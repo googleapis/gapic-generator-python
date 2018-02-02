@@ -1,0 +1,57 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+import abc
+import typing
+
+from google import auth
+from google.auth import credentials
+
+{% for rpc in service.rpcs %}
+from {{ rpc.input_type.import_path }} import {{ rpc.input_type.label }}
+from {{ rpc.return_type.import_path }} import {{ rpc.return_type.label }}
+{% endfor %}
+
+
+class {{ service.label }}Transport(metaclass=abc.ABCMeta):
+    """Abstract transport class for {{ service.label }}."""
+
+    SERVICE_ADDRESS: str = '{{ api.service_config.name }}'
+
+    AUTH_SCOPES: typing.Tuple[str] = (
+        {%- for scope in service.auth_scopes %}
+        '{{ scope }}',
+        {%- endfor %}
+    )
+
+    def __init__(
+            self, *,
+            credentials: credentials.Credentials = None,
+            ) -> None:
+        """Instantiate the transport.
+
+        Args:
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+        """
+        # If no credentials are provided, then determine the appropriate
+        # defaults.
+        if credentials is None:
+            credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+
+        # Save the credentials.
+        self._credentials = credentials
+
+    {%- for rpc in service.rpcs %}
+
+    @abc.abstractmethod
+    def {{ rpc.label|snake_case }}(
+            self,
+            {{ rpc.input_type|snake_case }}: {{ rpc.input_type }},
+            ) -> {{ rpc.return_type}}:
+        raise NotImplementedError
+    {%- endfor %}
+{% endblock %}

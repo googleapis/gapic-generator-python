@@ -1,0 +1,92 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+import pkg_resources
+from typing import Mapping, Optional, Sequence, Tuple, Union
+
+from google.api_core import gapic_v1
+from google.api_core import retry
+from google.auth import credentials
+
+{% for rpc in service.rpcs %}
+from {{ rpc.input_type.import_path }} import {{ rpc.input_type.label }}
+from {{ rpc.return_type.import_path }} import {{ rpc.return_type.label }}
+{% endfor %}
+
+from .transports import get_transport_class
+from .transports import {{ service.label }}Transport
+
+
+# LIBRARY_VERSION: str = pkg_resources.get_distribution(
+#     '{{ api.package_name }}',
+# ).version
+
+
+class {{ service.label }}:
+    """{{ service.documentation|wrap(width=72, subsequent_indent='    ') }}
+    """
+    def __init__(self, *,
+            credentials: credentials.Credentials = None,
+            transport: Union[str, {{ service.label }}Transport] = None,
+            ) -> None:
+        """Instantiate the {{ (service.label|snake_case).replace('_', ' ') }}.
+
+        Args:
+            credentials (Optional[google.auth.credentials.Credential]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+            transport (Union[str, ~.{{ service.label }}Transport): The
+                transport to use. If set to None, a transport is chosen
+                automatically.
+        """
+        # Save or instantiate the transport.
+        # Ordinarily, we provide the transport, but allowing a custom transport
+        # instance provides an extensibility point for unusual situations.
+        if isinstance(transport, {{ service.label }}Transport):
+            if credentials:
+                raise ValueError('When providing a transport instance, '
+                                 'provide its credentials directly.')
+            self._transport = transport
+        else:
+            Transport = get_transport_class(transport)
+            self._transport = Transport(credentials=credentials)
+
+    {% for rpc in service.rpcs %}
+    def {{ rpc.label|snake_case }}(self,
+            {{ rpc.input_type|snake_case }}: {{ rpc.input_type }}, *,
+            retry: retry.Retry = None,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> {{ rpc.return_type }}:
+        """{{ rpc.documentation }}
+        """
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.{{ rpc.label|snake_case }},
+            default_retry=None,  # FIXME
+            default_timeout=None,  # FIXME
+            client_info=self.client_info,
+        )
+
+        # Send the request and return the response.
+        return rpc(
+            {{ rpc.input_type|snake_case }},
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+    {% endfor %}
+
+    @property
+    def client_info(self) -> gapic_v1.client_info.ClientInfo:
+        """Return information about this client (for metrics).
+
+        Returns:
+            client_info.ClientInfo: An object with metadata about this
+                client library.
+        """
+        return gapic_v1.client_info.ClientInfo()
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+import io
+import os
+
+from setuptools import setup
+
+
+with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
+    README = file_obj.read()
+
+
+setup(
+    name='{{ api.service_config.name }}',
+    author='{{ api.copyright.label }}',
+    {%- if api.copyright.email %}
+    author_email='{{ api.copyright.email }}',
+    {%- endif %}
+    version='0.0.1',
+    description='{{ api.service_config.documentation.summary|wrap(width=70, initial_width=50, subsequent_indent="        '", antecedent_trailer=" '") }}',
+    long_description=README,
+    license={% if api.copyright.license.label %}'{{ api.copyright.license.label }}'{% else %}None{% endif %},
+    platforms='Posix; MacOS X; Windows',
+    include_package_data=True,
+    install_requires=(
+        'google-api-core >= 0.1.4, < 0.2.0dev',
+    ),
+    classifiers=(
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        {%- if api.copyright.license.label %}
+        'License :: OSI Approved :: {{ api.copyright.license.label }}',
+        {% endif -%}
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Internet',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+    ),
+    zip_safe=False,
+)
+{% endblock %}
