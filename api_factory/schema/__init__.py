@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .translator import translate
+from api_factory.schema.api import API
 
 
 __all__ = (
-    'translate',
+    'API',
 )

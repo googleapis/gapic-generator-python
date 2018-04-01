@@ -58,6 +58,10 @@ def wrap(text: str, width: int, initial_width: int = None,
     """
     initial_width = initial_width or width
 
+    # Sanity check: If there is empty text, abort.
+    if not text:
+        return ''
+
     # Reduce the values by the length of the trailing string, if any.
     width -= len(antecedent_trailer)
     initial_width -= len(antecedent_trailer)

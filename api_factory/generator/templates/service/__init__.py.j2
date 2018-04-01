@@ -1,9 +1,9 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-from .client import {{ service.label }}
+from .client import {{ service.name }}
 
 __all__ = (
-    '{{ service.label }}',
+    '{{ service.name }}',
 )
 {% endblock %}

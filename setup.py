@@ -24,7 +24,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 
 setup(
     name='python-api-factory',
-    version='0.0.1',
+    version='0.0.2',
     license='Apache 2.0',
     author='Luke Sneeringer',
     author_email='lukesneeringer@google.com',
@@ -34,7 +34,8 @@ setup(
                 'buffers',
     long_description=README,
     entry_points="""[console_scripts]
-        pyacf=api_factory.cli.pyacf:pyacf
+        protoc-gen-dump=api_factory.cli.dump:dump
+        protoc-gen-pyclient=api_factory.cli.generate:generate
     """,
     platforms='Posix; MacOS X',
     include_package_data=True,

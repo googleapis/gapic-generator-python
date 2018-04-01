@@ -25,10 +25,11 @@ class TemplateLoader(jinja2.FileSystemLoader):
     which are in the directory or directories and have not yet been loaded
     with :meth:`get_source`.
     """
-    def get_source(self,
+    def get_source(
+            self,
             environment: jinja2.Environment,
             template: str,
-        ) -> typing.Tuple[str, str, bool]:
+            ) -> typing.Tuple[str, str, bool]:
         """Return information about the template.
 
         This method is generally called from the jinja2 environment, rather

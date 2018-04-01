@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from api_factory.normalizer.parser import parse
+from .generator import generate
 
 
 __all__ = (
-    'parse',
+    'generate',
 )

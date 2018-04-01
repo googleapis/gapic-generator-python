@@ -7,16 +7,14 @@ import typing
 from google import auth
 from google.auth import credentials
 
-{% for rpc in service.rpcs %}
-from {{ rpc.input_type.import_path }} import {{ rpc.input_type.label }}
-from {{ rpc.return_type.import_path }} import {{ rpc.return_type.label }}
+{% for package, pb2_module in service.pb2_modules -%}
+from {{ package }} import {{ pb2_module }}
 {% endfor %}
 
+class {{ service.name }}Transport(metaclass=abc.ABCMeta):
+    """Abstract transport class for {{ service.name }}."""
 
-class {{ service.label }}Transport(metaclass=abc.ABCMeta):
-    """Abstract transport class for {{ service.label }}."""
-
-    SERVICE_ADDRESS: str = '{{ api.service_config.name }}'
+    SERVICE_ADDRESS: str = '{{ api.name }}'
 
     AUTH_SCOPES: typing.Tuple[str] = (
         {%- for scope in service.auth_scopes %}
@@ -45,13 +43,12 @@ class {{ service.label }}Transport(metaclass=abc.ABCMeta):
         # Save the credentials.
         self._credentials = credentials
 
-    {%- for rpc in service.rpcs %}
-
+    {% for method in service.methods.values() -%}
     @abc.abstractmethod
-    def {{ rpc.label|snake_case }}(
+    def {{ method.name|snake_case }}(
             self,
-            {{ rpc.input_type|snake_case }}: {{ rpc.input_type }},
-            ) -> {{ rpc.return_type}}:
+            request: {{ method.input.pb2_module }}.{{ method.input.name }},
+            ) -> {{ method.output.pb2_module }}.{{ method.output.name }}:
         raise NotImplementedError
-    {%- endfor %}
+    {% endfor -%}
 {% endblock %}

@@ -12,15 +12,12 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 
 
 setup(
-    name='{{ api.service_config.name }}',
-    author='{{ api.copyright.label }}',
-    {%- if api.copyright.email %}
-    author_email='{{ api.copyright.email }}',
-    {%- endif %}
+    name='{{ api.client.name.lower().replace(' ', '-') }}',
+    author='{{ api.client.copyright.name }}',
     version='0.0.1',
-    description='{{ api.service_config.documentation.summary|wrap(width=70, initial_width=50, subsequent_indent="        '", antecedent_trailer=" '") }}',
+    description='{{ api.client.documentation.tagline|wrap(width=70, initial_width=50, subsequent_indent="        '", antecedent_trailer=" '") }}',
     long_description=README,
-    license={% if api.copyright.license.label %}'{{ api.copyright.license.label }}'{% else %}None{% endif %},
+    license={% if api.client.license.name %}'{{ api.client.license.name }}'{% else %}None{% endif %},
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
@@ -29,9 +26,9 @@ setup(
     classifiers=(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
-        {%- if api.copyright.license.label %}
-        'License :: OSI Approved :: {{ api.copyright.license.label }}',
-        {% endif -%}
+        {%- if api.client.license.name %}
+        'License :: OSI Approved :: {{ api.client.license.name }}',
+        {%- endif %}
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',

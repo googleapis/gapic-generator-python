@@ -17,28 +17,34 @@ import os
 
 import jinja2
 
-from api_factory.normalizer.schema import APIDescriptor
-from api_factory.translator.loader import TemplateLoader
-from api_factory.translator.schema import ClientLibrary
-from api_factory.translator.schema import OutputFile
+from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest
+from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
+
+from api_factory.schema import API
+from api_factory.generator.loader import TemplateLoader
 from api_factory import utils
 
 
-def translate(api_desc: APIDescriptor) -> ClientLibrary:
-    """Generate a client library.
-
-    This function pieces together a client library (which is really just
-    a collection of output files) and returns it.
+def generate(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
+    """Generate a code generator response to provide to protoc.
 
     Args:
-        api_desc (~.normalizer.schema.APIDescriptor): The API descriptor
-            from which to generate the library.
+        request (CodeGeneratorRequest): A request protocol buffer as provided
+            by protoc.
 
     Returns:
-        ~.translator.schema.ClientLibrary: An in-memory object representing
-            the complete client library.
+        CodeGeneratorResponse: A complete response to be written to (usually)
+            stdout and thus read by protoc.
     """
-    answer = ClientLibrary()
+    # Parse the CodeGeneratorRequest into this plugin's internal schema.
+    api_desc = API()
+    for fdp in request.proto_file:
+        api_desc.load(fdp)
+
+    # Instantiate a CodeGeneratorResponse object.
+    output_files = []
+
+    # Create the jinja environment with which to render templates.
     env = jinja2.Environment(loader=TemplateLoader(
         searchpath=os.path.join(_dirname, 'templates'),
     ))
@@ -46,33 +52,31 @@ def translate(api_desc: APIDescriptor) -> ClientLibrary:
     env.filters['subsequent_indent'] = utils.subsequent_indent
     env.filters['wrap'] = utils.wrap
 
-    # For every service, generate a client module.
-    # (The term "service" here refers to the proto3 keyword, not the
-    # service configuration.)
+    # For every protocol buffer service, generate a client module.
     service_templates = [i for i in env.loader.remaining_templates
                          if i.startswith('service/')]
-    for service in api_desc.services:
+    for service in api_desc.services.values():
         for filename in service_templates:
             # Get the output filename for this service and template.
             output_filename = filename[:-len('.j2')].replace(
                 'service/',
-                f'{utils.to_snake_case(service.label)}/',
+                f'{utils.to_snake_case(service.name)}/',
             )
-            answer.output_files.append(OutputFile(
-                contents=env.get_template(filename).render(
+            output_files.append(CodeGeneratorResponse.File(
+                content=env.get_template(filename).render(
                     api=api_desc,
                     service=service,
-                ),
-                filename=output_filename,
+                ).strip() + '\n',
+                name=output_filename,
             ))
 
     # Create boilerplate metadata files.
     for filename in env.loader.remaining_templates:
-        answer.output_files.append(OutputFile(
-            contents=env.get_template(filename).render(
+        output_files.append(CodeGeneratorResponse.File(
+            content=env.get_template(filename).render(
                 api=api_desc,
-            ),
-            filename=filename[:-len('.j2')],
+            ).strip() + '\n',
+            name=filename[:-len('.j2')],
         ))
 
     # Some files are direct files and not templates; simply read them
@@ -91,14 +95,14 @@ def translate(api_desc: APIDescriptor) -> ClientLibrary:
 
             # Read the file from disk and create an appropriate OutputFile.
             with io.open(os.path.join(path, filename), 'r') as f:
-                answer.output_files.append(OutputFile(
-                    contents=f.read(),
-                    filename=relative_filename,
+                output_files.append(CodeGeneratorResponse.File(
+                    content=f.read(),
+                    name=relative_filename,
                 ))
 
     # Done; return the full library object, containing each individual
     # file to be written.
-    return answer
+    return CodeGeneratorResponse(file=output_files)
 
 
 _dirname = os.path.realpath(os.path.dirname(__file__))
