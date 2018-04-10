@@ -12,12 +12,12 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 
 
 setup(
-    name='{{ api.client.name.lower().replace(' ', '-') }}',
-    author='{{ api.client.copyright.name }}',
+    name='{{ api.warehouse_package_name }}',
+    author='{{ api.client.copyright.fullname }}',
     version='0.0.1',
     description='{{ api.client.documentation.tagline|wrap(width=70, initial_width=50, subsequent_indent="        '", antecedent_trailer=" '") }}',
     long_description=README,
-    license={% if api.client.license.name %}'{{ api.client.license.name }}'{% else %}None{% endif %},
+    license={% if api.client.license %}'{{ api.client.license.replace('-', ' ') }}'{% else %}None{% endif %},
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(

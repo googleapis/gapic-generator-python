@@ -33,7 +33,9 @@ from typing import List, Mapping
 
 from google.protobuf import descriptor_pb2
 
+from api_factory import utils
 from api_factory.schema.metadata import Metadata
+from api_factory.schema.pb import client_pb2
 
 
 @dataclasses.dataclass
@@ -104,6 +106,28 @@ class Service:
 
     def __getattr__(self, name):
         return getattr(self.service_pb, name)
+
+    @property
+    def host(self):
+        """Return the hostname for this service, if specified.
+
+        Returns:
+            str: The hostname, with no protocol and no trailing ``/``.
+        """
+        if self.service_pb.options.Extensions[client_pb2.host]:
+            return self.service_pb.options.Extensions[client_pb2.host]
+        return utils.E('<<< HOSTNAME >>>')
+
+    @property
+    def oauth_scopes(self):
+        """Return a sequence of oauth scopes, if applicable.
+
+        Returns:
+            Sequence[str]: A sequence of OAuth scopes.
+        """
+        if self.service_pb.options.Extensions[client_pb2.oauth_scopes]:
+            return self.service_pb.options.Extensions[client_pb2.oauth_scopes]
+        return ()
 
     @property
     def pb2_modules(self):

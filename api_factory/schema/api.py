@@ -19,13 +19,19 @@ from typing import Callable, List, Mapping
 
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import client_pb2
+from api_factory import utils
 from api_factory.schema import metadata
 from api_factory.schema import wrappers
+from api_factory.schema.pb import client_pb2
 
 
 @dataclasses.dataclass
 class API:
+    """A representation of a full API.
+
+    An instance of this object is made available to every template
+    (as ``api``); all data goes here.
+    """
     client: client_pb2.Client = client_pb2.Client()
     services: Mapping[str, wrappers.Service] = dataclasses.field(
         default_factory=dict,
@@ -36,6 +42,19 @@ class API:
     enums: Mapping[str, wrappers.EnumType] = dataclasses.field(
         default_factory=dict,
     )
+
+    @property
+    def warehouse_package_name(self):
+        """Return the appropriate Python package name for Warehouse."""
+        # Sanity check: If no name is provided, use a clearly placeholder
+        # default that is not a valid name on Warehouse.
+        if not self.client.name:
+            return utils.E('<<< PACKAGE NAME >>>')
+
+        # Piece the name and namespace together to come up with the
+        # proper package name.
+        answer = list(self.client.namespace) + [self.client.name]
+        return '-'.join(answer).lower()
 
     def load(self, fdp: descriptor_pb2.FileDescriptorProto) -> None:
         """Load the provided FileDescriptorProto into this object.

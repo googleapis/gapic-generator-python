@@ -14,10 +14,10 @@ from {{ package }} import {{ pb2_module }}
 class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     """Abstract transport class for {{ service.name }}."""
 
-    SERVICE_ADDRESS: str = '{{ api.name }}'
+    SERVICE_ADDRESS: str = '{{ service.host }}'
 
     AUTH_SCOPES: typing.Tuple[str] = (
-        {%- for scope in service.auth_scopes %}
+        {%- for scope in service.oauth_scopes %}
         '{{ scope }}',
         {%- endfor %}
     )

@@ -12,19 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from api_factory.utils.cached_property import cached_property
-from api_factory.utils.case import to_snake_case
-from api_factory.utils.error_string import E
-from api_factory.utils.lines import subsequent_indent
-from api_factory.utils.lines import wrap
-from api_factory.utils.sequences import find_in_sequence
 
+class E(str):
+    """A string which always has a boolean value of False.
 
-__all__ = (
-    'cached_property',
-    'E',
-    'find_in_sequence',
-    'subsequent_indent',
-    'to_snake_case',
-    'wrap',
-)
+    Used for sending placeholder strings to templates, such that the string
+    is meaningful if used, but an if check will resolve to False.
+    """
+    def __bool__(self):
+        return False
