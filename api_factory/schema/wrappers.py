@@ -28,6 +28,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 """
 
 
+import collections
 import dataclasses
 from typing import List, Mapping
 
@@ -36,6 +37,7 @@ from google.protobuf import descriptor_pb2
 from api_factory import utils
 from api_factory.schema.metadata import Metadata
 from api_factory.schema.pb import client_pb2
+from api_factory.schema.pb import overload_pb2
 
 
 @dataclasses.dataclass
@@ -96,6 +98,11 @@ class Method:
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
 
+    @property
+    def overloads(self):
+        """Return the overloads defined for this method."""
+        return self.method_pb.options.Extensions[overload_pb2.overloads]
+
 
 @dataclasses.dataclass
 class Service:
@@ -116,7 +123,7 @@ class Service:
         """
         if self.service_pb.options.Extensions[client_pb2.host]:
             return self.service_pb.options.Extensions[client_pb2.host]
-        return utils.E('<<< HOSTNAME >>>')
+        return utils.Placeholder('<<< HOSTNAME >>>')
 
     @property
     def oauth_scopes(self):

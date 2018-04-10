@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+import functools
 import pkg_resources
 from typing import Mapping, Optional, Sequence, Tuple, Union
 
@@ -52,6 +53,7 @@ class {{ service.name }}:
             self._transport = Transport(credentials=credentials)
 
     {% for method in service.methods.values() -%}
+    @functools.singledispatch
     def {{ method.name|snake_case }}(self,
             request: {{ method.input.pb2_module }}.{{ method.input.name }}, *,
             retry: retry.Retry = None,

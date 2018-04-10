@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-from google.api.expr.v1 import syntax_pb2 as google_dot_api_dot_expr_dot_v1_dot_syntax__pb2
+from api_factory.schema.pb.expr.v1 import syntax_pb2 as google_dot_api_dot_expr_dot_v1_dot_syntax__pb2
 from google.protobuf import descriptor_pb2 as google_dot_protobuf_dot_descriptor__pb2
 
 

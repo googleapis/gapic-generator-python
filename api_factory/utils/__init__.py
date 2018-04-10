@@ -14,16 +14,16 @@
 
 from api_factory.utils.cached_property import cached_property
 from api_factory.utils.case import to_snake_case
-from api_factory.utils.error_string import E
 from api_factory.utils.lines import subsequent_indent
 from api_factory.utils.lines import wrap
+from api_factory.utils.placeholder import Placeholder
 from api_factory.utils.sequences import find_in_sequence
 
 
 __all__ = (
     'cached_property',
-    'E',
     'find_in_sequence',
+    'Placeholder',
     'subsequent_indent',
     'to_snake_case',
     'wrap',

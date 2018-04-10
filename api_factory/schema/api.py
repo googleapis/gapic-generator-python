@@ -54,7 +54,7 @@ class API:
         # Sanity check: If no name is provided, use a clearly placeholder
         # default that is not a valid name on Warehouse.
         if not self.client.name:
-            return utils.E('<<< PACKAGE NAME >>>')
+            return utils.Placeholder('<<< PACKAGE NAME >>>')
 
         # Piece the name and namespace together to come up with the
         # proper package name.

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-class E(str):
+class Placeholder(str):
     """A string which always has a boolean value of False.
 
     Used for sending placeholder strings to templates, such that the string
