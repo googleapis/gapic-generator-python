@@ -4,8 +4,8 @@
 import collections
 import typing
 
-from .base import {{ service.label }}Transport
-from .http import {{ service.label }}HttpTransport
+from .base import {{ service.name }}Transport
+from .http import {{ service.name }}HttpTransport
 
 # Compile a registry of transports.
 _registry = collections.OrderedDict()
@@ -14,19 +14,19 @@ _registry = collections.OrderedDict()
 # be installed. If it is available, however, it should be the "first in"
 # (default).
 try:
-    from .grpc import {{ service.label }}GrpcTransport
-    _registry['grpc'] = {{ service.label }}GrpcTransport
+    from .grpc import {{ service.name }}GrpcTransport
+    _registry['grpc'] = {{ service.name }}GrpcTransport
 except ImportError:
     pass
 
 # Always provide an HTTP/1.1 transport.
-_registry['http'] = {{ service.label }}HttpTransport
+_registry['http'] = {{ service.name }}HttpTransport
 
 
 # Provide a function for the client to get the appropriate transport.
 def get_transport_class(
         label: str = None,
-        ) -> typing.Type[{{ service.label }}Transport]:
+        ) -> typing.Type[{{ service.name }}Transport]:
     """Return an appropriate transport class.
 
     Args:
@@ -46,7 +46,7 @@ def get_transport_class(
 
 
 __all__ = (
-    '{{ service.label }}Transport',
+    '{{ service.name }}Transport',
     'get_transport_class',
 )
 {% endblock %}
