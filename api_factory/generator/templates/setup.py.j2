@@ -7,7 +7,8 @@ import os
 from setuptools import setup
 
 
-with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
+PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+with io.open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
     README = file_obj.read()
 
 
@@ -26,8 +27,8 @@ setup(
     classifiers=(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
-        {%- if api.client.license.name %}
-        'License :: OSI Approved :: {{ api.client.license.name }}',
+        {%- if api.client.license %}
+        'License :: OSI Approved :: {{ api.client.license }}',
         {%- endif %}
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',

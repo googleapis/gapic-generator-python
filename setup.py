@@ -19,7 +19,7 @@ from setuptools import find_packages, setup
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
+with io.open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
     README = file_obj.read()
 
 setup(
