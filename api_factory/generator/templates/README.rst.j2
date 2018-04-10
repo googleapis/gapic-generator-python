@@ -1,5 +1,5 @@
-{% for ns in api.client.namespace %}{{ ns }} {% endfor %}{{ api.client.name }}
-===================================
+{{ api.long_name }}
+{{ '=' * api.long_name|length }}
 
 {% if api.client.documentation.summary -%}
 *{{ api.client.documentation.summary }}*

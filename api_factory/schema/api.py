@@ -44,6 +44,11 @@ class API:
     )
 
     @property
+    def long_name(self):
+        """Return an appropriate title-cased long name."""
+        return ' '.join(list(self.client.namespace) + [self.client.name])
+
+    @property
     def warehouse_package_name(self):
         """Return the appropriate Python package name for Warehouse."""
         # Sanity check: If no name is provided, use a clearly placeholder
