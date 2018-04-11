@@ -32,5 +32,11 @@ You can build the docs into a nice HTML page. This requires installing
 
 .. _Sphinx: https://sphinx-doc.org/
 
+Disclaimer
+----------
+
+This is not an official Google product.
+
+
 .. |release level| image:: https://img.shields.io/badge/release%20level-pre%20alpha-red.svg?style&#x3D;flat
     :target: https://cloud.google.com/terms/launch-stages
