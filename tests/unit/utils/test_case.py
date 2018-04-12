@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from api_factory.utils.case import to_snake_case
-from api_factory.utils.lines import subsequent_indent
-from api_factory.utils.lines import wrap
-from api_factory.utils.placeholder import Placeholder
+from api_factory.utils import case
 
 
-__all__ = (
-    'Placeholder',
-    'subsequent_indent',
-    'to_snake_case',
-    'wrap',
-)
+def test_pascal_to_snake():
+    assert case.to_snake_case('PascalCaseThing') == 'pascal_case_thing'
+
+
+def test_camel_to_snake():
+    assert case.to_snake_case('camelCaseThing') == 'camel_case_thing'
+
+
+def test_constant_to_snake():
+    assert case.to_snake_case('CONSTANT_CASE_THING') == 'constant_case_thing'
