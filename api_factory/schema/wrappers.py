@@ -27,8 +27,6 @@ Reading of underlying descriptor properties in templates *is* okay, a
 Documentation is consistently at ``{thing}.meta.doc``.
 """
 
-
-import collections
 import dataclasses
 from typing import List, Mapping
 
