@@ -18,7 +18,7 @@ from google.protobuf import descriptor_pb2
 
 from api_factory.schema import metadata
 from api_factory.schema import wrappers
-from api_facotry.schema.pb import client_pb2
+from api_factory.schema.pb import client_pb2
 
 
 def test_service_properties():
@@ -33,7 +33,7 @@ def test_service_host():
 
 def test_service_no_host():
     service = get_service()
-    assert service.host == '<<< PLACEHOLDER >>>'
+    assert service.host == '<<< HOSTNAME >>>'
     assert bool(service.host) is False
 
 
@@ -61,9 +61,9 @@ def get_service(name: str = 'Placeholder', host: str = '',
     # appropriate.
     service_pb = descriptor_pb2.ServiceDescriptorProto(name=name)
     if host:
-        service_pb.options[client_pb2.host] = host
+        service_pb.options.Extensions[client_pb2.host] = host
     if scopes:
-        service_pb.options[client_pb2.oauth_scopes] = scopes
+        service_pb.options.Extensions[client_pb2.oauth_scopes].extend(scopes)
 
     # Return a service object to test.
     return wrappers.Service(
@@ -77,7 +77,7 @@ def get_method(name: str, in_type: str, out_type: str) -> wrappers.Method:
     output = get_message(out_type)
     method_pb = descriptor_pb2.MethodDescriptorProto(
         name=name,
-        input_type=input.proto_path,
+        input_type=input_.proto_path,
         output_type=output.proto_path,
     )
     return wrappers.Method(method_pb=method_pb, input=input_, output=output)
@@ -93,6 +93,7 @@ def get_message(dot_path: str) -> wrappers.MessageType:
     pieces = dot_path.split('.')
     pkg, module, name = pieces[:-2], pieces[-2], pieces[-1]
     return wrappers.MessageType(
+        fields={},
         message_pb=descriptor_pb2.DescriptorProto(name=name),
         meta=metadata.Metadata(address=metadata.Address(
             package=pkg,
