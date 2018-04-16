@@ -83,7 +83,7 @@ def generate(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
     # into output files directly.
     #
     # Rather than expect an enumeration of these, we simply grab everything
-    # in the `files/` directory atuo
+    # in the `files/` directory automatically.
     for path, _, filenames in os.walk(os.path.join(_dirname, 'files')):
         relative_path = path[len(_dirname) + len('/files/'):]
         for filename in filenames:
