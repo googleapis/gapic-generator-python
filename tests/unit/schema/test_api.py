@@ -202,42 +202,45 @@ def test_get_fields():
         next(items)
 
 
-# def test_get_methods():
-#     L = descriptor_pb2.SourceCodeInfo.Location
-#
-#     # Set up data to test with.
-#     # This requires setting up the fields that the method uses.
-#     field_pbs = [
-#         descriptor_pb2.MethodDescriptorProto(name='spam'),
-#         descriptor_pb2.MethodDescriptorProto(name='eggs'),
-#     ]
-#     address = metadata.Address(package=['foo', 'bar'], module='baz')
-#     info = {1: {'TERMINAL': L(leading_comments='Eggs.')}}
-#
-#     # Run the method under test.
-#     methods = make_api()._get_fields(field_pbs, address=address, info=info)
-#
-#     # Test that we get two field objects back.
-#     assert len(methods) == 2
-#     for method in methods.values():
-#         assert isinstance(method, wrappers.Method)
-#     items = iter(methods.items())
-#
-#     # Test that the first field is spam, and it has no documentation
-#     # (since `info` has no `0` key).
-#     field_name, field = next(items)
-#     assert field_name == 'spam'
-#     assert field.meta.doc == ''
-#
-#     # Test that the second field is eggs, and it does have documentation
-#     # (since `info` has a `1` key).
-#     field_name, field = next(items)
-#     assert field_name == 'eggs'
-#     assert field.meta.doc == 'Eggs.'
-#
-#     # Done.
-#     with pytest.raises(StopIteration):
-#         next(items)
+def test_get_methods():
+    L = descriptor_pb2.SourceCodeInfo.Location
+
+    # Start with an empty API object.
+    api = make_api()
+
+    # Load the input and output type for a method into the API object.
+    address = metadata.Address(package=['foo', 'bar'], module='baz')
+    api._load_descriptor(descriptor_pb2.DescriptorProto(name='In'),
+                         address=address, info={})
+    api._load_descriptor(descriptor_pb2.DescriptorProto(name='Out'),
+                         address=address, info={})
+
+    # Run the method under test.
+    method_pb = descriptor_pb2.MethodDescriptorProto(
+        name='DoThings',
+        input_type='foo.bar.In',
+        output_type='foo.bar.Out',
+    )
+    methods = api._get_methods([method_pb], address=address, info={})
+
+    # Test that we get a method object back.
+    assert len(methods) == 1
+    for method in methods.values():
+        assert isinstance(method, wrappers.Method)
+    items = iter(methods.items())
+
+    # Test that the method has what we expect, an input and output type
+    # and appropriate name.
+    method_key, method = next(items)
+    assert method_key == 'DoThings'
+    assert isinstance(method.input, wrappers.MessageType)
+    assert method.input.name == 'In'
+    assert isinstance(method.output, wrappers.MessageType)
+    assert method.output.name == 'Out'
+
+    # Done.
+    with pytest.raises(StopIteration):
+        next(items)
 
 
 def test_load_descriptor():
@@ -248,6 +251,37 @@ def test_load_descriptor():
     assert 'foo.bar.v1.Riddle' in api.messages
     assert isinstance(api.messages['foo.bar.v1.Riddle'], wrappers.MessageType)
     assert api.messages['foo.bar.v1.Riddle'].message_pb == message_pb
+
+
+def test_load_enum():
+    # Set up the appropriate protos.
+    enum_value_pb = descriptor_pb2.EnumValueDescriptorProto(name='A', number=0)
+    enum_pb = descriptor_pb2.EnumDescriptorProto(
+        name='Enum',
+        value=[enum_value_pb],
+    )
+
+    # Load it into the API.
+    address = metadata.Address(package=['foo', 'bar', 'v1'], module='baz')
+    api = make_api()
+    api._load_enum(enum_pb, address=address, info={})
+
+    # Assert we got back the right stuff.
+    assert 'foo.bar.v1.Enum' in api.enums
+    assert isinstance(api.enums['foo.bar.v1.Enum'], wrappers.EnumType)
+    assert api.enums['foo.bar.v1.Enum'].enum_pb == enum_pb
+    assert len(api.enums['foo.bar.v1.Enum'].values) == 1
+
+
+def test_load_service():
+    service_pb = descriptor_pb2.ServiceDescriptorProto(name='RiddleService')
+    address = metadata.Address(package=['foo', 'bar', 'v1'], module='baz')
+    api = make_api()
+    api._load_service(service_pb, address=address, info={})
+    assert 'foo.bar.v1.RiddleService' in api.services
+    assert isinstance(api.services['foo.bar.v1.RiddleService'],
+                      wrappers.Service)
+    assert api.services['foo.bar.v1.RiddleService'].service_pb == service_pb
 
 
 def make_api(client: client_pb2.Client = None) -> api.API:

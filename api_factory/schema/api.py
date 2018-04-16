@@ -287,7 +287,7 @@ class API:
         )
 
         # Load the comments for the service itself.
-        self.services[service.name] = wrappers.Service(
+        self.services[f'{str(address)}.{service.name}'] = wrappers.Service(
             meta=metadata.Metadata(address=address, documentation=info.get(
                 'TERMINAL',
                 descriptor_pb2.SourceCodeInfo.Location(),
