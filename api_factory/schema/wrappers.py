@@ -38,7 +38,7 @@ from api_factory.schema.pb import client_pb2
 from api_factory.schema.pb import overload_pb2
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Field:
     """Description of a field."""
     field_pb: descriptor_pb2.FieldDescriptorProto
@@ -48,7 +48,7 @@ class Field:
         return getattr(self.field_pb, name)
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
     message_pb: descriptor_pb2.DescriptorProto
@@ -69,7 +69,7 @@ class MessageType:
         return f'{str(self.meta.address)}.{self.name}'
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class EnumValueType:
     """Description of an enum value."""
     enum_value_pb: descriptor_pb2.EnumValueDescriptorProto
@@ -79,7 +79,7 @@ class EnumValueType:
         return getattr(self.enum_value_pb, name)
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class EnumType:
     """Description of an enum (defined with the ``enum`` keyword.)"""
     enum_pb: descriptor_pb2.EnumDescriptorProto
@@ -90,7 +90,7 @@ class EnumType:
         return getattr(self.enum_pb, name)
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Method:
     """Description of a method (defined with the ``rpc`` keyword)."""
     method_pb: descriptor_pb2.MethodDescriptorProto
@@ -107,7 +107,7 @@ class Method:
         return self.method_pb.options.Extensions[overload_pb2.overloads]
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Service:
     """Description of a service (defined with the ``service`` keyword)."""
     service_pb: descriptor_pb2.ServiceDescriptorProto

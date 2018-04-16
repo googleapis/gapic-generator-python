@@ -32,7 +32,9 @@ class API:
     An instance of this object is made available to every template
     (as ``api``); all data goes here.
     """
-    client: client_pb2.Client = client_pb2.Client()
+    client: client_pb2.Client = dataclasses.field(
+        default_factory=client_pb2.Client,
+    )
     services: Mapping[str, wrappers.Service] = dataclasses.field(
         default_factory=dict,
     )
@@ -44,12 +46,12 @@ class API:
     )
 
     @property
-    def long_name(self):
+    def long_name(self) -> str:
         """Return an appropriate title-cased long name."""
         return ' '.join(list(self.client.namespace) + [self.client.name])
 
     @property
-    def warehouse_package_name(self):
+    def warehouse_package_name(self) -> str:
         """Return the appropriate Python package name for Warehouse."""
         # Sanity check: If no name is provided, use a clearly placeholder
         # default that is not a valid name on Warehouse.
@@ -75,7 +77,7 @@ class API:
         # Compile together the comments from the source code.
         # This creates a nested diciontary structure sorted by the
         # location paths. So, a location with path [4, 1, 2, 7] will end
-        # up being in `source_docs` under [4][1][2][7]['TERMINAL'].
+        # up being in `comments_by_path` under [4][1][2][7]['TERMINAL'].
         #
         # The purpose of always ending with 'TERMINAL' is because there
         # always could be something nested deeper.
@@ -110,9 +112,8 @@ class API:
         # self._load_children(fdp.extension, loader=self._load_field,
         #                   address=address, info=comments_by_path.get(7, {}))
 
-        # If the FileDescriptorProto has a Client object, save it.
-        if fdp.options.Extensions[client_pb2.client]:
-            self.client = fdp.options.Extensions[client_pb2.client]
+        # Merge any client directives with what we have going so far.
+        self.client.MergeFrom(fdp.options.Extensions[client_pb2.client])
 
     def _load_children(self, children: list, loader: Callable,
                        address: metadata.Address, info: dict) -> None:
@@ -123,14 +124,12 @@ class API:
                 be loaded. For example, a FileDescriptorProto contains the
                 lists ``message_type``, ``enum_type``, etc.; these are valid
                 inputs for this argument.
-            loader (Callable[Message, prefix, dict]): The function able
+            loader (Callable[Message, Address, dict]): The function able
                 to load the kind of message in ``children``. This should
                 be one of the ``_load_{noun}`` methods on this class
                 (e.g. ``_load_descriptor``).
-            prefix (str): The protocol buffer qualified namespace up to this
-                point. This will include the package and may include outer
-                messages. Note that the proto file name is not part of the
-                prefix.
+            address (~.metadata.Address): The address up to this point.
+                This will include the package and may include outer messages.
             info (dict): A dictionary of comment information corresponding to
                 the messages for which being laoded. In other words, this is
                 the segment of the source info that has paths matching
@@ -147,6 +146,16 @@ class API:
         """Return a dictionary of wrapped fields for the given message.
 
         Args:
+            fields (Sequence[~.descriptor_pb2.FieldDescriptorProto]): A
+                sequence of protobuf field objects.
+            address (~.metadata.Address): An address object denoting the
+                location of these fields.
+            info (dict): The appropriate slice of proto comments
+                corresponding to these fields.
+
+        Returns:
+            Mapping[str, ~.wrappers.Field]: A ordered mapping of
+                :class:`~.wrappers.Field` objects.
         """
         # Iterate over the fields and collect them into a dictionary.
         answer = collections.OrderedDict()
@@ -171,6 +180,16 @@ class API:
         """Return a dictionary of wrapped methods for the given service.
 
         Args:
+            fields (Sequence[~.descriptor_pb2.MethodDescriptorProto]): A
+                sequence of protobuf method objects.
+            address (~.metadata.Address): An address object denoting the
+                location of these methods.
+            info (dict): The appropriate slice of proto comments
+                corresponding to these methods.
+
+        Returns:
+            Mapping[str, ~.wrappers.Method]: A ordered mapping of
+                :class:`~.wrappers.Method` objects.
         """
         # Iterate over the methods and collect them into a dictionary.
         answer = collections.OrderedDict()
