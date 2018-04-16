@@ -140,7 +140,7 @@ class API:
         for child, i in zip(children, range(0, sys.maxsize)):
             loader(child, address=address, info=info.get(i, {}))
 
-    def _get_fields(self, fields: List[descriptor_pb2.FieldDescriptorProto],
+    def _get_fields(self, field_pbs: List[descriptor_pb2.FieldDescriptorProto],
                     address: metadata.Address, info: dict,
                     ) -> Mapping[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
@@ -159,7 +159,7 @@ class API:
         """
         # Iterate over the fields and collect them into a dictionary.
         answer = collections.OrderedDict()
-        for field_pb, i in zip(fields, range(0, sys.maxsize)):
+        for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
                 meta=metadata.Metadata(
@@ -180,7 +180,7 @@ class API:
         """Return a dictionary of wrapped methods for the given service.
 
         Args:
-            fields (Sequence[~.descriptor_pb2.MethodDescriptorProto]): A
+            methods (Sequence[~.descriptor_pb2.MethodDescriptorProto]): A
                 sequence of protobuf method objects.
             address (~.metadata.Address): An address object denoting the
                 location of these methods.
@@ -210,20 +210,20 @@ class API:
         # Done; return the answer.
         return answer
 
-    def _load_descriptor(self, message: descriptor_pb2.DescriptorProto,
+    def _load_descriptor(self, message_pb: descriptor_pb2.DescriptorProto,
                          address: metadata.Address, info: dict) -> None:
         """Load message descriptions from DescriptorProtos."""
-        ident = f'{str(address)}.{message.name}'
-        nested_addr = address.child(message.name)
+        ident = f'{str(address)}.{message_pb.name}'
+        nested_addr = address.child(message_pb.name)
 
         # Create a dictionary of all the fields for this message.
         fields = self._get_fields(
-            message.field,
+            message_pb.field,
             address=nested_addr,
             info=info.get(2, {}),
         )
         fields.update(self._get_fields(
-            message.extension,
+            message_pb.extension,
             address=nested_addr,
             info=info.get(6, {}),
         ))
@@ -231,7 +231,7 @@ class API:
         # Create a message correspoding to this descriptor.
         self.messages[ident] = wrappers.MessageType(
             fields=fields,
-            message_pb=message,
+            message_pb=message_pb,
             meta=metadata.Metadata(address=address, documentation=info.get(
                 'TERMINAL',
                 descriptor_pb2.SourceCodeInfo.Location(),
@@ -239,10 +239,10 @@ class API:
         )
 
         # Load all nested items.
-        self._load_children(message.nested_type, loader=self._load_descriptor,
-                            address=nested_addr, info=info.get(3, {}))
-        self._load_children(message.enum_type, loader=self._load_enum,
-                            address=nested_addr, info=info.get(4, {}))
+        self._load_children(message_pb.nested_type, address=nested_addr,
+                            loader=self._load_descriptor, info=info.get(3, {}))
+        self._load_children(message_pb.enum_type, address=nested_addr,
+                            loader=self._load_enum, info=info.get(4, {}))
         # self._load_children(message.oneof_decl, loader=self._load_field,
         #                     address=nested_addr, info=info.get(8, {}))
 

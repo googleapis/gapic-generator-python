@@ -202,6 +202,54 @@ def test_get_fields():
         next(items)
 
 
+# def test_get_methods():
+#     L = descriptor_pb2.SourceCodeInfo.Location
+#
+#     # Set up data to test with.
+#     # This requires setting up the fields that the method uses.
+#     field_pbs = [
+#         descriptor_pb2.MethodDescriptorProto(name='spam'),
+#         descriptor_pb2.MethodDescriptorProto(name='eggs'),
+#     ]
+#     address = metadata.Address(package=['foo', 'bar'], module='baz')
+#     info = {1: {'TERMINAL': L(leading_comments='Eggs.')}}
+#
+#     # Run the method under test.
+#     methods = make_api()._get_fields(field_pbs, address=address, info=info)
+#
+#     # Test that we get two field objects back.
+#     assert len(methods) == 2
+#     for method in methods.values():
+#         assert isinstance(method, wrappers.Method)
+#     items = iter(methods.items())
+#
+#     # Test that the first field is spam, and it has no documentation
+#     # (since `info` has no `0` key).
+#     field_name, field = next(items)
+#     assert field_name == 'spam'
+#     assert field.meta.doc == ''
+#
+#     # Test that the second field is eggs, and it does have documentation
+#     # (since `info` has a `1` key).
+#     field_name, field = next(items)
+#     assert field_name == 'eggs'
+#     assert field.meta.doc == 'Eggs.'
+#
+#     # Done.
+#     with pytest.raises(StopIteration):
+#         next(items)
+
+
+def test_load_descriptor():
+    message_pb = descriptor_pb2.DescriptorProto(name='Riddle')
+    address = metadata.Address(package=['foo', 'bar', 'v1'], module='baz')
+    api = make_api()
+    api._load_descriptor(message_pb=message_pb, address=address, info={})
+    assert 'foo.bar.v1.Riddle' in api.messages
+    assert isinstance(api.messages['foo.bar.v1.Riddle'], wrappers.MessageType)
+    assert api.messages['foo.bar.v1.Riddle'].message_pb == message_pb
+
+
 def make_api(client: client_pb2.Client = None) -> api.API:
     return api.API(client=client or make_client())
 
