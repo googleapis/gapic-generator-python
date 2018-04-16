@@ -19,9 +19,7 @@ from api_factory.schema import wrappers
 
 
 def get_message() -> wrappers.MessageType:
-    message_pb = descriptor_pb2.DescriptorProto(
-        name='MyMessage',
-    )
+    message_pb = descriptor_pb2.DescriptorProto(name='MyMessage')
     return wrappers.MessageType(
         fields=[],
         message_pb=message_pb,
@@ -39,7 +37,7 @@ def test_message_properties():
     assert message.name == 'MyMessage'
 
 
-def test_message_metadata():
+def test_message_docstring():
     message = get_message()
     assert message.meta.doc == 'Lorem ipsum dolor set amet'
 

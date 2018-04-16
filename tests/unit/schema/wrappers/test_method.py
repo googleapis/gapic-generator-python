@@ -20,8 +20,6 @@ from api_factory.schema.pb import overload_pb2
 
 
 def get_method() -> wrappers.Method:
-    Location = descriptor_pb2.SourceCodeInfo.Location
-
     # Create the address where this method lives, and the types live,
     # and make them distinct.
     method_addr = metadata.Address(package=['foo', 'bar'], module='baz')
@@ -44,23 +42,14 @@ def get_method() -> wrappers.Method:
         input=wrappers.MessageType(
             fields=[],
             message_pb=descriptor_pb2.DescriptorProto(name='Input'),
-            meta=metadata.Metadata(
-                address=types_addr,
-                documentation=Location(),
-            ),
+            meta=metadata.Metadata(address=types_addr),
         ),
         output=wrappers.MessageType(
             fields=[],
             message_pb=descriptor_pb2.DescriptorProto(name='Output'),
-            meta=metadata.Metadata(
-                address=types_addr,
-                documentation=Location(),
-            ),
+            meta=metadata.Metadata(address=types_addr),
         ),
-        meta=metadata.Metadata(
-            address=method_addr,
-            documentation=Location(),
-        ),
+        meta=metadata.Metadata(address=method_addr),
     )
 
 

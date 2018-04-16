@@ -19,7 +19,7 @@ from typing import List
 from google.protobuf import descriptor_pb2
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Address:
     package: List[str] = dataclasses.field(default_factory=list)
     module: str = ''
@@ -44,10 +44,12 @@ class Address:
         return answer
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Metadata:
-    address: Address
-    documentation: descriptor_pb2.SourceCodeInfo.Location
+    address: Address = dataclasses.field(default_factory=Address)
+    documentation: descriptor_pb2.SourceCodeInfo.Location = dataclasses.field(
+        default_factory=descriptor_pb2.SourceCodeInfo.Location,
+    )
 
     @property
     def doc(self):

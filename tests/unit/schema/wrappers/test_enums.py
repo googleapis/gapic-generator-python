@@ -19,7 +19,6 @@ from api_factory.schema.metadata import Address, Metadata
 
 
 def get_enum() -> wrappers.EnumType:
-    address = Address(package=['foo', 'bar'], module='baz')
     enum_value_pbs = [
         descriptor_pb2.EnumValueDescriptorProto(name='RED', number=1),
         descriptor_pb2.EnumValueDescriptorProto(name='GREEN', number=2),
@@ -31,19 +30,8 @@ def get_enum() -> wrappers.EnumType:
     )
     return wrappers.EnumType(
         enum_pb=enum_pb,
-        meta=Metadata(
-            address=address,
-            documentation=descriptor_pb2.SourceCodeInfo.Location(
-                leading_comments='Look ma! Many colors!',
-            ),
-        ),
-        values=[wrappers.EnumValueType(
-            enum_value_pb=evpb,
-            meta=Metadata(
-                address=address,
-                documentation=descriptor_pb2.SourceCodeInfo.Location()
-            ),
-        ) for evpb in enum_value_pbs],
+        values=[wrappers.EnumValueType(enum_value_pb=evpb)
+                for evpb in enum_value_pbs],
     )
 
 

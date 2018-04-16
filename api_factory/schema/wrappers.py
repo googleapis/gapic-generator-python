@@ -42,7 +42,7 @@ from api_factory.schema.pb import overload_pb2
 class Field:
     """Description of a field."""
     field_pb: descriptor_pb2.FieldDescriptorProto
-    meta: Metadata
+    meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
@@ -53,7 +53,7 @@ class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
     message_pb: descriptor_pb2.DescriptorProto
     fields: Mapping[str, Field]
-    meta: Metadata
+    meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
@@ -68,7 +68,7 @@ class MessageType:
 class EnumValueType:
     """Description of an enum value."""
     enum_value_pb: descriptor_pb2.EnumValueDescriptorProto
-    meta: Metadata
+    meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     def __getattr__(self, name):
         return getattr(self.enum_value_pb, name)
@@ -79,7 +79,7 @@ class EnumType:
     """Description of an enum (defined with the ``enum`` keyword.)"""
     enum_pb: descriptor_pb2.EnumDescriptorProto
     values: List[EnumValueType]
-    meta: Metadata
+    meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     def __getattr__(self, name):
         return getattr(self.enum_pb, name)
@@ -91,7 +91,7 @@ class Method:
     method_pb: descriptor_pb2.MethodDescriptorProto
     input: MessageType
     output: MessageType
-    meta: Metadata
+    meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
@@ -107,7 +107,7 @@ class Service:
     """Description of a service (defined with the ``service`` keyword)."""
     service_pb: descriptor_pb2.ServiceDescriptorProto
     methods: Mapping[str, Method]
-    meta: Metadata
+    meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     def __getattr__(self, name):
         return getattr(self.service_pb, name)
