@@ -59,9 +59,14 @@ class MessageType:
         return getattr(self.message_pb, name)
 
     @property
-    def pb2_module(self):
+    def pb2_module(self) -> str:
         """Return the name of the Python pb2 module."""
         return f'{self.meta.address.module}_pb2'
+
+    @property
+    def proto_path(self) -> str:
+        """Return the fully qualfied proto path as a string."""
+        return '.'.join(self.meta.address.package + [self.name])
 
 
 @dataclasses.dataclass
@@ -151,5 +156,9 @@ class Service:
             answer.add((
                 '.'.join(method.input.meta.address.package),
                 method.input.pb2_module,
+            ))
+            answer.add((
+                '.'.join(method.output.meta.address.package),
+                method.output.pb2_module,
             ))
         return sorted(answer)
