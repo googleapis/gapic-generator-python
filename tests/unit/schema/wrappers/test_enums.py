@@ -15,7 +15,6 @@
 from google.protobuf import descriptor_pb2
 
 from api_factory.schema import wrappers
-from api_factory.schema.metadata import Address, Metadata
 
 
 def get_enum() -> wrappers.EnumType:

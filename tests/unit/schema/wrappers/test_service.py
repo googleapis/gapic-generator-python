@@ -48,6 +48,17 @@ def test_service_no_scopes():
     assert len(service.oauth_scopes) == 0
 
 
+def test_service_pb2_modules():
+    service = get_service()
+    assert service.pb2_modules == [
+        ('a.b.v1', 'c_pb2'),
+        ('foo', 'bacon_pb2'),
+        ('foo', 'bar_pb2'),
+        ('foo', 'baz_pb2'),
+        ('x.y.v1', 'z_pb2'),
+    ]
+
+
 def get_service(name: str = 'Placeholder', host: str = '',
                 scopes: typing.Tuple[str] = ()) -> wrappers.Service:
     # Declare a few methods, with messages in distinct packages.

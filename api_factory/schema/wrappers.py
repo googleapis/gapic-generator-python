@@ -66,7 +66,7 @@ class MessageType:
     @property
     def proto_path(self) -> str:
         """Return the fully qualfied proto path as a string."""
-        return '.'.join(self.meta.address.package + [self.name])
+        return f'{str(self.meta.address)}.{self.name}'
 
 
 @dataclasses.dataclass
