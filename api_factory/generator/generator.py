@@ -94,7 +94,7 @@ class Generator:
                 self._env.loader.service_templates,
                 transform_filename=lambda fn: fn.replace(
                     'service/',
-                    utils.to_snake_case(service.name),
+                    f'{utils.to_snake_case(service.name)}/',
                 ),
                 additional_context={'service': service},
             )
@@ -163,7 +163,7 @@ class Generator:
 
         # Iterate over all files in the directory.
         for path, _, filenames in os.walk(target_dir):
-            relative_path = path[len(_dirname) + len('/files/'):]
+            relative_path = path[len(target_dir):]
             for filename in filenames:
                 # Determine the "relative filename" (the filename against the
                 # files/ subdirectory and repository root).
