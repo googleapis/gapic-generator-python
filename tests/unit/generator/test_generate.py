@@ -12,17 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from api_factory.utils.cache import cached_property
-from api_factory.utils.case import to_snake_case
-from api_factory.utils.lines import subsequent_indent
-from api_factory.utils.lines import wrap
-from api_factory.utils.placeholder import Placeholder
+from unittest import mock
 
 
-__all__ = (
-    'cached_property',
-    'Placeholder',
-    'subsequent_indent',
-    'to_snake_case',
-    'wrap',
-)
+def test_generate():
+    # Set up an API with a mock service.
+
+    ''

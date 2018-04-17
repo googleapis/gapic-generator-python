@@ -14,6 +14,7 @@
 
 import io
 import os
+from typing import Any, Callable, Iterable, Mapping, Sequence
 
 import jinja2
 
@@ -26,83 +27,164 @@ from api_factory import utils
 
 
 def generate(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
-    """Generate a code generator response to provide to protoc.
+    """Accept a ``CodeGeneratorRequest``, return a ``CodeGeneratorResponse``.
+
+    This function (which is a thin wrapper around the :class:`~.Generator`
+    class) is the implementation of the contract described in
+    ``plugin.proto``.
+
+    It accepts a request with one or more protocol buffers which collectively
+    describe an API, and returns a response which ``protoc`` is able to read.
 
     Args:
         request (CodeGeneratorRequest): A request protocol buffer as provided
             by protoc.
 
     Returns:
-        CodeGeneratorResponse: A complete response to be written to (usually)
-            stdout and thus read by protoc.
+        ~.CodeGeneratorResponse: A complete response to be written
+            to (usually) stdout, and thus read by ``protoc``.
     """
-    # Parse the CodeGeneratorRequest into this plugin's internal schema.
-    api_desc = API()
-    for fdp in request.proto_file:
-        api_desc.load(fdp)
+    return Generator(request).get_response()
 
-    # Instantiate a CodeGeneratorResponse object.
-    output_files = []
 
-    # Create the jinja environment with which to render templates.
-    env = jinja2.Environment(loader=TemplateLoader(
-        searchpath=os.path.join(_dirname, 'templates'),
-    ))
-    env.filters['snake_case'] = utils.to_snake_case
-    env.filters['subsequent_indent'] = utils.subsequent_indent
-    env.filters['wrap'] = utils.wrap
+class Generator:
+    """A protoc code generator for client libraries.
 
-    # For every protocol buffer service, generate a client module.
-    service_templates = [i for i in env.loader.remaining_templates
-                         if i.startswith('service/')]
-    for service in api_desc.services.values():
-        for filename in service_templates:
-            # Get the output filename for this service and template.
-            output_filename = filename[:-len('.j2')].replace(
-                'service/',
-                f'{utils.to_snake_case(service.name)}/',
+    This class ultimately receives a ``CodeGeneratorRequest`` (as per
+    the protoc plugin contract), and provides an interface for getting
+    a ``CodeGeneratorResponse``.
+
+    Args:
+        request (CodeGeneratorRequest): A request protocol buffer as provided
+            by protoc. See ``plugin.proto``.
+    """
+    def __init__(self, request: CodeGeneratorRequest) -> None:
+        # Parse the CodeGeneratorRequest into this plugin's internal schema.
+        self._api = API()
+        for fdp in request.proto_file:
+            self._api.load(fdp)
+
+        # Create the jinja environment with which to render templates.
+        self._env = jinja2.Environment(loader=TemplateLoader(
+            searchpath=os.path.join(_dirname, 'templates'),
+        ))
+
+        # Add filters which templates require.
+        self._env.filters['snake_case'] = utils.to_snake_case
+        self._env.filters['subsequent_indent'] = utils.subsequent_indent
+        self._env.filters['wrap'] = utils.wrap
+
+    def get_response(self) -> CodeGeneratorResponse:
+        """Return a ``CodeGeneratorResponse`` representing this library.
+
+        Returns:
+            ~.CodeGeneratorResponse: A response describing appropriate
+                files and contents. See ``plugin.proto``.
+        """
+        output_files = []
+
+        # Some templates are rendered once per API client library.
+        # These are generally boilerplate packaging and metadata files.
+        output_files += self._render_templates(self._env.loader.api_templates)
+
+        # Some templates are rendered once per service (an API may have
+        # one or more services).
+        for service in self._api.services.values():
+            output_files += self._render_templates(
+                self._env.loader.service_templates,
+                transform_filename=lambda fn: fn.replace(
+                    'service/',
+                    utils.to_snake_case(service.name),
+                ),
+                additional_context={'service': service},
             )
-            output_files.append(CodeGeneratorResponse.File(
-                content=env.get_template(filename).render(
-                    api=api_desc,
-                    service=service,
+
+        # Some files are direct files and not templates; simply read them
+        # into output files directly.
+        #
+        # Rather than expect an enumeration of these, we simply grab everything
+        # in the `files/` directory automatically.
+        output_files += self._read_flat_files(os.path.join(_dirname, 'files'))
+
+        # Return the CodeGeneratorResponse output.
+        return CodeGeneratorResponse(file=output_files)
+
+    def _render_templates(
+            self,
+            templates: Iterable[str], *,
+            transform_filename: Callable[[str], str] = lambda fn: fn,
+            additional_context: Mapping[str, Any] = None,
+            ) -> Sequence[CodeGeneratorResponse.File]:
+        """Render the requested templates.
+
+        Args:
+            templates (Iterable[str]): The set of templates to be rendered.
+                It is expected that these come from the methods on
+                :class:`~.loader.TemplateLoader`, and they should be
+                able to be set to the :meth:`jinja2.Environment.get_template`
+                method.
+            transform_filename (Callable[str, str]): A callable to
+                rename the resulting file from the template name.
+                Note that the `.j2` suffix is stripped automatically.
+            additional_context (Mapping[str, Any]): Additional variables
+                to be sent to the templates. The ``api`` variable
+                is always available.
+
+        Returns:
+            Sequence[~.CodeGeneratorResponse.File]: A sequence of File
+                objects for inclusion in the final response.
+        """
+        answer = []
+        additional_context = additional_context or {}
+
+        # Iterate over the provided templates and generate a File object
+        # for each.
+        for template_name in templates:
+            # Get the appropriate output filename.
+            output_filename = transform_filename(template_name[:-len('.j2')])
+
+            # Generate the File object.
+            answer.append(CodeGeneratorResponse.File(
+                content=self._env.get_template(template_name).render(
+                    api=self._api,
+                    **additional_context
                 ).strip() + '\n',
                 name=output_filename,
             ))
 
-    # Create boilerplate metadata files.
-    for filename in env.loader.remaining_templates:
-        output_files.append(CodeGeneratorResponse.File(
-            content=env.get_template(filename).render(
-                api=api_desc,
-            ).strip() + '\n',
-            name=filename[:-len('.j2')],
-        ))
+        # Done; return the File objects based on these templates.
+        return answer
 
-    # Some files are direct files and not templates; simply read them
-    # into output files directly.
-    #
-    # Rather than expect an enumeration of these, we simply grab everything
-    # in the `files/` directory automatically.
-    for path, _, filenames in os.walk(os.path.join(_dirname, 'files')):
-        relative_path = path[len(_dirname) + len('/files/'):]
-        for filename in filenames:
-            # Determine the "relative filename" (the filename against the
-            # files/ subdirectory and repository root).
-            relative_filename = filename
-            if relative_path:
-                relative_filename = os.path.join(relative_path, filename)
+    def _read_flat_files(
+            self,
+            target_dir: str,
+            ) -> Sequence[CodeGeneratorResponse.File]:
+        answer = []
 
-            # Read the file from disk and create an appropriate OutputFile.
-            with io.open(os.path.join(path, filename), 'r') as f:
-                output_files.append(CodeGeneratorResponse.File(
-                    content=f.read(),
-                    name=relative_filename,
-                ))
+        # Iterate over all files in the directory.
+        for path, _, filenames in os.walk(target_dir):
+            relative_path = path[len(_dirname) + len('/files/'):]
+            for filename in filenames:
+                # Determine the "relative filename" (the filename against the
+                # files/ subdirectory and repository root).
+                relative_filename = filename
+                if relative_path:
+                    relative_filename = os.path.join(relative_path, filename)
 
-    # Done; return the full library object, containing each individual
-    # file to be written.
-    return CodeGeneratorResponse(file=output_files)
+                # Read the file from disk and create an appropriate OutputFile.
+                with io.open(os.path.join(path, filename), 'r') as f:
+                    answer.append(CodeGeneratorResponse.File(
+                        content=f.read(),
+                        name=relative_filename,
+                    ))
+
+        # Done; return the File objects.
+        return answer
 
 
 _dirname = os.path.realpath(os.path.dirname(__file__))
+
+
+__all__ = (
+    'generate',
+)

@@ -16,6 +16,8 @@ import typing
 
 import jinja2
 
+from api_factory.utils import cached_property
+
 
 class TemplateLoader(jinja2.FileSystemLoader):
     """A jinja2 template loader that tracks what is left to be loaded.
@@ -25,55 +27,35 @@ class TemplateLoader(jinja2.FileSystemLoader):
     which are in the directory or directories and have not yet been loaded
     with :meth:`get_source`.
     """
-    def get_source(
-            self,
-            environment: jinja2.Environment,
-            template: str,
-            ) -> typing.Tuple[str, str, bool]:
-        """Return information about the template.
+    @cached_property
+    def api_templates(self) -> typing.Set[str]:
+        """Return the (public) templates tied to the API as a whole.
 
-        This method is generally called from the jinja2 environment, rather
-        than directly.
+        All templates in the ``templates/`` directory are included except:
 
-        Args:
-            environment (jinja2.Environment): The jinja2 environment.
-            template (str): The template being loaded. This is generally
-                what was provided to :meth:`get_template` on the
-                ``environment``.
+          * Templates corresponding to services (in the ``service/``
+            subdirectory) are excluded. See :meth:`service_templates`.
+          * Templates beginning with ``_`` are excluded.
 
         Returns:
-            Tuple[str, str, bool]: The template contents, filename, and
-                whether the template is up to date, respectively.
+            Set[str]: A set of templates.
         """
-        contents, filename, current = super().get_source(environment, template)
+        # Start with the full list of templates, excluding private ones,
+        # but exclude templates from other methods on this loader.
+        return set(
+            [t for t in self.list_templates() if not t.startswith('_')]
+        ).difference(self.service_templates)
 
-        # Track that this filename has been loaded.
-        # This removes that filename from `remaining_templates`.
-        self.__dict__.setdefault('_loaded', set()).add(template)
+    @cached_property
+    def service_templates(self):
+        """Return the templates specific to each service.
 
-        # Just return the answer from the superclass invocation above.
-        return contents, filename, current
-
-    @property
-    def remaining_templates(self) -> typing.Set[str]:
-        """Return the (public) templates not yet loaded.
-
-        Templates already loaded are not included, nor are those beginning
-        with underscore.
-
-        This explicitly returns a metastatized set, not a generator,
-        because the use case for this method is "go load all the remaining
-        templates".
+        This corresponds to all of the templates in the
+        ``templates/service/`` subdirectory (relative to this file).
 
         Returns:
-            set[str]: A list of templates not yet loaded.
+            Set[str]: A list of service templates.
         """
-        # Start with the full list of templates, excluding private ones.
-        available = set(filter(
-            lambda t: not t.startswith('_'),
-            self.list_templates(),
-        ))
-
-        # Remove all templates already loaded, and return the rest.
-        loaded = self.__dict__.setdefault('_loaded', set())
-        return available.difference(loaded)
+        return set(
+            [t for t in self.list_templates() if t.startswith('service/')]
+        )
