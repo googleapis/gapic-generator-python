@@ -92,10 +92,7 @@ class Generator:
         for service in self._api.services.values():
             output_files += self._render_templates(
                 self._env.loader.service_templates,
-                transform_filename=lambda fn: fn.replace(
-                    'service/',
-                    f'{utils.to_snake_case(service.name)}/',
-                ),
+                transform_filename=service.transform_filename,
                 additional_context={'service': service},
             )
 

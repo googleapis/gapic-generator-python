@@ -24,6 +24,7 @@ from google.protobuf.compiler import plugin_pb2
 from api_factory.generator import generator
 from api_factory.schema import API
 from api_factory.schema import wrappers
+from api_factory import utils
 
 
 def test_generate_function():
@@ -116,7 +117,9 @@ def test_get_response():
                 continue
             service = kwargs['additional_context']['service']
             assert isinstance(service, wrappers.Service)
-            assert callable(kwargs['transform_filename'])
+            assert kwargs['transform_filename'](
+                'service/foo',
+            ) == f'{utils.to_snake_case(service.name)}/foo'
 
 
 def test_render_templates():

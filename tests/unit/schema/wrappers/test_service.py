@@ -22,34 +22,34 @@ from api_factory.schema.pb import client_pb2
 
 
 def test_service_properties():
-    service = get_service(name='ThingDoer')
+    service = make_service(name='ThingDoer')
     assert service.name == 'ThingDoer'
 
 
 def test_service_host():
-    service = get_service(host='thingdoer.googleapis.com')
+    service = make_service(host='thingdoer.googleapis.com')
     assert service.host == 'thingdoer.googleapis.com'
 
 
 def test_service_no_host():
-    service = get_service()
+    service = make_service()
     assert service.host == '<<< HOSTNAME >>>'
     assert bool(service.host) is False
 
 
 def test_service_scopes():
-    service = get_service(scopes=('https://foo/user/', 'https://foo/admin/'))
+    service = make_service(scopes=('https://foo/user/', 'https://foo/admin/'))
     assert 'https://foo/user/' in service.oauth_scopes
     assert 'https://foo/admin/' in service.oauth_scopes
 
 
 def test_service_no_scopes():
-    service = get_service()
+    service = make_service()
     assert len(service.oauth_scopes) == 0
 
 
 def test_service_pb2_modules():
-    service = get_service()
+    service = make_service()
     assert service.pb2_modules == [
         ('a.b.v1', 'c_pb2'),
         ('foo', 'bacon_pb2'),
@@ -59,7 +59,13 @@ def test_service_pb2_modules():
     ]
 
 
-def get_service(name: str = 'Placeholder', host: str = '',
+def test_service_transform_filename():
+    service = make_service()
+    assert service.transform_filename('foobar') == 'foobar'
+    assert service.transform_filename('service/foobar') == 'placeholder/foobar'
+
+
+def make_service(name: str = 'Placeholder', host: str = '',
                 scopes: typing.Tuple[str] = ()) -> wrappers.Service:
     # Declare a few methods, with messages in distinct packages.
     methods = (
