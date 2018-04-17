@@ -14,36 +14,26 @@
 
 from unittest import mock
 
-import jinja2
-
 from api_factory.generator.loader import TemplateLoader
 
 
-def test_get_source():
-    # This test is ensuring that the _loaded property is added to
-    # whenever get_source is called.
-    #
-    # This is effectively a pure subset of the remanining_templates test,
-    # but `get_source` is a public method.
-    loader = TemplateLoader(searchpath='<<< IRRELEVANT >>>')
-    env = jinja2.Environment()
-    with mock.patch.object(jinja2.FileSystemLoader, 'get_source') as super_gs:
-        super_gs.return_value = ('', '', 0)  # Throwaway return value.
-        loader.get_source(env, 'foo')
-        super_gs.assert_called_once_with(env, 'foo')
-        assert 'foo' in loader._loaded
-
-
-def test_remaining_templates():
-    # This test is ensuring that the remaining_templates property returns
-    # back unrendered templates only.
+def test_service_templates():
     loader = TemplateLoader(searchpath='<<< IRRELEVANT >>>')
     with mock.patch.object(loader, 'list_templates') as list_templates:
-        list_templates.return_value = ['a', 'b', 'c']
-        with mock.patch.object(jinja2.FileSystemLoader, 'get_source') as sgs:
-            sgs.return_value = ('', '', 0)  # Throwaway return value.
-            assert loader.remaining_templates == {'a', 'b', 'c'}
-            loader.get_source(jinja2.Environment(), 'b')
-            assert loader.remaining_templates == {'a', 'c'}
-            loader.get_source(jinja2.Environment(), 'b')
-            assert loader.remaining_templates == {'a', 'c'}
+        list_templates.return_value = [
+            '_base.j2', 'foo.j2', 'bar.j2',
+            'service/spam.j2', 'service/eggs.j2', 'service/py/spameggs.j2',
+        ]
+        assert loader.service_templates == {
+            'service/spam.j2', 'service/eggs.j2', 'service/py/spameggs.j2',
+        }
+
+
+def test_api_templates():
+    loader = TemplateLoader(searchpath='<<< IRRELEVANT >>>')
+    with mock.patch.object(loader, 'list_templates') as list_templates:
+        list_templates.return_value = [
+            '_base.j2', 'foo.j2', 'bar.j2',
+            'service/spam.j2', 'service/eggs.j2', 'service/py/spameggs.j2',
+        ]
+        assert loader.api_templates == {'foo.j2', 'bar.j2'}
