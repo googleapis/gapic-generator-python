@@ -28,7 +28,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 """
 
 import dataclasses
-from typing import List, Mapping
+from typing import List, Mapping, Sequence, Tuple
 
 from google.protobuf import descriptor_pb2
 
@@ -118,7 +118,7 @@ class Service:
         return getattr(self.service_pb, name)
 
     @property
-    def host(self):
+    def host(self) -> str:
         """Return the hostname for this service, if specified.
 
         Returns:
@@ -129,7 +129,7 @@ class Service:
         return utils.Placeholder('<<< HOSTNAME >>>')
 
     @property
-    def oauth_scopes(self):
+    def oauth_scopes(self) -> Sequence[str]:
         """Return a sequence of oauth scopes, if applicable.
 
         Returns:
@@ -140,7 +140,7 @@ class Service:
         return ()
 
     @property
-    def pb2_modules(self):
+    def pb2_modules(self) -> Sequence[Tuple[str, str]]:
         """Return a sequence of pb2 modules, for import.
 
         The results of this method are in alphabetical order (by package,
