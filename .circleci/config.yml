@@ -1,0 +1,31 @@
+---
+version: 2
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - unit
+      - docs
+jobs:
+  unit:
+    docker:
+      - image: 'python:3.6'
+    steps:
+      - checkout
+      - run:
+          name: Install nox.
+          command: pip install nox-automation
+      - run:
+          name: Run unit tests.
+          command: nox -s unit
+  docs:
+    docker:
+      - image: 'python3.6'
+    steps:
+      - checkout
+      - run:
+          name: Install nox.
+          command: pip install nox-automation
+      - run:
+          name: Build the documentation.
+          command: nox -s docs
