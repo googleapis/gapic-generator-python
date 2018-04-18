@@ -13,11 +13,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install nox.
-          command: pip install nox-automation
+          name: Install nox and codecov.
+          command: pip install nox-automation codecov
       - run:
           name: Run unit tests.
           command: nox -s unit
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
   docs:
     docker:
       - image: 'python:3.6'
