@@ -1,7 +1,7 @@
 API Client Generator for Python
 ===============================
 
-|release level|
+|release level| |docs|
 
     A generator for protocol buffer described APIs for and in Python 3.
 
@@ -18,19 +18,15 @@ Purpose
 This library primarily exists to facilitate experimentation, particularly
 regarding:
 
-  - An explicit normalized format for specifying APIs.
-  - Lighter weight, in-language code generators.
+- An explicit normalized format for specifying APIs.
+- Light weight, in-language code generators.
 
 Documentation
 -------------
 
-For more information, see the ``docs/`` directory. (Start on ``index.rst``.)
+To learn more, consult the `documentation`_.
 
-You can build the docs into a nice HTML page. This requires installing
-`Sphinx`_; once this is done, just run ``make html`` from within the
-``docs/`` directory.
-
-.. _Sphinx: https://sphinx-doc.org/
+.. _documentation: https://gapic-generator-python.readthedocs.io/
 
 Disclaimer
 ----------
@@ -39,4 +35,6 @@ This is not an official Google product.
 
 
 .. |release level| image:: https://img.shields.io/badge/release%20level-pre%20alpha-red.svg?style&#x3D;flat
-    :target: https://cloud.google.com/terms/launch-stages
+  :target: https://cloud.google.com/terms/launch-stages
+.. |docs| image:: https://readthedocs.org/projects/gapic-generator-python/badge/?version=latest
+  :target: https://gapic-generator-python.readthedocs.io/

@@ -106,7 +106,7 @@ html_static_path = []
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'APIClientGeneratorforPythondoc'
+htmlhelp_basename = 'gapic-generator-python'
 
 
 # -- Options for LaTeX output ------------------------------------------------
