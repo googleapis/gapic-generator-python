@@ -23,9 +23,11 @@ class TemplateLoader(jinja2.FileSystemLoader):
     """A jinja2 template loader that tracks what is left to be loaded.
 
     This class behaves identically to :class:`jinja2.FileSystemLoader`
-    except that it adds an additional method for remaining templates
-    which are in the directory or directories and have not yet been loaded
-    with :meth:`get_source`.
+    but provides methods to return templates segmented by type.
+
+    There are two types of templates: templates that describe the API as a
+    whole (and for which the template is rendered once per API), and templates
+    describing a service (which are rendered once per service in the API).
     """
     @cached_property
     def api_templates(self) -> typing.Set[str]:
@@ -36,6 +38,9 @@ class TemplateLoader(jinja2.FileSystemLoader):
           * Templates corresponding to services (in the ``service/``
             subdirectory) are excluded. See :meth:`service_templates`.
           * Templates beginning with ``_`` are excluded.
+
+        When these templates are rendered, they are expected to be sent
+        one and only one variable: an :class:`~.API` object spelled ``api``.
 
         Returns:
             Set[str]: A set of templates.
@@ -52,6 +57,12 @@ class TemplateLoader(jinja2.FileSystemLoader):
 
         This corresponds to all of the templates in the
         ``templates/service/`` subdirectory (relative to this file).
+
+        When these templates are rendered, they are expected to be sent
+        two variables: an :class:`~.API` object spelled ``api``, and the
+        :class:`~.wrappers.Service` object being iterated over, spelled
+        ``service``. These templates are rendered once per service, with
+        a distinct ``service`` variable each time.
 
         Returns:
             Set[str]: A list of service templates.

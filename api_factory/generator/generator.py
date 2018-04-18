@@ -21,38 +21,20 @@ import jinja2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
-from api_factory.schema import API
+from api_factory.schema.api import API
 from api_factory.generator.loader import TemplateLoader
 from api_factory import utils
-
-
-def generate(request: CodeGeneratorRequest) -> CodeGeneratorResponse:
-    """Accept a ``CodeGeneratorRequest``, return a ``CodeGeneratorResponse``.
-
-    This function (which is a thin wrapper around the :class:`~.Generator`
-    class) is the implementation of the contract described in
-    ``plugin.proto``.
-
-    It accepts a request with one or more protocol buffers which collectively
-    describe an API, and returns a response which ``protoc`` is able to read.
-
-    Args:
-        request (CodeGeneratorRequest): A request protocol buffer as provided
-            by protoc.
-
-    Returns:
-        ~.CodeGeneratorResponse: A complete response to be written
-            to (usually) stdout, and thus read by ``protoc``.
-    """
-    return Generator(request).get_response()
 
 
 class Generator:
     """A protoc code generator for client libraries.
 
-    This class ultimately receives a ``CodeGeneratorRequest`` (as per
+    This class receives a :class:`~.plugin_pb2.CodeGeneratorRequest` (as per
     the protoc plugin contract), and provides an interface for getting
-    a ``CodeGeneratorResponse``.
+    a :class:`~.plugin_pb2.CodeGeneratorResponse`.
+
+    That request with one or more protocol buffers which collectively
+    describe an API.
 
     Args:
         request (CodeGeneratorRequest): A request protocol buffer as provided
@@ -75,11 +57,14 @@ class Generator:
         self._env.filters['wrap'] = utils.wrap
 
     def get_response(self) -> CodeGeneratorResponse:
-        """Return a ``CodeGeneratorResponse`` representing this library.
+        """Return a :class:`~.CodeGeneratorResponse` for this library.
+
+        This is a complete response to be written to (usually) stdout, and
+        thus read by ``protoc``.
 
         Returns:
             ~.CodeGeneratorResponse: A response describing appropriate
-                files and contents. See ``plugin.proto``.
+            files and contents. See ``plugin.proto``.
         """
         output_files = []
 
@@ -183,5 +168,5 @@ _dirname = os.path.realpath(os.path.dirname(__file__))
 
 
 __all__ = (
-    'generate',
+    'Generator',
 )

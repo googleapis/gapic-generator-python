@@ -40,7 +40,7 @@ def generate(
 
     # Translate into a protobuf CodeGeneratorResponse;
     # if there are issues, error out appropriately.
-    res = generator.generate(req)
+    res = generator.Generator(req).get_response()
 
     # Output the serialized response.
     output.write(res.SerializeToString())

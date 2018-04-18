@@ -16,13 +16,15 @@ import re
 
 
 def to_snake_case(s: str) -> str:
-    """Convert any string to camel_case.
+    """Convert any string to snake case.
+
+    This is provided to templates as the ``snake_case`` filter.
 
     Args:
         s (str): The input string, provided in any sane case system.
 
     Returns:
-        s: The string in snake case (and all lower-cased).
+        str: The string in snake case (and all lower-cased).
     """
     # Replace all capital letters that are preceded by a lower-case letter.
     s = re.sub(r'(?<=[a-z])([A-Z])', r'_\1', str(s))

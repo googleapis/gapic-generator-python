@@ -12,9 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .generator import generate
+"""The ``generator`` module contains the code generation logic.
+
+The core of this work is around the :class:`~.generator.Generator` class,
+which divides up the processing of individual templates.
+"""
+
+from .generator import Generator
 
 
 __all__ = (
-    'generate',
+    'Generator',
 )

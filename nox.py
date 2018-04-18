@@ -44,6 +44,7 @@ def unit(session, python_version='3.6'):
 def docs(session):
     """Build the docs."""
 
+    session.interpreter = 'python3.6'
     session.install('sphinx', 'sphinx_rtd_theme')
     session.install('.')
 

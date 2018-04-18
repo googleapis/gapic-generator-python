@@ -23,3 +23,4 @@ implemented as a plugin to ``protoc``, the protocol buffer compiler.
   api-configuration
   process
   status
+  reference/index

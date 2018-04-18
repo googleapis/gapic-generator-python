@@ -21,6 +21,8 @@ def subsequent_indent(text: str, prefix: str) -> str:
     A "hanging" line is any line except for the first one. After prefixing,
     if any lines end in whitespace, that whitespace is stripped.
 
+    This is provided to all templates as the ``subsequent_indent`` filter.
+
     Args:
         text (str): The text string.
         prefix (str): The prefix to use.
@@ -40,6 +42,8 @@ def wrap(text: str, width: int, initial_width: int = None,
     This uses :meth:`textwrap.fill` under the hood, but provides functionality
     for the initial width, as well as a common line ending for every line
     but the last.
+
+    This is provided to all templates as the ``wrap`` filter.
 
     Args:
         text (str): The initial text string.

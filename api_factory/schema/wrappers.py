@@ -148,8 +148,8 @@ class Service:
 
         Returns:
             Sequence[str, str]: The package and pb2_module pair, intended
-                for use in a ``from package import pb2_module`` type
-                of statement.
+            for use in a ``from package import pb2_module`` type
+            of statement.
         """
         answer = set()
         for method in self.methods.values():

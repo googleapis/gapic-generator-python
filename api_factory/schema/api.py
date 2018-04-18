@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""This module contains the "roll-up" class, :class:`~.API`.
+Everything else in the :mod:`~.schema` module is usually accessed
+through an :class:`~.API` object.
+"""
+
 import collections
 import dataclasses
 import sys
@@ -29,8 +34,13 @@ from api_factory.schema.pb import client_pb2
 class API:
     """A representation of a full API.
 
+    This represents a top-down view of a complete API, as loaded from a
+    set of protocol buffer files. Once the descriptors are loaded
+    (see :meth:`load`), this object contains every message, method, service,
+    and everything else needed to write a client library.
+
     An instance of this object is made available to every template
-    (as ``api``); all data goes here.
+    (as ``api``).
     """
     client: client_pb2.Client = dataclasses.field(
         default_factory=client_pb2.Client,
@@ -66,8 +76,12 @@ class API:
     def load(self, fdp: descriptor_pb2.FileDescriptorProto) -> None:
         """Load the provided FileDescriptorProto into this object.
 
-        This method wraps Map as required, and recusrively
-        parses through the descriptor.
+        This method iterates over the complete descriptor and loads all
+        of its members (services, methods, messages, enums, etc.) into
+        this object, wrapping each descriptor in a wrapper to preserve
+        metadata.
+
+        This method modifies the :class:`~.API` object in-place.
 
         Args:
             fdp (~.descriptor_pb2.FileDescriptorProto): The

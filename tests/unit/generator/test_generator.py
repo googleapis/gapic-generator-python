@@ -22,18 +22,9 @@ from google.protobuf import descriptor_pb2
 from google.protobuf.compiler import plugin_pb2
 
 from api_factory.generator import generator
-from api_factory.schema import API
+from api_factory.schema.api import API
 from api_factory.schema import wrappers
 from api_factory import utils
-
-
-def test_generate_function():
-    # Trivial test to prove that it runs the Generator class,
-    # which has all the guts.
-    with mock.patch('api_factory.generator.generator.Generator') as G:
-        generator.generate(mock.sentinel.request)
-        G.assert_called_once_with(mock.sentinel.request)
-        G().get_response.assert_called_once()
 
 
 def test_constructor():

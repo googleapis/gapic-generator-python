@@ -18,9 +18,9 @@ import pytest
 
 from google.protobuf import descriptor_pb2
 
-from api_factory.schema import api
 from api_factory.schema import metadata
 from api_factory.schema import wrappers
+from api_factory.schema.api import API
 from api_factory.schema.pb import client_pb2
 
 
@@ -284,8 +284,8 @@ def test_load_service():
     assert api.services['foo.bar.v1.RiddleService'].service_pb == service_pb
 
 
-def make_api(client: client_pb2.Client = None) -> api.API:
-    return api.API(client=client or make_client())
+def make_api(client: client_pb2.Client = None) -> API:
+    return API(client=client or make_client())
 
 
 def make_client(**kwargs) -> client_pb2.Client:
