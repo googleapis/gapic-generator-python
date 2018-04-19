@@ -186,10 +186,20 @@ def test_read_flat_files():
         assert files[1].content == 'abc-files/other/bar.ext-r'
 
 
-def test_get_output_filename_no_service():
-    g = make_generator(proto_file=[make_proto_file(name='spam', version='v2')])
+def test_get_output_filename():
+    g = make_generator(proto_file=[make_proto_file(name='Spam', version='v2')])
     template_name = '$namespace/$name_$version/foo.py.j2'
     assert g._get_output_filename(template_name) == 'spam_v2/foo.py'
+
+
+def test_get_output_filename_with_namespace():
+    g = make_generator(proto_file=[make_proto_file(
+        name='Spam',
+        namespace=['Ham', 'Bacon'],
+        version='v2',
+    )])
+    template_name = '$namespace/$name_$version/foo.py.j2'
+    assert g._get_output_filename(template_name) == 'ham/bacon/spam_v2/foo.py'
 
 
 def test_get_output_filename_with_service():
