@@ -63,12 +63,12 @@ class API:
     @property
     def module_name(self) -> str:
         """Return the appropriate Python module name."""
-        return self.client.name.lower()
+        return utils.to_valid_module_name(self.client.name)
 
     @property
     def version(self) -> str:
         """Return the appropriate API version."""
-        return self.client.version
+        return utils.to_valid_module_name(self.client.version)
 
     @property
     def versioned_module_name(self) -> str:
