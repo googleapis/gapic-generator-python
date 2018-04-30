@@ -49,8 +49,8 @@ As for this library itself, the recommended installation approach is
 .. code-block:: shell
 
     # Due to its experimental state, this tool is not published to a
-    # package manager, and pip can not install from git-on-borg;
-    # you should clone it.
+    # package manager; you should clone it.
+    # (You can pip install it from GitHub, not not if you want to tinker.)
     git clone git@github.com:googleapis/gapic-generator-python.git
     cd gapic-generator-python/
 
