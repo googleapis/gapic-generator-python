@@ -6,11 +6,10 @@ import pkg_resources
 from typing import Mapping, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
-from google.api_core import retry
 {% if service.has_lro %}
-import google.api_core.operation
-import google.api_core.operations_v1
+from google.api_core import operation
 {% endif %}
+from google.api_core import retry
 from google.auth import credentials
 
 {% for package, pb2_module in service.pb2_modules -%}
@@ -55,20 +54,6 @@ class {{ service.name }}:
         else:
             Transport = get_transport_class(transport)
             self._transport = Transport(credentials=credentials)
-        {%- if service.has_lro %}
-
-        # Instantiate a client for the long-running operations
-        if hasattr(self._transport, 'grpc_channel'):
-            channel = self._transport.grpc_channel
-        else:
-            GrpcTransport = get_transport_class('grpc')
-            grpc_transport = GrpcTransport(
-                credentials=self._transport._credentials,
-            )
-            channel = grpc_transport.grpc_channel
-        self._operations_client = (
-            google.api_core.operations_v1.OperationsClient(channel))
-        {%- endif %}
 
     {% for method in service.methods.values() -%}
     @functools.singledispatch
@@ -78,7 +63,7 @@ class {{ service.name }}:
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             {%- if method.lro_payload %}
-            ) -> google.api_core.operation.Operation:
+            ) -> operation.Operation:
             {%- else %}
             ) -> {{ method.output.pb2_module }}.{{ method.output.name }}:
             {%- endif %}
@@ -96,7 +81,7 @@ class {{ service.name }}:
 
         Returns:
             {%- if method.lro_payload %}
-            google.api_core.operation.Operation:
+            ~.operation.Operation:
                 A :class:`google.api_core.operation.Operation` instance.
             {%- else %}
             ~.{{ method.output.pb2_module }}.{{ method.output.name }}:
@@ -113,25 +98,21 @@ class {{ service.name }}:
             client_info=self.client_info,
         )
 
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
         {%- if method.lro_payload %}
-        operation = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
 
         # Wrap the response in an operation future
-        return google.api_core.operation.from_gapic(
-            operation,
-            self._operations_client,
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
             {{ method.lro_payload.pb2_module }}.{{ method.lro_payload.name }},
             metadata_type={{ method.lro_metadata.pb2_module }}.{{ method.lro_metadata.name }}
         )
-        {%- else %}
-        # Send the request and return the response.
-        return rpc(request, retry=retry, timeout=timeout, metadata=metadata)
         {%- endif %}
+
+        # Done; return the response.
+        return response
     {%- endfor %}
 
     @property

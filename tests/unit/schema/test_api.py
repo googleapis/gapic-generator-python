@@ -292,8 +292,6 @@ def test_get_methods_lro():
     )
     api._load_descriptor(descriptor_pb2.DescriptorProto(name='Operation'),
                          address=operations_address, info={})
-
-    # Run the method under test.
     method_pb = descriptor_pb2.MethodDescriptorProto(
         name='DoBigThings',
         input_type='foo.bar.In',
@@ -303,6 +301,8 @@ def test_get_methods_lro():
         lro_return_type='foo.bar.Out',
         lro_metadata_type='foo.bar.Progress',
     ))
+
+    # Run the method under test.
     methods = api._get_methods([method_pb], address=address, info={})
 
     # Test that the method has the expected lro output, payload, and metadata.

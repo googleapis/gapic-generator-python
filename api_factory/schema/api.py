@@ -91,7 +91,7 @@ class API:
 
         # Piece the name and namespace together to come up with the
         # proper package name.
-        answer = list(self.client.namespace) + self.client.name.split()
+        answer = list(self.client.namespace) + self.client.name.split(' ')
         return '-'.join(answer).lower()
 
     def load(self, fdp: descriptor_pb2.FileDescriptorProto) -> None:
@@ -230,17 +230,10 @@ class API:
         answer = collections.OrderedDict()
         for method_pb, i in zip(methods, range(0, sys.maxsize)):
             types = method_pb.options.Extensions[lro_pb2.types]
-            lro_payload = None
-            if types and types.lro_return_type:
-                lro_payload = self.messages[types.lro_return_type]
-
-            lro_metadata = None
-            if types and types.lro_metadata_type:
-                lro_metadata = self.messages[types.lro_metadata_type]
             answer[method_pb.name] = wrappers.Method(
                 input=self.messages[method_pb.input_type.lstrip('.')],
-                lro_metadata=lro_metadata,
-                lro_payload=lro_payload,
+                lro_metadata=self.messages.get(types.lro_metadata_type, None),
+                lro_payload=self.messages.get(types.lro_return_type, None),
                 method_pb=method_pb,
                 meta=metadata.Metadata(
                     address=address,
