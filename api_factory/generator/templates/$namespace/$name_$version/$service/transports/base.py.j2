@@ -5,9 +5,9 @@ import abc
 import typing
 
 from google import auth
-{% if service.has_lro %}
+{%- if service.has_lro %}
 from google.api_core import operations_v1
-{% endif %}
+{%- endif %}
 from google.auth import credentials
 
 {% for package, pb2_module in service.pb2_modules -%}

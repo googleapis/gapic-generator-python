@@ -4,9 +4,9 @@
 from typing import Sequence, Tuple
 
 from google.api_core import grpc_helpers
-{% if service.has_lro %}
+{%- if service.has_lro %}
 from google.api_core import operations_v1
-{% endif %}
+{%- endif %}
 from google.auth import credentials
 
 import grpc

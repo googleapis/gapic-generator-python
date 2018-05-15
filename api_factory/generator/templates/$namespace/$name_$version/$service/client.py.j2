@@ -6,9 +6,9 @@ import pkg_resources
 from typing import Mapping, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
-{% if service.has_lro %}
+{%- if service.has_lro %}
 from google.api_core import operation
-{% endif %}
+{%- endif %}
 from google.api_core import retry
 from google.auth import credentials
 
