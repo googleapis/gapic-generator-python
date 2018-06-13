@@ -35,6 +35,7 @@ from google.protobuf import descriptor_pb2
 from api_factory import utils
 from api_factory.schema.metadata import Metadata
 from api_factory.schema.pb import client_pb2
+from api_factory.schema.pb import headers_pb2
 from api_factory.schema.pb import overload_pb2
 
 
@@ -107,6 +108,11 @@ class Method:
     def overloads(self):
         """Return the overloads defined for this method."""
         return self.method_pb.options.Extensions[overload_pb2.overloads]
+
+    @property
+    def field_headers(self):
+        """Return the field headers defined for this method."""
+        return self.method_pb.options.Extensions[headers_pb2.field_headers]
 
 
 @dataclasses.dataclass(frozen=True)
@@ -187,4 +193,22 @@ class Service:
     @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
-        return any(method.lro_payload for method in self.methods.values())
+        return self._any_method('lro_payload')
+
+    @property
+    def has_field_headers(self) -> bool:
+        """Return whether the service has a method containing field headers."""
+        return self._any_method('field_headers')
+
+    def _any_method(self, attr: str) -> bool:
+        """Return whether the service has a method containing ``attr``.
+
+        Args:
+            attr (str): The attribute to check for presence in the service
+                methods.
+
+        Returns:
+            bool: True if any method of the service contains the specified
+                attribute.
+        """
+        return any(getattr(method, attr) for method in self.methods.values())
