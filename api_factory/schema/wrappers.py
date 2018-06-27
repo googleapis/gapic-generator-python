@@ -28,7 +28,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 """
 
 import dataclasses
-from typing import List, Mapping, Sequence, Tuple
+from typing import Callable, List, Mapping, Sequence, Tuple
 
 from google.protobuf import descriptor_pb2
 
@@ -193,22 +193,22 @@ class Service:
     @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
-        return self._any_method('lro_payload')
+        return self._any_method(lambda m: getattr(m, 'lro_payload'))
 
     @property
     def has_field_headers(self) -> bool:
         """Return whether the service has a method containing field headers."""
-        return self._any_method('field_headers')
+        return self._any_method(lambda m: getattr(m, 'field_headers'))
 
-    def _any_method(self, attr: str) -> bool:
-        """Return whether the service has a method containing ``attr``.
+    def _any_method(self, predicate: Callable) -> bool:
+        """Return whether the service has a method that fulfills ``predicate``.
 
         Args:
-            attr (str): The attribute to check for presence in the service
-                methods.
+            predicate (Callable[Method]): Function specifying the criteria
+                testing the methods in the service.
 
         Returns:
             bool: True if any method of the service contains the specified
                 attribute.
         """
-        return any(getattr(method, attr) for method in self.methods.values())
+        return any(predicate(method) for method in self.methods.values())

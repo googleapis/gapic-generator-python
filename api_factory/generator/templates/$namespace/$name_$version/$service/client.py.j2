@@ -103,34 +103,25 @@ class {{ service.name }}:
         {%- if method.field_headers %}
 
         # Ensure metadata is a mutable sequence.
-        if metadata is None:
-            metadata = []
-        else:
-            metadata = list(metadata)
+        metadata = list(metadata)
 
         # Add request headers to metadata.
+        {%- for field_header in method.field_headers %}
+
         try:
-            request_headers = (
-                {%- for field_header in method.field_headers %}
-                ('{{ field_header.header }}', '{{ field_header.field }}', request.{{ field_header.field }}),
-                {%- endfor %}
-            )
+            header_value = request.{{ field_header.field }}
         except AttributeError:
             # Suppress when attribute missing.
             pass
         else:
-            request_metadata = [
-                (
-                    header,
-                    '{}={}'.format(
-                        parse.quote_plus(key),
-                        parse.quote_plus(value),
-                    ),
-                )
-                for (header, key, value)
-                in request_headers
-            ]
-            metadata.extend(request_metadata)
+            metadata.append((
+                '{{ field_header.header }}',
+                '{}={}'.format(
+                    parse.quote_plus('{{ field_header.field }}'),
+                    parse.quote_plus(header_value),
+                ),
+            ))
+        {%- endfor %}
         {%- endif %}
 
         # Send the request.
