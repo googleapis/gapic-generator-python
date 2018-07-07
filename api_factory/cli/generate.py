@@ -20,6 +20,7 @@ import click
 from google.protobuf.compiler import plugin_pb2
 
 from api_factory import generator
+from api_factory.schema import api
 
 
 @click.command()
@@ -40,7 +41,8 @@ def generate(
 
     # Translate into a protobuf CodeGeneratorResponse;
     # if there are issues, error out appropriately.
-    res = generator.Generator(req).get_response()
+    api_schema = api.API.build(req)
+    res = generator.Generator(api_schema=api_schema).get_response()
 
     # Output the serialized response.
     output.write(res.SerializeToString())

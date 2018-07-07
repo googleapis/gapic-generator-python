@@ -30,13 +30,11 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import dataclasses
 from typing import Callable, List, Mapping, Sequence, Tuple
 
+from google.api import annotations_pb2
 from google.protobuf import descriptor_pb2
 
 from api_factory import utils
 from api_factory.schema.metadata import Metadata
-from api_factory.schema.pb import client_pb2
-from api_factory.schema.pb import headers_pb2
-from api_factory.schema.pb import overload_pb2
 
 
 @dataclasses.dataclass(frozen=True)
@@ -107,7 +105,7 @@ class Method:
     @property
     def overloads(self):
         """Return the overloads defined for this method."""
-        return self.method_pb.options.Extensions[overload_pb2.overloads]
+        return self.method_pb.options.Extensions[annotations_pb2.signature]
 
     @property
     def field_headers(self):
@@ -132,8 +130,8 @@ class Service:
         Returns:
             str: The hostname, with no protocol and no trailing ``/``.
         """
-        if self.service_pb.options.Extensions[client_pb2.host]:
-            return self.service_pb.options.Extensions[client_pb2.host]
+        if self.options.Extensions[annotations_pb2.default_host]:
+            return self.options.Extensions[annotations_pb2.default_host]
         return utils.Placeholder('<<< HOSTNAME >>>')
 
     @property
@@ -143,9 +141,8 @@ class Service:
         Returns:
             Sequence[str]: A sequence of OAuth scopes.
         """
-        if self.service_pb.options.Extensions[client_pb2.oauth_scopes]:
-            return self.service_pb.options.Extensions[client_pb2.oauth_scopes]
-        return ()
+        oauth = self.options.Extensions[annotations_pb2.oauth]
+        return tuple(oauth.canonical_scopes.split(','))
 
     @property
     def module_name(self) -> str:
@@ -170,6 +167,8 @@ class Service:
         """
         answer = set()
         for method in self.methods.values():
+            # Add the module containing both the request and response
+            # messages. (These are usually the same, but not necessarily.)
             answer.add((
                 '.'.join(method.input.meta.address.package),
                 method.input.pb2_module,
@@ -178,6 +177,9 @@ class Service:
                 '.'.join(method.output.meta.address.package),
                 method.output.pb2_module,
             ))
+
+            # If this method has LRO, it is possible (albeit unlikely) that
+            # the LRO messages reside in a different module.
             if method.lro_payload:
                 answer.add((
                     '.'.join(method.lro_payload.meta.address.package),
@@ -188,7 +190,7 @@ class Service:
                     '.'.join(method.lro_metadata.meta.address.package),
                     method.lro_metadata.pb2_module,
                 ))
-        return sorted(answer)
+        return tuple(sorted(answer))
 
     @property
     def has_lro(self) -> bool:

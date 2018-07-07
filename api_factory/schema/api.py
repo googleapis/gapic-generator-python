@@ -20,18 +20,18 @@ through an :class:`~.API` object.
 import collections
 import dataclasses
 import sys
-from typing import Callable, List, Mapping
+from typing import Callable, List, Mapping, Sequence, Tuple
 
+from google.api import annotations_pb2
+from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
 from api_factory import utils
 from api_factory.schema import metadata
 from api_factory.schema import wrappers
-from api_factory.schema.pb import client_pb2
-from api_factory.schema.pb import lro_pb2
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class API:
     """A representation of a full API.
 
@@ -43,9 +43,13 @@ class API:
     An instance of this object is made available to every template
     (as ``api``).
     """
-    client: client_pb2.Client = dataclasses.field(
-        default_factory=client_pb2.Client,
-    )
+    data: APIData
+    product_name: str
+    product_url: str
+    name: str
+    namespace: Tuple[str]
+    version: str
+
     services: Mapping[str, wrappers.Service] = dataclasses.field(
         default_factory=dict,
     )
@@ -59,17 +63,12 @@ class API:
     @property
     def long_name(self) -> str:
         """Return an appropriate title-cased long name."""
-        return ' '.join(list(self.client.namespace) + [self.client.name])
+        return ' '.join(tuple(self.namespace) + (self.name,))
 
     @property
     def module_name(self) -> str:
         """Return the appropriate Python module name."""
-        return utils.to_valid_module_name(self.client.name)
-
-    @property
-    def version(self) -> str:
-        """Return the appropriate API version."""
-        return utils.to_valid_module_name(self.client.version)
+        return utils.to_valid_module_name(self.name)
 
     @property
     def versioned_module_name(self) -> str:
@@ -93,6 +92,39 @@ class API:
         # proper package name.
         answer = list(self.client.namespace) + self.client.name.split(' ')
         return '-'.join(answer).lower()
+
+    @classmethod
+    def build(
+            cls,
+            file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
+            package: str = '',
+            ) -> 'API':
+        """Build the internal API schema based on the request.
+
+        Args:
+            file_descriptors (Sequence[~.FileDescriptorProto]): A list of
+                :class:`~.FileDescriptorProto` objects describing the
+                API.
+            package (str): A protocol buffer package, as a string, for which
+                code should be explicitly generated (including subpackages).
+                Protos with packages outside this list are considered imports
+                rather than explicit targets.
+
+        Returns:
+            ~.API: An API object. This object is frozen and immutable once
+                it is returned.
+        """
+        # Put together the metadata for the API as a whole.
+        target_protos = [i for i in file_descriptors if i.startswith(package)]
+        api_metadata = get_api_metadata(target_protos)
+
+
+        for fd in file_descriptors:
+            # If packages were specified and this file descriptor is not
+            # a member of one of them, skip it.
+            if package and not fd.startswith(package):
+                continue
+
 
     def load(self, fdp: descriptor_pb2.FileDescriptorProto) -> None:
         """Load the provided FileDescriptorProto into this object.
@@ -148,7 +180,7 @@ class API:
         #                   address=address, info=comments_by_path.get(7, {}))
 
         # Merge any client directives with what we have going so far.
-        self.client.MergeFrom(fdp.options.Extensions[client_pb2.client])
+        self.client.MergeFrom(fdp.options.Extensions[annotations_pb2.metadata])
 
     def _load_children(self, children: list, loader: Callable,
                        address: metadata.Address, info: dict) -> None:
@@ -229,11 +261,11 @@ class API:
         # Iterate over the methods and collect them into a dictionary.
         answer = collections.OrderedDict()
         for method_pb, i in zip(methods, range(0, sys.maxsize)):
-            types = method_pb.options.Extensions[lro_pb2.types]
+            types = method_pb.options.Extensions[operations_pb2.operation_types]
             answer[method_pb.name] = wrappers.Method(
                 input=self.messages[method_pb.input_type.lstrip('.')],
-                lro_metadata=self.messages.get(types.lro_metadata_type, None),
-                lro_payload=self.messages.get(types.lro_return_type, None),
+                lro_metadata=self.messages.get(types.metadata, None),
+                lro_payload=self.messages.get(types.response, None),
                 method_pb=method_pb,
                 meta=metadata.Metadata(
                     address=address,
