@@ -12,24 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
 import dataclasses
 import os
 import re
-import sys
-from typing import Callable, List, Mapping, Sequence, Tuple
+from typing import Iterable, Tuple
 
 from google.api import annotations_pb2
-from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
 from api_factory import utils
-from api_factory.schema import metadata
-from api_factory.schema import wrappers
 
 
 @dataclasses.dataclass(frozen=True)
-class APINaming:
+class NamingBase:
+    """Naming data for a proto file or metadata annotation."""
+    name: str
+    namespace: Tuple[str]
+    version: str
+    product_name: str
+    product_url: str
+
+
+@dataclasses.dataclass(frozen=True, init=False)
+class Naming(NamingBase):
     """Naming data for an API.
 
     This class contains the naming nomenclature used for this API
@@ -38,23 +43,9 @@ class APINaming:
     An instance of this object is made available to every template
     (as ``api.naming``).
     """
-    name: str
-    namespace: Tuple[str]
-    version: str
-    product_name: str
-    product_url: str
 
-    def __bool__(self):
-        """Return True if any of the fields are truthy, False otherwise."""
-        return any(
-            [getattr(self, k) for k in dataclasses.fields(self).keys()],
-        )
-
-    @classmethod
-    def build(
-            cls,
-            file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
-            ) -> 'APINaming':
+    def __init__(self,
+            file_descriptors: Iterable[descriptor_pb2.FileDescriptorProto]):
         """Return a full APINaming instance based on these file descriptors.
 
         This is pieced together from the proto package names as well as the
@@ -63,7 +54,7 @@ class APINaming:
         the data does not conflict.
 
         Args:
-            file_descriptors (Sequence[~.FileDescriptorProto]): A list of
+            file_descriptors (Iterable[~.FileDescriptorProto]): A list of
                 file descriptor protos. This list should only include the
                 files actually targeted for output (not their imports).
 
@@ -88,7 +79,7 @@ class APINaming:
             r'(?P<name>[a-z0-9_]+)',
             r'(\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta|test)[0-9])*))?',
         )), string=root_package).groupdict()
-        package_info = cls(
+        package_info = NamingBase(
             name=match['name'].capitalize(),
             namespace=[i.capitalize() for i in match['namespace'].split('.')],
             product_name=match['name'].capitalize(),
@@ -110,7 +101,7 @@ class APINaming:
         metadata_info = set()
         for fd in file_descriptors:
             meta = fd.options.Extensions[annotations_pb2.metadata]
-            naming = cls(
+            naming = NamingBase(
                 name=meta.package_name or meta.product_name,
                 namespace=tuple(meta.package_namespace),
                 product_name=meta.product_name,
@@ -130,4 +121,45 @@ class APINaming:
 
         # Merge the package naming information and the metadata naming
         # information, with the latter being preferred.
-        return package_info.replace(**dataclasses.asdict(metadata_info.pop()))
+        # Write both to this object.
+        for k, v in dataclasses.asdict(package_info).items():
+            object.__setattr__(self, k, v)
+        if len(metadata_info):
+            for k, v in dataclasses.asdict(metadata_info.pop()).items():
+                if v:
+                    object.__setattr__(self, k, v)
+
+    def __bool__(self):
+        """Return True if any of the fields are truthy, False otherwise."""
+        return any(
+            [getattr(self, k) for k in dataclasses.fields(self).keys()],
+        )
+
+    @property
+    def long_name(self) -> str:
+        """Return an appropriate title-cased long name."""
+        return ' '.join(tuple(self.namespace) + (self.name,))
+
+    @property
+    def module_name(self) -> str:
+        """Return the appropriate Python module name."""
+        return utils.to_valid_module_name(self.name)
+
+    @property
+    def versioned_module_name(self) -> str:
+        """Return the versiond module name (e.g. ``apiname_v1``).
+
+        If there is no version, this is the same as ``module_name``.
+        """
+        if self.version:
+            return f'{self.module_name}_{self.version}'
+        return self.module_name
+
+    @property
+    def warehouse_package_name(self) -> str:
+        """Return the appropriate Python package name for Warehouse."""
+
+        # Piece the name and namespace together to come up with the
+        # proper package name.
+        answer = list(self.namespace) + self.name.split(' ')
+        return '-'.join(answer).lower()

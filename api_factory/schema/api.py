@@ -28,10 +28,11 @@ from google.protobuf import descriptor_pb2
 
 from api_factory import utils
 from api_factory.schema import metadata
+from api_factory.schema import naming
 from api_factory.schema import wrappers
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, init=False)
 class API:
     """A representation of a full API.
 
@@ -43,62 +44,12 @@ class API:
     An instance of this object is made available to every template
     (as ``api``).
     """
-    data: APIData
-    product_name: str
-    product_url: str
-    name: str
-    namespace: Tuple[str]
-    version: str
+    naming: naming.Naming
+    protos: Tuple[Proto]
 
-    services: Mapping[str, wrappers.Service] = dataclasses.field(
-        default_factory=dict,
-    )
-    messages: Mapping[str, wrappers.MessageType] = dataclasses.field(
-        default_factory=dict,
-    )
-    enums: Mapping[str, wrappers.EnumType] = dataclasses.field(
-        default_factory=dict,
-    )
-
-    @property
-    def long_name(self) -> str:
-        """Return an appropriate title-cased long name."""
-        return ' '.join(tuple(self.namespace) + (self.name,))
-
-    @property
-    def module_name(self) -> str:
-        """Return the appropriate Python module name."""
-        return utils.to_valid_module_name(self.name)
-
-    @property
-    def versioned_module_name(self) -> str:
-        """Return the versiond module name (e.g. ``apiname_v1``).
-
-        If there is no version, this is the same as ``module_name``.
-        """
-        if self.version:
-            return f'{self.module_name}_{self.version}'
-        return self.module_name
-
-    @property
-    def warehouse_package_name(self) -> str:
-        """Return the appropriate Python package name for Warehouse."""
-        # Sanity check: If no name is provided, use a clearly placeholder
-        # default that is not a valid name on Warehouse.
-        if not self.client.name:
-            return utils.Placeholder('<<< PACKAGE NAME >>>')
-
-        # Piece the name and namespace together to come up with the
-        # proper package name.
-        answer = list(self.client.namespace) + self.client.name.split(' ')
-        return '-'.join(answer).lower()
-
-    @classmethod
-    def build(
-            cls,
+    def __init__(self,
             file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
-            package: str = '',
-            ) -> 'API':
+            package: str = ''):
         """Build the internal API schema based on the request.
 
         Args:
@@ -109,82 +60,86 @@ class API:
                 code should be explicitly generated (including subpackages).
                 Protos with packages outside this list are considered imports
                 rather than explicit targets.
-
-        Returns:
-            ~.API: An API object. This object is frozen and immutable once
-                it is returned.
         """
-        # Put together the metadata for the API as a whole.
-        target_protos = [i for i in file_descriptors if i.startswith(package)]
-        api_metadata = get_api_metadata(target_protos)
+        # Save information about the overall naming for this API.
+        object.__setattr__('naming', naming.Naming(file_descriptors=filter(
+            lambda fd: fd.startswith(package),
+            file_descriptors,
+        )))
 
-
+        # Iterate over each FileDescriptorProto and fill out a Proto
+        # object describing it, and save these to the instance.
+        protos = []
         for fd in file_descriptors:
-            # If packages were specified and this file descriptor is not
-            # a member of one of them, skip it.
-            if package and not fd.startswith(package):
-                continue
+            protos.append(Proto(
+                file_descriptor=fd,
+                file_to_generate=fd.startswith(package),
+            ))
+        object.__setattr__('protos', tuple(protos))
 
 
-    def load(self, fdp: descriptor_pb2.FileDescriptorProto) -> None:
-        """Load the provided FileDescriptorProto into this object.
+@dataclasses.dataclass(init=False)
+class Proto:
+    """A representation of a particular proto file within an API."""
 
-        This method iterates over the complete descriptor and loads all
-        of its members (services, methods, messages, enums, etc.) into
-        this object, wrapping each descriptor in a wrapper to preserve
-        metadata.
+    services: Mapping[str, wrappers.Service]
+    messages: Mapping[str, wrappers.MessageType]
+    enums: Mapping[str, wrappers.EnumType]
+    file_to_generate: bool
 
-        This method modifies the :class:`~.API` object in-place.
+    def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
+            file_to_generate: bool):
+        """Build and return a Proto instance.
 
         Args:
-            fdp (~.descriptor_pb2.FileDescriptorProto): The
-                :class:`FileDescriptorProto` object; this is usually provided
-                as a list in :class:`CodeGeneratorRequest`.
+            file_descriptor (~.FileDescriptorProto): The protocol buffer
+                object describing the proto file.
+            file_to_generate (bool): Whether this is a file which is
+                to be directly generated, or a dependency.
         """
-        # Compile together the comments from the source code.
-        # This creates a nested diciontary structure sorted by the
-        # location paths. So, a location with path [4, 1, 2, 7] will end
-        # up being in `comments_by_path` under [4][1][2][7]['TERMINAL'].
-        #
-        # The purpose of always ending with 'TERMINAL' is because there
-        # always could be something nested deeper.
-        comments_by_path = {}
-        for loc in fdp.source_code_info.location:
-            cursor = comments_by_path
-            for p in loc.path:
-                cursor.setdefault(p, {})
-                cursor = cursor[p]
-            cursor['TERMINAL'] = loc
+        attrs = {'enums': {}, 'messages': {}, 'services': {}}
 
-        # Now iterate over the FileDescriptorProto and grab the relevant
-        # source documentation from the dictionary created above and
-        # add this to the `self.comments` dictionary, which is sorted by
-        # fully-qualfied proto identifiers.
+        # Iterate over the documentation and place it into a dictionary.
         #
-        # The hard-coded keys here are based on how descriptor.proto
+        # The comments in protocol buffers are sorted by a concept called
+        # the "path", which is a sequence of integers described in more
+        # detail below; this code simply shifts from a list to a dict,
+        # with tuples of paths as the dictionary keys.
+        source_info = {}
+        for location in file_descriptor.source_code_info.location:
+            source_info[tuple(location.path)] = location
+
+        # Everything has an "address", which is the proto where the thing
+        # was declared.
+        #
+        # We put this together by a baton pass of sorts: everything in
+        # this file *starts with* this address, which is appended to
+        # for each item as it is loaded.
+        address = metadata.Address(
+            module=file_descriptor.name.split('/')[-1][:-len('.proto')],
+            package=file_descriptor.package.split('.'),
+        )
+
+        # Now iterate over the FileDescriptorProto and pull out each of
+        # the messages, enums, and services.
+        #
+        # The hard-coded path keys sent here are based on how descriptor.proto
         # works; it uses the proto message number of the pieces of each
         # message (e.g. the hard-code `4` for `message_type` immediately
         # below is because `repeated DescriptorProto message_type = 4;` in
         # descriptor.proto itself).
-        address = metadata.Address(
-            module=fdp.name.split('/')[-1][:-len('.proto')],
-            package=fdp.package.split('.'),
-        )
-        self._load_children(fdp.message_type, loader=self._load_descriptor,
-                            address=address, info=comments_by_path.get(4, {}))
-        self._load_children(fdp.enum_type, loader=self._load_enum,
-                            address=address, info=comments_by_path.get(5, {}))
-        self._load_children(fdp.service, loader=self._load_service,
-                            address=address, info=comments_by_path.get(6, {}))
-        # self._load_children(fdp.extension, loader=self._load_field,
-        #                   address=address, info=comments_by_path.get(7, {}))
+        self._load_children(file_descriptor.message_type, _load_message,
+                base_address=address, path=(4,), source_info=source_info)
+        self._load_children(file_descriptor.enum_type, _load_enum,
+                base_address=address, path=(5,), source_info=source_info)
+        self._load_children(file_descriptor.service_type, _load_service,
+                base_address=address, path=(6,), source_info=source_info)
+        # TODO(lukesneeringer): oneofs are on path 7.
 
-        # Merge any client directives with what we have going so far.
-        self.client.MergeFrom(fdp.options.Extensions[annotations_pb2.metadata])
-
-    def _load_children(self, children: list, loader: Callable,
-                       address: metadata.Address, info: dict) -> None:
-        """Load arbitrary children from a Descriptor.
+    def _load_children(children: Sequence, loader: Callable, *,
+                       base_address: metadata.Address, path: Tuple[int],
+                       source_info: SourceInfo) -> None:
+        """Return wrapped versions of arbitrary children from a Descriptor.
 
         Args:
             children (list): A sequence of children of the given field to
@@ -195,17 +150,18 @@ class API:
                 to load the kind of message in ``children``. This should
                 be one of the ``_load_{noun}`` methods on this class
                 (e.g. ``_load_descriptor``).
-            address (~.metadata.Address): The address up to this point.
+            base_address (~.metadata.Address): The address up to this point.
                 This will include the package and may include outer messages.
-            info (dict): A dictionary of comment information corresponding to
-                the messages for which being laoded. In other words, this is
-                the segment of the source info that has paths matching
-                or within ``children``.
+            path (Tuple[int]): The location path up to this point. This is
+                used to correspond to documentation in ``SourceCodeInfo.Location``
+                in ``descriptor.proto``.
+            source_info (Mapping[Tuple[int], ~.SourceCodeInfo.Location]): A
+                dictionary with all of the comments retrieved from the proto.
         """
         # Iterate over the list of children provided and call the
         # applicable loader function on each.
         for child, i in zip(children, range(0, sys.maxsize)):
-            loader(child, address=address, info=info.get(i, {}))
+            loader(child, base_address=base_address, path=path + (i,), source_info=source_info)
 
     def _get_fields(self, field_pbs: List[descriptor_pb2.FieldDescriptorProto],
                     address: metadata.Address, info: dict,

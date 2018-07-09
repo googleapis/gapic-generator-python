@@ -18,12 +18,14 @@ from api_factory.utils.filename import to_valid_filename
 from api_factory.utils.filename import to_valid_module_name
 from api_factory.utils.lines import subsequent_indent
 from api_factory.utils.lines import wrap
+from api_factory.utils.mapping import recursive_update
 from api_factory.utils.placeholder import Placeholder
 
 
 __all__ = (
     'cached_property',
     'Placeholder',
+    'recursive_update',
     'subsequent_indent',
     'to_snake_case',
     'to_valid_filename',
