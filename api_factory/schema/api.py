@@ -22,14 +22,23 @@ import dataclasses
 import sys
 from typing import Callable, List, Mapping, Sequence, Tuple
 
-from google.api import annotations_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
-from api_factory import utils
 from api_factory.schema import metadata
 from api_factory.schema import naming
 from api_factory.schema import wrappers
+from api_factory.utils import cached_property
+
+
+@dataclasses.dataclass(frozen=True)
+class Proto:
+    """A representation of a particular proto file within an API."""
+
+    services: Mapping[str, wrappers.Service]
+    messages: Mapping[str, wrappers.MessageType]
+    enums: Mapping[str, wrappers.EnumType]
+    file_to_generate: bool
 
 
 @dataclasses.dataclass(frozen=True, init=False)
@@ -71,24 +80,46 @@ class API:
         # object describing it, and save these to the instance.
         protos = []
         for fd in file_descriptors:
-            protos.append(Proto(
+            protos.append(_ProtoBuilder(
                 file_descriptor=fd,
                 file_to_generate=fd.startswith(package),
-            ))
+            ).proto)
         object.__setattr__('protos', tuple(protos))
 
+    @cached_property
+    def enums(self) -> Mapping[str, wrappers.EnumType]:
+        """Return a map of all enums available in the API."""
+        return collections.ChainMap(*[p.enums for p in self.protos])
 
-@dataclasses.dataclass(init=False)
-class Proto:
-    """A representation of a particular proto file within an API."""
+    @cached_property
+    def messages(self) -> Mapping[str, wrappers.MessageType]:
+        """Return a map of all messages available in the API."""
+        return collections.ChainMap(*[p.messages for p in self.protos])
 
-    services: Mapping[str, wrappers.Service]
-    messages: Mapping[str, wrappers.MessageType]
-    enums: Mapping[str, wrappers.EnumType]
-    file_to_generate: bool
+    @cached_property
+    def services(self) -> Mapping[str, wrappers.Service]:
+        """Return a map of all services available in the API."""
+        return collections.ChainMap(*[p.services for p in self.protos])
+
+
+class _ProtoBuilder(Proto):
+    """A "builder class" for Proto objects.
+
+    The sole purpose of this class is to accept the information from the
+    file descriptor and "piece together" the components of the :class:`~.Proto`
+    object in-place.
+
+    This allows the public :class:`~.Proto` object to be frozen, and free
+    of the setup machinations.
+
+    The correct usage of this class is always to create an instance, call
+    the :attr:`proto` property, and then throw the builder away. Additionally,
+    there should be no reason to use this class outside of this module.
+    """
+    EMPTY = descriptor_pb2.SourceCodeInfo.Location()
 
     def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
-            file_to_generate: bool):
+                 file_to_generate: bool):
         """Build and return a Proto instance.
 
         Args:
@@ -97,7 +128,10 @@ class Proto:
             file_to_generate (bool): Whether this is a file which is
                 to be directly generated, or a dependency.
         """
-        attrs = {'enums': {}, 'messages': {}, 'services': {}}
+        self.messages = {}
+        self.enums = {}
+        self.services = {}
+        self.file_to_generate = file_to_generate
 
         # Iterate over the documentation and place it into a dictionary.
         #
@@ -105,9 +139,9 @@ class Proto:
         # the "path", which is a sequence of integers described in more
         # detail below; this code simply shifts from a list to a dict,
         # with tuples of paths as the dictionary keys.
-        source_info = {}
+        self.docs = {}
         for location in file_descriptor.source_code_info.location:
-            source_info[tuple(location.path)] = location
+            self.docs[tuple(location.path)] = location
 
         # Everything has an "address", which is the proto where the thing
         # was declared.
@@ -128,17 +162,26 @@ class Proto:
         # message (e.g. the hard-code `4` for `message_type` immediately
         # below is because `repeated DescriptorProto message_type = 4;` in
         # descriptor.proto itself).
-        self._load_children(file_descriptor.message_type, _load_message,
-                base_address=address, path=(4,), source_info=source_info)
-        self._load_children(file_descriptor.enum_type, _load_enum,
-                base_address=address, path=(5,), source_info=source_info)
-        self._load_children(file_descriptor.service_type, _load_service,
-                base_address=address, path=(6,), source_info=source_info)
+        self._load_children(file_descriptor.message_type, self._load_message,
+                            address=address, path=(4,))
+        self._load_children(file_descriptor.enum_type, self._load_enum,
+                            address=address, path=(5,))
+        self._load_children(file_descriptor.service_type, self._load_service,
+                            address=address, path=(6,))
         # TODO(lukesneeringer): oneofs are on path 7.
 
+    @property
+    def proto(self) -> Proto:
+        """Return a Proto dataclass object."""
+        return Proto(
+            enums=self.enums,
+            file_to_generate=self.file_to_generate,
+            messages=self.messages,
+            services=self.services,
+        )
+
     def _load_children(children: Sequence, loader: Callable, *,
-                       base_address: metadata.Address, path: Tuple[int],
-                       source_info: SourceInfo) -> None:
+                       address: metadata.Address, path: Tuple[int]) -> None:
         """Return wrapped versions of arbitrary children from a Descriptor.
 
         Args:
@@ -150,21 +193,19 @@ class Proto:
                 to load the kind of message in ``children``. This should
                 be one of the ``_load_{noun}`` methods on this class
                 (e.g. ``_load_descriptor``).
-            base_address (~.metadata.Address): The address up to this point.
+            address (~.metadata.Address): The address up to this point.
                 This will include the package and may include outer messages.
             path (Tuple[int]): The location path up to this point. This is
-                used to correspond to documentation in ``SourceCodeInfo.Location``
-                in ``descriptor.proto``.
-            source_info (Mapping[Tuple[int], ~.SourceCodeInfo.Location]): A
-                dictionary with all of the comments retrieved from the proto.
+                used to correspond to documentation in
+                ``SourceCodeInfo.Location`` in ``descriptor.proto``.
         """
         # Iterate over the list of children provided and call the
         # applicable loader function on each.
         for child, i in zip(children, range(0, sys.maxsize)):
-            loader(child, base_address=base_address, path=path + (i,), source_info=source_info)
+            loader(child, address=address, path=path + (i,))
 
     def _get_fields(self, field_pbs: List[descriptor_pb2.FieldDescriptorProto],
-                    address: metadata.Address, info: dict,
+                    address: metadata.Address, path: Tuple[int],
                     ) -> Mapping[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
 
@@ -173,8 +214,8 @@ class Proto:
                 sequence of protobuf field objects.
             address (~.metadata.Address): An address object denoting the
                 location of these fields.
-            info (dict): The appropriate slice of proto comments
-                corresponding to these fields.
+            path (Tuple[int]): The source location path thus far, as
+                understood by ``SourceCodeInfo.Location``.
 
         Returns:
             Mapping[str, ~.wrappers.Field]: A ordered mapping of
@@ -187,10 +228,7 @@ class Proto:
                 field_pb=field_pb,
                 meta=metadata.Metadata(
                     address=address,
-                    documentation=info.get(i, {}).get(
-                        'TERMINAL',
-                        descriptor_pb2.SourceCodeInfo.Location(),
-                    ),
+                    documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
             )
 
@@ -198,7 +236,7 @@ class Proto:
         return answer
 
     def _get_methods(self, methods: List[descriptor_pb2.MethodDescriptorProto],
-                     address: metadata.Address, info: dict,
+                     address: metadata.Address, path: Tuple[int],
                      ) -> Mapping[str, wrappers.Method]:
         """Return a dictionary of wrapped methods for the given service.
 
@@ -207,8 +245,8 @@ class Proto:
                 sequence of protobuf method objects.
             address (~.metadata.Address): An address object denoting the
                 location of these methods.
-            info (dict): The appropriate slice of proto comments
-                corresponding to these methods.
+            path (Tuple[int]): The source location path thus far, as understood
+                by ``SourceCodeInfo.Location``.
 
         Returns:
             Mapping[str, ~.wrappers.Method]: A ordered mapping of
@@ -216,28 +254,25 @@ class Proto:
         """
         # Iterate over the methods and collect them into a dictionary.
         answer = collections.OrderedDict()
-        for method_pb, i in zip(methods, range(0, sys.maxsize)):
-            types = method_pb.options.Extensions[operations_pb2.operation_types]
-            answer[method_pb.name] = wrappers.Method(
-                input=self.messages[method_pb.input_type.lstrip('.')],
+        for meth_pb, i in zip(methods, range(0, sys.maxsize)):
+            types = meth_pb.options.Extensions[operations_pb2.operation_types]
+            answer[meth_pb.name] = wrappers.Method(
+                input=self.messages[meth_pb.input_type.lstrip('.')],
                 lro_metadata=self.messages.get(types.metadata, None),
                 lro_payload=self.messages.get(types.response, None),
-                method_pb=method_pb,
+                method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=address,
-                    documentation=info.get(i, {}).get(
-                        'TERMINAL',
-                        descriptor_pb2.SourceCodeInfo.Location(),
-                    ),
+                    documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
-                output=self.messages[method_pb.output_type.lstrip('.')],
+                output=self.messages[meth_pb.output_type.lstrip('.')],
             )
 
         # Done; return the answer.
         return answer
 
-    def _load_descriptor(self, message_pb: descriptor_pb2.DescriptorProto,
-                         address: metadata.Address, info: dict) -> None:
+    def _load_message(self, message_pb: descriptor_pb2.DescriptorProto,
+                      address: metadata.Address, path: Tuple[int]) -> None:
         """Load message descriptions from DescriptorProtos."""
         ident = f'{str(address)}.{message_pb.name}'
         nested_addr = address.child(message_pb.name)
@@ -246,34 +281,34 @@ class Proto:
         fields = self._get_fields(
             message_pb.field,
             address=nested_addr,
-            info=info.get(2, {}),
+            path=path + (2,),
         )
         fields.update(self._get_fields(
             message_pb.extension,
             address=nested_addr,
-            info=info.get(6, {}),
+            path=path + (6,),
         ))
 
         # Create a message correspoding to this descriptor.
         self.messages[ident] = wrappers.MessageType(
             fields=fields,
             message_pb=message_pb,
-            meta=metadata.Metadata(address=address, documentation=info.get(
-                'TERMINAL',
-                descriptor_pb2.SourceCodeInfo.Location(),
-            )),
+            meta=metadata.Metadata(
+                address=address,
+                documentation=self.docs.get(path, self.EMPTY),
+            ),
         )
 
         # Load all nested items.
         self._load_children(message_pb.nested_type, address=nested_addr,
-                            loader=self._load_descriptor, info=info.get(3, {}))
+                            loader=self._load_message, path=path + (3,))
         self._load_children(message_pb.enum_type, address=nested_addr,
-                            loader=self._load_enum, info=info.get(4, {}))
+                            loader=self._load_enum, path=path + (4,))
         # self._load_children(message.oneof_decl, loader=self._load_field,
         #                     address=nested_addr, info=info.get(8, {}))
 
     def _load_enum(self, enum: descriptor_pb2.EnumDescriptorProto,
-                   address: metadata.Address, info: dict) -> None:
+                   address: metadata.Address, path: Tuple[int]) -> None:
         """Load enum descriptions from EnumDescriptorProtos."""
         # Put together wrapped objects for the enum values.
         values = []
@@ -282,10 +317,7 @@ class Proto:
                 enum_value_pb=enum_value,
                 meta=metadata.Metadata(
                     address=address,
-                    documentation=info.get(2, {}).get(
-                        'TERMINAL',
-                        descriptor_pb2.SourceCodeInfo.Location(),
-                    ),
+                    documentation=self.docs.get(path, self.EMPTY),
                 ),
             ))
 
@@ -293,15 +325,15 @@ class Proto:
         ident = f'{str(address)}.{enum.name}'
         self.enums[ident] = wrappers.EnumType(
             enum_pb=enum,
-            meta=metadata.Metadata(address=address, documentation=info.get(
-                'TERMINAL',
-                descriptor_pb2.SourceCodeInfo.Location(),
-            )),
+            meta=metadata.Metadata(
+                address=address,
+                documentation=self.docs.get(path, self.EMPTY),
+            ),
             values=values,
         )
 
     def _load_service(self, service: descriptor_pb2.ServiceDescriptorProto,
-                      address: metadata.Address, info: dict) -> None:
+                      address: metadata.Address, path: Tuple[int]) -> None:
         """Load comments for a service and its methods."""
         service_addr = address.child(service.name)
 
@@ -309,15 +341,15 @@ class Proto:
         methods = self._get_methods(
             service.method,
             address=service_addr,
-            info=info.get(2, {}),
+            path=path + (2,),
         )
 
         # Load the comments for the service itself.
         self.services[f'{str(address)}.{service.name}'] = wrappers.Service(
-            meta=metadata.Metadata(address=address, documentation=info.get(
-                'TERMINAL',
-                descriptor_pb2.SourceCodeInfo.Location(),
-            )),
+            meta=metadata.Metadata(
+                address=address,
+                documentation=self.docs.get(path, self.EMPTY),
+            ),
             methods=methods,
             service_pb=service,
         )
