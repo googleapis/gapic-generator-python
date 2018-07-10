@@ -74,11 +74,20 @@ class Naming(NamingBase):
         # It is not necessary for the regex to be as particular about package
         # name validity (e.g. avoiding .. or segments starting with numbers)
         # because protoc is guaranteed to give us valid package names.
-        match = re.search(pattern=''.join((
-            r'^(?P<namespace>[a-z0-9_.]+\.)?',
-            r'(?P<name>[a-z0-9_]+)',
-            r'(\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta|test)[0-9])*))?',
-        )), string=root_package).groupdict()
+        pattern = r'^(?P<namespace>[a-z0-9_.]+\.)?(?P<name>[a-z0-9_]+)'
+
+        # Only require the version portion of the regex if the version is
+        # present.
+        #
+        # This code may look counter-intuitive (why not use ? to make it
+        # optional), but the engine's greediness routine will decide that
+        # the version is the name, which is not what we want.
+        version = r'\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta|test)[0-9])*)'
+        if re.search(version, root_package):
+            pattern += version
+
+        # Okay, do the match
+        match = re.search(pattern=pattern, string=root_package).groupdict()
         match['namespace'] = match['namespace'] or ''
         package_info = NamingBase(
             name=match['name'].capitalize(),

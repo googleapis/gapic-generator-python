@@ -271,8 +271,6 @@ class _ProtoBuilder:
         answer = collections.OrderedDict()
         for meth_pb, i in zip(methods, range(0, sys.maxsize)):
             types = meth_pb.options.Extensions[operations_pb2.operation_types]
-            print(meth_pb.input_type, file=sys.stderr)
-            print(meth_pb.output_type, file=sys.stderr)
             answer[meth_pb.name] = wrappers.Method(
                 input=self.all_messages[meth_pb.input_type.lstrip('.')],
                 lro_metadata=self.all_messages.get(types.metadata, None),

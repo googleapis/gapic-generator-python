@@ -28,6 +28,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 """
 
 import dataclasses
+import re
 from typing import Callable, List, Mapping, Sequence, Tuple
 
 from google.api import annotations_pb2
@@ -105,12 +106,15 @@ class Method:
     @property
     def overloads(self):
         """Return the overloads defined for this method."""
-        return self.method_pb.options.Extensions[annotations_pb2.signature]
+        return self.options.Extensions[annotations_pb2.signature]
 
     @property
-    def field_headers(self):
+    def field_headers(self) -> Sequence[str]:
         """Return the field headers defined for this method."""
-        return self.method_pb.options.Extensions[headers_pb2.field_headers]
+        http = self.options.Extensions[annotations_pb2.http]
+        if http.get:
+            return re.findall(r'\{([a-z][\w\d_.])=', http.get)
+        return ()
 
 
 @dataclasses.dataclass(frozen=True)
