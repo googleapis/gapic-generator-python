@@ -72,7 +72,7 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
         initial_width=25, subsequent_indent="        ") }} method over HTTP.
 
         Args:
-            request (~.{{ method.input.pb2_module }}.{{ method.input.name }}:
+            request (~.{{ method.input.pb2_module }}.{{ method.input.name }}):
                 The request object. {{ method.input.meta.doc|wrap(width=72,
                 initial_width=36, subsequent_indent=' ' * 16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -88,7 +88,12 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
 
         # Send the request.
         response = self._session.post(
-            f'https://{self.SERVICE_ADDRESS}/$rpc/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
+            'https://{host}/$rpc/{package}.{service}/{method}'.format(
+                host=self.SERVICE_ADDRESS,
+                method='{{ method.name }}',
+                package='{{ '.'.join(method.meta.address.package) }}',
+                service='{{ service.name }}',
+            ),
             data=data,
             headers={
                 'content-type': 'application/x-protobuf',

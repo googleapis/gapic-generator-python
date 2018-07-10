@@ -7,15 +7,9 @@ import os
 from setuptools import setup
 
 
-PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
-with io.open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
-    README = file_obj.read()
-
-
 setup(
     name='{{ api.naming.warehouse_package_name }}',
     version='0.0.1',
-    long_description=README,
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
