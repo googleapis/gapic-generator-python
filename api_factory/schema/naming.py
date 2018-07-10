@@ -67,7 +67,7 @@ class Naming(NamingBase):
         """
         # Determine the set of proto packages.
         proto_packages = {fd.package for fd in file_descriptors}
-        root_package = os.path.commonprefix(proto_packages)
+        root_package = os.path.commonprefix(tuple(proto_packages)).rstrip('.')
 
         # Define the valid regex to split the package.
         #
@@ -79,12 +79,13 @@ class Naming(NamingBase):
             r'(?P<name>[a-z0-9_]+)',
             r'(\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta|test)[0-9])*))?',
         )), string=root_package).groupdict()
+        match['namespace'] = match['namespace'] or ''
         package_info = NamingBase(
             name=match['name'].capitalize(),
             namespace=[i.capitalize() for i in match['namespace'].split('.')],
             product_name=match['name'].capitalize(),
             product_url='',
-            version=match['version'],
+            version=match['version'] or '',
         )
 
         # Sanity check: Ensure that the package directives all inferred

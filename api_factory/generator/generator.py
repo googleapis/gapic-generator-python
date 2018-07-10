@@ -21,9 +21,9 @@ import jinja2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
-from api_factory.schema.api import API
-from api_factory.generator.loader import TemplateLoader
 from api_factory import utils
+from api_factory.generator.loader import TemplateLoader
+from api_factory.schema import api
 
 
 class Generator:
@@ -151,13 +151,13 @@ class Generator:
         # Replace the $namespace variable.
         filename = filename.replace(
             '$namespace',
-            '/'.join([i.lower() for i in self._api.client.package_namespace]),
+            '/'.join([i.lower() for i in self._api.naming.namespace]),
         ).lstrip('/')
 
         # Replace the $name and $version variables.
         filename = filename.replace('$name_$version',
-                                    self._api.versioned_module_name)
-        filename = filename.replace('$name', self._api.module_name)
+                                    self._api.naming.versioned_module_name)
+        filename = filename.replace('$name', self._api.naming.module_name)
 
         # Replace the $service variable if applicable.
         if context and 'service' in context:

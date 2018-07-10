@@ -54,7 +54,7 @@ class API:
     (as ``api``).
     """
     naming: naming.Naming
-    protos: Tuple[Proto]
+    protos: Mapping[str, Proto]
 
     def __init__(self,
             file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
@@ -71,38 +71,45 @@ class API:
                 rather than explicit targets.
         """
         # Save information about the overall naming for this API.
-        object.__setattr__('naming', naming.Naming(file_descriptors=filter(
-            lambda fd: fd.startswith(package),
+        object.__setattr__(self, 'naming', naming.Naming(filter(
+            lambda fd: fd.package.startswith(package),
             file_descriptors,
         )))
 
         # Iterate over each FileDescriptorProto and fill out a Proto
         # object describing it, and save these to the instance.
-        protos = []
+        protos = {}
         for fd in file_descriptors:
-            protos.append(_ProtoBuilder(
+            protos[fd.name] = _ProtoBuilder(
                 file_descriptor=fd,
-                file_to_generate=fd.startswith(package),
-            ).proto)
-        object.__setattr__('protos', tuple(protos))
+                file_to_generate=fd.package.startswith(package),
+                prior_protos=protos,
+            ).proto
+        object.__setattr__(self, 'protos', protos)
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
         """Return a map of all enums available in the API."""
-        return collections.ChainMap(*[p.enums for p in self.protos])
+        return collections.ChainMap({},
+            *[p.enums for p in self.protos.values()],
+        )
 
     @cached_property
     def messages(self) -> Mapping[str, wrappers.MessageType]:
         """Return a map of all messages available in the API."""
-        return collections.ChainMap(*[p.messages for p in self.protos])
+        return collections.ChainMap({},
+            *[p.messages for p in self.protos.values()],
+        )
 
     @cached_property
     def services(self) -> Mapping[str, wrappers.Service]:
         """Return a map of all services available in the API."""
-        return collections.ChainMap(*[p.services for p in self.protos])
+        return collections.ChainMap({},
+            *[p.services for p in self.protos.values()],
+        )
 
 
-class _ProtoBuilder(Proto):
+class _ProtoBuilder:
     """A "builder class" for Proto objects.
 
     The sole purpose of this class is to accept the information from the
@@ -119,7 +126,7 @@ class _ProtoBuilder(Proto):
     EMPTY = descriptor_pb2.SourceCodeInfo.Location()
 
     def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
-                 file_to_generate: bool):
+                 file_to_generate: bool, prior_protos: Mapping[str, Proto]):
         """Build and return a Proto instance.
 
         Args:
@@ -132,6 +139,7 @@ class _ProtoBuilder(Proto):
         self.enums = {}
         self.services = {}
         self.file_to_generate = file_to_generate
+        self.prior_protos = prior_protos
 
         # Iterate over the documentation and place it into a dictionary.
         #
@@ -166,8 +174,9 @@ class _ProtoBuilder(Proto):
                             address=address, path=(4,))
         self._load_children(file_descriptor.enum_type, self._load_enum,
                             address=address, path=(5,))
-        self._load_children(file_descriptor.service_type, self._load_service,
-                            address=address, path=(6,))
+        if file_to_generate:
+            self._load_children(file_descriptor.service, self._load_service,
+                                address=address, path=(6,))
         # TODO(lukesneeringer): oneofs are on path 7.
 
     @property
@@ -180,7 +189,13 @@ class _ProtoBuilder(Proto):
             services=self.services,
         )
 
-    def _load_children(children: Sequence, loader: Callable, *,
+    @cached_property
+    def all_messages(self) -> Sequence[wrappers.MessageType]:
+        return collections.ChainMap({}, self.messages,
+            *[p.messages for p in self.prior_protos.values()],
+        )
+
+    def _load_children(self, children: Sequence, loader: Callable, *,
                        address: metadata.Address, path: Tuple[int]) -> None:
         """Return wrapped versions of arbitrary children from a Descriptor.
 
@@ -256,16 +271,18 @@ class _ProtoBuilder(Proto):
         answer = collections.OrderedDict()
         for meth_pb, i in zip(methods, range(0, sys.maxsize)):
             types = meth_pb.options.Extensions[operations_pb2.operation_types]
+            print(meth_pb.input_type, file=sys.stderr)
+            print(meth_pb.output_type, file=sys.stderr)
             answer[meth_pb.name] = wrappers.Method(
-                input=self.messages[meth_pb.input_type.lstrip('.')],
-                lro_metadata=self.messages.get(types.metadata, None),
-                lro_payload=self.messages.get(types.response, None),
+                input=self.all_messages[meth_pb.input_type.lstrip('.')],
+                lro_metadata=self.all_messages.get(types.metadata, None),
+                lro_payload=self.all_messages.get(types.response, None),
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=address,
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
-                output=self.messages[meth_pb.output_type.lstrip('.')],
+                output=self.all_messages[meth_pb.output_type.lstrip('.')],
             )
 
         # Done; return the answer.

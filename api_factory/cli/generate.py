@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import sys
 import typing
 
@@ -41,7 +42,11 @@ def generate(
 
     # Translate into a protobuf CodeGeneratorResponse;
     # if there are issues, error out appropriately.
-    api_schema = api.API.build(req)
+    package = os.path.commonprefix([i.package for i in filter(
+        lambda p: p.name in req.file_to_generate,
+        req.proto_file,
+    )]).rstrip('.')
+    api_schema = api.API(req.proto_file, package=package)
     res = generator.Generator(api_schema=api_schema).get_response()
 
     # Output the serialized response.
