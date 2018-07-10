@@ -24,11 +24,10 @@ from google.protobuf.compiler import plugin_pb2
 from api_factory.generator import generator
 from api_factory.schema import wrappers
 from api_factory.schema.api import API
-from api_factory.schema.pb import client_pb2
 
 
 def test_constructor():
-    # Crete a bogue and very stripped down request.
+    # Crete a bogus and very stripped down request.
     request = plugin_pb2.CodeGeneratorRequest(proto_file=[
         # We are just going to prove that each file is loaded,
         # so it does not matter what is in them.

@@ -19,7 +19,8 @@ import nox
 
 
 @nox.session
-def unit(session, python_version='3.6'):
+@nox.parametrize('python_version', ['3.6', '3.7'])
+def unit(session, python_version='3.7'):
     """Run the unit test suite."""
 
     session.interpreter = 'python{0}'.format(python_version)
@@ -44,7 +45,7 @@ def unit(session, python_version='3.6'):
 def docs(session):
     """Build the docs."""
 
-    session.interpreter = 'python3.6'
+    session.interpreter = 'python3.7'
     session.install('sphinx', 'sphinx_rtd_theme')
     session.install('.')
 

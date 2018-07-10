@@ -24,17 +24,7 @@ from api_factory import utils
 
 
 @dataclasses.dataclass(frozen=True)
-class NamingBase:
-    """Naming data for a proto file or metadata annotation."""
-    name: str
-    namespace: Tuple[str]
-    version: str
-    product_name: str
-    product_url: str
-
-
-@dataclasses.dataclass(frozen=True, init=False)
-class Naming(NamingBase):
+class Naming:
     """Naming data for an API.
 
     This class contains the naming nomenclature used for this API
@@ -43,9 +33,16 @@ class Naming(NamingBase):
     An instance of this object is made available to every template
     (as ``api.naming``).
     """
+    name: str
+    namespace: Tuple[str]
+    version: str
+    product_name: str
+    product_url: str
 
-    def __init__(self,
-            file_descriptors: Iterable[descriptor_pb2.FileDescriptorProto]):
+    @classmethod
+    def build(cls,
+            file_descriptors: Iterable[descriptor_pb2.FileDescriptorProto]
+            ) -> 'Naming':
         """Return a full APINaming instance based on these file descriptors.
 
         This is pieced together from the proto package names as well as the
@@ -59,7 +56,8 @@ class Naming(NamingBase):
                 files actually targeted for output (not their imports).
 
         Returns:
-            APINaming: An APINaming instance which is provided to templates.
+            ~.Naming: A :class:`~.Naming` instance which is provided to
+                templates as part of the :class:`~.API`.
 
         Raises:
             ValueError: If the provided file descriptors contain contradictory
@@ -89,7 +87,7 @@ class Naming(NamingBase):
         # Okay, do the match
         match = re.search(pattern=pattern, string=root_package).groupdict()
         match['namespace'] = match['namespace'] or ''
-        package_info = NamingBase(
+        package_info = cls(
             name=match['name'].capitalize(),
             namespace=[i.capitalize() for i in match['namespace'].split('.')],
             product_name=match['name'].capitalize(),
@@ -111,7 +109,7 @@ class Naming(NamingBase):
         metadata_info = set()
         for fd in file_descriptors:
             meta = fd.options.Extensions[annotations_pb2.metadata]
-            naming = NamingBase(
+            naming = cls(
                 name=meta.package_name or meta.product_name,
                 namespace=tuple(meta.package_namespace),
                 product_name=meta.product_name,
@@ -131,13 +129,15 @@ class Naming(NamingBase):
 
         # Merge the package naming information and the metadata naming
         # information, with the latter being preferred.
-        # Write both to this object.
-        for k, v in dataclasses.asdict(package_info).items():
-            object.__setattr__(self, k, v)
+        # Return a Naming object which effectively merges them.
+        answer = package_info
         if len(metadata_info):
             for k, v in dataclasses.asdict(metadata_info.pop()).items():
+                # Sanity check: We only want to overwrite anything if the
+                # new value is truthy.
                 if v:
-                    object.__setattr__(self, k, v)
+                    answer = answer.replace(**{k: v})
+        return answer
 
     def __bool__(self):
         """Return True if any of the fields are truthy, False otherwise."""

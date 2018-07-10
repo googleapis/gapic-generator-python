@@ -71,7 +71,7 @@ class API:
                 rather than explicit targets.
         """
         # Save information about the overall naming for this API.
-        object.__setattr__(self, 'naming', naming.Naming(filter(
+        object.__setattr__(self, 'naming', naming.Naming.build(filter(
             lambda fd: fd.package.startswith(package),
             file_descriptors,
         )))

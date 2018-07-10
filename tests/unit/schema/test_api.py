@@ -19,67 +19,9 @@ import pytest
 from google.protobuf import descriptor_pb2
 
 from api_factory.schema import metadata
+from api_factory.schema import naming
 from api_factory.schema import wrappers
 from api_factory.schema.api import API
-from api_factory.schema.pb import client_pb2
-from api_factory.schema.pb import lro_pb2
-
-
-def test_long_name():
-    api = make_api(
-        client=make_client(name='Genie', namespace=['Agrabah', 'Lamp']),
-    )
-    assert api.long_name == 'Agrabah Lamp Genie'
-
-
-def test_module_name():
-    api = make_api(client=make_client(
-        name='Genie',
-        namespace=['Agrabah', 'Lamp'],
-    ))
-    assert api.module_name == 'genie'
-
-
-def test_versioned_module_name_no_version():
-    api = make_api(client=make_client(
-        name='Genie',
-        namespace=['Agrabah', 'Lamp'],
-        version='',
-    ))
-    assert api.versioned_module_name == 'genie'
-
-
-def test_versioned_module_name():
-    api = make_api(client=make_client(
-        name='Genie',
-        namespace=['Agrabah', 'Lamp'],
-        version='v2',
-    ))
-    assert api.versioned_module_name == 'genie_v2'
-
-
-def test_warehouse_package_name_placeholder():
-    api = make_api(client=make_client(name=''))
-    assert api.warehouse_package_name == '<<< PACKAGE NAME >>>'
-    assert bool(api.warehouse_package_name) is False
-
-
-def test_warehouse_package_name_no_namespace():
-    api = make_api(client=make_client(name='BigQuery', namespace=[]))
-    assert api.warehouse_package_name == 'bigquery'
-
-
-def test_warehouse_package_name_with_namespace():
-    api = make_api(client=make_client(
-        name='BigQuery',
-        namespace=('Google', 'Cloud'),
-    ))
-    assert api.warehouse_package_name == 'google-cloud-bigquery'
-
-
-def test_warehouse_package_name_multiple_words():
-    api = make_api(client=make_client(name='Big Query', namespace=[]))
-    assert api.warehouse_package_name == 'big-query'
 
 
 def test_load():
@@ -355,12 +297,14 @@ def test_load_service():
     assert api.services['foo.bar.v1.RiddleService'].service_pb == service_pb
 
 
-def make_api(client: client_pb2.Client = None) -> API:
-    return API(client=client or make_client())
+def make_api(naming: naming.Naming = None) -> API:
+    return API(naming=naming or make_naming())
 
 
-def make_client(**kwargs) -> client_pb2.Client:
+def make_naming(**kwargs) -> naming.Naming:
     kwargs.setdefault('name', 'Hatstand')
     kwargs.setdefault('namespace', ('Google', 'Cloud'))
     kwargs.setdefault('version', 'v1')
-    return client_pb2.Client(**kwargs)
+    kwargs.setdefault('product_name', 'Hatstand')
+    kwargs.setdefault('product_url', 'https://cloud.google.com/hatstand/')
+    return naming.Naming(**kwargs)

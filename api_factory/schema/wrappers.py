@@ -29,9 +29,10 @@ Documentation is consistently at ``{thing}.meta.doc``.
 
 import dataclasses
 import re
-from typing import Callable, List, Mapping, Sequence, Tuple
+from typing import List, Mapping, Sequence, Tuple
 
 from google.api import annotations_pb2
+from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
 from api_factory import utils
@@ -104,17 +105,17 @@ class Method:
         return getattr(self.method_pb, name)
 
     @property
-    def overloads(self):
-        """Return the overloads defined for this method."""
-        return self.options.Extensions[annotations_pb2.signature]
-
-    @property
     def field_headers(self) -> Sequence[str]:
         """Return the field headers defined for this method."""
         http = self.options.Extensions[annotations_pb2.http]
         if http.get:
-            return re.findall(r'\{([a-z][\w\d_.])=', http.get)
+            return tuple(re.findall(r'\{([a-z][\w\d_.]+)=', http.get))
         return ()
+
+    @property
+    def signature(self) -> signature_pb2.MethodSignature:
+        """Return the signature defined for this method."""
+        return self.options.Extensions[annotations_pb2.method_signature]
 
 
 @dataclasses.dataclass(frozen=True)
@@ -199,22 +200,9 @@ class Service:
     @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
-        return self._any_method(lambda m: getattr(m, 'lro_payload'))
+        return any([m.lro_payload for m in self.methods.values()])
 
     @property
     def has_field_headers(self) -> bool:
         """Return whether the service has a method containing field headers."""
-        return self._any_method(lambda m: getattr(m, 'field_headers'))
-
-    def _any_method(self, predicate: Callable) -> bool:
-        """Return whether the service has a method that fulfills ``predicate``.
-
-        Args:
-            predicate (Callable[Method]): Function specifying the criteria
-                testing the methods in the service.
-
-        Returns:
-            bool: True if any method of the service contains the specified
-                attribute.
-        """
-        return any(predicate(method) for method in self.methods.values())
+        return any([m.field_headers for m in self.methods.values()])
