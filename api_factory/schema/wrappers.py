@@ -146,7 +146,7 @@ class Service:
             Sequence[str]: A sequence of OAuth scopes.
         """
         oauth = self.options.Extensions[annotations_pb2.oauth]
-        return tuple(oauth.canonical_scopes.split(','))
+        return tuple(oauth.scopes)
 
     @property
     def module_name(self) -> str:
