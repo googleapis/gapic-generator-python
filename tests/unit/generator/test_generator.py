@@ -14,6 +14,7 @@
 
 import io
 import os
+from typing import Mapping
 from unittest import mock
 
 import jinja2
@@ -22,30 +23,18 @@ from google.protobuf import descriptor_pb2
 from google.protobuf.compiler import plugin_pb2
 
 from api_factory.generator import generator
+from api_factory.schema import api
+from api_factory.schema import naming
 from api_factory.schema import wrappers
-from api_factory.schema.api import API
 
 
-def test_constructor():
-    # Crete a bogus and very stripped down request.
-    request = plugin_pb2.CodeGeneratorRequest(proto_file=[
-        # We are just going to prove that each file is loaded,
-        # so it does not matter what is in them.
-        descriptor_pb2.FileDescriptorProto(),
-        descriptor_pb2.FileDescriptorProto(),
-    ])
-
-    # Create a generator, prove it has an API.
-    # This is somewhat internal implementation baseball, but realistically
-    # the only reasonable way to write these tests is to split them up by
-    # internal segment.
-    with mock.patch.object(API, 'load') as load:
-        g = generator.Generator(request)
-        assert load.call_count == 2
-    assert isinstance(g._api, API)
+def test_proto_builder_constructor():
+    # Create a generator.
+    g = generator.Generator(api_schema=make_api())
+    assert isinstance(g._api, api.API)
 
     # Assert we have a Jinja environment also, with the expected filters.
-    # Still internal implementation baseball, but this is the best place
+    # This is internal implementation baseball, but this is the best place
     # to establish this and templates will depend on it.
     assert isinstance(g._env, jinja2.Environment)
     assert 'snake_case' in g._env.filters
@@ -64,7 +53,8 @@ def test_get_response():
         service=[descriptor_pb2.ServiceDescriptorProto(name='SpamService'),
                  descriptor_pb2.ServiceDescriptorProto(name='EggsService')],
     )
-    g = make_generator(proto_file=[file_pb2])
+    api_schema = make_api(make_proto(file_pb2))
+    g = generator.Generator(api_schema=api_schema)
 
     # Mock all the rendering methods.
     with mock.patch.object(g, '_render_templates') as _render_templates:
@@ -74,25 +64,13 @@ def test_get_response():
                 content='This was a template.',
             ),
         ]
-        with mock.patch.object(g, '_read_flat_files') as _read_flat_files:
-            _read_flat_files.return_value = [
-                plugin_pb2.CodeGeneratorResponse.File(
-                    name='flat_file',
-                    content='This was a flat file.',
-                ),
-            ]
 
-            # Okay, now run the `get_response` method.
-            response = g.get_response()
+        # Okay, now run the `get_response` method.
+        response = g.get_response()
 
-            # First and foremost, we care that we got a valid response
-            # object back (albeit not so much what is in it).
-            assert isinstance(response, plugin_pb2.CodeGeneratorResponse)
-
-            # Next, determine that flat files were read.
-            assert _read_flat_files.call_count == 1
-            _, args, _ = _read_flat_files.mock_calls[0]
-            assert args[0].endswith('files')
+        # First and foremost, we care that we got a valid response
+        # object back (albeit not so much what is in it).
+        assert isinstance(response, plugin_pb2.CodeGeneratorResponse)
 
         # Next, determine that the general API templates and service
         # templates were both called; the method should be called
@@ -215,13 +193,27 @@ def test_get_output_filename_with_service():
     ) == 'spam/eggs/foo.py'
 
 
-def make_generator(**kwargs):
-    return generator.Generator(plugin_pb2.CodeGeneratorRequest(**kwargs))
+def make_proto(file_pb: descriptor_pb2.FileDescriptorProto,
+        file_to_generate: bool = True, prior_protos: Mapping = None,
+        ) -> api.Proto:
+    prior_protos = prior_protos or {}
+    return api._ProtoBuilder(file_pb,
+        file_to_generate=file_to_generate,
+        prior_protos=prior_protos,
+    ).proto
 
 
-def make_proto_file(**kwargs):
-    proto_file = descriptor_pb2.FileDescriptorProto()
-    proto_file.options.Extensions[client_pb2.client].MergeFrom(
-        client_pb2.Client(**kwargs),
+def make_api(*protos, naming: naming.Naming = None) -> api.API:
+    return api.API(
+        naming=naming or make_naming(),
+        protos={i.name: i for i in protos},
     )
-    return proto_file
+
+
+def make_naming(**kwargs) -> naming.Naming:
+    kwargs.setdefault('name', 'Hatstand')
+    kwargs.setdefault('namespace', ('Google', 'Cloud'))
+    kwargs.setdefault('version', 'v1')
+    kwargs.setdefault('product_name', 'Hatstand')
+    kwargs.setdefault('product_url', 'https://cloud.google.com/hatstand/')
+    return naming.Naming(**kwargs)

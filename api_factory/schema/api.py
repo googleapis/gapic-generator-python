@@ -35,13 +35,17 @@ from api_factory.utils import cached_property
 class Proto:
     """A representation of a particular proto file within an API."""
 
+    file_pb2: descriptor_pb2.FileDescriptorProto
     services: Mapping[str, wrappers.Service]
     messages: Mapping[str, wrappers.MessageType]
     enums: Mapping[str, wrappers.EnumType]
     file_to_generate: bool
 
+    def __getattr__(self, name: str):
+        return getattr(self.file_pb2, name)
 
-@dataclasses.dataclass(frozen=True, init=False)
+
+@dataclasses.dataclass(frozen=True)
 class API:
     """A representation of a full API.
 
@@ -56,9 +60,10 @@ class API:
     naming: naming.Naming
     protos: Mapping[str, Proto]
 
-    def __init__(self,
+    @classmethod
+    def build(cls,
             file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
-            package: str = ''):
+            package: str = '') -> 'API':
         """Build the internal API schema based on the request.
 
         Args:
@@ -71,10 +76,10 @@ class API:
                 rather than explicit targets.
         """
         # Save information about the overall naming for this API.
-        object.__setattr__(self, 'naming', naming.Naming.build(filter(
+        n = naming.Naming.build(filter(
             lambda fd: fd.package.startswith(package),
             file_descriptors,
-        )))
+        ))
 
         # Iterate over each FileDescriptorProto and fill out a Proto
         # object describing it, and save these to the instance.
@@ -85,7 +90,9 @@ class API:
                 file_to_generate=fd.package.startswith(package),
                 prior_protos=protos,
             ).proto
-        object.__setattr__(self, 'protos', protos)
+
+        # Done; return the API.
+        return cls(naming=n, protos=protos)
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
@@ -138,6 +145,7 @@ class _ProtoBuilder:
         self.messages = {}
         self.enums = {}
         self.services = {}
+        self.file_descriptor = file_descriptor
         self.file_to_generate = file_to_generate
         self.prior_protos = prior_protos
 
@@ -184,6 +192,7 @@ class _ProtoBuilder:
         """Return a Proto dataclass object."""
         return Proto(
             enums=self.enums,
+            file_pb2=self.file_descriptor,
             file_to_generate=self.file_to_generate,
             messages=self.messages,
             services=self.services,

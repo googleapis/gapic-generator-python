@@ -46,7 +46,7 @@ def generate(
         lambda p: p.name in req.file_to_generate,
         req.proto_file,
     )]).rstrip('.')
-    api_schema = api.API(req.proto_file, package=package)
+    api_schema = api.API.build(req.proto_file, package=package)
     res = generator.Generator(api_schema=api_schema).get_response()
 
     # Output the serialized response.

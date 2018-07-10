@@ -297,8 +297,8 @@ def test_load_service():
     assert api.services['foo.bar.v1.RiddleService'].service_pb == service_pb
 
 
-def make_api(naming: naming.Naming = None) -> API:
-    return API(naming=naming or make_naming())
+def make_api(naming: naming.Naming = None, protos=()) -> API:
+    return API(naming=naming or make_naming(), protos=protos)
 
 
 def make_naming(**kwargs) -> naming.Naming:
