@@ -88,7 +88,7 @@ def test_get_response():
 
 
 def test_render_templates():
-    g = make_generator()
+    g = generator.Generator(api_schema=make_api())
 
     # Determine the templates to be rendered.
     templates = ('foo.j2', 'bar.j2')
@@ -109,7 +109,7 @@ def test_render_templates():
 
 
 def test_render_templates_additional_context():
-    g = make_generator()
+    g = generator.Generator(api_schema=make_api())
 
     # Determine the templates to be rendered.
     templates = ('foo.j2',)
@@ -127,60 +127,30 @@ def test_render_templates_additional_context():
     assert files[0].content == 'A bird!\n'
 
 
-def test_read_flat_files():
-    g = make_generator()
-
-    # This function walks over a directory on the operating system;
-    # even though that directory is actually in this repo, fake it.
-    with mock.patch.object(os, 'walk') as walk:
-        walk.return_value = (
-            ('files/', [], ['foo.ext']),
-            ('files/other/', [], ['bar.ext']),
-        )
-
-        # This function also reads files from disk, fake that too.
-        with mock.patch.object(io, 'open') as open:
-            open.side_effect = lambda fn, mode: io.StringIO(f'abc-{fn}-{mode}')
-
-            # Okay, now we can run the function.
-            files = g._read_flat_files('files/')
-
-            # Each file should have been opened, so one call to `io.open`
-            # per file.
-            assert open.call_count == len(walk.return_value)
-
-        # `os.walk` should have been called once and exactly once,
-        # with unmodified input.
-        walk.assert_called_once_with('files/')
-
-        # Lastly, we should have gotten one file back for each file
-        # yielded by walk, and each one should have the expected contents
-        # (the 'abc' prefix and then the filename and read mode).
-        assert len(files) == 2
-        assert files[0].name == 'foo.ext'
-        assert files[1].name == 'other/bar.ext'
-        assert files[0].content == 'abc-files/foo.ext-r'
-        assert files[1].content == 'abc-files/other/bar.ext-r'
-
-
 def test_get_output_filename():
-    g = make_generator(proto_file=[make_proto_file(name='Spam', version='v2')])
+    g = generator.Generator(api_schema=make_api(
+        naming=make_naming(namespace=(), name='Spam', version='v2'),
+    ))
     template_name = '$namespace/$name_$version/foo.py.j2'
     assert g._get_output_filename(template_name) == 'spam_v2/foo.py'
 
 
 def test_get_output_filename_with_namespace():
-    g = make_generator(proto_file=[make_proto_file(
-        name='Spam',
-        namespace=['Ham', 'Bacon'],
-        version='v2',
-    )])
+    g = generator.Generator(api_schema=make_api(
+        naming=make_naming(
+            name='Spam',
+            namespace=('Ham', 'Bacon'),
+            version='v2',
+        ),
+    ))
     template_name = '$namespace/$name_$version/foo.py.j2'
     assert g._get_output_filename(template_name) == 'ham/bacon/spam_v2/foo.py'
 
 
 def test_get_output_filename_with_service():
-    g = make_generator(proto_file=[make_proto_file(name='spam', version='v2')])
+    g = generator.Generator(api_schema=make_api(
+        naming=make_naming(namespace=(), name='Spam', version='v2'),
+    ))
     template_name = '$name/$service/foo.py.j2'
     assert g._get_output_filename(
         template_name,

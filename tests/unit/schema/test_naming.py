@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+
+from google.api import annotations_pb2
+from google.api import metadata_pb2
+from google.protobuf import descriptor_pb2
+
 from api_factory.schema import naming
 
 
@@ -63,6 +69,104 @@ def test_warehouse_package_name_with_namespace():
 def test_warehouse_package_name_multiple_words():
     n = make_naming(name='Big Query', namespace=[])
     assert n.warehouse_package_name == 'big-query'
+
+
+def test_build_no_annotations():
+    protos = (
+        descriptor_pb2.FileDescriptorProto(
+            name='baz_service.proto',
+            package='foo.bar.baz.v1',
+        ),
+        descriptor_pb2.FileDescriptorProto(
+            name='baz_common.proto',
+            package='foo.bar.baz.v1',
+        ),
+    )
+    n = naming.Naming.build(*protos)
+    assert n.name == 'Baz'
+    assert n.namespace == ('Foo', 'Bar')
+    assert n.version == 'v1'
+    assert n.product_name == 'Baz'
+
+
+def test_build_no_annotations_no_version():
+    protos = (
+        descriptor_pb2.FileDescriptorProto(
+            name='baz_service.proto',
+            package='foo.bar',
+        ),
+        descriptor_pb2.FileDescriptorProto(
+            name='baz_common.proto',
+            package='foo.bar',
+        ),
+    )
+    n = naming.Naming.build(*protos)
+    assert n.name == 'Bar'
+    assert n.namespace == ('Foo',)
+    assert n.version == ''
+
+
+def test_build_with_annotations():
+    proto = descriptor_pb2.FileDescriptorProto(
+        name='spanner.proto',
+        package='google.spanner.v1',
+    )
+    proto.options.Extensions[annotations_pb2.metadata].MergeFrom(
+        metadata_pb2.Metadata(package_namespace=['Google', 'Cloud']),
+    )
+    n = naming.Naming.build(proto)
+    assert n.name == 'Spanner'
+    assert n.namespace == ('Google', 'Cloud')
+    assert n.version == 'v1'
+    assert n.product_name == 'Spanner'
+
+
+def test_inconsistent_metadata_error():
+    # Set up the first proto.
+    proto1 = descriptor_pb2.FileDescriptorProto(
+        name='spanner.proto',
+        package='google.spanner.v1',
+    )
+    proto1.options.Extensions[annotations_pb2.metadata].MergeFrom(
+        metadata_pb2.Metadata(package_namespace=['Google', 'Cloud']),
+    )
+
+    # Set up the second proto.
+    # Note that
+    proto2 = descriptor_pb2.FileDescriptorProto(
+        name='spanner2.proto',
+        package='google.spanner.v1',
+    )
+    proto2.options.Extensions[annotations_pb2.metadata].MergeFrom(
+        metadata_pb2.Metadata(package_namespace=['Google', 'Cloud'],
+                              package_name='Spanner'),
+    )
+
+    # This should error. Even though the data in the metadata is consistent,
+    # it is expected to exactly match, and it does not.
+    with pytest.raises(ValueError):
+        naming.Naming.build(proto1, proto2)
+
+
+def test_inconsistent_package_error():
+    proto1 = descriptor_pb2.FileDescriptorProto(package='google.spanner.v1')
+    proto2 = descriptor_pb2.FileDescriptorProto(package='spanner.v1')
+    proto3 = descriptor_pb2.FileDescriptorProto(package='google.spanner.v2')
+
+    # These should all error against one another.
+    with pytest.raises(ValueError):
+        naming.Naming.build(proto1, proto2)
+    with pytest.raises(ValueError):
+        naming.Naming.build(proto1, proto3)
+
+
+def test_subpackages():
+    proto1 = descriptor_pb2.FileDescriptorProto(package='google.ads.v0.foo')
+    proto2 = descriptor_pb2.FileDescriptorProto(package='google.ads.v0.bar')
+    n = naming.Naming.build(proto1, proto2)
+    assert n.name == 'Ads'
+    assert n.namespace == ('Google',)
+    assert n.version == 'v0'
 
 
 def make_naming(**kwargs) -> naming.Naming:

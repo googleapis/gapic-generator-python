@@ -41,7 +41,7 @@ class Naming:
 
     @classmethod
     def build(cls,
-            file_descriptors: Iterable[descriptor_pb2.FileDescriptorProto]
+            *file_descriptors: Iterable[descriptor_pb2.FileDescriptorProto]
             ) -> 'Naming':
         """Return a full APINaming instance based on these file descriptors.
 
@@ -67,12 +67,18 @@ class Naming:
         proto_packages = {fd.package for fd in file_descriptors}
         root_package = os.path.commonprefix(tuple(proto_packages)).rstrip('.')
 
+        # Sanity check: If there is no common ground in the package,
+        # we are obviously in trouble.
+        if not root_package:
+            raise ValueError('Protos provided have entirely different '
+                             'proto packages.')
+
         # Define the valid regex to split the package.
         #
         # It is not necessary for the regex to be as particular about package
         # name validity (e.g. avoiding .. or segments starting with numbers)
         # because protoc is guaranteed to give us valid package names.
-        pattern = r'^(?P<namespace>[a-z0-9_.]+\.)?(?P<name>[a-z0-9_]+)'
+        pattern = r'^((?P<namespace>[a-z0-9_.]+)\.)?(?P<name>[a-z0-9_]+)'
 
         # Only require the version portion of the regex if the version is
         # present.
@@ -89,10 +95,11 @@ class Naming:
         match['namespace'] = match['namespace'] or ''
         package_info = cls(
             name=match['name'].capitalize(),
-            namespace=[i.capitalize() for i in match['namespace'].split('.')],
+            namespace=tuple([i.capitalize()
+                             for i in match['namespace'].split('.')]),
             product_name=match['name'].capitalize(),
             product_url='',
-            version=match['version'] or '',
+            version=match.get('version', ''),
         )
 
         # Sanity check: Ensure that the package directives all inferred
@@ -136,13 +143,13 @@ class Naming:
                 # Sanity check: We only want to overwrite anything if the
                 # new value is truthy.
                 if v:
-                    answer = answer.replace(**{k: v})
+                    answer = dataclasses.replace(answer, **{k: v})
         return answer
 
     def __bool__(self):
         """Return True if any of the fields are truthy, False otherwise."""
         return any(
-            [getattr(self, k) for k in dataclasses.fields(self).keys()],
+            [getattr(self, i.name) for i in dataclasses.fields(self)],
         )
 
     @property

@@ -76,7 +76,7 @@ class API:
                 rather than explicit targets.
         """
         # Save information about the overall naming for this API.
-        n = naming.Naming.build(filter(
+        n = naming.Naming.build(*filter(
             lambda fd: fd.package.startswith(package),
             file_descriptors,
         ))
