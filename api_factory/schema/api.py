@@ -44,6 +44,25 @@ class Proto:
     def __getattr__(self, name: str):
         return getattr(self.file_pb2, name)
 
+    @classmethod
+    def build(cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
+            file_to_generate: bool, prior_protos: Mapping[str, 'Proto'] = (),
+            ) -> 'Proto':
+        """Build and return a Proto instance.
+
+        Args:
+            file_descriptor (~.FileDescriptorProto): The protocol buffer
+                object describing the proto file.
+            file_to_generate (bool): Whether this is a file which is
+                to be directly generated, or a dependency.
+            prior_protos (~.Proto): Previous, already processed protos.
+                These are needed to look up messages in imported protos.
+        """
+        return _ProtoBuilder(file_descriptor,
+            file_to_generate=file_to_generate,
+            prior_protos=prior_protos,
+        ).proto
+
 
 @dataclasses.dataclass(frozen=True)
 class API:
@@ -133,15 +152,8 @@ class _ProtoBuilder:
     EMPTY = descriptor_pb2.SourceCodeInfo.Location()
 
     def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
-                 file_to_generate: bool, prior_protos: Mapping[str, Proto]):
-        """Build and return a Proto instance.
-
-        Args:
-            file_descriptor (~.FileDescriptorProto): The protocol buffer
-                object describing the proto file.
-            file_to_generate (bool): Whether this is a file which is
-                to be directly generated, or a dependency.
-        """
+                 file_to_generate: bool,
+                 prior_protos: Mapping[str, Proto] = ()):
         self.messages = {}
         self.enums = {}
         self.services = {}

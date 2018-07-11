@@ -12,113 +12,107 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Sequence
 from unittest import mock
 
 import pytest
 
 from google.protobuf import descriptor_pb2
 
+from api_factory.schema import api
 from api_factory.schema import metadata
 from api_factory.schema import naming
 from api_factory.schema import wrappers
-from api_factory.schema.api import API
 
 
-# def test_load():
-#     sentinel_message = descriptor_pb2.DescriptorProto()
-#     sentinel_enum = descriptor_pb2.EnumDescriptorProto()
-#     sentinel_service = descriptor_pb2.ServiceDescriptorProto()
-#
-#     # Create a file descriptor proto. It does not matter that none
-#     # of the sentinels have actual data because this test just ensures
-#     # they are sent off to the correct methods unmodified.
-#     fdp = descriptor_pb2.FileDescriptorProto(
-#         name='my_proto_file.proto',
-#         package='google.example.v1',
-#         message_type=[sentinel_message],
-#         enum_type=[sentinel_enum],
-#         service=[sentinel_service],
-#     )
-#
-#     # Create an API object.
-#     api = make_api()
-#
-#     # Test the load function.
-#     with mock.patch.object(api, '_load_children') as lc:
-#         api.load(fdp)
-#
-#         # There should be three total calls to load the different types
-#         # of children.
-#         assert lc.call_count == 3
-#
-#         # The message type should come first.
-#         _, args, kwargs = lc.mock_calls[0]
-#         assert args[0][0] == sentinel_message
-#         assert kwargs['loader'] == api._load_descriptor
-#
-#         # The enum type should come second.
-#         _, args, kwargs = lc.mock_calls[1]
-#         assert args[0][0] == sentinel_enum
-#         assert kwargs['loader'] == api._load_enum
-#
-#         # The services should come third.
-#         _, args, kwargs = lc.mock_calls[2]
-#         assert args[0][0] == sentinel_service
-#         assert kwargs['loader'] == api._load_service
-#
-#
-# def test_load_comments_top_level():
-#     L = descriptor_pb2.SourceCodeInfo.Location
-#
-#     # Create a file descriptor proto.
-#     # This has comments which should be largely sharded and ferried off to the
-#     # correct sub-methods.
-#     locations = [
-#         L(path=[4, 0], leading_comments='foo'),
-#         L(path=[4, 0, 2, 0], leading_comments='bar'),
-#         L(path=[6, 0], leading_comments='baz'),
-#     ]
-#     fdp = descriptor_pb2.FileDescriptorProto(
-#         name='my_proto_file.proto',
-#         package='google.example.v1',
-#         source_code_info=descriptor_pb2.SourceCodeInfo(location=locations)
-#     )
-#
-#     # Create an API object.
-#     api = make_api()
-#
-#     # Test the load function. This sends empty arrays to each of the
-#     # individual child-processing function, but sends meaningful slices of
-#     # documentation (which is what this test is trying to confirm).
-#     with mock.patch.object(api, '_load_children') as lc:
-#         api.load(fdp)
-#
-#         # There are still three total calls, like above.
-#         assert lc.call_count == 3
-#
-#         # The `message_type` field has the ID of 4 in `FileDescriptorProto`,
-#         # so the two whose path begins with 4 should be sent, and in the
-#         # ad hoc dictionary that this method creates.
-#         _, args, kwargs = lc.mock_calls[0]
-#         assert kwargs['loader'] == api._load_descriptor
-#         assert kwargs['info'] == {
-#             0: {'TERMINAL': locations[0], 2: {0: {'TERMINAL': locations[1]}}},
-#         }
-#
-#         # The `enum_type` field has the ID of 5 in `FileDescriptorProto`,
-#         # but no location objects were sent with a matching path, so it
-#         # will just get an empty dictionary.
-#         _, args, kwargs = lc.mock_calls[1]
-#         assert kwargs['loader'] == api._load_enum
-#         assert kwargs['info'] == {}
-#
-#         # The `service_type` field has the ID of 6 in `FileDescriptorProto`,
-#         # so it will get the one location object that begins with 6.
-#         _, args, kwargs = lc.mock_calls[2]
-#         assert kwargs['loader'] == api._load_service
-#         assert kwargs['info'] == {0: {'TERMINAL': locations[2]}}
-#
-#
+def test_proto_build():
+    fdp = descriptor_pb2.FileDescriptorProto(
+        name='my_proto_file.proto',
+        package='google.example.v1',
+    )
+    proto = api.Proto.build(fdp, file_to_generate=True)
+    assert isinstance(proto, api.Proto)
+
+
+def test_proto_builder_constructor():
+    sentinel_message = descriptor_pb2.DescriptorProto()
+    sentinel_enum = descriptor_pb2.EnumDescriptorProto()
+    sentinel_service = descriptor_pb2.ServiceDescriptorProto()
+
+    # Create a file descriptor proto. It does not matter that none
+    # of the sentinels have actual data because this test just ensures
+    # they are sent off to the correct methods unmodified.
+    fdp = make_file_pb2(
+        messages=(sentinel_message,),
+        enums=(sentinel_enum,),
+        services=(sentinel_service,),
+    )
+
+    # Test the load function.
+    with mock.patch.object(api._ProtoBuilder, '_load_children') as lc:
+        pb = api._ProtoBuilder(fdp, file_to_generate=True)
+
+        # There should be three total calls to load the different types
+        # of children.
+        assert lc.call_count == 3
+
+        # The message type should come first.
+        _, args, _ = lc.mock_calls[0]
+        assert args[0][0] == sentinel_message
+        assert args[1] == pb._load_message
+
+        # The enum type should come second.
+        _, args, _ = lc.mock_calls[1]
+        assert args[0][0] == sentinel_enum
+        assert args[1] == pb._load_enum
+
+        # The services should come third.
+        _, args, _ = lc.mock_calls[2]
+        assert args[0][0] == sentinel_service
+        assert args[1] == pb._load_service
+
+
+def test_not_taget_file():
+    """Establish that services are not ignored for untargeted protos."""
+    message_pb = make_message_pb2(name='Foo',
+        fields=(make_field_pb2(name='bar', type=3, number=1),)
+    )
+    service_pb = descriptor_pb2.ServiceDescriptorProto()
+    fdp = make_file_pb2(messages=(message_pb,), services=(service_pb,))
+
+    # Actually make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=False)
+
+    # The proto object should have the message, but no service.
+    assert len(proto.messages) == 1
+    assert len(proto.services) == 0
+
+
+def test_messages():
+    L = descriptor_pb2.SourceCodeInfo.Location
+
+    message_pb = make_message_pb2(name='Foo',
+        fields=(make_field_pb2(name='bar', type=3, number=1),)
+    )
+    locations = (
+        L(path=(4, 0), leading_comments='This is the Foo message.'),
+        L(path=(4, 0, 2, 0), leading_comments='This is the bar field.'),
+    )
+    fdp = make_file_pb2(
+        messages=(message_pb,),
+        locations=locations,
+        package='google.example.v2',
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True)
+
+    # Get the message.
+    message = proto.messages['google.example.v2.Foo']
+    assert message.meta.doc == 'This is the Foo message.'
+    assert message.fields['bar'].meta.doc == 'This is the bar field.'
+
+
 # def test_load_children():
 #     # Set up the data to be sent to the method.
 #     children = (mock.sentinel.child_zero, mock.sentinel.child_one)
@@ -295,16 +289,48 @@ from api_factory.schema.api import API
 #     assert isinstance(api.services['foo.bar.v1.RiddleService'],
 #                       wrappers.Service)
 #     assert api.services['foo.bar.v1.RiddleService'].service_pb == service_pb
-#
-#
-# def make_api(naming: naming.Naming = None, protos=()) -> API:
-#     return API(naming=naming or make_naming(), protos=protos)
-#
-#
-# def make_naming(**kwargs) -> naming.Naming:
-#     kwargs.setdefault('name', 'Hatstand')
-#     kwargs.setdefault('namespace', ('Google', 'Cloud'))
-#     kwargs.setdefault('version', 'v1')
-#     kwargs.setdefault('product_name', 'Hatstand')
-#     kwargs.setdefault('product_url', 'https://cloud.google.com/hatstand/')
-#     return naming.Naming(**kwargs)
+
+
+def make_file_pb2(name: str = '', package: str = '', *,
+        messages: Sequence[descriptor_pb2.DescriptorProto] = (),
+        enums: Sequence[descriptor_pb2.EnumDescriptorProto] = (),
+        services: Sequence[descriptor_pb2.ServiceDescriptorProto] = (),
+        locations: Sequence[descriptor_pb2.SourceCodeInfo.Location] = (),
+        ) -> descriptor_pb2.FileDescriptorProto:
+    return descriptor_pb2.FileDescriptorProto(
+        name=name or 'my_proto_file.proto',
+        package=package or 'google.example.v1',
+        message_type=messages,
+        enum_type=enums,
+        service=services,
+        source_code_info=descriptor_pb2.SourceCodeInfo(location=locations),
+    )
+
+
+def make_message_pb2(name: str, fields=()) -> descriptor_pb2.DescriptorProto:
+    return descriptor_pb2.DescriptorProto(name=name, field=fields)
+
+
+def make_field_pb2(name: str, number: int,
+        type: int = 11,  # 11 == message
+        type_name: str = None,
+        ) -> descriptor_pb2.FieldDescriptorProto:
+    return descriptor_pb2.FieldDescriptorProto(
+        name=name,
+        number=number,
+        type=type,
+        type_name=type_name,
+    )
+
+
+def make_api(naming: naming.Naming = None, protos=()) -> api.API:
+    return API(naming=naming or make_naming(), protos=protos)
+
+
+def make_naming(**kwargs) -> naming.Naming:
+    kwargs.setdefault('name', 'Hatstand')
+    kwargs.setdefault('namespace', ('Google', 'Cloud'))
+    kwargs.setdefault('version', 'v1')
+    kwargs.setdefault('product_name', 'Hatstand')
+    kwargs.setdefault('product_url', 'https://cloud.google.com/hatstand/')
+    return naming.Naming(**kwargs)
