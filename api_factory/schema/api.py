@@ -46,7 +46,7 @@ class Proto:
 
     @classmethod
     def build(cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
-            file_to_generate: bool, prior_protos: Mapping[str, 'Proto'] = (),
+            file_to_generate: bool, prior_protos: Mapping[str, 'Proto'] = None,
             ) -> 'Proto':
         """Build and return a Proto instance.
 
@@ -60,7 +60,7 @@ class Proto:
         """
         return _ProtoBuilder(file_descriptor,
             file_to_generate=file_to_generate,
-            prior_protos=prior_protos,
+            prior_protos=prior_protos or {},
         ).proto
 
 
@@ -153,13 +153,13 @@ class _ProtoBuilder:
 
     def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
                  file_to_generate: bool,
-                 prior_protos: Mapping[str, Proto] = ()):
+                 prior_protos: Mapping[str, Proto] = None):
         self.messages = {}
         self.enums = {}
         self.services = {}
         self.file_descriptor = file_descriptor
         self.file_to_generate = file_to_generate
-        self.prior_protos = prior_protos
+        self.prior_protos = prior_protos or {}
 
         # Iterate over the documentation and place it into a dictionary.
         #
@@ -353,7 +353,7 @@ class _ProtoBuilder:
                 enum_value_pb=enum_value,
                 meta=metadata.Metadata(
                     address=address,
-                    documentation=self.docs.get(path, self.EMPTY),
+                    documentation=self.docs.get(path + (2, i), self.EMPTY),
                 ),
             ))
 
