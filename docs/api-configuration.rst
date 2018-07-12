@@ -65,7 +65,7 @@ The most important piece of information this plugin requires is information
 about the client library itself: what should it be called, what is its proper
 namespace, and so on.
 
-This is rolled up into a strcuture spelled ``Metadata``, and the annotation
+This is rolled up into a structure called ``Metadata``, and the annotation
 is defined in `google/api/metadata.proto`_.
 
 The option may be defined as a full structure at the top level of the proto
