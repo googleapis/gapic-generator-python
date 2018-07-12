@@ -40,13 +40,23 @@ def generate(
     # Load the protobuf CodeGeneratorRequest.
     req = plugin_pb2.CodeGeneratorRequest.FromString(request.read())
 
-    # Translate into a protobuf CodeGeneratorResponse;
-    # if there are issues, error out appropriately.
+    # Determine the appropriate package.
+    # This generator uses a slightly different mechanism for determining
+    # which files to generate; it tracks at package level rather than file
+    # level.
     package = os.path.commonprefix([i.package for i in filter(
         lambda p: p.name in req.file_to_generate,
         req.proto_file,
     )]).rstrip('.')
+
+    # Build the API model object.
+    # This object is a frozen representation of the whole API, and is sent
+    # to each template in the rendering step.
     api_schema = api.API.build(req.proto_file, package=package)
+
+    # Translate into a protobuf CodeGeneratorResponse; this reads the
+    # individual templates and renders them.
+    # If there are issues, error out appropriately.
     res = generator.Generator(api_schema=api_schema).get_response()
 
     # Output the serialized response.

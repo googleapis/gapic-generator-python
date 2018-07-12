@@ -35,6 +35,16 @@ contract model to be able to follow what this library is doing.
 .. _plugin.proto: https://github.com/google/protobuf/blob/master/src/google/protobuf/compiler/plugin.proto
 .. _descriptor.proto: https://github.com/google/protobuf/blob/master/src/google/protobuf/descriptor.proto
 
+
+Entry Point
+~~~~~~~~~~~
+
+The entry point to this tool is ``api_factory/cli/generate.py``. The function
+in this module is responsible for accepting CLI input, building the internal
+API schema, and then rendering templates and using them to build a response
+object.
+
+
 Parse
 ~~~~~
 
