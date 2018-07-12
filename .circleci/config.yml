@@ -4,7 +4,8 @@ workflows:
   version: 2
   tests:
     jobs:
-      - unit
+      - unit-3.6
+      - unit-3.7
       - docs
 jobs:
   unit-3.6:
