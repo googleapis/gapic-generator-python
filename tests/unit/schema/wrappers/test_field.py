@@ -18,12 +18,13 @@ from api_factory.schema import wrappers
 from api_factory.schema.metadata import Address, Metadata
 
 
-def get_field() -> wrappers.Field:
-    field_pb = descriptor_pb2.FieldDescriptorProto(
-        name='my_field',
-        number=1,
-        type=descriptor_pb2.FieldDescriptorProto.Type.Value('TYPE_BOOL'),
+def get_field(**kwargs) -> wrappers.Field:
+    kwargs.setdefault('name', 'my_field')
+    kwargs.setdefault('number', 1)
+    kwargs.setdefault('type',
+        descriptor_pb2.FieldDescriptorProto.Type.Value('TYPE_BOOL'),
     )
+    field_pb = descriptor_pb2.FieldDescriptorProto(**kwargs)
     return wrappers.Field(field_pb=field_pb, meta=Metadata(
         address=Address(package=['foo', 'bar'], module='baz'),
         documentation=descriptor_pb2.SourceCodeInfo.Location(
@@ -33,10 +34,22 @@ def get_field() -> wrappers.Field:
 
 
 def test_field_properties():
-    field = get_field()
+    field = get_field(name='my_field', number=1, type=8)
     assert field.name == 'my_field'
     assert field.number == 1
     assert field.type == 8
+
+
+def test_repeated():
+    REP = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
+    field = get_field(label=REP)
+    assert field.repeated
+
+
+def test_not_repeated():
+    OPT = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_OPTIONAL')
+    field = get_field(label=OPT)
+    assert not field.repeated
 
 
 def test_field_metadata():

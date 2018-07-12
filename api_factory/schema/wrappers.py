@@ -27,6 +27,7 @@ Reading of underlying descriptor properties in templates *is* okay, a
 Documentation is consistently at ``{thing}.meta.doc``.
 """
 
+import collections
 import dataclasses
 import re
 from typing import List, Mapping, Sequence, Tuple
@@ -43,10 +44,22 @@ from api_factory.schema.metadata import Metadata
 class Field:
     """Description of a field."""
     field_pb: descriptor_pb2.FieldDescriptorProto
+    message: 'MessageType' = None
+    enum: 'EnumType' = None
     meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
+
+    @property
+    def repeated(self) -> bool:
+        """Return True if this is a repeated field, False otherwise.
+
+        Returns:
+            bool: Whether this field is repeated.
+        """
+        return self.label == \
+            descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
 
 
 @dataclasses.dataclass(frozen=True)
@@ -58,6 +71,47 @@ class MessageType:
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
+
+    def get_field(self, *field_path: Sequence[str]) -> Field:
+        """Return a field arbitrarily deep in this message's structure.
+
+        This method recursively traverses the message tree to return the
+        requested inner-field.
+
+        Traversing through repeated fields is not supported; a repeated field
+        may be specified if and only if it is the last field in the path.
+
+        Args:
+            field_path (Sequence[str]): The field path.
+
+        Returns:
+            ~.Field: A field object.
+
+        Raises:
+            KeyError: If a repeated field is used in the non-terminal position
+                in the path.
+        """
+        # Get the first field in the path.
+        cursor = self.fields[field_path[0]]
+
+        # Base case: If this is the last field in the path, return it outright.
+        if len(field_path) == 1:
+            return cursor
+
+        # Sanity check: If cursor is a repeated field, then raise an exception.
+        # Repeated fields are only permitted in the terminal position.
+        if cursor.repeated:
+            raise KeyError(
+                f'The {cursor.name} field is repeated; unable to use '
+                '`get_field` to retrieve its children.\n'
+                'This exception usually indicates that a '
+                'google.api.method_signature annotation uses a repeated field '
+                'in the fields list in a position other than the end.',
+            )
+
+        # Recursion case: Pass the remainder of the path to the sub-field's
+        # message.
+        return cursor.message.get_field(*field_path[1:])
 
     @property
     def pb2_module(self) -> str:
@@ -112,10 +166,40 @@ class Method:
             return tuple(re.findall(r'\{([a-z][\w\d_.]+)=', http.get))
         return ()
 
-    @property
-    def signature(self) -> signature_pb2.MethodSignature:
+    @utils.cached_property
+    def signatures(self) -> Tuple[signature_pb2.MethodSignature]:
         """Return the signature defined for this method."""
-        return self.options.Extensions[annotations_pb2.method_signature]
+        sig_pb2 = self.options.Extensions[annotations_pb2.method_signature]
+
+        # Sanity check: If there are no signatures (which should be by far
+        # the common case), just abort now.
+        if len(sig_pb2.fields) == 0:
+            return ()
+
+        # Signatures are annotated with an `additional_signatures` key that
+        # allows for specifying additional signatures. This is an uncommon
+        # case but we still want to deal with it.
+        answer = []
+        for sig in (sig_pb2,) + tuple(sig_pb2.additional_signatures):
+            # Build a MethodSignature object with the appropriate name
+            # and fields. The fields are field objects, retrieved from
+            # the method's `input` message.
+            answer.append(MethodSignature(
+                name=sig.function_name if sig.function_name else self.name,
+                fields=collections.OrderedDict([
+                    (f.split('.')[-1], self.input.get_field(f))
+                    for f in sig.fields
+                ]),
+            ))
+
+        # Done; return a tuple of signatures.
+        return tuple(answer)
+
+
+@dataclasses.dataclass(frozen=True)
+class MethodSignature:
+    name: str
+    fields: Mapping[str, Field]
 
 
 @dataclasses.dataclass(frozen=True)

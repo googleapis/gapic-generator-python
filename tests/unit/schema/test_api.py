@@ -163,6 +163,27 @@ def test_messages():
     assert message.fields['bar'].meta.doc == 'This is the bar field.'
 
 
+def test_self_referencing_message():
+    message_pb = make_message_pb2(name='Foo',
+        fields=(make_field_pb2(name='foo', number=1,
+                               type_name='google.example.v2.Foo'),)
+    )
+    fdp = make_file_pb2(
+        messages=(message_pb,),
+        package='google.example.v2',
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True)
+
+    # Get the message.
+    assert len(proto.messages) == 1
+    message = proto.messages['google.example.v2.Foo']
+    assert isinstance(message, wrappers.MessageType)
+    assert len(message.fields) == 1
+    assert message.fields['foo'].message == message
+
+
 def test_services():
     L = descriptor_pb2.SourceCodeInfo.Location
 

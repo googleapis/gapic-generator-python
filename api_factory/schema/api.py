@@ -211,7 +211,13 @@ class _ProtoBuilder:
         )
 
     @cached_property
-    def all_messages(self) -> Sequence[wrappers.MessageType]:
+    def all_enums(self) -> Mapping[str, wrappers.EnumType]:
+        return collections.ChainMap({}, self.enums,
+            *[p.enums for p in self.prior_protos.values()],
+        )
+
+    @cached_property
+    def all_messages(self) -> Mapping[str, wrappers.MessageType]:
         return collections.ChainMap({}, self.messages,
             *[p.messages for p in self.prior_protos.values()],
         )
@@ -258,10 +264,21 @@ class _ProtoBuilder:
                 :class:`~.wrappers.Field` objects.
         """
         # Iterate over the fields and collect them into a dictionary.
+        #
+        # The saving of the enum and message types rely on protocol buffers'
+        # naming rules to trust that they will never collide.
+        #
+        # Note: If this field is a recursive reference to its own message,
+        # then the message will not be in `all_messages` yet (because the
+        # message wrapper is not yet created, because it needs this object
+        # first) and this will be None. This case is addressed in the
+        # `_load_message` method.
         answer = collections.OrderedDict()
         for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
+                enum=self.all_enums.get(field_pb.type_name, None),
+                message=self.all_messages.get(field_pb.type_name, None),
                 meta=metadata.Metadata(
                     address=address,
                     documentation=self.docs.get(path + (i,), self.EMPTY),
@@ -311,17 +328,31 @@ class _ProtoBuilder:
                       address: metadata.Address, path: Tuple[int]) -> None:
         """Load message descriptions from DescriptorProtos."""
         ident = f'{str(address)}.{message_pb.name}'
-        nested_addr = address.child(message_pb.name)
+        message_addr = address.child(message_pb.name)
+
+        # Load all nested items.
+        #
+        # Note: This occurs before piecing together this message's fields
+        # because if nested types are present, they are generally the
+        # type of one of this message's fields, and they need to be in
+        # the registry for the field's message or enum attributes to be
+        # set correctly.
+        self._load_children(message_pb.nested_type, address=message_addr,
+                            loader=self._load_message, path=path + (3,))
+        self._load_children(message_pb.enum_type, address=message_addr,
+                            loader=self._load_enum, path=path + (4,))
+        # self._load_children(message.oneof_decl, loader=self._load_field,
+        #                     address=nested_addr, info=info.get(8, {}))
 
         # Create a dictionary of all the fields for this message.
         fields = self._get_fields(
             message_pb.field,
-            address=nested_addr,
+            address=message_addr,
             path=path + (2,),
         )
         fields.update(self._get_fields(
             message_pb.extension,
-            address=nested_addr,
+            address=message_addr,
             path=path + (6,),
         ))
 
@@ -335,13 +366,11 @@ class _ProtoBuilder:
             ),
         )
 
-        # Load all nested items.
-        self._load_children(message_pb.nested_type, address=nested_addr,
-                            loader=self._load_message, path=path + (3,))
-        self._load_children(message_pb.enum_type, address=nested_addr,
-                            loader=self._load_enum, path=path + (4,))
-        # self._load_children(message.oneof_decl, loader=self._load_field,
-        #                     address=nested_addr, info=info.get(8, {}))
+        # Corner case: If any of the fields have this message as their type,
+        # their will not have been set correctly. Fix that up.
+        for field in self.messages[ident].fields.values():
+            if field.type_name == str(message_addr):
+                object.__setattr__(field, 'message', self.messages[ident])
 
     def _load_enum(self, enum: descriptor_pb2.EnumDescriptorProto,
                    address: metadata.Address, path: Tuple[int]) -> None:
