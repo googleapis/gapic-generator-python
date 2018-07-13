@@ -119,7 +119,7 @@ def test_proto_builder_constructor():
         assert args[1] == pb._load_service
 
 
-def test_not_taget_file():
+def test_not_target_file():
     """Establish that services are not ignored for untargeted protos."""
     message_pb = make_message_pb2(name='Foo',
         fields=(make_field_pb2(name='bar', type=3, number=1),)
