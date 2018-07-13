@@ -30,7 +30,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import dataclasses
 import re
-from typing import List, Mapping, Sequence, Tuple
+from typing import List, Mapping, Sequence, Tuple, Union
 
 from google.api import annotations_pb2
 from google.api import signature_pb2
@@ -38,6 +38,7 @@ from google.protobuf import descriptor_pb2
 
 from api_factory import utils
 from api_factory.schema.metadata import Metadata
+
 
 
 @dataclasses.dataclass(frozen=True)
@@ -60,6 +61,40 @@ class Field:
         """
         return self.label == \
             descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
+
+    @utils.cached_property
+    def type(self) -> Union['MessageType', 'EnumType', 'PythonType']:
+        """Return the type of this field."""
+        # If this is a message or enum, return the appropriate thing.
+        if self.type_name and self.message:
+            return self.message
+        if self.type_name and self.enum:
+            return self.enum
+
+        # This is a primitive. Return the corresponding Python type.
+        # The enum values used here are defined in:
+        #   Repository: https://github.com/google/protobuf/
+        #   Path: src/google/protobuf/descriptor.proto
+        #
+        # The values are used here because the code would be excessively
+        # verbose otherwise, and this is guaranteed never to change.
+        #
+        # 10, 11, and 14 are intentionally missing. They correspond to
+        # group (unused), message (covered above), and enum (covered above).
+        if self.field_pb.type in (1, 2):
+            return PythonType(python_type=float)
+        if self.field_pb.type in (3, 4, 5, 6, 7, 13, 15, 16, 17, 18):
+            return PythonType(python_type=int)
+        if self.field_pb.type == 8:
+            return PythonType(python_type=bool)
+        if self.field_pb.type == 9:
+            return PythonType(python_type=str)
+        if self.field_pb.type == 12:
+            return PythonType(python_type=bytes)
+
+        # This should never happen.
+        raise TypeError('Unrecognized protobuf type. This code should '
+                        'not be reachable; please file a bug.')
 
 
 @dataclasses.dataclass(frozen=True)
@@ -146,6 +181,21 @@ class EnumType:
 
 
 @dataclasses.dataclass(frozen=True)
+class PythonType:
+    """Wrapper class for Python types.
+
+    This exists for interface consistency, so that methods like
+    :meth:`Field.type` can return an object and the caller can be confident
+    that a ``name`` property will be present.
+    """
+    python_type: type
+
+    @property
+    def name(self) -> str:
+        return self.python_type.__name__
+
+
+@dataclasses.dataclass(frozen=True)
 class Method:
     """Description of a method (defined with the ``rpc`` keyword)."""
     method_pb: descriptor_pb2.MethodDescriptorProto
@@ -200,6 +250,11 @@ class Method:
 class MethodSignature:
     name: str
     fields: Mapping[str, Field]
+
+    @property
+    def dispatch_type(self) -> Union[MessageType, EnumType, PythonType]:
+        """Return the type object for the first field."""
+        return iter(self.fields.values()).next()
 
 
 @dataclasses.dataclass(frozen=True)
