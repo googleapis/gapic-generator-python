@@ -41,7 +41,7 @@ def test_message_docstring():
 
 def test_message_python_package():
     message = make_message('Spam', module='eggs')
-    assert message.pb2_module == 'eggs_pb2'
+    assert message.python_module == 'eggs_pb2'
 
 
 def test_get_field():

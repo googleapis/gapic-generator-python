@@ -4,7 +4,7 @@
 import functools
 
 
-def overload(func):
+def dispatch(func):
     base_dispatcher = functools.singledispatch(func)
 
     # Define a wrapper function that works off args[1] instead of args[0].

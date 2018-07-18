@@ -49,9 +49,9 @@ def test_service_no_scopes():
     assert len(service.oauth_scopes) == 0
 
 
-def test_service_pb2_modules():
+def test_service_python_modules():
     service = make_service()
-    assert service.pb2_modules == (
+    assert service.python_modules == (
         ('a.b.v1', 'c_pb2'),
         ('foo', 'bacon_pb2'),
         ('foo', 'bar_pb2'),
@@ -60,9 +60,9 @@ def test_service_pb2_modules():
     )
 
 
-def test_service_pb2_modules_lro():
+def test_service_python_modules_lro():
     service = make_service_with_method_options()
-    assert service.pb2_modules == (
+    assert service.python_modules == (
         ('foo', 'bar_pb2'),
         ('foo', 'baz_pb2'),
         ('foo', 'qux_pb2'),

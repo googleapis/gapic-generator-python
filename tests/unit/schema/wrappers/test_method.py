@@ -30,9 +30,9 @@ def test_method_types():
                          package='foo.bar', module='bacon')
     assert method.name == 'DoSomething'
     assert method.input.name == 'Input'
-    assert method.input.pb2_module == 'baz_pb2'
+    assert method.input.python_module == 'baz_pb2'
     assert method.output.name == 'Output'
-    assert method.output.pb2_module == 'baz_pb2'
+    assert method.output.python_module == 'baz_pb2'
 
 
 def test_method_signature():

@@ -40,7 +40,6 @@ from api_factory import utils
 from api_factory.schema.metadata import Metadata
 
 
-
 @dataclasses.dataclass(frozen=True)
 class Field:
     """Description of a field."""
@@ -149,14 +148,14 @@ class MessageType:
         return cursor.message.get_field(*field_path[1:])
 
     @property
-    def pb2_module(self) -> str:
-        """Return the name of the Python pb2 module."""
-        return f'{self.meta.address.module}_pb2'
-
-    @property
     def proto_path(self) -> str:
         """Return the fully qualfied proto path as a string."""
         return f'{str(self.meta.address)}.{self.name}'
+
+    @property
+    def python_module(self) -> str:
+        """Return the name of the Python pb2 module."""
+        return f'{self.meta.address.module}_pb2'
 
 
 @dataclasses.dataclass(frozen=True)
@@ -189,10 +188,18 @@ class PythonType:
     that a ``name`` property will be present.
     """
     python_type: type
+    meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     @property
     def name(self) -> str:
         return self.python_type.__name__
+
+    @property
+    def python_module(self) -> str:
+        """Return the name of the Python pb2 module."""
+        if self.meta.address:
+            return f'{self.meta.address.module}'
+        return None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -298,15 +305,15 @@ class Service:
         return utils.to_snake_case(self.name)
 
     @property
-    def pb2_modules(self) -> Sequence[Tuple[str, str]]:
-        """Return a sequence of pb2 modules, for import.
+    def python_modules(self) -> Sequence[Tuple[str, str]]:
+        """Return a sequence of Python modules, for import.
 
         The results of this method are in alphabetical order (by package,
         then module), and do not contain duplicates.
 
         Returns:
-            Sequence[str, str]: The package and pb2_module pair, intended
-            for use in a ``from package import pb2_module`` type
+            Sequence[str, str]: The package and module pair, intended
+            for use in a ``from package import module`` type
             of statement.
         """
         answer = set()
@@ -315,11 +322,11 @@ class Service:
             # messages. (These are usually the same, but not necessarily.)
             answer.add((
                 '.'.join(method.input.meta.address.package),
-                method.input.pb2_module,
+                method.input.python_module,
             ))
             answer.add((
                 '.'.join(method.output.meta.address.package),
-                method.output.pb2_module,
+                method.output.python_module,
             ))
 
             # If this method has LRO, it is possible (albeit unlikely) that
@@ -327,12 +334,12 @@ class Service:
             if method.lro_payload:
                 answer.add((
                     '.'.join(method.lro_payload.meta.address.package),
-                    method.lro_payload.pb2_module,
+                    method.lro_payload.python_module,
                 ))
             if method.lro_metadata:
                 answer.add((
                     '.'.join(method.lro_metadata.meta.address.package),
-                    method.lro_metadata.pb2_module,
+                    method.lro_metadata.python_module,
                 ))
         return tuple(sorted(answer))
 
