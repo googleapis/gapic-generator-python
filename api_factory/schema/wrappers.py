@@ -37,7 +37,7 @@ from google.api import signature_pb2
 from google.protobuf import descriptor_pb2
 
 from api_factory import utils
-from api_factory.schema.metadata import Metadata
+from api_factory.schema import metadata
 
 
 @dataclasses.dataclass(frozen=True)
@@ -46,7 +46,9 @@ class Field:
     field_pb: descriptor_pb2.FieldDescriptorProto
     message: 'MessageType' = None
     enum: 'EnumType' = None
-    meta: Metadata = dataclasses.field(default_factory=Metadata)
+    meta: metadata.Metadata = dataclasses.field(
+        default_factory=metadata.Metadata,
+    )
 
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
@@ -60,6 +62,15 @@ class Field:
         """
         return self.label == \
             descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
+
+    @property
+    def required(self) -> bool:
+        """Return True if this is a required field, False otherwise.
+
+        Returns:
+            bool: Whether this field is required.
+        """
+        return bool(self.options.Extensions[annotations_pb2.required])
 
     @utils.cached_property
     def type(self) -> Union['MessageType', 'EnumType', 'PythonType']:
@@ -101,7 +112,9 @@ class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
     message_pb: descriptor_pb2.DescriptorProto
     fields: Mapping[str, Field]
-    meta: Metadata = dataclasses.field(default_factory=Metadata)
+    meta: metadata.Metadata = dataclasses.field(
+        default_factory=metadata.Metadata,
+    )
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
@@ -153,16 +166,32 @@ class MessageType:
         return f'{str(self.meta.address)}.{self.name}'
 
     @property
+    def python_ident(self) -> str:
+        """Return the identifier to be used in templates.
+
+        Because we import modules as a whole, rather than individual
+        members from modules, this is consistently `module.Name`.
+        """
+        return f'{self.python_module}.{self.name}'
+
+    @property
     def python_module(self) -> str:
         """Return the name of the Python pb2 module."""
         return f'{self.meta.address.module}_pb2'
+
+    @property
+    def sphinx_ident(self) -> str:
+        """Return the identifier to be used in templates for Sphinx."""
+        return f'~.{self.python_ident}'
 
 
 @dataclasses.dataclass(frozen=True)
 class EnumValueType:
     """Description of an enum value."""
     enum_value_pb: descriptor_pb2.EnumValueDescriptorProto
-    meta: Metadata = dataclasses.field(default_factory=Metadata)
+    meta: metadata.Metadata = dataclasses.field(
+        default_factory=metadata.Metadata,
+    )
 
     def __getattr__(self, name):
         return getattr(self.enum_value_pb, name)
@@ -173,10 +202,31 @@ class EnumType:
     """Description of an enum (defined with the ``enum`` keyword.)"""
     enum_pb: descriptor_pb2.EnumDescriptorProto
     values: List[EnumValueType]
-    meta: Metadata = dataclasses.field(default_factory=Metadata)
+    meta: metadata.Metadata = dataclasses.field(
+        default_factory=metadata.Metadata,
+    )
 
     def __getattr__(self, name):
         return getattr(self.enum_pb, name)
+
+    @property
+    def python_ident(self) -> str:
+        """Return the identifier to be used in templates.
+
+        Because we import modules as a whole, rather than individual
+        members from modules, this is consistently `module.Name`.
+        """
+        return f'{self.python_module}.{self.name}'
+
+    @property
+    def python_module(self) -> str:
+        """Return the name of the Python pb2 module."""
+        return f'{self.meta.address.module}_pb2'
+
+    @property
+    def sphinx_ident(self) -> str:
+        """Return the identifier to be used in templates for Sphinx."""
+        return f'~.{self.python_ident}'
 
 
 @dataclasses.dataclass(frozen=True)
@@ -188,18 +238,77 @@ class PythonType:
     that a ``name`` property will be present.
     """
     python_type: type
-    meta: Metadata = dataclasses.field(default_factory=Metadata)
 
     @property
     def name(self) -> str:
         return self.python_type.__name__
 
     @property
+    def python_ident(self) -> str:
+        """Return the identifier to be used in templates.
+
+        Primitives have no import, and no module to reference, so this
+        is simply the name of the class (e.g. "int", "str").
+        """
+        return self.name
+
+    @property
+    def sphinx_ident(self) -> str:
+        """Return the identifier to be used in templates for Sphinx."""
+        return f'{self.python_ident}'
+
+
+@dataclasses.dataclass(frozen=True)
+class OperationType:
+    """Wrapper class for :class:`~.operations.Operation`.
+
+    This exists for interface consistency, so Operations can be used
+    alongside :class:`~.MessageType` instances.
+    """
+    lro_response: MessageType
+    lro_metadata: MessageType = None
+
+    @utils.cached_property
+    def meta(self) -> metadata.Metadata:
+        """Return a Metadata object."""
+        return metadata.Metadata(
+            address=metadata.Address(
+                module='operation',
+                package=('google', 'api_core'),
+            ),
+            documentation=descriptor_pb2.SourceCodeInfo.Location(
+                leading_comments='An object representing a long-running '
+                                 'operation. \n\n'
+                                 'The result type for the operation will be '
+                                 ':class:`~.{module}.{name}: {doc}`'.format(
+                                     doc=self.lro_response.meta.doc,
+                                     module=self.lro_response.python_module,
+                                     name=self.lro_response.name,
+                                 ),
+            ),
+        )
+
+    @property
+    def name(self) -> str:
+        """Return the class name."""
+        # This is always "Operation", because it is always a reference to
+        # `google.api_core.operation.Operation`.
+        #
+        # This is hard-coded rather than subclassing PythonType (above) so
+        # that this generator is not forced to take an entire dependency
+        # on google.api_core just to get these strings.
+        return 'Operation'
+
+    @property
     def python_module(self) -> str:
-        """Return the name of the Python pb2 module."""
-        if self.meta.address:
-            return f'{self.meta.address.module}'
-        return None
+        """Return the name of the Python module."""
+        # This is always "operation", because it is always a reference to
+        # `google.api_core.operation.Operation`.
+        #
+        # This is hard-coded rather than subclassing PythonType (above) so
+        # that this generator is not forced to take an entire dependency
+        # on google.api_core just to get these strings.
+        return self.meta.address.module
 
 
 @dataclasses.dataclass(frozen=True)
@@ -208,9 +317,9 @@ class Method:
     method_pb: descriptor_pb2.MethodDescriptorProto
     input: MessageType
     output: MessageType
-    lro_payload: MessageType = None
-    lro_metadata: MessageType = None
-    meta: Metadata = dataclasses.field(default_factory=Metadata)
+    meta: metadata.Metadata = dataclasses.field(
+        default_factory=metadata.Metadata,
+    )
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
@@ -269,7 +378,9 @@ class Service:
     """Description of a service (defined with the ``service`` keyword)."""
     service_pb: descriptor_pb2.ServiceDescriptorProto
     methods: Mapping[str, Method]
-    meta: Metadata = dataclasses.field(default_factory=Metadata)
+    meta: metadata.Metadata = dataclasses.field(
+        default_factory=metadata.Metadata,
+    )
 
     def __getattr__(self, name):
         return getattr(self.service_pb, name)
@@ -331,22 +442,23 @@ class Service:
 
             # If this method has LRO, it is possible (albeit unlikely) that
             # the LRO messages reside in a different module.
-            if method.lro_payload:
+            if getattr(method.output, 'lro_response', None):
                 answer.add((
-                    '.'.join(method.lro_payload.meta.address.package),
-                    method.lro_payload.python_module,
+                    '.'.join(method.output.lro_response.meta.address.package),
+                    method.output.lro_response.python_module,
                 ))
-            if method.lro_metadata:
+            if getattr(method.output, 'lro_metadata', None):
                 answer.add((
-                    '.'.join(method.lro_metadata.meta.address.package),
-                    method.lro_metadata.python_module,
+                    '.'.join(method.output.lro_metadata.meta.address.package),
+                    method.output.lro_metadata.python_module,
                 ))
         return tuple(sorted(answer))
 
     @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
-        return any([m.lro_payload for m in self.methods.values()])
+        return any([hasattr(m.output, 'lro_response')
+                    for m in self.methods.values()])
 
     @property
     def has_field_headers(self) -> bool:

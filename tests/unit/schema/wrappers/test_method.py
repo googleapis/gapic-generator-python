@@ -106,7 +106,7 @@ def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
         message_pb=message_pb,
         fields=collections.OrderedDict((i.name, i) for i in fields),
         meta=metadata.Metadata(address=metadata.Address(
-            package=package.split('.'),
+            package=tuple(package.split('.')),
             module=module,
         )),
     )

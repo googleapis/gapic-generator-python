@@ -72,14 +72,14 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
         initial_width=25, subsequent_indent="        ") }} method over HTTP.
 
         Args:
-            request (~.{{ method.input.python_module }}.{{ method.input.name }}):
+            request (~.{{ method.input.python_ident }}):
                 The request object. {{ method.input.meta.doc|wrap(width=72,
                 initial_width=36, subsequent_indent=' ' * 16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent alont with the request as metadata.
 
         Returns:
-            ~.{{ method.output.python_module }}.{{ method.output.name }}:
+            ~.{{ method.output.python_ident }}:
                 {{ method.output.meta.doc|wrap(width=72, initial_width=56,
                                                subsequent_indent=' ' * 16) }}
         """
@@ -101,7 +101,7 @@ class {{ service.name }}HttpTransport({{ service.name }}Transport):
         )
 
         # Return the response.
-        return {{ method.output.python_module }}.{{ method.output.name }}.FromString(
+        return {{ method.output.python_ident }}.FromString(
             response.content,
         )
     {%- endfor %}

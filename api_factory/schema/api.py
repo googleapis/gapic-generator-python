@@ -222,6 +222,27 @@ class _ProtoBuilder:
             *[p.messages for p in self.prior_protos.values()],
         )
 
+    def _get_operation_type(self,
+            response_type: wrappers.Method,
+            metadata_type: wrappers.Method = None,
+            ) -> wrappers.PythonType:
+        """Return a wrapper around Operation that designates the end result.
+
+        Args:
+            response_type (~.wrappers.Method): The response type that
+                the Operation ultimately uses.
+            metadata_type (~.wrappers.Method): The metadata type that
+                the Operation ultimately uses, if any.
+
+        Returns:
+            ~.wrappers.OperationType: An OperationType object, which is
+                sent down to templates, and aware of the LRO types used.
+        """
+        return wrappers.OperationType(
+            lro_response=response_type,
+            lro_metadata=metadata_type,
+        )
+
     def _load_children(self, children: Sequence, loader: Callable, *,
                        address: metadata.Address, path: Tuple[int]) -> None:
         """Return wrapped versions of arbitrary children from a Descriptor.
@@ -309,16 +330,25 @@ class _ProtoBuilder:
         answer = collections.OrderedDict()
         for meth_pb, i in zip(methods, range(0, sys.maxsize)):
             types = meth_pb.options.Extensions[operations_pb2.operation_types]
+
+            # If the output type is google.longrunning.Operation, we use
+            # a specialized object in its place.
+            output_type = self.all_messages[meth_pb.output_type.lstrip('.')]
+            if meth_pb.output_type.endswith('google.longrunning.Operation'):
+                output_type = self._get_operation_type(
+                    response_type=self.all_messages.get(types.response, None),
+                    metadata_type=self.all_messages.get(types.metadata, None),
+                )
+
+            # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
                 input=self.all_messages[meth_pb.input_type.lstrip('.')],
-                lro_metadata=self.all_messages.get(types.metadata, None),
-                lro_payload=self.all_messages.get(types.response, None),
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=address,
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
-                output=self.all_messages[meth_pb.output_type.lstrip('.')],
+                output=output_type,
             )
 
         # Done; return the answer.

@@ -20,23 +20,23 @@ from api_factory.schema import metadata
 
 
 def test_address_str_no_parent():
-    addr = metadata.Address(package=['foo', 'bar'], module='baz')
+    addr = metadata.Address(package=('foo', 'bar'), module='baz')
     assert str(addr) == 'foo.bar'
 
 
 def test_address_str_parent():
-    addr = metadata.Address(package=['foo', 'bar'], module='baz',
-                            parent=['spam', 'eggs'])
+    addr = metadata.Address(package=('foo', 'bar'), module='baz',
+                            parent=('spam', 'eggs'))
     assert str(addr) == 'foo.bar.spam.eggs'
 
 
 def test_address_child():
-    addr = metadata.Address(package=['foo', 'bar'], module='baz')
+    addr = metadata.Address(package=('foo', 'bar'), module='baz')
     child = addr.child('bacon')
-    assert child.parent == ['bacon']
+    assert child.parent == ('bacon',)
     assert str(child) == 'foo.bar.bacon'
     grandchild = child.child('ham')
-    assert grandchild.parent == ['bacon', 'ham']
+    assert grandchild.parent == ('bacon', 'ham')
     assert str(grandchild) == 'foo.bar.bacon.ham'
 
 

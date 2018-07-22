@@ -37,7 +37,7 @@ def test_field_properties():
     field = get_field(name='my_field', number=1, type=8)
     assert field.name == 'my_field'
     assert field.number == 1
-    assert field.type == 8
+    assert field.type.python_type == bool
 
 
 def test_repeated():

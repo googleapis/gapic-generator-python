@@ -26,21 +26,20 @@ in a separate structure, and this object model re-connects the comments
 with the things they describe for easy access in templates.
 """
 
-import copy
 import dataclasses
-from typing import List
+from typing import Tuple
 
 from google.protobuf import descriptor_pb2
 
 
 @dataclasses.dataclass(frozen=True)
 class Address:
-    package: List[str] = dataclasses.field(default_factory=list)
+    package: Tuple[str] = dataclasses.field(default_factory=tuple)
     module: str = ''
-    parent: List[str] = dataclasses.field(default_factory=list)
+    parent: Tuple[str] = dataclasses.field(default_factory=tuple)
 
     def __str__(self):
-        return '.'.join(self.package + self.parent)
+        return '.'.join(tuple(self.package) + tuple(self.parent))
 
     def child(self, child_name: str) -> 'Address':
         """Return a new Address with ``child_name`` appended to its parent.
@@ -53,9 +52,11 @@ class Address:
         Returns:
             ~.Address: The new address object.
         """
-        answer = copy.deepcopy(self)
-        answer.parent.append(child_name)
-        return answer
+        return type(self)(
+            module=self.module,
+            package=self.package,
+            parent=self.parent + (child_name,),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
