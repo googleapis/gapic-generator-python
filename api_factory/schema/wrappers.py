@@ -30,7 +30,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import dataclasses
 import re
-from typing import List, Mapping, Sequence, Tuple, Union
+from typing import Iterable, List, Mapping, Sequence, Tuple, Union
 
 from google.api import annotations_pb2
 from google.api import signature_pb2
@@ -54,6 +54,24 @@ class Field:
         return getattr(self.field_pb, name)
 
     @property
+    def is_primitive(self) -> bool:
+        """Return True if the field is a primitive, False otherwise."""
+        return isinstance(self.type, PythonType)
+
+    @property
+    def python_ident(self) -> str:
+        """Return the identifier to be used in templates.
+
+        Because we import modules as a whole, rather than individual
+        members from modules, this is consistently `module.Name`.
+
+        This property also adds the Sequence[] notation for repeated fields.
+        """
+        if self.repeated:
+            return f'Sequence[{self.type.python_ident}]'
+        return self.type.python_ident
+
+    @property
     def repeated(self) -> bool:
         """Return True if this is a repeated field, False otherwise.
 
@@ -71,6 +89,16 @@ class Field:
             bool: Whether this field is required.
         """
         return bool(self.options.Extensions[annotations_pb2.required])
+
+    @property
+    def sphinx_ident(self) -> str:
+        """Return the identifier to be used in templates for Sphinx.
+
+        This property also adds the Sequence[] notation for repeated fields.
+        """
+        if self.repeated:
+            return f'Sequence[{self.type.sphinx_ident}]'
+        return self.type.sphinx_ident
 
     @utils.cached_property
     def type(self) -> Union['MessageType', 'EnumType', 'PythonType']:
@@ -280,7 +308,7 @@ class OperationType:
                 leading_comments='An object representing a long-running '
                                  'operation. \n\n'
                                  'The result type for the operation will be '
-                                 ':class:`~.{module}.{name}: {doc}`'.format(
+                                 ':class:`~.{module}.{name}`: {doc}'.format(
                                      doc=self.lro_response.meta.doc,
                                      module=self.lro_response.python_module,
                                      name=self.lro_response.name,
@@ -300,6 +328,11 @@ class OperationType:
         return 'Operation'
 
     @property
+    def python_ident(self) -> str:
+        """Return the identifier to be used in templates."""
+        return f'{self.python_module}.{self.name}'
+
+    @property
     def python_module(self) -> str:
         """Return the name of the Python module."""
         # This is always "operation", because it is always a reference to
@@ -309,6 +342,10 @@ class OperationType:
         # that this generator is not forced to take an entire dependency
         # on google.api_core just to get these strings.
         return self.meta.address.module
+
+    @property
+    def sphinx_ident(self) -> str:
+        return f'~.{self.python_ident}'
 
 
 @dataclasses.dataclass(frozen=True)
@@ -359,7 +396,7 @@ class Method:
             ))
 
         # Done; return a tuple of signatures.
-        return tuple(answer)
+        return MethodSignatures(all=tuple(answer))
 
 
 @dataclasses.dataclass(frozen=True)
@@ -367,10 +404,38 @@ class MethodSignature:
     name: str
     fields: Mapping[str, Field]
 
-    @property
-    def dispatch_type(self) -> Union[MessageType, EnumType, PythonType]:
+    @utils.cached_property
+    def dispatch_field(self) -> Union[MessageType, EnumType, PythonType]:
         """Return the type object for the first field."""
-        return iter(self.fields.values()).next()
+        return next(iter(self.fields.values()))
+
+
+@dataclasses.dataclass(frozen=True)
+class MethodSignatures:
+    all: Tuple[MethodSignature]
+
+    def __iter__(self) -> Iterable[MethodSignature]:
+        return iter(self.all)
+
+    @utils.cached_property
+    def single_dispatch(self) -> Tuple[MethodSignature]:
+        """Return a tuple of signatures, grouped and deduped by dispatch type.
+
+        In the Python 3 templates, we only honor at most one method
+        signature per initial argument type, and only for primitives.
+
+        This method groups and deduplicates signatures and sends back only
+        the signatures that the template actually wants.
+
+        Returns:
+            Tuple[MethodSignature]: Method signatures to be used with
+                "single dispatch" routing.
+        """
+        answer = collections.OrderedDict()
+        for sig in [i for i in self.all
+                    if isinstance(i.dispatch_field.type, PythonType)]:
+            answer.setdefault(sig.dispatch_field.python_ident, sig)
+        return tuple(answer.values())
 
 
 @dataclasses.dataclass(frozen=True)

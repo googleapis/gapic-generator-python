@@ -58,6 +58,27 @@ class Address:
             parent=self.parent + (child_name,),
         )
 
+    def resolve(self, selector: str) -> str:
+        """Resolve a potentially-relative protobuf selector.
+
+        This takes a protobuf selector which may be fully-qualified
+        (e.g. `foo.bar.v1.Baz`) or may be relative (`Baz`) and
+        returns the fully-qualified version.
+
+        This method is naive and does not check to see if the message
+        actually exists.
+
+        Args:
+            selector (str): A protobuf selector, either fully-qualified
+                or relative.
+
+        Returns:
+            str: An absolute selector.
+        """
+        if '.' not in selector:
+            return f'{".".join(self.package)}.{selector}'
+        return selector
+
 
 @dataclasses.dataclass(frozen=True)
 class Metadata:

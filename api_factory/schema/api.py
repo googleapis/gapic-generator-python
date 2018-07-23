@@ -298,8 +298,8 @@ class _ProtoBuilder:
         for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
-                enum=self.all_enums.get(field_pb.type_name, None),
-                message=self.all_messages.get(field_pb.type_name, None),
+                enum=self.all_enums.get(field_pb.type_name.lstrip('.')),
+                message=self.all_messages.get(field_pb.type_name.lstrip('.')),
                 meta=metadata.Metadata(
                     address=address,
                     documentation=self.docs.get(path + (i,), self.EMPTY),
@@ -336,8 +336,12 @@ class _ProtoBuilder:
             output_type = self.all_messages[meth_pb.output_type.lstrip('.')]
             if meth_pb.output_type.endswith('google.longrunning.Operation'):
                 output_type = self._get_operation_type(
-                    response_type=self.all_messages.get(types.response, None),
-                    metadata_type=self.all_messages.get(types.metadata, None),
+                    response_type=self.all_messages.get(
+                        address.resolve(types.response),
+                    ),
+                    metadata_type=self.all_messages.get(
+                        address.resolve(types.metadata),
+                    ),
                 )
 
             # Create the method wrapper object.
