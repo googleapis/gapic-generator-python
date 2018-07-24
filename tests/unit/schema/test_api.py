@@ -163,6 +163,55 @@ def test_messages():
     assert message.fields['bar'].meta.doc == 'This is the bar field.'
 
 
+def test_messages_reverse_declaration_order():
+    # Test that if a message is used as a field higher in the same file,
+    # that things still work.
+    message_pbs = (
+        make_message_pb2(name='Foo', fields=(
+            make_field_pb2(name='bar', number=1,
+                           type_name='.google.example.v3.Bar'),
+            ),
+        ),
+        make_message_pb2(name='Bar'),
+    )
+    fdp = make_file_pb2(
+        messages=message_pbs,
+        package='google.example.v3',
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True)
+
+    # Get the message.
+    assert len(proto.messages) == 2
+    Foo = proto.messages['google.example.v3.Foo']
+    assert Foo.fields['bar'].message == proto.messages['google.example.v3.Bar']
+
+
+def test_messages_recursive():
+    # Test that if a message is used as a field higher in the same file,
+    # that things still work.
+    message_pbs = (
+        make_message_pb2(name='Foo', fields=(
+            make_field_pb2(name='foo', number=1,
+                           type_name='.google.example.v3.Foo'),
+            ),
+        ),
+    )
+    fdp = make_file_pb2(
+        messages=message_pbs,
+        package='google.example.v3',
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True)
+
+    # Get the message.
+    assert len(proto.messages) == 1
+    Foo = proto.messages['google.example.v3.Foo']
+    assert Foo.fields['foo'].message == proto.messages['google.example.v3.Foo']
+
+
 def test_services():
     L = descriptor_pb2.SourceCodeInfo.Location
 

@@ -40,6 +40,13 @@ def test_address_child():
     assert str(grandchild) == 'foo.bar.bacon.ham'
 
 
+def test_address_resolve():
+    addr = metadata.Address(package=('foo', 'bar'), module='baz')
+    assert addr.resolve('Bacon') == 'foo.bar.Bacon'
+    assert addr.resolve('foo.bar.Bacon') == 'foo.bar.Bacon'
+    assert addr.resolve('google.example.Bacon') == 'google.example.Bacon'
+
+
 def test_doc_nothing():
     meta = metadata.Metadata()
     assert meta.doc == ''
