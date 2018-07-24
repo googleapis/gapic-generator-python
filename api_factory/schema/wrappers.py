@@ -131,6 +131,8 @@ class Field:
             return PythonType(python_type=bytes)
 
         # This should never happen.
+        import sys
+        print(self, file=sys.stderr)
         raise TypeError('Unrecognized protobuf type. This code should '
                         'not be reachable; please file a bug.')
 

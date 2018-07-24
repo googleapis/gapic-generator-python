@@ -190,10 +190,31 @@ class _ProtoBuilder:
         # message (e.g. the hard-code `4` for `message_type` immediately
         # below is because `repeated DescriptorProto message_type = 4;` in
         # descriptor.proto itself).
-        self._load_children(file_descriptor.message_type, self._load_message,
-                            address=address, path=(4,))
         self._load_children(file_descriptor.enum_type, self._load_enum,
                             address=address, path=(5,))
+        self._load_children(file_descriptor.message_type, self._load_message,
+                            address=address, path=(4,))
+
+        # Edge case: Protocol buffers is not particularly picky about
+        # ordering, and it is possible that a message will have had a field
+        # referencing another message which appears later in the file
+        # (or itself, recursively).
+        #
+        # In this situation, we would not have come across the message yet,
+        # and the field would have its original textual reference to the
+        # message (`type_name`) but not its resolved message wrapper.
+        for message in self.messages.values():
+            for field in message.fields.values():
+                if field.type_name and not any((field.message, field.enum)):
+                    object.__setattr__(
+                        field, 'message',
+                        self.messages[field.type_name.lstrip('.')],
+                    )
+
+        # Only generate the service if this is a target file to be generated.
+        # This prevents us from generating common services (e.g. LRO) when
+        # they are being used as an import just to get types declared in the
+        # same files.
         if file_to_generate:
             self._load_children(file_descriptor.service, self._load_service,
                                 address=address, path=(6,))
@@ -371,10 +392,10 @@ class _ProtoBuilder:
         # type of one of this message's fields, and they need to be in
         # the registry for the field's message or enum attributes to be
         # set correctly.
-        self._load_children(message_pb.nested_type, address=message_addr,
-                            loader=self._load_message, path=path + (3,))
         self._load_children(message_pb.enum_type, address=message_addr,
                             loader=self._load_enum, path=path + (4,))
+        self._load_children(message_pb.nested_type, address=message_addr,
+                            loader=self._load_message, path=path + (3,))
         # self._load_children(message.oneof_decl, loader=self._load_field,
         #                     address=nested_addr, info=info.get(8, {}))
 
@@ -399,12 +420,6 @@ class _ProtoBuilder:
                 documentation=self.docs.get(path, self.EMPTY),
             ),
         )
-
-        # Corner case: If any of the fields have this message as their type,
-        # their will not have been set correctly. Fix that up.
-        for field in self.messages[ident].fields.values():
-            if field.type_name == str(message_addr):
-                object.__setattr__(field, 'message', self.messages[ident])
 
     def _load_enum(self, enum: descriptor_pb2.EnumDescriptorProto,
                    address: metadata.Address, path: Tuple[int]) -> None:

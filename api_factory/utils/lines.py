@@ -70,6 +70,11 @@ def wrap(text: str, width: int, initial_width: int = None,
     width -= len(antecedent_trailer)
     initial_width -= len(antecedent_trailer)
 
+    # Protocol buffers preserves single initial spaces after line breaks
+    # when parsing comments (such as the space before the "w" in "when" here).
+    # Re-wrapping causes these to be two spaces; correct for this.
+    text = text.replace('\n ', '\n')
+
     # If the initial width is different, break off the beginning of the
     # string.
     first = ''
