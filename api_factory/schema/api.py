@@ -357,9 +357,9 @@ class _ProtoBuilder:
             output_type = self.all_messages[meth_pb.output_type.lstrip('.')]
             if meth_pb.output_type.endswith('google.longrunning.Operation'):
                 output_type = self._get_operation_type(
-                    response_type=self.all_messages.get(
-                        address.resolve(types.response),
-                    ),
+                    response_type=self.all_messages[
+                        address.resolve(types.response)
+                    ],
                     metadata_type=self.all_messages.get(
                         address.resolve(types.metadata),
                     ),
