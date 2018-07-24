@@ -44,6 +44,16 @@ def test_message_python_package():
     assert message.python_module == 'eggs_pb2'
 
 
+def test_message_python_ident():
+    message = make_message('Baz', package='foo.v1', module='bar')
+    assert message.python_ident == 'bar_pb2.Baz'
+
+
+def test_message_sphinx_ident():
+    message = make_message('Baz', package='foo.v1', module='bar')
+    assert message.sphinx_ident == '~.bar_pb2.Baz'
+
+
 def test_get_field():
     fields = (make_field('field_one'), make_field('field_two'))
     message = make_message('Message', fields=fields)
