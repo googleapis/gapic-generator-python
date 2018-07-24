@@ -273,7 +273,7 @@ class _ProtoBuilder:
                 be loaded. For example, a FileDescriptorProto contains the
                 lists ``message_type``, ``enum_type``, etc.; these are valid
                 inputs for this argument.
-            loader (Callable[Message, Address, dict]): The function able
+            loader (Callable[Message, Address, Tuple[int]]): The function able
                 to load the kind of message in ``children``. This should
                 be one of the ``_load_{noun}`` methods on this class
                 (e.g. ``_load_descriptor``).
