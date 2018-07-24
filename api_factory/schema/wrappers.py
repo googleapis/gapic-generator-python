@@ -406,7 +406,9 @@ class MethodSignature:
 
     @utils.cached_property
     def dispatch_field(self) -> Union[MessageType, EnumType, PythonType]:
-        """Return the type object for the first field."""
+        """Return the first field.
+
+        This is what is used for `functools.singledispatch`."""
         return next(iter(self.fields.values()))
 
 
