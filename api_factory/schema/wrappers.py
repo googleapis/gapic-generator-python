@@ -416,8 +416,14 @@ class MethodSignature:
 class MethodSignatures:
     all: Tuple[MethodSignature]
 
+    def __getitem__(self, key: Union[int, slice]) -> MethodSignature:
+        return self.all[key]
+
     def __iter__(self) -> Iterable[MethodSignature]:
         return iter(self.all)
+
+    def __len__(self) -> int:
+        return len(self.all)
 
     @utils.cached_property
     def single_dispatch(self) -> Tuple[MethodSignature]:

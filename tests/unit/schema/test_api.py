@@ -38,11 +38,11 @@ def test_api_build():
                 make_message_pb2(name='Foo', fields=()),
                 make_message_pb2(name='GetFooRequest', fields=(
                     make_field_pb2(name='imported_message', number=1,
-                                   type_name='google.dep.ImportedMessasge'),
+                                   type_name='.google.dep.ImportedMessage'),
                 )),
                 make_message_pb2(name='GetFooResponse', fields=(
                     make_field_pb2(name='foo', number=1,
-                                   type_name='google.example.v1.Foo'),
+                                   type_name='.google.example.v1.Foo'),
                 )),
             ),
             services=(descriptor_pb2.ServiceDescriptorProto(
@@ -103,15 +103,15 @@ def test_proto_builder_constructor():
         # of children.
         assert lc.call_count == 3
 
-        # The message type should come first.
+        # The enum type should come first.
         _, args, _ = lc.mock_calls[0]
-        assert args[0][0] == sentinel_message
-        assert args[1] == pb._load_message
-
-        # The enum type should come second.
-        _, args, _ = lc.mock_calls[1]
         assert args[0][0] == sentinel_enum
         assert args[1] == pb._load_enum
+
+        # The message type should come second.
+        _, args, _ = lc.mock_calls[1]
+        assert args[0][0] == sentinel_message
+        assert args[1] == pb._load_message
 
         # The services should come third.
         _, args, _ = lc.mock_calls[2]
