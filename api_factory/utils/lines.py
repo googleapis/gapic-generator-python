@@ -13,10 +13,10 @@
 # limitations under the License.
 
 import textwrap
-from typing import Sequence
+from typing import Tuple
 
 
-def wrap(text: str, width: int, offset: Sequence[int, int] = (0, 0)) -> str:
+def wrap(text: str, width: int, offset: Tuple[int, int] = (0, 0)) -> str:
     """Wrap the given string to the given width.
 
     This uses :meth:`textwrap.fill` under the hood, but provides useful
