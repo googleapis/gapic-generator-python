@@ -31,13 +31,6 @@ def test_wrap_strips():
     assert lines.wrap('foo bar baz  ', width=80) == 'foo bar baz'
 
 
-def test_wrap_offset():
-    assert lines.wrap(
-        'The hail in Wales falls mainly on the snails.',
-        width=36, offset=8,
-    ) == 'The hail in Wales falls\n        mainly on the snails.'
-
-
 def test_wrap_subsequent_offset():
     assert lines.wrap('foo bar baz',
         width=5, offset=(0, 2)
@@ -52,4 +45,4 @@ def test_wrap_initial_offset():
 
 
 def test_wrap_offset_short():
-    assert lines.wrap('foo bar', width=30, offset=10) == 'foo bar'
+    assert lines.wrap('foo bar', width=30, offset=(10, 10)) == 'foo bar'

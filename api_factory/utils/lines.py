@@ -16,7 +16,7 @@ import textwrap
 from typing import Tuple, Union
 
 
-def wrap(text: str, width: int, offset: Union[int, Tuple[int,int]] = 0) -> str:
+def wrap(text: str, width: int, offset: Tuple[int, int] = (0, 0)) -> str:
     """Wrap the given string to the given width.
 
     This uses :meth:`textwrap.fill` under the hood, but provides useful
@@ -29,13 +29,16 @@ def wrap(text: str, width: int, offset: Union[int, Tuple[int,int]] = 0) -> str:
         width (int): The width at which to wrap the text. If offset is
             provided, these are automatically counted against this.
         offset (Union[int, Tuple[int, int]]): An offset for the text.
-            This can be specified as an int or a tuple or two ints (using an
-            int is identical to a tuple with that int specified twice);
-            the tuple form is ``(first_line, subsequent_lines)``.
+            This is specified as a tuple or two ints; the tuple form
+            is ``(first_line, subsequent_lines)``.
+
+            The intention here is to be an expression of intent
+            (the first line will end up offset by ``X``, all subsequent lines
+            by ``Y``), which means a divergence in implementation:
 
             The first line value applies to the first line; this value is
             subtracted from ``width`` for the first line only. No leading
-            whitespace is added (the template is assumed to have it).
+            whitespace is actually added (the template is assumed to have it).
 
             The subsequent lines value applies to all subsequent lines; each
             line will be indented by this many characters.
@@ -46,10 +49,6 @@ def wrap(text: str, width: int, offset: Union[int, Tuple[int,int]] = 0) -> str:
     # Sanity check: If there is empty text, abort.
     if not text:
         return ''
-
-    # Coerce the offset value into a tuple.
-    if isinstance(offset, int):
-        offset = (offset, offset)
 
     # Protocol buffers preserves single initial spaces after line breaks
     # when parsing comments (such as the space before the "w" in "when" here).
