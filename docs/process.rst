@@ -36,8 +36,6 @@ contract model to be able to follow what this library is doing.
 .. _descriptor.proto: https://github.com/google/protobuf/blob/master/src/google/protobuf/descriptor.proto
 
 
-
-
 Entry Point
 ~~~~~~~~~~~
 
