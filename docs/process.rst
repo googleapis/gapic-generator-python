@@ -14,16 +14,16 @@ library.
 The protoc contract
 ~~~~~~~~~~~~~~~~~~~
 
-This code generator is written as a ``protoc`` plugin, which operates on
+This code generator is written as a :command:`protoc` plugin, which operates on
 a defined contract. The contract is straightforward: a plugin must
 accept a ``CodeGeneratorRequest`` (essentially a sequence of
 ``FileDescriptor`` objects) and output a
 ``CodeGeneratorResponse``.
 
-If you are unfamiliar with ``protoc`` plugins, welcome! That last paragraph
-likely sounded not as straightforward as claimed. It may be useful to read
-`plugin.proto`_ and `descriptor.proto`_ before continuing on. The former
-describes the contract with plugins (such as this one) and is relatively
+If you are unfamiliar with :command:`protoc` plugins, welcome! That last
+paragraph likely sounded not as straightforward as claimed. It may be useful
+to read `plugin.proto`_ and `descriptor.proto`_ before continuing on. The
+former describes the contract with plugins (such as this one) and is relatively
 easy to digest, the latter describes protocol buffer files themselves and is
 rather dense. The key point to grasp is that each ``.proto`` *file* compiles
 into one of these proto messages (called *descriptors*), and this plugin's
@@ -107,7 +107,7 @@ This works by reading in and rendering `Jinja`_ templates into a string.
 The file path of the Jinja template is used to determine the filename
 in the resulting client library.
 
-More details on authoring templates is discussed on the _`templates`
+More details on authoring templates is discussed on the :doc:`templates`
 page.
 
 Exit Point
@@ -115,7 +115,7 @@ Exit Point
 
 Once the individual strings corresponding to each file to be generated
 is collected into memory, these are pieced together into a
-`CodeGeneratorResponse <plugin.proto>`_ object, which is serialized
+``CodeGeneratorResponse`` object, which is serialized
 and written to stdout.
 
 .. _Jinja: http://jinja.pocoo.org/docs/2.10/
