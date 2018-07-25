@@ -16,26 +16,6 @@ import textwrap
 from typing import Tuple, Union
 
 
-def subsequent_indent(text: str, prefix: str) -> str:
-    """Decorates the text string with the given prefix on hanging lines.
-
-    A "hanging" line is any line except for the first one. After prefixing,
-    if any lines end in whitespace, that whitespace is stripped.
-
-    This is provided to all templates as the ``subsequent_indent`` filter.
-
-    Args:
-        text (str): The text string.
-        prefix (str): The prefix to use.
-
-    Returns:
-        str: The string with all hanging lines prefixed.
-    """
-    lines = text.split('\n')
-    lines[1:] = [f'{prefix}{s}'.rstrip() for s in lines[1:]]
-    return '\n'.join(lines)
-
-
 def wrap(text: str, width: int, offset: Union[int, Tuple[int,int]] = 0) -> str:
     """Wrap the given string to the given width.
 
