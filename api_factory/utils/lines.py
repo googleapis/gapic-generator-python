@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import textwrap
+from typing import Tuple, Union
 
 
 def subsequent_indent(text: str, prefix: str) -> str:
@@ -35,47 +36,53 @@ def subsequent_indent(text: str, prefix: str) -> str:
     return '\n'.join(lines)
 
 
-def wrap(text: str, width: int, initial_width: int = None,
-         subsequent_indent: str = '') -> str:
+def wrap(text: str, width: int, offset: Union[int, Tuple[int,int]] = 0) -> str:
     """Wrap the given string to the given width.
 
-    This uses :meth:`textwrap.fill` under the hood, but provides functionality
-    for the initial width, as well as a common line ending for every line
-    but the last.
+    This uses :meth:`textwrap.fill` under the hood, but provides useful
+    offset functionality for Jinja templates.
 
     This is provided to all templates as the ``wrap`` filter.
 
     Args:
         text (str): The initial text string.
-        width (int): The width at which to wrap the text. If either
-            ``subsequent_indent`` or ``antecedent_trailer`` are provided,
-            their width will be automatically counted against this.
-        initial_width (int): Optional. The width of the first line, if
-            different. Defaults to the value of ``width``.
-        subsequent_indent (str): A string to be prepended to every line
-            except the first.
+        width (int): The width at which to wrap the text. If offset is
+            provided, these are automatically counted against this.
+        offset (Union[int, Tuple[int, int]]): An offset for the text.
+            This can be specified as an int or a tuple or two ints (using an
+            int is identical to a tuple with that int specified twice);
+            the tuple form is ``(first_line, subsequent_lines)``.
+
+            The first line value applies to the first line; this value is
+            subtracted from ``width`` for the first line only. No leading
+            whitespace is added (the template is assumed to have it).
+
+            The subsequent lines value applies to all subsequent lines; each
+            line will be indented by this many characters.
 
     Returns:
         str: The wrapped string.
     """
-    initial_width = initial_width or width
-
     # Sanity check: If there is empty text, abort.
     if not text:
         return ''
+
+    # Coerce the offset value into a tuple.
+    if isinstance(offset, int):
+        offset = (offset, offset)
 
     # Protocol buffers preserves single initial spaces after line breaks
     # when parsing comments (such as the space before the "w" in "when" here).
     # Re-wrapping causes these to be two spaces; correct for this.
     text = text.replace('\n ', '\n')
 
-    # If the initial width is different, break off the beginning of the
-    # string.
+    # If the initial width is different (in other words, the initial offset
+    # is non-zero), break off the beginning of the string.
     first = ''
-    if initial_width != width:
+    if offset[0] > 0:
         initial = textwrap.wrap(text,
             break_long_words=False,
-            width=initial_width,
+            width=width - offset[0],
         )
         first = f'{initial[0]}\n'
         text = ' '.join(initial[1:])
@@ -85,8 +92,8 @@ def wrap(text: str, width: int, initial_width: int = None,
         first=first,
         text=textwrap.fill(
             break_long_words=False,
-            initial_indent=subsequent_indent if first else '',
-            subsequent_indent=subsequent_indent,
+            initial_indent=' ' * offset[1] if first else '',
+            subsequent_indent=' ' * offset[1],
             text=text,
             width=width,
         ),
