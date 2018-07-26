@@ -33,16 +33,16 @@ def test_wrap_strips():
 
 def test_wrap_subsequent_offset():
     assert lines.wrap('foo bar baz',
-        width=5, offset=(0, 2)
+        width=5, offset=0, indent=2,
     ) == 'foo\n  bar\n  baz'
 
 
 def test_wrap_initial_offset():
     assert lines.wrap(
         'The hail in Wales falls mainly on the snails.',
-        width=20, offset=(12, 0),
+        width=20, offset=12, indent=0,
     ) == 'The hail\nin Wales falls\nmainly on the\nsnails.'
 
 
-def test_wrap_offset_short():
-    assert lines.wrap('foo bar', width=30, offset=(10, 10)) == 'foo bar'
+def test_wrap_indent_short():
+    assert lines.wrap('foo bar', width=30, indent=10) == 'foo bar'
