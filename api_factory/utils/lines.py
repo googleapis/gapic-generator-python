@@ -13,10 +13,9 @@
 # limitations under the License.
 
 import textwrap
-from typing import Tuple
 
 
-def wrap(text: str, width: int, offset: Tuple[int, int] = (0, 0)) -> str:
+def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
     """Wrap the given string to the given width.
 
     This uses :meth:`textwrap.fill` under the hood, but provides useful
@@ -28,20 +27,13 @@ def wrap(text: str, width: int, offset: Tuple[int, int] = (0, 0)) -> str:
         text (str): The initial text string.
         width (int): The width at which to wrap the text. If offset is
             provided, these are automatically counted against this.
-        offset (Union[int, Tuple[int, int]]): An offset for the text.
-            This is specified as a tuple or two ints; the tuple form
-            is ``(first_line, subsequent_lines)``.
-
-            The intention here is to be an expression of intent
-            (the first line will end up offset by ``X``, all subsequent lines
-            by ``Y``), which means a divergence in implementation:
-
-            The first line value applies to the first line; this value is
-            subtracted from ``width`` for the first line only. No leading
-            whitespace is actually added (the template is assumed to have it).
-
-            The subsequent lines value applies to all subsequent lines; each
-            line will be indented by this many characters.
+        offset (int): The offset for the first line of text.
+            This value is subtracted from ``width`` for the first line
+            only, and is intended to represent the vertical position of
+            the first line as already present in the template.
+            Defaults to the value of ``indent``.
+        indent (int): The number of spaces to indent all lines after the
+            first one.
 
     Returns:
         str: The wrapped string.
@@ -49,6 +41,10 @@ def wrap(text: str, width: int, offset: Tuple[int, int] = (0, 0)) -> str:
     # Sanity check: If there is empty text, abort.
     if not text:
         return ''
+
+    # If the offset is None, default it to the indent value.
+    if offset is None:
+        offset = indent
 
     # Protocol buffers preserves single initial spaces after line breaks
     # when parsing comments (such as the space before the "w" in "when" here).
@@ -58,10 +54,10 @@ def wrap(text: str, width: int, offset: Tuple[int, int] = (0, 0)) -> str:
     # If the initial width is different (in other words, the initial offset
     # is non-zero), break off the beginning of the string.
     first = ''
-    if offset[0] > 0:
+    if offset > 0:
         initial = textwrap.wrap(text,
             break_long_words=False,
-            width=width - offset[0],
+            width=width - offset,
         )
         first = f'{initial[0]}\n'
         text = ' '.join(initial[1:])
@@ -71,8 +67,8 @@ def wrap(text: str, width: int, offset: Tuple[int, int] = (0, 0)) -> str:
         first=first,
         text=textwrap.fill(
             break_long_words=False,
-            initial_indent=' ' * offset[1] if first else '',
-            subsequent_indent=' ' * offset[1],
+            initial_indent=' ' * indent if first else '',
+            subsequent_indent=' ' * indent,
             text=text,
             width=width,
         ),
