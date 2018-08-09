@@ -49,6 +49,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install netstat
+          command: apt-get install net-tools
+      - run:
           name: Install nox.
           command: pip install --pre nox-automation
       - run:
