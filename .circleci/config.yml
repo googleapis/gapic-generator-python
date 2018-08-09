@@ -52,7 +52,12 @@ jobs:
           name: Install nox.
           command: pip install --pre nox-automation
       - run:
-          name: Install protoc.
+          name: Install unzip.
+          command: |
+            apt-get update
+            apt-get install unzip
+      - run:
+          name: Install protoc 3.6.1.
           command: |
             mkdir -p /usr/src/protoc/
             curl --location https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.6.1.zip
