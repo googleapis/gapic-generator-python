@@ -44,11 +44,12 @@ def showcase(session):
     # Try to make it clear if Showcase is not running, so that
     # people do not end up with tons of difficult-to-debug failures over
     # an obvious problem.
-    session.log('-' * 70)
-    session.log('Note: Showcase must be running for these tests to work.')
-    session.log('See https://github.com/googleapis/gapic-showcase')
-    session.log('-' * 70)
-    session.run('netstat', '-plnt', '|', 'grep', ':7469', silent=True)
+    if not os.environ.get('CIRCLECI'):
+        session.log('-' * 70)
+        session.log('Note: Showcase must be running for these tests to work.')
+        session.log('See https://github.com/googleapis/gapic-showcase')
+        session.log('-' * 70)
+        session.run('netstat', '-plnt', '|', 'grep', ':7469', silent=True)
 
     # Install pytest and gapic-generator-python
     session.install('pytest')
