@@ -15,7 +15,9 @@ jobs:
       - checkout
       - run:
           name: Install nox and codecov.
-          command: pip install nox-automation codecov
+          command: |
+            pip install --pre nox-automation
+            pip install codecov
       - run:
           name: Run unit tests.
           command: nox -s "unit(python_version='3.6')"
@@ -30,7 +32,9 @@ jobs:
       - checkout
       - run:
           name: Install nox and codecov.
-          command: pip install nox-automation codecov
+          command: >
+            pip install --pre nox-automation
+            pip install codecov
       - run:
           name: Run unit tests.
           command: nox -s "unit(python_version='3.7')"
@@ -38,6 +42,25 @@ jobs:
           name: Submit coverage data to codecov.
           command: codecov
           when: always
+  showcase:
+    docker:
+      - image: 'python:3.7'
+    steps:
+      - checkout
+      - run:
+          name: Install nox.
+          command: pip install --pre nox-automation
+      - run:
+          name: Download Showcase
+          command: |
+            curl -L https://github.com/googleapis/gapic-showcase/releases/download/v1alpha1-0.0.2/gapic-showcase-v1alpha1-0.0.2-linux-amd64 -o /usr/local/bin/showcase
+            chmod a+x /usr/local/bin/showcase
+      - run:
+          name: Run Showcase in the background.
+          command: /usr/local/bin/showcase &
+      - run:
+          name: Run showcase tests.
+          command: nox -s showcase
   docs:
     docker:
       - image: 'python:3.6'
@@ -45,7 +68,7 @@ jobs:
       - checkout
       - run:
           name: Install nox.
-          command: pip install nox-automation
+          command: pip install --pre nox-automation
       - run:
           name: Build the documentation.
           command: nox -s docs

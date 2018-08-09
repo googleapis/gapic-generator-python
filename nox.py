@@ -14,18 +14,14 @@
 
 from __future__ import absolute_import
 import os
+import tempfile
 
 import nox
 
 
-@nox.session
-@nox.parametrize('python_version', ['3.6', '3.7'])
-def unit(session, python_version='3.7'):
+@nox.session(python=['3.6', '3.7'])
+def unit(session):
     """Run the unit test suite."""
-
-    session.interpreter = 'python{0}'.format(python_version)
-
-    session.virtualenv_dirname = 'unit-{0}'.format(python_version)
 
     session.install('coverage', 'pytest', 'pytest-cov')
     session.install('-e', '.')
@@ -41,11 +37,54 @@ def unit(session, python_version='3.7'):
     )
 
 
-@nox.session
+@nox.session(python='3.7')
+def showcase(session):
+    """Run the Showcase test suite."""
+
+    # Try to make it clear if Showcase is not running, so that
+    # people do not end up with tons of difficult-to-debug failures over
+    # an obvious problem.
+    session.log('-' * 70)
+    session.log('Note: Showcase must be running for these tests to work.')
+    session.log('See https://github.com/googleapis/gapic-showcase')
+    session.log('-' * 70)
+    session.run('netstat', '-plnt', '|', 'grep', ':7469', silent=True)
+
+    # Install pytest and gapic-generator-python
+    session.install('pytest')
+    session.install('-e', '.')
+
+    # Install a client library for Showcase.
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        showcase_version = 'v1alpha1-0.0.2'
+
+        # Download the Showcase descriptor.
+        session.run(
+            'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
+                    f'download/{showcase_version}/'
+                    f'gapic-showcase-{showcase_version}.desc',
+            '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
+            silent=True,
+        )
+
+        # Write out a client library for Showcase.
+        session.run('ls', '-l', tmp_dir)
+        session.run('protoc',
+            f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
+            f'--python_out={tmp_dir}', f'--pyclient_out={tmp_dir}',
+            'google/showcase/v1alpha1/showcase.proto',
+        )
+
+        # Install the library.
+        session.install(tmp_dir)
+
+    session.run('py.test', '--quiet', os.path.join('tests', 'system'))
+
+
+@nox.session(python='3.6')
 def docs(session):
     """Build the docs."""
 
-    session.interpreter = 'python3.6'
     session.install('sphinx', 'sphinx_rtd_theme')
     session.install('.')
 
