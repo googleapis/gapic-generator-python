@@ -14,6 +14,7 @@
 
 import pytest
 
+from google.auth.credentials import AnonymousCredentials
 from google.showcase import Showcase
 from google.showcase_v1alpha1.showcase.transports.grpc import (
     ShowcaseGrpcTransport,
@@ -24,7 +25,7 @@ import grpc
 
 @pytest.fixture
 def showcase():
-    transport = ShowcaseGrpcTransport()
+    transport = ShowcaseGrpcTransport(credentials=AnonymousCredentials())
     transport.__dict__['grpc_channel'] = grpc.insecure_channel(
         transport.SERVICE_ADDRESS,
     )
