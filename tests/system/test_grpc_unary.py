@@ -14,12 +14,12 @@
 
 import pytest
 
-from google import showcase_v1alpha1
+from google import showcase
 from google.rpc import code_pb2
 
 
 def test_unary():
-    client = showcase_v1alpha1.Showcase()
+    client = showcase.Showcase()
     response = client.echo({
         'content': 'The hail in Wales falls mainly on the snails.',
     })
@@ -27,7 +27,7 @@ def test_unary():
 
 
 def test_unary_error():
-    client = showcase_v1alpha1.Showcase()
+    client = showcase.Showcase()
     with pytest.raises(ValueError):
         response = client.echo({
             'error': code_pb2.Status.Value('INVALID_ARGUMENT'),
