@@ -62,7 +62,7 @@ def showcase(session):
         # Download the Showcase descriptor.
         session.run(
             'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
-                    f'download/{showcase_version}/'
+                    f'download/v{showcase_version}/'
                     f'gapic-showcase-v1alpha1-{showcase_version}.desc',
             '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
             silent=True,
