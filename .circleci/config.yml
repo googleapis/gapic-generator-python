@@ -6,7 +6,10 @@ workflows:
     jobs:
       - unit-3.6
       - unit-3.7
-      - showcase
+      - showcase:
+          requires:
+            - unit-3.6
+            - unit-3.7
       - docs
 jobs:
   unit-3.6:
