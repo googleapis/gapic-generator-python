@@ -11,8 +11,7 @@ setuptools.setup(
     name='{{ api.naming.warehouse_package_name }}',
     version='0.0.1',
     {% if api.naming.namespace -%}
-    packages=['{{ api.naming.namespace|join('.')|lower }}.%s' % i for i in
-              setuptools.find_packages('{{ api.naming.namespace|join('/')|lower }}/')],
+    packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages={{ api.naming.namespace_packages }},
     {% else -%}
     packages=setuptools.find_packages(),
