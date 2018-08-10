@@ -67,7 +67,7 @@ jobs:
       - run:
           name: Download Showcase
           command: |
-            curl --location https://github.com/googleapis/gapic-showcase/releases/download/v1alpha1-0.0.2/gapic-showcase-v1alpha1-0.0.2-linux-amd64 --output /usr/local/bin/showcase
+            curl --location https://github.com/googleapis/gapic-showcase/releases/download/v1alpha1-0.0.3/gapic-showcase-v1alpha1-0.0.3-linux-amd64 --output /usr/local/bin/showcase
             chmod a+x /usr/local/bin/showcase
       - run:
           name: Run Showcase in the background.
