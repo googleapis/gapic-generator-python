@@ -15,7 +15,8 @@
 import pytest
 
 from google import showcase
-from google.rpc import code_pb2
+from google.api_core import exceptions
+from google.rpc import status_pb2
 
 
 def test_unary():
@@ -28,7 +29,7 @@ def test_unary():
 
 def test_unary_error():
     client = showcase.Showcase()
-    with pytest.raises(ValueError):
+    with pytest.raises(exceptions.InvalidArgument):
         response = client.echo({
-            'error': code_pb2.Status.Value('INVALID_ARGUMENT'),
+            'error': status_pb2.Status.Value('INVALID_ARGUMENT'),
         })
