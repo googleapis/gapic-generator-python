@@ -57,13 +57,13 @@ def showcase(session):
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
-        showcase_version = 'v1alpha1-0.0.3'
+        showcase_version = '0.0.3'
 
         # Download the Showcase descriptor.
         session.run(
             'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
                     f'download/{showcase_version}/'
-                    f'gapic-showcase-{showcase_version}.desc',
+                    f'gapic-showcase-v1alpha1-{showcase_version}.desc',
             '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
             silent=True,
         )
