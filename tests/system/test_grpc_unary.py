@@ -14,22 +14,24 @@
 
 import pytest
 
-from google import showcase
 from google.api_core import exceptions
-from google.rpc import status_pb2
+from google.rpc import code_pb2
 
 
-def test_unary():
-    client = showcase.Showcase()
-    response = client.echo({
+def test_unary(showcase):
+    response = showcase.echo({
         'content': 'The hail in Wales falls mainly on the snails.',
     })
     assert response.content == 'The hail in Wales falls mainly on the snails.'
 
 
-def test_unary_error():
-    client = showcase.Showcase()
-    with pytest.raises(exceptions.InvalidArgument):
-        response = client.echo({
-            'error': status_pb2.Status.Value('INVALID_ARGUMENT'),
+def test_unary_error(showcase):
+    with pytest.raises(exceptions.InvalidArgument) as exc:
+        showcase.echo({
+            'error': {
+                'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
+                'message': 'Bad things! Bad things!',
+            },
         })
+    assert exc.value.code == 400
+    assert exc.value.message == 'Bad things! Bad things!'
