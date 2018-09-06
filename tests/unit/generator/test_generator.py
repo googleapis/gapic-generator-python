@@ -117,6 +117,7 @@ def test_render_templates_duplicate():
     g = generator.Generator(api_schema=make_api())
 
     # Determine the templates to be rendered.
+    # In the case of duplication, we want the last one encountered to win.
     templates = ('foo.j2', 'foo.j2')
     with mock.patch.object(jinja2.Environment, 'get_template') as get_template:
         get_template.side_effect = (
