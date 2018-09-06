@@ -65,12 +65,12 @@ def test_get_response():
 
     # Mock all the rendering methods.
     with mock.patch.object(g, '_render_templates') as _render_templates:
-        _render_templates.return_value = [
-            plugin_pb2.CodeGeneratorResponse.File(
+        _render_templates.return_value = {
+            'template_file': plugin_pb2.CodeGeneratorResponse.File(
                 name='template_file',
                 content='This was a template.',
             ),
-        ]
+        }
 
         # Okay, now run the `get_response` method.
         response = g.get_response()
@@ -109,10 +109,10 @@ def test_render_templates():
 
     # Test that we get back the expected content for each template.
     assert len(files) == 2
-    assert files[0].name == 'foo'
-    assert files[1].name == 'bar'
-    assert files[0].content == 'Hello, I am `foo.j2`.\n'
-    assert files[1].content == 'Hello, I am `bar.j2`.\n'
+    assert files['foo'].name == 'foo'
+    assert files['bar'].name == 'bar'
+    assert files['foo'].content == 'Hello, I am `foo.j2`.\n'
+    assert files['bar'].content == 'Hello, I am `bar.j2`.\n'
 
 
 def test_render_templates_additional_context():
@@ -130,8 +130,8 @@ def test_render_templates_additional_context():
 
     # Test that we get back the expected content for each template.
     assert len(files) == 1
-    assert files[0].name == 'foo'
-    assert files[0].content == 'A bird!\n'
+    assert files['foo'].name == 'foo'
+    assert files['foo'].content == 'A bird!\n'
 
 
 def test_get_filenames():
