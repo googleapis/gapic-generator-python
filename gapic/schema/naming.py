@@ -187,4 +187,4 @@ class Naming:
         # Piece the name and namespace together to come up with the
         # proper package name.
         answer = list(self.namespace) + self.name.split(' ')
-        return '-'.join(answer).lstrip('-').lower()
+        return '-'.join(answer).lower()
