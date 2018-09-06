@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import io
-import os
 from typing import Mapping
 from unittest import mock
 
@@ -113,6 +111,26 @@ def test_render_templates():
     assert files['bar'].name == 'bar'
     assert files['foo'].content == 'Hello, I am `foo.j2`.\n'
     assert files['bar'].content == 'Hello, I am `bar.j2`.\n'
+
+
+def test_render_templates_duplicate():
+    g = generator.Generator(api_schema=make_api())
+
+    # Determine the templates to be rendered.
+    templates = ('foo.j2', 'foo.j2')
+    with mock.patch.object(jinja2.Environment, 'get_template') as get_template:
+        get_template.side_effect = (
+            jinja2.Template(f'Hello, I am the first.'),
+            jinja2.Template(f'Hello, I am the second.'),
+        )
+
+        # Render the templates.
+        files = g._render_templates(templates)
+
+    # Test that we get back the expected content for each template.
+    assert len(files) == 1
+    assert files['foo'].name == 'foo'
+    assert files['foo'].content == 'Hello, I am the second.\n'
 
 
 def test_render_templates_additional_context():
