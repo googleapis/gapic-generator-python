@@ -171,6 +171,16 @@ class Naming:
         return tuple(answer)
 
     @property
+    def versioned_module_name(self) -> str:
+        """Return the versiond module name (e.g. ``apiname_v1``).
+
+        If there is no version, this is the same as ``module_name``.
+        """
+        if self.version:
+            return f'{self.module_name}_{self.version}'
+        return self.module_name
+
+    @property
     def warehouse_package_name(self) -> str:
         """Return the appropriate Python package name for Warehouse."""
 

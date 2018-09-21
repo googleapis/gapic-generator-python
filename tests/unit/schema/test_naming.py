@@ -35,6 +35,24 @@ def test_module_name():
     assert n.module_name == 'genie'
 
 
+def test_versioned_module_name_no_version():
+    n = make_naming(
+        name='Genie',
+        namespace=['Agrabah', 'Lamp'],
+        version='',
+    )
+    assert n.versioned_module_name == 'genie'
+
+
+def test_versioned_module_name():
+    n = make_naming(
+        name='Genie',
+        namespace=['Agrabah', 'Lamp'],
+        version='v2',
+    )
+    assert n.versioned_module_name == 'genie_v2'
+
+
 def test_namespace_packages():
     n = make_naming(name='BigQuery', namespace=('Google', 'Cloud'))
     assert n.namespace_packages == ('google', 'google.cloud')

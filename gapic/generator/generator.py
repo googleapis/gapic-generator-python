@@ -179,6 +179,8 @@ class Generator:
         ).lstrip(os.path.sep)
 
         # Replace the $name and $version variables.
+        filename = filename.replace('$name_$version',
+                                    self._api.naming.versioned_module_name)
         filename = filename.replace('$version', self._api.naming.version)
         filename = filename.replace('$name', self._api.naming.module_name)
 
