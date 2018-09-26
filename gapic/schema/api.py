@@ -69,13 +69,19 @@ class Proto:
         """Return the appropriate module name for this service.
 
         Returns:
-            str: The service name, in snake case.
+            str: The module name for this service (which is the service
+                name in snake case).
         """
         return to_snake_case(self.name.split('/')[-1][:-len('.proto')])
 
     @cached_property
     def top(self) -> 'Proto':
-        """Return a proto shim which is only aware of top-level objects."""
+        """Return a proto shim which is only aware of top-level objects.
+
+        This is useful in a situation where a template wishes to iterate
+        over only those messages and enums that are at the top level of the
+        file.
+        """
         return type(self)(
             file_pb2=self.file_pb2,
             services=self.services,
@@ -307,7 +313,8 @@ class _ProtoBuilder:
                 ``SourceCodeInfo.Location`` in ``descriptor.proto``.
 
         Return:
-            Mapping: A sequence of the objects that were loaded.
+            Mapping[str, Union[~.MessageType, ~.Service, ~.EnumType]]: A
+                sequence of the objects that were loaded.
         """
         # Iterate over the list of children provided and call the
         # applicable loader function on each.
