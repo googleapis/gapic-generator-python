@@ -444,7 +444,7 @@ class Service:
         then module), and do not contain duplicates.
 
         Returns:
-            Sequence[str, str]: The package and module pair, intended
+            Sequence[Tuple[str, str]]: The package and module pair, intended
             for use in a ``from package import module`` type
             of statement.
         """

@@ -82,14 +82,14 @@ class Proto:
         return to_snake_case(self.name.split('/')[-1][:-len('.proto')])
 
     @cached_property
-    def python_modules(self) -> Tuple[Sequence[str], str]:
+    def python_modules(self) -> Sequence[Tuple[str, str]]:
         """Return a sequence of Python modules, for import.
 
         The results of this method are in alphabetical order (by package,
         then module), and do not contain duplicates.
 
         Returns:
-            Tuple[Sequence[str], str]: The package and module pair, intended
+            Sequence[Tuple[str, str]]: The package and module pair, intended
             for use in a ``from package import module`` type
             of statement.
         """
