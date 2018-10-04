@@ -106,7 +106,7 @@ class Proto:
 
         # We may have gotten an import for this proto.
         # Obviously no Python module may import itself; get rid of that.
-        answer.remove(self.meta.address.python_import)
+        answer = answer.difference({self.meta.address.python_import})
 
         # Done; return the sorted sequence.
         return tuple(sorted(list(answer)))
