@@ -44,7 +44,7 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
 
     # If the offset is None, default it to the indent value.
     if offset is None:
-        offset = indent + 3
+        offset = indent
 
     # Protocol buffers preserves single initial spaces after line breaks
     # when parsing comments (such as the space before the "w" in "when" here).
