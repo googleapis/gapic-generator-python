@@ -27,7 +27,7 @@ from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
 from gapic.schema import wrappers
-from gapic.schema.naming import Naming
+from gapic.schema import naming as api_naming
 from gapic.utils import cached_property
 from gapic.utils import to_snake_case
 
@@ -50,7 +50,7 @@ class Proto:
 
     @classmethod
     def build(cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
-            file_to_generate: bool, naming: Naming,
+            file_to_generate: bool, naming: api_naming.Naming,
             prior_protos: Mapping[str, 'Proto'] = None,
             ) -> 'Proto':
         """Build and return a Proto instance.
@@ -143,7 +143,7 @@ class API:
     An instance of this object is made available to every template
     (as ``api``).
     """
-    naming: Naming
+    naming: api_naming.Naming
     protos: Mapping[str, Proto]
 
     @classmethod
@@ -162,7 +162,7 @@ class API:
                 rather than explicit targets.
         """
         # Save information about the overall naming for this API.
-        naming = Naming.build(*filter(
+        naming = api_naming.Naming.build(*filter(
             lambda fd: fd.package.startswith(package),
             file_descriptors,
         ))
@@ -221,7 +221,7 @@ class _ProtoBuilder:
 
     def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
                  file_to_generate: bool,
-                 naming: Naming,
+                 naming: api_naming.Naming,
                  prior_protos: Mapping[str, Proto] = None):
         self.messages = {}
         self.enums = {}
