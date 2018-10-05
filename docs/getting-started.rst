@@ -107,8 +107,8 @@ Here is a test script:
   # to change which underlying transport layer is being used.
   ia = vision.ImageAnnotator()
 
-  # Piece together the request object.
-  request = vision.types.BatchAnnotateImagesRequest({
+  # Send the request to the server and get the response.
+  response = ia.batch_annotate_images({
       'requests': [{
           'features': [{
               'type': vision.types.image_annotator.Feature.Type.LABEL_DETECTION
@@ -119,9 +119,6 @@ Here is a test script:
           }},
       }],
   })
-
-  # Send the request to the server and get the response.
-  response = ia.batch_annotate_images(request)
   print(response)
 
 
