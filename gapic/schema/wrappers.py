@@ -148,7 +148,7 @@ class MessageType:
         """Return all composite fields used in this proto's messages."""
         answer = []
         for field in self.fields.values():
-            if field.message and not field.enum:
+            if field.message or field.enum:
                 answer.append(field.type)
         return tuple(answer)
 
@@ -329,7 +329,7 @@ class Method:
         )
 
     @utils.cached_property
-    def ref_types(self) -> Sequence[MessageType]:
+    def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
         """Return types referenced by this method."""
         # Begin with the input (request) and output (response) messages.
         answer = [self.input, self.output]
@@ -395,7 +395,7 @@ class MethodSignature:
         return next(iter(self.fields.values()))
 
     @utils.cached_property
-    def composite_types(self) -> Sequence[Field]:
+    def composite_types(self) -> Sequence[Union[MessageType, EnumType]]:
         """Return all composite types used in this signature."""
         answer = []
         for field in self.fields.values():
