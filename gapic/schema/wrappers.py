@@ -519,7 +519,7 @@ class Service:
         answer = set()
         for method in self.methods.values():
             for t in method.ref_types:
-                answer.add(t.ident.context(self).python_import)
+                answer.add(t.ident.python_import)
         return tuple(sorted(list(answer)))
 
     @property
