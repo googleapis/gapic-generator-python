@@ -42,6 +42,7 @@ class Proto:
     messages: Mapping[str, wrappers.MessageType]
     enums: Mapping[str, wrappers.EnumType]
     file_to_generate: bool
+    collisions: Set[str] = dataclasses.field(default_factory=frozenset)
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
@@ -83,32 +84,6 @@ class Proto:
         return to_snake_case(self.name.split('/')[-1][:-len('.proto')])
 
     @cached_property
-    def names(self) -> Set[str]:
-        """Return a set of names used by this proto.
-
-        This is used for detecting naming collisions in the module names
-        used for imports.
-        """
-        # Add names of all enums, messages, and fields.
-        answer = {e.name for e in self.enums.values()}
-        for message in self.messages.values():
-            answer = answer.union({f.name for f in message.fields.values()})
-            answer.add(message.name)
-
-        # Identify any import module names where the same module name is used
-        # from distinct packages.
-        modules = {}
-        for t in chain(*[m.field_types for m in self.messages.values()]):
-            modules.setdefault(t.ident.module, set())
-            modules[t.ident.module].add(t.ident.package)
-        for module_name, packages in modules.items():
-            if len(packages) > 1:
-                answer.add(module_name)
-
-        # Return the set of collision names.
-        return frozenset(answer)
-
-    @cached_property
     def python_modules(self) -> Sequence[Tuple[str, str]]:
         """Return a sequence of Python modules, for import.
 
@@ -121,12 +96,12 @@ class Proto:
             of statement.
         """
         answer = set()
-        self_reference = self.meta.address.context(self).python_import
+        self_reference = self.meta.address.python_import
         for t in chain(*[m.field_types for m in self.messages.values()]):
             # Add the appropriate Python import for the field.
             # Sanity check: We do make sure that we are not trying to have
             # a module import itself.
-            imp = t.ident.context(self).python_import
+            imp = t.ident.python_import
             if imp != self_reference:
                 answer.add(imp)
 
@@ -159,7 +134,7 @@ class Proto:
         returns the same string, but it returns a modified version if
         it will cause a naming collision with messages or fields in this proto.
         """
-        if string in self.names:
+        if string in self.collisions:
             return self.disambiguate(f'_{string}')
         return string
 
@@ -281,6 +256,8 @@ class _ProtoBuilder:
         # for each item as it is loaded.
         self.address = metadata.Address(
             api_naming=naming,
+            collisions=self._get_names(file_descriptor)
+                if file_to_generate else frozenset(),
             module=file_descriptor.name.split('/')[-1][:-len('.proto')],
             package=tuple(file_descriptor.package.split('.')),
         )
@@ -348,6 +325,60 @@ class _ProtoBuilder:
         return collections.ChainMap({}, self.messages,
             *[p.messages for p in self.prior_protos.values()],
         )
+
+    def _flatten_message_pbs(self,
+            message_pbs: Sequence[descriptor_pb2.DescriptorProto]
+            ) -> Sequence[descriptor_pb2.DescriptorProto]:
+        """Return a list of protobuf messages, including nested ones."""
+        answer = []
+        for message_pb in message_pbs:
+            answer.append(message_pb)
+            answer += self._flatten_message_pbs(message_pb.nested_type)
+        return answer
+
+    def _get_names(self, fd: descriptor_pb2.FileDescriptorProto) -> Set[str]:
+        """Return a set of names used by this proto.
+
+        This is used for detecting naming collisions in the module names
+        used for imports.
+
+        We determine the names from the FileDescriptorSet directly so that
+        we already know the full list as we create the pieces of the structure.
+        """
+        field_types = set()
+
+        # Piece together a list of enum, message, and field names.
+        # The case scheme in protocol buffers matches the case scheme in
+        # Python for all of these, so no case-conversion is required.
+        answer = {e.name for e in fd.enum_type}
+        for message_pb in self._flatten_message_pbs(fd.message_type):
+            answer = answer.union({message_pb.name}).union(
+                {f.name for f in message_pb.field},
+            ).union(
+                {e.name for e in message_pb.enum_type},
+            )
+
+            # Also track the field types we encounter.
+            field_types = field_types.union(
+                {f.type_name.lstrip('.') for f in message_pb.field
+                if isinstance(f.type_name, str)},
+            )
+
+        # Identify any import module names where the same module name is used
+        # from distinct packages.
+        modules = {}
+        all_types = collections.ChainMap({}, self.all_messages, self.all_enums)
+        for field_type in field_types:
+            t = all_types.get(field_type, None)
+            if t:
+                modules.setdefault(t.ident.module, set())
+                modules[t.ident.module].add(t.ident.package)
+        for module_name, packages in modules.items():
+            if len(packages) > 1:
+                answer.add(module_name)
+
+        # Return the set of collision names.
+        return frozenset(answer)
 
     def _get_operation_type(self,
             response_type: wrappers.Method,
@@ -430,10 +461,20 @@ class _ProtoBuilder:
         # `_load_message` method.
         answer = collections.OrderedDict()
         for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
+            # Ensure that the message or enum to which this field
+            # is attached has appropriate context.
+            message = self.all_messages.get(field_pb.type_name.lstrip('.'))
+            if message:
+                message = message.bind(address.collisions)
+            enum = self.all_enums.get(field_pb.type_name.lstrip('.'))
+            if enum:
+                enum = enum.bind(address.collisions)
+
+            # Wrap and save the field.
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
-                enum=self.all_enums.get(field_pb.type_name.lstrip('.')),
-                message=self.all_messages.get(field_pb.type_name.lstrip('.')),
+                enum=enum,
+                message=message,
                 meta=metadata.Metadata(
                     address=address.child(field_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
@@ -473,20 +514,22 @@ class _ProtoBuilder:
                     response_type=self.all_messages[
                         address.resolve(lro.response_type)
                     ],
-                    metadata_type=self.all_messages.get(
-                        address.resolve(lro.metadata_type),
-                    ),
+                    metadata_type=self.all_messages[
+                        address.resolve(lro.metadata_type)
+                    ],
                 )
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
-                input=self.all_messages[meth_pb.input_type.lstrip('.')],
+                input=self.all_messages[meth_pb.input_type.lstrip('.')].bind(
+                    address.collisions,
+                ),
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=address.child(meth_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
-                output=output_type,
+                output=output_type.bind(address.collisions),
             )
 
         # Done; return the answer.
@@ -578,16 +621,35 @@ class _ProtoBuilder:
         return self.enums[address.proto]
 
     def _load_service(self,
-            service: descriptor_pb2.ServiceDescriptorProto,
+            svc_pb: descriptor_pb2.ServiceDescriptorProto,
             address: metadata.Address,
             path: Tuple[int],
             ) -> wrappers.Service:
         """Load comments for a service and its methods."""
-        address = address.child(service.name, path)
+        address = address.child(svc_pb.name, path)
+
+        # Determine the names used by this service.
+        # Method names are `snake_case` in Python, so we case-convert those.
+        collisions = {svc_pb.name}.union(
+            {to_snake_case(i.name) for i in svc_pb.method},
+        )
+
+        # Identify any import module names where the same module name is used
+        # from distinct packages.
+        modules = {}
+        for t in chain(*[m.ref_types for m in self._get_methods(
+                svc_pb.method, address=address, path=path + (2,)).values()]):
+            modules.setdefault(t.ident.module, set())
+            modules[t.ident.module].add(t.ident.package)
+        for module_name, packages in modules.items():
+            if len(packages) > 1:
+                collisions.add(module_name)
+
+        # Augment the address with the collision information.
+        address = address.bind(collisions)
 
         # Put together a dictionary of the service's methods.
-        methods = self._get_methods(
-            service.method,
+        methods = self._get_methods(svc_pb.method,
             address=address,
             path=path + (2,),
         )
@@ -599,6 +661,6 @@ class _ProtoBuilder:
                 documentation=self.docs.get(path, self.EMPTY),
             ),
             methods=methods,
-            service_pb=service,
+            service_pb=svc_pb,
         )
         return self.services[address.proto]
