@@ -153,14 +153,14 @@ class Address:
             parent=self.parent + (self.name,) if self.name else self.parent,
         )
 
-    def context(self, context) -> 'Address':
+    def context(self, collisions: Set[str]) -> 'Address':
         """Return a derivative of this address with the provided context.
 
         This method is used to address naming collisions. The returned
         ``Address`` object aliases module names to avoid naming collisions in
         the file being written.
         """
-        return dataclasses.replace(self, collisions=frozenset(context.names))
+        return dataclasses.replace(self, collisions=frozenset(collisions))
 
     def rel(self, address: 'Address') -> str:
         """Return an identifier for this type, relative to the given address.
@@ -259,6 +259,17 @@ class Metadata:
             return '\n\n'.join(self.documentation.leading_detached_comments)
         return ''
 
+    def context(self, collisions: Set[str]) -> 'Metadata':
+        """Return a derivative of this metadata with the provided context.
+
+        This method is used to address naming collisions. The returned
+        ``Address`` object aliases module names to avoid naming collisions in
+        the file being written.
+        """
+        return dataclasses.replace(self,
+            address=self.address.context(collisions),
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class FieldIdentifier:
@@ -275,7 +286,3 @@ class FieldIdentifier:
         if self.repeated:
             return f'Sequence[{self.ident.sphinx}]'
         return self.ident.sphinx
-
-    def context(self, arg) -> 'FieldIdentifier':
-        """Return self. Provided for compatibility with Address."""
-        return self

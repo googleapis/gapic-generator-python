@@ -121,14 +121,13 @@ class Proto:
             of statement.
         """
         answer = set()
-        self_reference = self.meta.address.context(self).python_import
+        self_reference = self.meta.address.python_import
         for t in chain(*[m.field_types for m in self.messages.values()]):
             # Add the appropriate Python import for the field.
             # Sanity check: We do make sure that we are not trying to have
             # a module import itself.
-            imp = t.ident.context(self).python_import
-            if imp != self_reference:
-                answer.add(imp)
+            if t.ident.python_import != self_reference:
+                answer.add(t.ident.python_import)
 
         # Done; return the sorted sequence.
         return tuple(sorted(list(answer)))
@@ -326,7 +325,10 @@ class _ProtoBuilder:
     @property
     def proto(self) -> Proto:
         """Return a Proto dataclass object."""
-        return Proto(
+        # Create a "context-naïve" proto.
+        # This has everything but is ignorant of naming collisions in the
+        # ultimate file that will be written.
+        naive = Proto(
             enums=self.enums,
             file_pb2=self.file_descriptor,
             file_to_generate=self.file_to_generate,
@@ -335,6 +337,27 @@ class _ProtoBuilder:
             meta=metadata.Metadata(
                 address=self.address,
             ),
+        )
+
+        # If this is not a file being generated, we do not need to
+        # do anything else.
+        if not self.file_to_generate:
+            return naive
+
+        # Return a context-aware proto object.
+        # Note: The services bind to themselves, because services get their
+        # own output files.
+        return dataclasses.replace(naive,
+            enums=collections.OrderedDict([
+                (k, v.context(naive.names)) for k, v in naive.enums.items()
+            ]),
+            messages=collections.OrderedDict([
+                (k, v.context(naive.names)) for k, v in naive.messages.items()
+            ]),
+            services=collections.OrderedDict([
+                (k, v.context(v.names)) for k, v in naive.services.items()
+            ]),
+            meta=naive.meta.context(naive.names),
         )
 
     @cached_property
