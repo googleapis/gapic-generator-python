@@ -128,6 +128,18 @@ class Field:
         raise TypeError('Unrecognized protobuf type. This code should '
                         'not be reachable; please file a bug.')
 
+    def bind(self, collisions: Set[str]) -> 'Field':
+        """Return a derivative of this field aware of the given collisions.
+
+        This method is used to address naming collisions, and is a pass-through
+        to :meth:`~.Address.context`.
+        """
+        return dataclasses.replace(self,
+            message=self.message.bind(collisions) if self.message else None,
+            enum=self.enum.bind(collisions) if self.enum else None,
+            meta=self.meta.bind(collisions),
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class MessageType:
@@ -151,6 +163,15 @@ class MessageType:
             if field.message or field.enum:
                 answer.append(field.type)
         return tuple(answer)
+
+    @property
+    def ident(self) -> metadata.Address:
+        """Return the identifier data to be used in templates."""
+        return self.meta.address
+
+    def bind(self, collisions: Set[str]) -> 'MessageType':
+        """Return a copy of this message, with a rebound address."""
+        return dataclasses.replace(self, meta=self.meta.bind(collisions))
 
     def get_field(self, *field_path: Sequence[str]) -> Field:
         """Return a field arbitrarily deep in this message's structure.
@@ -193,11 +214,6 @@ class MessageType:
         # message.
         return cursor.message.get_field(*field_path[1:])
 
-    @property
-    def ident(self) -> metadata.Address:
-        """Return the identifier data to be used in templates."""
-        return self.meta.address
-
 
 @dataclasses.dataclass(frozen=True)
 class EnumValueType:
@@ -227,6 +243,10 @@ class EnumType:
     def ident(self) -> metadata.Address:
         """Return the identifier data to be used in templates."""
         return self.meta.address
+
+    def bind(self, collisions: Set[str]) -> 'EnumType':
+        """Return a copy of this enum, with a rebound address."""
+        return dataclasses.replace(self, meta=self.meta.bind(collisions))
 
 
 @dataclasses.dataclass(frozen=True)
@@ -261,7 +281,7 @@ class OperationType:
     alongside :class:`~.MessageType` instances.
     """
     lro_response: MessageType
-    lro_metadata: MessageType = None
+    lro_metadata: MessageType
 
     @property
     def ident(self) -> metadata.Address:
@@ -297,6 +317,12 @@ class OperationType:
         # that this generator is not forced to take an entire dependency
         # on google.api_core just to get these strings.
         return 'Operation'
+
+    def bind(self, collisions: Set[str]) -> 'OperationType':
+        return dataclasses.replace(self,
+            lro_response=self.lro_response.bind(collisions),
+            lro_metadata=self.lro_metadata.bind(collisions),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -372,10 +398,10 @@ class Method:
             # the method's `input` message.
             answer.append(MethodSignature(
                 name=sig.function_name if sig.function_name else self.name,
-                fields=collections.OrderedDict([
-                    (f.split('.')[-1], self.input.get_field(f))
-                    for f in sig.fields
-                ]),
+                fields=collections.OrderedDict([(
+                    f.split('.')[-1],
+                    self.input.get_field(f).bind(self.meta.address.collisions),
+                ) for f in sig.fields]),
             ))
 
         # Done; return a tuple of signatures.

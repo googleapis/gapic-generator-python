@@ -25,13 +25,13 @@ def test_address_str():
     assert str(addr) == 'baz.Bacon'
 
 
-def test_address_str_context():
+def test_address_str_bind():
     Names = collections.namedtuple('Names', ['names'])
     addr = metadata.Address(
         package=('foo', 'bar'),
         module='baz',
         name='Bacon',
-    ).context(Names(names={'baz'}))
+    ).bind(Names(names={'baz'}))
     assert str(addr) == 'fb_baz.Bacon'
 
 
@@ -141,9 +141,9 @@ def test_doc_detached_joined():
     assert meta.doc == 'foo\n\nbar'
 
 
-def test_field_identifier_context():
+def test_field_identifier_bind():
     fi = metadata.FieldIdentifier(ident=metadata.Address(), repeated=False)
-    assert fi.context(None) is fi
+    assert fi.bind(None) is fi
 
 
 def make_doc_meta(

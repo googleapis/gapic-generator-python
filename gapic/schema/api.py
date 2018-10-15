@@ -256,7 +256,8 @@ class _ProtoBuilder:
         # for each item as it is loaded.
         self.address = metadata.Address(
             api_naming=naming,
-            collisions=self._get_names(file_descriptor),
+            collisions=self._get_names(file_descriptor)
+                if file_to_generate else frozenset(),
             module=file_descriptor.name.split('/')[-1][:-len('.proto')],
             package=tuple(file_descriptor.package.split('.')),
         )
@@ -460,10 +461,20 @@ class _ProtoBuilder:
         # `_load_message` method.
         answer = collections.OrderedDict()
         for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
+            # Ensure that the message or enum to which this field
+            # is attached has appropriate context.
+            message = self.all_messages.get(field_pb.type_name.lstrip('.'))
+            if message:
+                message = message.bind(address.collisions)
+            enum = self.all_enums.get(field_pb.type_name.lstrip('.'))
+            if enum:
+                enum = enum.bind(address.collisions)
+
+            # Wrap and save the field.
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
-                enum=self.all_enums.get(field_pb.type_name.lstrip('.')),
-                message=self.all_messages.get(field_pb.type_name.lstrip('.')),
+                enum=enum,
+                message=message,
                 meta=metadata.Metadata(
                     address=address.child(field_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
@@ -503,20 +514,22 @@ class _ProtoBuilder:
                     response_type=self.all_messages[
                         address.resolve(lro.response_type)
                     ],
-                    metadata_type=self.all_messages.get(
-                        address.resolve(lro.metadata_type),
-                    ),
+                    metadata_type=self.all_messages[
+                        address.resolve(lro.metadata_type)
+                    ],
                 )
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
-                input=self.all_messages[meth_pb.input_type.lstrip('.')],
+                input=self.all_messages[meth_pb.input_type.lstrip('.')].bind(
+                    address.collisions,
+                ),
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=address.child(meth_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
-                output=output_type,
+                output=output_type.bind(address.collisions),
             )
 
         # Done; return the answer.
@@ -633,7 +646,7 @@ class _ProtoBuilder:
                 collisions.add(module_name)
 
         # Augment the address with the collision information.
-        address = address.context(collisions)
+        address = address.bind(collisions)
 
         # Put together a dictionary of the service's methods.
         methods = self._get_methods(svc_pb.method,

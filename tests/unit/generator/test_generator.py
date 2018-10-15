@@ -167,7 +167,7 @@ def test_render_templates_duplicate():
     assert files['foo'].content == 'Hello, I am the second.\n'
 
 
-def test_render_templates_additional_context():
+def test_render_templates_additional_bind():
     g = generator.Generator(api_schema=make_api())
 
     # Determine the templates to be rendered.

@@ -153,7 +153,7 @@ class Address:
             parent=self.parent + (self.name,) if self.name else self.parent,
         )
 
-    def context(self, collisions: Set[str]) -> 'Address':
+    def bind(self, collisions: Set[str]) -> 'Address':
         """Return a derivative of this address with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -259,6 +259,16 @@ class Metadata:
             return '\n\n'.join(self.documentation.leading_detached_comments)
         return ''
 
+    def bind(self, collisions: Set[str]) -> 'Metadata':
+        """Return a derivative of this metadata with the provided context.
+
+        This method is used to address naming collisions, and is a pass-through
+        to :meth:`~.Address.context`.
+        """
+        return dataclasses.replace(self,
+            address=self.address.bind(collisions),
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class FieldIdentifier:
@@ -276,6 +286,6 @@ class FieldIdentifier:
             return f'Sequence[{self.ident.sphinx}]'
         return self.ident.sphinx
 
-    def context(self, arg) -> 'FieldIdentifier':
+    def bind(self, arg) -> 'FieldIdentifier':
         """Return self. Provided for compatibility with Address."""
         return self
