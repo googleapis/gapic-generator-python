@@ -181,12 +181,17 @@ class MessageType:
         references.
         """
         return dataclasses.replace(self,
-            fields={k: v.context(collisions) for k, v in self.fields.items()}
-                if not skip_fields else self.fields,
-            nested_enums={k: v.context(collisions)
-                for k, v in self.nested_enums.items()},
-            nested_messages={k: v.context(collisions, skip_fields=skip_fields)
-                for k, v in self.nested_messages.items()},
+            fields=collections.OrderedDict([
+                (k, v.context(collisions)) for k, v in self.fields.items()
+            ]) if not skip_fields else self.fields,
+            nested_enums=collections.OrderedDict([
+                (k, v.context(collisions))
+                for k, v in self.nested_enums.items()
+            ]),
+            nested_messages=collections.OrderedDict([
+                (k, v.context(collisions, skip_fields=skip_fields))
+                for k, v in self.nested_messages.items()
+            ]),
             meta=self.meta.context(collisions),
         )
 
@@ -619,7 +624,8 @@ class Service:
         in the file being written.
         """
         return dataclasses.replace(self,
-            methods={k: v.context(collisions)
-                for k, v in self.methods.items()},
+            methods=collections.OrderedDict([
+                (k, v.context(collisions)) for k, v in self.methods.items()
+            ]),
             meta=self.meta.context(collisions),
         )

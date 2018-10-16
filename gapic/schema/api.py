@@ -143,10 +143,14 @@ class Proto:
         return type(self)(
             file_pb2=self.file_pb2,
             services=self.services,
-            messages={k: v for k, v in self.messages.items()
-                      if not v.meta.address.parent},
-            enums={k: v for k, v in self.enums.items()
-                   if not v.meta.address.parent},
+            messages=collections.OrderedDict([
+                (k, v) for k, v in self.messages.items()
+                if not v.meta.address.parent
+            ]),
+            enums=collections.OrderedDict([
+                (k, v) for k, v in self.enums.items()
+                if not v.meta.address.parent
+            ]),
             file_to_generate=False,
             meta=self.meta,
         )
