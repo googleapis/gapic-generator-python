@@ -74,7 +74,8 @@ class Naming:
             raise ValueError(
                 'The protos provided do not share a common root package. '
                 'Ensure that all explicitly-specified protos are for a '
-                'single API.'
+                'single API. '
+                f'The packages we got are: {", ".join(proto_packages)}'
             )
 
         # Define the valid regex to split the package.
