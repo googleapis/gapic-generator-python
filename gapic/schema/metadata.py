@@ -153,15 +153,6 @@ class Address:
             parent=self.parent + (self.name,) if self.name else self.parent,
         )
 
-    def context(self, collisions: Set[str]) -> 'Address':
-        """Return a derivative of this address with the provided context.
-
-        This method is used to address naming collisions. The returned
-        ``Address`` object aliases module names to avoid naming collisions in
-        the file being written.
-        """
-        return dataclasses.replace(self, collisions=frozenset(collisions))
-
     def rel(self, address: 'Address') -> str:
         """Return an identifier for this type, relative to the given address.
 
@@ -233,6 +224,15 @@ class Address:
             return f'{".".join(self.package)}.{selector}'
         return selector
 
+    def with_context(self, *, collisions: Set[str]) -> 'Address':
+        """Return a derivative of this address with the provided context.
+
+        This method is used to address naming collisions. The returned
+        ``Address`` object aliases module names to avoid naming collisions in
+        the file being written.
+        """
+        return dataclasses.replace(self, collisions=frozenset(collisions))
+
 
 @dataclasses.dataclass(frozen=True)
 class Metadata:
@@ -259,7 +259,7 @@ class Metadata:
             return '\n\n'.join(self.documentation.leading_detached_comments)
         return ''
 
-    def context(self, collisions: Set[str]) -> 'Metadata':
+    def with_context(self, *, collisions: Set[str]) -> 'Metadata':
         """Return a derivative of this metadata with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -267,7 +267,7 @@ class Metadata:
         the file being written.
         """
         return dataclasses.replace(self,
-            address=self.address.context(collisions),
+            address=self.address.with_context(collisions=collisions),
         )
 
 

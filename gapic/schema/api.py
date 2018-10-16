@@ -353,15 +353,18 @@ class _ProtoBuilder:
         # own output files.
         return dataclasses.replace(naive,
             enums=collections.OrderedDict([
-                (k, v.context(naive.names)) for k, v in naive.enums.items()
+                (k, v.with_context(collisions=naive.names))
+                for k, v in naive.enums.items()
             ]),
             messages=collections.OrderedDict([
-                (k, v.context(naive.names)) for k, v in naive.messages.items()
+                (k, v.with_context(collisions=naive.names))
+                for k, v in naive.messages.items()
             ]),
             services=collections.OrderedDict([
-                (k, v.context(v.names)) for k, v in naive.services.items()
+                (k, v.with_context(collisions=v.names))
+                for k, v in naive.services.items()
             ]),
-            meta=naive.meta.context(naive.names),
+            meta=naive.meta.with_context(collisions=naive.names),
         )
 
     @cached_property

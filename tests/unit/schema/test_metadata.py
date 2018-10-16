@@ -25,12 +25,12 @@ def test_address_str():
     assert str(addr) == 'baz.Bacon'
 
 
-def test_address_str_context():
+def test_address_str_with_context():
     addr = metadata.Address(
         package=('foo', 'bar'),
         module='baz',
         name='Bacon',
-    ).context({'baz'})
+    ).with_context({'baz'})
     assert str(addr) == 'fb_baz.Bacon'
 
 
