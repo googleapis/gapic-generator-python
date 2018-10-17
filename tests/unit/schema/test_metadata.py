@@ -119,6 +119,13 @@ def test_address_resolve():
     assert addr.resolve('google.example.Bacon') == 'google.example.Bacon'
 
 
+def test_metadata_with_context():
+    meta = metadata.Metadata()
+    assert meta.with_context(
+        collisions={'foo', 'bar'},
+    ).address.collisions == {'foo', 'bar'}
+
+
 def test_doc_nothing():
     meta = metadata.Metadata()
     assert meta.doc == ''
