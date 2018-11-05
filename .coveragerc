@@ -1,8 +1,11 @@
 [run]
 branch = True
+include =
+  gapic/generator/
+  gapic/schema/
+  gapic/utils/
 omit =
   *_pb2.py
-  gapic/cli/*
 
 [report]
 fail_under = 100
