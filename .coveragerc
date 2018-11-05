@@ -2,6 +2,7 @@
 branch = True
 omit =
   *_pb2.py
+  gapic/cli/*
 
 [report]
 fail_under = 100
