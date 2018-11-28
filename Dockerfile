@@ -1,4 +1,4 @@
-FROM python:3.7-slim-stretch
+FROM python:3.7-slim
 
 # Install system packages.
 RUN apt-get update \
@@ -7,7 +7,16 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Add protoc and our common protos.
-COPY --from gcr.io/gapic-images/api-common-protos:latest /usr/local/bin/protoc /usr/local/bin/protoc
-COPY --from gcr.io/gapic-images/api-common-protos:latest /protos/ /protos/
+COPY --from=gcr.io/gapic-images/api-common-protos:latest /usr/local/bin/protoc /usr/local/bin/protoc
+COPY --from=gcr.io/gapic-images/api-common-protos:latest /protos/ /protos/
 
-#
+# Add our code to the Docker image.
+ADD . /usr/src/gapic-generator-python/
+
+# Install the tool within the image.
+RUN pip install /usr/src/gapic-generator-python
+
+# Define the generator as an entry point.
+ENTRYPOINT protoc --proto_path=/protos/ --proto_path=/input/ \
+                  --python_gapic_out=/output/ \
+                  `find /input/ -name *.proto`
