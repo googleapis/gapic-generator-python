@@ -84,6 +84,13 @@ for the remainder of the examples on this page.
 Compiling an API
 ~~~~~~~~~~~~~~~~
 
+.. note::
+
+    If you are running code generation repeatedly, executing the
+    long ``docker run`` command may be cumbersome. While you should ensure
+    you understand this section, a :ref:`shortcut script<docker-shortcut>`
+    is available to make iterative work easier.
+
 Compile the API into a client library by invoking the Docker image.
 
 It is worth noting that the image must interact with the host machine
