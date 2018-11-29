@@ -17,6 +17,6 @@ ADD . /usr/src/gapic-generator-python/
 RUN pip install /usr/src/gapic-generator-python
 
 # Define the generator as an entry point.
-ENTRYPOINT protoc --proto_path=/protos/ --proto_path=/input/ \
-                  --python_gapic_out=/output/ \
-                  `find /input/ -name *.proto`
+ENTRYPOINT protoc --proto_path=/protos/ --proto_path=/in/ \
+                  --python_gapic_out=/out/ \
+                  `find /in/ -name *.proto`

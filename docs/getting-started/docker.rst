@@ -76,13 +76,13 @@ It is worth noting that the image must interact with the host machine
 and writing the output. This means that when you run the image, two mount
 points are required in order for anything useful to happen.
 
-In particular, the input protos are expected to be mounted into ``/input/``,
-and the desired output location is expected to be mounted into ``/output/``.
+In particular, the input protos are expected to be mounted into ``/in/``,
+and the desired output location is expected to be mounted into ``/out/``.
 The output directory must also be writable.
 
 .. note::
 
-    The ``/input/`` and ``/output/`` directories inside the image are
+    The ``/in/`` and ``/out/`` directories inside the image are
     hard-coded; they can not be altered where they appear in the command
     below.
 
@@ -92,8 +92,8 @@ Perform that step with ``docker run``:
 
     # This is assumed to be run from the `googleapis` project root.
     $ docker run \
-      --mount type=bind,source=google/cloud/vision/v1/,destination=/input/google/cloud/vision/v1/,readonly \
-      --mount type=bind,source=dest/,destination=/output/ \
+      --mount type=bind,source=google/cloud/vision/v1/,destination=/in/google/cloud/vision/v1/,readonly \
+      --mount type=bind,source=dest/,destination=/out/ \
       --rm \
       --user $UID \
       gcr.io/gapic-images/gapic-generator-python
@@ -102,13 +102,13 @@ Perform that step with ``docker run``:
 
     ``protoc`` is *very* picky about paths, and the exact construction here
     matters a lot. The source is ``google/cloud/vision/v1/``, and then
-    the destination is that full directory path after the ``/input/`` root;
-    therefore: ``/input/google/cloud/vision/v1/``.
+    the destination is that full directory path after the ``/in/`` root;
+    therefore: ``/in/google/cloud/vision/v1/``.
 
     This matters because of how proto imports are resolved. The ``import``
     statement imports a *file*, relative to a base directory or set of
     base directories, called the ``proto_path``. This is assumed
-    (and hard-coded) to ``/input/`` in the Docker image, and so any directory
+    (and hard-coded) to ``/in/`` in the Docker image, and so any directory
     structure present in the imports of the proto files must be preserved
     beneath this for compilation to succeed.
 
