@@ -19,7 +19,7 @@ Once available, it can be invoked using:
 .. code-block:: shell
 
     # This is assumed to be from the "proto root" directory.
-    $ gapic.sh --image gcp.io/gapic-images/gapic-generator-python \
+    $ gapic.sh --image gcr.io/gapic-images/gapic-generator-python \
         --in path/to/src/protos/
         --out dest/
 

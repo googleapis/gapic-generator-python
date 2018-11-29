@@ -45,7 +45,7 @@ Once Docker is installed, simply pull the Docker image for this tool:
 
 .. parsed-literal::
 
-    $ docker pull gcp.io/gapic-images/gapic-generator-python:\ |version|\
+    $ docker pull gcr.io/gapic-images/gapic-generator-python:\ |version|\
 
 
 Usage
@@ -118,7 +118,7 @@ Perform that step with ``docker run``:
       --mount type=bind,source=dest/,destination=/output/ \
       --rm \
       --user $UID \
-      gcp.io/gapic-images/gapic-generator-python
+      gcr.io/gapic-images/gapic-generator-python
 
 .. warning::
 
