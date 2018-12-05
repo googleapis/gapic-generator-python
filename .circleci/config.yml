@@ -103,3 +103,36 @@ jobs:
       - run:
           name: Build the documentation.
           command: nox -s docs
+  publish_package:
+    docker:
+      - image: python:3.7-slim
+    steps:
+      - checkout
+      - run:
+          name: Decrypt the PyPI key.
+          command: |
+            openssl aes-256-cbc -d \
+              -in .circleci/.pypirc.enc \
+              -out ~/.pypirc \
+              -k "${PYPIRC_ENCRYPTION_KEY}"
+      - run:
+          name: Publish to PyPI.
+          command: python setup.py sdist upload
+  publish_image:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - run:
+          name: Build Docker image.
+          command: docker build . \
+            -t gcr.io/gapic-images/gapic-generator-python:${CIRCLE_TAG:-latest} \
+      - run:
+          name: Set up authentication to Google Container Registry.
+          command: |
+            echo ${GCLOUD_SERVICE_KEY} > ${GOOGLE_APPLICATION_CREDENTIALS}
+            gcloud auth configure-docker
+      - run:
+          name: Push Docker image to Google Container Registry.
+          command: |
+            docker push gcr.io/gapic-images/gapic-generator-python:${CIRCLE_TAG:-latest}
