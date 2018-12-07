@@ -4,13 +4,47 @@ workflows:
   version: 2
   tests:
     jobs:
-      - unit-3.6
-      - unit-3.7
+      - unit-3.6:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - unit-3.7:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
       - showcase:
           requires:
             - unit-3.6
             - unit-3.7
-      - docs
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - docs:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - publish_package:
+          requires:
+            - unit-3.6
+            - unit-3.7
+            - showcase
+            - docs
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - publish_image:
+          requires:
+            - unit-3.6
+            - unit-3.7
+            - showcase
+            - docs
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
 jobs:
   unit-3.6:
     docker:
@@ -125,14 +159,22 @@ jobs:
       - checkout
       - run:
           name: Build Docker image.
-          command: docker build . \
-            -t gcr.io/gapic-images/gapic-generator-python:${CIRCLE_TAG:-latest} \
+          command: docker build . -t gcr.io/gapic-images/gapic-generator-python:latest
       - run:
           name: Set up authentication to Google Container Registry.
           command: |
             echo ${GCLOUD_SERVICE_KEY} > ${GOOGLE_APPLICATION_CREDENTIALS}
             gcloud auth configure-docker
       - run:
-          name: Push Docker image to Google Container Registry.
+          name: Tag the Docker image and push it to Google Container Registry.
           command: |
-            docker push gcr.io/gapic-images/gapic-generator-python:${CIRCLE_TAG:-latest}
+            if [ -n "$CIRCLE_TAG" ]; then
+              IFS='.' read -r MAJOR MINOR PATCH <<< "$CIRCLE_TAG"
+              docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
+              docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
+              docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR
+              docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
+              docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
+              docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR
+            fi
+            docker push gcr.io/gapic-images/gapic-generator-python:latest
