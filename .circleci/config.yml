@@ -157,6 +157,7 @@ jobs:
       - image: docker
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Build Docker image.
           command: docker build . -t gcr.io/gapic-images/gapic-generator-python:latest
