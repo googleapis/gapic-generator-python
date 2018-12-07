@@ -154,17 +154,26 @@ jobs:
           command: python setup.py sdist upload
   publish_image:
     docker:
-      - image: google/cloud-sdk
+      - image: docker
     steps:
       - checkout
       - run:
           name: Build Docker image.
           command: docker build . -t gcr.io/gapic-images/gapic-generator-python:latest
       - run:
+          name: Download curl
+          command: apk add --no-cache curl
+      - run:
+          name: Download the GCR credential helper.
+          command: |
+            curl -fsSL https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v1.5.0/docker-credential-gcr_linux_amd64-1.5.0.tar.gz \
+              | tar xz --to-stdout ./docker-credential-gcr \
+              > /usr/bin/docker-credential-gcr && chmod a+x /usr/bin/docker-credential-gcr
+      - run:
           name: Set up authentication to Google Container Registry.
           command: |
             echo ${GCLOUD_SERVICE_KEY} > ${GOOGLE_APPLICATION_CREDENTIALS}
-            gcloud auth configure-docker
+            docker-credential-gcr configure-docker
       - run:
           name: Tag the Docker image and push it to Google Container Registry.
           command: |
