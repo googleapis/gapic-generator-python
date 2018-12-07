@@ -177,14 +177,11 @@ jobs:
             docker-credential-gcr configure-docker
       - run:
           name: Tag the Docker image and push it to Google Container Registry.
-          environment:
-            MAJOR: "`echo $CIRCLE_TAG | awk -F '.' '{ print $1; }'`"
-            MINOR: "`echo $CIRCLE_TAG | awk -F '.' '{ print $2; }'`"
-            PATCH: "`echo $CIRCLE_TAG | awk -F '.' '{ print $3; }'`"
           command: |
             if [ -n "$CIRCLE_TAG" ]; then
-              echo $CIRCLE_TAG
-              echo "$MAJOR $MINOR $PATCH"
+              export MAJOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $1; }'`
+              export MINOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $2; }'`
+              export PATCH=`echo $CIRCLE_TAG | awk -F '.' '{ print $3; }'`
               docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
               docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
               docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR
