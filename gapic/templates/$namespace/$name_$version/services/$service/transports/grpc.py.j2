@@ -58,7 +58,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         # If a channel was explicitly provided, set it.
         if channel:
-            self.__dict__['grpc_channel'] = channel
+            self._grpc_channel = channel
 
     @property
     def grpc_channel(self) -> grpc.Channel:
