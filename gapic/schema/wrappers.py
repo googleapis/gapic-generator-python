@@ -454,7 +454,7 @@ class Method:
             answer.append(MethodSignature(
                 name=sig.function_name if sig.function_name else self.name,
                 fields=collections.OrderedDict([
-                    (f.split('.')[-1], self.input.get_field(f))
+                    (f.split('.')[-1], self.input.get_field(*f.split('.')))
                     for f in sig.fields
                 ]),
             ))
@@ -553,7 +553,7 @@ class Service:
         """
         if self.options.Extensions[annotations_pb2.default_host]:
             return self.options.Extensions[annotations_pb2.default_host]
-        return utils.Placeholder('<<< SERVICE ADDRESS >>>')
+        return None
 
     @property
     def oauth_scopes(self) -> Sequence[str]:
