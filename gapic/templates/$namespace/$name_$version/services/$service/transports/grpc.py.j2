@@ -29,18 +29,39 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
-    def __init__(self, *, credentials: credentials.Credentials = None) -> None:
+    def __init__(self, *,
+            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+            credentials: credentials.Credentials = None,
+            channel: grpc.Channel = None) -> None:
         """Instantiate the transport.
 
         Args:
+            host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
+                {{- ' ' }}The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+                This argument is mutually exclusive with ``channel``;
+                providing both will raise an exception.
+            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+                which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
         """
-        super().__init__(credentials=credentials)
+        # Sanity check: Ensure that channel and credentials are not both
+        # provided.
+        if channel and credentials:
+            raise TypeError('The `channel` and `credentials` arguments are '
+                            'mutually exclusive.')
+
+        # Run the base constructor.
+        super().__init__(host=host, credentials=credentials)
         self._stubs = {}
+
+        # If a channel was explicitly provided, set it.
+        if channel:
+            self.__dict__['grpc_channel'] = channel
 
     @property
     def grpc_channel(self) -> grpc.Channel:
@@ -53,7 +74,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         # have one.
         if 'grpc_channel' not in self.__dict__:
             self.__dict__['grpc_channel'] = grpc_helpers.create_channel(
-                '{0}:443'.format(self.SERVICE_ADDRESS),
+                self._host,
                 credentials=self._credentials,
                 scopes=self.AUTH_SCOPES,
             )
