@@ -43,17 +43,14 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is mutually exclusive with ``channel``;
-                providing both will raise an exception.
+                This argument is ignored if ``channel`` is provided.
             channel (Optional[grpc.Channel]): A ``Channel`` instance through
-                which to make calls. This argument is mutually exclusive
-                with ``credentials``; providing both will raise an exception.
+                which to make calls.
         """
         # Sanity check: Ensure that channel and credentials are not both
         # provided.
-        if channel and credentials:
-            raise TypeError('The `channel` and `credentials` arguments are '
-                            'mutually exclusive.')
+        if channel:
+            credentials = False
 
         # Run the base constructor.
         super().__init__(host=host, credentials=credentials)
@@ -72,15 +69,15 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         """
         # Sanity check: Only create a new channel if we do not already
         # have one.
-        if 'grpc_channel' not in self.__dict__:
-            self.__dict__['grpc_channel'] = grpc_helpers.create_channel(
+        if not hasattr(self, '_grpc_channel'):
+            self._grpc_channel = grpc_helpers.create_channel(
                 self._host,
                 credentials=self._credentials,
                 scopes=self.AUTH_SCOPES,
             )
 
         # Return the channel from cache.
-        return self.__dict__['grpc_channel']
+        return self._grpc_channel
     {%- if service.has_lro %}
 
     @property
