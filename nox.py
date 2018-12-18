@@ -60,7 +60,7 @@ def showcase(session):
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
-        showcase_version = '0.0.7'
+        showcase_version = '0.0.8'
 
         # Download the Showcase descriptor.
         session.run(
@@ -75,7 +75,7 @@ def showcase(session):
         session.run('protoc',
             f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
             f'--python_gapic_out={tmp_dir}',
-            'google/showcase/v1alpha2/echo.proto',
+            'google/showcase/v1alpha3/echo.proto',
         )
 
         # Install the library.
