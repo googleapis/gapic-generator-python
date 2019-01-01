@@ -180,7 +180,8 @@ class API:
     (as ``api``).
     """
     naming: api_naming.Naming
-    protos: Mapping[str, Proto]
+    all_protos: Mapping[str, Proto]
+    subpackage_view: Tuple[str] = dataclasses.field(default_factory=tuple)
 
     @classmethod
     def build(cls,
@@ -215,7 +216,7 @@ class API:
             ).proto
 
         # Done; return the API.
-        return cls(naming=naming, protos=protos)
+        return cls(naming=naming, all_protos=protos)
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
@@ -232,11 +233,49 @@ class API:
         )
 
     @cached_property
+    def protos(self) -> Mapping[str, Proto]:
+        """Return a map of all protos specific to this API.
+
+        This property excludes imported protos that are dependencies
+        of this API but not being directly generated.
+        """
+        view = self.subpackage_view
+        return collections.OrderedDict([
+            (k, v) for k, v in self.all_protos.items()
+            if v.file_to_generate and
+            v.meta.address.subpackage[:len(view)] == view
+        ])
+
+    @cached_property
     def services(self) -> Mapping[str, wrappers.Service]:
         """Return a map of all services available in the API."""
         return collections.ChainMap({},
             *[p.services for p in self.protos.values()],
         )
+
+    @cached_property
+    def subpackages(self) -> Mapping[str, 'API']:
+        """Return a map of all subpackages, if any.
+
+        Each value in the mapping is another API object, but the ``protos``
+        property only shows protos belonging to the subpackage.
+        """
+        answer = collections.OrderedDict()
+
+        # Get the actual subpackages we have.
+        #
+        # Note that this intentionally only goes one level deep; nested
+        # subpackages can be accessed by requesting subpackages of the
+        # derivative API objects returned here.
+        level = len(self.subpackage_view)
+        for subpkg_name in sorted({p.meta.address.subpackage[0]
+                for p in self.protos.values()
+                if len(p.meta.address.subpackage) > level and
+                p.meta.address.subpackage[:level] == self.subpackage_view}):
+            answer[subpkg_name] = dataclasses.replace(self,
+                subpackage_view=self.subpackage_view + (subpkg_name,),
+            )
+        return answer
 
 
 class _ProtoBuilder:

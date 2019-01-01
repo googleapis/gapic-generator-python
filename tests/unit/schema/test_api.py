@@ -36,6 +36,11 @@ def test_api_build():
             messages=(make_message_pb2(name='ImportedMessage', fields=()),),
         ),
         make_file_pb2(
+            name='common.proto',
+            package='google.example.v1.common',
+            messages=(make_message_pb2(name='Bar'),),
+        ),
+        make_file_pb2(
             name='foo.proto',
             package='google.example.v1',
             messages=(
@@ -68,8 +73,10 @@ def test_api_build():
 
     # Establish that the API has the data expected.
     assert isinstance(api_schema, api.API)
+    assert len(api_schema.all_protos) == 3
     assert len(api_schema.protos) == 2
-    assert 'google.dep.ImportedMessage' in api_schema.messages
+    assert 'google.dep.ImportedMessage' not in api_schema.messages
+    assert 'google.example.v1.common.Bar' in api_schema.messages
     assert 'google.example.v1.Foo' in api_schema.messages
     assert 'google.example.v1.GetFooRequest' in api_schema.messages
     assert 'google.example.v1.GetFooResponse' in api_schema.messages
@@ -78,6 +85,13 @@ def test_api_build():
     assert api_schema.protos['foo.proto'].python_modules == (
         imp.Import(package=('google', 'dep'), module='dep_pb2'),
     )
+
+    # Establish that the subpackages work.
+    assert 'common' in api_schema.subpackages
+    sub = api_schema.subpackages['common']
+    assert len(sub.protos) == 1
+    assert 'google.example.v1.common.Bar' in sub.messages
+    assert 'google.example.v1.Foo' not in sub.messages
 
 
 def test_proto_build():
@@ -519,7 +533,7 @@ def test_lro_missing_annotation():
 
     # Make the proto object.
     with pytest.raises(TypeError):
-        proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
+        api.Proto.build(fdp, file_to_generate=True, prior_protos={
             'google/longrunning/operations.proto': lro_proto,
         }, naming=make_naming())
 
