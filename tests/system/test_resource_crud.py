@@ -12,38 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 
-
-def test_crud_with_request_dict(identity):
-    if len(identity.list_users({}).users) > 0:
-        pytest.xfail(reason='Unexpected state.')
+def test_crud_with_request(identity):
+    count = len(identity.list_users({}).users)
+    user = identity.create_user({'user': {
+        'display_name': 'Guido van Rossum',
+        'email': 'guido@guido.fake',
+    }})
     try:
-        user = identity.create_user({'user': {
-            'display_name': 'Guido van Rossum',
-            'email': 'guido@guido.fake',
-        }})
         assert user.display_name == 'Guido van Rossum'
         assert user.email == 'guido@guido.fake'
-        assert len(identity.list_users({}).users) == 1
+        assert len(identity.list_users({}).users) == count + 1
         assert identity.get_user({
             'name': user.name,
         }).display_name == 'Guido van Rossum'
     finally:
         identity.delete_user({'name': user.name})
-
-
-def test_crud_with_signatures(identity):
-    if len(identity.list_users({}).users) > 0:
-        pytest.xfail(reason='Unexpected state.')
-    try:
-        user = identity.create_user(
-            display_name='Guido van Rossum',
-            email='guido',
-        )
-        assert user.display_name == 'Guido van Rossum'
-        assert user.email == 'guido@guido.fake'
-        assert len(identity.list_users({}).users) == 1
-        assert identity.get_user(name=user.name).email == 'guido@guido.fake'
-    finally:
-        identity.delete_user(name=user.name)
