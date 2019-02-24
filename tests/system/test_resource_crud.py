@@ -13,14 +13,18 @@
 # limitations under the License.
 
 
-def test_unary_stream(echo):
-    content = 'The hail in Wales falls mainly on the snails.'
-    responses = echo.expand({
-        'content': content,
-    })
-
-    # Consume the response and ensure it matches what we expect.
-    # with pytest.raises(exceptions.NotFound) as exc:
-    for ground_truth, response in zip(content.split(' '), responses):
-        assert response.content == ground_truth
-    assert ground_truth == 'snails.'
+def test_crud_with_request(identity):
+    count = len(identity.list_users({}).users)
+    user = identity.create_user({'user': {
+        'display_name': 'Guido van Rossum',
+        'email': 'guido@guido.fake',
+    }})
+    try:
+        assert user.display_name == 'Guido van Rossum'
+        assert user.email == 'guido@guido.fake'
+        assert len(identity.list_users({}).users) == count + 1
+        assert identity.get_user({
+            'name': user.name,
+        }).display_name == 'Guido van Rossum'
+    finally:
+        identity.delete_user({'name': user.name})
