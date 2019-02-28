@@ -32,7 +32,7 @@ def test_retry_nonidempotent(echo):
     # success response.
     transport = type(echo).get_transport_class()
     with mock.patch.object(transport, 'echo',
-            new_callable=mock.PropertyMock(return_value=server)) as echo_mock:
+            new_callable=mock.PropertyMock(return_value=server)):
         with mock.patch.object(time, 'sleep'):
             response = echo.echo({'content': 'bar'})
         assert response.content == 'foo'
@@ -51,7 +51,7 @@ def test_retry_idempotent(identity):
     # success response.
     transport = type(identity).get_transport_class()
     with mock.patch.object(transport, 'get_user',
-            new_callable=mock.PropertyMock(return_value=server)) as ident_mock:
+            new_callable=mock.PropertyMock(return_value=server)):
         with mock.patch.object(time, 'sleep'):
             response = identity.get_user({'name': 'users/0'})
         assert response.name == 'users/0'
