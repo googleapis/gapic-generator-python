@@ -69,6 +69,11 @@ def test_method_idempotent_no():
     assert method.idempotent is False
 
 
+def test_method_idempotent_no_http_rule():
+    method = make_method('DoSomething')
+    assert method.idempotent is False
+
+
 def test_method_unary_unary():
     method = make_method('F', client_streaming=False, server_streaming=False)
     assert method.grpc_stub_type == 'unary_unary'
