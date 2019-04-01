@@ -85,12 +85,13 @@ def showcase(session):
     session.run('py.test', '--quiet', os.path.join('tests', 'system'))
 
 
-@nox.session(python=['3.5', '3.6', '3.7'])
+@nox.session(python=['3.6', '3.7'])
 def showcase_unit(session):
     """Run the generated unit tests against the Showcase library."""
 
     # Install pytest and gapic-generator-python
     session.install('coverage', 'pytest', 'pytest-cov')
+    session.install('.')
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
