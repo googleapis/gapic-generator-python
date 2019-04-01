@@ -162,7 +162,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc
+            apt-get install -y curl pandoc unzip
       - run:
           name: Install protoc 3.7.1.
           command: |
@@ -186,7 +186,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc
+            apt-get install -y curl pandoc unzip
       - run:
           name: Install protoc 3.7.1.
           command: |
@@ -210,7 +210,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc
+            apt-get install -y curl pandoc unzip
       - run:
           name: Install protoc 3.7.1.
           command: |
