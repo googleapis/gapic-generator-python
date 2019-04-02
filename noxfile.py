@@ -59,7 +59,6 @@ def showcase(session):
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
-
         # Download the Showcase descriptor.
         session.run(
             'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
