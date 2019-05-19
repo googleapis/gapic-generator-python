@@ -50,6 +50,7 @@ class Generator:
         # Add filters which templates require.
         self._env.filters['rst'] = utils.rst
         self._env.filters['snake_case'] = utils.to_snake_case
+        self._env.filters['sort_lines'] = utils.sort_lines
         self._env.filters['wrap'] = utils.wrap
 
     def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
