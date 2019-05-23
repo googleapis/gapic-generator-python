@@ -549,6 +549,9 @@ class Method:
             if field.repeated and field.message:
                 return field
 
+        # We found no repeated fields. Return None.
+        return None
+
     @utils.cached_property
     def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
         """Return types referenced by this method."""
