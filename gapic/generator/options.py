@@ -80,7 +80,7 @@ class Options:
         # If there are any options remaining, then we failed to recognize
         # them -- complain.
         for key in opts.keys():
-            warnings.warn(f'Unrecognized option: `{key}`.')
+            warnings.warn(f'Unrecognized option: `python-gapic-{key}`.')
 
         # Done; return the built options.
         return answer
