@@ -158,11 +158,14 @@ class Generator:
             api_schema=api.API,
             **context: Mapping):
         """Render a template to a protobuf plugin File object."""
+        # Determine the target filename.
         fn = self._get_filename(template_name,
             api_schema=api_schema,
             context=context,
         )
-        return {fn: CodeGeneratorResponse.File(
+
+        # Render the file contents.
+        cgr_file = CodeGeneratorResponse.File(
             content=formatter.fix_whitespace(
                 self._env.get_template(template_name).render(
                     api=api_schema,
@@ -170,7 +173,15 @@ class Generator:
                 ),
             ),
             name=fn,
-        )}
+        )
+
+        # Sanity check: Do not render empty files.
+        if utils.empty(cgr_file.content) and not fn.endswith('__init__.py'):
+            return {}
+
+        # Return the filename and content in a length-1 dictionary
+        # (because we track output files overall in a dictionary).
+        return {fn: cgr_file}
 
     def _get_filename(
             self,
