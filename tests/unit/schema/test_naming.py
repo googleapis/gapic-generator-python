@@ -14,7 +14,6 @@
 
 import pytest
 
-from google.api import client_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import naming
