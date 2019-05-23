@@ -26,7 +26,9 @@ class Options:
     on unrecognized arguments (essentially, we throw them away, but we do
     warn if it looks like it was meant for us).
     """
-    templates: Tuple[str]
+    templates: Tuple[str] = dataclasses.field(default=('DEFAULT',))
+    namespace: Tuple[str] = dataclasses.field(default=())
+    name: str = ''
 
     @classmethod
     def build(cls, opt_string: str) -> 'Options':
@@ -70,6 +72,8 @@ class Options:
 
         # Build the options instance.
         answer = Options(
+            name=opts.pop('name', ['']).pop(),
+            namespace=tuple(opts.pop('namespace', [])),
             templates=tuple([os.path.expanduser(i) for i in templates]),
         )
 
