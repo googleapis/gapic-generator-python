@@ -59,12 +59,12 @@ class Options:
             # Set the option.
             # Just assume everything is a list at this point, and the
             # final instantiation step can de-list-ify where appropriate.
-            opts.setdefault(opt, [])
-            opts[opt].append(value)
+            opts.setdefault(opt[13:], [])
+            opts[opt[13:]].append(value)
 
         # If templates are specified, one of the specified directories
         # may be our default; perform that replacement.
-        templates = opts.pop('python-gapic-templates', ['DEFAULT'])
+        templates = opts.pop('templates', ['DEFAULT'])
         while 'DEFAULT' in templates:
             templates[templates.index('DEFAULT')] = os.path.realpath(
                 os.path.join(os.path.dirname(__file__), '..', 'templates'),
