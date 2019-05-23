@@ -16,6 +16,7 @@ import collections
 from typing import Sequence
 
 from google.api import annotations_pb2
+from google.api import client_pb2
 from google.api import http_pb2
 from google.protobuf import descriptor_pb2
 
@@ -200,6 +201,11 @@ def make_method(
     if http_rule:
         ext_key = annotations_pb2.http
         method_pb.options.Extensions[ext_key].MergeFrom(http_rule)
+
+    # If there are signatures, include them.
+    for sig in signatures:
+        ext_key = client_pb2.method_signature
+        method_pb.options.Extensions[ext_key].append(sig)
 
     # Instantiate the wrapper class.
     return wrappers.Method(
