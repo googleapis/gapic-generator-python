@@ -56,11 +56,13 @@ class Options:
             if not opt.startswith('python-gapic-'):
                 continue
 
-            # Set the option.
+            # Set the option, using a key with the "python-gapic-" prefix
+            # stripped.
+            #
             # Just assume everything is a list at this point, and the
             # final instantiation step can de-list-ify where appropriate.
-            opts.setdefault(opt[13:], [])
-            opts[opt[13:]].append(value)
+            opts.setdefault(opt[len('python-gapic-'):], [])
+            opts[opt[len('python-gapic-'):]].append(value)
 
         # If templates are specified, one of the specified directories
         # may be our default; perform that replacement.
