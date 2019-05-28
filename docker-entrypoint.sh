@@ -25,10 +25,10 @@ while [ -n "$1" ]; do
     * )
       # If this switch begins with "--python-gapic-" or "--gapic-", then it is
       # meant for us.
-      if [ "${1:0:15}" == "--python-gapic-" ]; then
+      if [[ $1 == --python-gapic-* ]]; then
         PLUGIN_OPTIONS="$PLUGIN_OPTIONS,$1=$2"
         shift 2
-      else if [ "${1:0:8}" == "--gapic-" ]; then
+      else if [[ $1 == --gapic-* ]]; then
         PLUGIN_OPTIONS="$PLUGIN_OPTIONS,$1=$2"
         shift 2
       else
