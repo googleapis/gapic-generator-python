@@ -28,8 +28,7 @@ workflows:
               only: /^\d+\.\d+\.\d+$/
       - showcase-mypy:
           requires:
-            - unit-3.6
-            - unit-3.7
+            - mypy
           filters:
             tags:
               only: /^\d+\.\d+\.\d+$/
