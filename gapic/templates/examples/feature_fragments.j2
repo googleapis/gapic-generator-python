@@ -25,7 +25,7 @@ There is a little, but not enough for it to be important because
 
 {# response handling macros #}
 
-{% macro handlePrint(elts) %}
+{% macro renderPrint(elts) %}
   {# First elment is a format string, remaining elements are the format string parameters #}
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
@@ -34,7 +34,7 @@ print({{ ([fmtStr] + elts[1:])|join(', ') }})
   {% endwith -%}
 {% endmacro %}
 
-{% macro handleComment(elts) %}
+{% macro renderComment(elts) %}
   {# First elment is a format string, remaining elements are the format string parameters #}
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
@@ -43,42 +43,48 @@ print({{ ([fmtStr] + elts[1:])|join(', ') }})
   {% endwith %}
 {% endmacro %}
 
-{% macro handleDefine(statement) %}
+{% macro renderDefine(statement) %}
 {# Python code already verified the form, no need to check #}
-{% set args = statement.split("=") %}
-{% set lvalue, rvalue = args %}
+{% with lvalue, rvalue = statement.split("=") %}
 {{ lvalue }} = {{ rvalue }}
+{% endwith %}
 {% endmacro %}
 
-{% macro handleCollectionLoop(statement) %}
+{% macro renderCollectionLoop(statement) %}
 for {{ statement.variable }} in {{ statement.collection }}:
   {{ dispatchStatement(statement.body) -}}
 {% endmacro %}
 
-{% macro handleMapLoop(statement) %}
-  {# At least one of key and value exist; validated in python #}
-for {{ statement.key if "key" in statement else "_"}}, {{ statement.value if "value" in statement else "_" }} in {{ statement.map }}.items():
+{% macro renderMapLoop(statement) %}
+ {# At least one of key and value exist; validated in python #}
+{% if "key" not in statement %}
+for {{ statement.value }} in {{ statement.map }}.values():
+{% elif "value" not in statement %}
+for {{ statement.key }} in {{ statement.map }}.keys():
+{% else %}
+for {{statement.key }}, {{ statement.value }} in {{ statement.map }}.items():
+{% endif %}
   {{ dispatchStatement(statement.body) -}}
 {% endmacro %}
 
 {% macro dispatchStatement(statement) %}
 {# Each statement is a dict with a single key/value pair #}
 {% if "print" in statement %}
-{{ handlePrint(statement["print"]) -}}
+{{ renderPrint(statement["print"]) -}}
 {% elif "comment" in statement %}
-{{ handleComment(statement["comment"]) -}}
+{{ renderComment(statement["comment"]) -}}
 {% elif "loop" in statement %}
   {% with loop = statement["loop"] %}
     {% if "collection" in loop %}
-{{ handleCollectionLoop(loop) -}}
+{{ renderCollectionLoop(loop) -}}
     {% else %}
-{{ handleMapLoop(loop) -}}
+{{ renderMapLoop(loop) -}}
     {% endif %}
   {% endwith %}
 {% endif %}
 {% endmacro %}
 
-{% macro handleRequestAttr(baseName, attr) %}
+{% macro renderRequestAttr(baseName, attr) %}
 {# Note: python code will have manipulated the value #}
 {# to be the correct enum from the right module, if necessary. #}
 {# Python is also responsible for verifying that each input parameter is unique,#}
@@ -96,21 +102,21 @@ with open({{ attr.input_parameter }}, "rb") as f:
   {% endif %}
 {% endmacro %}
 
-{% macro handleRequest(request) %}
+{% macro renderRequest(request) %}
   {% for parameterBlock in request %}
 {{ parameterBlock.base }} = {}
     {% for attr in parameterBlock.body %}
-{{ handleRequestAttr(parameterBlock.base, attr) }}
+{{ renderRequestAttr(parameterBlock.base, attr) }}
     {% endfor %}
   {% endfor %}
 {% endmacro %}
 
-{% macro handleMainBlock(methodName, requestBlock) %}
+{% macro renderMainBlock(methodName, requestBlock) %}
 def main():
   import argparse
 
   parser = argparse.ArgumentParser()
-{% set arg_list = [] %}
+{% with arg_list = [] %}
 {% for attr in requestBlock if "input_parameter" in attr %}
   parser.add_argument("--{{ attr.input_parameter }}",
                       type=str,
@@ -124,4 +130,5 @@ def main():
 
 if __name__ == "__main__":
   main()
+{% endwith %}
 {% endmacro %}

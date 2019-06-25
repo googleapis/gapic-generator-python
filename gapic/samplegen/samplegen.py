@@ -37,55 +37,87 @@ RESERVED_WORDS = frozenset(itertools.chain(keyword.kwlist, dir(__builtins__)))
 TEMPLATE_NAME = 'samplegen_template.j2'
 
 
-class ReservedVariableName(Exception):
+class SampleError(Exception):
     pass
 
 
-class SchemaVersion(Exception):
+class ReservedVariableName(SampleError):
     pass
 
 
-class RpcMethodNotFound(Exception):
+class SchemaVersion(SampleError):
     pass
 
 
-class InvalidConfigType(Exception):
+class RpcMethodNotFound(SampleError):
     pass
 
 
-class InvalidStatement(Exception):
+class InvalidConfigType(SampleError):
     pass
 
 
-class BadLoop(Exception):
+class InvalidStatement(SampleError):
     pass
 
 
-class MismatchedPrintStatement(Exception):
+class BadLoop(SampleError):
     pass
 
 
-class UndefinedVariableReference(Exception):
+class MismatchedPrintStatement(SampleError):
     pass
 
 
-class BadAssignment(Exception):
+class UndefinedVariableReference(SampleError):
     pass
 
 
-class InconsistentRequestName(Exception):
+class BadAssignment(SampleError):
     pass
 
 
-class InvalidRequestSetup(Exception):
+class InconsistentRequestName(SampleError):
     pass
 
 
-class DuplicateInputParameter(Exception):
+class InvalidRequestSetup(SampleError):
+    pass
+
+
+class DuplicateInputParameter(SampleError):
     pass
 
 
 def validate_response(response):
+    """Validates a "response" block from a sample config.
+    A full description of the response block is outside the scope of this code
+    and is better handled by reading the samplegen documentation.
+
+    Args:
+       response: list[dict{str:?}]: The structured data representing
+                                    the sample's response.
+
+    Returns:
+        bool: True if response block is correctly formed.
+
+    Raises:
+        BadAssignment: If a "define" statement is badly formed.
+        ReservedVariablename: If an attempted lvalue is a reserved word.
+        UndefinedVariableReference: If an attempted rvalue base is a previously
+                                    undeclared variable.
+        MismatchedPrintStatement: If the number of format string segments ("%s") in
+                                  a "print" or "comment" block does not equal the
+                                  size number of strings in the block minus 1.
+        BadLoop: If a "loop" segments has unexpected keywords
+                 or keyword combinatations.
+        InvalidStatement: If an unexpected key is found in a statement dict
+                          or a statement dict has more than or less than one key.
+    """
+
+    # Note: all python functions that work with sample configs
+    #       do validation and minimimal data structure transformation.
+    #       Rendering is handled by jinja templates.
     coll_kword = "collection"
     var_kword = "variable"
     map_kword = "map"
@@ -242,15 +274,54 @@ def validate_response(response):
 # TODO: this will eventually need the method name and the proto file
 # so that it can do the correct value transformation for enums.
 def validate_and_transform_request(request):
+    """Checks the "request" block from a sample config
+       and returns a transformed version.
+
+       In the initial request, each dict has a "field" key that maps to a dotted
+       variable name, e.g. clam.shell.
+       Multiple dicts may share a variable base name; these indicate that multiple
+       attributes of a request parameter are being configured.
+
+       The only required keys in each dict are "field" and value".
+       Optional keys are "input_parameter" and "value_is_file".
+       All values in the initial request are strings
+       except for the value for "value_is_file", which is a bool.
+
+       The topmost dict of the return value has two keys: "base" and "body",
+       where "base" maps to a variable name, and "body" maps to a list of variable
+       assignment definitions. The only difference in the bottommost dicts
+       are that "field" maps only to the second part of a dotted variable name.
+       Other key/value combinations in the dict are unmodified for the time being.
+
+       E.g. [{"field": "clam.shell", "value": "10 kg", "input_parameter": "shell"},
+             {"field": "clam.pearls", "value": "3"},
+             {"field": "squid.mantle", "value": "100 kg"}]
+              ->
+            [{"base": "clam",
+              "body": [{"field": "shell", "value": "10 kg", "input_parameter": "shell"},
+                       {"field": "pearls", "value": "3"}]},
+             {"base": "squid", "body": [{"field": "mantle", "value": "100 kg"}]}]
+
+       The transformation makes it easier to set up request parameters in jinja
+       because it doesn't have to engage in prefix detection, validation,
+       or aggregation logic.
+
+
+    Args:
+        request (list[dict{str:str}]): The request body from the sample config
+
+    Returns:
+        list[dict{str:(str|list[dict{str:str}])}]: The transformed request block.
+
+    Raises:
+        DuplicateInputParameter: If an "input_parameter" value is repeated.
+        ReservedVariableName: If an "input_parameter" value or a "base" value
+                              is a reserved word.
+        InvalidRequestSetup: If a dict in the request lacks a "field" key
+                             or the corresponding value is malformed.
+    """
     base_param_to_attrs = defaultdict(list)
     input_params = set()
-    # request looks like
-    # [{"field": base.attr, "value": value, "input_parameter": varname},
-    # {"field": base.attr, "value": value, "comment": helpful_comment},
-    # {"field": base.attr, "value": value, value_is_file: True }]
-    #
-    # The base does not need to be the same for all arguments;
-    # input_parameter, comment, and value_is_file are all optional.
     for field_assignment in request:
         field_assignment_copy = dict(field_assignment)
         input_param = field_assignment_copy.get("input_parameter")
