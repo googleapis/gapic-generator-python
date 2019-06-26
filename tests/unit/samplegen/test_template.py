@@ -15,9 +15,8 @@
 
 import jinja2
 import os.path as path
-# import textwrap
 import gapic.samplegen.samplegen as samplegen
-import gapic.samplegen.utils as utils
+import gapic.utils as utils
 
 from textwrap import dedent
 
@@ -43,7 +42,7 @@ def check_template(template_fragment, expected_output):
         trim_blocks=True, lstrip_blocks=True
     )
 
-    env.filters["split_downcase"] = utils.split_caps_and_downcase
+    env.filters['snake_case'] = utils.to_snake_case
 
     template = env.get_template("template_fragment")
     text = template.render()
@@ -86,7 +85,7 @@ def test_render_attr_file():
         '''
             # mollusc_video_path = "path/to/mollusc/video.mkv"
             with open(mollusc_video_path, "rb") as f:
-              classify_mollusc_request["mollusc_video"] = f.read()
+                classify_mollusc_request["mollusc_video"] = f.read()
         ''')
 
 
@@ -116,26 +115,26 @@ def test_render_request_basic():
                                            "value_is_file": True}]}, ]) }}
         ''',
         '''
-            cephalopod = {}
-            # cephalopod_mass = "10 kg"
-            cephalopod["mantle_mass"] = cephalopod_mass
-            
-            # photo_path = "path/to/cephalopod/photo.jpg"
-            with open(photo_path, "rb") as f:
-              cephalopod["photo"] = f.read()
-            
-            cephalopod["order"] = Molluscs.Cephalopoda.Coleoidea
-            
-            gastropod = {}
-            # gastropod_mass = "1 kg"
-            gastropod["mantle_mass"] = gastropod_mass
-            
-            gastropod["order"] = Molluscs.Gastropoda.Pulmonata
-            
-            # movie_path = "path/to/gastropod/movie.mkv"
-            with open(movie_path, "rb") as f:
-              gastropod["movie"] = f.read()
-            
+        cephalopod = {}
+        # cephalopod_mass = "10 kg"
+        cephalopod["mantle_mass"] = cephalopod_mass
+        
+        # photo_path = "path/to/cephalopod/photo.jpg"
+        with open(photo_path, "rb") as f:
+            cephalopod["photo"] = f.read()
+        
+        cephalopod["order"] = Molluscs.Cephalopoda.Coleoidea
+        
+        gastropod = {}
+        # gastropod_mass = "1 kg"
+        gastropod["mantle_mass"] = gastropod_mass
+        
+        gastropod["order"] = Molluscs.Gastropoda.Pulmonata
+        
+        # movie_path = "path/to/gastropod/movie.mkv"
+        with open(movie_path, "rb") as f:
+            gastropod["movie"] = f.read()
+    
             '''
     )
 
@@ -143,8 +142,8 @@ def test_render_request_basic():
 def test_render_print():
     check_template(
         '''
-            {% import "feature_fragments.j2" as frags %}
-            {{ frags.renderPrint(["Mollusc"]) }}
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.renderPrint(["Mollusc"]) }}
         ''',
         '\nprint("Mollusc")\n'
     )
@@ -219,7 +218,7 @@ def test_collection_loop():
                                         "body": {"print": ["Mollusc: %s", "m"]}}) }}''',
         '''
         for m in molluscs:
-          print("Mollusc: {}", m)
+            print("Mollusc: {}", m)
         '''
     )
 
@@ -233,7 +232,7 @@ def test_dispatch_collection_loop():
                                     "body": {"print": ["Mollusc: %s", "m"]}}}) }}''',
         '''
         for m in molluscs:
-          print("Mollusc: {}", m)
+            print("Mollusc: {}", m)
         '''
     )
 
@@ -249,7 +248,7 @@ def test_map_loop():
         }}''',
         '''
         for cls, example in molluscs.items():
-          print("A {} is a {}", example, cls)
+            print("A {} is a {}", example, cls)
         '''
     )
 
@@ -264,7 +263,7 @@ def test_map_loop_no_key():
         }}''',
         '''
         for example in molluscs.values():
-          print("A {} is a mollusc", example)
+            print("A {} is a mollusc", example)
         '''
     )
 
@@ -279,7 +278,7 @@ def test_map_loop_no_value():
         }}''',
         '''
         for cls in molluscs.keys():
-          print("A {} is a mollusc", cls)
+            print("A {} is a mollusc", cls)
         '''
     )
 
@@ -297,7 +296,7 @@ def test_dispatch_map_loop():
         ''',
         '''
         for cls, example in molluscs.items():
-          print("A {} is a {}", example, cls)
+            print("A {} is a {}", example, cls)
         '''
     )
 
@@ -317,21 +316,21 @@ def test_main_block():
         ''',
         '''
         def main():
-          import argparse
-        
-          parser = argparse.ArgumentParser()
-          parser.add_argument("--order",
-                              type=str,
-                              default="coleoidea")
-          parser.add_argument("--mass",
-                              type=str,
-                              default="60kg")
-          args = parser.parse_args()
-        
-          sample_list_molluscs(args.order, args.mass)
-        
-        
+            import argparse
+
+            parser = argparse.ArgumentParser()
+            parser.add_argument("--order",
+                                type=str,
+                                default="coleoidea")
+            parser.add_argument("--mass",
+                                type=str,
+                                default="60kg")
+            args = parser.parse_args()
+
+            sample_list_molluscs(args.order, args.mass)
+
+
         if __name__ == "__main__":
-          main()
+            main()
         '''
     )

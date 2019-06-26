@@ -41,18 +41,3 @@ class CallingForm(Enum):
             return cls.RequestStreamingServer
 
         return cls.Request
-
-
-def split_caps_and_downcase(s):
-    # API method names are pased in CamelCase
-    # but python samples want snake case.
-    # Don't do the join here for the sake of modularity.
-    toks = []
-    base_idx = 0
-    for idx, char in enumerate(s):
-        if base_idx != idx and char.isupper():
-            toks.append(s[base_idx:idx].lower())
-            base_idx = idx
-
-    toks.append(s[base_idx:].lower())
-    return toks

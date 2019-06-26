@@ -17,7 +17,8 @@ import keyword
 import re
 import gapic.samplegen.utils
 
-from collections import defaultdict
+from collections import (defaultdict, namedtuple)
+from typing import (List, Mapping, Set)
 
 # Outstanding issues:
 # * Neither license nor copyright are defined
@@ -89,51 +90,86 @@ class DuplicateInputParameter(SampleError):
     pass
 
 
-def validate_response(response):
-    """Validates a "response" block from a sample config.
-    A full description of the response block is outside the scope of this code
-    and is better handled by reading the samplegen documentation.
+class ResponseValidator:
+    COLL_KWORD = "collection"
+    VAR_KWORD = "variable"
+    MAP_KWORD = "map"
+    KEY_KWORD = "key"
+    VAL_KWORD = "value"
+    BODY_KWORD = "body"
 
-    Args:
-       response: list[dict{str:?}]: The structured data representing
-                                    the sample's response.
+    def __init__(self, response):
+        """Validates a "response" block from a sample config.
 
-    Returns:
-        bool: True if response block is correctly formed.
+        A full description of the response block is outside the scope of this code
+        and is better handled by reading the samplegen documentation.
 
-    Raises:
-        BadAssignment: If a "define" statement is badly formed.
-        ReservedVariablename: If an attempted lvalue is a reserved word.
-        UndefinedVariableReference: If an attempted rvalue base is a previously
-                                    undeclared variable.
-        MismatchedPrintStatement: If the number of format string segments ("%s") in
-                                  a "print" or "comment" block does not equal the
-                                  size number of strings in the block minus 1.
-        BadLoop: If a "loop" segments has unexpected keywords
-                 or keyword combinatations.
-        InvalidStatement: If an unexpected key is found in a statement dict
-                          or a statement dict has more than or less than one key.
-    """
+        Args:
+           response: list[dict{str:?}]: The structured data representing
+                                        the sample's response.
 
-    # Note: all python functions that work with sample configs
-    #       do validation and minimimal data structure transformation.
-    #       Rendering is handled by jinja templates.
-    coll_kword = "collection"
-    var_kword = "variable"
-    map_kword = "map"
-    key_kword = "key"
-    val_kword = "value"
-    body_kword = "body"
-    # Do NOT need checks for valid lexical scoping
-    # because of python variable definition rules.
-    # E.g. the following is valid python:
-    #
-    # for i in range(10):
-    #   squid = "Squid {}".format(i)
-    #
-    # print("Last squid is {}".format(squid))
+        Raises:
+            BadAssignment: If a "define" statement is badly formed.
+            ReservedVariablename: If an attempted lvalue is a reserved word.
+            UndefinedVariableReference: If an attempted rvalue base is a previously
+                                        undeclared variable.
+            MismatchedPrintStatement: If the number of format string segments ("%s") in
+                                      a "print" or "comment" block does not equal the
+                                      size number of strings in the block minus 1.
+            BadLoop: If a "loop" segments has unexpected keywords
+                     or keyword combinatations.
+            InvalidStatement: If an unexpected key is found in a statement dict
+                              or a statement dict has more than or less than one key.
+        """
 
-    def handle_define(body):
+        # The response ($resp) variable is special and guaranteed to exist.
+        self.var_defs_ = {"$resp"}
+
+        self.inner_validate_(response)
+
+    def inner_validate_(self, response):
+        for statement in response:
+            if len(statement) != 1:
+                raise InvalidStatement(
+                    "Invalid statement: {}".format(statement))
+
+            keyword, body = next(iter(statement.items()))
+            validater = self.STATEMENT_DISPATCH_TABLE.get(keyword)
+            if not validater:
+                raise InvalidStatement("Invalid statement keyword: {}"
+                                       .format(keyword))
+
+            validater(self, body)
+
+    def validate_comment_(self, body: List[str]):
+        fmt_str = body[0]
+        num_vars = fmt_str.count("%s")
+        if num_vars != len(body) - 1:
+            raise MismatchedPrintStatement(
+                "Expected {} var names in comment but received {}"
+                .format(num_vars, len(body) - 1))
+
+        for var_name in body[1:]:
+            var_base = var_name.split(".")[0]
+            if var_base not in self.var_defs_:
+                raise UndefinedVariableReference("Reference to undefined variable: {}"
+                                                 .format(var_base))
+
+    def validate_print_(self, body: List[str]):
+        fmt_str = body[0]
+        num_prints = fmt_str.count("%s")
+        if num_prints != len(body) - 1:
+            raise MismatchedPrintStatement(
+                "Expected {} expresssions in print statement but received {}"
+                .format(num_prints, len(body) - 1))
+
+        for expression in body[1:]:
+            var = expression.split(".")[0]
+            if var not in self.var_defs_:
+                raise UndefinedVariableReference("Reference to undefined variable: {}"
+                                                 .format(var))
+
+    def validate_define_(self, body: str):
         m = re.match(r"^([^=]+)=([^=]+)$", body)
         if not m:
             raise BadAssignment("Bad assignment statement: {}", body)
@@ -144,7 +180,7 @@ def validate_response(response):
                 "Tried to define a variable with reserved name: {}".format(var))
 
         rval_base = rval.split(".")[0]
-        if not rval_base in var_defs:
+        if not rval_base in self.var_defs_:
             raise UndefinedVariableReference("Reference to undefined variable: {}"
                                              .format(rval_base))
         # TODO: Need to validate the attributes of the response
@@ -154,81 +190,66 @@ def validate_response(response):
         #
         # Note: really checking for safety would be equivalent to
         #       re-implementing the python interpreter.
-        var_defs.add(var)
+        self.var_defs_.add(var)
 
-    def handle_print(body):
-        fmtStr = body[0]
-        numPrints = fmtStr.count("%s")
-        if numPrints != len(body) - 1:
-            raise MismatchedPrintStatement(
-                "Expected {} expresssions in print statement but received {}"
-                .format(numPrints, len(body) - 1))
-
-        for expression in body[1:]:
-            var = expression.split(".")[0]
-            if var not in var_defs:
-                raise UndefinedVariableReference("Reference to undefined variable: {}"
-                                                 .format(var))
-
-    def handle_comment(body):
-        fmtStr = body[0]
-        numVars = fmtStr.count("%s")
-        if numVars != len(body) - 1:
-            raise MismatchedPrintStatement(
-                "Expected {} var names in comment but received {}"
-                .format(numVars, len(body) - 1))
-
-        for var_name in body[1:]:
-            var_base = var_name.split(".")[0]
-            if var_base not in var_defs:
-                raise UndefinedVariableReference("Reference to undefined variable: {}"
-                                                 .format(var_base))
-
-    def handle_loop(body):
+    def validate_loop_(self, body):
         segments = set(body.keys())
-        map_args = {map_kword, body_kword}
-        if {coll_kword, var_kword, body_kword} == segments:
-            collection_name = body[coll_kword].split(".")[0]
+        map_args = {self.MAP_KWORD, self.BODY_KWORD}
+
+        # Even though it's valid python to use a variable outside of the lexical
+        # scope it was defined in,
+        #
+        # i.e.
+        #   for m in molluscs:
+        #     handle(m)
+        #   print("Last mollusc: {}".format(m))
+        #
+        # is valid python, the samplegen spec requires that errors are raised
+        # if strict lexical scoping is violated.
+        previous_defs = set(self.var_defs_)
+
+        if {self.COLL_KWORD, self.VAR_KWORD, self.BODY_KWORD} == segments:
+            collection_name = body[self.COLL_KWORD].split(".")[0]
             # TODO: resolve the implicit $resp dilemma
             # if collection_name.startswith("."):
             #     collection_name = "$resp" + collection_name
-            if collection_name not in var_defs:
+            if collection_name not in self.var_defs_:
                 raise UndefinedVariableReference("Reference to undefined variable: {}"
                                                  .format(collection_name))
 
-            var = body[var_kword]
+            var = body[self.VAR_KWORD]
             if var in RESERVED_WORDS:
                 raise ReservedVariableName(
                     "Tried to define a variable with reserved name: {}".format(var))
 
-            var_defs.add(var)
+            self.var_defs_.add(var)
 
-            inner_validate(body[body_kword])
+            self.inner_validate_(body[self.BODY_KWORD])
 
         elif map_args <= segments:
-            segments -= {map_kword, body_kword}
-            map_name_base = body[map_kword].split(".")[0]
-            if map_name_base not in var_defs:
+            segments -= {self.MAP_KWORD, self.BODY_KWORD}
+            map_name_base = body[self.MAP_KWORD].split(".")[0]
+            if map_name_base not in self.var_defs_:
                 raise UndefinedVariableReference("Reference to undefined variable: {}"
                                                  .format(map_name_base))
 
-            key = body.get(key_kword)
+            key = body.get(self.KEY_KWORD)
             if key:
                 if key in RESERVED_WORDS:
                     raise ReservedVariableName(
                         "Tried to define a variable with reserved name: {}".format(key))
 
-                var_defs.add(key)
-                segments.remove(key_kword)
+                self.var_defs_.add(key)
+                segments.remove(self.KEY_KWORD)
 
-            val = body.get(val_kword)
+            val = body.get(self.VAL_KWORD)
             if val:
                 if val in RESERVED_WORDS:
                     raise ReservedVariableName(
                         "Tried to define a variable with reserved name: {}".format(val))
 
-                var_defs.add(val)
-                segments.remove(val_kword)
+                self.var_defs_.add(val)
+                segments.remove(self.VAL_KWORD)
 
             if not (key or val):
                 raise BadLoop(
@@ -238,44 +259,32 @@ def validate_response(response):
                 raise BadLoop("Unexpected keywords in loop statement: {}"
                               .format(segments))
 
-            inner_validate(body[body_kword])
+            self.inner_validate_(body[self.BODY_KWORD])
 
         else:
             raise BadLoop("Unexpected loop form: {}".format(segments))
 
-    # The response variable is special and guaranteed to exist.
-    var_defs = {"$resp"}
-    statement_dispatcher = {
-        "define": handle_define,
-        "print": handle_print,
-        "loop": handle_loop,
-        "comment": handle_comment
+        # Restore the previous lexical scope.
+        # This is stricter than python scope rules
+        # because the samplegen spec mandates it.
+        self.var_defs_ = previous_defs
+
+    # Add new statement keywords to this table
+    STATEMENT_DISPATCH_TABLE = {
+        "define": validate_define_,
+        "print": validate_print_,
+        "loop": validate_loop_,
+        "comment": validate_comment_
     }
 
-    def inner_validate(sample_segment):
-        for statement in sample_segment:
-            if len(statement) != 1:
-                raise InvalidStatement(
-                    "Invalid statement: {}".format(statement))
 
-            keyword, body = next(iter(statement.items()))
-            handler = statement_dispatcher.get(keyword)
-            if not handler:
-                raise InvalidStatement("Invalid statement keyword: {}"
-                                       .format(keyword))
-
-            handler(body)
-
-        return True
-
-    return inner_validate(response)
+TransformedRequest = namedtuple("TransformedRequest", ["base", "body"])
 
 
 # TODO: this will eventually need the method name and the proto file
 # so that it can do the correct value transformation for enums.
-def validate_and_transform_request(request):
-    """Checks the "request" block from a sample config
-       and returns a transformed version.
+def validate_and_transform_request(request: List[Mapping[str, str]]) -> List[TransformedRequest]:
+    """Checks the "request" block from a sample config and returns a transformed version.
 
        In the initial request, each dict has a "field" key that maps to a dotted
        variable name, e.g. clam.shell.
@@ -297,10 +306,10 @@ def validate_and_transform_request(request):
              {"field": "clam.pearls", "value": "3"},
              {"field": "squid.mantle", "value": "100 kg"}]
               ->
-            [{"base": "clam",
-              "body": [{"field": "shell", "value": "10 kg", "input_parameter": "shell"},
-                       {"field": "pearls", "value": "3"}]},
-             {"base": "squid", "body": [{"field": "mantle", "value": "100 kg"}]}]
+            [TransformedRequest("clam",
+              [{"field": "shell", "value": "10 kg", "input_parameter": "shell"},
+               {"field": "pearls", "value": "3"}]),
+             TransformedRequest("squid", [{"field": "mantle", "value": "100 kg"}])]
 
        The transformation makes it easier to set up request parameters in jinja
        because it doesn't have to engage in prefix detection, validation,
@@ -320,8 +329,9 @@ def validate_and_transform_request(request):
         InvalidRequestSetup: If a dict in the request lacks a "field" key
                              or the corresponding value is malformed.
     """
-    base_param_to_attrs = defaultdict(list)
-    input_params = set()
+    base_param_to_attrs: Mapping[str,
+                                 List[Mapping[str, str]]] = defaultdict(list)
+    input_params: Set[str] = set()
     for field_assignment in request:
         field_assignment_copy = dict(field_assignment)
         input_param = field_assignment_copy.get("input_parameter")
@@ -342,7 +352,14 @@ def validate_and_transform_request(request):
                 "No field attribute found in request setup assignment: {}",
                 field_assignment_copy)
 
-        m = re.match("^([^.]+)\.([^.]+)$", field)
+        # TODO: properly handle top level fields
+        # E.g.
+        #
+        #  -field: edition
+        #   comment: The edition of the series.
+        #   value: '123'
+        #   input_parameter: edition
+        m = re.match(r"^([^.]+)\.([^.]+)$", field)
         if not m:
             raise InvalidRequestSetup(
                 "Malformed request attribute description: {}", field)
@@ -355,5 +372,5 @@ def validate_and_transform_request(request):
         field_assignment_copy["field"] = attr
         base_param_to_attrs[base].append(field_assignment_copy)
 
-    return [{"base": base, "body": body}
+    return [TransformedRequest(base, body)
             for base, body in base_param_to_attrs.items()]

@@ -18,7 +18,7 @@
 A careful reader may comment that there is duplication of effort
 between the python verification step and the dispatch/rendering here.
 There is a little, but not enough for it to be important because
-1) Other python artefacts (client libraries, unit tests, and so forth)
+1) Other python artifacts (client libraries, unit tests, and so forth)
    are generated using templates, so doing the same for generated samples is consistent.
 2) Using jinja for anything requiring real logic or data structures is a bad idea.
 #}
@@ -52,7 +52,7 @@ print({{ ([fmtStr] + elts[1:])|join(', ') }})
 
 {% macro renderCollectionLoop(statement) %}
 for {{ statement.variable }} in {{ statement.collection }}:
-  {{ dispatchStatement(statement.body) -}}
+    {{ dispatchStatement(statement.body) -}}
 {% endmacro %}
 
 {% macro renderMapLoop(statement) %}
@@ -64,7 +64,7 @@ for {{ statement.key }} in {{ statement.map }}.keys():
 {% else %}
 for {{statement.key }}, {{ statement.value }} in {{ statement.map }}.items():
 {% endif %}
-  {{ dispatchStatement(statement.body) -}}
+    {{ dispatchStatement(statement.body) -}}
 {% endmacro %}
 
 {% macro dispatchStatement(statement) %}
@@ -93,7 +93,7 @@ for {{statement.key }}, {{ statement.value }} in {{ statement.map }}.items():
 # {{ attr.input_parameter }} = "{{ attr.value }}"
     {% if "value_is_file" in attr and attr.value_is_file %}
 with open({{ attr.input_parameter }}, "rb") as f:
-  {{ baseName }}["{{ attr.field }}"] = f.read()
+    {{ baseName }}["{{ attr.field }}"] = f.read()
     {% else %}
 {{ baseName }}["{{ attr.field }}"] = {{ attr.input_parameter }}
     {% endif %}
@@ -113,22 +113,22 @@ with open({{ attr.input_parameter }}, "rb") as f:
 
 {% macro renderMainBlock(methodName, requestBlock) %}
 def main():
-  import argparse
+    import argparse
 
-  parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser()
 {% with arg_list = [] %}
 {% for attr in requestBlock if "input_parameter" in attr %}
-  parser.add_argument("--{{ attr.input_parameter }}",
-                      type=str,
-                      default="{{ attr.value }}")
+    parser.add_argument("--{{ attr.input_parameter }}",
+                        type=str,
+                        default="{{ attr.value }}")
 {% do arg_list.append("args." + attr.input_parameter) -%}
 {% endfor %}
-  args = parser.parse_args()
+    args = parser.parse_args()
 
-  sample_{{ methodName|split_downcase|join("_") }}({{ arg_list|join(", ") }})
+    sample_{{ methodName|snake_case }}({{ arg_list|join(", ") }})
 
 
 if __name__ == "__main__":
-  main()
+    main()
 {% endwith %}
 {% endmacro %}

@@ -25,7 +25,6 @@ from gapic import utils
 from gapic.generator import formatter
 from gapic.generator import options
 from gapic.schema import api
-from gapic.samplegen import utils as sampleutils
 
 
 class Generator:
@@ -55,7 +54,6 @@ class Generator:
         self._env.filters['snake_case'] = utils.to_snake_case
         self._env.filters['sort_lines'] = utils.sort_lines
         self._env.filters['wrap'] = utils.wrap
-        self._env.filters["split_downcase"] = sampleutils.split_caps_and_downcase
 
     def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
