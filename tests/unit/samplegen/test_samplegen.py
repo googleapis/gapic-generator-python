@@ -21,86 +21,111 @@ import gapic.samplegen.utils as utils
 
 def test_define():
     define = {"define": "squid=$resp"}
-    assert samplegen.ResponseValidator([define])
+    assert samplegen.Validator().validate_response([define])
 
 
 def test_define_undefined_var():
     define = {"define": "squid=humboldt"}
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator([define])
+        samplegen.Validator().validate_response([define])
 
 
 def test_define_reserved_varname():
     define = {"define": "class=$resp"}
     with pytest.raises(samplegen.ReservedVariableName):
-        samplegen.ResponseValidator([define])
+        samplegen.Validator().validate_response([define])
 
 
 def test_define_add_var():
-    assert samplegen.ResponseValidator([{"define": "squid=$resp"},
-                                        {"define": "name=squid.name"}])
+    assert samplegen.Validator().validate_response([{"define": "squid=$resp"},
+                                                    {"define": "name=squid.name"}])
 
 
 def test_define_bad_form():
     define = {"define": "mollusc=$resp.squid=$resp.clam"}
     with pytest.raises(samplegen.BadAssignment):
-        samplegen.ResponseValidator([define])
+        samplegen.Validator().validate_response([define])
+
+
+def test_define_redefinition():
+    statements = [{"define": "molluscs=$resp.molluscs"},
+                  {"define": "molluscs=$resp.molluscs"}]
+    with pytest.raises(samplegen.RedefinedVariable):
+        samplegen.Validator().validate_response(statements)
+
+
+def test_define_input_param():
+    validator = samplegen.Validator()
+    validator.validate_and_transform_request([{"field": "squid.mantle_length",
+                                               "value": "100 cm",
+                                               "input_parameter": "mantle_length"}])
+    validator.validate_response([{"define": "length=mantle_length"}])
+
+
+def test_define_input_param_redefinition():
+    validator = samplegen.Validator()
+    validator.validate_and_transform_request([{"field": "squid.mantle_length",
+                                               "value": "100 cm",
+                                               "input_parameter": "mantle_length"}])
+    with pytest.raises(samplegen.RedefinedVariable):
+        validator.validate_response(
+            [{"define": "mantle_length=mantle_length"}])
 
 
 def test_print_basic():
     print_statement = {"print": ["This is a squid"]}
-    assert samplegen.ResponseValidator([print_statement])
+    assert samplegen.Validator().validate_response([print_statement])
 
 
 def test_print_fmt_str():
     print_statement = {"print": ["This is a squid named %s", "$resp.name"]}
-    assert samplegen.ResponseValidator([print_statement])
+    assert samplegen.Validator().validate_response([print_statement])
 
 
 def test_print_fmt_mismatch():
     print_statement = {"print": ["This is a squid named %s"]}
-    with pytest.raises(samplegen.MismatchedPrintStatement):
-        samplegen.ResponseValidator([print_statement])
+    with pytest.raises(samplegen.MismatchedFormatSpecifier):
+        samplegen.Validator().validate_response([print_statement])
 
 
 def test_print_fmt_mismatch2():
     print_statement = {"print": ["This is a squid", "$resp.name"]}
-    with pytest.raises(samplegen.MismatchedPrintStatement):
-        samplegen.ResponseValidator([print_statement])
+    with pytest.raises(samplegen.MismatchedFormatSpecifier):
+        samplegen.Validator().validate_response([print_statement])
 
 
 def test_print_undefined_var():
     print_statement = {"print": ["This mollusc is a %s", "mollusc.type"]}
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator([print_statement])
+        samplegen.Validator().validate_response([print_statement])
 
 
 def test_comment():
     comment = {"comment": ["This is a mollusc"]}
-    assert samplegen.ResponseValidator([comment])
+    assert samplegen.Validator().validate_response([comment])
 
 
 def test_comment_fmt_str():
     comment = {"comment": ["This is a mollusc of class %s", "$resp.class"]}
-    assert samplegen.ResponseValidator([comment])
+    assert samplegen.Validator().validate_response([comment])
 
 
 def test_comment_fmt_undefined_var():
     comment = {"comment": ["This is a mollusc of class %s", "cephalopod"]}
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator([comment])
+        samplegen.Validator().validate_response([comment])
 
 
 def test_comment_fmt_mismatch():
     comment = {"comment": ["This is a mollusc of class %s"]}
-    with pytest.raises(samplegen.MismatchedPrintStatement):
-        samplegen.ResponseValidator([comment])
+    with pytest.raises(samplegen.MismatchedFormatSpecifier):
+        samplegen.Validator().validate_response([comment])
 
 
 def test_comment_fmt_mismatch2():
     comment = {"comment": ["This is a mollusc of class ", "$resp.class"]}
-    with pytest.raises(samplegen.MismatchedPrintStatement):
-        samplegen.ResponseValidator([comment])
+    with pytest.raises(samplegen.MismatchedFormatSpecifier):
+        samplegen.Validator().validate_response([comment])
 
 
 def test_loop_collection():
@@ -108,7 +133,17 @@ def test_loop_collection():
                      "variable": "m",
                      "body": [{"print":
                                ["Mollusc of class: %s", "m.class"]}]}}
-    assert samplegen.ResponseValidator([loop])
+    assert samplegen.Validator().validate_response([loop])
+
+
+def test_loop_collection_redefinition():
+    statements = [{"define": "m=$resp.molluscs"},
+                  {"loop": {"collection": "$resp.molluscs",
+                            "variable": "m",
+                            "body": [{"print": ["Mollusc of class: %s",
+                                                "m.class"]}]}}]
+    with pytest.raises(samplegen.RedefinedVariable):
+        samplegen.Validator().validate_response(statements)
 
 
 def test_loop_undefined_collection():
@@ -117,7 +152,7 @@ def test_loop_undefined_collection():
                      "body": [{"print":
                                ["Squid: %s", "s"]}]}}
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_collection_extra_kword():
@@ -127,7 +162,7 @@ def test_loop_collection_extra_kword():
                      "body": [{"print":
                                ["Mollusc of class: %s", "m.class"]}]}}
     with pytest.raises(samplegen.BadLoop):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_collection_missing_kword():
@@ -135,7 +170,7 @@ def test_loop_collection_missing_kword():
                      "body": [{"print":
                                ["Mollusc of class: %s", "m.class"]}]}}
     with pytest.raises(samplegen.BadLoop):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_collection_missing_kword2():
@@ -143,14 +178,14 @@ def test_loop_collection_missing_kword2():
                      "body": [{"print":
                                ["Mollusc: %s", "m.class"]}]}}
     with pytest.raises(samplegen.BadLoop):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_collection_missing_kword3():
     loop = {"loop": {"collection": "$resp.molluscs",
                      "variable": "r"}}
     with pytest.raises(samplegen.BadLoop):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_collection_reserved_loop_var():
@@ -159,7 +194,7 @@ def test_loop_collection_reserved_loop_var():
                      "body": [{"print":
                                ["Mollusc: %s", "class.name"]}]}}
     with pytest.raises(samplegen.ReservedVariableName):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map():
@@ -167,7 +202,7 @@ def test_loop_map():
                      "key": "cls",
                      "value": "mollusc",
                      "body": [{"print": ["A %s is a %s", "mollusc", "cls"]}]}}
-    assert samplegen.ResponseValidator([loop])
+    assert samplegen.Validator().validate_response([loop])
 
 
 def test_collection_loop_lexical_scope_variable():
@@ -176,7 +211,7 @@ def test_collection_loop_lexical_scope_variable():
                             "body": [{"define": "squid=m"}]}},
                   {"define": "cephalopod=m"}]
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator(statements)
+        samplegen.Validator().validate_response(statements)
 
 
 def test_collection_loop_lexical_scope_inline():
@@ -185,7 +220,7 @@ def test_collection_loop_lexical_scope_inline():
                             "body": [{"define": "squid=m"}]}},
                   {"define": "cephalopod=squid"}]
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator(statements)
+        samplegen.Validator().validate_response(statements)
 
 
 def test_map_loop_lexical_scope_key():
@@ -195,7 +230,7 @@ def test_map_loop_lexical_scope_key():
                             "body": [{"define": "tmp=cls"}]}},
                   {"define": "last_cls=cls"}]
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator(statements)
+        samplegen.Validator().validate_response(statements)
 
 
 def test_map_loop_lexical_scope_value():
@@ -205,7 +240,7 @@ def test_map_loop_lexical_scope_value():
                             "body": [{"define": "tmp=order"}]}},
                   {"define": "last_order=order"}]
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator(statements)
+        samplegen.Validator().validate_response(statements)
 
 
 def test_map_loop_lexical_scope_inline():
@@ -215,7 +250,7 @@ def test_map_loop_lexical_scope_inline():
                             "body": [{"define": "tmp=order"}]}},
                   {"define": "last_order=tmp"}]
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator(statements)
+        samplegen.Validator().validate_response(statements)
 
 
 def test_loop_map_reserved_key():
@@ -224,7 +259,7 @@ def test_loop_map_reserved_key():
                      "value": "mollusc",
                      "body": [{"print": ["A %s is a %s", "mollusc", "class"]}]}}
     with pytest.raises(samplegen.ReservedVariableName):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_reserved_val():
@@ -233,7 +268,7 @@ def test_loop_map_reserved_val():
                      "value": "class",
                      "body": [{"print": ["A %s is a %s", "m", "class"]}]}}
     with pytest.raises(samplegen.ReservedVariableName):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_undefined():
@@ -242,28 +277,28 @@ def test_loop_map_undefined():
                      "value": "mollusc",
                      "body": [{"print": ["A %s is a %s", "mollusc", "name"]}]}}
     with pytest.raises(samplegen.UndefinedVariableReference):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_no_key():
     loop = {"loop": {"map": "$resp.molluscs",
                      "value": "mollusc",
                      "body": [{"print": ["Mollusc: %s", "mollusc"]}]}}
-    assert samplegen.ResponseValidator([loop])
+    assert samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_no_value():
     loop = {"loop": {"map": "$resp.molluscs",
                      "key": "mollusc",
                      "body": [{"print": ["Mollusc: %s", "mollusc"]}]}}
-    assert samplegen.ResponseValidator([loop])
+    assert samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_no_key_or_value():
     loop = {"loop": {"map": "$resp.molluscs",
                      "body": [{"print": ["Dead loop"]}]}}
     with pytest.raises(samplegen.BadLoop):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_no_map():
@@ -271,7 +306,7 @@ def test_loop_map_no_map():
                      "value": "mollusc",
                      "body": [{"print": ["A %s is a %s", "mollusc", "name"]}]}}
     with pytest.raises(samplegen.BadLoop):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_no_body():
@@ -279,7 +314,7 @@ def test_loop_map_no_body():
                      "key": "name",
                      "value": "mollusc"}}
     with pytest.raises(samplegen.BadLoop):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_extra_kword():
@@ -289,23 +324,41 @@ def test_loop_map_extra_kword():
                      "phylum": "$resp.phylum",
                      "body": [{"print": ["A %s is a %s", "mollusc", "name"]}]}}
     with pytest.raises(samplegen.BadLoop):
-        samplegen.ResponseValidator([loop])
+        samplegen.Validator().validate_response([loop])
+
+
+def test_loop_map_redefined_key():
+    statements = [{"define": "mollusc=$resp.molluscs"},
+                  {"loop": {"map": "$resp.molluscs",
+                            "key": "mollusc",
+                            "body": [{"print": ["Mollusc: %s", "mollusc"]}]}}]
+    with pytest.raises(samplegen.RedefinedVariable):
+        samplegen.Validator().validate_response(statements)
+
+
+def test_loop_map_redefined_value():
+    statements = [{"define": "mollusc=$resp.molluscs"},
+                  {"loop": {"map": "$resp.molluscs",
+                            "value": "mollusc",
+                            "body": [{"print": ["Mollusc: %s", "mollusc"]}]}}]
+    with pytest.raises(samplegen.RedefinedVariable):
+        samplegen.Validator().validate_response(statements)
 
 
 def test_invalid_statement():
     statement = {"print": ["Name"], "comment": ["Value"]}
     with pytest.raises(samplegen.InvalidStatement):
-        samplegen.ResponseValidator([statement])
+        samplegen.Validator().validate_response([statement])
 
 
 def test_invalid_statement2():
     statement = {"squidify": ["Statement body"]}
     with pytest.raises(samplegen.InvalidStatement):
-        samplegen.ResponseValidator([statement])
+        samplegen.Validator().validate_response([statement])
 
 
 def test_basic():
-    assert samplegen.validate_and_transform_request(
+    assert samplegen.Validator().validate_and_transform_request(
         [{"field": "squid.mantle_length",
           "value": "100 cm"},
          {"field": "squid.mantle_mass",
@@ -319,52 +372,57 @@ def test_basic():
 
 def test_no_field_parameter():
     with pytest.raises(samplegen.InvalidRequestSetup):
-        samplegen.validate_and_transform_request([{"squid": "humboldt"}])
+        samplegen.Validator().validate_and_transform_request(
+            [{"squid": "humboldt"}])
 
 
 def test_malformed_field_attr():
     with pytest.raises(samplegen.InvalidRequestSetup):
-        samplegen.validate_and_transform_request([{"field": "squid"}])
+        samplegen.Validator().validate_and_transform_request(
+            [{"field": "squid"}])
 
 
 def test_multiple_arguments():
-    assert samplegen.validate_and_transform_request(
+    assert samplegen.Validator().validate_and_transform_request(
         [{"field": "squid.mantle_length",
           "value": "100 cm",
           "value_is_file": True},
          {"field": "clam.shell_mass",
           "value": "100 kg",
-          "comment": "Clams can be large"}]) == [samplegen.TransformedRequest("squid",
-                                                                              [{"field": "mantle_length",
-                                                                                "value": "100 cm",
-                                                                                "value_is_file": True}]),
-                                                 samplegen.TransformedRequest("clam",
-                                                                              [{"field": "shell_mass",
-                                                                                "value": "100 kg",
-                                                                                "comment": "Clams can be large"}])]
+          "comment": "Clams can be large"}]) == [
+              samplegen.TransformedRequest("squid",
+                                           [{"field": "mantle_length",
+                                             "value": "100 cm",
+                                             "value_is_file": True}]),
+        samplegen.TransformedRequest("clam",
+                                     [{"field": "shell_mass",
+                                       "value": "100 kg",
+                                       "comment": "Clams can be large"}])]
 
 
 def test_reserved_request_name():
     with pytest.raises(samplegen.ReservedVariableName):
-        samplegen.validate_and_transform_request(
+        samplegen.Validator().validate_and_transform_request(
             [{"field": "class.order", "value": "coleoidea"}])
 
 
 def test_duplicate_input_param():
-    with pytest.raises(samplegen.DuplicateInputParameter):
-        samplegen.validate_and_transform_request([{"field": "squid.mantle_mass",
-                                                   "value": "10 kg",
-                                                   "input_parameter": "mantle_mass"},
-                                                  {"field": "clam.mantle_mass",
-                                                   "value": "1 kg",
-                                                   "input_parameter": "mantle_mass"}])
+    with pytest.raises(samplegen.RedefinedVariable):
+        samplegen.Validator().validate_and_transform_request(
+            [{"field": "squid.mantle_mass",
+              "value": "10 kg",
+              "input_parameter": "mantle_mass"},
+             {"field": "clam.mantle_mass",
+              "value": "1 kg",
+              "input_parameter": "mantle_mass"}])
 
 
 def test_reserved_input_param():
     with pytest.raises(samplegen.ReservedVariableName):
-        samplegen.validate_and_transform_request([{"field": "mollusc.class",
-                                                   "value": "cephalopoda",
-                                                   "input_parameter": "class"}])
+        samplegen.Validator().validate_and_transform_request(
+            [{"field": "mollusc.class",
+              "value": "cephalopoda",
+              "input_parameter": "class"}])
 
 
 def test_calling_form():
