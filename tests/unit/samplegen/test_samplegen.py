@@ -18,10 +18,12 @@ from collections import namedtuple
 import gapic.samplegen.samplegen as samplegen
 import gapic.samplegen.utils as utils
 
+# validate_response tests
+
 
 def test_define():
     define = {"define": "squid=$resp"}
-    assert samplegen.Validator().validate_response([define])
+    samplegen.Validator().validate_response([define])
 
 
 def test_define_undefined_var():
@@ -37,8 +39,8 @@ def test_define_reserved_varname():
 
 
 def test_define_add_var():
-    assert samplegen.Validator().validate_response([{"define": "squid=$resp"},
-                                                    {"define": "name=squid.name"}])
+    samplegen.Validator().validate_response([{"define": "squid=$resp"},
+                                             {"define": "name=squid.name"}])
 
 
 def test_define_bad_form():
@@ -74,12 +76,12 @@ def test_define_input_param_redefinition():
 
 def test_print_basic():
     print_statement = {"print": ["This is a squid"]}
-    assert samplegen.Validator().validate_response([print_statement])
+    samplegen.Validator().validate_response([print_statement])
 
 
 def test_print_fmt_str():
     print_statement = {"print": ["This is a squid named %s", "$resp.name"]}
-    assert samplegen.Validator().validate_response([print_statement])
+    samplegen.Validator().validate_response([print_statement])
 
 
 def test_print_fmt_mismatch():
@@ -102,12 +104,12 @@ def test_print_undefined_var():
 
 def test_comment():
     comment = {"comment": ["This is a mollusc"]}
-    assert samplegen.Validator().validate_response([comment])
+    samplegen.Validator().validate_response([comment])
 
 
 def test_comment_fmt_str():
     comment = {"comment": ["This is a mollusc of class %s", "$resp.class"]}
-    assert samplegen.Validator().validate_response([comment])
+    samplegen.Validator().validate_response([comment])
 
 
 def test_comment_fmt_undefined_var():
@@ -133,7 +135,7 @@ def test_loop_collection():
                      "variable": "m",
                      "body": [{"print":
                                ["Mollusc of class: %s", "m.class"]}]}}
-    assert samplegen.Validator().validate_response([loop])
+    samplegen.Validator().validate_response([loop])
 
 
 def test_loop_collection_redefinition():
@@ -202,7 +204,7 @@ def test_loop_map():
                      "key": "cls",
                      "value": "mollusc",
                      "body": [{"print": ["A %s is a %s", "mollusc", "cls"]}]}}
-    assert samplegen.Validator().validate_response([loop])
+    samplegen.Validator().validate_response([loop])
 
 
 def test_collection_loop_lexical_scope_variable():
@@ -284,14 +286,14 @@ def test_loop_map_no_key():
     loop = {"loop": {"map": "$resp.molluscs",
                      "value": "mollusc",
                      "body": [{"print": ["Mollusc: %s", "mollusc"]}]}}
-    assert samplegen.Validator().validate_response([loop])
+    samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_no_value():
     loop = {"loop": {"map": "$resp.molluscs",
                      "key": "mollusc",
                      "body": [{"print": ["Mollusc: %s", "mollusc"]}]}}
-    assert samplegen.Validator().validate_response([loop])
+    samplegen.Validator().validate_response([loop])
 
 
 def test_loop_map_no_key_or_value():
@@ -357,7 +359,8 @@ def test_invalid_statement2():
         samplegen.Validator().validate_response([statement])
 
 
-def test_basic():
+# validate_and_transform_request tests
+def test_validate_request_basic():
     assert samplegen.Validator().validate_and_transform_request(
         [{"field": "squid.mantle_length",
           "value": "100 cm"},
@@ -370,19 +373,19 @@ def test_basic():
                                              "value": "10 kg"}])]
 
 
-def test_no_field_parameter():
+def test_validate_request_no_field_parameter():
     with pytest.raises(samplegen.InvalidRequestSetup):
         samplegen.Validator().validate_and_transform_request(
             [{"squid": "humboldt"}])
 
 
-def test_malformed_field_attr():
+def test_validate_request_malformed_field_attr():
     with pytest.raises(samplegen.InvalidRequestSetup):
         samplegen.Validator().validate_and_transform_request(
             [{"field": "squid"}])
 
 
-def test_multiple_arguments():
+def test_validate_request_multiple_arguments():
     assert samplegen.Validator().validate_and_transform_request(
         [{"field": "squid.mantle_length",
           "value": "100 cm",
@@ -400,13 +403,13 @@ def test_multiple_arguments():
                                        "comment": "Clams can be large"}])]
 
 
-def test_reserved_request_name():
+def test_validate_request_reserved_request_name():
     with pytest.raises(samplegen.ReservedVariableName):
         samplegen.Validator().validate_and_transform_request(
             [{"field": "class.order", "value": "coleoidea"}])
 
 
-def test_duplicate_input_param():
+def test_validate_request_duplicate_input_param():
     with pytest.raises(samplegen.RedefinedVariable):
         samplegen.Validator().validate_and_transform_request(
             [{"field": "squid.mantle_mass",
@@ -417,7 +420,7 @@ def test_duplicate_input_param():
               "input_parameter": "mantle_mass"}])
 
 
-def test_reserved_input_param():
+def test_validate_request_reserved_input_param():
     with pytest.raises(samplegen.ReservedVariableName):
         samplegen.Validator().validate_and_transform_request(
             [{"field": "mollusc.class",
@@ -425,7 +428,7 @@ def test_reserved_input_param():
               "input_parameter": "class"}])
 
 
-def test_calling_form():
+def test_validate_request_calling_form():
     DummyMethod = namedtuple("DummyMethod",
                              ["lro",
                               "paged_result_field",

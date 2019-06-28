@@ -93,8 +93,7 @@ class InvalidRequestSetup(SampleError):
 
 
 class Validator:
-    """
-    Class that validates samples.
+    """Class that validates samples.
 
     Contains methods that validate different segments of a sample and maintains
     state that's relevant to validation across different segments.
@@ -108,12 +107,6 @@ class Validator:
     BODY_KWORD = "body"
 
     def __init__(self):
-        """
-        Args:
-           response: list[dict{str:?}]: The structured data representing
-                                        the sample's response.
-        """
-
         # The response ($resp) variable is special and guaranteed to exist.
         self.var_defs_: Set[str] = {"$resp"}
 
@@ -121,13 +114,10 @@ class Validator:
     # so that it can do the correct value transformation for enums.
     def validate_and_transform_request(self,
                                        request: List[Mapping[str, str]]) -> List[TransformedRequest]:
-        """Validates the "request" block from a sample config and returns a transformed
-           version that aggregates attribute bases for use in the sample templates.
+        """Validates and transforms the "request" block from a sample config.
 
            In the initial request, each dict has a "field" key that maps to a dotted
            variable name, e.g. clam.shell.
-           Multiple dicts may share a variable base name; these indicate that multiple
-           attributes of a request parameter are being configured.
 
            The only required keys in each dict are "field" and value".
            Optional keys are "input_parameter" and "value_is_file".
@@ -139,6 +129,13 @@ class Validator:
            assignment definitions. The only difference in the bottommost dicts
            are that "field" maps only to the second part of a dotted variable name.
            Other key/value combinations in the dict are unmodified for the time being.
+
+           Note: gRPC API methods only take one parameter (ignoring client side streaming).
+                 The reason that GAPIC client library API methods may take multiple parameters
+                 is a workaround to provide idiomatic protobuf support within python.
+                 The different 'bases' are really attributes for the singular request parameter.
+
+           TODO: properly handle subfields, indexing, and so forth.
 
            TODO: Conduct module lookup and expansion for protobuf enums.
                  Requires proto/method/message descriptors.
@@ -186,8 +183,8 @@ class Validator:
             field = field_assignment_copy.get("field")
             if not field:
                 raise InvalidRequestSetup(
-                    "No field attribute found in request setup assignment: {}",
-                    field_assignment_copy)
+                    "No field attribute found in request setup assignment: {}".format(
+                        field_assignment_copy))
 
             # TODO: properly handle top level fields
             # E.g.
@@ -196,10 +193,10 @@ class Validator:
             #   comment: The edition of the series.
             #   value: '123'
             #   input_parameter: edition
-            m = re.match(r"^([^.]+)\.([^.]+)$", field)
+            m = re.match(r"^([a-zA-Z]\w*)\.([a-zA-Z]\w*)$", field)
             if not m:
                 raise InvalidRequestSetup(
-                    "Malformed request attribute description: {}", field)
+                    "Malformed request attribute description: {}".format(field))
 
             base, attr = m.groups()
             if base in RESERVED_WORDS:
@@ -246,11 +243,8 @@ class Validator:
 
             validater(self, body)
 
-        return True
-
     def _handle_lvalue(self, lval):
-        """Internal helper method that does safety checks on an lvalue
-           and adds it to lexical scope.
+        """Conducts safety checks on an lvalue and adds it to the lexical scope.
 
         Raises:
             ReservedVariableName: If an attempted lvalue is a reserved keyword.
@@ -285,7 +279,7 @@ class Validator:
         num_prints = fmt_str.count("%s")
         if num_prints != len(body) - 1:
             raise MismatchedFormatSpecifier(
-                "Expected {} expresssions in print statement but received {}"
+                "Expected {} expresssions in format string but received {}"
                 .format(num_prints, len(body) - 1))
 
         for expression in body[1:]:
@@ -297,6 +291,9 @@ class Validator:
     def _validate_define(self, body: str):
         """"Validates 'define' statements.
 
+        Adds the defined lvalue to the lexical scope.
+        Other statements can reference it.
+
          Raises:
              BadAssignment: If a "define" statement is badly formed lexically.
              UndefinedVariableReference: If an attempted rvalue base is a previously
@@ -306,12 +303,14 @@ class Validator:
         #       based on the method return type.
         # TODO: Need to check the defined variables
         #       if the rhs references a non-response variable.
+        # TODO: Need to rework the regex to allow for subfields,
+        #       indexing, and so forth.
         #
         # Note: really checking for safety would be equivalent to
         #       re-implementing the python interpreter.
-        m = re.match(r"^([^=]+)=([^=]+)$", body)
+        m = re.match(r"^([a-zA-Z]\w*)=([^=]+)$", body)
         if not m:
-            raise BadAssignment("Bad assignment statement: {}", body)
+            raise BadAssignment("Bad assignment statement: {}".format(body))
 
         lval, rval = m.groups()
         self._handle_lvalue(lval)
@@ -331,6 +330,8 @@ class Validator:
         use the variables from the header.
 
         The body statements are validated recursively.
+        The iteration variable(s) is/are added to the lexical scope
+        before validating the statements in the loop body.
 
         Raises:
             UndefinedVariableReference: If an attempted rvalue base is a previously
