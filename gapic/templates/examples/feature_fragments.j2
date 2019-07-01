@@ -25,13 +25,45 @@ There is a little, but not enough for it to be important because
 
 {# response handling macros #}
 
+{% macro licenseSection(fileHeader, sample, callingForm) %}
+# -*- coding: utf-8 -*-
+#
+{% for line in fileHeader["copyrightLines"] -%}
+# {{ line }}
+{% endfor -%}
+#
+{% for line in fileHeader["licenseLines"] -%}
+# {{ line }}
+{% endfor -%}
+#
+# DO NOT EDIT! This is a generated sample ("{{ callingForm }}",  "{{ sample.region_tag }}")
+#
+# To install the latest published package dependency, execute the following:
+#   pip3 install TODO
+{% endmacro %}
+
+{% macro printInputParams(requests) %}
+{% with input_parameters = [] %}
+{% for request in requests %}
+  {% for element in request.body %}
+    {% if "input_parameter" in element %}
+      {% do input_parameters.append(element["input_parameter"]) %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+{{ input_parameters|join(", ") -}}
+{% endwith %}
+{% endmacro %}
+
 {% macro renderPrint(elts) %}
   {# First elment is a format string, remaining elements are the format string parameters #}
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
   {% with fmtStr = ('\"' + elts[0] + '\"') |replace("%s", "{}") %}
-print({{ ([fmtStr] + elts[1:])|join(', ') }})
-  {% endwith -%}
+  {% with params = elts[1:]|map("replace","$resp", "response")|list %}
+print({{ ([fmtStr] + params)|join(', ') }})
+{% endwith -%}
+{% endwith -%}
 {% endmacro %}
 
 {% macro renderComment(elts) %}
@@ -39,30 +71,32 @@ print({{ ([fmtStr] + elts[1:])|join(', ') }})
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
   {% with fmtStr = elts[0] %}
-# {{ fmtStr|format(*elts[1:]) }}
-  {% endwith %}
+  {% with params = elts[1:]|map("replace", "$resp", "response")|list %}
+# {{ fmtStr|format(*params) }}
+{% endwith %}
+{% endwith %}
 {% endmacro %}
 
 {% macro renderDefine(statement) %}
 {# Python code already verified the form, no need to check #}
 {% with lvalue, rvalue = statement.split("=") %}
-{{ lvalue }} = {{ rvalue }}
+{{ lvalue }} = {{ rvalue|replace("$resp", "response") }}
 {% endwith %}
 {% endmacro %}
 
 {% macro renderCollectionLoop(statement) %}
-for {{ statement.variable }} in {{ statement.collection }}:
+for {{ statement.variable }} in {{ statement.collection|replace("$resp", "response") }}:
     {{ dispatchStatement(statement.body) -}}
 {% endmacro %}
 
 {% macro renderMapLoop(statement) %}
  {# At least one of key and value exist; validated in python #}
 {% if "key" not in statement %}
-for {{ statement.value }} in {{ statement.map }}.values():
+for {{ statement.value }} in {{ statement.map|replace("$resp", "response") }}.values():
 {% elif "value" not in statement %}
-for {{ statement.key }} in {{ statement.map }}.keys():
+for {{ statement.key }} in {{ statement.map|replace("$resp", "response") }}.keys():
 {% else %}
-for {{statement.key }}, {{ statement.value }} in {{ statement.map }}.items():
+for {{statement.key }}, {{ statement.value }} in {{ statement.map|replace("$resp", "response") }}.items():
 {% endif %}
     {{ dispatchStatement(statement.body) -}}
 {% endmacro %}
@@ -111,6 +145,61 @@ with open({{ attr.input_parameter }}, "rb") as f:
   {% endfor %}
 {% endmacro %}
 
+{% macro renderMethodCall(sample, callingForm, callingFormEnum) %}
+{# Note: this doesn't deal with enums or unions #}
+{% if callingForm not in [callingFormEnum.RequestStreamingBidi,
+callingFormEnum.RequestStreamingClient] %}
+client.{{ sample.rpc }}({{ sample.request|map(attribute="base")|join(", ") }})
+{% else %}
+{# TODO: set up client streaming once some questions are answered #}
+client.{{ sample.rpc }}([{{ sample.request|map(attribute="base")|join("") }}])
+{% endif %}
+{% endmacro %}
+
+{# Setting up the method invocation is the responsibility of the caller: #}
+{# it's just easier to set up client side streamin and other things from outside this macro. #}
+{% macro renderCallingForm(methodInvocationText, callingForm, callingFormEnum, responseStatements ) %}
+{% if callingForm == callingFormEnum.Request %}
+response = {{ methodInvocationText }}
+{% for statement in responseStatements %}
+{{ dispatchStatement(statement ) }}
+{% endfor %}
+{% elif callingForm == callingFormEnum.RequestPagedAll %}
+page_result = {{ methodInvocationText }}
+for response in page_result:
+  {% for statement in responseStatements %}
+    {{ dispatchStatement(statement ) }}
+  {% endfor %}
+{% elif callingForm == callingFormEnum.RequestPaged %}
+page_result = {{ methodInvocationText }}
+for page in page_result.pages():
+    for response in page:
+  {% for statement in responseStatements %}
+        {{ dispatchStatement(statement ) }}
+  {% endfor %}
+{% elif callingForm in [callingFormEnum.RequestStreamingServer,
+callingFormEnum.RequestStreamingBidi] %}
+stream = {{ methodInvocationText }}
+for response in stream:
+  {% for statement in responseStatements %}
+    {{ dispatchStatement(statement ) }}
+  {% endfor %}
+{% elif callingForm == callingFormEnum.LongRunningRequestPromise %}
+operation = {{ methodInvocationText }}
+
+print("Waiting for operation to complete...")
+
+response = operation.result()
+{% for statement in responseStatements %}
+{{ dispatchStatement(statement ) }}
+{% endfor %}
+{% endif %}
+{% endmacro %}
+
+{% macro renderMethodName(methodName) %}
+{{ methodName|snake_case -}}
+{% endmacro %}
+
 {% macro renderMainBlock(methodName, requestBlock) %}
 def main():
     import argparse
@@ -125,7 +214,7 @@ def main():
 {% endfor %}
     args = parser.parse_args()
 
-    sample_{{ methodName|snake_case }}({{ arg_list|join(", ") }})
+    sample_{{ renderMethodName(methodName) }}({{ arg_list|join(", ") }})
 
 
 if __name__ == "__main__":

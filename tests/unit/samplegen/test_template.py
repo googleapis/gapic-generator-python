@@ -153,9 +153,9 @@ def test_render_print_args():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.renderPrint(["Molluscs: %s, %s, %s", "squid", "clam", "whelk"]) }}
+        {{ frags.renderPrint(["$resp %s %s", "$resp.squids", "$resp.clams"]) }}
         ''',
-        '\nprint("Molluscs: {}, {}, {}", squid, clam, whelk)\n'
+        '\nprint("$resp {} {}", response.squids, response.clams)\n'
     )
 
 
@@ -173,9 +173,9 @@ def test_render_comment_args():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.renderComment(["Molluscs: %s, %s, %s", "squid", "clam", "whelk"]) }}
+        {{ frags.renderComment(["$resp %s %s", "$resp.squids", "$resp.clams"]) }}
         ''',
-        '\n# Molluscs: squid, clam, whelk\n'
+        '\n# $resp response.squids response.clams\n'
     )
 
 
@@ -186,6 +186,16 @@ def test_define():
         {{ frags.renderDefine("squid=humboldt") }}
         ''',
         '\nsquid = humboldt\n'
+    )
+
+
+def test_define_resp():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.renderDefine("squid=$resp.squid") }}
+        ''',
+        '\nsquid = response.squid\n'
     )
 
 
@@ -213,11 +223,12 @@ def test_collection_loop():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.renderCollectionLoop({"collection": "molluscs",
-                                        "variable": "m",
-                                        "body": {"print": ["Mollusc: %s", "m"]}}) }}''',
+        {{ frags.renderCollectionLoop({"collection": "$resp.molluscs",
+                                       "variable": "m",
+                                       "body": {"print": ["Mollusc: %s", "m"]}})}}
+        ''',
         '''
-        for m in molluscs:
+        for m in response.molluscs:
             print("Mollusc: {}", m)
         '''
     )
@@ -241,13 +252,13 @@ def test_map_loop():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.renderMapLoop({"map": "molluscs",
+        {{ frags.renderMapLoop({"map": "$resp.molluscs",
                                 "key":"cls",
                                 "value":"example",
                                 "body": {"print": ["A %s is a %s", "example", "cls"] }})
         }}''',
         '''
-        for cls, example in molluscs.items():
+        for cls, example in response.molluscs.items():
             print("A {} is a {}", example, cls)
         '''
     )
@@ -257,12 +268,12 @@ def test_map_loop_no_key():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.renderMapLoop({"map": "molluscs",
+        {{ frags.renderMapLoop({"map": "$resp.molluscs",
                                 "value":"example",
                                 "body": {"print": ["A %s is a mollusc", "example"] }})
         }}''',
         '''
-        for example in molluscs.values():
+        for example in response.molluscs.values():
             print("A {} is a mollusc", example)
         '''
     )
@@ -272,12 +283,12 @@ def test_map_loop_no_value():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.renderMapLoop({"map": "molluscs",
+        {{ frags.renderMapLoop({"map": "$resp.molluscs",
                                 "key":"cls",
                                 "body": {"print": ["A %s is a mollusc", "cls"] }})
         }}''',
         '''
-        for cls in molluscs.keys():
+        for cls in response.molluscs.keys():
             print("A {} is a mollusc", cls)
         '''
     )
@@ -298,6 +309,226 @@ def test_dispatch_map_loop():
         for cls, example in molluscs.items():
             print("A {} is a {}", example, cls)
         '''
+    )
+
+
+def test_print_input_params():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.printInputParams([{"base": "squid",
+                                    "body": [{"field": "mass",
+                                              "value": "10 kg",
+                                              "input_parameter": "mass"},
+                                             {"field": "length",
+                                              "value": "20 m",
+                                              "input_parameter": "length"}]},
+                                    {"base": "clam",
+                                     "body": [{"field": "diameter",
+                                               "value": "10 cm"}]},
+                                    {"base": "whelk",
+                                     "body": [{"field": "color",
+                                               "value": "red",
+                                               "input_parameter": "color"}]},
+                                    ]) }}
+        ''',
+        "\nmass, length, color"
+    )
+
+
+def test_render_calling_form_request():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {% set callingFormEnum  = {
+                           "Request": "request",
+                           "RequestPagedAll": "requestpagedall",
+                           "RequestPaged": "requestpaged",
+                           "RequestStreamingServer": "requeststreamingserver",
+                           "RequestStreamingBidi": "requeststreamingbidi",
+                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
+        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "request", callingFormEnum,
+                                   [{"print": ["Test print statement"]}]) }}
+        ''',
+        '''
+        response = TEST_INVOCATION_TXT
+        print("Test print statement")
+
+        '''
+
+    )
+
+
+def test_render_calling_form_paged_all():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {% set callingFormEnum  = {
+                           "Request": "request",
+                           "RequestPagedAll": "requestpagedall",
+                           "RequestPaged": "requestpaged",
+                           "RequestStreamingServer": "requeststreamingserver",
+                           "RequestStreamingBidi": "requeststreamingbidi",
+                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
+        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "requestpagedall",
+                                   callingFormEnum,
+                                   [{"print": ["Test print statement"]}]) }}
+        ''',
+        '''
+        page_result = TEST_INVOCATION_TXT
+        for response in page_result:
+            print("Test print statement")
+
+        '''
+
+    )
+
+
+def test_render_calling_form_paged():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {% set callingFormEnum  = {
+                           "Request": "request",
+                           "RequestPagedAll": "requestpagedall",
+                           "RequestPaged": "requestpaged",
+                           "RequestStreamingServer": "requeststreamingserver",
+                           "RequestStreamingBidi": "requeststreamingbidi",
+                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
+        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "requestpaged",
+                                   callingFormEnum,
+                                   [{"print": ["Test print statement"]}]) }}
+        ''',
+        '''
+        page_result = TEST_INVOCATION_TXT
+        for page in page_result.pages():
+            for response in page:
+                print("Test print statement")
+
+        '''
+
+    )
+
+
+def test_render_calling_form_streaming_server():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {% set callingFormEnum  = {
+                           "Request": "request",
+                           "RequestPagedAll": "requestpagedall",
+                           "RequestPaged": "requestpaged",
+                           "RequestStreamingServer": "requeststreamingserver",
+                           "RequestStreamingBidi": "requeststreamingbidi",
+                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
+        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "requeststreamingserver",
+                                   callingFormEnum,
+                                   [{"print": ["Test print statement"]}]) }}
+        ''',
+        '''
+        stream = TEST_INVOCATION_TXT
+        for response in stream:
+            print("Test print statement")
+
+        '''
+
+    )
+
+
+def test_render_calling_form_streaming_bidi():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {% set callingFormEnum  = {
+                           "Request": "request",
+                           "RequestPagedAll": "requestpagedall",
+                           "RequestPaged": "requestpaged",
+                           "RequestStreamingServer": "requeststreamingserver",
+                           "RequestStreamingBidi": "requeststreamingbidi",
+                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
+        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "requeststreamingbidi",
+                                   callingFormEnum,
+                                   [{"print": ["Test print statement"]}]) }}
+        ''',
+        '''
+        stream = TEST_INVOCATION_TXT
+        for response in stream:
+            print("Test print statement")
+
+        '''
+
+    )
+
+
+def test_render_calling_form_longrunning():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {% set callingFormEnum  = {
+                           "Request": "request",
+                           "RequestPagedAll": "requestpagedall",
+                           "RequestPaged": "requestpaged",
+                           "RequestStreamingServer": "requeststreamingserver",
+                           "RequestStreamingBidi": "requeststreamingbidi",
+                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
+        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "longrunningrequestpromise",
+                                   callingFormEnum,
+                                   [{"print": ["Test print statement"]}]) }}
+        ''',
+        '''
+        operation = TEST_INVOCATION_TXT
+        
+        print("Waiting for operation to complete...")
+
+        response = operation.result()
+        print("Test print statement")
+
+        '''
+
+    )
+
+
+def test_render_method_call_basic():
+    # The callingForm and callingFormEnum parameters are dummies,
+    # which we can get away with because of duck typing in the template.
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.renderMethodCall({"rpc": "Categorize", "request": [{"base": "video"},
+                                                                    {"base": "audio"},
+                                                                    {"base": "guess"}]},
+                                  "result", {"RequestStreamingBidi": "bidi",
+                                             "RequestStreamingClient": "client"}) }}
+        ''',
+        "\nclient.Categorize(video, audio, guess)\n"
+    )
+
+
+def test_render_method_call_bidi():
+    # The callingForm and callingFormEnum parameters are dummies,
+    # which we can get away with because of duck typing in the template.
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.renderMethodCall({"rpc": "Categorize", "request": [{"base": "video"}]},
+                                  "bidi", {"RequestStreamingBidi": "bidi",
+                                             "RequestStreamingClient": "client"}) }}
+        ''',
+        "\nclient.Categorize([video])\n"
+    )
+
+
+def test_render_method_call_client():
+    # The callingForm and callingFormEnum parameters are dummies,
+    # which we can get away with because of duck typing in the template.
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.renderMethodCall({"rpc": "Categorize", "request": [{"base": "video"}]},
+                                  "client", {"RequestStreamingBidi": "bidi",
+                                             "RequestStreamingClient": "client"}) }}
+       ''',
+        "\nclient.Categorize([video])\n"
     )
 
 
