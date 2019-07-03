@@ -21,3 +21,25 @@ def empty(content: str) -> bool:
     """
     return not any([i.lstrip() and not i.lstrip().startswith('#')
                     for i in content.split('\n')])
+
+
+def partition(iterator, predicate=bool):
+    """Partitions an iterable into two lists based on a predicate
+
+    Args:
+        iterator : An iterable on any type.
+        predicate: A callable predicate on a single argument
+                   of whatever type is in iterator.
+
+    Returns:
+        Tuple(List, List): The contents of iterator partitoned into two lists.
+                           The first list contains the "true" elements
+                           and the second contains the "false" elements.
+    """
+    results = ([], [])
+
+    for i in iterator:
+        results[int(predicate(i))].append(i)
+
+    # Returns trueList, falseList
+    return reversed(results)
