@@ -66,9 +66,6 @@ def test_generate_sample_basic():
     fpath, template_stream = samplegen.generate_sample(sample, env, schema)
     sample_str = "".join(iter(template_stream))
 
-    with open("/usr/local/google/home/dovs/tmp/sample.py", "w") as f:
-        f.write(sample_str)
-
     assert sample_str == '''# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2019  Google LLC
