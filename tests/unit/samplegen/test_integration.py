@@ -49,7 +49,10 @@ env.filters['snake_case'] = utils.to_snake_case
 
 def test_generate_sample_basic():
     # Note: the sample integration tests are needfully large
-    # and difficult to eyeball parse. They
+    # and difficult to eyeball parse. They are intended to be integration tests
+    # that catch errors in behavior that is emergent from combining smaller features
+    # or in features that are sufficiently small and trivial that it doesn't make sense
+    # to have standalone tests.
     schema = DummyApiSchema(
         {"animalia.mollusca.v1.Mollusc": DummyService({"Classify": DummyMethod()})})
 

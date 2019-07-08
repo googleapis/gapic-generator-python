@@ -41,7 +41,6 @@ def sample_{{ frags.renderMethodName(sample.rpc) }}({{ frags.printInputParams(sa
 
     {{ frags.renderRequest(sample.request)|indent }}
 
-{# Still need to set up client streaming #}
 {% with methodCall = frags.renderMethodCall(sample, callingForm, callingFormEnum) %}
     {{ frags.renderCallingForm(methodCall, callingForm, callingFormEnum, sample.response)|indent }}
 {% endwith %}

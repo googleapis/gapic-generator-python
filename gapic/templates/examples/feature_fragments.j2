@@ -157,7 +157,7 @@ client.{{ sample.rpc }}([{{ sample.request|map(attribute="base")|join("") }}])
 {% endmacro %}
 
 {# Setting up the method invocation is the responsibility of the caller: #}
-{# it's just easier to set up client side streamin and other things from outside this macro. #}
+{# it's just easier to set up client side streaming and other things from outside this macro. #}
 {% macro renderCallingForm(methodInvocationText, callingForm, callingFormEnum, responseStatements ) %}
 {% if callingForm == callingFormEnum.Request %}
 response = {{ methodInvocationText }}

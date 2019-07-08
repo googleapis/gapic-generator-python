@@ -251,9 +251,6 @@ class Validator:
             response: list[dict{str:?}]: The structured data representing
                                          the sample's response.
 
-        Returns:
-            bool: True if response is valid.
-
         Raises:
             InvalidStatement: If an unexpected key is found in a statement dict
                               or a statement dict has more than or less than one key.

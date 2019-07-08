@@ -24,6 +24,7 @@ from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 from gapic import utils
 from gapic.generator import formatter
 from gapic.generator import options
+from gapic.samplegen import samplegen
 from gapic.schema import api
 
 
@@ -73,7 +74,7 @@ class Generator:
         # TODO: handle sample_templates specially, generate samples.
         sample_templates, other_templates = utils.partition(
             self._env.loader.list_templates(),
-            lambda fname: os.path.basename(fname) == "sample.py.j2")
+            lambda fname: os.path.basename(fname) == samplegen.TEMPLATE_NAME)
 
         # Iterate over each template and add the appropriate output files
         # based on that template.
