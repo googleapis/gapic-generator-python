@@ -417,6 +417,14 @@ def test_validate_request_reserved_input_param():
 
 
 def test_single_request_client_streaming():
+    # Each API client method really only takes one parameter:
+    # either a single protobuf message or an iterable of protobuf messages.
+    # With unary request methods, python lets us describe attributes as positional
+    # and keyword parameters, which simplifies request construction.
+    # The 'base' in the transformed request refers to an attribute, and the
+    # 'field's refer to sub-attributes.
+    # Client streaming and bidirectional streaming methods can't use this notation,
+    # and generate an exception if there is more than one 'base'.
     with pytest.raises(samplegen.InvalidRequestSetup):
         samplegen.Validator().validate_and_transform_request(
             utils.CallingForm.RequestStreamingClient,
@@ -427,6 +435,14 @@ def test_single_request_client_streaming():
 
 
 def test_single_request_bidi_streaming():
+    # Each API client method really only takes one parameter:
+    # either a single protobuf message or an iterable of protobuf messages.
+    # With unary request methods, python lets us describe attributes as positional
+    # and keyword parameters, which simplifies request construction.
+    # The 'base' in the transformed request refers to an attribute, and the
+    # 'field's refer to sub-attributes.
+    # Client streaming and bidirectional streaming methods can't use this notation,
+    # and generate an exception if there is more than one 'base'.
     with pytest.raises(samplegen.InvalidRequestSetup):
         samplegen.Validator().validate_and_transform_request(
             utils.CallingForm.RequestStreamingBidi,

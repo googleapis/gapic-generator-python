@@ -28,11 +28,11 @@ There is a little, but not enough for it to be important because
 {% macro licenseSection(fileHeader, sample, callingForm) %}
 # -*- coding: utf-8 -*-
 #
-{% for line in fileHeader["copyrightLines"] -%}
+{% for line in fileHeader["copyrightLines"].split("\n") -%}
 # {{ line }}
 {% endfor -%}
 #
-{% for line in fileHeader["licenseLines"] -%}
+{% for line in fileHeader["licenseLines"].split("\n") -%}
 # {{ line }}
 {% endfor -%}
 #
@@ -149,10 +149,10 @@ with open({{ attr.input_parameter }}, "rb") as f:
 {# Note: this doesn't deal with enums or unions #}
 {% if callingForm not in [callingFormEnum.RequestStreamingBidi,
 callingFormEnum.RequestStreamingClient] %}
-client.{{ sample.rpc }}({{ sample.request|map(attribute="base")|join(", ") }})
+client.{{ sample.rpc|snake_case }}({{ sample.request|map(attribute="base")|join(", ") }})
 {% else %}
 {# TODO: set up client streaming once some questions are answered #}
-client.{{ sample.rpc }}([{{ sample.request|map(attribute="base")|join("") }}])
+client.{{ sample.rpc|snake_case }}([{{ sample.request|map(attribute="base")|join("") }}])
 {% endif %}
 {% endmacro %}
 
@@ -178,7 +178,7 @@ for page in page_result.pages():
         {{ dispatchStatement(statement ) }}
   {% endfor %}
 {% elif callingForm in [callingFormEnum.RequestStreamingServer,
-callingFormEnum.RequestStreamingBidi] %}
+                        callingFormEnum.RequestStreamingBidi] %}
 stream = {{ methodInvocationText }}
 for response in stream:
   {% for statement in responseStatements %}

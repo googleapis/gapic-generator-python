@@ -18,10 +18,11 @@ import os.path as path
 import gapic.samplegen.samplegen as samplegen
 import gapic.utils as utils
 
+from gapic.samplegen.utils import CallingForm
 from textwrap import dedent
 
 
-def check_template(template_fragment, expected_output):
+def check_template(template_fragment, expected_output, **kwargs):
     # Making a new environment for every unit test seems wasteful,
     # but the obvious alternative (make env an instance attribute
     # and passing a FunctionLoader whose load function returns
@@ -45,7 +46,7 @@ def check_template(template_fragment, expected_output):
     env.filters['snake_case'] = utils.to_snake_case
 
     template = env.get_template("template_fragment")
-    text = template.render()
+    text = template.render(**kwargs)
     assert text == dedent(expected_output)
 
 
@@ -57,7 +58,9 @@ def test_render_attr_value():
                                    {"field": "order",
                                     "value": "Molluscs.Cephalopoda.Coleoidea"}) }}
         ''',
-        '\nmollusc["order"] = Molluscs.Cephalopoda.Coleoidea\n'
+        '''
+        mollusc["order"] = Molluscs.Cephalopoda.Coleoidea
+        '''
     )
 
 
@@ -69,7 +72,10 @@ def test_render_attr_input_parameter():
                                              "value": "Humboldt",
                                              "input_parameter": "species"}) }}
         ''',
-        '\n# species = "Humboldt"\nsquid["species"] = species\n')
+        '''
+        # species = "Humboldt"
+        squid["species"] = species
+        ''')
 
 
 def test_render_attr_file():
@@ -135,7 +141,7 @@ def test_render_request_basic():
         with open(movie_path, "rb") as f:
             gastropod["movie"] = f.read()
     
-            '''
+        '''
     )
 
 
@@ -336,156 +342,87 @@ def test_print_input_params():
     )
 
 
-def test_render_calling_form_request():
-    check_template(
-        '''
+CALLING_FORM_TEMPLATE_TEST_STR = '''
         {% import "feature_fragments.j2" as frags %}
-        {% set callingFormEnum  = {
-                           "Request": "request",
-                           "RequestPagedAll": "requestpagedall",
-                           "RequestPaged": "requestpaged",
-                           "RequestStreamingServer": "requeststreamingserver",
-                           "RequestStreamingBidi": "requeststreamingbidi",
-                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
-        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "request", callingFormEnum,
+        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", callingForm,
+                                   callingFormEnum,
                                    [{"print": ["Test print statement"]}]) }}
-        ''',
-        '''
-        response = TEST_INVOCATION_TXT
-        print("Test print statement")
-
         '''
 
-    )
+
+def test_render_calling_form_request():
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                   response = TEST_INVOCATION_TXT
+                   print("Test print statement")
+                   
+                   ''',
+                   callingFormEnum=CallingForm,
+                   callingForm=CallingForm.Request)
 
 
 def test_render_calling_form_paged_all():
-    check_template(
-        '''
-        {% import "feature_fragments.j2" as frags %}
-        {% set callingFormEnum  = {
-                           "Request": "request",
-                           "RequestPagedAll": "requestpagedall",
-                           "RequestPaged": "requestpaged",
-                           "RequestStreamingServer": "requeststreamingserver",
-                           "RequestStreamingBidi": "requeststreamingbidi",
-                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
-        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "requestpagedall",
-                                   callingFormEnum,
-                                   [{"print": ["Test print statement"]}]) }}
-        ''',
-        '''
-        page_result = TEST_INVOCATION_TXT
-        for response in page_result:
-            print("Test print statement")
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                   page_result = TEST_INVOCATION_TXT
+                   for response in page_result:
+                       print("Test print statement")
 
-        '''
-
-    )
+                   ''',
+                   callingFormEnum=CallingForm,
+                   callingForm=CallingForm.RequestPagedAll)
 
 
 def test_render_calling_form_paged():
-    check_template(
-        '''
-        {% import "feature_fragments.j2" as frags %}
-        {% set callingFormEnum  = {
-                           "Request": "request",
-                           "RequestPagedAll": "requestpagedall",
-                           "RequestPaged": "requestpaged",
-                           "RequestStreamingServer": "requeststreamingserver",
-                           "RequestStreamingBidi": "requeststreamingbidi",
-                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
-        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "requestpaged",
-                                   callingFormEnum,
-                                   [{"print": ["Test print statement"]}]) }}
-        ''',
-        '''
-        page_result = TEST_INVOCATION_TXT
-        for page in page_result.pages():
-            for response in page:
-                print("Test print statement")
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                    page_result = TEST_INVOCATION_TXT
+                    for page in page_result.pages():
+                        for response in page:
+                            print("Test print statement")
 
-        '''
-
-    )
+                    ''',
+                   callingFormEnum=CallingForm,
+                   callingForm=CallingForm.RequestPaged)
 
 
 def test_render_calling_form_streaming_server():
-    check_template(
-        '''
-        {% import "feature_fragments.j2" as frags %}
-        {% set callingFormEnum  = {
-                           "Request": "request",
-                           "RequestPagedAll": "requestpagedall",
-                           "RequestPaged": "requestpaged",
-                           "RequestStreamingServer": "requeststreamingserver",
-                           "RequestStreamingBidi": "requeststreamingbidi",
-                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
-        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "requeststreamingserver",
-                                   callingFormEnum,
-                                   [{"print": ["Test print statement"]}]) }}
-        ''',
-        '''
-        stream = TEST_INVOCATION_TXT
-        for response in stream:
-            print("Test print statement")
-
-        '''
-
-    )
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                   stream = TEST_INVOCATION_TXT
+                   for response in stream:
+                       print("Test print statement")
+                   
+                   ''',
+                   callingFormEnum=CallingForm,
+                   callingForm=CallingForm.RequestStreamingServer)
 
 
 def test_render_calling_form_streaming_bidi():
-    check_template(
-        '''
-        {% import "feature_fragments.j2" as frags %}
-        {% set callingFormEnum  = {
-                           "Request": "request",
-                           "RequestPagedAll": "requestpagedall",
-                           "RequestPaged": "requestpaged",
-                           "RequestStreamingServer": "requeststreamingserver",
-                           "RequestStreamingBidi": "requeststreamingbidi",
-                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
-        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "requeststreamingbidi",
-                                   callingFormEnum,
-                                   [{"print": ["Test print statement"]}]) }}
-        ''',
-        '''
-        stream = TEST_INVOCATION_TXT
-        for response in stream:
-            print("Test print statement")
-
-        '''
-
-    )
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                   stream = TEST_INVOCATION_TXT
+                   for response in stream:
+                       print("Test print statement")
+                   
+                   ''',
+                   callingFormEnum=CallingForm,
+                   callingForm=CallingForm.RequestStreamingBidi)
 
 
 def test_render_calling_form_longrunning():
-    check_template(
-        '''
-        {% import "feature_fragments.j2" as frags %}
-        {% set callingFormEnum  = {
-                           "Request": "request",
-                           "RequestPagedAll": "requestpagedall",
-                           "RequestPaged": "requestpaged",
-                           "RequestStreamingServer": "requeststreamingserver",
-                           "RequestStreamingBidi": "requeststreamingbidi",
-                           "LongRunningRequestPromise": "longrunningrequestpromise"} %}
-        {{ frags.renderCallingForm("TEST_INVOCATION_TXT", "longrunningrequestpromise",
-                                   callingFormEnum,
-                                   [{"print": ["Test print statement"]}]) }}
-        ''',
-        '''
-        operation = TEST_INVOCATION_TXT
-        
-        print("Waiting for operation to complete...")
-
-        response = operation.result()
-        print("Test print statement")
-
-        '''
-
-    )
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                   operation = TEST_INVOCATION_TXT
+                   
+                   print("Waiting for operation to complete...")
+                   
+                   response = operation.result()
+                   print("Test print statement")
+                   
+                   ''',
+                   callingFormEnum=CallingForm,
+                   callingForm=CallingForm.LongRunningRequestPromise)
 
 
 def test_render_method_call_basic():
@@ -494,13 +431,16 @@ def test_render_method_call_basic():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.renderMethodCall({"rpc": "Categorize", "request": [{"base": "video"},
+        {{ frags.renderMethodCall({"rpc": "CategorizeMollusc", "request": [{"base": "video"},
                                                                     {"base": "audio"},
                                                                     {"base": "guess"}]},
                                   "result", {"RequestStreamingBidi": "bidi",
                                              "RequestStreamingClient": "client"}) }}
         ''',
-        "\nclient.Categorize(video, audio, guess)\n"
+
+        '''
+        client.categorize_mollusc(video, audio, guess)
+        '''
     )
 
 
@@ -510,11 +450,13 @@ def test_render_method_call_bidi():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.renderMethodCall({"rpc": "Categorize", "request": [{"base": "video"}]},
+        {{ frags.renderMethodCall({"rpc": "CategorizeMollusc", "request": [{"base": "video"}]},
                                   "bidi", {"RequestStreamingBidi": "bidi",
                                              "RequestStreamingClient": "client"}) }}
         ''',
-        "\nclient.Categorize([video])\n"
+        '''
+        client.categorize_mollusc([video])
+        '''
     )
 
 
@@ -524,11 +466,13 @@ def test_render_method_call_client():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.renderMethodCall({"rpc": "Categorize", "request": [{"base": "video"}]},
+        {{ frags.renderMethodCall({"rpc": "CategorizeMollusc", "request": [{"base": "video"}]},
                                   "client", {"RequestStreamingBidi": "bidi",
                                              "RequestStreamingClient": "client"}) }}
        ''',
-        "\nclient.Categorize([video])\n"
+        '''
+        client.categorize_mollusc([video])
+        '''
     )
 
 

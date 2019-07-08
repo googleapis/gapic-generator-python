@@ -20,6 +20,7 @@ import re
 from gapic.samplegen import utils
 
 from collections import (defaultdict, namedtuple)
+from textwrap import dedent
 from typing import (List, Mapping, Set, Tuple)
 
 # Outstanding issues:
@@ -30,19 +31,22 @@ MIN_SCHEMA_VERSION = (1, 2, 0)
 
 VALID_CONFIG_TYPE = 'com.google.api.codegen.SampleConfigProto'
 
-FILE_HEADER = {"copyrightLines": ["Copyright (C) 2019  Google LLC"],
-               "licenseLines": ["Licensed under the Apache License, Version 2.0 (the \"License\");",
-                                "you may not use this file except in compliance with the License.",
-                                "You may obtain a copy of the License at",
-                                "",
-                                "     http://www.apache.org/licenses/LICENSE-2.0",
-                                "",
-                                "Unless required by applicable law or agreed to in writing, software",
-                                "distributed under the License is distributed on an \"AS IS\" BASIS,",
-                                "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.",
-                                "See the License for the specific language governing permissions and",
-                                "limitations under the License."
-                                ]}
+FILE_HEADER = {"copyrightLines": "Copyright (C) 2019  Google LLC",
+               "licenseLines": dedent(
+                   """
+                   Licensed under the Apache License, Version 2.0 (the "License");
+                   you may not use this file except in compliance with the License.
+                   You may obtain a copy of the License at
+                      
+                        http://www.apache.org/licenses/LICENSE-2.0
+                      
+                   Unless required by applicable law or agreed to in writing, software
+                   distributed under the License is distributed on an "AS IS" BASIS,
+                   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                   See the License for the specific language governing permissions and
+                   limitations under the License.
+                   """).strip()
+               }
 
 RESERVED_WORDS = frozenset(
     itertools.chain(keyword.kwlist,
@@ -232,8 +236,8 @@ class Validator:
         if (calling_form in {utils.CallingForm.RequestStreamingClient,
                              utils.CallingForm.RequestStreamingBidi} and
                 len(base_param_to_attrs) > 1):
-            raise InvalidRequestSetup("""There can be at most 1 base request in a
-            sample for a method with client side streaming""")
+            raise InvalidRequestSetup(("There can be at most 1 base request in a sample"
+                                       " for a method with client side streaming"))
 
         return [TransformedRequest(base, body)
                 for base, body in base_param_to_attrs.items()]

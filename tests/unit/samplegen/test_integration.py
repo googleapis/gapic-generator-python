@@ -106,8 +106,7 @@ def sample_classify(video):
         classify_request["video"] = f.read()
 
 
-
-    response = client.Classify(classify_request)
+    response = client.classify(classify_request)
 
     print("Mollusc is a {}", response.taxonomy)
 

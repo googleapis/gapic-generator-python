@@ -38,7 +38,7 @@ def partition(iterator: Iterable[T],
                                         of whatever type is in iterator.
 
     Returns:
-        Tuple(List(T), List(T)): The contents of iterator partitoned into two lists.
+        Tuple(List(T), List(T)): The contents of iterator partitioned into two lists.
                                  The first list contains the "true" elements
                                  and the second contains the "false" elements.
     """

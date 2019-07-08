@@ -72,13 +72,13 @@ class Generator:
         output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
 
         # TODO: handle sample_templates specially, generate samples.
-        sample_templates, other_templates = utils.partition(
+        sample_templates, client_templates = utils.partition(
             self._env.loader.list_templates(),
             lambda fname: os.path.basename(fname) == samplegen.TEMPLATE_NAME)
 
         # Iterate over each template and add the appropriate output files
         # based on that template.
-        for template_name in other_templates:
+        for template_name in client_templates:
             # Sanity check: Skip "private" templates.
             filename = template_name.split('/')[-1]
             if filename.startswith('_') and filename != '__init__.py.j2':

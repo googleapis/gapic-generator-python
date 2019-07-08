@@ -40,7 +40,6 @@ def sample_{{ frags.renderMethodName(sample.rpc) }}({{ frags.printInputParams(sa
                 join("_") }}.{{ sample.service.split(".")[-1] }}Client()
 
     {{ frags.renderRequest(sample.request)|indent }}
-
 {% with methodCall = frags.renderMethodCall(sample, callingForm, callingFormEnum) %}
     {{ frags.renderCallingForm(methodCall, callingForm, callingFormEnum, sample.response)|indent }}
 {% endwith %}
