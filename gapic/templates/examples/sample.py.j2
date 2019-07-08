@@ -23,7 +23,7 @@
 {% import "feature_fragments.j2" as frags %}
 {{ frags.licenseSection(fileHeader, sample, callingForm) }}
 
-# [START {{ sample.region_tag }}]
+# [START {{ sample.id }}]
 {# python code is responsible for all transformations: all we do here is render #}
 {% for importStatement in imports %}
 {{ importStatement }}
@@ -33,7 +33,7 @@
 def sample_{{ frags.renderMethodName(sample.rpc) }}({{ frags.printInputParams(sample.request) }}):
     """{{ sample.description }}"""
 
-    # [START {{ sample.region_tag }}_core]
+    # [START {{ sample.id }}_core]
 
     client = {{ sample.service.split(".")[-3:-1]|
                 map("lower")|
@@ -43,8 +43,8 @@ def sample_{{ frags.renderMethodName(sample.rpc) }}({{ frags.printInputParams(sa
 {% with methodCall = frags.renderMethodCall(sample, callingForm, callingFormEnum) %}
     {{ frags.renderCallingForm(methodCall, callingForm, callingFormEnum, sample.response)|indent }}
 {% endwith %}
-    # [END {{ sample.region_tag}}_core]
+    # [END {{ sample.id}}_core]
 
-# [END {{ sample.region_tag }}]
+# [END {{ sample.id }}]
 
 {{ frags.renderMainBlock(sample.rpc, sample.request) }}

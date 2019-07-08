@@ -117,6 +117,20 @@ class InvalidRequestSetup(SampleError):
     pass
 
 
+def resp_to_response(s):
+    # In the sample config, the "$resp" keyword is used to refer to the
+    # item of interest as received by the corresponding calling form.
+    # For a 'regular', i.e. unary, synchronous, non-long-running method,
+    # it's the return value; for a server-streaming method, it's the iteration
+    # variable in the for loop that iterates over the return value, and for
+    # a long running promise, the user calls result on the method return value to
+    # resolve the future.
+    #
+    # The sample schema uses '$resp' as the special variable,
+    # but in the samples the 'response' variable is used instead.
+    return s.replace("$resp", "response")
+
+
 class Validator:
     """Class that validates samples.
 
@@ -465,8 +479,8 @@ def generate_sample(sample,
                                                          sample["request"])
     v.validate_response(sample["response"])
 
-    region_tag = sample["region_tag"]
-    sample_fpath = region_tag + str(calling_form) + ".py"
+    sample_id = sample["id"]
+    sample_fpath = sample_id + str(calling_form) + ".py"
 
     return sample_fpath, sample_template.stream(fileHeader=FILE_HEADER,
                                                 sample=sample,

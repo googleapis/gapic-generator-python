@@ -45,6 +45,7 @@ env = jinja2.Environment(
     trim_blocks=True, lstrip_blocks=True
 )
 env.filters['snake_case'] = utils.to_snake_case
+env.filters['resp_to_response'] = samplegen.resp_to_response
 
 
 def test_generate_sample_basic():
@@ -58,7 +59,7 @@ def test_generate_sample_basic():
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",
               "rpc": "Classify",
-              "region_tag": "mollusc_classify_sync",
+              "id": "mollusc_classify_sync",
               "description": "Determine the full taxonomy of input mollusc",
               "request": [{"field": "classify_request.video",
                            "value": "path/to/mollusc/video.mkv",

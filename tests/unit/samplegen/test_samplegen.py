@@ -476,3 +476,9 @@ def test_validate_request_calling_form():
 
     assert utils.CallingForm.method_default(DummyMethod(
         False, False, True, True)) == utils.CallingForm.RequestStreamingBidi
+
+
+def test_resp_to_response():
+    # Don't really need a test, but it shuts up code coverage.
+    assert samplegen.resp_to_response("$resp.squid") == "response.squid"
+    assert samplegen.resp_to_response("mollusc.squid") == "mollusc.squid"
