@@ -21,7 +21,7 @@ from gapic.samplegen import utils
 
 from collections import (defaultdict, namedtuple)
 from textwrap import dedent
-from typing import (List, Mapping, Set, Tuple)
+from typing import (Dict, List, Mapping, Set, Tuple)
 
 # Outstanding issues:
 # * In real sample configs, many variables are
@@ -32,7 +32,7 @@ MIN_SCHEMA_VERSION = (1, 2, 0)
 VALID_CONFIG_TYPE = 'com.google.api.codegen.SampleConfigProto'
 
 # TODO: read in copyright and license from files.
-FILE_HEADER = {}
+FILE_HEADER: Dict[str, str] = {}
 
 RESERVED_WORDS = frozenset(
     itertools.chain(keyword.kwlist,
