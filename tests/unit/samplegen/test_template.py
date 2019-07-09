@@ -44,7 +44,7 @@ def check_template(template_fragment, expected_output, **kwargs):
     )
 
     env.filters['snake_case'] = utils.to_snake_case
-    env.filters['resp_to_response'] = samplegen.resp_to_response
+    env.filters['coerce_variable_name'] = samplegen.coerce_variable_name
 
     template = env.get_template("template_fragment")
     text = template.render(**kwargs)

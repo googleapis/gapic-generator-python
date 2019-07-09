@@ -25,21 +25,12 @@ There is a little, but not enough for it to be important because
 
 {# response handling macros #}
 
-{% macro licenseSection(fileHeader, sample, callingForm) %}
-# -*- coding: utf-8 -*-
-#
-{% for line in fileHeader["copyrightLines"].split("\n") -%}
-# {{ line }}
-{% endfor -%}
-#
-{% for line in fileHeader["licenseLines"].split("\n") -%}
-# {{ line }}
-{% endfor -%}
+{% macro sample_header(fileHeader, sample, callingForm) %}
 #
 # DO NOT EDIT! This is a generated sample ("{{ callingForm }}",  "{{ sample.id }}")
 #
 # To install the latest published package dependency, execute the following:
-#   pip3 install TODO
+#   pip3 install {{ sample.package_name }}
 {% endmacro %}
 
 {% macro printInputParams(requests) %}
@@ -60,7 +51,7 @@ There is a little, but not enough for it to be important because
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
   {% with fmtStr = ('\"' + elts[0] + '\"') |replace("%s", "{}") %}
-  {% with params = elts[1:]|map("resp_to_response")|list %}
+  {% with params = elts[1:]|map("coerce_variable_name")|list %}
 print({{ ([fmtStr] + params)|join(', ') }})
 {% endwith -%}
 {% endwith -%}
@@ -71,7 +62,7 @@ print({{ ([fmtStr] + params)|join(', ') }})
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
   {% with fmtStr = elts[0] %}
-  {% with params = elts[1:]|map("resp_to_response")|list %}
+  {% with params = elts[1:]|map("coerce_variable_name")|list %}
 # {{ fmtStr|format(*params) }}
 {% endwith %}
 {% endwith %}
@@ -80,23 +71,23 @@ print({{ ([fmtStr] + params)|join(', ') }})
 {% macro renderDefine(statement) %}
 {# Python code already verified the form, no need to check #}
 {% with lvalue, rvalue = statement.split("=") %}
-{{ lvalue }} = {{ rvalue|resp_to_response }}
+{{ lvalue }} = {{ rvalue|coerce_variable_name }}
 {% endwith %}
 {% endmacro %}
 
 {% macro renderCollectionLoop(statement) %}
-for {{ statement.variable }} in {{ statement.collection|resp_to_response }}:
+for {{ statement.variable }} in {{ statement.collection|coerce_variable_name }}:
     {{ dispatchStatement(statement.body) -}}
 {% endmacro %}
 
 {% macro renderMapLoop(statement) %}
  {# At least one of key and value exist; validated in python #}
 {% if "key" not in statement %}
-for {{ statement.value }} in {{ statement.map|resp_to_response }}.values():
+for {{ statement.value }} in {{ statement.map|coerce_variable_name }}.values():
 {% elif "value" not in statement %}
-for {{ statement.key }} in {{ statement.map|resp_to_response }}.keys():
+for {{ statement.key }} in {{ statement.map|coerce_variable_name }}.keys():
 {% else %}
-for {{statement.key }}, {{ statement.value }} in {{ statement.map|resp_to_response }}.items():
+for {{statement.key }}, {{ statement.value }} in {{ statement.map|coerce_variable_name }}.items():
 {% endif %}
     {{ dispatchStatement(statement.body) -}}
 {% endmacro %}

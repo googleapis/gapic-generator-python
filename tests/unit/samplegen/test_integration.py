@@ -33,7 +33,10 @@ DummyMethod.__new__.__defaults__ = (False,)*len(dummy_method_fields)
 
 DummyService = namedtuple("DummyService", ["methods"])
 
-DummyApiSchema = namedtuple("DummyApiSchema", ["services"])
+DummyApiSchema = namedtuple("DummyApiSchema", ["services", "naming"])
+
+DummyNaming = namedtuple("DummyNaming", ["warehouse_package_name"])
+
 
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(
@@ -45,7 +48,7 @@ env = jinja2.Environment(
     trim_blocks=True, lstrip_blocks=True
 )
 env.filters['snake_case'] = utils.to_snake_case
-env.filters['resp_to_response'] = samplegen.resp_to_response
+env.filters['coerce_variable_name'] = samplegen.coerce_variable_name
 
 
 def test_generate_sample_basic():
@@ -55,7 +58,9 @@ def test_generate_sample_basic():
     # or in features that are sufficiently small and trivial that it doesn't make sense
     # to have standalone tests.
     schema = DummyApiSchema(
-        {"animalia.mollusca.v1.Mollusc": DummyService({"Classify": DummyMethod()})})
+        {"animalia.mollusca.v1.Mollusc": DummyService(
+            {"Classify": DummyMethod()})},
+        DummyNaming("molluscs-v1-mollusc"))
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",
               "rpc": "Classify",
@@ -70,26 +75,11 @@ def test_generate_sample_basic():
     fpath, template_stream = samplegen.generate_sample(sample, env, schema)
     sample_str = "".join(iter(template_stream))
 
-    assert sample_str == '''# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2019  Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-#      http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+    assert sample_str == '''#
 # DO NOT EDIT! This is a generated sample ("CallingForm.Request",  "mollusc_classify_sync")
 #
 # To install the latest published package dependency, execute the following:
-#   pip3 install TODO
+#   pip3 install molluscs-v1-mollusc
 
 
 # [START mollusc_classify_sync]
@@ -131,7 +121,7 @@ if __name__ == "__main__":
 
 
 def test_generate_sample_service_not_found():
-    schema = DummyApiSchema({})
+    schema = DummyApiSchema({}, DummyNaming("pkg_name"))
     sample = {"service": "Mollusc"}
 
     with pytest.raises(samplegen.UnknownService):
@@ -139,7 +129,8 @@ def test_generate_sample_service_not_found():
 
 
 def test_generate_sample_rpc_not_found():
-    schema = DummyApiSchema({"Mollusc": DummyService({})})
+    schema = DummyApiSchema(
+        {"Mollusc": DummyService({})}, DummyNaming("pkg_name"))
     sample = {"service": "Mollusc", "rpc": "Classify"}
 
     with pytest.raises(samplegen.RpcMethodNotFound):

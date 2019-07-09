@@ -31,22 +31,8 @@ MIN_SCHEMA_VERSION = (1, 2, 0)
 
 VALID_CONFIG_TYPE = 'com.google.api.codegen.SampleConfigProto'
 
-FILE_HEADER = {"copyrightLines": "Copyright (C) 2019  Google LLC",
-               "licenseLines": dedent(
-                   """
-                   Licensed under the Apache License, Version 2.0 (the "License");
-                   you may not use this file except in compliance with the License.
-                   You may obtain a copy of the License at
-                      
-                        http://www.apache.org/licenses/LICENSE-2.0
-                      
-                   Unless required by applicable law or agreed to in writing, software
-                   distributed under the License is distributed on an "AS IS" BASIS,
-                   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                   See the License for the specific language governing permissions and
-                   limitations under the License.
-                   """).strip()
-               }
+# TODO: read in copyright and license from files.
+FILE_HEADER = {}
 
 RESERVED_WORDS = frozenset(
     itertools.chain(keyword.kwlist,
@@ -117,7 +103,7 @@ class InvalidRequestSetup(SampleError):
     pass
 
 
-def resp_to_response(s):
+def coerce_variable_name(s):
     # In the sample config, the "$resp" keyword is used to refer to the
     # item of interest as received by the corresponding calling form.
     # For a 'regular', i.e. unary, synchronous, non-long-running method,
@@ -481,6 +467,8 @@ def generate_sample(sample,
 
     sample_id = sample["id"]
     sample_fpath = sample_id + str(calling_form) + ".py"
+
+    sample["package_name"] = api_schema.naming.warehouse_package_name
 
     return sample_fpath, sample_template.stream(fileHeader=FILE_HEADER,
                                                 sample=sample,

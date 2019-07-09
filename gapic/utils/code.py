@@ -28,14 +28,14 @@ def empty(content: str) -> bool:
 T = TypeVar('T')
 
 
-def partition(iterator: Iterable[T],
-              predicate: Callable[[T], bool] = bool) -> Tuple[List[T], List[T]]:
+def partition(predicate: Callable[[T], bool],
+              iterator: Iterable[T]) -> Tuple[List[T], List[T]]:
     """Partitions an iterable into two lists based on a predicate
 
     Args:
-        iterator Iterable(T):           An iterable on any type.
         predicate Callable((T), bool) : A callable predicate on a single argument
                                         of whatever type is in iterator.
+        iterator Iterable(T):           An iterable on any type.
 
     Returns:
         Tuple(List(T), List(T)): The contents of iterator partitioned into two lists.

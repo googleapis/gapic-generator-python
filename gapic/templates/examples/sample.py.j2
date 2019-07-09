@@ -21,7 +21,7 @@
 {# Note: this sample template is WILDLY INACCURATE AND INCOMPLETE #}
 {# It does not correctly enums, unions, top level attributes, or various other things #}
 {% import "feature_fragments.j2" as frags %}
-{{ frags.licenseSection(fileHeader, sample, callingForm) }}
+{{ frags.sample_header(fileHeader, sample, callingForm) }}
 
 # [START {{ sample.id }}]
 {# python code is responsible for all transformations: all we do here is render #}

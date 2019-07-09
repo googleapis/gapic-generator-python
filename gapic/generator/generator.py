@@ -55,7 +55,7 @@ class Generator:
         self._env.filters['snake_case'] = utils.to_snake_case
         self._env.filters['sort_lines'] = utils.sort_lines
         self._env.filters['wrap'] = utils.wrap
-        self._env.filters['resp_to_response'] = samplegen.resp_to_response
+        self._env.filters['coerce_variable_name'] = samplegen.coerce_variable_name
 
     def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
@@ -74,8 +74,8 @@ class Generator:
 
         # TODO: handle sample_templates specially, generate samples.
         sample_templates, client_templates = utils.partition(
-            self._env.loader.list_templates(),
-            lambda fname: os.path.basename(fname) == samplegen.TEMPLATE_NAME)
+            lambda fname: os.path.basename(fname) == samplegen.TEMPLATE_NAME,
+            self._env.loader.list_templates())
 
         # Iterate over each template and add the appropriate output files
         # based on that template.
