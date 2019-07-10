@@ -26,11 +26,25 @@ There is a little, but not enough for it to be important because
 {# response handling macros #}
 
 {% macro sample_header(fileHeader, sample, callingForm) %}
+{% for line in fileHeader["copyright"].split("\n") %}
+# {{ line }}
+{% endfor %}
+{% for line in fileHeader["license"].split("\n") %}
+# {{ line }}
+{% endfor %}
 #
 # DO NOT EDIT! This is a generated sample ("{{ callingForm }}",  "{{ sample.id }}")
 #
 # To install the latest published package dependency, execute the following:
 #   pip3 install {{ sample.package_name }}
+{% endmacro %}
+
+{% macro print_string_formatting(string_list) %}
+{% if string_list|length == 1 %}
+"{{ string_list[0]|replace("%s", "{}") }}"
+{% else %}
+"{{ string_list[0]|replace("%s", "{}") }}".format({{ string_list[1:]|map("coerce_response_name")|join(", ") }})
+{% endif %}
 {% endmacro %}
 
 {% macro printInputParams(requests) %}
@@ -50,11 +64,7 @@ There is a little, but not enough for it to be important because
   {# First elment is a format string, remaining elements are the format string parameters #}
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
-  {% with fmtStr = ('\"' + elts[0] + '\"') |replace("%s", "{}") %}
-  {% with params = elts[1:]|map("coerce_variable_name")|list %}
-print({{ ([fmtStr] + params)|join(', ') }})
-{% endwith -%}
-{% endwith -%}
+print({{ print_string_formatting(elts)|trim }})
 {% endmacro %}
 
 {% macro renderComment(elts) %}
@@ -62,7 +72,7 @@ print({{ ([fmtStr] + params)|join(', ') }})
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
   {% with fmtStr = elts[0] %}
-  {% with params = elts[1:]|map("coerce_variable_name")|list %}
+  {% with params = elts[1:]|map("coerce_response_name")|list %}
 # {{ fmtStr|format(*params) }}
 {% endwith %}
 {% endwith %}
@@ -71,25 +81,33 @@ print({{ ([fmtStr] + params)|join(', ') }})
 {% macro renderDefine(statement) %}
 {# Python code already verified the form, no need to check #}
 {% with lvalue, rvalue = statement.split("=") %}
-{{ lvalue }} = {{ rvalue|coerce_variable_name }}
+{{ lvalue }} = {{ rvalue|coerce_response_name }}
 {% endwith %}
 {% endmacro %}
 
 {% macro renderCollectionLoop(statement) %}
-for {{ statement.variable }} in {{ statement.collection|coerce_variable_name }}:
+for {{ statement.variable }} in {{ statement.collection|coerce_response_name }}:
     {{ dispatchStatement(statement.body) -}}
 {% endmacro %}
 
 {% macro renderMapLoop(statement) %}
  {# At least one of key and value exist; validated in python #}
 {% if "key" not in statement %}
-for {{ statement.value }} in {{ statement.map|coerce_variable_name }}.values():
+for {{ statement.value }} in {{ statement.map|coerce_response_name }}.values():
 {% elif "value" not in statement %}
-for {{ statement.key }} in {{ statement.map|coerce_variable_name }}.keys():
+for {{ statement.key }} in {{ statement.map|coerce_response_name }}.keys():
 {% else %}
-for {{statement.key }}, {{ statement.value }} in {{ statement.map|coerce_variable_name }}.items():
+for {{statement.key }}, {{ statement.value }} in {{ statement.map|coerce_response_name }}.items():
 {% endif %}
     {{ dispatchStatement(statement.body) -}}
+{% endmacro %}
+
+{% macro render_write_file(statement) %}
+  {% with contents_rval = statement["contents"]|coerce_response_name %}
+with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
+    f.write({{ contents_rval }})
+
+  {% endwith %}
 {% endmacro %}
 
 {% macro dispatchStatement(statement) %}
@@ -106,6 +124,8 @@ for {{statement.key }}, {{ statement.value }} in {{ statement.map|coerce_variabl
 {{ renderMapLoop(loop) -}}
     {% endif %}
   {% endwith %}
+{% elif "write_file" in statement %}
+{{ render_write_file(statement["write_file"]) -}}
 {% endif %}
 {% endmacro %}
 

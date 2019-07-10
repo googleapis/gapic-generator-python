@@ -33,17 +33,14 @@
 def sample_{{ frags.renderMethodName(sample.rpc) }}({{ frags.printInputParams(sample.request) }}):
     """{{ sample.description }}"""
 
-    # [START {{ sample.id }}_core]
-
     client = {{ sample.service.split(".")[-3:-1]|
                 map("lower")|
                 join("_") }}.{{ sample.service.split(".")[-1] }}Client()
 
     {{ frags.renderRequest(sample.request)|indent }}
 {% with methodCall = frags.renderMethodCall(sample, callingForm, callingFormEnum) %}
-    {{ frags.renderCallingForm(methodCall, callingForm, callingFormEnum, sample.response)|indent }}
+    {{ frags.renderCallingForm(methodCall, callingForm, callingFormEnum, sample.response)|indent -}}
 {% endwith %}
-    # [END {{ sample.id}}_core]
 
 # [END {{ sample.id }}]
 

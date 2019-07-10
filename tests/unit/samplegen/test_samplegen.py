@@ -335,6 +335,47 @@ def test_loop_map_redefined_value():
         samplegen.Validator().validate_response(statements)
 
 
+def test_validate_write_file():
+    samplegen.Validator().validate_response(
+        [{"write_file": {"filename": ["specimen-%s", "$resp.species"],
+                         "contents": "$resp.photo"}}])
+
+
+def test_validate_write_file_fname_fmt():
+    with pytest.raises(samplegen.MismatchedFormatSpecifier):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"filename": ["specimen-%s"],
+                             "contents": "$resp.photo"}}])
+
+
+def test_validate_write_file_fname_bad_var():
+    with pytest.raises(samplegen.UndefinedVariableReference):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"filename": ["specimen-%s", "squid.species"],
+                             "contents": "$resp.photo"}}])
+
+
+def test_validate_write_file_missing_fname():
+    with pytest.raises(samplegen.InvalidStatement):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"contents": "$resp.photo"}}]
+        )
+
+
+def test_validate_write_file_missing_contents():
+    with pytest.raises(samplegen.InvalidStatement):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"filename": ["specimen-%s", "$resp.species"]}}]
+        )
+
+
+def test_validate_write_file_bad_contents_var():
+    with pytest.raises(samplegen.UndefinedVariableReference):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"filename": ["specimen-%s", "$resp.species"],
+                             "contents": "squid.photo"}}])
+
+
 def test_invalid_statement():
     statement = {"print": ["Name"], "comment": ["Value"]}
     with pytest.raises(samplegen.InvalidStatement):
@@ -478,7 +519,7 @@ def test_validate_request_calling_form():
         False, False, True, True)) == utils.CallingForm.RequestStreamingBidi
 
 
-def test_coerce_variable_name():
+def test_coerce_response_name():
     # Don't really need a test, but it shuts up code coverage.
-    assert samplegen.coerce_variable_name("$resp.squid") == "response.squid"
-    assert samplegen.coerce_variable_name("mollusc.squid") == "mollusc.squid"
+    assert samplegen.coerce_response_name("$resp.squid") == "response.squid"
+    assert samplegen.coerce_response_name("mollusc.squid") == "mollusc.squid"

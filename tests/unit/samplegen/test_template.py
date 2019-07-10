@@ -44,7 +44,7 @@ def check_template(template_fragment, expected_output, **kwargs):
     )
 
     env.filters['snake_case'] = utils.to_snake_case
-    env.filters['coerce_variable_name'] = samplegen.coerce_variable_name
+    env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
     template = env.get_template("template_fragment")
     text = template.render(**kwargs)
@@ -162,7 +162,7 @@ def test_render_print_args():
         {% import "feature_fragments.j2" as frags %}
         {{ frags.renderPrint(["$resp %s %s", "$resp.squids", "$resp.clams"]) }}
         ''',
-        '\nprint("$resp {} {}", response.squids, response.clams)\n'
+        '\nprint("$resp {} {}".format(response.squids, response.clams))\n'
     )
 
 
@@ -226,6 +226,39 @@ def test_dispatch_comment():
     )
 
 
+def test_write_file():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_write_file({"filename": ["specimen-%s",
+                                                 "$resp.species"],
+                                    "contents": "$resp.photo"}) }}
+        ''',
+        '''
+        with open("specimen-{}".format(response.species), "wb") as f:
+            f.write(response.photo)
+      
+        '''
+    )
+
+
+def test_dispatch_write_file():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.dispatchStatement({"write_file": 
+                                       {"filename": ["specimen-%s",
+                                                     "$resp.species"],
+                                        "contents": "$resp.photo"}})}}
+        ''',
+        '''
+        with open("specimen-{}".format(response.species), "wb") as f:
+            f.write(response.photo)
+      
+        '''
+    )
+
+
 def test_collection_loop():
     check_template(
         '''
@@ -236,7 +269,7 @@ def test_collection_loop():
         ''',
         '''
         for m in response.molluscs:
-            print("Mollusc: {}", m)
+            print("Mollusc: {}".format(m))
         '''
     )
 
@@ -250,7 +283,7 @@ def test_dispatch_collection_loop():
                                     "body": {"print": ["Mollusc: %s", "m"]}}}) }}''',
         '''
         for m in molluscs:
-            print("Mollusc: {}", m)
+            print("Mollusc: {}".format(m))
         '''
     )
 
@@ -266,7 +299,7 @@ def test_map_loop():
         }}''',
         '''
         for cls, example in response.molluscs.items():
-            print("A {} is a {}", example, cls)
+            print("A {} is a {}".format(example, cls))
         '''
     )
 
@@ -281,7 +314,7 @@ def test_map_loop_no_key():
         }}''',
         '''
         for example in response.molluscs.values():
-            print("A {} is a mollusc", example)
+            print("A {} is a mollusc".format(example))
         '''
     )
 
@@ -296,7 +329,7 @@ def test_map_loop_no_value():
         }}''',
         '''
         for cls in response.molluscs.keys():
-            print("A {} is a mollusc", cls)
+            print("A {} is a mollusc".format(cls))
         '''
     )
 
@@ -314,7 +347,7 @@ def test_dispatch_map_loop():
         ''',
         '''
         for cls, example in molluscs.items():
-            print("A {} is a {}", example, cls)
+            print("A {} is a {}".format(example, cls))
         '''
     )
 
@@ -435,13 +468,13 @@ def test_render_method_call_basic():
         {{ frags.renderMethodCall({"rpc": "CategorizeMollusc", "request": [{"base": "video"},
                                                                     {"base": "audio"},
                                                                     {"base": "guess"}]},
-                                  "result", {"RequestStreamingBidi": "bidi",
-                                             "RequestStreamingClient": "client"}) }}
+                                  callingForm, callingFormEnum) }}
         ''',
-
         '''
         client.categorize_mollusc(video, audio, guess)
-        '''
+        ''',
+        callingFormEnum=CallingForm,
+        callingForm=CallingForm.Request
     )
 
 
@@ -452,12 +485,13 @@ def test_render_method_call_bidi():
         '''
         {% import "feature_fragments.j2" as frags %}
         {{ frags.renderMethodCall({"rpc": "CategorizeMollusc", "request": [{"base": "video"}]},
-                                  "bidi", {"RequestStreamingBidi": "bidi",
-                                             "RequestStreamingClient": "client"}) }}
+                                  callingForm, callingFormEnum) }}
         ''',
         '''
         client.categorize_mollusc([video])
-        '''
+        ''',
+        callingFormEnum=CallingForm,
+        callingForm=CallingForm.RequestStreamingBidi
     )
 
 
@@ -468,12 +502,13 @@ def test_render_method_call_client():
         '''
         {% import "feature_fragments.j2" as frags %}
         {{ frags.renderMethodCall({"rpc": "CategorizeMollusc", "request": [{"base": "video"}]},
-                                  "client", {"RequestStreamingBidi": "bidi",
-                                             "RequestStreamingClient": "client"}) }}
-       ''',
+        callingForm, callingFormEnum) }}
+        ''',
         '''
         client.categorize_mollusc([video])
-        '''
+        ''',
+        callingFormEnum=CallingForm,
+        callingForm=CallingForm.RequestStreamingClient
     )
 
 

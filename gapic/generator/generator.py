@@ -55,7 +55,7 @@ class Generator:
         self._env.filters['snake_case'] = utils.to_snake_case
         self._env.filters['sort_lines'] = utils.sort_lines
         self._env.filters['wrap'] = utils.wrap
-        self._env.filters['coerce_variable_name'] = samplegen.coerce_variable_name
+        self._env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
     def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.

@@ -48,7 +48,7 @@ env = jinja2.Environment(
     trim_blocks=True, lstrip_blocks=True
 )
 env.filters['snake_case'] = utils.to_snake_case
-env.filters['coerce_variable_name'] = samplegen.coerce_variable_name
+env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
 
 def test_generate_sample_basic():
@@ -75,7 +75,9 @@ def test_generate_sample_basic():
     fpath, template_stream = samplegen.generate_sample(sample, env, schema)
     sample_str = "".join(iter(template_stream))
 
-    assert sample_str == '''#
+    assert sample_str == '''# TODO: add a copyright
+# TODO: add a license
+#
 # DO NOT EDIT! This is a generated sample ("CallingForm.Request",  "mollusc_classify_sync")
 #
 # To install the latest published package dependency, execute the following:
@@ -87,8 +89,6 @@ def test_generate_sample_basic():
 def sample_classify(video):
     """Determine the full taxonomy of input mollusc"""
 
-    # [START mollusc_classify_sync_core]
-
     client = mollusca_v1.MolluscClient()
 
     classify_request = {}
@@ -99,10 +99,8 @@ def sample_classify(video):
 
     response = client.classify(classify_request)
 
-    print("Mollusc is a {}", response.taxonomy)
+    print("Mollusc is a {}".format(response.taxonomy))
 
-
-    # [END mollusc_classify_sync_core]
 
 # [END mollusc_classify_sync]
 

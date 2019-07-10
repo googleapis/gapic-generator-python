@@ -32,7 +32,8 @@ MIN_SCHEMA_VERSION = (1, 2, 0)
 VALID_CONFIG_TYPE = 'com.google.api.codegen.SampleConfigProto'
 
 # TODO: read in copyright and license from files.
-FILE_HEADER: Dict[str, str] = {}
+FILE_HEADER: Dict[str, str] = {"copyright": "TODO: add a copyright",
+                               "license": "TODO: add a license"}
 
 RESERVED_WORDS = frozenset(
     itertools.chain(keyword.kwlist,
@@ -103,7 +104,7 @@ class InvalidRequestSetup(SampleError):
     pass
 
 
-def coerce_variable_name(s):
+def coerce_response_name(s: str) -> str:
     # In the sample config, the "$resp" keyword is used to refer to the
     # item of interest as received by the corresponding calling form.
     # For a 'regular', i.e. unary, synchronous, non-long-running method,
@@ -156,7 +157,7 @@ class Validator:
            are that "field" maps only to the second part of a dotted variable name.
            Other key/value combinations in the dict are unmodified for the time being.
 
-           Note: gRPC API methods only take one parameter (ignoring client side streaming).
+           Note: gRPC API methods only take one parameter (ignoring client-side streaming).
                  The reason that GAPIC client library API methods may take multiple parameters
                  is a workaround to provide idiomatic protobuf support within python.
                  The different 'bases' are really attributes for the singular request parameter.
@@ -350,6 +351,39 @@ class Validator:
             raise UndefinedVariableReference("Reference to undefined variable: {}"
                                              .format(rval_base))
 
+    def _validate_write_file(self, body):
+        """Validate 'write_file' statements.
+
+        The body of a 'write_file' statement is a two-element dict
+        with known keys: 'filename' and 'contents'.
+        'filename' maps to a list of strings which constitute a format string
+        and variable-based rvalues defining the fields.
+        'contents' maps to a single variable-based rvalue.
+
+        Raises:
+            MismatchedFormatSpecifier: If the filename formatstring is badly formed.
+            UndefinedVariableReference: If any of the formatstring variables
+                                        or the file contents variable are undefined.
+            InvalidStatement: If either 'filename' or 'contents' are absent keys.
+        """
+
+        fname_fmt = body.get("filename")
+        if not fname_fmt:
+            raise InvalidStatement(
+                "Missing key in 'write_file' statement: 'filename'")
+
+        self._validate_format(fname_fmt)
+
+        contents_var = body.get("contents")
+        if not contents_var:
+            raise InvalidStatement(
+                "Missing key in 'write_file' statement: 'contents'")
+
+        base = contents_var.split(".")[0]
+        if base not in self.var_defs_:
+            raise UndefinedVariableReference("Reference to undefined variable: {}"
+                                             .format(base))
+
     def _validate_loop(self, body):
         """Validates loop headers and statement bodies.
 
@@ -438,6 +472,7 @@ class Validator:
         "define": _validate_define,
         "print": _validate_format,
         "comment": _validate_format,
+        "write_file": _validate_write_file,
         "loop": _validate_loop,
     }
 
