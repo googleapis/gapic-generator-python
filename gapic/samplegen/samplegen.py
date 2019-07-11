@@ -379,6 +379,7 @@ class Validator:
             raise InvalidStatement(
                 "Missing key in 'write_file' statement: 'contents'")
 
+        # TODO: check the rest of the elements for valid subfield attribute
         base = contents_var.split(".")[0]
         if base not in self.var_defs_:
             raise UndefinedVariableReference("Reference to undefined variable: {}"
