@@ -19,10 +19,11 @@ import re
 import time
 
 from gapic.samplegen import utils, yaml
+from gapic.schema import (api, wrappers)
 
-
-from collections import defaultdict, namedtuple
-from typing import Dict, List, Mapping, Optional, Set, Tuple
+from collections import (defaultdict, namedtuple, ChainMap as chainmap)
+from textwrap import dedent
+from typing import (Dict, List, Mapping, Optional, Set, Tuple)
 
 # Outstanding issues:
 # * In real sample configs, many variables are
@@ -96,6 +97,10 @@ class UndefinedVariableReference(SampleError):
     pass
 
 
+class BadAttributeLookup(SampleError):
+    pass
+
+
 class RedefinedVariable(SampleError):
     pass
 
@@ -127,7 +132,7 @@ def coerce_response_name(s: str) -> str:
 
 
 class Validator:
-    """Class that validates samples.
+    """Class that validates a sample.
 
     Contains methods that validate different segments of a sample and maintains
     state that's relevant to validation across different segments.
@@ -140,15 +145,43 @@ class Validator:
     VAL_KWORD = "value"
     BODY_KWORD = "body"
 
-    def __init__(self):
+    def __init__(self, method: wrappers.Method):
         # The response ($resp) variable is special and guaranteed to exist.
-        self.var_defs_: Set[str] = {"$resp"}
+        # TODO: name lookup also involes type checking
+        response_type = method.output
+        if method.paged_result_field:
+            response_type = method.paged_result_field
+        elif method.lro:
+            response_type = method.lro.response_type
 
-    # TODO: this will eventually need the method name and the proto file
-    # so that it can do the correct value transformation for enums.
-    def validate_and_transform_request(
-        self, calling_form: utils.CallingForm, request: List[Mapping[str, str]]
-    ) -> List[TransformedRequest]:
+        class FieldMocker:
+            # This is a shameless hack to work around the design of wrappers.Field
+            def __init__(self, val):
+                self.val = val
+
+            def __getattr__(self, name):
+                return self.val
+
+        # TODO: pass var_defs_ around during response verification
+        #       instead of assigning/restoring.
+        self.var_defs_: Dict[str,  wrappers.Field] = chainmap({
+            # When validating expressions we need to store the Field,
+            # not just the message type, because there are additional data we need:
+            # whether a name refers to a repeated value (or a map),
+            # and whether it's an enum or a message or a primitive type.
+            # The method call response isn't a field, so construct an artificial
+            # field that wraps the response.
+            "$resp": wrappers.Field(field_pb=FieldMocker(False),
+                                    message=response_type,
+                                    enum=None,
+                                    meta=None)})
+
+    def var_field(self, var_name: str) -> Optional[wrappers.Field]:
+        return self.var_defs_.get(var_name)
+
+    def validate_and_transform_request(self,
+                                       calling_form: utils.CallingForm,
+                                       request: List[Mapping[str, str]]) -> List[TransformedRequest]:
         """Validates and transforms the "request" block from a sample config.
 
            In the initial request, each dict has a "field" key that maps to a dotted
@@ -214,7 +247,7 @@ class Validator:
             field_assignment_copy = dict(field_assignment)
             input_param = field_assignment_copy.get("input_parameter")
             if input_param:
-                self._handle_lvalue(input_param)
+                self._handle_lvalue(input_param, str)
 
             field = field_assignment_copy.get("field")
             if not field:
@@ -272,7 +305,6 @@ class Validator:
         A full description of the response block is outside the scope of this code;
         refer to the samplegen documentation.
 
-
         Dispatches statements to sub-validators.
 
         Args:
@@ -297,7 +329,49 @@ class Validator:
 
             validater(self, body)
 
-    def _handle_lvalue(self, lval):
+    def validate_expression(self, exp: str) -> wrappers.Field:
+        """Validate an attribute chain expression.
+
+        Given a lookup expression, e.g. squid.clam.whelk,
+        recursively validate that each base has an attr with the name of the
+        next lookup lower down and that no attributes, besides possibly the final,
+        are repeated fields.
+
+        Args:
+            expr: str: The attribute expression.
+
+        Raises:
+            UndefinedVariableReference: If the root of the expression is not
+                                        a previously defined lvalue.
+            BadAttributeLookup: If an attribute other than the final is repeated OR
+                                if an attribute in the chain is not a field of its parent.
+
+        Returns:
+            wrappers.Field: The final field in the chain.
+        """
+        toks = exp.split(".")
+        base_tok = toks[0]
+        base = self.var_field(base_tok)
+        if not base:
+            raise UndefinedVariableReference(
+                "Reference to undefined variable: {}".format(base_tok))
+
+        for attr_name in toks[1:]:
+            if base.repeated:
+                raise BadAttributeLookup(
+                    "Cannot access attributes through repeated field: {}".format(attr_name))
+
+            attr = base.message.fields.get(attr_name)
+            if not attr:
+                raise BadAttributeLookup(
+                    "No such attribute in type '{}': {}".format(base, attr_name))
+
+            # TODO: handle enums, primitives, and so forth.
+            base = attr
+
+        return base
+
+    def _handle_lvalue(self, lval: str, type_=None):
         """Conducts safety checks on an lvalue and adds it to the lexical scope.
 
         Raises:
@@ -315,7 +389,7 @@ class Validator:
             raise RedefinedVariable(
                 "Tried to redefine variable: {}".format(lval))
 
-        self.var_defs_.add(lval)
+        self.var_defs_[lval] = type_
 
     def _validate_format(self, body: List[str]):
         """Validates a format string and corresponding arguments.
@@ -330,6 +404,8 @@ class Validator:
              MismatchedFormatSpecifier: If the number of format string segments ("%s") in
                                         a "print" or "comment" block does not equal the
                                         size number of strings in the block minus 1.
+             UndefinedVariableReference: If the base lvalue in an expression chain
+                                         is not a previously defined lvalue.
         """
         fmt_str = body[0]
         num_prints = fmt_str.count("%s")
@@ -358,8 +434,6 @@ class Validator:
              UndefinedVariableReference: If an attempted rvalue base is a previously
                                          undeclared variable.
         """
-        # TODO: Need to validate the attributes of the response
-        #       based on the method return type.
         # TODO: Need to check the defined variables
         #       if the rhs references a non-response variable.
         # TODO: Need to rework the regex to allow for subfields,
@@ -372,13 +446,9 @@ class Validator:
             raise BadAssignment("Bad assignment statement: {}".format(body))
 
         lval, rval = m.groups()
-        self._handle_lvalue(lval)
 
-        rval_base = rval.split(".")[0]
-        if not rval_base in self.var_defs_:
-            raise UndefinedVariableReference(
-                "Reference to undefined variable: {}".format(rval_base)
-            )
+        rval_type = self.validate_expression(rval)
+        self._handle_lvalue(lval, rval_type)
 
     def _validate_write_file(self, body):
         """Validate 'write_file' statements.
@@ -448,20 +518,20 @@ class Validator:
         #
         # is allowed, the samplegen spec requires that errors are raised
         # if strict lexical scoping is violated.
-        previous_defs = set(self.var_defs_)
+        self.var_defs_ = self.var_defs_.new_child()
 
         if {self.COLL_KWORD, self.VAR_KWORD, self.BODY_KWORD} == segments:
-            collection_name = body[self.COLL_KWORD].split(".")[0]
-            # TODO: Once proto info is being passed in, validate the
-            #       [1:] in the collection name.
+            tokens = body[self.COLL_KWORD].split(".")
+
             # TODO: resolve the implicit $resp dilemma
             # if collection_name.startswith("."):
             #     collection_name = "$resp" + collection_name
-            if collection_name not in self.var_defs_:
-                raise UndefinedVariableReference(
-                    "Reference to undefined variable: {}".format(
-                        collection_name)
-                )
+            collection_field = self.validate_expression(
+                body[self.COLL_KWORD])
+
+            if not collection_field.repeated:
+                raise BadLoop(
+                    "Tried to use a non-repeated field as a collection: {}".format(tokens[-1]))
 
             var = body[self.VAR_KWORD]
             self._handle_lvalue(var)
@@ -500,10 +570,9 @@ class Validator:
         # Restore the previous lexical scope.
         # This is stricter than python scope rules
         # because the samplegen spec mandates it.
-        self.var_defs_ = previous_defs
+        self.var_defs_ = self.var_defs_.parents
 
     # Add new statement keywords to this table.
-    # TODO: add write_file validator and entry (and tests).
     STATEMENT_DISPATCH_TABLE = {
         "define": _validate_define,
         "print": _validate_format,
@@ -513,9 +582,11 @@ class Validator:
     }
 
 
-def generate_sample(
-    sample, id_is_unique: bool, env: jinja2.environment.Environment, api_schema
-) -> Tuple[str, jinja2.environment.TemplateStream]:
+def generate_sample(sample,
+                    id_is_unique: bool,
+                    env: jinja2.environment.Environment,
+                    api_schema: api.API) -> Tuple[str, jinja2.environment.TemplateStream]:
+
     sample_template = env.get_template(TEMPLATE_NAME)
 
     service_name = sample["service"]
@@ -533,14 +604,14 @@ def generate_sample(
 
     calling_form = utils.CallingForm.method_default(rpc)
 
-    v = Validator()
-    sample["request"] = v.validate_and_transform_request(
-        calling_form, sample["request"]
-    )
+    v = Validator(rpc)
+    sample["request"] = v.validate_and_transform_request(calling_form,
+                                                         sample["request"])
     v.validate_response(sample["response"])
 
     sample_fpath = (
-        sample["id"] + (str(calling_form) if not id_is_unique else "") + ".py"
+        sample["id"] + (str(calling_form)
+                        if not id_is_unique else "") + ".py"
     )
 
     sample["package_name"] = api_schema.naming.warehouse_package_name
