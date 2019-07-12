@@ -530,9 +530,9 @@ def test_generate_manifest():
     DummyApiSchema = namedtuple("DummyApiSchema", ["naming"])
 
     fpath_to_dummy_sample = {
-        "squid_fpath": {"id": "squid_sample"},
-        "clam_fpath": {"id": "clam_sample",
-                       "region_tag": "gian_clam_sample"},
+        "squid_fpath.py": {"id": "squid_sample"},
+        "clam_fpath.py": {"id": "clam_sample",
+                          "region_tag": "gian_clam_sample"},
     }
 
     fname, info = samplegen.generate_manifest(
