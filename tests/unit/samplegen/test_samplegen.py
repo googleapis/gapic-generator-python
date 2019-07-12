@@ -564,7 +564,7 @@ def test_generate_manifest():
                     "invocation": "{bin} {path} @args",
                 },
                 "sample": "squid_sample",
-                "path": "{base_path}/squid_fpath",
+                "path": "{base_path}/squid_fpath.py",
                 "region_tag": "",
             },
             {
@@ -575,7 +575,7 @@ def test_generate_manifest():
                     "invocation": "{bin} {path} @args",
                 },
                 "sample": "clam_sample",
-                "path": "{base_path}/clam_fpath",
+                "path": "{base_path}/clam_fpath.py",
                 "region_tag": "gian_clam_sample",
             },
         ],
