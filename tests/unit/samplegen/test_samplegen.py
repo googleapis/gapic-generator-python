@@ -523,3 +523,62 @@ def test_coerce_response_name():
     # Don't really need a test, but it shuts up code coverage.
     assert samplegen.coerce_response_name("$resp.squid") == "response.squid"
     assert samplegen.coerce_response_name("mollusc.squid") == "mollusc.squid"
+
+
+def test_generate_manifest():
+    DummyNaming = namedtuple("DummyNaming", ["name", "version"])
+    DummyApiSchema = namedtuple("DummyApiSchema", ["naming"])
+
+    fpath_to_dummy_sample = {
+        "squid_fpath": {"id": "squid_sample"},
+        "clam_fpath": {"id": "clam_sample",
+                       "region_tag": "gian_clam_sample"},
+    }
+
+    fname, info = samplegen.generate_manifest(
+        fpath_to_dummy_sample.items(),
+        DummyApiSchema(DummyNaming("Mollusc", "v1")),
+        # Empirically derived number such that the
+        # corresponding time_struct tests the zero
+        # padding in the returned filename.
+        manifest_time=4486525628
+    )
+
+    assert fname == "Mollusc.v1.python.21120304.090708.manifest.yaml"
+
+    expected_info = {
+        "type": "manifest/samples",
+        "schema_version": 3,
+        "python": {
+            "environment": "python",
+            "bin": "python3",
+            "base_path": "sample/base/directory",
+            "invocation": "{bin} {path} @args",
+        },
+        "samples": [
+            {
+                "python": {
+                    "environment": "python",
+                    "bin": "python3",
+                    "base_path": "sample/base/directory",
+                    "invocation": "{bin} {path} @args",
+                },
+                "sample": "squid_sample",
+                "path": "{base_path}/squid_fpath",
+                "region_tag": "",
+            },
+            {
+                "python": {
+                    "environment": "python",
+                    "bin": "python3",
+                    "base_path": "sample/base/directory",
+                    "invocation": "{bin} {path} @args",
+                },
+                "sample": "clam_sample",
+                "path": "{base_path}/clam_fpath",
+                "region_tag": "gian_clam_sample",
+            },
+        ],
+    }
+
+    assert info == expected_info

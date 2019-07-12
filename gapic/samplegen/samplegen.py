@@ -16,6 +16,7 @@ import itertools
 import jinja2
 import keyword
 import re
+import time
 
 from gapic.samplegen import utils
 
@@ -48,6 +49,7 @@ RESERVED_WORDS = frozenset(
                      }))
 
 TEMPLATE_NAME = "sample.py.j2"
+
 
 TransformedRequest = namedtuple("TransformedRequest", ["base", "body"])
 
@@ -501,8 +503,7 @@ def generate_sample(sample,
                                                          sample["request"])
     v.validate_response(sample["response"])
 
-    sample_id = sample["id"]
-    sample_fpath = sample_id + str(calling_form) + ".py"
+    sample_fpath = sample["id"] + str(calling_form) + ".py"
 
     sample["package_name"] = api_schema.naming.warehouse_package_name
 
@@ -511,3 +512,59 @@ def generate_sample(sample,
                                                 imports=[],
                                                 calling_form=calling_form,
                                                 calling_form_enum=utils.CallingForm)
+
+
+def generate_manifest(fpaths_and_samples,
+                      api_schema,
+                      *,
+                      manifest_time: int = None):
+    """Generate a samplegen manifest for use by sampletest
+
+    Args:
+        fpaths_and_samples (Iterable[Tuple[str, Mapping[str, ?]]]):
+                         The file paths and samples to be listed in the manifest
+
+        api_schema (~api.API): An API schema object.
+        manifest_time (int): Optional. An override for the timestamp in the name of the manifest filename.
+                             Primarily used for testing.
+
+    Returns:
+        Tuple[str, Dict[str,?]]: The filename of the manifest and the manifest data as a dictionary.
+
+    """
+    python_env = {
+        "environment": "python",
+        "bin": "python3",
+        "base_path": "sample/base/directory",
+        "invocation": "{bin} {path} @args",
+    }
+    all_info = {
+        "type": "manifest/samples",
+        "schema_version": 3,
+        "python": python_env,
+        "samples": [{
+            "python": python_env,
+            "sample": sample["id"],
+            "path": "{base_path}/%s" % fpath,
+            "region_tag": sample.get("region_tag", "")
+        } for fpath, sample in fpaths_and_samples],
+    }
+
+    dt = time.gmtime(manifest_time)
+    manifest_fname_template = ("{api}.{version}.python."
+                               "{year:04d}{month:02d}{day:02d}."
+                               "{hour:02d}{minute:02d}{second:02d}."
+                               "manifest.yaml")
+
+    manifest_fname = manifest_fname_template.format(
+        api=api_schema.naming.name,
+        version=api_schema.naming.version,
+        year=dt.tm_year,
+        month=dt.tm_mon,
+        day=dt.tm_mday,
+        hour=dt.tm_hour,
+        minute=dt.tm_min,
+        second=dt.tm_sec,
+    )
+
+    return manifest_fname, all_info
