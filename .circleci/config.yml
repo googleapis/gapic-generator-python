@@ -303,7 +303,9 @@ jobs:
           command: |
             pip install autopep8
       - run:
-          find gapic tests -name "*.py" | xargs autopep8 --in-place
+          name: Format files
+          command: |
+            find gapic tests -name "*.py" | xargs autopep8 --in-place
       - run:
           name: Check diff
           command: |
