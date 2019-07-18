@@ -23,7 +23,7 @@ from gapic.schema import (api, wrappers)
 
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
 from textwrap import dedent
-from typing import (Dict, List, Mapping, Optional, Set, Tuple)
+from typing import (ChainMap, Dict, List, Mapping, Optional, Set, Tuple)
 
 # Outstanding issues:
 # * In real sample configs, many variables are
@@ -154,27 +154,22 @@ class Validator:
         elif method.lro:
             response_type = method.lro.response_type
 
-        class FieldMocker:
-            # This is a shameless hack to work around the design of wrappers.Field
-            def __init__(self, val):
-                self.val = val
-
-            def __getattr__(self, name):
-                return self.val
+        # This is a shameless hack to work around the design of wrappers.Field
+        MockField = namedtuple("MockField", ["message", "repeated"])
 
         # TODO: pass var_defs_ around during response verification
         #       instead of assigning/restoring.
-        self.var_defs_: Dict[str, wrappers.Field] = chainmap({
+        self.var_defs_: ChainMap[str, wrappers.Field] = chainmap(
             # When validating expressions we need to store the Field,
             # not just the message type, because there are additional data we need:
             # whether a name refers to a repeated value (or a map),
             # and whether it's an enum or a message or a primitive type.
             # The method call response isn't a field, so construct an artificial
             # field that wraps the response.
-            "$resp": wrappers.Field(field_pb=FieldMocker(False),
-                                    message=response_type,
-                                    enum=None,
-                                    meta=None)})
+            {  # type: ignore
+                "$resp": MockField(response_type, False)
+            }
+        )
 
     def var_field(self, var_name: str) -> Optional[wrappers.Field]:
         return self.var_defs_.get(var_name)
@@ -361,12 +356,12 @@ class Validator:
                 raise BadAttributeLookup(
                     "Cannot access attributes through repeated field: {}".format(attr_name))
 
-            attr = base.message.fields.get(attr_name)
+            # TODO: handle enums, primitives, and so forth.
+            attr = base.message.fields.get(attr_name)  # type: ignore
             if not attr:
                 raise BadAttributeLookup(
                     "No such attribute in type '{}': {}".format(base, attr_name))
 
-            # TODO: handle enums, primitives, and so forth.
             base = attr
 
         return base
