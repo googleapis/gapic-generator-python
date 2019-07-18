@@ -164,7 +164,7 @@ class Validator:
 
         # TODO: pass var_defs_ around during response verification
         #       instead of assigning/restoring.
-        self.var_defs_: Dict[str,  wrappers.Field] = chainmap({
+        self.var_defs_: Dict[str, wrappers.Field] = chainmap({
             # When validating expressions we need to store the Field,
             # not just the message type, because there are additional data we need:
             # whether a name refers to a repeated value (or a map),
