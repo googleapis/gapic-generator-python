@@ -351,7 +351,8 @@ class Validator:
         """
         # TODO: handle mapping attributes, i.e. {}
         # TODO: Add resource name handling, i.e. %
-        indexed_exp_re = re.compile(r"^(?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\])?$")
+        indexed_exp_re = re.compile(
+            r"^(?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\])?$")
 
         toks = exp.split(".")
         base_tok, previous_was_indexed = indexed_exp_re.match(toks[0]).groups()
