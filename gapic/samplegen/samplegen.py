@@ -355,8 +355,12 @@ class Validator:
             r"^(?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\])?$")
 
         toks = exp.split(".")
-        base_tok, previous_was_indexed = indexed_exp_re.match(toks[0]).groups()
+        match = indexed_exp_re.match(toks[0])
+        if not match:
+            raise BadAttributeLookup(f"Badly formatted attribute expression: {exp}")
 
+        base_tok, previous_was_indexed = (match.groupdict()["attr_name"],
+                                          bool(match.groupdict()["index"]))
         base = self.var_field(base_tok)
         if not base:
             raise UndefinedVariableReference(
@@ -365,9 +369,13 @@ class Validator:
             raise BadAttributeLookup(
                 "Cannot index non-repeated attribute: {}".format(base_tok))
 
-        name_and_lookup_generator = (indexed_exp_re.match(tok).groups()
-                                     for tok in toks[1:])
-        for attr_name, lookup_token in name_and_lookup_generator:
+        for tok in toks[1:]:
+            match = indexed_exp_re.match(tok)
+            if not match:
+                raise BadAttributeLookup(
+                    f"Badly formatted attribute expression: {tok}")
+
+            attr_name, lookup_token = match.groups()
             if base.repeated and not previous_was_indexed:
                 raise BadAttributeLookup(
                     "Cannot access attributes through repeated field: {}".format(attr_name))

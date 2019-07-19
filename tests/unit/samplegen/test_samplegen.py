@@ -907,3 +907,23 @@ def test_validate_expresssion_lookup_unrepeated_base():
     v = samplegen.Validator(method)
     with pytest.raises(samplegen.BadAttributeLookup):
         v.validate_response([{"define": "m=$resp[0]"}])
+
+
+def test_validate_expression_malformed_base():
+    # Note the mistype
+    exp = "r$esp.mollusc"
+    OutputType = message_factory(exp)
+    method = DummyMethod(OutputType)
+    v = samplegen.Validator(method)
+    with pytest.raises(samplegen.BadAttributeLookup):
+        v.validate_expression(exp)
+
+
+def test_validate_expression_malformed_attr():
+    # Note the mistype
+    exp = "$resp.mollu$c"
+    OutputType = message_factory(exp)
+    method = DummyMethod(OutputType)
+    v = samplegen.Validator(method)
+    with pytest.raises(samplegen.BadAttributeLookup):
+        v.validate_expression(exp)
