@@ -357,7 +357,8 @@ class Validator:
         toks = exp.split(".")
         match = indexed_exp_re.match(toks[0])
         if not match:
-            raise BadAttributeLookup(f"Badly formatted attribute expression: {exp}")
+            raise BadAttributeLookup(
+                f"Badly formatted attribute expression: {exp}")
 
         base_tok, previous_was_indexed = (match.groupdict()["attr_name"],
                                           bool(match.groupdict()["index"]))
