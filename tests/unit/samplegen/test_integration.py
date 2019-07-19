@@ -109,9 +109,12 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser()
+    parser.add_argument("--video",
+                        type=str,
+                        default="path/to/mollusc/video.mkv")
     args = parser.parse_args()
 
-    sample_classify()
+    sample_classify(args.video)
 
 
 if __name__ == "__main__":
