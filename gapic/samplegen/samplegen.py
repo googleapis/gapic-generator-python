@@ -242,6 +242,11 @@ class Validator:
             field_assignment_copy = dict(field_assignment)
             input_param = field_assignment_copy.get("input_parameter")
             if input_param:
+                # We use str as the input type because
+                # validate_expression just needs to know
+                # that the input_parameter isn't a MessageType of any kind.
+                # TODO: write a test about that.
+                # TODO: handle enums
                 self._handle_lvalue(input_param, str)
 
             field = field_assignment_copy.get("field")
@@ -344,17 +349,30 @@ class Validator:
         Returns:
             wrappers.Field: The final field in the chain.
         """
+        # TODO: handle mapping attributes, i.e. {}
+        # TODO: Add resource name handling, i.e. %
+        indexed_exp_re = re.compile(r"^(?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\])?$")
+
         toks = exp.split(".")
-        base_tok = toks[0]
+        base_tok, previous_was_indexed = indexed_exp_re.match(toks[0]).groups()
+
         base = self.var_field(base_tok)
         if not base:
             raise UndefinedVariableReference(
                 "Reference to undefined variable: {}".format(base_tok))
+        if previous_was_indexed and not base.repeated:
+            raise BadAttributeLookup(
+                "Cannot index non-repeated attribute: {}".format(base_tok))
 
-        for attr_name in toks[1:]:
-            if base.repeated:
+        name_and_lookup_generator = (indexed_exp_re.match(tok).groups()
+                                     for tok in toks[1:])
+        for attr_name, lookup_token in name_and_lookup_generator:
+            if base.repeated and not previous_was_indexed:
                 raise BadAttributeLookup(
                     "Cannot access attributes through repeated field: {}".format(attr_name))
+            if previous_was_indexed and not base.repeated:
+                raise BadAttributeLookup(
+                    "Cannot index non-repeated attribute: {}".format(attr_name))
 
             # TODO: handle enums, primitives, and so forth.
             attr = base.message.fields.get(attr_name)  # type: ignore
@@ -362,7 +380,7 @@ class Validator:
                 raise BadAttributeLookup(
                     "No such attribute in type '{}': {}".format(base, attr_name))
 
-            base = attr
+            base, previous_was_indexed = attr, bool(lookup_token)
 
         return base
 

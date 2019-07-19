@@ -872,3 +872,38 @@ def test_validate_expression_collection_error():
     # Because 'molluscs' isn't repeated
     with pytest.raises(samplegen.BadLoop):
         v.validate_response([statement])
+
+
+def test_validate_expression_repeated_lookup():
+    exp = "$resp.molluscs.mantle"
+    OutputType = message_factory(exp, [True, False])
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    v.validate_expression("$resp.molluscs[0].mantle")
+
+
+def test_validate_expression_repeated_lookup_invalid():
+    exp = "$resp.molluscs.mantle"
+    OutputType = message_factory(exp)
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    with pytest.raises(samplegen.BadAttributeLookup):
+        v.validate_expression("$resp.molluscs[0].mantle")
+
+
+def test_validate_expression_base_attr_is_repeated():
+    exp = "$resp.molluscs.mantle"
+    OutputType = message_factory(exp, [True, False])
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    v.validate_response([{"define": "molluscs=$resp.molluscs"}])
+    v.validate_expression("molluscs[0].mantle")
+
+
+def test_validate_expresssion_lookup_unrepeated_base():
+    exp = "$resp.molluscs"
+    OutputType = message_factory(exp)
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    with pytest.raises(samplegen.BadAttributeLookup):
+        v.validate_response([{"define": "m=$resp[0]"}])
