@@ -75,7 +75,7 @@ workflows:
 jobs:
   docs:
     docker:
-      - image: python:3.6-slim
+      - image: python:3.7-slim
     steps:
       - checkout
       - run:
@@ -175,7 +175,7 @@ jobs:
           command: nox -s showcase
   showcase-unit-3.6:
     docker:
-      - image: python:3.6-slim
+      - image: python:3.7-slim
     steps:
       - checkout
       - run:
@@ -247,7 +247,7 @@ jobs:
           command: nox -s showcase_mypy
   unit-3.6:
     docker:
-      - image: python:3.6-slim
+      - image: python:3.7-slim
     steps:
       - checkout
       - run:
@@ -291,7 +291,7 @@ jobs:
           when: always
   style-check:
     docker:
-      - image: python:3.6-alpine
+      - image: python:3.7-alpine
     steps:
       - checkout
       - run:
