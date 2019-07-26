@@ -23,7 +23,8 @@ import gapic.schema.wrappers as wrappers
 import gapic.samplegen.yaml as gapic_yaml
 import gapic.samplegen.samplegen as samplegen
 
-from common_types import (DummyField, DummyMessage, DummyMethod, message_factory)
+from common_types import (DummyField, DummyMessage,
+                          DummyMethod, message_factory)
 from gapic.samplegen import utils
 
 
@@ -51,8 +52,10 @@ def test_define_reserved_varname():
 
 
 def test_define_add_var():
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc.name")))
-    v.validate_response([{"define": "squid=$resp"}, {"define": "name=squid.name"}])
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc.name")))
+    v.validate_response([{"define": "squid=$resp"},
+                         {"define": "name=squid.name"}])
 
 
 def test_define_bad_form():
@@ -468,7 +471,8 @@ def test_loop_map_redefined_key():
             }
         },
     ]
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc.molluscs")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc.molluscs")))
     with pytest.raises(samplegen.RedefinedVariable):
         v.validate_response(statements)
 

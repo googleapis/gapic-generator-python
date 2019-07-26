@@ -270,17 +270,20 @@ class Validator:
                                 in the request message type.
 
         """
-        base_param_to_attrs: Dict[str, List[AttributeRequestSetup]] = defaultdict(list)
+        base_param_to_attrs: Dict[str,
+                                  List[AttributeRequestSetup]] = defaultdict(list)
 
         for r in request:
             duplicate = dict(r)
             val = duplicate.get("value")
             if not val:
-                raise InvalidRequestSetup("Missing keyword in request entry: 'value'")
+                raise InvalidRequestSetup(
+                    "Missing keyword in request entry: 'value'")
 
             field = duplicate.get("field")
             if not field:
-                raise InvalidRequestSetup("Missing keyword in request entry: 'field'")
+                raise InvalidRequestSetup(
+                    "Missing keyword in request entry: 'field'")
 
             spurious_keywords = set(duplicate.keys()) - {"value",
                                                          "field",
