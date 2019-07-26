@@ -51,17 +51,14 @@ There is a little, but not enough for it to be important because
 {% with input_parameters = [] %}
   {% for request in requests %}
     {% if request.body %}
-      {% for element in request.body %}
-        {% if element.input_parameter %}
-          {% do input_parameters.append(element.input_parameter) %}
-        {% endif %}
+      {% for element in request.body if element.input_parameter %}
+        {% do input_parameters.append(element.input_parameter) %}
       {% endfor %}
     {% elif request.single and request.single.input_parameter %}
       {% do input_parameters.append(request.single.input_parameter) %}
     {% endif %}
   {% endfor %}
-{% endfor %}
-{{ input_parameters|join(", ") -}
+{{ input_parameters|join(", ") -}}
 {% endwith %}
 {% endmacro %}
 

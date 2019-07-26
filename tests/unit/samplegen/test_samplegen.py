@@ -488,7 +488,8 @@ def test_loop_map_redefined_value():
             }
         },
     ]
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc.molluscs")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc.molluscs")))
     with pytest.raises(samplegen.RedefinedVariable):
         v.validate_response(statements)
 
@@ -533,7 +534,8 @@ def test_validate_write_file_missing_fname():
 
 
 def test_validate_write_file_missing_contents():
-    statements = [{"write_file": {"filename": ["specimen-%s", "$resp.species"]}}]
+    statements = [{"write_file": {"filename": ["specimen-%s",
+                                               "$resp.species"]}}]
     v = samplegen.Validator(DummyMethod())
     with pytest.raises(samplegen.InvalidStatement):
         v.validate_response(statements)
@@ -624,7 +626,8 @@ def test_validate_request_no_such_attribute():
 
 
 def test_validate_request_top_level_field():
-    v = samplegen.Validator(DummyMethod(input=message_factory("mollusc.squid")))
+    v = samplegen.Validator(DummyMethod(
+        input=message_factory("mollusc.squid")))
     actual = v.validate_and_transform_request(
         utils.CallingForm.Request,
         [{"field": "squid", "value": "humboldt"}]
@@ -642,7 +645,8 @@ def test_validate_request_top_level_field():
 
 
 def test_validate_request_missing_keyword(kword="field"):
-    v = samplegen.Validator(DummyMethod(input=message_factory("mollusc.squid")))
+    v = samplegen.Validator(DummyMethod(
+        input=message_factory("mollusc.squid")))
     with pytest.raises(samplegen.InvalidRequestSetup):
         v.validate_and_transform_request(
             utils.CallingForm.Request,
@@ -655,7 +659,8 @@ def test_validate_request_missing_value():
 
 
 def test_validate_request_spurious_kword():
-    v = samplegen.Validator(DummyMethod(input=message_factory("mollusc.squid")))
+    v = samplegen.Validator(
+        DummyMethod(input=message_factory("mollusc.squid")))
     with pytest.raises(samplegen.InvalidRequestSetup):
         v.validate_and_transform_request(
             utils.CallingForm.Request,
@@ -674,7 +679,8 @@ def test_validate_request_unknown_field_type():
 
 
 def test_validate_request_duplicate_top_level_fields():
-    v = samplegen.Validator(DummyMethod(input=message_factory("mollusc.squid")))
+    v = samplegen.Validator(DummyMethod(
+        input=message_factory("mollusc.squid")))
     with pytest.raises(samplegen.InvalidRequestSetup):
         v.validate_and_transform_request(
             utils.CallingForm.Request,
@@ -843,7 +849,8 @@ def test_single_request_client_streaming(
 
 
 def test_single_request_bidi_streaming():
-    test_single_request_client_streaming(utils.CallingForm.RequestStreamingBidi)
+    test_single_request_client_streaming(
+        utils.CallingForm.RequestStreamingBidi)
 
 
 def test_validate_request_calling_form():

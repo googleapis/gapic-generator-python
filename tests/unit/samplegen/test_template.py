@@ -562,9 +562,15 @@ def test_render_method_call_basic():
         '''
         client.categorize_mollusc(video, audio, guess)
         ''',
-        request=[samplegen.TransformedRequest(base="video", body=True, single=None),
-                 samplegen.TransformedRequest(base="audio", body=True, single=None),
-                 samplegen.TransformedRequest(base="guess", body=True, single=None)],
+        request=[samplegen.TransformedRequest(base="video",
+                                              body=True,
+                                              single=None),
+                 samplegen.TransformedRequest(base="audio",
+                                              body=True,
+                                              single=None),
+                 samplegen.TransformedRequest(base="guess",
+                                              body=True,
+                                              single=None)],
         calling_form_enum=CallingForm,
         calling_form=CallingForm.Request
     )
@@ -580,7 +586,9 @@ def test_render_method_call_bidi():
         '''
         client.categorize_mollusc([video])
         ''',
-        request=[samplegen.TransformedRequest(base="video", body=True, single=None)],
+        request=[samplegen.TransformedRequest(base="video",
+                                              body=True,
+                                              single=None)],
         calling_form_enum=CallingForm,
         calling_form=CallingForm.RequestStreamingBidi
     )
@@ -596,7 +604,9 @@ def test_render_method_call_client():
         '''
         client.categorize_mollusc([video])
         ''',
-        request=[samplegen.TransformedRequest(base="video", body=True, single=None)],
+        request=[samplegen.TransformedRequest(base="video",
+                                              body=True,
+                                              single=None)],
         calling_form_enum=CallingForm,
         calling_form=CallingForm.RequestStreamingClient
     )
