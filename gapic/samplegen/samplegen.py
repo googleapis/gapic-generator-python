@@ -61,6 +61,18 @@ TEMPLATE_NAME = "sample.py.j2"
 
 @dataclasses.dataclass(frozen=True)
 class AttributeRequestSetup:
+    """A single request-field setup description.
+
+    If 'field' is not set, this is a top level attribute, in which case the 'base'
+    parameter of the owning TransformedRequest is the attribute name.
+
+    A True 'value_is_file' indicates that 'value' is a file path,
+    and that the value of the attribute is the contents of that file.
+
+    A non-empty 'input_parameter' indicates a formal parameter to the sample function
+    that contains the value for the attribute.
+
+    """
     value: str
     field: Optional[str] = None
     value_is_file: bool = False
@@ -72,11 +84,21 @@ class AttributeRequestSetup:
 class TransformedRequest:
     """Class representing a single field in a method call.
 
-    The Optional[single]/Optional[body] is workaround for not having tagged unions;
-    each transformed request either describes an attribute with multiple fields
-    ('base' is the top level field name, 'body' contains a list of AttributeRequestSetups,
-     where each one describes how to set up a subfield) or a top level field,
-    where 'single' refers to the value of the singleton top level attribute.
+    A request block, as read in from the sample config, is a list of dicts that
+    describe field setup for the API method request.
+
+    Fields with subfields are treated as dictionaries, with subfields as keys
+    and passed, read, or hardcoded subfield values as the mapped values.
+    These field dictionaries are passed into the client method as positional arguments.
+
+    Fields _without_ subfields, aka top-level-fields, are passed into the method call
+    as keyword parameters, with their associated values assigned directly.
+
+    A TransformedRequest describes a subfield of the API request.
+    It is either a top level request, in which case the 'single' attribute is filled,
+    or it has assigned-to subfields, in which case 'body' lists assignment setups.
+
+    The Optional[single]/Optional[body] is workaround for not having tagged unions.
     """
     base: str
     single: Optional[AttributeRequestSetup]

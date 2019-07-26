@@ -612,12 +612,14 @@ def test_validate_request_no_field_parameter():
     v = samplegen.Validator(DummyMethod())
     with pytest.raises(samplegen.InvalidRequestSetup):
         v.validate_and_transform_request(
-            utils.CallingForm.Request, [{"squid": "humboldt", "value": "teuthida"}]
+            utils.CallingForm.Request, [{"squid": "humboldt",
+                                         "value": "teuthida"}]
         )
 
 
 def test_validate_request_no_such_attribute():
-    v = samplegen.Validator(DummyMethod(input=message_factory("mollusc.squid.mantle")))
+    v = samplegen.Validator(DummyMethod(
+        input=message_factory("mollusc.squid.mantle")))
     with pytest.raises(samplegen.BadAttributeLookup):
         v.validate_and_transform_request(
             utils.CallingForm.Request,
