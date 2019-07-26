@@ -28,6 +28,7 @@ def check_template(template_fragment, expected_output, **kwargs):
     # and passing a FunctionLoader whose load function returns
     # a constantly reassigned string attribute) isn't any faster
     # and is less clear.
+    expected_output = dedent(expected_output)
     env = jinja2.Environment(
         loader=jinja2.ChoiceLoader(
             [jinja2.FileSystemLoader(
@@ -48,20 +49,24 @@ def check_template(template_fragment, expected_output, **kwargs):
 
     template = env.get_template("template_fragment")
     text = template.render(**kwargs)
-    assert text == dedent(expected_output)
+    expected_output = dedent(expected_output)
+
+    assert text == expected_output
 
 
 def test_render_attr_value():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_request_attr("mollusc",
-                                   {"field": "order",
-                                    "value": "Molluscs.Cephalopoda.Coleoidea"}) }}
+        {{ frags.render_request_attr("mollusc", request) }}
         ''',
         '''
         mollusc["order"] = Molluscs.Cephalopoda.Coleoidea
-        '''
+        ''',
+        request=samplegen.AttributeRequestSetup(
+            field="order",
+            value="Molluscs.Cephalopoda.Coleoidea"
+        )
     )
 
 
@@ -69,57 +74,40 @@ def test_render_attr_input_parameter():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_request_attr("squid", {"field": "species",
-                                             "value": "Humboldt",
-                                             "input_parameter": "species"}) }}
+        {{ frags.render_request_attr("squid", request) }}
         ''',
         '''
         # species = "Humboldt"
         squid["species"] = species
-        ''')
+        ''',
+        request=samplegen.AttributeRequestSetup(field="species",
+                                                value="Humboldt",
+                                                input_parameter="species"))
 
 
 def test_render_attr_file():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_request_attr("classify_mollusc_request",
-                                   {"field": "mollusc_video",
-                                    "value": "path/to/mollusc/video.mkv",
-                                    "input_parameter" : "mollusc_video_path",
-                                    "value_is_file": True}) }}
+        {{ frags.render_request_attr("classify_mollusc_request", request) }}
         ''',
         '''
         # mollusc_video_path = "path/to/mollusc/video.mkv"
         with open(mollusc_video_path, "rb") as f:
             classify_mollusc_request["mollusc_video"] = f.read()
-        ''')
+        ''',
+        request=samplegen.AttributeRequestSetup(field="mollusc_video",
+                                                value="path/to/mollusc/video.mkv",
+                                                input_parameter="mollusc_video_path",
+                                                value_is_file=True)
+    )
 
 
 def test_render_request_basic():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_request([{"base": "cephalopod",
-                                 "body": [{"field": "mantle_mass",
-                                           "value": "10 kg",
-                                           "input_parameter": "cephalopod_mass"},
-                                          {"field": "photo",
-                                           "value": "path/to/cephalopod/photo.jpg",
-                                           "input_parameter": "photo_path",
-                                           "value_is_file": True},
-                                          {"field": "order",
-                                           "value": "Molluscs.Cephalopoda.Coleoidea"}, ]},
-                                {"base": "gastropod",
-                                 "body": [{"field": "mantle_mass",
-                                           "value": "1 kg",
-                                           "input_parameter": "gastropod_mass"},
-                                          {"field": "order",
-                                           "value": "Molluscs.Gastropoda.Pulmonata"},
-                                          {"field": "movie",
-                                           "value": "path/to/gastropod/movie.mkv",
-                                           "input_parameter": "movie_path",
-                                           "value_is_file": True}]}, ]) }}
+        {{ frags.render_request_setup(request) }}
         ''',
         '''
         cephalopod = {}
@@ -142,7 +130,45 @@ def test_render_request_basic():
         with open(movie_path, "rb") as f:
             gastropod["movie"] = f.read()
     
-        '''
+        ''',
+        request=[samplegen.TransformedRequest(base="cephalopod",
+                                              body=[
+                                                  samplegen.AttributeRequestSetup(
+                                                      field="mantle_mass",
+                                                      value="10 kg",
+                                                      input_parameter="cephalopod_mass"
+                                                  ),
+                                                  samplegen.AttributeRequestSetup(
+                                                      field="photo",
+                                                      value="path/to/cephalopod/photo.jpg",
+                                                      input_parameter="photo_path",
+                                                      value_is_file=True
+                                                  ),
+                                                  samplegen.AttributeRequestSetup(
+                                                      field="order",
+                                                      value="Molluscs.Cephalopoda.Coleoidea"),
+                                              ],
+                                              single=None),
+                 samplegen.TransformedRequest(base="gastropod",
+                                              body=[
+                                                  samplegen.AttributeRequestSetup(
+                                                      field="mantle_mass",
+                                                      value="1 kg",
+                                                      input_parameter="gastropod_mass"
+                                                  ),
+                                                  samplegen.AttributeRequestSetup(
+                                                      field="order",
+                                                      value="Molluscs.Gastropoda.Pulmonata"
+                                                  ),
+                                                  samplegen.AttributeRequestSetup(
+                                                      field="movie",
+                                                      value="path/to/gastropod/movie.mkv",
+                                                      input_parameter="movie_path",
+                                                      value_is_file=True
+                                                  )
+                                              ],
+                                              single=None),
+                 ]
     )
 
 
@@ -226,6 +252,20 @@ def test_dispatch_print():
         ''',
         '''
         print("Squid")
+        
+        '''
+    )
+
+
+def test_dispatch_define():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.dispatch_statement({"define": "squid=humboldt"})}}
+        ''',
+        '''
+        squid = humboldt
+        
         '''
     )
 
@@ -238,6 +278,7 @@ def test_dispatch_comment():
         ''',
         '''
         # Squid
+        
         '''
     )
 
@@ -253,7 +294,6 @@ def test_write_file():
         '''
         with open("specimen-{}".format(response.species), "wb") as f:
             f.write(response.photo)
-      
         '''
     )
 
@@ -281,11 +321,13 @@ def test_collection_loop():
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_collection_loop({"collection": "$resp.molluscs",
                                        "variable": "m",
-                                       "body": {"print": ["Mollusc: %s", "m"]}})}}
+                                       "body": [{"print": ["Mollusc: %s", "m"]}]})}}
         ''',
         '''
         for m in response.molluscs:
             print("Mollusc: {}".format(m))
+        
+        
         '''
     )
 
@@ -296,10 +338,13 @@ def test_dispatch_collection_loop():
         {% import "feature_fragments.j2" as frags %}
         {{ frags.dispatch_statement({"loop": {"collection": "molluscs",
                                     "variable": "m",
-                                    "body": {"print": ["Mollusc: %s", "m"]}}}) }}''',
+                                    "body": [{"print": ["Mollusc: %s", "m"]}]}}) }}''',
         '''
         for m in molluscs:
             print("Mollusc: {}".format(m))
+        
+        
+        
         '''
     )
 
@@ -311,11 +356,13 @@ def test_map_loop():
         {{ frags.render_map_loop({"map": "$resp.molluscs",
                                 "key":"cls",
                                 "value":"example",
-                                "body": {"print": ["A %s is a %s", "example", "cls"] }})
+                                "body": [{"print": ["A %s is a %s", "example", "cls"] }]})
         }}''',
         '''
         for cls, example in response.molluscs.items():
             print("A {} is a {}".format(example, cls))
+        
+        
         '''
     )
 
@@ -326,12 +373,14 @@ def test_map_loop_no_key():
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_map_loop({"map": "$resp.molluscs",
                                 "value":"example",
-                                "body": {"print": ["A %s is a mollusc", "example"] }})
+                                "body": [{"print": ["A %s is a mollusc", "example"] }]})
         }}
         ''',
         '''
         for example in response.molluscs.values():
             print("A {} is a mollusc".format(example))
+        
+        
         '''
     )
 
@@ -342,12 +391,14 @@ def test_map_loop_no_value():
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_map_loop({"map": "$resp.molluscs",
                                 "key":"cls",
-                                "body": {"print": ["A %s is a mollusc", "cls"] }})
+                                "body": [{"print": ["A %s is a mollusc", "cls"] }]})
         }}
         ''',
         '''
         for cls in response.molluscs.keys():
             print("A {} is a mollusc".format(cls))
+        
+        
         '''
     )
 
@@ -359,13 +410,16 @@ def test_dispatch_map_loop():
         {{ frags.dispatch_statement({"loop":{"map": "molluscs",
                                             "key":"cls",
                                             "value":"example",
-                                            "body": {
-                                              "print": ["A %s is a %s", "example", "cls"] }}})
+                                            "body": [{
+                                              "print": ["A %s is a %s", "example", "cls"] }]}})
         }}
         ''',
         '''
         for cls, example in molluscs.items():
             print("A {} is a {}".format(example, cls))
+        
+        
+        
         '''
     )
 
@@ -374,24 +428,38 @@ def test_print_input_params():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.print_input_params([{"base": "squid",
-                                    "body": [{"field": "mass",
-                                              "value": "10 kg",
-                                              "input_parameter": "mass"},
-                                             {"field": "length",
-                                              "value": "20 m",
-                                              "input_parameter": "length"}]},
-                                    {"base": "clam",
-                                     "body": [{"field": "diameter",
-                                               "value": "10 cm"}]},
-                                    {"base": "whelk",
-                                     "body": [{"field": "color",
-                                               "value": "red",
-                                               "input_parameter": "color"}]},
-                                    ]) }}
+        {{ frags.print_input_params(request) }}
+
         ''',
         '''
-        mass, length, color'''
+        mass, length, color
+        ''',
+        request=[samplegen.TransformedRequest(base="squid",
+                                              body=[
+                                                  samplegen.AttributeRequestSetup(
+                                                      field="mass",
+                                                      value="10 kg",
+                                                      input_parameter="mass"
+                                                  ),
+                                                  samplegen.AttributeRequestSetup(
+                                                      field="length",
+                                                      value="20 m",
+                                                      input_parameter="length"
+                                                  )
+                                              ],
+                                              single=None),
+                 samplegen.TransformedRequest(base="diameter",
+                                              single=samplegen.AttributeRequestSetup(
+                                                  value="10 cm"
+                                              ),
+                                              body=None),
+                 samplegen.TransformedRequest(base="color",
+                                              single=samplegen.AttributeRequestSetup(
+                                                  value="red",
+                                                  input_parameter="color"
+                                              ),
+                                              body=None),
+                 ]
     )
 
 
@@ -409,6 +477,7 @@ def test_render_calling_form_request():
                    response = TEST_INVOCATION_TXT
                    print("Test print statement")
                    
+                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.Request)
@@ -420,7 +489,8 @@ def test_render_calling_form_paged_all():
                    page_result = TEST_INVOCATION_TXT
                    for response in page_result:
                        print("Test print statement")
-
+                   
+                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestPagedAll)
@@ -433,7 +503,8 @@ def test_render_calling_form_paged():
                     for page in page_result.pages():
                         for response in page:
                             print("Test print statement")
-
+                   
+                   
                     ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestPaged)
@@ -446,6 +517,7 @@ def test_render_calling_form_streaming_server():
                    for response in stream:
                        print("Test print statement")
                    
+                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestStreamingServer)
@@ -457,6 +529,7 @@ def test_render_calling_form_streaming_bidi():
                    stream = TEST_INVOCATION_TXT
                    for response in stream:
                        print("Test print statement")
+                   
                    
                    ''',
                    calling_form_enum=CallingForm,
@@ -473,61 +546,110 @@ def test_render_calling_form_longrunning():
                    response = operation.result()
                    print("Test print statement")
                    
+                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.LongRunningRequestPromise)
 
 
 def test_render_method_call_basic():
-    # The callingForm and callingFormEnum parameters are dummies,
-    # which we can get away with because of duck typing in the template.
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": [{"base": "video"},
-                                                                    {"base": "audio"},
-                                                                    {"base": "guess"}]},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
                                   calling_form, calling_form_enum) }}
         ''',
         '''
         client.categorize_mollusc(video, audio, guess)
         ''',
+        request=[samplegen.TransformedRequest(base="video",
+                                              body=True,
+                                              single=None),
+                 samplegen.TransformedRequest(base="audio",
+                                              body=True,
+                                              single=None),
+                 samplegen.TransformedRequest(base="guess",
+                                              body=True,
+                                              single=None)],
         calling_form_enum=CallingForm,
         calling_form=CallingForm.Request
     )
 
 
 def test_render_method_call_bidi():
-    # The callingForm and callingFormEnum parameters are dummies,
-    # which we can get away with because of duck typing in the template.
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": [{"base": "video"}]},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
                                   calling_form, calling_form_enum) }}
         ''',
         '''
         client.categorize_mollusc([video])
         ''',
+        request=[samplegen.TransformedRequest(base="video",
+                                              body=True,
+                                              single=None)],
         calling_form_enum=CallingForm,
         calling_form=CallingForm.RequestStreamingBidi
     )
 
 
 def test_render_method_call_client():
-    # The callingForm and callingFormEnum parameters are dummies,
-    # which we can get away with because of duck typing in the template.
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": [{"base": "video"}]},
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
         calling_form, calling_form_enum) }}
         ''',
         '''
         client.categorize_mollusc([video])
         ''',
+        request=[samplegen.TransformedRequest(base="video",
+                                              body=True,
+                                              single=None)],
         calling_form_enum=CallingForm,
         calling_form=CallingForm.RequestStreamingClient
+    )
+
+
+def test_render_request_params():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_request_params(request) }}
+        
+        ''',
+        '''
+        mollusc, length_meters=16, order='TEUTHIDA'
+        ''',
+        request=[
+            samplegen.TransformedRequest(
+                base="length_meters",
+                body=None,
+                single=samplegen.AttributeRequestSetup(value="16")
+            ),
+            samplegen.TransformedRequest(
+                base="mollusc",
+                body=[
+                    samplegen.AttributeRequestSetup(
+                        field="video",
+                        value="path/to/video.mkv"
+                    ),
+                    samplegen.AttributeRequestSetup(
+                        field="audio",
+                        value="path/to/audio.ogg"
+                    )
+                ],
+                single=None
+            ),
+            samplegen.TransformedRequest(
+                base="order",
+                body=None,
+                single=samplegen.AttributeRequestSetup(
+                    value="'TEUTHIDA'"
+                )
+            )
+        ]
     )
 
 
@@ -557,13 +679,26 @@ def test_main_block():
             main()
         ''',
         request=[
-            samplegen.TransformedRequest("input_params", [{"field": "list_molluscs.order",
-                                                           "value": "coleoidea",
-                                                           "input_parameter": "order"},
-                                                          {"field ": "list_molluscs.mass",
-                                                           "value": "60kg",
-                                                           "input_parameter": "mass"}]),
-            samplegen.TransformedRequest("enum_param", [{"field": "list_molluscs.zone",
-                                                         "value": "MESOPELAGIC"}])
+            samplegen.TransformedRequest(base="input_params",
+                                         body=[
+                                             samplegen.AttributeRequestSetup(
+                                                 field="list_molluscs.order",
+                                                 value="coleoidea",
+                                                 input_parameter="order"
+                                             ),
+                                             samplegen.AttributeRequestSetup(
+                                                 field="list_molluscs.mass",
+                                                 value="60kg",
+                                                 input_parameter="mass")
+                                         ],
+                                         single=None),
+            samplegen.TransformedRequest(base="enum_param",
+                                         body=[
+                                             samplegen.AttributeRequestSetup(
+                                                 field="list_molluscs.zone",
+                                                 value="MESOPELAGIC"
+                                             )
+                                         ],
+                                         single=None)
         ]
     )

@@ -49,21 +49,23 @@ There is a little, but not enough for it to be important because
 
 {% macro print_input_params(requests) %}
 {% with input_parameters = [] %}
-{% for request in requests %}
-  {% for element in request.body %}
-    {% if "input_parameter" in element %}
-      {% do input_parameters.append(element["input_parameter"]) %}
+  {% for request in requests %}
+    {% if request.body %}
+      {% for element in request.body if element.input_parameter %}
+        {% do input_parameters.append(element.input_parameter) %}
+      {% endfor %}
+    {% elif request.single and request.single.input_parameter %}
+      {% do input_parameters.append(request.single.input_parameter) %}
     {% endif %}
   {% endfor %}
-{% endfor %}
 {{ input_parameters|join(", ") -}}
 {% endwith %}
 {% endmacro %}
 
+{# First elment is a format string, remaining elements are the format string parameters #}
+{# Validating that the number of format params equals #}
+{# the number of remaining params is handled by real python code #}
 {% macro render_print(elts) %}
-  {# First elment is a format string, remaining elements are the format string parameters #}
-  {# Validating that the number of format params equals #}
-  {# the number of remaining params is handled by real python code #}
 print({{ print_string_formatting(elts)|trim }})
 {% endmacro %}
 
@@ -87,7 +89,9 @@ print({{ print_string_formatting(elts)|trim }})
 
 {% macro render_collection_loop(statement) %}
 for {{ statement.variable }} in {{ statement.collection|coerce_response_name }}:
-    {{ dispatch_statement(statement.body) -}}
+  {% for s in statement.body %}
+    {{ dispatch_statement(s) }}
+  {% endfor %}
 {% endmacro %}
 
 {% macro render_map_loop(statement) %}
@@ -99,33 +103,36 @@ for {{ statement.key }} in {{ statement.map|coerce_response_name }}.keys():
 {% else %}
 for {{statement.key }}, {{ statement.value }} in {{ statement.map|coerce_response_name }}.items():
 {% endif %}
-    {{ dispatch_statement(statement.body) -}}
+{% for s in statement.body %}
+    {{ dispatch_statement(s) }}
+{% endfor %}
 {% endmacro %}
 
 {% macro render_write_file(statement) %}
   {% with contents_rval = statement["contents"]|coerce_response_name %}
 with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
     f.write({{ contents_rval }})
-
   {% endwith %}
 {% endmacro %}
 
 {% macro dispatch_statement(statement) %}
 {# Each statement is a dict with a single key/value pair #}
-{% if "print" in statement %}
-{{ render_print(statement["print"]) -}}
-{% elif "comment" in statement %}
-{{ render_comment(statement["comment"]) -}}
-{% elif "loop" in statement %}
-  {% with loop = statement["loop"] %}
-    {% if "collection" in loop %}
-{{ render_collection_loop(loop) -}}
-    {% else %}
-{{ render_map_loop(loop) -}}
-    {% endif %}
-  {% endwith %}
-{% elif "write_file" in statement %}
-{{ render_write_file(statement["write_file"]) -}}
+{% if "print" in statement -%}
+{{ render_print(statement["print"]) }}
+{% elif "define" in statement -%}
+{{ render_define(statement["define"]) }}
+{% elif "comment" in statement -%}
+{{ render_comment(statement["comment"]) }}
+{% elif "loop" in statement -%}
+  {% with loop = statement["loop"] -%}
+    {% if "collection" in loop -%}
+{{ render_collection_loop(loop) }}
+    {% else -%}
+{{ render_map_loop(loop) }}
+    {% endif -%}
+  {% endwith -%}
+{% elif "write_file" in statement -%}
+{{ render_write_file(statement["write_file"]) }}
 {% endif %}
 {% endmacro %}
 
@@ -134,9 +141,9 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 {# to be the correct enum from the right module, if necessary. #}
 {# Python is also responsible for verifying that each input parameter is unique,#}
 {# no parameter is a reserved keyword #}
-  {% if "input_parameter" in attr %}
+  {% if attr.input_parameter %}
 # {{ attr.input_parameter }} = "{{ attr.value }}"
-    {% if "value_is_file" in attr and attr.value_is_file %}
+  {% if attr.value_is_file %}
 with open({{ attr.input_parameter }}, "rb") as f:
     {{ base_name }}["{{ attr.field }}"] = f.read()
     {% else %}
@@ -147,8 +154,8 @@ with open({{ attr.input_parameter }}, "rb") as f:
   {% endif %}
 {% endmacro %}
 
-{% macro render_request(request) %}
-  {% for parameter_block in request %}
+{% macro render_request_setup(request) %}
+  {% for parameter_block in request if parameter_block.body %}
 {{ parameter_block.base }} = {}
     {% for attr in parameter_block.body %}
 {{ render_request_attr(parameter_block.base, attr) }}
@@ -156,14 +163,27 @@ with open({{ attr.input_parameter }}, "rb") as f:
   {% endfor %}
 {% endmacro %}
 
+{% macro render_request_params(request) %}
+  {# Provide the top level parameters last and as keyword params #}
+  {% with params = [] -%}
+    {% for r in request if r.body -%}
+      {% do params.append(r.base) -%}
+    {% endfor -%}
+    {% for r in request if r.single -%}
+      {% do params.append("%s=%s"|format(r.base, r.single.value)) -%}
+    {% endfor -%}
+{{ params|join(", ") -}}
+  {% endwith -%}
+{% endmacro %}
+
 {% macro render_method_call(sample, calling_form, calling_form_enum) %}
 {# Note: this doesn't deal with enums or unions #}
-{% if calling_form not in [calling_form_enum.RequestStreamingBidi,
-calling_form_enum.RequestStreamingClient] %}
-client.{{ sample.rpc|snake_case }}({{ sample.request|map(attribute="base")|join(", ") }})
+{% if calling_form in [calling_form_enum.RequestStreamingBidi,
+                       calling_form_enum.RequestStreamingClient] %}
+client.{{ sample.rpc|snake_case }}([{{ render_request_params(sample.request) }}])
 {% else %}
 {# TODO: set up client streaming once some questions are answered #}
-client.{{ sample.rpc|snake_case }}([{{ sample.request|map(attribute="base")|join("") }}])
+client.{{ sample.rpc|snake_case }}({{ render_request_params(sample.request) }})
 {% endif %}
 {% endmacro %}
 
@@ -202,13 +222,13 @@ print("Waiting for operation to complete...")
 
 response = operation.result()
 {% for statement in response_statements %}
-{{ dispatch_statement(statement ) }}
+{{ dispatch_statement(statement) }}
 {% endfor %}
 {% endif %}
 {% endmacro %}
 
 {% macro render_method_name(method_name) %}
-{{ method_name|snake_case -}}
+{{ method_name|snake_case }}
 {% endmacro %}
 
 {% macro render_main_block(method_name, request_block) %}
@@ -217,17 +237,22 @@ def main():
 
     parser = argparse.ArgumentParser()
 {% with arg_list = [] %}
-{% for request in request_block|map(attribute="body") -%}
-{% for attr in request if "input_parameter" in attr %}
+  {% for request in request_block if request.body -%}
+      {% for attr in request.body if attr.input_parameter %}
     parser.add_argument("--{{ attr.input_parameter }}",
                         type=str,
                         default="{{ attr.value }}")
 {% do arg_list.append("args." + attr.input_parameter) -%}
+{% endfor -%}
 {% endfor %}
+{% for request in request_block if request.single and request.single.input_parameter -%}
+    parser.add_argument("-- {{ request.single.input_parameter }}",
+                        type=str,
+                        default="{{ request.single.value }}")
 {% endfor %}
     args = parser.parse_args()
 
-    sample_{{ render_method_name(method_name) }}({{ arg_list|join(", ") }})
+    sample_{{ render_method_name(method_name)|trim }}({{ arg_list|join(", ") }})
 
 
 if __name__ == "__main__":
