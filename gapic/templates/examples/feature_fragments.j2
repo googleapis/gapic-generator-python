@@ -87,14 +87,14 @@ print({{ print_string_formatting(elts)|trim }})
 {% endwith %}
 {% endmacro %}
 
-{% macro render_collection_loop(statement, indentation=0) %}
+{% macro render_collection_loop(statement) %}
 for {{ statement.variable }} in {{ statement.collection|coerce_response_name }}:
   {% for s in statement.body %}
-{{ dispatch_statement(s, indentation) }}
+{{ dispatch_statement(s, 4) }}
   {% endfor %}
 {% endmacro %}
 
-{% macro render_map_loop(statement, indentation=0) %}
+{% macro render_map_loop(statement) %}
  {# At least one of key and value exist; validated in python #}
 {% if "key" not in statement %}
 for {{ statement.value }} in {{ statement.map|coerce_response_name }}.values():
@@ -104,7 +104,7 @@ for {{ statement.key }} in {{ statement.map|coerce_response_name }}.keys():
 for {{statement.key }}, {{ statement.value }} in {{ statement.map|coerce_response_name }}.items():
 {% endif %}
 {% for s in statement.body %}
-{{ dispatch_statement(s, indentation) }}
+{{ dispatch_statement(s, 4) }}
 {% endfor %}
 {% endmacro %}
 
@@ -126,9 +126,9 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 {% elif "loop" in statement -%}
   {% with loop = statement["loop"] -%}
     {% if "collection" in loop -%}
-{{ render_collection_loop(loop, 4)|indent(width=indentation, first=True) }}
+{{ render_collection_loop(loop)|indent(width=indentation, first=True) }}
     {% else -%}
-{{ render_map_loop(loop, 4)|indent(width=indentation, first=True) }}
+{{ render_map_loop(loop)|indent(width=indentation, first=True) }}
     {% endif -%}
   {% endwith -%}
 {% elif "write_file" in statement -%}

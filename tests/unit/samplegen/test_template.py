@@ -319,7 +319,7 @@ def test_collection_loop():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_collection_loop(collection, 4) }}
+        {{ frags.render_collection_loop(collection) }}
         ''',
         '''
         for m in response.molluscs:
@@ -355,7 +355,7 @@ def test_map_loop():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_map_loop(map_loop, 4)
+        {{ frags.render_map_loop(map_loop)
         }}''',
         '''
         for cls, example in response.molluscs.items():
@@ -374,7 +374,7 @@ def test_map_loop_no_key():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_map_loop(map_loop, 4)
+        {{ frags.render_map_loop(map_loop)
         }}
         ''',
         '''
@@ -393,7 +393,7 @@ def test_map_loop_no_value():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_map_loop(map_loop, 4)
+        {{ frags.render_map_loop(map_loop)
         }}
         ''',
         '''
