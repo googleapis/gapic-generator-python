@@ -335,27 +335,24 @@ class Validator:
                 elif attr.enum:
                     # A little bit hacky, but 'values' is a list, and this is the easiest
                     # way to verify that the value is a valid enum variant.
-                    witness = next((e.name
-                                    for e in attr.enum.values
-                                    if e.name == val),
-                                   None)
+                    witness = any(e.name == val for e in attr.enum.values)
                     if not witness:
                         raise InvalidEnumVariant(
                             "Invalid variant for enum {}: '{}'".format(attr, val))
                     # Python code can set protobuf enums from strings.
                     # This is preferable to adding the necessary import statement
                     # and requires less munging of the assigned value
-                    duplicate["value"] = f"'{witness}'"
+                    duplicate["value"] = f"'{val}'"
                     break
                 else:
                     raise TypeError
 
             if i != len(attr_chain) - 1:
+                # We broke out of the loop after processing an enum.
                 extra_attrs = ".".join(attr_chain[i:])
                 raise InvalidEnumVariant(
-                    f"Subsequent attributes in enum request setup: '{extra_attrs}'")
+                    f"Attempted to reference attributes of enum value: '{extra_attrs}'")
 
-                # TODO: what if there's more stuff in the chain?
             if len(attr_chain) > 1:
                 duplicate["field"] = ".".join(attr_chain[1:])
             else:
