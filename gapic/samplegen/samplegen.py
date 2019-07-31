@@ -525,7 +525,7 @@ class Validator:
 
         return validate_recursively(exp, self.var_defs_)
 
-    def _handle_lvalue(self, lval: str, type_=None):
+    def _handle_lvalue(self, lval: str, type_: wrappers.Field):
         """Conducts safety checks on an lvalue and adds it to the lexical scope.
 
         Raises:
