@@ -182,7 +182,8 @@ def test_loop_collection():
             "body": [{"print": ["Mollusc of class: %s", "m.class"]}],
         }
     }
-    OutputType = message_factory("$resp.molluscs.class", repeated_iter=[True, False])
+    OutputType = message_factory(
+        "$resp.molluscs.class", repeated_iter=[True, False])
     v = samplegen.Validator(DummyMethod(output=OutputType))
     v.validate_response([loop])
 

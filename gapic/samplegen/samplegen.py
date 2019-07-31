@@ -334,7 +334,7 @@ class Validator:
             input_parameter = duplicate.get("input_parameter")
             if input_parameter:
                 self._handle_lvalue(input_parameter, wrappers.Field(
-                    field_pb=descriptor_pb2.FieldDescriptorProto(type=9)))
+                    field_pb=descriptor_pb2.FieldDescriptorProto()))
 
             attr_chain = field.split(".")
             base = self.request_type_
@@ -494,7 +494,8 @@ class Validator:
                 # See https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto#L496
                 # for a better understanding of how map attributes are handled in protobuf
                 if not message or not message.options.map_field:
-                    raise BadAttributeLookup(f"Badly formed mapped field: {base}")
+                    raise BadAttributeLookup(
+                        f"Badly formed mapped field: {base}")
 
                 value_field = message.fields.get("value")
                 if not value_field:
@@ -518,9 +519,9 @@ class Validator:
                 raise BadAttributeLookup(
                     f"Non-terminal attribute is not a message: {base}")
 
-            return validate_recursively(expression[first_dot+1:],
+            return validate_recursively(expression[first_dot + 1:],
                                         scope,
-                                        depth+1)
+                                        depth + 1)
 
         return validate_recursively(exp, self.var_defs_)
 

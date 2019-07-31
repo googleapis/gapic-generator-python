@@ -50,7 +50,8 @@ def test_generate_sample_basic():
             "animalia.mollusca.v1.Mollusc": DummyService(
                 {
                     "Classify": DummyMethod(
-                        input=message_factory("mollusc.classify_request.video"),
+                        input=message_factory(
+                            "mollusc.classify_request.video"),
                         output=message_factory("$resp.taxonomy")
                     )
                 }
