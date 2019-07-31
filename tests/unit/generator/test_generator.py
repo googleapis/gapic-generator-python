@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from textwrap import dedent
 from typing import Mapping
 from unittest import mock
 
@@ -20,9 +21,11 @@ import jinja2
 import pytest
 
 from google.protobuf import descriptor_pb2
+from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic.generator import generator
 from gapic.generator import options
+from gapic.samplegen_utils import yaml
 from gapic.schema import api
 from gapic.schema import naming
 from gapic.schema import wrappers
@@ -244,6 +247,72 @@ def test_get_filename_with_proto_and_sub():
         api_schema=api,
         context={'proto': api.protos['bacon.proto']},
     ) == 'bar/types/baz/bacon.py'
+
+
+def test_parse_sample_paths(fs):
+    for fpath in [
+            'sample.yaml',
+            'sampledir/sample.yaml',
+            'other_sampledir/sample.yaml',
+    ]:
+        fs.create_file(
+            fpath,
+            contents=dedent(
+                '''
+                ---
+                type: com.google.api.codegen.SampleConfigProto
+                config_schema_version: 1.2.0
+                samples:
+                - service: google.cloud.language.v1.LanguageService
+                '''
+            )
+        )
+
+    opts = options.Options.build(
+        ("samples=sample.yaml,"
+         "samples=sampledir/,"
+         "samples=other_sampledir"))
+
+    expected_configs = (
+        'sample.yaml',
+        'sampledir/sample.yaml',
+        'other_sampledir/sample.yaml',
+    )
+
+    assert opts.sample_configs == expected_configs
+
+
+@mock.patch(
+    'gapic.samplegen.samplegen.generate_sample',
+    return_value=('sample.py', '')
+)
+@mock.patch(
+    'gapic.samplegen.samplegen.generate_manifest',
+    return_value=('manifest.yaml', yaml.Doc([]))
+)
+def test_samplegen_end_to_end(mock_generate_sample, mock_generate_manifest, fs):
+    fs.create_file(
+        'samples.yaml',
+        contents=dedent(
+            '''
+            ---
+            type: com.google.api.codegen.SampleConfigProto
+            config_schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            '''
+        )
+    )
+
+    g = generator.Generator(options.Options.build('samples=samples.yaml'))
+    actual_response = g.get_response(None)
+    expected_response = CodeGeneratorResponse(
+        file=[
+            CodeGeneratorResponse.File(name='samples/sample.py', content="\n"),
+            CodeGeneratorResponse.File(name="samples/manifest.yaml", content="---\n")
+        ]
+    )
+    assert actual_response == expected_response
 
 
 def make_generator(opts_str: str = '') -> generator.Generator:

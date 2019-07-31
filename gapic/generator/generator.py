@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import OrderedDict
-from typing import Dict, Mapping
+from collections import (OrderedDict, defaultdict)
+from hashlib import sha256
+from typing import (Any, DefaultDict, Dict, Mapping, List)
 import os
 import re
+import yaml
 
 import jinja2
 
@@ -57,6 +59,9 @@ class Generator:
         self._env.filters['wrap'] = utils.wrap
         self._env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
+        self._sample_configs = opts.sample_configs
+        self._sample_outdir = opts.sample_out_dir
+
     def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
 
@@ -72,7 +77,6 @@ class Generator:
         """
         output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
 
-        # TODO: handle sample_templates specially, generate samples.
         sample_templates, client_templates = utils.partition(
             lambda fname: os.path.basename(fname) == samplegen.TEMPLATE_NAME,
             self._env.loader.list_templates())
@@ -90,8 +94,77 @@ class Generator:
                                                       api_schema=api_schema,
                                                       ))
 
+        output_files.update(self._generate_samples_and_manifest(api_schema))
+
         # Return the CodeGeneratorResponse output.
         return CodeGeneratorResponse(file=[i for i in output_files.values()])
+
+    def _generate_samples_and_manifest(
+        self,
+        api_schema: api.API
+    ) -> Dict[str, CodeGeneratorResponse.File]:
+        """Generate samples and samplegen manifest for the API.
+
+        Arguments:
+            api_schema (api.API): The schema for the API to which the samples belong.
+
+        Returns:
+            Dict[str, CodeGeneratorResponse.File]: A dict mapping filepath to rendered file.
+        """
+        id_to_samples: DefaultDict[str, List[Any]] = defaultdict(list)
+        for config_fpath in self._sample_configs:
+            with open(config_fpath) as f:
+                configs = yaml.safe_load_all(f.read())
+                for c in configs:
+                    for s in c.get("samples", []):
+                        # Every sample requires an id, preferably provided by the
+                        # samplegen config author.
+                        # If no id is provided, fall back to the region tag.
+                        # If there's no region tag, generate a unique id.
+                        key = (s.get("id")
+                               or s.get("region_tag")
+                               or sha256(str(s).encode('utf8')).hexdigest()[:8])
+
+                        s["id"] = key
+                        id_to_samples[key].append(s)
+
+        fpath_to_sample_and_rendering = {}
+        for samples in id_to_samples.values():
+            for s in samples:
+                # If the id is not unique, the sample generation code
+                # needs to know so that the resulting file name includes
+                # the sample's calling form.
+                sample_fpath, rendered_sample = samplegen.generate_sample(
+                    s,
+                    len(samples) == 1,
+                    self._env,
+                    api_schema
+                )
+                fpath_to_sample_and_rendering[os.path.join(
+                    self._sample_outdir, sample_fpath)] = (s, rendered_sample)
+
+        manifest_fname, manifest_doc = samplegen.generate_manifest(
+            ((sample_fname, sample)
+             for sample_fname, (sample, _) in fpath_to_sample_and_rendering.items()),
+            self._sample_outdir,
+            api_schema)
+
+        all_things = {
+            sample_fname: CodeGeneratorResponse.File(
+                content=formatter.fix_whitespace(rendering),
+                name=sample_fname
+            )
+            for sample_fname, (_, rendering) in fpath_to_sample_and_rendering.items()
+        }
+
+        if all_things:
+            manifest_fname = os.path.join(self._sample_outdir, manifest_fname)
+            all_things[manifest_fname] = CodeGeneratorResponse.File(
+                content=manifest_doc.render(),
+                name=manifest_fname
+            )
+
+        return all_things
 
     def _render_template(
             self,

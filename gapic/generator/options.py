@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Dict, List, Tuple
-import dataclasses
-import os
 import warnings
+import os
+import dataclasses
+from typing import DefaultDict, List, Tuple
+from collections import defaultdict
+
+from gapic.samplegen_utils import utils as samplegen_utils
 
 
 @dataclasses.dataclass(frozen=True)
@@ -28,7 +31,14 @@ class Options:
     """
     templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
     namespace: Tuple[str, ...] = dataclasses.field(default=())
+    sample_configs: Tuple[str, ...] = dataclasses.field(default=())
     name: str = ''
+    sample_out_dir: str = 'samples'
+
+    # Class constants
+    SAMPLES_OPT: str = 'samples'
+    SAMPLE_OUT_DIR_OPT: str = 'sample_outdir'
+    PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
 
     @classmethod
     def build(cls, opt_string: str) -> 'Options':
@@ -45,15 +55,21 @@ class Options:
             ~.Options: The Options instance.
         """
         # Parse out every option beginning with `python-gapic`
-        opts: Dict[str, List[str]] = {}
+        opts: DefaultDict[str, List[str]] = defaultdict(list)
         for opt in opt_string.split(','):
             # Parse out the key and value.
             value = 'true'
             if '=' in opt:
                 opt, value = opt.split('=')
 
-            # Throw away options not meant for us.
-            if not opt.startswith('python-gapic-'):
+            if opt == cls.SAMPLES_OPT:
+                opts[cls.SAMPLES_OPT].append(value)
+
+            if opt == cls.SAMPLE_OUT_DIR_OPT:
+                opts[cls.SAMPLE_OUT_DIR_OPT].append(value)
+
+            # Throw away other options not meant for us.
+            if not opt.startswith(cls.PYTHON_GAPIC_PREFIX):
                 continue
 
             # Set the option, using a key with the "python-gapic-" prefix
@@ -61,8 +77,7 @@ class Options:
             #
             # Just assume everything is a list at this point, and the
             # final instantiation step can de-list-ify where appropriate.
-            opts.setdefault(opt[len('python-gapic-'):], [])
-            opts[opt[len('python-gapic-'):]].append(value)
+            opts[opt[len(cls.PYTHON_GAPIC_PREFIX):]].append(value)
 
         # If templates are specified, one of the specified directories
         # may be our default; perform that replacement.
@@ -77,6 +92,14 @@ class Options:
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
             templates=tuple([os.path.expanduser(i) for i in templates]),
+            sample_configs=tuple(
+                cfg_path
+                for s in opts.pop(cls.SAMPLES_OPT, [])
+                for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
+            ),
+            # If the user passed in a sample out dir, use the last one they defined.
+            # Otherwise, use the default: 'samples'
+            sample_out_dir=next(reversed(opts.pop(cls.SAMPLE_OUT_DIR_OPT, [])), 'samples'),
         )
 
         # If there are any options remaining, then we failed to recognize

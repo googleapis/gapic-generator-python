@@ -22,6 +22,7 @@ def test_options_empty():
     opts = options.Options.build('')
     assert len(opts.templates) == 1
     assert opts.templates[0].endswith('gapic/templates')
+    assert opts.sample_out_dir == 'samples'
 
 
 def test_options_replace_templates():
@@ -46,3 +47,8 @@ def test_options_unrecognized_likely_typo():
     with mock.patch.object(warnings, 'warn') as warn:
         options.Options.build('go-gapic-abc=xyz')
     assert len(warn.mock_calls) == 0
+
+
+def test_options_sample_out_dir():
+    opts = options.Options.build('sample_outdir=/var/tmp/samples')
+    assert opts.sample_out_dir == '/var/tmp/samples'
