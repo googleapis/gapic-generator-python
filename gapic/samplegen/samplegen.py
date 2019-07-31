@@ -449,7 +449,6 @@ class Validator:
         Returns:
             wrappers.Field: The final field in the chain.
         """
-        # TODO: handle mapping attributes, i.e. {}
         # TODO: Add resource name handling, i.e. %
         chain_link_re = re.compile(
             r"""
@@ -551,9 +550,6 @@ class Validator:
          The number of format tokens in the string must equal the
          number of arguments, and each argument must be a defined variable.
 
-         TODO: the attributes of the variable must correspond to attributes
-               of the variable's type.
-
          Raises:
              MismatchedFormatSpecifier: If the number of format string segments ("%s") in
                                         a "print" or "comment" block does not equal the
@@ -584,11 +580,6 @@ class Validator:
              UndefinedVariableReference: If an attempted rvalue base is a previously
                                          undeclared variable.
         """
-        # TODO: Need to check the defined variables
-        #       if the rhs references a non-response variable.
-        # TODO: Need to rework the regex to allow for subfields,
-        #       indexing, and so forth.
-        #
         # Note: really checking for safety would be equivalent to
         #       re-implementing the python interpreter.
         m = re.match(r"^([a-zA-Z]\w*)=([^=]+)$", body)
