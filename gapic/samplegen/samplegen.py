@@ -181,18 +181,6 @@ def coerce_response_name(s: str) -> str:
     return s.replace("$resp", "response")
 
 
-@dataclasses.dataclass(frozen=True)
-class LoopParameterField(wrappers.Field):
-    # This class is a hack for assigning the iteration variable in a collection loop.
-    # The variable is assigned to the field that represents the collection,
-    # but while the collection is a repeated field, the iteration variable is not.
-    # When adding the iteration variable to the lexical scope,
-    # instead of being directly assigned to the collection variable,
-    # it is copied into an instance of this class, which has a value
-    # override for 'repeated'.
-    repeated: bool = False
-
-
 class Validator:
     """Class that validates a sample.
 
@@ -472,8 +460,6 @@ class Validator:
                                    UndefinedVariableReference)
                 raise exception_class(f"No such variable or attribute: {name}")
 
-            message = field.message
-
             # Invalid input
             if (idxed or mapped) and not field.repeated:
                 raise BadAttributeLookup(
@@ -483,10 +469,11 @@ class Validator:
             # if it is the terminal point in the expression.
             if field.repeated and not (idxed or mapped) and first_dot != -1:
                 raise BadAttributeLookup(
-                    (f"Accessing attributes from a non-indexed"
-                     ", non-terminal collection: {base}")
+                    ("Accessing attribute on a non-terminal collection without"
+                     f"indexing into the collection: {base}")
                 )
 
+            message = field.message
             scope = dict(message.fields) if message else {}
             # Can only map message types, not enums
             if mapped:
@@ -621,7 +608,18 @@ class Validator:
 
         self.validate_expression(contents_var)
 
-    def _validate_loop(self, body):
+    @dataclasses.dataclass(frozen=True)
+    class LoopParameterField(wrappers.Field):
+        # This class is a hack for assigning the iteration variable in a collection loop.
+        # The variable is assigned to the field that represents the collection,
+        # but while the collection is a repeated field, the iteration variable is not.
+        # When adding the iteration variable to the lexical scope,
+        # instead of being directly assigned to the collection variable,
+        # it is copied into an instance of this class, which has a value
+        # override for 'repeated'.
+        repeated: bool = False
+
+    def _validate_loop(self, loop):
         """Validates loop headers and statement bodies.
 
         Checks for correctly defined loop constructs,
@@ -641,7 +639,7 @@ class Validator:
                      or keyword combinatations.
 
         """
-        segments = set(body.keys())
+        segments = set(loop.keys())
         map_args = {self.MAP_KWORD, self.BODY_KWORD}
 
         # Even though it's valid python to use a variable outside of the lexical
@@ -657,25 +655,25 @@ class Validator:
         self.var_defs_ = self.var_defs_.new_child()
 
         if {self.COLL_KWORD, self.VAR_KWORD, self.BODY_KWORD} == segments:
-            tokens = body[self.COLL_KWORD].split(".")
+            tokens = loop[self.COLL_KWORD].split(".")
 
             # TODO: resolve the implicit $resp dilemma
             # if collection_name.startswith("."):
             #     collection_name = "$resp" + collection_name
             collection_field = self.validate_expression(
-                body[self.COLL_KWORD])
+                loop[self.COLL_KWORD])
 
             if not collection_field.repeated:
                 raise BadLoop(
                     "Tried to use a non-repeated field as a collection: {}".format(
                         tokens[-1]))
 
-            var = body[self.VAR_KWORD]
+            var = loop[self.VAR_KWORD]
             # The collection_field is repeated,
             # but the iteration parameter should not be.
             self._handle_lvalue(
                 var,
-                LoopParameterField(
+                self.LoopParameterField(
                     field_pb=collection_field.field_pb,
                     message=collection_field.message,
                     enum=collection_field.enum,
@@ -692,13 +690,13 @@ class Validator:
                         segments)
                 )
 
-            map_field = self.validate_expression(body[self.MAP_KWORD])
+            map_field = self.validate_expression(loop[self.MAP_KWORD])
 
-            key = body.get(self.KEY_KWORD)
+            key = loop.get(self.KEY_KWORD)
             if key:
                 self._handle_lvalue(key, map_field.message.fields["key"])
 
-            val = body.get(self.VAL_KWORD)
+            val = loop.get(self.VAL_KWORD)
             if val:
                 self._handle_lvalue(val, map_field.message.fields["value"])
 
@@ -709,7 +707,7 @@ class Validator:
         else:
             raise BadLoop("Unexpected loop form: {}".format(segments))
 
-        self.validate_response(body[self.BODY_KWORD])
+        self.validate_response(loop[self.BODY_KWORD])
         # Restore the previous lexical scope.
         # This is stricter than python scope rules
         # because the samplegen spec mandates it.

@@ -1220,18 +1220,7 @@ def test_validate_expression_no_such_attr():
         v.validate_expression("$resp.nautiloidea")
 
 
-def test_validate_expression_predefined():
-    # TODO: can't remember what this test does
-    exp = "$resp.coleoidea.octopodiformes.octopus"
-    OutputType = message_factory(exp)
-    method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
-
-    with pytest.raises(samplegen.BadAttributeLookup):
-        v.validate_response([{"define": "nautilus=$resp.nautiloidea"}])
-
-
-def test_validate_expression_repeated_attrs():
+def test_validate_expression_non_indexed_non_terminal_repeated():
     # This is a little tricky: there's an attribute hierarchy
     # of response/coleoidea/octopodiformes, but coleoidea is a repeated field,
     # so accessing $resp.coleoidea.octopodiformes doesn't make any sense.
@@ -1380,38 +1369,6 @@ def test_validate_expression_map_lookup_terminal_lookup():
     method = DummyMethod(output=OutputType)
     v = samplegen.Validator(method)
     v.validate_expression('$resp.cephalopods{"squid"}')
-
-
-def test_validate_expression_mapped_no_message():
-    OutputType = DummyMessage(
-        fields={
-            "cephalopods": DummyField(
-                message=DummyMessage(
-                    fields={
-                        "key": DummyField(),
-                        "value": DummyField(
-                            message=DummyMessage(
-                                fields={
-                                    "mantle": DummyField(
-                                        message=DummyMessage(type="MANTLE_TYPE",
-                                                             fields={}),
-                                    )
-                                },
-                                type="CEPHALOPOD_TYPE"
-                            )
-                        ),
-                    },
-                    type="CEPHALOPODS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(False)),
-                repeated=True,
-            )
-        },
-        type="MOLLUSC_TYPE"
-    )
-    method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
-    with pytest.raises(samplegen.BadAttributeLookup):
-        v.validate_expression('$resp.cephalopods{"squid"}.mantle')
 
 
 def test_validate_expression_mapped_no_map_field():
