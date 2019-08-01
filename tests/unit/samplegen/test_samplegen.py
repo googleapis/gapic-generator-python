@@ -336,6 +336,8 @@ def test_map_loop_lexical_scope_key():
                 "body": [{"define": "tmp=cls"}],
             }
         },
+        # 'cls' is outside the visible lexical scope according to strict
+        # samplegen rules, even though it is valid python.
         {"define": "last_cls=cls"},
     ]
     OutputType = DummyMessage(
@@ -372,10 +374,12 @@ def test_map_loop_lexical_scope_value():
                 "map": "$resp.molluscs",
                 "key": "cls",
                 "value": "mollusc",
-                "body": [{"define": "tmp=order"}],
+                "body": [{"define": "tmp=mollusc"}],
             }
         },
-        {"define": "last_order=order"},
+        # 'mollusc' is outside the visible lexical scope according to strict
+        # samplegen rules, even though it is valid python.
+        {"define": "last_mollusc=mollusc"},
     ]
     OutputType = DummyMessage(
         fields={
@@ -414,6 +418,8 @@ def test_map_loop_lexical_scope_inline():
                 "body": [{"define": "tmp=mollusc"}],
             }
         },
+        # 'tmp' is outside the visible lexical scope according to strict
+        # samplegen rules, even though it is valid python.
         {"define": "last_mollusc=tmp"},
     ]
     OutputType = DummyMessage(
@@ -446,6 +452,7 @@ def test_loop_map_reserved_key():
     loop = {
         "loop": {
             "map": "$resp.molluscs",
+            # Can't use 'class' since it's a reserved keyword
             "key": "class",
             "value": "mollusc",
             "body": [{"print": ["A %s is a %s", "mollusc", "class"]}],
@@ -483,6 +490,7 @@ def test_loop_map_reserved_val():
         "loop": {
             "map": "$resp.molluscs",
             "key": "m",
+            # Can't use 'class' since it's a reserved keyword
             "value": "class",
             "body": [{"print": ["A %s is a %s", "m", "class"]}],
         }
@@ -598,6 +606,7 @@ def test_loop_map_no_value():
 
 def test_loop_map_no_key_or_value():
     loop = {"loop": {"map": "$resp.molluscs",
+                     # Need at least one of 'key' or 'value'
                      "body": [{"print": ["Dead loop"]}]}}
     OutputType = DummyMessage(
         fields={
@@ -667,6 +676,7 @@ def test_loop_map_redefined_key():
         {
             "loop": {
                 "map": "$resp.molluscs",
+                # Can't redefine mollusc, which was defined one statement above.
                 "key": "mollusc",
                 "body": [{"print": ["Mollusc: %s", "mollusc"]}],
             }
@@ -705,6 +715,7 @@ def test_loop_map_redefined_value():
         {
             "loop": {
                 "map": "$resp.molluscs",
+                # Can't redefine 'mollusc', which was defined one statement above.
                 "value": "mollusc",
                 "body": [{"print": ["Mollusc: %s", "mollusc"]}],
             }
@@ -1390,6 +1401,8 @@ def test_validate_expression_mapped_no_map_field():
                             )
                         )},
                     type="CEPHALOPODS_TYPE",
+                    # The map_field attribute in the options indicates whether
+                    # a message type is 'really' a map or just looks like one.
                     options=namedtuple("MessageOptions", ["map_field"])(False)),
                 repeated=True,
             )
@@ -1407,6 +1420,7 @@ def test_validate_expression_mapped_no_value():
         fields={
             "cephalopods": DummyField(
                 message=DummyMessage(
+                    # Maps need 'key' AND 'value' attributes.
                     fields={"key": DummyField()},
                     type="CEPHALOPODS_TYPE",
                     options=namedtuple("MessageOptions", ["map_field"])(True)),
@@ -1428,6 +1442,7 @@ def test_validate_expression_mapped_no_message():
                 message=DummyMessage(
                     fields={
                         "key": DummyField(),
+                        # The value field needs a message.
                         "value": DummyField(),
                     },
                     type="CEPHALOPODS_TYPE",

@@ -611,12 +611,10 @@ class Validator:
     @dataclasses.dataclass(frozen=True)
     class LoopParameterField(wrappers.Field):
         # This class is a hack for assigning the iteration variable in a collection loop.
-        # The variable is assigned to the field that represents the collection,
-        # but while the collection is a repeated field, the iteration variable is not.
-        # When adding the iteration variable to the lexical scope,
-        # instead of being directly assigned to the collection variable,
-        # it is copied into an instance of this class, which has a value
-        # override for 'repeated'.
+        # In protobuf, the concept of collection<T> is manifested as a repeated
+        # field of message type T. Therefore, in order to assign the correct type
+        # to a loop iteration parameter, we copy the field that is the collection
+        # but remove 'repeated'.
         repeated: bool = False
 
     def _validate_loop(self, loop):
