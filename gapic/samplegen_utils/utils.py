@@ -29,6 +29,21 @@ VALID_CONFIG_TYPE = "com.google.api.codegen.SampleConfigProto"
 
 
 def generate_all_sample_fpaths(path: str) -> Generator[str, None, None]:
+    """Given file or directory path, yield all valid sample config fpaths recursively.
+
+    Arguments:
+        path (str): The file or directory path to check
+                    for valid samplegen config files.
+                    Directories are checked recursively.
+
+    Raises:
+        types.InvalidConfig: If 'path' is an invalid sampleconfig file
+                             or 'path' is not a file or directory.
+
+    Returns:
+        Generator[str, None, None]: All valid samplegen config files
+                                    starting at 'path'.
+    """
     def parse_version(version_str: str) -> Tuple[int, ...]:
         return tuple(int(tok) for tok in version_str.split("."))
 

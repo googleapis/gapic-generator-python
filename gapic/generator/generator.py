@@ -83,6 +83,9 @@ class Generator:
 
         # Iterate over each template and add the appropriate output files
         # based on that template.
+        # Sample templates work differently: there's (usually) only one,
+        # and instead of iterating over it/them, we iterate over samples
+        # and plug those into the template.
         for template_name in client_templates:
             # Sanity check: Skip "private" templates.
             filename = template_name.split('/')[-1]
@@ -115,18 +118,22 @@ class Generator:
         for config_fpath in self._sample_configs:
             with open(config_fpath) as f:
                 configs = yaml.safe_load_all(f.read())
-                for c in configs:
-                    for s in c.get("samples", []):
-                        # Every sample requires an id, preferably provided by the
-                        # samplegen config author.
-                        # If no id is provided, fall back to the region tag.
-                        # If there's no region tag, generate a unique id.
-                        key = (s.get("id")
-                               or s.get("region_tag")
-                               or sha256(str(s).encode('utf8')).hexdigest()[:8])
 
-                        s["id"] = key
-                        id_to_samples[key].append(s)
+            for c in configs:
+                for s in c.get("samples", []):
+                    # Every sample requires an id, preferably provided by the
+                    # samplegen config author.
+                    # If no id is provided, fall back to the region tag.
+                    # If there's no region tag, generate a unique id.
+                    #
+                    # Ideally the sample author should pick a descriptive, unique id,
+                    # but this may be impractical and can be error prone.
+                    key = (s.get("id")
+                           or s.get("region_tag")
+                           or sha256(str(s).encode('utf8')).hexdigest()[:8])
+
+                    s["id"] = key
+                    id_to_samples[key].append(s)
 
         fpath_to_sample_and_rendering = {}
         for samples in id_to_samples.values():
@@ -158,6 +165,7 @@ class Generator:
         }
 
         if all_things:
+            # Don't generate a manifest if there are no samples.
             manifest_fname = os.path.join(self._sample_outdir, manifest_fname)
             all_things[manifest_fname] = CodeGeneratorResponse.File(
                 content=manifest_doc.render(),
