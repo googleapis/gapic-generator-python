@@ -22,7 +22,7 @@ def test_options_empty():
     opts = options.Options.build('')
     assert len(opts.templates) == 1
     assert opts.templates[0].endswith('gapic/templates')
-    assert opts.sample_out_dir == 'samples'
+    assert opts.sample_out_dir == '{api}/samples/{version}'
 
 
 def test_options_replace_templates():
@@ -50,5 +50,5 @@ def test_options_unrecognized_likely_typo():
 
 
 def test_options_sample_out_dir():
-    opts = options.Options.build('sample_outdir=/var/tmp/samples')
+    opts = options.Options.build('gapic_sample_out_dir=/var/tmp/samples')
     assert opts.sample_out_dir == '/var/tmp/samples'

@@ -269,9 +269,9 @@ def test_parse_sample_paths(fs):
         )
 
     opts = options.Options.build(
-        ("samples=sample.yaml,"
-         "samples=sampledir/,"
-         "samples=other_sampledir"))
+        ("gapic_samples=sample.yaml,"
+         "gapic_samples=sampledir/,"
+         "gapic_samples=other_sampledir"))
 
     expected_configs = (
         'sample.yaml',
@@ -304,14 +304,26 @@ def test_samplegen_end_to_end(mock_generate_sample, mock_generate_manifest, fs):
         )
     )
 
-    g = generator.Generator(options.Options.build('samples=samples.yaml'))
-    actual_response = g.get_response(None)
+    g = generator.Generator(
+        options.Options.build(
+            (
+                'gapic_samples=samples.yaml,'
+                'gapic_sample_out_dir=api/{api}/version/{version}/samples'
+            )
+        )
+    )
+    api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
+    actual_response = g.get_response(api_schema)
     expected_response = CodeGeneratorResponse(
         file=[
-            CodeGeneratorResponse.File(name='samples/sample.py',
-                                       content="\n"),
-            CodeGeneratorResponse.File(name="samples/manifest.yaml",
-                                       content="---\n")
+            CodeGeneratorResponse.File(
+                name='api/Mollusc/version/v6/samples/sample.py',
+                content="\n"
+            ),
+            CodeGeneratorResponse.File(
+                name="api/Mollusc/version/v6/samples/manifest.yaml",
+                content="---\n"
+            )
         ]
     )
     assert actual_response == expected_response

@@ -33,12 +33,13 @@ class Options:
     namespace: Tuple[str, ...] = dataclasses.field(default=())
     sample_configs: Tuple[str, ...] = dataclasses.field(default=())
     name: str = ''
-    sample_out_dir: str = 'samples'
+    sample_out_dir: str = ''
 
     # Class constants
-    SAMPLES_OPT: str = 'samples'
-    SAMPLE_OUT_DIR_OPT: str = 'sample_outdir'
+    SAMPLES_OPT: str = 'gapic_samples'
+    SAMPLE_OUT_DIR_OPT: str = 'gapic_sample_out_dir'
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
+    SAMPLE_OUT_DIR_DEFAULT: str = '{api}/samples/{version}'
 
     @classmethod
     def build(cls, opt_string: str) -> 'Options':
@@ -100,7 +101,8 @@ class Options:
             # If the user passed in a sample out dir, use the last one they defined.
             # Otherwise, use the default: 'samples'
             sample_out_dir=next(
-                reversed(opts.pop(cls.SAMPLE_OUT_DIR_OPT, [])), 'samples'),
+                reversed(opts.pop(cls.SAMPLE_OUT_DIR_OPT, [])),
+                cls.SAMPLE_OUT_DIR_DEFAULT),
         )
 
         # If there are any options remaining, then we failed to recognize

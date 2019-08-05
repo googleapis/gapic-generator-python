@@ -60,7 +60,10 @@ class Generator:
         self._env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
         self._sample_configs = opts.sample_configs
-        self._sample_outdir = opts.sample_out_dir
+        # Note: this isn't necessarily the actual out dir itself;
+        #       it's actually a template that may have interpolable
+        #       variables {api} and {version}.
+        self._sample_out_dir = opts.sample_out_dir
 
     def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
@@ -135,6 +138,10 @@ class Generator:
                     s["id"] = key
                     id_to_samples[key].append(s)
 
+        # Interpolate the special variables in the sample_out_dir template.
+        out_dir = (self._sample_out_dir
+                   .replace('{api}', api_schema.naming.name)
+                   .replace('{version}', api_schema.naming.version))
         fpath_to_sample_and_rendering = {}
         for samples in id_to_samples.values():
             for s in samples:
@@ -148,12 +155,12 @@ class Generator:
                     api_schema
                 )
                 fpath_to_sample_and_rendering[os.path.join(
-                    self._sample_outdir, sample_fpath)] = (s, rendered_sample)
+                    out_dir, sample_fpath)] = (s, rendered_sample)
 
         manifest_fname, manifest_doc = samplegen.generate_manifest(
             ((sample_fname, sample)
              for sample_fname, (sample, _) in fpath_to_sample_and_rendering.items()),
-            self._sample_outdir,
+            out_dir,
             api_schema)
 
         all_things = {
@@ -166,7 +173,7 @@ class Generator:
 
         if all_things:
             # Don't generate a manifest if there are no samples.
-            manifest_fname = os.path.join(self._sample_outdir, manifest_fname)
+            manifest_fname = os.path.join(out_dir, manifest_fname)
             all_things[manifest_fname] = CodeGeneratorResponse.File(
                 content=manifest_doc.render(),
                 name=manifest_fname

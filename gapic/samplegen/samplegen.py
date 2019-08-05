@@ -704,6 +704,7 @@ def generate_sample(sample,
     v.validate_response(sample["response"])
 
     sample_fpath = (
+        # TODO: enable configuration that allows other language samples.
         sample["id"] + (str(calling_form)
                         if not id_is_unique else "") + ".py"
     )
@@ -747,6 +748,8 @@ def generate_manifest(
         [
             yaml.KeyVal("type", "manifest/samples"),
             yaml.KeyVal("schema_version", "3"),
+            # TODO: make the environment configurable to allow other languages
+            #       to use the same basic machinery.
             yaml.Map(
                 name="python",
                 anchor_name="python",
@@ -776,6 +779,7 @@ def generate_manifest(
     )
 
     dt = time.gmtime(manifest_time)
+    # TODO: allow other language configuration
     manifest_fname_template = (
         "{api}.{version}.python."
         "{year:04d}{month:02d}{day:02d}."
