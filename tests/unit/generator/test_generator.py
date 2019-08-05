@@ -308,8 +308,10 @@ def test_samplegen_end_to_end(mock_generate_sample, mock_generate_manifest, fs):
     actual_response = g.get_response(None)
     expected_response = CodeGeneratorResponse(
         file=[
-            CodeGeneratorResponse.File(name='samples/sample.py', content="\n"),
-            CodeGeneratorResponse.File(name="samples/manifest.yaml", content="---\n")
+            CodeGeneratorResponse.File(name='samples/sample.py',
+                                       content="\n"),
+            CodeGeneratorResponse.File(name="samples/manifest.yaml",
+                                       content="---\n")
         ]
     )
     assert actual_response == expected_response

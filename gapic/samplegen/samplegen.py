@@ -511,7 +511,7 @@ class Validator:
         #       re-implementing the python interpreter.
         m = re.match(r"^([a-zA-Z]\w*)=([^=]+)$", body)
         if not m:
-            raise types.BadAssignment("Bad assignment statement: {}".format(body))
+            raise types.BadAssignment(f"Bad assignment statement: {body}")
 
         lval, rval = m.groups()
 
@@ -766,7 +766,8 @@ def generate_manifest(
                         yaml.KeyVal("path",
                                     "'{base_path}/%s'" % os.path.relpath(fpath,
                                                                          base_path)),
-                        yaml.KeyVal("region_tag", sample.get("region_tag", "")),
+                        yaml.KeyVal("region_tag",
+                                    sample.get("region_tag", "")),
                     ]
                     for fpath, sample in fpaths_and_samples
                 ],

@@ -99,7 +99,8 @@ class Options:
             ),
             # If the user passed in a sample out dir, use the last one they defined.
             # Otherwise, use the default: 'samples'
-            sample_out_dir=next(reversed(opts.pop(cls.SAMPLE_OUT_DIR_OPT, [])), 'samples'),
+            sample_out_dir=next(
+                reversed(opts.pop(cls.SAMPLE_OUT_DIR_OPT, [])), 'samples'),
         )
 
         # If there are any options remaining, then we failed to recognize
