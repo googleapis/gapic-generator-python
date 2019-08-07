@@ -41,7 +41,7 @@ env.filters['snake_case'] = utils.to_snake_case
 env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
 
-def test_generate_sample_basic():
+def test_generate_sample_basic(id_is_unique=True):
     # Note: the sample integration tests are needfully large
     # and difficult to eyeball parse. They are intended to be integration tests
     # that catch errors in behavior that is emergent from combining smaller features
@@ -71,19 +71,21 @@ def test_generate_sample_basic():
                            "value_is_file": True}],
               "response": [{"print": ["Mollusc is a %s", "$resp.taxonomy"]}]}
 
-    fpath, sample_str = samplegen.generate_sample(
-        sample, True, env, schema)
+    sample_str = samplegen.generate_sample(
+        sample, id_is_unique, env, schema)
 
+    sample_id = ("mollusc_classify_sync" if id_is_unique else
+                 "mollusc_classify_sync_request")
     expected_str = '''# TODO: add a copyright
 # TODO: add a license
 #
-# DO NOT EDIT! This is a generated sample ("CallingForm.Request",  "mollusc_classify_sync")
+# DO NOT EDIT! This is a generated sample ("request",  "%s")
 #
 # To install the latest published package dependency, execute the following:
 #   pip3 install molluscs-v1-mollusc
 
 
-# [START mollusc_classify_sync]
+# [START %s]
 
 def sample_classify(video):
     """Determine the full taxonomy of input mollusc"""
@@ -100,7 +102,7 @@ def sample_classify(video):
 
     print("Mollusc is a {}".format(response.taxonomy))
 
-# [END mollusc_classify_sync]
+# [END %s]
 
 def main():
     import argparse
@@ -116,9 +118,13 @@ def main():
 
 if __name__ == "__main__":
     main()
-'''
+''' % (sample_id, sample_id, sample_id)
 
     assert sample_str == expected_str
+
+
+def test_generate_sample_basic_non_unique_id():
+    test_generate_sample_basic(id_is_unique=False)
 
 
 def test_generate_sample_service_not_found():
@@ -167,9 +173,9 @@ def test_generate_sample_config_fpaths_directories(fs):
         - service: google.cloud.language.v1.LanguageService
         '''
     )
-    bad_contents = 'bad contents'
     # We need some invalid configs in the directory as well to verify that
     # they don't cause spurious failures.
+    bad_contents = 'bad contents'
     directory = 'sampleconfig'
     for p in [
             "config_1.yaml",
@@ -199,6 +205,16 @@ def test_generate_sample_config_fpaths_directories(fs):
     actual_paths = sorted(gapic_utils.generate_all_sample_fpaths(directory))
 
     assert actual_paths == expected_paths
+
+
+def test_generate_sample_config_fpaths_directories_no_configs(fs):
+    directory = 'sampleconfig'
+    for f in ['a.yaml', 'b.yaml']:
+        fs.create_file(path.join(directory, f))
+
+    actual_paths = list(gapic_utils.generate_all_sample_fpaths(directory))
+
+    assert not actual_paths
 
 
 def test_generate_sample_config_fpaths_not_yaml(fs):
@@ -255,6 +271,63 @@ def test_generate_sample_config_fpaths_bad_contents_no_samples(fs):
             '''
         )
     )
+
+
+def test_generate_sample_config_partial_config(fs):
+    expected_path = 'sample.yaml'
+    fs.create_file(
+        expected_path,
+        contents=dedent(
+            '''
+            ---
+            # Note: this one is NOT a valid config
+            type: com.google.api.codegen.SampleConfigPronto
+            config_schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            ---
+            # Note: this one IS a valid config
+            type: com.google.api.codegen.SampleConfigProto
+            config_schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            '''
+        )
+    )
+    expected_paths = [expected_path]
+
+    actual_paths = list(gapic_utils.generate_all_sample_fpaths(expected_path))
+
+    assert actual_paths == expected_paths
+
+
+def test_generate_sample_config_partial_config_directory(fs):
+    directory = 'samples'
+    fpath = path.join(directory, 'sample.yaml')
+    fs.create_file(
+        fpath,
+        contents=dedent(
+            '''
+            ---
+            # Note: this one is NOT a valid config
+            type: com.google.api.codegen.SampleConfigPronto
+            config_schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            ---
+            # Note: this one IS a valid config
+            type: com.google.api.codegen.SampleConfigProto
+            config_schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            '''
+        )
+    )
+    expected_paths = [fpath]
+
+    actual_paths = list(gapic_utils.generate_all_sample_fpaths(directory))
+
+    assert actual_paths == expected_paths
 
 
 def test_generate_sample_config_fpaths_no_such_file(fs):

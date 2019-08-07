@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from enum import Enum, auto
+from gapic.utils import to_snake_case
 
 
 class SampleError(Exception):
@@ -102,3 +103,6 @@ class CallingForm(Enum):
             return cls.RequestStreamingServer
 
         return cls.Request
+
+    def __str__(self):
+        return to_snake_case(super().__str__().split(".")[-1])

@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pdb
 from textwrap import dedent
 from typing import Mapping
 from unittest import mock
 
+import itertools
 import jinja2
-
 import pytest
 
 from google.protobuf import descriptor_pb2
@@ -25,7 +26,7 @@ from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic.generator import generator
 from gapic.generator import options
-from gapic.samplegen_utils import yaml
+from gapic.samplegen_utils import (types, yaml)
 from gapic.schema import api
 from gapic.schema import naming
 from gapic.schema import wrappers
@@ -269,9 +270,9 @@ def test_parse_sample_paths(fs):
         )
 
     opts = options.Options.build(
-        ("gapic_samples=sample.yaml,"
-         "gapic_samples=sampledir/,"
-         "gapic_samples=other_sampledir"))
+        ("samples=sample.yaml,"
+         "samples=sampledir/,"
+         "samples=other_sampledir"))
 
     expected_configs = (
         'sample.yaml',
@@ -284,13 +285,27 @@ def test_parse_sample_paths(fs):
 
 @mock.patch(
     'gapic.samplegen.samplegen.generate_sample',
-    return_value=('sample.py', '')
+    return_value='',
 )
 @mock.patch(
-    'gapic.samplegen.samplegen.generate_manifest',
-    return_value=('manifest.yaml', yaml.Doc([]))
+    'time.gmtime',
 )
-def test_samplegen_end_to_end(mock_generate_sample, mock_generate_manifest, fs):
+def test_samplegen_config_to_output_files(
+        mock_gmtime,
+        mock_generate_sample,
+        fs,
+):
+    # These time values are nothing special,
+    # they just need to be deterministic.
+    returner = mock.MagicMock()
+    returner.tm_year = 2112
+    returner.tm_mon = 6
+    returner.tm_mday = 1
+    returner.tm_hour = 13
+    returner.tm_min = 13
+    returner.tm_sec = 13
+    mock_gmtime.return_value = returner
+
     fs.create_file(
         'samples.yaml',
         contents=dedent(
@@ -299,17 +314,18 @@ def test_samplegen_end_to_end(mock_generate_sample, mock_generate_manifest, fs):
             type: com.google.api.codegen.SampleConfigProto
             config_schema_version: 1.2.0
             samples:
-            - service: google.cloud.language.v1.LanguageService
+            - id: squid_sample
+              region_tag: humboldt_tag
+              rpc: get_squid_streaming
             '''
         )
     )
 
+    mock_generate_sample
+
     g = generator.Generator(
         options.Options.build(
-            (
-                'gapic_samples=samples.yaml,'
-                'gapic_sample_out_dir=api/{api}/version/{version}/samples'
-            )
+            'samples=samples.yaml',
         )
     )
     api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
@@ -317,12 +333,25 @@ def test_samplegen_end_to_end(mock_generate_sample, mock_generate_manifest, fs):
     expected_response = CodeGeneratorResponse(
         file=[
             CodeGeneratorResponse.File(
-                name='api/Mollusc/version/v6/samples/sample.py',
-                content="\n"
+                name="samples/squid_sample.py",
+                content="\n",
             ),
             CodeGeneratorResponse.File(
-                name="api/Mollusc/version/v6/samples/manifest.yaml",
-                content="---\n"
+                name="samples/Mollusc.v6.python.21120601.131313.manifest.yaml",
+                content=dedent("""                ---
+                type: manifest/samples
+                schema_version: 3
+                python: &python
+                  environment: python
+                  bin: python3
+                  base_path: samples
+                  invocation: '{bin} {path} @args'
+                samples:
+                - <<: *python
+                  sample: squid_sample
+                  path: '{base_path}/squid_sample.py'
+                  region_tag: humboldt_tag
+                """.rstrip()),
             )
         ]
     )

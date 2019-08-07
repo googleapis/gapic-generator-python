@@ -12,22 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import (OrderedDict, defaultdict)
-from hashlib import sha256
-from typing import (Any, DefaultDict, Dict, Mapping, List)
-import os
-import re
-import yaml
-
-import jinja2
-
-from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
-
-from gapic import utils
-from gapic.generator import formatter
-from gapic.generator import options
-from gapic.samplegen import samplegen
 from gapic.schema import api
+from gapic.samplegen_utils.utils import is_valid_sample_cfg
+from gapic.samplegen import samplegen
+from gapic.generator import options
+from gapic.generator import formatter
+from gapic import utils
+from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
+import jinja2
+import yaml
+import re
+import os
+from typing import (Any, DefaultDict, Dict, Mapping, List)
+from hashlib import sha256
+from collections import (OrderedDict, defaultdict)
 
 
 class Generator:
@@ -60,10 +58,6 @@ class Generator:
         self._env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
         self._sample_configs = opts.sample_configs
-        # Note: this isn't necessarily the actual out dir itself;
-        #       it's actually a template that may have interpolable
-        #       variables {api} and {version}.
-        self._sample_out_dir = opts.sample_out_dir
 
     def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
@@ -122,64 +116,71 @@ class Generator:
             with open(config_fpath) as f:
                 configs = yaml.safe_load_all(f.read())
 
-            for c in configs:
-                for s in c.get("samples", []):
-                    # Every sample requires an id, preferably provided by the
-                    # samplegen config author.
-                    # If no id is provided, fall back to the region tag.
-                    # If there's no region tag, generate a unique id.
-                    #
-                    # Ideally the sample author should pick a descriptive, unique id,
-                    # but this may be impractical and can be error prone.
-                    key = (s.get("id")
-                           or s.get("region_tag")
-                           or sha256(str(s).encode('utf8')).hexdigest()[:8])
+            spec_generator = (
+                spec
+                for cfg in configs if is_valid_sample_cfg(cfg)
+                for spec in cfg.get("samples", [])
+            )
 
-                    s["id"] = key
-                    id_to_samples[key].append(s)
+            for spec in spec_generator:
+                # Every sample requires an ID, preferably provided by the
+                # samplegen config author.
+                # If no id is provided, fall back to the region tag.
+                # If there's no region tag, generate a unique id.
+                #
+                # Ideally the sample author should pick a descriptive, unique id,
+                # but this may be impractical and can be error-prone.
+                key = (spec.get("id")
+                       or spec.get("region_tag")
+                       or sha256(str(spec).encode('utf8')).hexdigest()[:8])
+
+                spec["id"] = key
+                id_to_samples[key].append(spec)
 
         # Interpolate the special variables in the sample_out_dir template.
-        out_dir = (self._sample_out_dir
-                   .replace('{api}', api_schema.naming.name)
-                   .replace('{version}', api_schema.naming.version))
-        fpath_to_sample_and_rendering = {}
+        out_dir = "samples"
+        fpath_to_spec_and_rendered = {}
         for samples in id_to_samples.values():
-            for s in samples:
-                # If the id is not unique, the sample generation code
+            for sample in samples:
+                # If the ID is not unique, the sample generation code
                 # needs to know so that the resulting file name includes
                 # the sample's calling form.
-                sample_fpath, rendered_sample = samplegen.generate_sample(
-                    s,
-                    len(samples) == 1,
+                # Note: this currently involves generate_sample manipulating
+                # sample["id"] if the ID is not unique.
+                id_is_unique = len(samples) == 1
+                rendered_sample = samplegen.generate_sample(
+                    sample,
+                    id_is_unique,
                     self._env,
                     api_schema
                 )
-                fpath_to_sample_and_rendering[os.path.join(
-                    out_dir, sample_fpath)] = (s, rendered_sample)
+                sample_fpath = sample["id"] + ".py"
+                fpath_to_spec_and_rendered[os.path.join(
+                    out_dir, sample_fpath)] = (sample, rendered_sample)
 
         manifest_fname, manifest_doc = samplegen.generate_manifest(
-            ((sample_fname, sample)
-             for sample_fname, (sample, _) in fpath_to_sample_and_rendering.items()),
+            ((sample_fname, sample_spec)
+             for sample_fname, (sample_spec, _) in fpath_to_spec_and_rendered.items()),
             out_dir,
             api_schema)
 
-        all_things = {
+        output_files = {
             sample_fname: CodeGeneratorResponse.File(
-                content=formatter.fix_whitespace(rendering),
+                content=formatter.fix_whitespace(rendered_sample),
                 name=sample_fname
             )
-            for sample_fname, (_, rendering) in fpath_to_sample_and_rendering.items()
+            for sample_fname, (_, rendered_sample) in fpath_to_spec_and_rendered.items()
         }
 
-        if all_things:
-            # Don't generate a manifest if there are no samples.
+        # Only generate a manifest if we generated samples.
+        if output_files:
             manifest_fname = os.path.join(out_dir, manifest_fname)
-            all_things[manifest_fname] = CodeGeneratorResponse.File(
+            output_files[manifest_fname] = CodeGeneratorResponse.File(
                 content=manifest_doc.render(),
                 name=manifest_fname
             )
 
-        return all_things
+        return output_files
 
     def _render_template(
             self,

@@ -664,22 +664,20 @@ class Validator:
 def generate_sample(sample,
                     id_is_unique: bool,
                     env: jinja2.environment.Environment,
-                    api_schema: api.API) -> Tuple[str, str]:
+                    api_schema: api.API) -> Tuple[types.CallingForm, str]:
     """Generate a standalone, runnable sample.
 
     Rendering and writing the rendered output is left for the caller.
 
     Args:
         sample (Any): A definition for a single sample generated from parsed yaml.
-        id_is_unique (bool): Indicates whether sample["id"] globally unique.
         env (jinja2.environment.Environment): The jinja environment used to generate
                                               the filled template for the sample.
         api_schema (api.API): The schema that defines the API to which the sample belongs.
 
     Returns:
-        Tuple[str, jinja2.Template]: The filename of the generated sample and the
-                                     generated, filled-in jinja template to be
-                                     rendered to make the sample.
+        Tuple[types.CallingForm, str]: The calling form of the sample and the
+                                       rendered sample.
     """
     sample_template = env.get_template(TEMPLATE_NAME)
 
@@ -697,29 +695,23 @@ def generate_sample(sample,
         )
 
     calling_form = types.CallingForm.method_default(rpc)
+    sample["id"] = (sample["id"] if id_is_unique else
+                    f'{sample["id"]}_{calling_form}')
 
     v = Validator(rpc)
     sample["request"] = v.validate_and_transform_request(calling_form,
                                                          sample["request"])
     v.validate_response(sample["response"])
 
-    sample_fpath = (
-        # TODO: enable configuration that allows other language samples.
-        sample["id"] + (str(calling_form)
-                        if not id_is_unique else "") + ".py"
-    )
-
     sample["package_name"] = api_schema.naming.warehouse_package_name
 
-    return (
-        sample_fpath,
-        sample_template.render(
-            file_header=FILE_HEADER,
-            sample=sample,
-            imports=[],
-            calling_form=calling_form,
-            calling_form_enum=types.CallingForm,
-        ),
+    # The onus to change the sample id based on the uniqueness
+    return sample_template.render(
+        file_header=FILE_HEADER,
+        sample=sample,
+        imports=[],
+        calling_form=calling_form,
+        calling_form_enum=types.CallingForm,
     )
 
 

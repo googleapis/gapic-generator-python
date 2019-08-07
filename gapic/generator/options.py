@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import warnings
-import os
-import dataclasses
-from typing import DefaultDict, List, Tuple
 from collections import defaultdict
+from typing import DefaultDict, List, Tuple
+
+import dataclasses
+import os
+import warnings
 
 from gapic.samplegen_utils import utils as samplegen_utils
 
@@ -33,13 +34,10 @@ class Options:
     namespace: Tuple[str, ...] = dataclasses.field(default=())
     sample_configs: Tuple[str, ...] = dataclasses.field(default=())
     name: str = ''
-    sample_out_dir: str = ''
 
     # Class constants
-    SAMPLES_OPT: str = 'gapic_samples'
-    SAMPLE_OUT_DIR_OPT: str = 'gapic_sample_out_dir'
+    SAMPLES_OPT: str = 'samples'
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
-    SAMPLE_OUT_DIR_DEFAULT: str = '{api}/samples/{version}'
 
     @classmethod
     def build(cls, opt_string: str) -> 'Options':
@@ -65,9 +63,6 @@ class Options:
 
             if opt == cls.SAMPLES_OPT:
                 opts[cls.SAMPLES_OPT].append(value)
-
-            if opt == cls.SAMPLE_OUT_DIR_OPT:
-                opts[cls.SAMPLE_OUT_DIR_OPT].append(value)
 
             # Throw away other options not meant for us.
             if not opt.startswith(cls.PYTHON_GAPIC_PREFIX):
@@ -98,11 +93,6 @@ class Options:
                 for s in opts.pop(cls.SAMPLES_OPT, [])
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
-            # If the user passed in a sample out dir, use the last one they defined.
-            # Otherwise, use the default: 'samples'
-            sample_out_dir=next(
-                reversed(opts.pop(cls.SAMPLE_OUT_DIR_OPT, [])),
-                cls.SAMPLE_OUT_DIR_DEFAULT),
         )
 
         # If there are any options remaining, then we failed to recognize

@@ -28,6 +28,24 @@ MIN_SCHEMA_VERSION = (1, 2, 0)
 VALID_CONFIG_TYPE = "com.google.api.codegen.SampleConfigProto"
 
 
+def is_valid_sample_cfg(
+        doc,
+        min_version: Tuple[int, int, int] = MIN_SCHEMA_VERSION,
+        config_type: str = VALID_CONFIG_TYPE,
+) -> bool:
+    def parse_version(version_str: str) -> Tuple[int, ...]:
+        return tuple(int(tok) for tok in version_str.split("."))
+
+    version_token = "config_schema_version"
+    return bool(
+        # Yaml may return a dict, a list, or a str
+        isinstance(doc, dict)
+        and doc.get("type") == VALID_CONFIG_TYPE
+        and parse_version(doc.get(version_token, "")) >= MIN_SCHEMA_VERSION
+        and doc.get("samples")
+    )
+
+
 def generate_all_sample_fpaths(path: str) -> Generator[str, None, None]:
     """Given file or directory path, yield all valid sample config fpaths recursively.
 
@@ -44,18 +62,6 @@ def generate_all_sample_fpaths(path: str) -> Generator[str, None, None]:
         Generator[str, None, None]: All valid samplegen config files
                                     starting at 'path'.
     """
-    def parse_version(version_str: str) -> Tuple[int, ...]:
-        return tuple(int(tok) for tok in version_str.split("."))
-
-    def is_valid_sampleconfig_p(doc) -> bool:
-        version_token = "config_schema_version"
-        return bool(
-            # Yaml may return a dict, a list, or a str
-            isinstance(doc, dict)
-            and doc.get("type") == VALID_CONFIG_TYPE
-            and parse_version(doc.get(version_token, "")) >= MIN_SCHEMA_VERSION
-            and doc.get("samples")
-        )
 
     # If a user passes in a directory to search for sample configs,
     # it is required to ignore any non-sample-config files so as to avoid
@@ -67,12 +73,11 @@ def generate_all_sample_fpaths(path: str) -> Generator[str, None, None]:
             raise types.InvalidConfig(f"Not a yaml file: {path}")
 
         with open(path) as f:
-            if not all(is_valid_sampleconfig_p(doc)
+            if not any(is_valid_sample_cfg(doc)
                        for doc in yaml.safe_load_all(f.read())):
-                raise types.InvalidConfig(
-                    f"Not a valid sampleconfig file: {path}")
+                raise types.InvalidConfig(f"No valid sample config in file: {path}")
 
-        yield path
+            yield path
 
     elif os.path.isdir(path):
         yaml_file_generator = (os.path.join(dirpath, fname)
@@ -81,7 +86,7 @@ def generate_all_sample_fpaths(path: str) -> Generator[str, None, None]:
 
         for fullpath in yaml_file_generator:
             with open(fullpath) as f:
-                if all(is_valid_sampleconfig_p(doc)
+                if any(is_valid_sample_cfg(doc)
                        for doc in yaml.safe_load_all(f.read())):
                     yield fullpath
 
