@@ -73,8 +73,8 @@ def showcase(session):
 
         # Write out a client library for Showcase.
         session.run('protoc',
-                    f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-                    f'--python_gapic_out={tmp_dir}',
+                    '--descriptor_set_in={}/showcase.desc'.format(tmp_dir),
+                    '--python_gapic_out={}'.format(tmp_dir),
                     'google/showcase/v1beta1/echo.proto',
                     'google/showcase/v1beta1/identity.proto',
                     external=True,
@@ -99,9 +99,11 @@ def showcase_unit(session):
 
         # Download the Showcase descriptor.
         session.run(
-            'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
-                    f'download/v{showcase_version}/'
-                    f'gapic-showcase-{showcase_version}.desc',
+            'curl',
+            (
+                'https://github.com/googleapis/gapic-showcase/releases/'
+                'download/v{showcase_version}/gapic-showcase-{showcase_version}.desc'
+            ).format(showcase_version=showcase_version),
             '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
             external=True,
             silent=True,
@@ -109,8 +111,8 @@ def showcase_unit(session):
 
         # Write out a client library for Showcase.
         session.run('protoc',
-                    f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-                    f'--python_gapic_out={tmp_dir}',
+                    '--descriptor_set_in={}/showcase.desc'.format(tmp_dir),
+                    '--python_gapic_out={}'.format(tmp_dir),
                     'google/showcase/v1beta1/echo.proto',
                     'google/showcase/v1beta1/identity.proto',
                     'google/showcase/v1beta1/messaging.proto',
@@ -144,9 +146,11 @@ def showcase_mypy(session):
     with tempfile.TemporaryDirectory() as tmp_dir:
         # Download the Showcase descriptor.
         session.run(
-            'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
-                    f'download/v{showcase_version}/'
-                    f'gapic-showcase-{showcase_version}.desc',
+            'curl',
+            (
+                'https://github.com/googleapis/gapic-showcase/releases/'
+                'download/v{showcase_version}/gapic-showcase-{showcase_version}.desc'
+            ).format(showcase_version=showcase_version),
             '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
             external=True,
             silent=True,
@@ -154,8 +158,8 @@ def showcase_mypy(session):
 
         # Write out a client library for Showcase.
         session.run('protoc',
-                    f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-                    f'--python_gapic_out={tmp_dir}',
+                    '--descriptor_set_in={}/showcase.desc'.format(tmp_dir),
+                    '--python_gapic_out={}'.format(tmp_dir),
                     'google/showcase/v1beta1/echo.proto',
                     'google/showcase/v1beta1/identity.proto',
                     'google/showcase/v1beta1/messaging.proto',
