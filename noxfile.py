@@ -61,9 +61,11 @@ def showcase(session):
     with tempfile.TemporaryDirectory() as tmp_dir:
         # Download the Showcase descriptor.
         session.run(
-            'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
-                    f'download/v{showcase_version}/'
-                    f'gapic-showcase-{showcase_version}.desc',
+            'curl',
+            (
+                'https://github.com/googleapis/gapic-showcase/releases/'
+                'download/v{showcase_version}/gapic-showcase-{showcase_version}.desc'
+            ).format(showcase_version=showcase_version),
             '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
             external=True,
             silent=True,
