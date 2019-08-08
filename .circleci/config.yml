@@ -204,6 +204,11 @@ jobs:
           command: |
             apt-get install -y git
             curl https://pyenv.run | bash
+            cat << EOF > ~/.bashrc
+            export PATH="/root/.pyenv/bin:$PATH"
+            eval "$(pyenv init -)"
+            eval "$(pyenv virtualenv-init -)"
+            EOF
       - run:
           name: Install python3.5
           command: |
