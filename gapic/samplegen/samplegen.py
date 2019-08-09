@@ -664,20 +664,22 @@ class Validator:
 def generate_sample(sample,
                     id_is_unique: bool,
                     env: jinja2.environment.Environment,
-                    api_schema: api.API) -> Tuple[types.CallingForm, str]:
+                    api_schema: api.API) -> str:
     """Generate a standalone, runnable sample.
 
     Rendering and writing the rendered output is left for the caller.
 
     Args:
         sample (Any): A definition for a single sample generated from parsed yaml.
+        id_is_unique (bool): Indicates whether the sample's id is unique.
+                             If it is not, sample["id"] is modified
+                             as an output parameter.
         env (jinja2.environment.Environment): The jinja environment used to generate
                                               the filled template for the sample.
         api_schema (api.API): The schema that defines the API to which the sample belongs.
 
     Returns:
-        Tuple[types.CallingForm, str]: The calling form of the sample and the
-                                       rendered sample.
+        str: The rendered sample.
     """
     sample_template = env.get_template(TEMPLATE_NAME)
 
