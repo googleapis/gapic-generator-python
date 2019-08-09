@@ -221,7 +221,7 @@ jobs:
           command: pip install nox
       - run:
           name: Run unit tests.
-          command: nox -s showcase_unit-3.5
+          command: nox -s showcase_unit-3.5.7
   showcase-unit-3.6:
     docker:
       - image: python:3.6-slim
