@@ -40,7 +40,7 @@ def unit(session):
     )
 
 
-@nox.session(python=['3.5.7', '3.6', '3.7'])
+@nox.session(python=['3.5', '3.6', '3.7'])
 def showcase(session):
     """Run the Showcase test suite."""
 
@@ -86,7 +86,7 @@ def showcase(session):
     session.run('py.test', '--quiet', os.path.join('tests', 'system'))
 
 
-@nox.session(python=['3.5.7', '3.6', '3.7'])
+@nox.session(python=['3.5', '3.6', '3.7'])
 def showcase_unit(session):
     """Run the generated unit tests against the Showcase library."""
 
