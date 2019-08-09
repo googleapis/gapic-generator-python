@@ -75,7 +75,8 @@ def generate_all_sample_fpaths(path: str) -> Generator[str, None, None]:
         with open(path) as f:
             if not any(is_valid_sample_cfg(doc)
                        for doc in yaml.safe_load_all(f.read())):
-                raise types.InvalidConfig(f"No valid sample config in file: {path}")
+                raise types.InvalidConfig(
+                    f"No valid sample config in file: {path}")
 
             yield path
 
