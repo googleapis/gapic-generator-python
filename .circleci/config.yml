@@ -211,8 +211,8 @@ jobs:
             pyenv init -
             pyenv virtualenv-init -
             pyenv update
-            pyenv install 3.5
-            pyenv global 3.5
+            pyenv install 3.5.7
+            pyenv global 3.5.7
       - run:
           name: Install nox.
           command: pip install nox
