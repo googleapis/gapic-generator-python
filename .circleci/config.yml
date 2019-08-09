@@ -211,7 +211,7 @@ jobs:
           name: Install python3.5
           command: |
             export PATH="/root/.pyenv/bin:$PATH"
-            eval "($pyenv init -)"
+            eval "$(pyenv init -)"
             pyenv virtualenv-init -
             pyenv update
             pyenv install 3.5.7
@@ -223,7 +223,7 @@ jobs:
           name: Run unit tests.
           command: |
             export PATH="/root/.pyenv/bin:$PATH"
-            eval "($pyenv init -)"
+            eval "$(pyenv init -)"
             nox -s showcase_unit-3.5
   showcase-unit-3.6:
     docker:
