@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pdb
 from textwrap import dedent
 from typing import Mapping
 from unittest import mock
 
-import itertools
 import jinja2
 import pytest
 
