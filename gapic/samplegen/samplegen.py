@@ -729,6 +729,7 @@ def generate_manifest(
         Tuple[str, yaml.Doc]: The filename of the manifest and the manifest data as a dictionary.
 
     """
+
     doc = yaml.Doc(
         [
             yaml.KeyVal("type", "manifest/samples"),
@@ -754,8 +755,9 @@ def generate_manifest(
                         yaml.KeyVal("path",
                                     "'{base_path}/%s'" % os.path.relpath(fpath,
                                                                          base_path)),
-                        yaml.KeyVal("region_tag",
-                                    sample.get("region_tag", "")),
+                        (yaml.KeyVal("region_tag", sample["region_tag"])
+                         if "region_tag" in sample
+                         else yaml.Null),
                     ]
                     for fpath, sample in fpaths_and_samples
                 ],
