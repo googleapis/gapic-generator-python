@@ -24,9 +24,7 @@ from gapic.samplegen_utils import (types, yaml)
 from gapic.schema import (api, wrappers)
 
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
-from textwrap import dedent
-from typing import (ChainMap, Dict, Generator, List,
-                    Mapping, Optional, Set, Tuple, Union)
+from typing import (ChainMap, Dict, List, Mapping, Optional, Tuple)
 
 from google.protobuf import descriptor_pb2
 

@@ -62,7 +62,6 @@ class Collection(Element):
         # -  cephalopod: squid
         #   bivalve: clam
         #   gastropod: whelk
-        whitespace = " " * spaces
         return f"{self.name}:\n" + "\n".join(
             indent(
                 "-"
