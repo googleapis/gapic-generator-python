@@ -147,7 +147,8 @@ class Generator:
                 # The ID is used to generate the file name and by sample tester
                 # to link filenames to invoked samples. It must be globally unique.
                 if not id_is_unique:
-                    spec_hash = sha256(str(spec).encode('utf8')).hexdigest()[:8]
+                    spec_hash = sha256(
+                        str(spec).encode('utf8')).hexdigest()[:8]
                     spec["id"] += f"_{spec_hash}"
 
                 sample = samplegen.generate_sample(spec, self._env, api_schema)
