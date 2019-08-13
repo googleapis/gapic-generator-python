@@ -301,7 +301,7 @@ def test_generate_sample_config_partial_config_directory(fs):
     fpath = path.join(directory, 'sample.yaml')
     fs.create_file(
         fpath,
-        # Note: this one is NOT a valid config
+        # Note the typo in the first sample: SampleConfigPronto
         contents=dedent(
             '''
             ---
