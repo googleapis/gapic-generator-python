@@ -19,7 +19,7 @@ import dataclasses
 import os
 import warnings
 
-from gapic.samplegen_utils import utils as samplegen_utils
+from gapic.samplegen_utils import (types, utils as samplegen_utils)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -52,6 +52,11 @@ class Options:
 
         Returns:
             ~.Options: The Options instance.
+
+        Raises:
+            gapic.samplegen_utils.types.InvalidConfig:
+                        If paths to files or directories that should contain sample
+                        configs are passed and no valid sample config is found.
         """
         # Parse out every option beginning with `python-gapic`
         opts: DefaultDict[str, List[str]] = defaultdict(list)
@@ -84,16 +89,23 @@ class Options:
             )
 
         # Build the options instance.
+        sample_paths = opts.pop(cls.SAMPLES_OPT, [])
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
-            templates=tuple([os.path.expanduser(i) for i in templates]),
+            templates=tuple(os.path.expanduser(i) for i in templates),
             sample_configs=tuple(
                 cfg_path
-                for s in opts.pop(cls.SAMPLES_OPT, [])
+                for s in sample_paths
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
         )
+
+        if sample_paths and not answer.sample_configs:
+            raise types.InvalidConfig(
+                ("No valid sample config found in any of the following: "
+                 "{}".format(", ".join(sample_paths)))
+            )
 
         # If there are any options remaining, then we failed to recognize
         # them -- complain.

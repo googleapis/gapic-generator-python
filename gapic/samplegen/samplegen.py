@@ -660,7 +660,6 @@ class Validator:
 
 
 def generate_sample(sample,
-                    id_is_unique: bool,
                     env: jinja2.environment.Environment,
                     api_schema: api.API) -> str:
     """Generate a standalone, runnable sample.
@@ -669,9 +668,6 @@ def generate_sample(sample,
 
     Args:
         sample (Any): A definition for a single sample generated from parsed yaml.
-        id_is_unique (bool): Indicates whether the sample's id is unique.
-                             If it is not, sample["id"] is modified
-                             as an output parameter.
         env (jinja2.environment.Environment): The jinja environment used to generate
                                               the filled template for the sample.
         api_schema (api.API): The schema that defines the API to which the sample belongs.
@@ -695,8 +691,6 @@ def generate_sample(sample,
         )
 
     calling_form = types.CallingForm.method_default(rpc)
-    sample["id"] = (sample["id"] if id_is_unique else
-                    f'{sample["id"]}_{calling_form}')
 
     v = Validator(rpc)
     sample["request"] = v.validate_and_transform_request(calling_form,
@@ -705,7 +699,6 @@ def generate_sample(sample,
 
     sample["package_name"] = api_schema.naming.warehouse_package_name
 
-    # The onus to change the sample id based on the uniqueness
     return sample_template.render(
         file_header=FILE_HEADER,
         sample=sample,

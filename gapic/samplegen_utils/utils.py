@@ -33,10 +33,22 @@ def is_valid_sample_cfg(
         min_version: Tuple[int, int, int] = MIN_SCHEMA_VERSION,
         config_type: str = VALID_CONFIG_TYPE,
 ) -> bool:
+    """Takes a 
+
+    Arguments:
+        doc (Any): The yaml document to be assessed
+        min_version (Tuple[int, int, int]): (optional) The minimum valid version for
+        the sample config. Uses semantic version (major, minor, bugfix).
+        config_type (str): (optional) The valid type of the document.
+
+    Returns:
+        bool: True if doc is a valid sample config document.
+
+    """
     def parse_version(version_str: str) -> Tuple[int, ...]:
         return tuple(int(tok) for tok in version_str.split("."))
 
-    version_token = "config_schema_version"
+    version_token = "schema_version"
     return bool(
         # Yaml may return a dict, a list, or a str
         isinstance(doc, dict)

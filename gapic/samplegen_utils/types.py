@@ -76,10 +76,6 @@ class InvalidEnumVariant(SampleError):
     pass
 
 
-class InvalidConfigFile(SampleError):
-    pass
-
-
 class CallingForm(Enum):
     Request = auto()
     RequestPaged = auto()

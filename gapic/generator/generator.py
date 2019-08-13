@@ -12,13 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gapic.schema import api
-from gapic.samplegen_utils.utils import is_valid_sample_cfg
-from gapic.samplegen import samplegen
-from gapic.generator import options
-from gapic.generator import formatter
-from gapic import utils
-from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 import jinja2
 import yaml
 import re
@@ -26,6 +19,14 @@ import os
 from typing import (Any, DefaultDict, Dict, Mapping, List)
 from hashlib import sha256
 from collections import (OrderedDict, defaultdict)
+from gapic.samplegen_utils.utils import is_valid_sample_cfg
+from gapic.samplegen_utils.types import InvalidConfig
+from gapic.samplegen import samplegen
+from gapic.generator import options
+from gapic.generator import formatter
+from gapic.schema import api
+from gapic import utils
+from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 
 class Generator:
@@ -125,55 +126,53 @@ class Generator:
             for spec in spec_generator:
                 # Every sample requires an ID, preferably provided by the
                 # samplegen config author.
-                # If no id is provided, fall back to the region tag.
-                # If there's no region tag, generate a unique id.
+                # If no ID is provided, fall back to the region tag.
+                # If there's no region tag, generate a unique ID.
                 #
-                # Ideally the sample author should pick a descriptive, unique id,
+                # Ideally the sample author should pick a descriptive, unique ID,
                 # but this may be impractical and can be error-prone.
-                key = (spec.get("id")
-                       or spec.get("region_tag")
-                       or sha256(str(spec).encode('utf8')).hexdigest()[:8])
+                sample_id = (spec.get("id")
+                             or spec.get("region_tag")
+                             or sha256(str(spec).encode('utf8')).hexdigest()[:8])
 
-                spec["id"] = key
-                id_to_samples[key].append(spec)
+                spec["id"] = sample_id
+                id_to_samples[sample_id].append(spec)
 
         # Interpolate the special variables in the sample_out_dir template.
         out_dir = "samples"
         fpath_to_spec_and_rendered = {}
         for samples in id_to_samples.values():
-            for sample in samples:
-                # If the ID is not unique, the sample generation code
-                # needs to know so that the resulting file name includes
-                # the sample's calling form.
-                # Note: this currently involves generate_sample manipulating
-                # sample["id"] if the ID is not unique.
+            for spec in samples:
                 id_is_unique = len(samples) == 1
-                rendered_sample = samplegen.generate_sample(
-                    sample,
-                    id_is_unique,
-                    self._env,
-                    api_schema
-                )
-                sample_fpath = sample["id"] + ".py"
-                fpath_to_spec_and_rendered[os.path.join(
-                    out_dir, sample_fpath)] = (sample, rendered_sample)
+                # The ID is used to generate the file name and by sample tester
+                # to link filenames to invoked samples. It must be globally unique.
+                if not id_is_unique:
+                    spec_hash = sha256(str(spec).encode('utf8')).hexdigest()[:8]
+                    spec["id"] += f"_{spec_hash}"
 
-        manifest_fname, manifest_doc = samplegen.generate_manifest(
-            ((sample_fname, sample_spec)
-             for sample_fname, (sample_spec, _) in fpath_to_spec_and_rendered.items()),
-            out_dir,
-            api_schema)
+                sample = samplegen.generate_sample(spec, self._env, api_schema)
+
+                fpath = spec["id"] + ".py"
+                fpath_to_spec_and_rendered[os.path.join(out_dir, fpath)] = (spec,
+                                                                            sample)
 
         output_files = {
-            sample_fname: CodeGeneratorResponse.File(
-                content=formatter.fix_whitespace(rendered_sample),
-                name=sample_fname
+            fname: CodeGeneratorResponse.File(
+                content=formatter.fix_whitespace(sample),
+                name=fname
             )
-            for sample_fname, (_, rendered_sample) in fpath_to_spec_and_rendered.items()
+            for fname, (_, sample) in fpath_to_spec_and_rendered.items()
         }
 
         # Only generate a manifest if we generated samples.
         if output_files:
+            manifest_fname, manifest_doc = samplegen.generate_manifest(
+                ((fname, spec)
+                 for fname, (spec, _) in fpath_to_spec_and_rendered.items()),
+                out_dir,
+                api_schema
+            )
+
             manifest_fname = os.path.join(out_dir, manifest_fname)
             output_files[manifest_fname] = CodeGeneratorResponse.File(
                 content=manifest_doc.render(),

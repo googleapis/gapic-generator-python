@@ -41,7 +41,7 @@ env.filters['snake_case'] = utils.to_snake_case
 env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
 
-def test_generate_sample_basic(id_is_unique=True):
+def test_generate_sample_basic():
     # Note: the sample integration tests are needfully large
     # and difficult to eyeball parse. They are intended to be integration tests
     # that catch errors in behavior that is emergent from combining smaller features
@@ -72,10 +72,9 @@ def test_generate_sample_basic(id_is_unique=True):
               "response": [{"print": ["Mollusc is a %s", "$resp.taxonomy"]}]}
 
     sample_str = samplegen.generate_sample(
-        sample, id_is_unique, env, schema)
+        sample, env, schema)
 
-    sample_id = ("mollusc_classify_sync" if id_is_unique else
-                 "mollusc_classify_sync_request")
+    sample_id = ("mollusc_classify_sync")
     expected_str = '''# TODO: add a copyright
 # TODO: add a license
 #
@@ -123,16 +122,12 @@ if __name__ == "__main__":
     assert sample_str == expected_str
 
 
-def test_generate_sample_basic_non_unique_id():
-    test_generate_sample_basic(id_is_unique=False)
-
-
 def test_generate_sample_service_not_found():
     schema = DummyApiSchema({}, DummyNaming("pkg_name"))
     sample = {"service": "Mollusc"}
 
     with pytest.raises(types.UnknownService):
-        samplegen.generate_sample(sample, True, env, schema)
+        samplegen.generate_sample(sample, env, schema)
 
 
 def test_generate_sample_rpc_not_found():
@@ -141,7 +136,7 @@ def test_generate_sample_rpc_not_found():
     sample = {"service": "Mollusc", "rpc": "Classify"}
 
     with pytest.raises(types.RpcMethodNotFound):
-        list(samplegen.generate_sample(sample, True, env, schema))
+        list(samplegen.generate_sample(sample, env, schema))
 
 
 def test_generate_sample_config_fpaths(fs):
@@ -152,7 +147,7 @@ def test_generate_sample_config_fpaths(fs):
             '''
             ---
             type: com.google.api.codegen.SampleConfigProto
-            config_schema_version: 1.2.0
+            schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService
             '''
@@ -168,7 +163,7 @@ def test_generate_sample_config_fpaths_directories(fs):
         '''
         ---
         type: com.google.api.codegen.SampleConfigProto
-        config_schema_version: 1.2.0
+        schema_version: 1.2.0
         samples:
         - service: google.cloud.language.v1.LanguageService
         '''
@@ -232,7 +227,7 @@ def test_generate_sample_config_fpaths_bad_contents(
             '''
             ---
             type: com.google.api.codegen.SampleConfigPronto
-            config_schema_version: 1.2.0
+            schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService
             '''
@@ -252,7 +247,7 @@ def test_generate_sample_config_fpaths_bad_contents_old(fs):
             '''
             ---
             type: com.google.api.codegen.SampleConfigProto
-            config_schema_version: 1.1.0
+            schema_version: 1.1.0
             samples:
             - service: google.cloud.language.v1.LanguageService
             '''
@@ -267,7 +262,7 @@ def test_generate_sample_config_fpaths_bad_contents_no_samples(fs):
             '''
             ---
             type: com.google.api.codegen.SampleConfigProto
-            config_schema_version: 1.2.0
+            schema_version: 1.2.0
             '''
         )
     )
@@ -277,18 +272,18 @@ def test_generate_sample_config_partial_config(fs):
     expected_path = 'sample.yaml'
     fs.create_file(
         expected_path,
+        # Note the typo: SampleConfigPront
         contents=dedent(
             '''
             ---
-            # Note: this one is NOT a valid config
             type: com.google.api.codegen.SampleConfigPronto
-            config_schema_version: 1.2.0
+            schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService
             ---
             # Note: this one IS a valid config
             type: com.google.api.codegen.SampleConfigProto
-            config_schema_version: 1.2.0
+            schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService
             '''
@@ -306,18 +301,19 @@ def test_generate_sample_config_partial_config_directory(fs):
     fpath = path.join(directory, 'sample.yaml')
     fs.create_file(
         fpath,
+        # Note: this one is NOT a valid config
         contents=dedent(
             '''
             ---
             # Note: this one is NOT a valid config
             type: com.google.api.codegen.SampleConfigPronto
-            config_schema_version: 1.2.0
+            schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService
             ---
             # Note: this one IS a valid config
             type: com.google.api.codegen.SampleConfigProto
-            config_schema_version: 1.2.0
+            schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService
             '''
