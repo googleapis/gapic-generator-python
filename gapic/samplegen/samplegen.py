@@ -748,6 +748,9 @@ def generate_manifest(
             ),
             yaml.Collection(
                 name="samples",
+                # Mypy doesn't correctly intuit the type of the
+                # "region_tag" conditional expression.
+                # type: ignore
                 elements=[
                     [
                         yaml.Alias("python"),
@@ -755,9 +758,6 @@ def generate_manifest(
                         yaml.KeyVal("path",
                                     "'{base_path}/%s'" % os.path.relpath(fpath,
                                                                          base_path)),
-                        # Mypy doesn't correctly intuit the
-                        # type of the conditional assignment.
-                        # type: ignore
                         (yaml.KeyVal("region_tag", sample["region_tag"])
                          if "region_tag" in sample else
                          yaml.Null),
