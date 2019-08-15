@@ -748,18 +748,19 @@ def generate_manifest(
             ),
             yaml.Collection(
                 name="samples",
-                # Mypy doesn't correctly intuit the type of the
-                # "region_tag" conditional expression.
                 elements=[
                     [
+                        # Mypy doesn't correctly intuit the type of the
+                        # "region_tag" conditional expression.
+                        # type: ignore
                         yaml.Alias("python"),
                         yaml.KeyVal("sample", sample["id"]),
                         yaml.KeyVal("path",
                                     "'{base_path}/%s'" % os.path.relpath(fpath,
                                                                          base_path)),
-                        (yaml.KeyVal("region_tag", sample["region_tag"])  # type: ignore
-                         if "region_tag" in sample else                   # type: ignore
-                         yaml.Null),                                      # type: ignore
+                        (yaml.KeyVal("region_tag", sample["region_tag"])
+                         if "region_tag" in sample else
+                         yaml.Null),
 
                     ]
                     for fpath, sample in fpaths_and_samples
