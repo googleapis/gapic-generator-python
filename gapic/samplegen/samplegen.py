@@ -749,10 +749,9 @@ def generate_manifest(
             yaml.Collection(
                 name="samples",
                 elements=[
-                    [
+                    [   # type: ignore
                         # Mypy doesn't correctly intuit the type of the
                         # "region_tag" conditional expression.
-                        # type: ignore
                         yaml.Alias("python"),
                         yaml.KeyVal("sample", sample["id"]),
                         yaml.KeyVal("path",
