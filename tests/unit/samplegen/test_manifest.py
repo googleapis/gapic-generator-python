@@ -16,7 +16,7 @@ import yaml
 from textwrap import dedent
 
 import gapic.samplegen_utils.yaml as gapic_yaml
-import gapic.samplegen.samplegen as samplegen
+import gapic.samplegen.manifest as manifest
 from common_types import DummyApiSchema, DummyNaming
 
 
@@ -27,7 +27,7 @@ def test_generate_manifest():
                                   "region_tag": "giant_clam_sample"},
     }
 
-    fname, info = samplegen.generate_manifest(
+    fname, info = manifest.generate_manifest(
         fpath_to_dummy_sample.items(),
         "samples/",
         DummyApiSchema(naming=DummyNaming(name="Mollusc", version="v1")),
@@ -50,7 +50,7 @@ def test_generate_manifest():
                            gapic_yaml.KeyVal(
                                "bin", "python3"),
                            gapic_yaml.KeyVal(
-                               "base_path", "samples/"),
+                               "base_path", "samples"),
                            gapic_yaml.KeyVal(
                                "invocation", "'{bin} {path} @args'"),
                        ]),
@@ -87,7 +87,7 @@ def test_generate_manifest():
         python: &python
           environment: python
           bin: python3
-          base_path: samples/
+          base_path: samples
           invocation: '{bin} {path} @args'
         samples:
         - <<: *python
@@ -108,14 +108,14 @@ def test_generate_manifest():
         "python": {
             "environment": "python",
             "bin": "python3",
-            "base_path": "samples/",
+            "base_path": "samples",
             "invocation": "{bin} {path} @args",
         },
         "samples": [
             {
                 "environment": "python",
                 "bin": "python3",
-                "base_path": "samples/",
+                "base_path": "samples",
                 "invocation": "{bin} {path} @args",
                 "sample": "squid_sample",
                 "path": "{base_path}/squid_fpath.py",
@@ -123,7 +123,7 @@ def test_generate_manifest():
             {
                 "environment": "python",
                 "bin": "python3",
-                "base_path": "samples/",
+                "base_path": "samples",
                 "invocation": "{bin} {path} @args",
                 "sample": "clam_sample",
                 "path": "{base_path}/clam_fpath.py",
