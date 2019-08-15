@@ -62,7 +62,11 @@ def generate_manifest(
     # Use iter([]) instead of a generator expression due to a bug in pytest.
     # See https://github.com/pytest-dev/pytest-cov/issues/310 for details.
     base_path = next(
-        iter([e.val for e in environment.elements if e.key == BASE_PATH_KEY]),
+        iter(
+            [e.val  # type: ignore
+             for e in environment.elements
+             if e.key == BASE_PATH_KEY]  # type: ignore
+        ),
         DEFAULT_SAMPLE_DIR
     )
     doc = yaml.Doc(
@@ -76,7 +80,7 @@ def generate_manifest(
                     [  # type: ignore
                         # Mypy doesn't correctly intuit the type of the
                         # "region_tag" conditional expression.
-                        yaml.Alias(environment.anchor_name),
+                        yaml.Alias(environment.anchor_name or ""),
                         yaml.KeyVal("sample", sample["id"]),
                         yaml.KeyVal(
                             "path",
