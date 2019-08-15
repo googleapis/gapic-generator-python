@@ -272,7 +272,7 @@ def test_generate_sample_config_partial_config(fs):
     expected_path = 'sample.yaml'
     fs.create_file(
         expected_path,
-        # Note the typo: SampleConfigPront
+        # Note the typo: SampleConfigPronto
         contents=dedent(
             '''
             ---

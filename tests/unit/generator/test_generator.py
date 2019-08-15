@@ -338,7 +338,8 @@ def test_samplegen_config_to_output_files(mock_gmtime, mock_generate_sample, fs)
             ),
             CodeGeneratorResponse.File(
                 name="samples/Mollusc.v6.python.21120601.131313.manifest.yaml",
-                content=dedent("""                ---
+                content=dedent("""\
+                ---
                 type: manifest/samples
                 schema_version: 3
                 python: &python
