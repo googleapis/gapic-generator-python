@@ -84,7 +84,8 @@ def generate_manifest(
                         yaml.KeyVal("sample", sample["id"]),
                         yaml.KeyVal(
                             "path",
-                            "'{base_path}/%s'" % os.path.relpath(fpath, base_path)
+                            "'{base_path}/%s'" % os.path.relpath(
+                                fpath, base_path)
                         ),
                         (yaml.KeyVal("region_tag", sample["region_tag"])
                          if "region_tag" in sample else

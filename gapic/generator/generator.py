@@ -19,7 +19,8 @@ import os
 from typing import (Any, DefaultDict, Dict, Mapping, List)
 from hashlib import sha256
 from collections import (OrderedDict, defaultdict)
-from gapic.samplegen_utils.utils import (coerce_response_name, is_valid_sample_cfg)
+from gapic.samplegen_utils.utils import (
+    coerce_response_name, is_valid_sample_cfg)
 from gapic.samplegen_utils.types import InvalidConfig
 from gapic.samplegen import (manifest, samplegen)
 from gapic.generator import options
@@ -76,7 +77,8 @@ class Generator:
         output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
 
         sample_templates, client_templates = utils.partition(
-            lambda fname: os.path.basename(fname) == samplegen.DEFAULT_TEMPLATE_NAME,
+            lambda fname: os.path.basename(
+                fname) == samplegen.DEFAULT_TEMPLATE_NAME,
             self._env.loader.list_templates())
 
         # Iterate over each template and add the appropriate output files
