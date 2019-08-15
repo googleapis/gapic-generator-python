@@ -729,10 +729,6 @@ def generate_manifest(
         Tuple[str, yaml.Doc]: The filename of the manifest and the manifest data as a dictionary.
 
     """
-    def region_tag_helper(sample) -> yaml.Element:
-        return (yaml.KeyVal("region_tag", sample["region_tag"])
-                if "region_tag" in sample
-                else yaml.Null)
 
     doc = yaml.Doc(
         [
@@ -759,7 +755,12 @@ def generate_manifest(
                         yaml.KeyVal("path",
                                     "'{base_path}/%s'" % os.path.relpath(fpath,
                                                                          base_path)),
-                        region_tag_helper(sample),
+                        # Mypy doesn't correctly intuit the
+                        # type of the conditional assignment.
+                        # type: ignore
+                        (yaml.KeyVal("region_tag", sample["region_tag"])
+                         if "region_tag" in sample else
+                         yaml.Null),
                     ]
                     for fpath, sample in fpaths_and_samples
                 ],
