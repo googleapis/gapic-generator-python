@@ -2,7 +2,7 @@
 
 {% block content %}
 from collections import OrderedDict
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import exceptions        # type: ignore
@@ -57,14 +57,14 @@ class {{ service.name }}(metaclass={{ service.name }}Meta):
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
-            transport: Union[str, {{ service.name }}Transport] = None,
+            transport: Union[str, {{ service.name }}Transport] = None
             ) -> None:
         """Instantiate the {{ (service.name|snake_case).replace('_', ' ') }}.
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
                 {{- ' ' }}The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credential]): The
+            credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
@@ -108,7 +108,7 @@ class {{ service.name }}(metaclass={{ service.name }}Meta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             {% endfor -%}
-            retry (~.retries.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -117,7 +117,7 @@ class {{ service.name }}(metaclass={{ service.name }}Meta):
 
         Returns:
             {{ method.client_output.ident.sphinx }}:
-                {{ method.client_output.meta.doc|wrap(width=72, indent=16) }}
+                {{ method.client_output.meta.doc|rst(width=72, indent=16) }}
         {%- endif %}
         """
         {% if method.flattened_fields -%}

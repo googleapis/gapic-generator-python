@@ -36,6 +36,12 @@ class Element(ABC):
 
 
 @dataclasses.dataclass(frozen=True)
+class Null(Element):
+    def render(self, spaces: int = 0) -> str:
+        return ""
+
+
+@dataclasses.dataclass(frozen=True)
 class KeyVal(Element):
     """A single key/value entry."""
     key: str
@@ -46,7 +52,7 @@ class KeyVal(Element):
         return f"{whitespace}{self.key}: {self.val}"
 
 
-@dataclasses.dataclass()
+@dataclasses.dataclass(frozen=True)
 class Collection(Element):
     """An ordered list of subobjects."""
     name: str
@@ -62,20 +68,21 @@ class Collection(Element):
         # -  cephalopod: squid
         #   bivalve: clam
         #   gastropod: whelk
-        whitespace = " " * spaces
         return f"{self.name}:\n" + "\n".join(
             indent(
                 "-"
-                + "\n".join(e.render(spaces=spaces + self.INDENT_SPACES) for e in l)[
-                    1:
-                ],
+                + "\n".join(
+                    r
+                    for r in (e.render(spaces + self.INDENT_SPACES) for e in l)
+                    if r
+                )[1:],
                 " " * (spaces),
             )
             for l in self.elements
         )
 
 
-@dataclasses.dataclass()
+@dataclasses.dataclass(frozen=True)
 class Alias(Element):
     """An anchor to a map."""
     target: str
@@ -85,7 +92,7 @@ class Alias(Element):
         return f"{whitespace}<<: *{self.target}"
 
 
-@dataclasses.dataclass()
+@dataclasses.dataclass(frozen=True)
 class Map(Element):
     """A named collection with a list of attributes."""
     name: str
@@ -99,3 +106,24 @@ class Map(Element):
         )
         whitespace = " " * spaces
         return f"{whitespace}{self.name}:{maybe_anchor}\n{element_str}"
+
+    def get(self, key, default=None):
+        # Use iter([]) instead of a generator expression due to a bug in pytest.
+        # See https://github.com/pytest-dev/pytest-cov/issues/310 for details.
+        return next(
+            iter(
+                [e.val  # type: ignore
+                 for e in self.elements
+                 if e.key == key]  # type: ignore
+            ),
+            default
+        )
+
+
+@dataclasses.dataclass(frozen=True)
+class Doc(Element):
+    """A yaml document"""
+    elements: List[Element]
+
+    def render(self):
+        return "---\n{}\n".format("\n".join(e.render() for e in self.elements))

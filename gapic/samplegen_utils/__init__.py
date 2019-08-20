@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gapic.samplegen import samplegen
-from gapic.samplegen import manifest
+import gapic.samplegen_utils.types
+import gapic.samplegen_utils.utils
+import gapic.samplegen_utils.yaml
 
 __all__ = (
-    'manifest',
-    'samplegen',
+    'types',
+    'utils',
+    'yaml',
 )
