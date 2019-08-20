@@ -145,10 +145,14 @@ class Validator:
         )
 
     @staticmethod
-    def preprocess_sample(api_schema, sample):
+    def preprocess_sample(sample, api_schema):
+        """Modify a sample to set default or missing fields.
+
+        Args:
+           sample (Any): A definition for a single sample generated from parsed yaml.
+           api_schema (api.API): The schema that defines the API to which the sample belongs.
+        """
         sample["package_name"] = api_schema.naming.warehouse_package_name
-        # If the sample author didn't define a response handling section,
-        # just print the response returned by the method call.
         sample.setdefault("response", [{"print": ["%s", "$resp"]}])
 
     def var_field(self, var_name: str) -> Optional[wrappers.Field]:
@@ -689,7 +693,7 @@ def generate_sample(sample,
     v = Validator(rpc)
     # Tweak some small aspects of the sample to set sane defaults for optional
     # fields, add fields that are required for the template, and so forth.
-    v.preprocess_sample(api_schema, sample)
+    v.preprocess_sample(sample, api_schema)
     sample["request"] = v.validate_and_transform_request(calling_form,
                                                          sample["request"])
     v.validate_response(sample["response"])

@@ -88,7 +88,7 @@ def test_preprocess_sample():
         all_protos={},
     )
 
-    samplegen.Validator.preprocess_sample(api_schema, sample)
+    samplegen.Validator.preprocess_sample(sample, api_schema)
 
     response = sample.get("response")
     assert response == [{"print": ["%s", "$resp"]}]

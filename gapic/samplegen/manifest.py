@@ -16,12 +16,17 @@ import os
 import time
 from typing import Tuple
 
-from gapic.samplegen_utils import yaml
-
+from gapic.samplegen_utils import (types, yaml)
 
 BASE_PATH_KEY = "base_path"
 DEFAULT_SAMPLE_DIR = "samples"
 
+# The default environment for executing python samples.
+# Custom environments must adhere to the following pattern:
+# they must be a yaml.Map with a defined anchor_name field,
+# and 'environment', 'base_path', and 'invocation' keys must be present.
+# The 'invocation' key must map to an interpolable commandline
+# that will invoke the given sample.
 PYTHON3_ENVIRONMENT = yaml.Map(
     name="python",
     anchor_name="python",
@@ -34,9 +39,8 @@ PYTHON3_ENVIRONMENT = yaml.Map(
 )
 
 
-def generate_manifest(
+def generate(
         fpaths_and_samples,
-        base_path: str,
         api_schema,
         *,
         environment: yaml.Map = PYTHON3_ENVIRONMENT,
@@ -47,7 +51,6 @@ def generate_manifest(
     Args:
         fpaths_and_samples (Iterable[Tuple[str, Mapping[str, Any]]]):
                          The file paths and samples to be listed in the manifest
-        base_path (str): The base directory where the samples are generated.
         api_schema (~.api.API): An API schema object.
         environment (yaml.Map): Optional custom sample execution environment.
                                 Set this if the samples are being generated for
@@ -58,17 +61,21 @@ def generate_manifest(
     Returns:
         Tuple[str, yaml.Doc]: The filename of the manifest and the manifest data as a dictionary.
 
+    Raises:
+        types.InvalidSampleFpath: If any of the paths in fpaths_and_samples do not
+                                  begin with the base_path from the environment.
+
     """
-    # Use iter([]) instead of a generator expression due to a bug in pytest.
-    # See https://github.com/pytest-dev/pytest-cov/issues/310 for details.
-    base_path = next(
-        iter(
-            [e.val  # type: ignore
-             for e in environment.elements
-             if e.key == BASE_PATH_KEY]  # type: ignore
-        ),
-        DEFAULT_SAMPLE_DIR
-    )
+    base_path = environment.get(BASE_PATH_KEY, DEFAULT_SAMPLE_DIR)
+
+    def transform_path(fpath):
+        fpath = os.path.normpath(fpath)
+        if not fpath.startswith(base_path):
+            raise types.InvalidSampleFpath(
+                f"Sample fpath does not start with '{base_path}': {fpath}")
+
+        return "'{base_path}/%s'" % os.path.relpath(fpath, base_path)
+
     doc = yaml.Doc(
         [
             yaml.KeyVal("type", "manifest/samples"),
@@ -83,9 +90,7 @@ def generate_manifest(
                         yaml.Alias(environment.anchor_name or ""),
                         yaml.KeyVal("sample", sample["id"]),
                         yaml.KeyVal(
-                            "path",
-                            "'{base_path}/%s'" % os.path.relpath(
-                                fpath, base_path)
+                            "path", transform_path(fpath)
                         ),
                         (yaml.KeyVal("region_tag", sample["region_tag"])
                          if "region_tag" in sample else

@@ -140,7 +140,6 @@ class Generator:
                 spec["id"] = sample_id
                 id_to_samples[sample_id].append(spec)
 
-        # Interpolate the special variables in the sample_out_dir template.
         out_dir = "samples"
         fpath_to_spec_and_rendered = {}
         for samples in id_to_samples.values():
@@ -169,10 +168,9 @@ class Generator:
 
         # Only generate a manifest if we generated samples.
         if output_files:
-            manifest_fname, manifest_doc = manifest.generate_manifest(
+            manifest_fname, manifest_doc = manifest.generate(
                 ((fname, spec)
                  for fname, (spec, _) in fpath_to_spec_and_rendered.items()),
-                out_dir,
                 api_schema
             )
 
