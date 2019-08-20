@@ -137,13 +137,14 @@ is outside the scope of this documentation.
   # Multiple sample paths or directories can be passed simultaneously by duplicating
   # the 'samples' option.
   # If no 'samples' option is passed, the generator does not generate a manifest.
-  $ docker run\
+  $ docker run \
     --mount type=bind,source=$(pwd)/path/to/proto/dir,destination=/in/path/to/proto,readonly \
     --mount type=bind,source=$(pwd)/dest/,destination=/out/ \
     --rm \
     --user $UID \
     --samples=path/to/sample/config.yaml \
-    --samples=path/to/sample/dir/
+    --samples=path/to/sample/dir/ \
+    gcr.io/gapic-images/gapic-generator-python
 
 Samples and manifests are always generated in a 'samples' subdir of the dest dir.
 
