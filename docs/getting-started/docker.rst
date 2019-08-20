@@ -120,4 +120,32 @@ Perform the actual code generation step with ``docker run``:
     beneath this for compilation to succeed.
 
 
+Generating Samples
+~~~~~~~~~~~~~~~~~~
+
+In addition to generating client libraries, the generator can also create standalone
+executable code samples.
+The user can specify individual sample config files or can pass paths to directories
+that contain sample configs. Directories are searched recursively, and any file that
+is not a sample config is ignored.
+
+A full description of the sample config, generated manifest, and generated samples
+is outside the scope of this documentation.
+
+.. code-block:: shell
+
+  # Multiple sample paths or directories can be passed simultaneously by duplicating
+  # the 'samples' option.
+  # If no 'samples' option is passed, the generator does not generate a manifest.
+  $ docker run\
+    --mount type=bind,source=$(pwd)/path/to/proto/dir,destination=/in/path/to/proto,readonly \
+    --mount type=bind,source=$(pwd)/dest/,destination=/out/ \
+    --rm \
+    --user $UID \
+    --samples=path/to/sample/config.yaml \
+    --samples=path/to/sample/dir/
+
+Samples and manifests are always generated in a 'samples' subdir of the dest dir.
+
+
 .. include:: _verifying.rst

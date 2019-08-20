@@ -153,4 +153,30 @@ This plugin is invoked under the hood via. the ``--python_gapic_out`` switch.
   where it expects to find protos, and *order matters*. In this case,
   the common protos must come first, and then the path to the API being built.
 
+
+Generating Samples
+~~~~~~~~~~~~~~~~~~
+
+In addition to generating client libraries, the generator can also create standalone
+executable code samples.
+The user can specify individual sample config files or can pass paths to directories
+that contain sample configs. Directories are searched recursively, and any file that
+is not a sample config is ignored.
+
+A full description of the sample config, generated manifest, and generated samples
+is outside the scope of this documentation.
+
+.. code-block:: shell
+
+  # Multiple sample paths or directories can be passed simultaneously by duplicating
+  # the 'samples' option. Options are comma delimited.
+  # If no 'samples' option is passed, the generator does not generate a manifest.
+  $ protoc path/to/api/protos/*.proto \
+                --proto_path=../api-common-protos/ \
+                --proto_path=. \
+                --python_gapic_opt="samples=sample_config.yaml,samples=sample_dir/" \
+                --python_gapic_out=/dest/
+
+Samples and manifests are always generated in a 'samples' subdir of the dest dir.
+
 .. include:: _verifying.rst
