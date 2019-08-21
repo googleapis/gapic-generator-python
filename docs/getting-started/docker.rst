@@ -142,9 +142,9 @@ is outside the scope of this documentation.
     --mount type=bind,source=$(pwd)/dest/,destination=/out/ \
     --rm \
     --user $UID \
+    gcr.io/gapic-images/gapic-generator-python \
     --samples path/to/sample/config.yaml \
-    --samples path/to/sample/dir/ \
-    gcr.io/gapic-images/gapic-generator-python
+    --samples path/to/sample/dir/
 
 Samples and manifests are always generated in a 'samples' subdir of the dest dir.
 
