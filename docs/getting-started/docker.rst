@@ -119,18 +119,7 @@ Perform the actual code generation step with ``docker run``:
     structure present in the imports of the proto files must be preserved
     beneath this for compilation to succeed.
 
-
-Generating Samples
-~~~~~~~~~~~~~~~~~~
-
-In addition to generating client libraries, the generator can also create standalone
-executable code samples.
-The user can specify individual sample config files or can pass paths to directories
-that contain sample configs. Directories are searched recursively, and any file that
-is not a sample config is ignored.
-
-A full description of the sample config, generated manifest, and generated samples
-is outside the scope of this documentation.
+.. include:: _samplegen.rst
 
 .. code-block:: shell
 
@@ -145,8 +134,6 @@ is outside the scope of this documentation.
     gcr.io/gapic-images/gapic-generator-python \
     --samples path/to/sample/config.yaml \
     --samples path/to/sample/dir/
-
-Samples and manifests are always generated in a 'samples' subdir of the dest dir.
 
 
 .. include:: _verifying.rst
