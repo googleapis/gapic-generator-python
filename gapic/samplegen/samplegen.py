@@ -481,8 +481,10 @@ class Validator:
         num_prints = fmt_str.count("%s")
         if num_prints != len(body) - 1:
             raise types.MismatchedFormatSpecifier(
-                "Expected {} expresssions in format string but received {}".format(
-                    num_prints, len(body) - 1
+                "Expected {} expresssions in format string '{}' but found {}".format(
+                    num_prints,
+                    fmt_str,
+                    len(body) - 1
                 )
             )
 
@@ -502,7 +504,7 @@ class Validator:
         """
         # Note: really checking for safety would be equivalent to
         #       re-implementing the python interpreter.
-        m = re.match(r"^([a-zA-Z]\w*)=([^=]+)$", body)
+        m = re.match(r"^([a-zA-Z_]\w*) *= *([^=]+)$", body)
         if not m:
             raise types.BadAssignment(f"Bad assignment statement: {body}")
 

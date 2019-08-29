@@ -32,7 +32,8 @@ env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(
         searchpath=path.realpath(path.join(path.dirname(__file__),
                                            "..", "..", "..",
-                                           "gapic", "templates", "examples"))),
+                                           "gapic", "templates")
+                                 )),
     undefined=jinja2.StrictUndefined,
     extensions=["jinja2.ext.do"],
     trim_blocks=True, lstrip_blocks=True
@@ -75,7 +76,7 @@ def test_generate_sample_basic():
         sample,
         env,
         schema,
-        env.get_template('sample.py.j2')
+        env.get_template('examples/sample.py.j2')
     )
 
     sample_id = ("mollusc_classify_sync")
@@ -135,7 +136,7 @@ def test_generate_sample_service_not_found():
             sample,
             env,
             schema,
-            env.get_template('sample.py.j2'),
+            env.get_template('examples/sample.py.j2'),
         )
 
 
@@ -149,7 +150,7 @@ def test_generate_sample_rpc_not_found():
             sample,
             env,
             schema,
-            env.get_template('sample.py.j2')),
+            env.get_template('examples/sample.py.j2')),
         )
 
 
