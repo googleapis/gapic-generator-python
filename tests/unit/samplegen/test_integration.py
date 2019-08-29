@@ -72,7 +72,11 @@ def test_generate_sample_basic():
               "response": [{"print": ["Mollusc is a %s", "$resp.taxonomy"]}]}
 
     sample_str = samplegen.generate_sample(
-        sample, env, schema)
+        sample,
+        env,
+        schema,
+        env.get_template('sample.py.j2')
+    )
 
     sample_id = ("mollusc_classify_sync")
     expected_str = '''# TODO: add a copyright
@@ -127,7 +131,12 @@ def test_generate_sample_service_not_found():
     sample = {"service": "Mollusc"}
 
     with pytest.raises(types.UnknownService):
-        samplegen.generate_sample(sample, env, schema)
+        samplegen.generate_sample(
+            sample,
+            env,
+            schema,
+            env.get_template('sample.py.j2'),
+        )
 
 
 def test_generate_sample_rpc_not_found():
@@ -136,7 +145,12 @@ def test_generate_sample_rpc_not_found():
     sample = {"service": "Mollusc", "rpc": "Classify"}
 
     with pytest.raises(types.RpcMethodNotFound):
-        list(samplegen.generate_sample(sample, env, schema))
+        list(samplegen.generate_sample(
+            sample,
+            env,
+            schema,
+            env.get_template('sample.py.j2')),
+        )
 
 
 def test_generate_sample_config_fpaths(fs):

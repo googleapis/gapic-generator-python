@@ -654,10 +654,12 @@ class Validator:
     }
 
 
-def generate_sample(sample,
-                    env: jinja2.environment.Environment,
-                    api_schema: api.API,
-                    template_name: str = DEFAULT_TEMPLATE_NAME) -> str:
+def generate_sample(
+        sample,
+        env: jinja2.environment.Environment,
+        api_schema: api.API,
+        sample_template: jinja2.Template
+) -> str:
     """Generate a standalone, runnable sample.
 
     Rendering and writing the rendered output is left for the caller.
@@ -667,14 +669,11 @@ def generate_sample(sample,
         env (jinja2.environment.Environment): The jinja environment used to generate
                                               the filled template for the sample.
         api_schema (api.API): The schema that defines the API to which the sample belongs.
-        template_name (str): An optional override for the name of the template
-                             used to generate the sample.
+        sample_template (jinja2.Template): The template representing a generic sample.
 
     Returns:
         str: The rendered sample.
     """
-    sample_template = env.get_template(template_name)
-
     service_name = sample["service"]
     service = api_schema.services.get(service_name)
     if not service:
