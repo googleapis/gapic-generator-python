@@ -49,7 +49,8 @@ def test_generate_sample_basic():
     # that catch errors in behavior that is emergent from combining smaller features
     # or in features that are sufficiently small and trivial that it doesn't make sense
     # to have standalone tests.
-    api_naming = naming.Naming(name="MolluscClient", namespace=("molluscs", "v1"))
+    api_naming = naming.Naming(
+        name="MolluscClient", namespace=("molluscs", "v1"))
     service = wrappers.Service(
         service_pb=namedtuple('service_pb', ['name'])('MolluscClient'),
         methods={
