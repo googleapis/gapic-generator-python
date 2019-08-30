@@ -702,7 +702,12 @@ def generate_sample(
     return sample_template.render(
         file_header=FILE_HEADER,
         sample=sample,
-        imports=[],
+        imports=[
+            "from google import auth",
+            "from google.auth import credentials",
+        ],
         calling_form=calling_form,
         calling_form_enum=types.CallingForm,
+        api=api_schema,
+        service=service,
     )

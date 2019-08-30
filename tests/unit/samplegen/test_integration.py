@@ -20,6 +20,7 @@ import gapic.utils as utils
 
 from gapic.samplegen import samplegen
 from gapic.samplegen_utils import (types, utils as gapic_utils)
+from gapic.schema import (naming, wrappers)
 
 from common_types import (DummyMethod, DummyService,
                           DummyApiSchema, DummyNaming, message_factory, enum_factory)
@@ -48,19 +49,22 @@ def test_generate_sample_basic():
     # that catch errors in behavior that is emergent from combining smaller features
     # or in features that are sufficiently small and trivial that it doesn't make sense
     # to have standalone tests.
-    schema = DummyApiSchema(
-        {
-            "animalia.mollusca.v1.Mollusc": DummyService(
-                {
-                    "Classify": DummyMethod(
-                        input=message_factory(
-                            "mollusc.classify_request.video"),
-                        output=message_factory("$resp.taxonomy")
-                    )
-                }
+    api_naming = naming.Naming(name="MolluscClient", namespace=("molluscs", "v1"))
+    service = wrappers.Service(
+        service_pb=namedtuple('service_pb', ['name'])('MolluscClient'),
+        methods={
+            "Classify": DummyMethod(
+                input=message_factory(
+                    "mollusc.classify_request.video"),
+                output=message_factory("$resp.taxonomy")
             )
-        },
-        DummyNaming("molluscs-v1-mollusc"))
+        }
+    )
+
+    schema = DummyApiSchema(
+        services={"animalia.mollusca.v1.Mollusc": service},
+        naming=api_naming,
+    )
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",
               "rpc": "Classify",
@@ -86,15 +90,21 @@ def test_generate_sample_basic():
 # DO NOT EDIT! This is a generated sample ("request",  "%s")
 #
 # To install the latest published package dependency, execute the following:
-#   pip3 install molluscs-v1-mollusc
+#   pip3 install molluscs-v1-molluscclient
 
 
 # [START %s]
+from google import auth
+from google.auth import credentials
+from molluscs.v1.molluscclient.services.mollusc_client import MolluscClient
 
 def sample_classify(video):
     """Determine the full taxonomy of input mollusc"""
 
-    client = mollusca_v1.MolluscClient()
+    client = MolluscClient(
+        credentials=credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
 
     classify_request = {}
     # video = "path/to/mollusc/video.mkv"
