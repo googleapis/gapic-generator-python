@@ -22,8 +22,8 @@ from gapic.samplegen import samplegen
 from gapic.samplegen_utils import (types, utils as gapic_utils)
 from gapic.schema import (naming, wrappers)
 
-from common_types import (DummyMethod, DummyService,
-                          DummyApiSchema, DummyNaming, message_factory, enum_factory)
+from common_types import (DummyField, DummyMessage, DummyMethod, DummyService,
+                          DummyApiSchema, DummyNaming, enum_factory, message_factory)
 
 from collections import namedtuple
 from textwrap import dedent
@@ -49,14 +49,32 @@ def test_generate_sample_basic():
     # that catch errors in behavior that is emergent from combining smaller features
     # or in features that are sufficiently small and trivial that it doesn't make sense
     # to have standalone tests.
+    input_type = DummyMessage(
+        type="REQUEST TYPE",
+        fields={
+            "classify_request": DummyField(
+                message=DummyMessage(
+                    type="CLASSIFY TYPE",
+                    fields={
+                        "video": DummyField(
+                            message=DummyMessage(type="VIDEO TYPE"),
+                        ),
+                        "location_annotation": DummyField(
+                            message=DummyMessage(type="LOCATION TYPE"),
+                        )
+                    },
+                )
+            )
+        }
+    )
+
     api_naming = naming.Naming(
         name="MolluscClient", namespace=("molluscs", "v1"))
     service = wrappers.Service(
         service_pb=namedtuple('service_pb', ['name'])('MolluscClient'),
         methods={
             "Classify": DummyMethod(
-                input=message_factory(
-                    "mollusc.classify_request.video"),
+                input=input_type,
                 output=message_factory("$resp.taxonomy")
             )
         }
@@ -71,10 +89,15 @@ def test_generate_sample_basic():
               "rpc": "Classify",
               "id": "mollusc_classify_sync",
               "description": "Determine the full taxonomy of input mollusc",
-              "request": [{"field": "classify_request.video",
-                           "value": "path/to/mollusc/video.mkv",
-                           "input_parameter": "video",
-                           "value_is_file": True}],
+              "request": [
+                  {"field": "classify_request.video",
+                   "value": "'path/to/mollusc/video.mkv'",
+                   "input_parameter": "video",
+                   "value_is_file": True},
+                  {"field": "classify_request.location_annotation",
+                   "value": "'New Zealand'",
+                   "input_parameter": "location"}
+              ],
               "response": [{"print": ["Mollusc is a %s", "$resp.taxonomy"]}]}
 
     sample_str = samplegen.generate_sample(
@@ -99,7 +122,7 @@ from google import auth
 from google.auth import credentials
 from molluscs.v1.molluscclient.services.mollusc_client import MolluscClient
 
-def sample_classify(video):
+def sample_classify(video, location):
     """Determine the full taxonomy of input mollusc"""
 
     client = MolluscClient(
@@ -108,9 +131,12 @@ def sample_classify(video):
     )
 
     classify_request = {}
-    # video = "path/to/mollusc/video.mkv"
+    # video = 'path/to/mollusc/video.mkv'
     with open(video, "rb") as f:
         classify_request["video"] = f.read()
+
+    # location = 'New Zealand'
+    classify_request["location_annotation"] = location
 
 
     response = client.classify(classify_request)
@@ -124,10 +150,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--video",
                         type=str,
-                        default="path/to/mollusc/video.mkv")
+                        default='path/to/mollusc/video.mkv')
+    parser.add_argument("--location",
+                        type=str,
+                        default='New Zealand')
     args = parser.parse_args()
 
-    sample_classify(args.video)
+    sample_classify(args.video, args.location)
 
 
 if __name__ == "__main__":
