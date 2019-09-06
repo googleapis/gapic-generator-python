@@ -72,7 +72,7 @@ class Field:
     @property
     def map(self) -> bool:
         """Return True if this field is a map, False otherwise."""
-        return self.repeated and self.message and self.message.map
+        return bool(self.repeated and self.message and self.message.map)
 
     @utils.cached_property
     def mock_value(self) -> str:
