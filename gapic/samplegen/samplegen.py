@@ -21,7 +21,7 @@ import re
 import time
 
 from gapic.samplegen_utils import types
-from gapic.schema import (api, wrappers)
+from gapic.schema import (wrappers)
 
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
 from typing import (ChainMap, Dict, List, Mapping, Optional, Tuple)
@@ -659,7 +659,7 @@ class Validator:
 def generate_sample(
         sample,
         env: jinja2.environment.Environment,
-        api_schema: api.API,
+        api_schema,
         sample_template: jinja2.Template
 ) -> str:
     """Generate a standalone, runnable sample.
