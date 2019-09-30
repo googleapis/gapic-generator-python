@@ -158,7 +158,6 @@ class Generator:
 
                 sample = samplegen.generate_sample(
                     spec,
-                    self._env,
                     api_schema,
                     sample_template,
                 )

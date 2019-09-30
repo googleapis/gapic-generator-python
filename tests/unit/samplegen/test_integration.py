@@ -102,7 +102,6 @@ def test_generate_sample_basic():
 
     sample_str = samplegen.generate_sample(
         sample,
-        env,
         schema,
         env.get_template('examples/sample.py.j2')
     )
@@ -173,7 +172,6 @@ def test_generate_sample_service_not_found():
     with pytest.raises(types.UnknownService):
         samplegen.generate_sample(
             sample,
-            env,
             schema,
             env.get_template('examples/sample.py.j2'),
         )
@@ -187,7 +185,6 @@ def test_generate_sample_rpc_not_found():
     with pytest.raises(types.RpcMethodNotFound):
         list(samplegen.generate_sample(
             sample,
-            env,
             schema,
             env.get_template('examples/sample.py.j2')),
         )
