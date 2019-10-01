@@ -402,7 +402,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
                 content="\n",
             ),
             CodeGeneratorResponse.File(
-                name="samples/squid_sample_c8014108.py",
+                name="samples/squid_sample_55051b38.py",
                 content="\n",
             ),
             CodeGeneratorResponse.File(
@@ -426,8 +426,8 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
                   path: '{base_path}/squid_sample_91a465c6.py'
                   region_tag: humboldt_tag
                 - <<: *python
-                  sample: squid_sample_c8014108
-                  path: '{base_path}/squid_sample_c8014108.py'
+                  sample: squid_sample_55051b38
+                  path: '{base_path}/squid_sample_55051b38.py'
                   region_tag: squid_sample
                 - <<: *python
                   sample: 157884ee

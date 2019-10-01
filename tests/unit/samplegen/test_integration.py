@@ -113,7 +113,7 @@ def sample_classify(video, location):
     """Determine the full taxonomy of input mollusc"""
 
     client = mollusca_v1.MolluscClient()
-9
+
     classify_request = {}
     # video = 'path/to/mollusc/video.mkv'
     with open(video, "rb") as f:
