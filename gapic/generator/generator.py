@@ -117,7 +117,8 @@ class Generator:
         # The two-layer data structure lets us do two things:
         # * detect duplicate samples, which is an error
         # * detect distinct samples with the same ID, which are disambiguated
-        id_to_hash_to_spec: DefaultDict[str: Dict[str, Any]] = defaultdict(dict)
+        id_to_hash_to_spec: DefaultDict[str, Dict[str, Any]] = defaultdict(
+            dict)
 
         for config_fpath in self._sample_configs:
             with open(config_fpath) as f:
@@ -145,7 +146,8 @@ class Generator:
 
                 hash_to_spec = id_to_hash_to_spec[sample_id]
                 if spec_hash in hash_to_spec:
-                    raise DuplicateSample(f"Duplicate samplegen spec found: {spec}")
+                    raise DuplicateSample(
+                        f"Duplicate samplegen spec found: {spec}")
 
                 hash_to_spec[spec_hash] = spec
 
