@@ -115,6 +115,10 @@ class Generator:
             Dict[str, CodeGeneratorResponse.File]: A dict mapping filepath to rendered file.
         """
         id_to_samples: DefaultDict[str, List[Any]] = defaultdict(list)
+
+        def hash_spec(spec: Any) -> str:
+            return sha256(str(spec).encode('utf8')).hexdigest()[:8]
+
         for config_fpath in self._sample_configs:
             with open(config_fpath) as f:
                 configs = yaml.safe_load_all(f.read())
@@ -135,21 +139,20 @@ class Generator:
                 # but this may be impractical and can be error-prone.
                 sample_id = (spec.get("id")
                              or spec.get("region_tag")
-                             or sha256(str(spec).encode('utf8')).hexdigest()[:8])
+                             or hash_spec(spec))
 
                 spec["id"] = sample_id
                 id_to_samples[sample_id].append(spec)
 
         out_dir = "samples"
         fpath_to_spec_and_rendered = {}
-        for samples in id_to_samples.values():
+        for sample_id, samples in id_to_samples.items():
             for spec in samples:
                 id_is_unique = len(samples) == 1
                 # The ID is used to generate the file name and by sample tester
                 # to link filenames to invoked samples. It must be globally unique.
                 if not id_is_unique:
-                    spec_hash = sha256(
-                        str(spec).encode('utf8')).hexdigest()[:8]
+                    spec_hash = hash_spec(spec)
                     spec["id"] += f"_{spec_hash}"
 
                 sample = samplegen.generate_sample(spec, self._env, api_schema)
