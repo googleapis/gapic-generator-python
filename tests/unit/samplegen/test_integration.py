@@ -113,7 +113,7 @@ def sample_classify(video, location):
     """Determine the full taxonomy of input mollusc"""
 
     client = mollusca_v1.MolluscClient()
-
+9
     classify_request = {}
     # video = 'path/to/mollusc/video.mkv'
     with open(video, "rb") as f:
@@ -251,6 +251,7 @@ def test_generate_sample_config_partial_config(fs):
         contents=dedent(
             '''
             ---
+            # Note: not a valid config because of the type.
             type: com.google.api.codegen.SampleConfigPronto
             schema_version: 1.2.0
             samples:

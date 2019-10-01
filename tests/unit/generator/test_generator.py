@@ -440,6 +440,33 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
     assert actual_response == expected_response
 
 
+def test_generator_duplicate_samples(fs):
+    config_fpath = "samples.yaml"
+    fs.create_file(
+        config_fpath,
+        contents=dedent(
+            '''
+            # Note: the samples are duplicates.
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - id: squid_sample
+              region_tag: humboldt_tag
+              rpc: get_squid
+            - id: squid_sample
+              region_tag: humboldt_tag
+              rpc: get_squid
+            '''
+        )
+    )
+
+    generator = make_generator('samples=samples.yaml')
+    api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
+
+    with pytest.raises(types.DuplicateSample):
+        generator.get_response(api_schema=api_schema)
+
+
 def make_generator(opts_str: str = '') -> generator.Generator:
     return generator.Generator(options.Options.build(opts_str))
 
