@@ -85,7 +85,6 @@ def generate(
                 name="samples",
                 elements=[
                     [
-                        # type: ignore
                         # Mypy doesn't correctly intuit the type of the
                         # "region_tag" conditional expression.
                         yaml.Alias(environment.anchor_name or ""),
