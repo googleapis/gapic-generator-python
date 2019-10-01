@@ -492,6 +492,7 @@ def test_generator_duplicate_samples(fs):
     )
 
     generator = make_generator('samples=samples.yaml')
+    generator._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
     api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
 
     with pytest.raises(types.DuplicateSample):
