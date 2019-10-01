@@ -139,8 +139,8 @@ class Validator:
             # and whether it's an enum or a message or a primitive type.
             # The method call response isn't a field, so construct an artificial
             # field that wraps the response.
-            {  # type: ignore
-                "$resp": MockField(response_type, False)
+            {
+                "$resp": MockField(response_type, False)  # type: ignore
             }
         )
 
