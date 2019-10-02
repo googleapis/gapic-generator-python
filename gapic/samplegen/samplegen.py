@@ -102,6 +102,7 @@ class TransformedRequest:
     base: str
     single: Optional[AttributeRequestSetup]
     body: Optional[List[AttributeRequestSetup]]
+    pattern: Optional[str] = None
 
 
 class Validator:
