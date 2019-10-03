@@ -26,6 +26,7 @@ from gapic.schema import wrappers
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
 from typing import (ChainMap, Dict, List, Mapping, Optional, Tuple)
 
+from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
 
 # Outstanding issues:
@@ -104,6 +105,79 @@ class TransformedRequest:
     body: Optional[List[AttributeRequestSetup]]
     pattern: Optional[str] = None
 
+    # Resource patterns look something like
+    # kingdom/{kingdom}/phylum/{phylum}/class/{class}
+    RESOURCE_RE = re.compile(r"\{([^}/]+)\}")
+
+    @classmethod
+    def build(cls, request_type, api_schema, base, attrs, is_resource_request):
+        """Build a TransformedRequest based on parsed inpu
+
+        Acts as a factory to hide complicated logic for resource based requests.
+
+        Args:
+            request_type (wrappers.MessageType): The method's request message type.
+            api_schema (api.API): The API schema (used for looking up other messages)
+            base (str): the name of the base field being set.
+            attrs [AttributeRequestSetup]: All the attributes (or fields) being set
+                                           for the base field.
+            is_resource_request (bool): Indicates whether the request describes a
+                                        constructed resource name path.
+        """
+
+        if not attrs[0].field:
+            return cls(base=base, body=None, single=attrs[0])
+        elif not is_resource_request:
+            return cls(base=base, body=attrs, single=None)
+        else:
+            # This is the tricky one.
+            # We need to determine whether the field is describing a valid resource,
+            # and if so, what its corresponding message type is.
+            # Then we need to find the pattern with parameters
+            # that exatcly matches the attrs, if one exists.
+            #
+            # It's a precondition that the base field is
+            # a valid field of the request message type.
+            resource_typestr = (request_type.
+                                fields[base].
+                                options.
+                                Extensions[resource_pb2.resource_reference].
+                                type)
+
+            resource_message_descriptor = next(
+                (msg.options.Extensions[resource_pb2.resource]
+                 for msg in api_schema.messages.values()
+                 if msg.options.Extensions[resource_pb2.resource].type == resource_typestr),
+                None
+            )
+            if not resource_message_descriptor:
+                raise types.NoSuchResource(
+                    f"No message exists for resource: {resource_typestr}")
+
+            attr_names = [attr.field for attr in attrs]
+
+            # A single resource may be found under multiple paths and have many patterns.
+            # We want to find an _exact_ match, if one exists.
+            pattern = next((p
+                            for p in resource_message_descriptor.pattern
+                            if cls.RESOURCE_RE.findall(p) == attr_names), None)
+            if not pattern:
+                attr_name_str = ", ".join(attr_names)
+                raise types.NoSuchResourcePattern(
+                    f"Resource {resource_typestr} has no pattern with params: {attr_name_str}")
+
+            return cls(base=base, body=attrs, single=None, pattern=pattern)
+
+
+@dataclasses.dataclass
+class RequestEntry:
+    """Throwaway data type used in validating and transforming requests.
+
+    Deliberatly NOT frozen: is_resource_request is mutable on purpose."""
+
+    is_resource_request: bool = False
+    attrs: List[AttributeRequestSetup] = dataclasses.field(default_factory=list)
+
 
 class Validator:
     """Class that validates a sample.
@@ -119,14 +193,17 @@ class Validator:
     VAL_KWORD = "value"
     BODY_KWORD = "body"
 
-    def __init__(self, method: wrappers.Method):
-        # The response ($resp) variable is special and guaranteed to exist.
+    # BUG_dovs: temporary hack, may make the schema a required param.
+    def __init__(self, method: wrappers.Method, api_schema=None):
+            # The response ($resp) variable is special and guaranteed to exist.
         self.request_type_ = method.input
         response_type = method.output
         if method.paged_result_field:
             response_type = method.paged_result_field
         elif method.lro:
             response_type = method.lro.response_type
+
+        self.api_schema_ = api_schema
 
         # This is a shameless hack to work around the design of wrappers.Field
         MockField = namedtuple("MockField", ["message", "repeated"])
@@ -158,6 +235,69 @@ class Validator:
 
     def var_field(self, var_name: str) -> Optional[wrappers.Field]:
         return self.var_defs_.get(var_name)
+
+    def _normal_request_setup(self, base_param_to_attrs, val, request, field, base):
+        """validates and transforms non-resource-based request entries.
+
+        Private method, lifted out to make validate_and_transform_request cleaner.
+
+        Args:
+            base_param_to_attrs ({str:RequestEntry}):
+            val (str): The value to which the terminal field will be set
+                       (only used if the terminus is an enum)
+            request (str:str): The request dictionary read in from the config.
+            field (str): The value of the "field" parameter in the request entry.
+            base (wrappers.MessageType): The base request type for the method.
+
+        Returns:
+                Tuple[str, AttributeRequestSetup]
+        """
+        attr_chain = field.split(".")
+        for i, attr_name in enumerate(attr_chain):
+            attr = base.fields.get(attr_name)
+            if not attr:
+                raise types.BadAttributeLookup(
+                    "Method request type {} has no attribute: '{}'".format(
+                        self.request_type_, attr_name))
+
+            if attr.message:
+                base = attr.message
+            elif attr.enum:
+                # A little bit hacky, but 'values' is a list, and this is the easiest
+                # way to verify that the value is a valid enum variant.
+                witness = any(e.name == val for e in attr.enum.values)
+                if not witness:
+                    raise types.InvalidEnumVariant(
+                        "Invalid variant for enum {}: '{}'".format(attr, val))
+                # Python code can set protobuf enums from strings.
+                # This is preferable to adding the necessary import statement
+                # and requires less munging of the assigned value
+                request["value"] = f"'{val}'"
+                break
+            else:
+                raise TypeError
+
+        if i != len(attr_chain) - 1:
+            # We broke out of the loop after processing an enum.
+            extra_attrs = ".".join(attr_chain[i:])
+            raise types.InvalidEnumVariant(
+                f"Attempted to reference attributes of enum value: '{extra_attrs}'")
+
+        if len(attr_chain) > 1:
+            request["field"] = ".".join(attr_chain[1:])
+        else:
+            # Because of the way top level attrs get rendered,
+            # there can't be duplicates.
+            # This is admittedly a bit of a hack.
+            if attr_chain[0] in base_param_to_attrs:
+                raise types.InvalidRequestSetup(
+                    "Duplicated top level field in request block: '{}'".format(
+                        attr_chain[0]))
+            del request["field"]
+
+        # Mypy isn't smart enough to handle dictionary unpacking,
+        # so disable it for the AttributeRequestSetup ctor call.
+        return attr_chain[0], AttributeRequestSetup(**request)  # type: ignore
 
     def validate_and_transform_request(self,
                                        calling_form: types.CallingForm,
@@ -228,8 +368,7 @@ class Validator:
                                 in the request message type.
 
         """
-        base_param_to_attrs: Dict[str,
-                                  List[AttributeRequestSetup]] = defaultdict(list)
+        base_param_to_attrs: Dict[str, RequestEntry] = defaultdict(RequestEntry)
 
         for r in request:
             duplicate = dict(r)
@@ -258,54 +397,37 @@ class Validator:
                 self._handle_lvalue(input_parameter, wrappers.Field(
                     field_pb=descriptor_pb2.FieldDescriptorProto()))
 
-            attr_chain = field.split(".")
             base = self.request_type_
-            for i, attr_name in enumerate(attr_chain):
-                attr = base.fields.get(attr_name)
-                if not attr:
+
+            # The percentage sign is used for setting up resource based requests
+            percent_idx = field.find('%')
+            if percent_idx == -1:
+                base_param, attr = self._normal_request_setup(
+                    base_param_to_attrs, val, duplicate, field, base)
+
+                request_entry = base_param_to_attrs.get(base_param)
+                if request_entry and request_entry.is_resource_request:
+                    raise types.ResourceRequestMismatch(
+                        f"Request setup mismatch for base: {base_param}")
+
+                base_param_to_attrs[base_param].attrs.append(attr)
+            else:
+                # It's a resource based request.
+                base_param, resource_attr = field[:percent_idx], field[percent_idx+1:]
+                request_entry = base_param_to_attrs.get(base_param)
+                if request_entry and not request_entry.is_resource_request:
+                    raise types.ResourceRequestMismatch(
+                        f"Request setup mismatch for base: {base_param}")
+
+                if not base.fields.get(base_param):
                     raise types.BadAttributeLookup(
                         "Method request type {} has no attribute: '{}'".format(
-                            self.request_type_.type, attr_name))
+                            self.request_type_, base_param))
 
-                if attr.message:
-                    base = attr.message
-                elif attr.enum:
-                    # A little bit hacky, but 'values' is a list, and this is the easiest
-                    # way to verify that the value is a valid enum variant.
-                    witness = any(e.name == val for e in attr.enum.values)
-                    if not witness:
-                        raise types.InvalidEnumVariant(
-                            "Invalid variant for enum {}: '{}'".format(attr, val))
-                    # Python code can set protobuf enums from strings.
-                    # This is preferable to adding the necessary import statement
-                    # and requires less munging of the assigned value
-                    duplicate["value"] = f"'{val}'"
-                    break
-                else:
-                    raise TypeError
-
-            if i != len(attr_chain) - 1:
-                # We broke out of the loop after processing an enum.
-                extra_attrs = ".".join(attr_chain[i:])
-                raise types.InvalidEnumVariant(
-                    f"Attempted to reference attributes of enum value: '{extra_attrs}'")
-
-            if len(attr_chain) > 1:
-                duplicate["field"] = ".".join(attr_chain[1:])
-            else:
-                # Because of the way top level attrs get rendered,
-                # there can't be duplicates.
-                # This is admittedly a bit of a hack.
-                if attr_chain[0] in base_param_to_attrs:
-                    raise types.InvalidRequestSetup(
-                        "Duplicated top level field in request block: '{}'".format(
-                            attr_chain[0]))
-                del duplicate["field"]
-
-            # Mypy isn't smart enough to handle dictionary unpacking,
-            # so disable it for the AttributeRequestSetup ctor call.
-            base_param_to_attrs[attr_chain[0]].append(
-                AttributeRequestSetup(**duplicate))  # type: ignore
+                duplicate["field"] = resource_attr
+                request_entry = base_param_to_attrs[base_param]
+                request_entry.is_resource_request = True
+                request_entry.attrs.append(AttributeRequestSetup(**duplicate))
 
         client_streaming_forms = {
             types.CallingForm.RequestStreamingClient,
@@ -317,8 +439,9 @@ class Validator:
                 "Too many base parameters for client side streaming form")
 
         return [
-            (TransformedRequest(base=key, body=val, single=None) if val[0].field
-             else TransformedRequest(base=key, body=None, single=val[0]))
+            TransformedRequest.build(
+                base, self.api_schema_, key, val.attrs, val.is_resource_request
+            )
             for key, val in base_param_to_attrs.items()
         ]
 
