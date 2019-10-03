@@ -26,7 +26,8 @@ from gapic.schema import wrappers
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
 from typing import (ChainMap, Dict, List, Mapping, Optional, Tuple)
 
-from google.api import resource_pb2
+# There is no library stub file for this module, so ignore it.
+from google.api import resource_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
 
 # Outstanding issues:
@@ -416,7 +417,7 @@ class Validator:
             else:
                 # It's a resource based request.
                 base_param, resource_attr = (field[:percent_idx],
-                                             field[percent_idx+1:])
+                                             field[percent_idx + 1:])
                 request_entry = base_param_to_attrs.get(base_param)
                 if request_entry and not request_entry.is_resource_request:
                     raise types.ResourceRequestMismatch(
