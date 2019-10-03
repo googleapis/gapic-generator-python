@@ -46,7 +46,8 @@ DummyField.__new__.__defaults__ = (False,) * len(DummyField._fields)
 
 DummyService = namedtuple("DummyService", ["methods"])
 
-DummyApiSchema = namedtuple("DummyApiSchema", ["services", "naming", "messages"])
+DummyApiSchema = namedtuple("DummyApiSchema",
+                            ["services", "naming", "messages"])
 DummyApiSchema.__new__.__defaults__ = (False,) * len(DummyApiSchema._fields)
 
 DummyNaming = namedtuple(

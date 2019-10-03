@@ -176,7 +176,8 @@ class RequestEntry:
     Deliberatly NOT frozen: is_resource_request is mutable on purpose."""
 
     is_resource_request: bool = False
-    attrs: List[AttributeRequestSetup] = dataclasses.field(default_factory=list)
+    attrs: List[AttributeRequestSetup] = dataclasses.field(
+        default_factory=list)
 
 
 class Validator:
@@ -368,7 +369,8 @@ class Validator:
                                 in the request message type.
 
         """
-        base_param_to_attrs: Dict[str, RequestEntry] = defaultdict(RequestEntry)
+        base_param_to_attrs: Dict[str,
+                                  RequestEntry] = defaultdict(RequestEntry)
 
         for r in request:
             duplicate = dict(r)
@@ -413,7 +415,8 @@ class Validator:
                 base_param_to_attrs[base_param].attrs.append(attr)
             else:
                 # It's a resource based request.
-                base_param, resource_attr = field[:percent_idx], field[percent_idx+1:]
+                base_param, resource_attr = (field[:percent_idx],
+                                             field[percent_idx+1:])
                 request_entry = base_param_to_attrs.get(base_param)
                 if request_entry and not request_entry.is_resource_request:
                     raise types.ResourceRequestMismatch(
@@ -427,7 +430,8 @@ class Validator:
                 duplicate["field"] = resource_attr
                 request_entry = base_param_to_attrs[base_param]
                 request_entry.is_resource_request = True
-                request_entry.attrs.append(AttributeRequestSetup(**duplicate))
+                request_entry.attrs.append(
+                    AttributeRequestSetup(**duplicate))  # type: ignore
 
         client_streaming_forms = {
             types.CallingForm.RequestStreamingClient,
