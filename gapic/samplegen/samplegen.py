@@ -167,7 +167,8 @@ class TransformedRequest:
                 raise types.NoSuchResource(
                     f"No message exists for resource: {resource_typestr}")
 
-            attr_names = [attr.field for attr in attrs]
+            # The field is only ever empty for singleton attributes.
+            attr_names: List[str] = [attr.field for attr in attrs]  # type: ignore
 
             # A single resource may be found under multiple paths and have many patterns.
             # We want to find an _exact_ match, if one exists.
