@@ -111,7 +111,8 @@ class TransformedRequest:
     RESOURCE_RE = re.compile(r"\{([^}/]+)\}")
 
     @classmethod
-    def build(cls, request_type, api_schema, base, attrs, is_resource_request):
+    def build(cls, request_type: wrappers.MessageType, api_schema, base: str,
+              attrs: List[str], is_resource_request: bool):
         """Build a TransformedRequest based on parsed inpu
 
         Acts as a factory to hide complicated logic for resource based requests.
@@ -120,10 +121,21 @@ class TransformedRequest:
             request_type (wrappers.MessageType): The method's request message type.
             api_schema (api.API): The API schema (used for looking up other messages)
             base (str): the name of the base field being set.
-            attrs [AttributeRequestSetup]: All the attributes (or fields) being set
+            attrs List[str]: All the attributes (or fields) being set
                                            for the base field.
             is_resource_request (bool): Indicates whether the request describes a
                                         constructed resource name path.
+
+        Returns:
+            TransformedRequest
+
+        Raises:
+            NoSuchResource: If the base parameter field for a resource-name
+                            request statement lists a resource_type for which
+                            there is no message with the same resource type.
+            NoSuchResourcePattern: If all the request setup statements for a
+                                   resource name parameter do not combine to
+                                   match a valid path pattern for that resource.
         """
 
         if not attrs[0].field:
@@ -194,6 +206,14 @@ class Validator:
     KEY_KWORD = "key"
     VAL_KWORD = "value"
     BODY_KWORD = "body"
+
+    CHAIN_LINK_RE = re.compile(
+        r"""
+        (?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\]|\{["'](?P<key>[^"']+)["']\})?$
+        """.strip())
+
+    VALID_REQUEST_KWORDS = frozenset(
+        ("value", "field", "value_is_file", "input_parameter", "comment"))
 
     # BUG_dovs: temporary hack, may make the schema a required param.
     def __init__(self, method: wrappers.Method, api_schema=None):
@@ -314,10 +334,13 @@ class Validator:
            All values in the initial request are strings except for the value
            for "value_is_file", which is a bool.
 
-           The TransformedRequest structure of the return value has three fields:
-           "base", "body", and "single", where "base" maps to the top level attribute name,
-           "body" maps to a list of subfield assignment definitions, and "single"
-           maps to a singleton attribute assignment structure with no "field" value.
+           The TransformedRequest structure of the return value has four fields:
+           "base", "body", "single", and "pattern",
+           where "base" maps to the top level attribute name,
+           "body" maps to a list of subfield assignment definitions, "single"
+           maps to a singleton attribute assignment structure with no "field" value,
+           and "pattern" is a resource name pattern string if the request describes
+           resource name construction.
            The "field" attribute in the requests in a "body" list have their prefix stripped;
            the request in a "single" attribute has no "field" attribute.
 
@@ -368,6 +391,9 @@ class Validator:
                                  a client-side streaming calling form.
             BadAttributeLookup: If a request field refers to a non-existent field
                                 in the request message type.
+            ResourceRequestMismatch: If a request attempts to describe both
+                                     attribute manipulation and resource name
+                                     construction.
 
         """
         base_param_to_attrs: Dict[str,
@@ -385,11 +411,7 @@ class Validator:
                 raise types.InvalidRequestSetup(
                     "Missing keyword in request entry: 'field'")
 
-            spurious_keywords = set(duplicate.keys()) - {"value",
-                                                         "field",
-                                                         "value_is_file",
-                                                         "input_parameter",
-                                                         "comment"}
+            spurious_keywords = set(duplicate.keys()) - self.VALID_REQUEST_KWORDS
             if spurious_keywords:
                 raise types.InvalidRequestSetup(
                     "Spurious keyword(s) in request entry: {}".format(
@@ -499,16 +521,10 @@ class Validator:
         Returns:
             wrappers.Field: The final field in the chain.
         """
-        # TODO: Add resource name handling, i.e. %
-        chain_link_re = re.compile(
-            r"""
-            (?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\]|\{["'](?P<key>[^"']+)["']\})?$
-            """.strip())
-
         def validate_recursively(expression, scope, depth=0):
             first_dot = expression.find(".")
             base = expression[:first_dot] if first_dot > 0 else expression
-            match = chain_link_re.match(base)
+            match = self.CHAIN_LINK_RE.match(base)
             if not match:
                 raise types.BadAttributeLookup(
                     f"Badly formed attribute expression: {expression}")
@@ -792,7 +808,7 @@ def generate_sample(
 ) -> str:
     """Generate a standalone, runnable sample.
 
-    Rendering and writing the rendered output is left for the caller.
+    Writing the rendered output is left for the caller.
 
     Args:
         sample (Any): A definition for a single sample generated from parsed yaml.
