@@ -112,8 +112,8 @@ class TransformedRequest:
 
     @classmethod
     def build(cls, request_type: wrappers.MessageType, api_schema, base: str,
-              attrs: List[str], is_resource_request: bool):
-        """Build a TransformedRequest based on parsed inpu
+              attrs: List[AttributeRequestSetup], is_resource_request: bool):
+        """Build a TransformedRequest based on parsed input.
 
         Acts as a factory to hide complicated logic for resource based requests.
 
@@ -400,24 +400,24 @@ class Validator:
                                   RequestEntry] = defaultdict(RequestEntry)
 
         for r in request:
-            duplicate = dict(r)
-            val = duplicate.get("value")
+            r_dup = dict(r)
+            val = r_dup.get("value")
             if not val:
                 raise types.InvalidRequestSetup(
                     "Missing keyword in request entry: 'value'")
 
-            field = duplicate.get("field")
+            field = r_dup.get("field")
             if not field:
                 raise types.InvalidRequestSetup(
                     "Missing keyword in request entry: 'field'")
 
-            spurious_keywords = set(duplicate.keys()) - self.VALID_REQUEST_KWORDS
-            if spurious_keywords:
+            spurious_kwords = set(r_dup.keys()) - self.VALID_REQUEST_KWORDS
+            if spurious_kwords:
                 raise types.InvalidRequestSetup(
                     "Spurious keyword(s) in request entry: {}".format(
-                        ", ".join(f"'{kword}'" for kword in spurious_keywords)))
+                        ", ".join(f"'{kword}'" for kword in spurious_kwords)))
 
-            input_parameter = duplicate.get("input_parameter")
+            input_parameter = r_dup.get("input_parameter")
             if input_parameter:
                 self._handle_lvalue(input_parameter, wrappers.Field(
                     field_pb=descriptor_pb2.FieldDescriptorProto()))
@@ -428,7 +428,7 @@ class Validator:
             percent_idx = field.find('%')
             if percent_idx == -1:
                 base_param, attr = self._normal_request_setup(
-                    base_param_to_attrs, val, duplicate, field, base)
+                    base_param_to_attrs, val, r_dup, field, base)
 
                 request_entry = base_param_to_attrs.get(base_param)
                 if request_entry and request_entry.is_resource_request:
@@ -450,11 +450,11 @@ class Validator:
                         "Method request type {} has no attribute: '{}'".format(
                             self.request_type_, base_param))
 
-                duplicate["field"] = resource_attr
+                r_dup["field"] = resource_attr
                 request_entry = base_param_to_attrs[base_param]
                 request_entry.is_resource_request = True
                 request_entry.attrs.append(
-                    AttributeRequestSetup(**duplicate))  # type: ignore
+                    AttributeRequestSetup(**r_dup))  # type: ignore
 
         client_streaming_forms = {
             types.CallingForm.RequestStreamingClient,
