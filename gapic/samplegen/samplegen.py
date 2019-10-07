@@ -138,6 +138,10 @@ class TransformedRequest:
                                    match a valid path pattern for that resource.
         """
 
+        # Attrs is guaranteed to be non-empty because of the construction of
+        # the base_param_to_attrs map in validate_and_transform_request.
+        # Each non-error lookup results in an append to the corresponding attrs
+        # list, and then the key/val pairs are passed into this factory.
         if not attrs[0].field:
             return cls(base=base, body=None, single=attrs[0])
         elif not is_resource_request:
@@ -208,15 +212,19 @@ class Validator:
     VAL_KWORD = "value"
     BODY_KWORD = "body"
 
-    CHAIN_LINK_RE = re.compile(
+    EXPRESSION_ATTR_RE = re.compile(
         r"""
         (?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\]|\{["'](?P<key>[^"']+)["']\})?$
         """.strip())
 
+    # This regex matches each variable or attribute in the following example
+    # expression and indicates whether the lookup is indexed, mapped, or neither
+    #
+    # cephalopoda.coleoidea[0].suborder{"incirrina"}
     VALID_REQUEST_KWORDS = frozenset(
         ("value", "field", "value_is_file", "input_parameter", "comment"))
 
-    # BUG_dovs: temporary hack, may make the schema a required param.
+    # TODO(dovs): make the schema a required param.
     def __init__(self, method: wrappers.Method, api_schema=None):
             # The response ($resp) variable is special and guaranteed to exist.
         self.request_type_ = method.input
@@ -259,7 +267,7 @@ class Validator:
     def var_field(self, var_name: str) -> Optional[wrappers.Field]:
         return self.var_defs_.get(var_name)
 
-    def _normal_request_setup(self, base_param_to_attrs, val, request, field, base):
+    def _normal_request_setup(self, base_param_to_attrs, val, request, field):
         """validates and transforms non-resource-based request entries.
 
         Private method, lifted out to make validate_and_transform_request cleaner.
@@ -270,11 +278,11 @@ class Validator:
                        (only used if the terminus is an enum)
             request (str:str): The request dictionary read in from the config.
             field (str): The value of the "field" parameter in the request entry.
-            base (wrappers.MessageType): The base request type for the method.
 
         Returns:
                 Tuple[str, AttributeRequestSetup]
         """
+        base = self.request_type_
         attr_chain = field.split(".")
         for i, attr_name in enumerate(attr_chain):
             attr = base.fields.get(attr_name)
@@ -399,7 +407,6 @@ class Validator:
         """
         base_param_to_attrs: Dict[str,
                                   RequestEntry] = defaultdict(RequestEntry)
-
         for r in request:
             r_dup = dict(r)
             val = r_dup.get("value")
@@ -423,13 +430,11 @@ class Validator:
                 self._handle_lvalue(input_parameter, wrappers.Field(
                     field_pb=descriptor_pb2.FieldDescriptorProto()))
 
-            base = self.request_type_
-
             # The percentage sign is used for setting up resource based requests
             percent_idx = field.find('%')
             if percent_idx == -1:
                 base_param, attr = self._normal_request_setup(
-                    base_param_to_attrs, val, r_dup, field, base)
+                    base_param_to_attrs, val, r_dup, field)
 
                 request_entry = base_param_to_attrs.get(base_param)
                 if request_entry and request_entry.is_resource_request:
@@ -446,7 +451,7 @@ class Validator:
                     raise types.ResourceRequestMismatch(
                         f"Request setup mismatch for base: {base_param}")
 
-                if not base.fields.get(base_param):
+                if not self.request_type_.fields.get(base_param):
                     raise types.BadAttributeLookup(
                         "Method request type {} has no attribute: '{}'".format(
                             self.request_type_, base_param))
@@ -468,7 +473,11 @@ class Validator:
 
         return [
             TransformedRequest.build(
-                base, self.api_schema_, key, val.attrs, val.is_resource_request
+                self.request_type_,
+                self.api_schema_,
+                key,
+                val.attrs,
+                val.is_resource_request
             )
             for key, val in base_param_to_attrs.items()
         ]
@@ -525,7 +534,7 @@ class Validator:
         def validate_recursively(expression, scope, depth=0):
             first_dot = expression.find(".")
             base = expression[:first_dot] if first_dot > 0 else expression
-            match = self.CHAIN_LINK_RE.match(base)
+            match = self.EXPRESSION_ATTR_RE.match(base)
             if not match:
                 raise types.BadAttributeLookup(
                     f"Badly formed attribute expression: {expression}")
