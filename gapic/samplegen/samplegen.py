@@ -115,7 +115,7 @@ class TransformedRequest:
               attrs: List[AttributeRequestSetup], is_resource_request: bool):
         """Build a TransformedRequest based on parsed input.
 
-        Acts as a factory to hide complicated logic for resource based requests.
+        Acts as a factory to hide complicated logic for resource-based requests.
 
         Args:
             request_type (wrappers.MessageType): The method's request message type.
