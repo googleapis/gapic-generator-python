@@ -212,15 +212,15 @@ class Validator:
     VAL_KWORD = "value"
     BODY_KWORD = "body"
 
+    # This regex matches each variable or attribute in the following example
+    # expression and indicates whether the lookup is indexed, mapped, or neither
+    #
+    # cephalopoda.coleoidea[0].suborder{"incirrina"}
     EXPRESSION_ATTR_RE = re.compile(
         r"""
         (?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\]|\{["'](?P<key>[^"']+)["']\})?$
         """.strip())
 
-    # This regex matches each variable or attribute in the following example
-    # expression and indicates whether the lookup is indexed, mapped, or neither
-    #
-    # cephalopoda.coleoidea[0].suborder{"incirrina"}
     VALID_REQUEST_KWORDS = frozenset(
         ("value", "field", "value_is_file", "input_parameter", "comment"))
 
