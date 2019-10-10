@@ -284,7 +284,8 @@ class Validator:
                     # Only valid if this is the last attribute in the chain.
                     break
                 else:
-                    raise TypeError
+                    raise TypeError(
+                        f"Could not handle attribute '{attr_name}' of type: {attr.type}")
 
             if i != len(attr_chain) - 1:
                 # We broke out of the loop after processing an enum or a primitive.

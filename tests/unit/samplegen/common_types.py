@@ -46,7 +46,8 @@ DummyField = namedtuple("DummyField",
                          "repeated",
                          "field_pb",
                          "meta",
-                         "is_primitive"])
+                         "is_primitive",
+                         "type"])
 DummyField.__new__.__defaults__ = (False,) * len(DummyField._fields)
 
 DummyService = namedtuple("DummyService", ["methods"])
