@@ -1579,6 +1579,7 @@ def test_validate_request_enum_not_last_attr():
             [{"field": "subclass.order", "value": "COLEOIDEA"}]
         )
 
+
 def test_validate_request_resource_name():
     request = [
         {"field": "taxon%kingdom", "value": "animalia"},
@@ -1638,8 +1639,9 @@ def test_validate_request_resource_name():
             ]
         )
     ]
-    
+
     assert actual == expected
+
 
 def test_validate_request_primitive_field():
     field = make_field(name="species", type="TYPE_STRING")
@@ -1777,8 +1779,8 @@ def test_validate_request_no_such_pattern():
     v = samplegen.Validator(method=method, api_schema=api_schema)
     with pytest.raises(types.NoSuchResourcePattern):
         v.validate_and_transform_request(types.CallingForm.Request, request)
-        
-        
+
+
 def test_validate_request_non_terminal_primitive_field():
     field = make_field(name="species", type="TYPE_STRING")
     request_type = make_message(name="request", fields=[field])
@@ -1795,7 +1797,7 @@ def test_validate_request_non_terminal_primitive_field():
         v.validate_and_transform_request(types.CallingForm.Request,
                                          request)
 
-        
+
 def make_message(name: str, package: str = 'animalia.mollusca.v1', module: str = 'cephalopoda',
                  fields: Sequence[wrappers.Field] = (), meta: metadata.Metadata = None,
                  options: descriptor_pb2.MethodOptions = None,
