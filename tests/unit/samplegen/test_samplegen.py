@@ -1556,16 +1556,28 @@ def test_validate_request_enum_invalid_value():
 
 
 def test_validate_request_enum_not_last_attr():
-    enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
-    request_type = message_factory("mollusc.subclass", enum=enum)
+    # enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
+    # field = make_field(name="subclass", enum=enum)
+    request_type = make_message(
+        name="mollusc",
+        fields=[
+            make_field(
+                name="subclass",
+                enum=enum_factory(
+                    "subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"]
+                )
+            )
+        ]
+    )
+
+    # request_type = message_factory("mollusc.subclass", enum=enum)
     v = samplegen.Validator(DummyMethod(output=message_factory("mollusc_result"),
                                         input=request_type))
-    with pytest.raises(types.InvalidEnumVariant):
+    with pytest.raises(types.NonTerminalPrimitiveOrEnum):
         v.validate_and_transform_request(
             types.CallingForm.Request,
             [{"field": "subclass.order", "value": "COLEOIDEA"}]
         )
-
 
 def test_validate_request_resource_name():
     request = [
@@ -1624,6 +1636,32 @@ def test_validate_request_resource_name():
                     input_parameter="phylum",
                 ),
             ]
+        )
+    ]
+    
+    assert actual == expected
+
+def test_validate_request_primitive_field():
+    field = make_field(name="species", type="TYPE_STRING")
+    request_type = make_message(name="request", fields=[field])
+
+    request = [{"field": "species", "value": "Architeuthis dux"}]
+    v = samplegen.Validator(
+        DummyMethod(
+            output=message_factory("mollusc_result"),
+            input=request_type
+        )
+    )
+
+    actual = v.validate_and_transform_request(types.CallingForm.Request,
+                                              request)
+    expected = [
+        samplegen.TransformedRequest(
+            base="species",
+            body=None,
+            single=samplegen.AttributeRequestSetup(
+                value="Architeuthis dux"
+            )
         )
     ]
 
@@ -1739,8 +1777,25 @@ def test_validate_request_no_such_pattern():
     v = samplegen.Validator(method=method, api_schema=api_schema)
     with pytest.raises(types.NoSuchResourcePattern):
         v.validate_and_transform_request(types.CallingForm.Request, request)
+        
+        
+def test_validate_request_non_terminal_primitive_field():
+    field = make_field(name="species", type="TYPE_STRING")
+    request_type = make_message(name="request", fields=[field])
 
+    request = [{"field": "species.nomenclature", "value": "Architeuthis dux"}]
+    v = samplegen.Validator(
+        DummyMethod(
+            output=message_factory("mollusc_result"),
+            input=request_type
+        )
+    )
 
+    with pytest.raises(types.NonTerminalPrimitiveOrEnum):
+        v.validate_and_transform_request(types.CallingForm.Request,
+                                         request)
+
+        
 def make_message(name: str, package: str = 'animalia.mollusca.v1', module: str = 'cephalopoda',
                  fields: Sequence[wrappers.Field] = (), meta: metadata.Metadata = None,
                  options: descriptor_pb2.MethodOptions = None,

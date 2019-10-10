@@ -305,8 +305,13 @@ class Validator:
                 # and requires less munging of the assigned value
                 request["value"] = f"'{val}'"
                 break
+            elif attr.is_primitive:
+                # Only valid if this is the last attribute in the chain.
+                break
             else:
-                raise TypeError
+                raise TypeError(
+                        f"Could not handle attribute '{attr_name}' of type: {attr.type}")
+
 
         if i != len(attr_chain) - 1:
             # We broke out of the loop after processing an enum.
@@ -454,13 +459,6 @@ class Validator:
                 if not self.request_type_.fields.get(base_param):
                     raise types.BadAttributeLookup(
                         "Method request type {} has no attribute: '{}'".format(
-                            self.request_type_, base_param))
-
-                r_dup["field"] = resource_attr
-                request_entry = base_param_to_attrs[base_param]
-                request_entry.is_resource_request = True
-                request_entry.attrs.append(
-                    AttributeRequestSetup(**r_dup))  # type: ignore
 
         client_streaming_forms = {
             types.CallingForm.RequestStreamingClient,
