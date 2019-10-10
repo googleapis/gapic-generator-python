@@ -1572,7 +1572,7 @@ def test_validate_request_enum_not_last_attr():
     # request_type = message_factory("mollusc.subclass", enum=enum)
     v = samplegen.Validator(DummyMethod(output=message_factory("mollusc_result"),
                                         input=request_type))
-    with pytest.raises(types.InvalidEnumVariant):
+    with pytest.raises(types.NonTerminalPrimitiveOrEnum):
         v.validate_and_transform_request(
             types.CallingForm.Request,
             [{"field": "subclass.order", "value": "COLEOIDEA"}]
@@ -1602,6 +1602,25 @@ def test_validate_request_primitive_field():
             )
         )
     ]
+
+    assert actual == expected
+
+
+def test_validate_request_non_terminal_primitive_field():
+    field = make_field(name="species", type="TYPE_STRING")
+    request_type = make_message(name="request", fields=[field])
+
+    request = [{"field": "species.nomenclature", "value": "Architeuthis dux"}]
+    v = samplegen.Validator(
+        DummyMethod(
+            output=message_factory("mollusc_result"),
+            input=request_type
+        )
+    )
+
+    with pytest.raises(types.NonTerminalPrimitiveOrEnum):
+        v.validate_and_transform_request(types.CallingForm.Request,
+                                         request)
 
 
 def make_message(name: str, package: str = 'animalia.mollusca.v1', module: str = 'cephalopoda',

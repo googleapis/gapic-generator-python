@@ -289,7 +289,7 @@ class Validator:
             if i != len(attr_chain) - 1:
                 # We broke out of the loop after processing an enum or a primitive.
                 extra_attrs = ".".join(attr_chain[i:])
-                raise types.InvalidEnumVariant(
+                raise types.NonTerminalPrimitiveOrEnum(
                     f"Attempted to reference attributes of enum value or primitive type: '{extra_attrs}'")
 
             if len(attr_chain) > 1:
