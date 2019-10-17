@@ -327,7 +327,7 @@ class Validator:
                         attr_chain[0]))
             del request["field"]
 
-        if isinstance(duplicate["value"], str):
+        if isinstance(request["value"], str):
             # Passing value through json is a safe and simple way of
             # making sure strings are properly wrapped and quotes escaped.
             # This statement both wraps enums in quotes and escapes quotes
@@ -336,9 +336,8 @@ class Validator:
             # Python code can set protobuf enums from strings.
             # This is preferable to adding the necessary import statement
             # and requires less munging of the assigned value
-            duplicate["value"] = json.dumps(duplicate["value"])
+            request["value"] = json.dumps(request["value"])
 
-            
         # Mypy isn't smart enough to handle dictionary unpacking,
         # so disable it for the AttributeRequestSetup ctor call.
         return attr_chain[0], AttributeRequestSetup(**request)  # type: ignore
