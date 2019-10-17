@@ -276,10 +276,6 @@ class Validator:
                     if not witness:
                         raise types.InvalidEnumVariant(
                             "Invalid variant for enum {}: '{}'".format(attr, val))
-                    # Python code can set protobuf enums from strings.
-                    # This is preferable to adding the necessary import statement
-                    # and requires less munging of the assigned value
-                    # duplicate["value"] = f"'{val}'"
                     break
                 elif attr.is_primitive:
                     # Only valid if this is the last attribute in the chain.
@@ -308,7 +304,13 @@ class Validator:
 
             if isinstance(duplicate["value"], str):
                 # Passing value through json is a safe and simple way of
-                # making sure strings are properly wrapped and quotes are escaped.
+                # making sure strings are properly wrapped and quotes escaped.
+                # This statement both wraps enums in quotes and escapes quotes
+                # in string values passed as parameters.
+                #
+                # Python code can set protobuf enums from strings.
+                # This is preferable to adding the necessary import statement
+                # and requires less munging of the assigned value
                 duplicate["value"] = json.dumps(duplicate["value"])
 
             # Mypy isn't smart enough to handle dictionary unpacking,
