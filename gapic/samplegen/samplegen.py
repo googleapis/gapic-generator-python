@@ -152,7 +152,7 @@ class TransformedRequest:
             # We need to determine whether the field is describing a valid resource,
             # and if so, what its corresponding message type is.
             # Then we need to find the pattern with parameters
-            # that exatcly matches the attrs, if one exists.
+            # that exactly matches the attrs, if one exists.
             #
             # It's a precondition that the base field is
             # a valid field of the request message type.
