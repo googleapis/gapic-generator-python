@@ -309,7 +309,7 @@ def test_{{ service.name|snake_case }}_host_with_port():
 
 def test_{{ service.name|snake_case }}_grpc_transport_channel():
     channel = grpc.insecure_channel('http://localhost/')
-    transport = transports.{{ service.client_name }}GrpcTransport(
+    transport = transports.{{ service.name }}GrpcTransport(
         channel=channel,
     )
     assert transport.grpc_channel is channel
