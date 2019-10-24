@@ -52,7 +52,8 @@ def test_service_names():
         get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
         get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
     ))
-    expected_names = {'ThingDoer', 'ThingDoerClient', 'do_thing', 'jump', 'yawn'}
+    expected_names = {'ThingDoer', 'ThingDoerClient',
+                      'do_thing', 'jump', 'yawn'}
     assert service.names == expected_names
 
 
@@ -62,7 +63,8 @@ def test_service_name_colliding_modules():
         get_method('Jump', 'bacon.bar.JumpRequest', 'bacon.bar.JumpResponse'),
         get_method('Yawn', 'a.b.v1.c.YawnRequest', 'a.b.v1.c.YawnResponse'),
     ))
-    expected_names = {'ThingDoer', 'ThingDoerClient', 'do_thing', 'jump', 'yawn', 'bar'}
+    expected_names = {'ThingDoer', 'ThingDoerClient',
+                      'do_thing', 'jump', 'yawn', 'bar'}
     assert service.names == expected_names
 
 
