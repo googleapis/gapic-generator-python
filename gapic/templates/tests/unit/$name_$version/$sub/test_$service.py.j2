@@ -222,7 +222,7 @@ def test_credentials_transport_error():
         credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = {{ service.name }}(
+        client = {{ service.client_name }}(
             credentials=credentials.AnonymousCredentials(),
             transport=transport,
         )
