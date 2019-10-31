@@ -32,11 +32,12 @@ import dataclasses
 import re
 from itertools import chain
 from typing import (cast, Dict, FrozenSet, List, Mapping, Optional,
-        Sequence, Set, Union)
+        Sequence, Set, Tuple, Union)
 
 from google.api import annotations_pb2  # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
+from google.api_core import exceptions
 from google.protobuf import descriptor_pb2
 
 from gapic import utils
@@ -423,12 +424,24 @@ class OperationInfo:
 
 
 @dataclasses.dataclass(frozen=True)
+class RetryInfo:
+    """Representation of the method's retry behavior."""
+    max_attempts: int
+    initial_backoff: float
+    max_backoff: float
+    backoff_multiplier: float
+    retryable_exceptions: Tuple[exceptions.GoogleAPICallError, ...]
+
+
+@dataclasses.dataclass(frozen=True)
 class Method:
     """Description of a method (defined with the ``rpc`` keyword)."""
     method_pb: descriptor_pb2.MethodDescriptorProto
     input: MessageType
     output: MessageType
     lro: Optional[OperationInfo] = dataclasses.field(default=None)
+    retry: Optional[RetryInfo] = dataclasses.field(default=None)
+    timeout: Optional[float] = None
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )

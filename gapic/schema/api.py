@@ -23,8 +23,11 @@ import sys
 from itertools import chain
 from typing import Callable, Dict, FrozenSet, Mapping, Sequence, Set, Tuple
 
+from google.api_core import exceptions
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
+
+import grpc
 
 from gapic.generator import options
 from gapic.schema import metadata
@@ -208,6 +211,7 @@ class API:
                 file_descriptor=fd,
                 file_to_generate=fd.package.startswith(package),
                 naming=naming,
+                opts=opts,
                 prior_protos=protos,
             ).proto
 
@@ -294,6 +298,7 @@ class _ProtoBuilder:
     def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
                  file_to_generate: bool,
                  naming: api_naming.Naming,
+                 opts: options.Options = options.Options(),
                  prior_protos: Mapping[str, Proto] = None):
         self.proto_messages: Dict[str, wrappers.MessageType] = {}
         self.proto_enums: Dict[str, wrappers.EnumType] = {}
@@ -301,6 +306,7 @@ class _ProtoBuilder:
         self.file_descriptor = file_descriptor
         self.file_to_generate = file_to_generate
         self.prior_protos = prior_protos or {}
+        self.opts = opts
 
         # Iterate over the documentation and place it into a dictionary.
         #
@@ -494,15 +500,15 @@ class _ProtoBuilder:
 
     def _get_methods(self,
                      methods: Sequence[descriptor_pb2.MethodDescriptorProto],
-                     address: metadata.Address, path: Tuple[int, ...],
+                     service_address: metadata.Address, path: Tuple[int, ...],
                      ) -> Mapping[str, wrappers.Method]:
         """Return a dictionary of wrapped methods for the given service.
 
         Args:
             methods (Sequence[~.descriptor_pb2.MethodDescriptorProto]): A
                 sequence of protobuf method objects.
-            address (~.metadata.Address): An address object denoting the
-                location of these methods.
+            service_address (~.metadata.Address): An address object for the
+                service, denoting the location of these methods.
             path (Tuple[int]): The source location path thus far, as understood
                 by ``SourceCodeInfo.Location``.
 
@@ -526,13 +532,64 @@ class _ProtoBuilder:
                         'metadata type.',
                     )
                 lro = wrappers.OperationInfo(
-                    response_type=self.api_messages[address.resolve(
+                    response_type=self.api_messages[service_address.resolve(
                         op.response_type,
                     )],
-                    metadata_type=self.api_messages[address.resolve(
+                    metadata_type=self.api_messages[service_address.resolve(
                         op.metadata_type,
                     )],
                 )
+
+            # If we got a gRPC service config, get the appropriate retry
+            # and timeout information from it.
+            retry = None
+            timeout = None
+            if self.opts.retry:
+                # This object should be a dictionary that conforms to the
+                # gRPC service config proto:
+                #   Repo: https://github.com/grpc/grpc-proto/
+                #   Filename: grpc/service_config/service_config.proto
+                #
+                # We only care about a small piece, so we are just leaving
+                # it as a dictionary and parsing accordingly.
+                for mc in self.opts.retry.get('methodConfig', []):
+                    # Does this method config apply to us?
+                    # The gRPC service config uses a repeated `name` field
+                    # with a particular format, which we match against.
+                    selector = {
+                        'service': '{package}.{service_name}'.format(
+                            package='.'.join(service_address.package),
+                            service_name=service_address.name,
+                        ),
+                        'method': meth_pb.name,
+                    }
+                    if selector not in mc.get('name', []):
+                        continue
+
+
+                    # Set the retry and timeout according to this rule.
+                    if mc.get('timeout'):
+                        timeout = self._to_float(mc['timeout'])
+                    r = mc.get('retryPolicy', {})
+                    retry = wrappers.RetryInfo(
+                        max_attempts=r.get('maxAttempts', 5),
+                        initial_backoff=self._to_float(
+                            r.get('initialBackoff', '1s'),
+                        ),
+                        max_backoff=self._to_float(
+                            r.get('maxBackoff', '60s'),
+                        ),
+                        backoff_multiplier=r.get('backoffMultiplier', 1.5),
+                        retryable_exceptions=tuple([
+                            exceptions.exception_class_for_grpc_status(
+                                getattr(grpc.StatusCode, code),
+                            )
+                            for code in r.get('retryableStatusCodes', [])
+                        ]),
+                    )
+
+                    # We found the rule that applied to us; stop looping.
+                    break
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
@@ -540,10 +597,12 @@ class _ProtoBuilder:
                 lro=lro,
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
-                    address=address.child(meth_pb.name, path + (i,)),
+                    address=service_address.child(meth_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
                 output=self.api_messages[meth_pb.output_type.lstrip('.')],
+                retry=retry,
+                timeout=timeout,
             )
 
         # Done; return the answer.
@@ -645,7 +704,7 @@ class _ProtoBuilder:
         # Put together a dictionary of the service's methods.
         methods = self._get_methods(
             service.method,
-            address=address,
+            service_address=address,
             path=path + (2,),
         )
 
@@ -659,3 +718,9 @@ class _ProtoBuilder:
             service_pb=service,
         )
         return self.proto_services[address.proto]
+
+    def _to_float(self, s: str) -> float:
+        """Convert a protobuf duration string (e.g. `"30s"`) to float."""
+        if s.endswith('n'):
+            return int(s[:-1]) / 10e9
+        return float(s[:-1])
