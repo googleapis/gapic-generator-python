@@ -572,14 +572,14 @@ class _ProtoBuilder:
                         timeout = self._to_float(mc['timeout'])
                     r = mc.get('retryPolicy', {})
                     retry = wrappers.RetryInfo(
-                        max_attempts=r.get('maxAttempts', 5),
+                        max_attempts=r.get('maxAttempts', 0),
                         initial_backoff=self._to_float(
-                            r.get('initialBackoff', '1s'),
+                            r.get('initialBackoff', '0s'),
                         ),
                         max_backoff=self._to_float(
-                            r.get('maxBackoff', '60s'),
+                            r.get('maxBackoff', '0s'),
                         ),
-                        backoff_multiplier=r.get('backoffMultiplier', 1.5),
+                        backoff_multiplier=r.get('backoffMultiplier', 0.0),
                         retryable_exceptions=tuple([
                             exceptions.exception_class_for_grpc_status(
                                 getattr(grpc.StatusCode, code),
