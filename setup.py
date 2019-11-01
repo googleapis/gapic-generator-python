@@ -46,7 +46,6 @@ setup(
         'googleapis-common-protos >= 1.6.0',
         'grpcio >= 1.24.3',
         'jinja2 >= 2.10',
-        'google_api >= 0.1.12',
         'protobuf >= 3.7.1',
         'pypandoc >= 1.4',
         'PyYAML >= 5.1.1',
