@@ -544,48 +544,53 @@ class _ProtoBuilder:
             # and timeout information from it.
             retry = None
             timeout = None
-            if self.opts.retry:
-                # This object should be a dictionary that conforms to the
-                # gRPC service config proto:
-                #   Repo: https://github.com/grpc/grpc-proto/
-                #   Filename: grpc/service_config/service_config.proto
-                #
-                # We only care about a small piece, so we are just leaving
-                # it as a dictionary and parsing accordingly.
-                for mc in self.opts.retry.get('methodConfig', []):
-                    # Does this method config apply to us?
-                    # The gRPC service config uses a repeated `name` field
-                    # with a particular format, which we match against.
-                    selector = {
-                        'service': '{package}.{service_name}'.format(
-                            package='.'.join(service_address.package),
-                            service_name=service_address.name,
-                        ),
-                        'method': meth_pb.name,
-                    }
-                    if selector not in mc.get('name', []):
-                        continue
 
-                    # Set the retry and timeout according to this rule.
+            # This object should be a dictionary that conforms to the
+            # gRPC service config proto:
+            #   Repo: https://github.com/grpc/grpc-proto/
+            #   Filename: grpc/service_config/service_config.proto
+            #
+            # We only care about a small piece, so we are just leaving
+            # it as a dictionary and parsing accordingly.
+            if self.opts.retry:
+                # The gRPC service config uses a repeated `name` field
+                # with a particular format, which we match against.
+                # This defines the expected selector for *this* method.
+                selector = {
+                    'service': '{package}.{service_name}'.format(
+                        package='.'.join(service_address.package),
+                        service_name=service_address.name,
+                    ),
+                    'method': meth_pb.name,
+                }
+
+                # Find the method config that applies to us, if any.
+                mc = next((i for i in self.opts.retry.get('methodConfig', [])
+                           if selector in i.get('name')), None)
+                if mc:
+                    # Set the timeout according to this method config.
                     if mc.get('timeout'):
                         timeout = self._to_float(mc['timeout'])
-                    r = mc.get('retryPolicy', {})
-                    retry = wrappers.RetryInfo(
-                        max_attempts=r.get('maxAttempts', 0),
-                        initial_backoff=self._to_float(
-                            r.get('initialBackoff', '0s'),
-                        ),
-                        max_backoff=self._to_float(
-                            r.get('maxBackoff', '0s'),
-                        ),
-                        backoff_multiplier=r.get('backoffMultiplier', 0.0),
-                        retryable_exceptions=frozenset([
-                            exceptions.exception_class_for_grpc_status(
-                                getattr(grpc.StatusCode, code),
-                            )
-                            for code in r.get('retryableStatusCodes', [])
-                        ]),
-                    )
+
+                    # Set the retry according to this method config.
+                    if 'retryPolicy' in mc:
+                        r = mc['retryPolicy']
+                        retry = wrappers.RetryInfo(
+                            max_attempts=r.get('maxAttempts', 0),
+                            initial_backoff=self._to_float(
+                                r.get('initialBackoff', '0s'),
+                            ),
+                            max_backoff=self._to_float(
+                                r.get('maxBackoff', '0s'),
+                            ),
+                            backoff_multiplier=r.get('backoffMultiplier', 0.0),
+                            retryable_exceptions=frozenset(
+                                exceptions.exception_class_for_grpc_status(
+                                    getattr(grpc.StatusCode, code),
+                                )
+                                for code in r.get('retryableStatusCodes', [])
+                            ),
+                        )
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
@@ -717,6 +722,4 @@ class _ProtoBuilder:
 
     def _to_float(self, s: str) -> float:
         """Convert a protobuf duration string (e.g. `"30s"`) to float."""
-        if s.endswith('n'):
-            return int(s[:-1]) / 1e9
-        return float(s[:-1])
+        return int(s[:-1]) / 1e9 if s.endswith('n') else float(s[:-1])

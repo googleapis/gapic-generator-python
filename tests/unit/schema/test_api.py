@@ -346,14 +346,16 @@ def test_messages_nested():
 def test_services():
     L = descriptor_pb2.SourceCodeInfo.Location
 
-    # Set up retry information.
+    # Make a silly helper method to not repeat some of the structure.
     def _n(method_name: str):
         return {
             'service': 'google.example.v2.FooService',
             'method': method_name,
         }
+
+    # Set up retry information.
     opts = options.Options(retry={'methodConfig': [
-        {'name': [_n('GetFoo')], 'timeout': '30s'},
+        {'name': [_n('TimeoutableGetFoo')], 'timeout': '30s'},
         {'name': [_n('RetryableGetFoo')], 'retryPolicy': {
             'maxAttempts': 3,
             'initialBackoff': '%dn' % 1e6,
@@ -375,6 +377,11 @@ def test_services():
         method=(
             descriptor_pb2.MethodDescriptorProto(
                 name='GetFoo',
+                input_type='google.example.v2.GetFooRequest',
+                output_type='google.example.v2.GetFooResponse',
+            ),
+            descriptor_pb2.MethodDescriptorProto(
+                name='TimeoutableGetFoo',
                 input_type='google.example.v2.GetFooRequest',
                 output_type='google.example.v2.GetFooResponse',
             ),
@@ -415,7 +422,7 @@ def test_services():
     assert len(proto.messages) == 2
     service = proto.services['google.example.v2.FooService']
     assert service.meta.doc == 'This is the FooService service.'
-    assert len(service.methods) == 2
+    assert len(service.methods) == 3
     method = service.methods['GetFoo']
     assert method.meta.doc == 'This is the GetFoo method.'
     assert isinstance(method.input, wrappers.MessageType)
@@ -424,18 +431,23 @@ def test_services():
     assert method.input.meta.doc == 'This is the GetFooRequest message.'
     assert method.output.name == 'GetFooResponse'
     assert method.output.meta.doc == 'This is the GetFooResponse message.'
-    assert method.timeout - 30.0 < 5e-10
-    assert not method.retry.max_attempts
-    assert not method.retry.initial_backoff
-    assert not method.retry.max_backoff
-    assert not method.retry.backoff_multiplier
-    assert not method.retry.retryable_exceptions
+    assert not method.timeout
+    assert not method.retry
+
+    # Establish that the retry information on a timeout-able method also
+    # looks correct.
+    timeout_method = service.methods['TimeoutableGetFoo']
+    assert timeout_method.timeout == pytest.approx(30.0)
+    assert not timeout_method.retry
+
+    # Establish that the retry information on the retryable method also
+    # looks correct.
     retry_method = service.methods['RetryableGetFoo']
     assert retry_method.timeout is None
     assert retry_method.retry.max_attempts == 3
-    assert retry_method.retry.initial_backoff - 0.001 < 5e-10
-    assert retry_method.retry.backoff_multiplier - 1.5 < 5e-10
-    assert retry_method.retry.max_backoff - 60.0 < 5e-10
+    assert retry_method.retry.initial_backoff == pytest.approx(0.001)
+    assert retry_method.retry.backoff_multiplier == pytest.approx(1.5)
+    assert retry_method.retry.max_backoff == pytest.approx(60.0)
     assert retry_method.retry.retryable_exceptions == {
         exceptions.ServiceUnavailable, exceptions.Aborted,
     }
