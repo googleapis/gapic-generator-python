@@ -17,9 +17,11 @@ from unittest import mock
 
 import pytest
 
+from google.api_core import exceptions
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
+from gapic.generator import options
 from gapic.schema import api
 from gapic.schema import imp
 from gapic.schema import naming
@@ -344,6 +346,23 @@ def test_messages_nested():
 def test_services():
     L = descriptor_pb2.SourceCodeInfo.Location
 
+    # Set up retry information.
+    def _n(method_name: str):
+        return {
+            'service': 'google.example.v2.FooService',
+            'method': method_name,
+        }
+    opts = options.Options(retry={'methodConfig': [
+        {'name': [_n('GetFoo')], 'timeout': '30s'},
+        {'name': [_n('RetryableGetFoo')], 'retryPolicy': {
+            'maxAttempts': 3,
+            'initialBackoff': '%dn' % 1e6,
+            'maxBackoff': '60s',
+            'backoffMultiplier': 1.5,
+            'retryableStatusCodes': ['UNAVAILABLE', 'ABORTED'],
+        }},
+    ]})
+
     # Set up messages for our RPC.
     request_message_pb = make_message_pb2(name='GetFooRequest',
         fields=(make_field_pb2(name='name', type=9, number=1),)
@@ -353,11 +372,18 @@ def test_services():
     # Set up the service with an RPC.
     service_pb = descriptor_pb2.ServiceDescriptorProto(
         name='FooService',
-        method=(descriptor_pb2.MethodDescriptorProto(
-            name='GetFoo',
-            input_type='google.example.v2.GetFooRequest',
-            output_type='google.example.v2.GetFooResponse',
-        ),),
+        method=(
+            descriptor_pb2.MethodDescriptorProto(
+                name='GetFoo',
+                input_type='google.example.v2.GetFooRequest',
+                output_type='google.example.v2.GetFooResponse',
+            ),
+            descriptor_pb2.MethodDescriptorProto(
+                name='RetryableGetFoo',
+                input_type='google.example.v2.GetFooRequest',
+                output_type='google.example.v2.GetFooResponse',
+            ),
+        ),
     )
 
     # Fake-document our fake stuff.
@@ -370,6 +396,7 @@ def test_services():
 
     # Finally, set up the file that encompasses these.
     fdp = make_file_pb2(
+        name='test.proto',
         package='google.example.v2',
         messages=(request_message_pb, response_message_pb),
         services=(service_pb,),
@@ -377,14 +404,18 @@ def test_services():
     )
 
     # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
+    proto = api.API.build(
+        [fdp],
+        'google.example.v2',
+        opts=opts,
+    ).protos['test.proto']
 
     # Establish that our data looks correct.
     assert len(proto.services) == 1
     assert len(proto.messages) == 2
     service = proto.services['google.example.v2.FooService']
     assert service.meta.doc == 'This is the FooService service.'
-    assert len(service.methods) == 1
+    assert len(service.methods) == 2
     method = service.methods['GetFoo']
     assert method.meta.doc == 'This is the GetFoo method.'
     assert isinstance(method.input, wrappers.MessageType)
@@ -393,6 +424,21 @@ def test_services():
     assert method.input.meta.doc == 'This is the GetFooRequest message.'
     assert method.output.name == 'GetFooResponse'
     assert method.output.meta.doc == 'This is the GetFooResponse message.'
+    assert method.timeout - 30.0 < 5e-10
+    assert not method.retry.max_attempts
+    assert not method.retry.initial_backoff
+    assert not method.retry.max_backoff
+    assert not method.retry.backoff_multiplier
+    assert not method.retry.retryable_exceptions
+    retry_method = service.methods['RetryableGetFoo']
+    assert retry_method.timeout is None
+    assert retry_method.retry.max_attempts == 3
+    assert retry_method.retry.initial_backoff - 0.001 < 5e-10
+    assert retry_method.retry.backoff_multiplier - 1.5 < 5e-10
+    assert retry_method.retry.max_backoff - 60.0 < 5e-10
+    assert retry_method.retry.retryable_exceptions == {
+        exceptions.ServiceUnavailable, exceptions.Aborted,
+    }
 
 
 def test_prior_protos():

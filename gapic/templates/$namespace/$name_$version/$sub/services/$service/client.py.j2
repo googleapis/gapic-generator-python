@@ -148,6 +148,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 {%- if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
                 {%- if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
                 predicate=retries.if_exception_type(
+                    {%- filter sort_lines %}
                     {%- for ex in method.retry.retryable_exceptions %}
                     exceptions.{{ ex.__name__ }},
                     {%- else %}{% if method.idempotent %}
@@ -155,6 +156,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                     exceptions.ServiceUnavailable,
                     exceptions.Unknown,
                     {%- endif %}{%- endfor %}
+                    {%- endfilter %}
                 ),
             ),
             default_timeout={{ method.timeout }},

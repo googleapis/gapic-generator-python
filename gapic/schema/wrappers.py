@@ -430,7 +430,7 @@ class RetryInfo:
     initial_backoff: float
     max_backoff: float
     backoff_multiplier: float
-    retryable_exceptions: Tuple[exceptions.GoogleAPICallError, ...]
+    retryable_exceptions: FrozenSet[exceptions.GoogleAPICallError]
 
 
 @dataclasses.dataclass(frozen=True)

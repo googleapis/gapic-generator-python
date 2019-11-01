@@ -23,11 +23,11 @@ import sys
 from itertools import chain
 from typing import Callable, Dict, FrozenSet, Mapping, Sequence, Set, Tuple
 
-from google.api_core import exceptions
+from google.api_core import exceptions  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
 
-import grpc
+import grpc  # type: ignore
 
 from gapic.generator import options
 from gapic.schema import metadata
@@ -579,16 +579,13 @@ class _ProtoBuilder:
                             r.get('maxBackoff', '0s'),
                         ),
                         backoff_multiplier=r.get('backoffMultiplier', 0.0),
-                        retryable_exceptions=tuple([
+                        retryable_exceptions=frozenset([
                             exceptions.exception_class_for_grpc_status(
                                 getattr(grpc.StatusCode, code),
                             )
                             for code in r.get('retryableStatusCodes', [])
                         ]),
                     )
-
-                    # We found the rule that applied to us; stop looping.
-                    break
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
@@ -721,5 +718,5 @@ class _ProtoBuilder:
     def _to_float(self, s: str) -> float:
         """Convert a protobuf duration string (e.g. `"30s"`) to float."""
         if s.endswith('n'):
-            return int(s[:-1]) / 10e9
+            return int(s[:-1]) / 1e9
         return float(s[:-1])
