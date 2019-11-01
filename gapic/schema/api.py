@@ -566,7 +566,6 @@ class _ProtoBuilder:
                     if selector not in mc.get('name', []):
                         continue
 
-
                     # Set the retry and timeout according to this rule.
                     if mc.get('timeout'):
                         timeout = self._to_float(mc['timeout'])
