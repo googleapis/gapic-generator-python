@@ -16,6 +16,7 @@ import pytest
 
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
+from google.showcase import MessagingClient
 
 import grpc
 

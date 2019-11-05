@@ -24,11 +24,11 @@ class {{ message.name }}({{ p }}.Message):
         {% endif %}
     {% endfor -%}
 
-    {% if "next_page_token" in message.fields.values()|map(attribute='name') -%}
+    {% if "next_page_token" in message.fields.values()|map(attribute='name') %}
     @property
     def raw_page(self):
         return self
-    {% endif -%}
+    {% endif %}
 
     {# Iterate over fields. -#}
     {% for field in message.fields.values() -%}
