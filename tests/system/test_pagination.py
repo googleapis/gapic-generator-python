@@ -45,6 +45,7 @@ def test_pagination_pages(echo):
     assert results == [showcase.EchoResponse(content=i)
                        for i in text.split(' ')]
 
+
 def test_pagination_raw_page():
     for response_type in [
         showcase.PagedExpandResponse,
