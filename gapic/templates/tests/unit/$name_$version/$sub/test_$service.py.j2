@@ -255,7 +255,7 @@ def test_{{ method.name|snake_case }}_pages():
             assert page.raw_page.next_page_token == token
 {% elif method.lro and "next_page_token" in method.lro.response_type.fields.keys() %}
 def test_{{ method.name|snake_case }}_raw_page_lro():
-    response = {{ method.lro.response_type.ident }}()n
+    response = {{ method.lro.response_type.ident }}()
     assert response.raw_page is response
 {% endif %} {#- method.paged_result_field #}
 
