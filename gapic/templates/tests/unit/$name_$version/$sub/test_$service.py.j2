@@ -251,9 +251,8 @@ def test_{{ method.name|snake_case }}_pages():
             RuntimeError,
         )
         pages = list(client.{{ method.name|snake_case }}(request={}).pages)
-        assert pages[0].raw_page.next_page_token == pages[1].page_token
-        assert pages[1].raw_page.next_page_token == pages[2].page_token
-        assert not pages[2].raw_page.next_page_token
+        for page, token in zip(pages, ['abc','def','ghi', '']):
+            assert page.raw_page.next_page_token == token
 {% endif %} {#- method.paged_response_field #}
 
 {% endfor -%} {#- method in methods #}
