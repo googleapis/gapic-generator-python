@@ -44,17 +44,3 @@ def test_pagination_pages(echo):
     results = [r for p in page_results for r in p.responses]
     assert results == [showcase.EchoResponse(content=i)
                        for i in text.split(' ')]
-
-
-def test_pagination_raw_page():
-    for response_type in [
-        showcase.PagedExpandResponse,
-        showcase.ListRoomsResponse,
-        showcase.ListBlurbsResponse,
-        showcase.SearchBlurbsResponse
-        showcase.ListUsersResponse,
-        showcase.ListSessionsResponse,
-        showcase.ListTestsResponse,
-    ]:
-        response = response_type()
-        assert response.raw_page is response

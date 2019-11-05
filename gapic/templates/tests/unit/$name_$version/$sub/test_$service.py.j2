@@ -211,7 +211,49 @@ def test_{{ method.name|snake_case }}_pager():
         )]
         assert len(results) == 6
         assert all([isinstance(i, {{ method.paged_result_field.message.ident }})
-                   for i in results])
+  for i in results])
+
+def test_{{ method.name|snake_case }}_pages():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[],
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.{{ method.name|snake_case }}(request={}).pages)
+        assert pages[0].raw_page.next_page_token == pages[1].page_token
+        assert pages[1].raw_page.next_page_token == pages[2].page_token
+        assert not pages[2].raw_page.next_page_token
 {% endif %} {#- method.paged_response_field #}
 
 {% endfor -%} {#- method in methods #}
