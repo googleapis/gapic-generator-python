@@ -28,14 +28,18 @@ def test_pagination(echo):
 def test_pagination_pages(echo):
     text = "The hail in Wales falls mainly on the snails."
     page_results = list(echo.paged_expand({
-        'tontent': text,
+        'content': text,
         'page_size': 3,
     }).pages)
 
     assert len(page_results) == 3
+    assert not page_results[-1].next_page_token
 
     # The monolithic surface uses a wrapper type that needs an explicit property
     # for a 'raw_page': we need to duplicate that interface, even though the
     # architecture is different.
     assert page_results[0].raw_page is page_results[0]
-    assert page_results.next_page_token is None
+
+    results = [r for p in page_results for r in p.responses]
+    assert results == [showcase.EchoResponse(content=i)
+                       for i in text.split(' ')]
