@@ -25,6 +25,7 @@ def test_pagination(echo):
     assert results == [showcase.EchoResponse(content=i)
                        for i in text.split(' ')]
 
+
 def test_pagination_pages(echo):
     text = "The hail in Wales falls mainly on the snails."
     page_results = list(echo.paged_expand({
