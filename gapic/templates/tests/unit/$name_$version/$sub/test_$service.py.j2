@@ -253,7 +253,11 @@ def test_{{ method.name|snake_case }}_pages():
         pages = list(client.{{ method.name|snake_case }}(request={}).pages)
         for page, token in zip(pages, ['abc','def','ghi', '']):
             assert page.raw_page.next_page_token == token
-{% endif %} {#- method.paged_response_field #}
+{% elif method.lro and "next_page_token" in method.lro.response_type.fields|map(attribute="name") %}
+def test_{{ method.name|snake_case }}_raw_page_lro():
+    response = {{ method.lro.response_type.ident }}()n
+    assert response.raw_page is response
+{% endif %} {#- method.paged_result_field #}
 
 {% endfor -%} {#- method in methods #}
 
