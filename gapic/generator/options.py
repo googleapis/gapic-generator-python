@@ -93,10 +93,11 @@ class Options:
             )
 
         retry_cfg = None
-        retry_path = opts.pop(cls.RETRY_OPT, None)
-        if retry_path:
-            with open(retry_path[-1]) as f:
-              retry_cfg = json.load(f)
+        retry_paths = opts.pop(cls.RETRY_OPT, None)
+        if retry_paths:
+            # Just use the last config specified.
+            with open(retry_paths[-1]) as f:
+                retry_cfg = json.load(f)
 
         # Build the options instance.
         sample_paths = opts.pop(cls.SAMPLES_OPT, [])

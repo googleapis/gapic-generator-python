@@ -93,16 +93,16 @@ def test_options_service_config(fs):
         "methodConfig": [
             {
                 "name": [
-                {
-                    "service": "animalia.mollusca.v1beta1.Cephalopod",
-                    "method":"IdentifySquid"
-                }
+                    {
+                        "service": "animalia.mollusca.v1beta1.Cephalopod",
+                        "method":"IdentifySquid",
+                    }
                 ],
-                "retryPolicy":{
-                    "maxAttempts":5,
-                    "maxBackoff":"3s",
-                    "initialBackoff":"0.2s",
-                    "backoffMultiplier":2,
+                "retryPolicy" :{
+                    "maxAttempts": 5,
+                    "maxBackoff": "3s",
+                    "initialBackoff": "0.2s",
+                    "backoffMultiplier": 2,
                     "retryableStatusCodes":
                     [
                         "UNAVAILABLE",
