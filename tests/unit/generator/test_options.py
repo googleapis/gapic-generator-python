@@ -55,6 +55,7 @@ def test_options_no_valid_sample_config(fs):
     with pytest.raises(types.InvalidConfig):
         options.Options.build("samples=sampledir/")
 
+
 def test_options_service_config(fs):
     opts = options.Options.build("")
     assert opts.retry is None
