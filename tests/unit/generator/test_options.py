@@ -95,10 +95,10 @@ def test_options_service_config(fs):
                 "name": [
                     {
                         "service": "animalia.mollusca.v1beta1.Cephalopod",
-                        "method":"IdentifySquid",
+                        "method": "IdentifySquid",
                     }
                 ],
-                "retryPolicy" :{
+                "retryPolicy": {
                     "maxAttempts": 5,
                     "maxBackoff": "3s",
                     "initialBackoff": "0.2s",
