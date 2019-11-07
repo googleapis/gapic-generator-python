@@ -498,6 +498,7 @@ def test_generator_duplicate_samples(fs):
     with pytest.raises(types.DuplicateSample):
         generator.get_response(api_schema=api_schema)
 
+
 @mock.patch(
     'gapic.samplegen.samplegen.generate_sample',
     return_value=''
@@ -525,30 +526,30 @@ def test_dont_generate_in_code_samples(
     fs.create_file(
         config_fpath,
         contents=dedent(
-          '''
-          type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
-          schema_version: 1.2.0
-          samples:
-          - id: squid_sample
-            rpc: IdentifyMollusc
-            service: Mollusc.v1.Mollusc
-            sample_type:
-            - standalone
-            - incode/SQUID
-          - id: clam_sample
-            rpc: IdentifyMollusc
-            service: Mollusc.v1.Mollusc
-            sample_type:
-            - incode/CLAM
-          - id: whelk_sample
-            rpc: IdentifyMollusc
-            service: Mollusc.v1.Mollusc
-            sample_type:
-            - standalone
-          - id: octopus_sample
-            rpc: IdentifyMollusc
-            service: Mollusc.v1.Mollusc
-          '''
+            '''
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - id: squid_sample
+              rpc: IdentifyMollusc
+              service: Mollusc.v1.Mollusc
+              sample_type:
+              - standalone
+              - incode/SQUID
+            - id: clam_sample
+              rpc: IdentifyMollusc
+              service: Mollusc.v1.Mollusc
+              sample_type:
+              - incode/CLAM
+            - id: whelk_sample
+              rpc: IdentifyMollusc
+              service: Mollusc.v1.Mollusc
+              sample_type:
+              - standalone
+            - id: octopus_sample
+              rpc: IdentifyMollusc
+              service: Mollusc.v1.Mollusc
+            '''
         )
     )
 
@@ -559,7 +560,8 @@ def test_dont_generate_in_code_samples(
             descriptor_pb2.FileDescriptorProto(
                 name='mollusc.proto',
                 package='Mollusc.v1',
-                service=[descriptor_pb2.ServiceDescriptorProto(name='Mollusc')],
+                service=[descriptor_pb2.ServiceDescriptorProto(
+                    name='Mollusc')],
             ),
         ),
         naming=naming.Naming(name='Mollusc', version='v6'),
@@ -611,6 +613,7 @@ def test_dont_generate_in_code_samples(
     )
     actual = generator.get_response(api_schema=api_schema)
     assert actual == expected
+
 
 def make_generator(opts_str: str = '') -> generator.Generator:
     return generator.Generator(options.Options.build(opts_str))
