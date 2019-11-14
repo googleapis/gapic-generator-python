@@ -139,8 +139,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         {% endif -%}
         request = {{ method.input.ident }}()
         {%- for field in method.legacy_flattened_fields.values() %}
-        if {{ field.name }} is not None:
-            request.{{ field.name }} = {{ field.name }}
+        request.{{ field.name }} = {{ field.name }}
         {%- endfor %}
 
         # Wrap the RPC method; this adds retry and timeout information,
