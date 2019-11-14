@@ -356,9 +356,10 @@ class EnumType:
         ``EnumType`` object aliases module names to avoid naming collisions in
         the file being written.
         """
-        return dataclasses.replace(self,
-                                   meta=self.meta.with_context(collisions=collisions),
-                                   )
+        return dataclasses.replace(
+            self,
+            meta=self.meta.with_context(collisions=collisions),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -689,9 +690,11 @@ class Service:
             Sequence[str]: A sequence of OAuth scopes.
         """
         # Return the OAuth scopes, split on comma.
-        return tuple([i.strip() for i in
-                      self.options.Extensions[client_pb2.oauth_scopes].split(',')
-                      if i])
+        return tuple(
+            i.strip()
+            for i in self.options.Extensions[client_pb2.oauth_scopes].split(',')
+            if i
+        )
 
     @property
     def module_name(self) -> str:
