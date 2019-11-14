@@ -32,7 +32,7 @@ import dataclasses
 import re
 from itertools import chain
 from typing import (cast, Dict, FrozenSet, List, Mapping, Optional,
-        Sequence, Set, Union)
+                    Sequence, Set, Union)
 
 from google.api import annotations_pb2  # type: ignore
 from google.api import client_pb2
@@ -185,7 +185,8 @@ class Field:
         ``Field`` object aliases module names to avoid naming collisions
         in the file being written.
         """
-        return dataclasses.replace(self,
+        return dataclasses.replace(
+            self,
             message=self.message.with_context(
                 collisions=collisions,
                 skip_fields=True,
@@ -230,7 +231,7 @@ class MessageType:
         return self.meta.address
 
     def get_field(self, *field_path: str,
-            collisions: FrozenSet[str] = frozenset()) -> Field:
+                  collisions: FrozenSet[str] = frozenset()) -> Field:
         """Return a field arbitrarily deep in this message's structure.
 
         This method recursively traverses the message tree to return the
@@ -288,8 +289,8 @@ class MessageType:
         return cursor.message.get_field(*field_path[1:], collisions=collisions)
 
     def with_context(self, *,
-            collisions: FrozenSet[str],
-            skip_fields: bool = False,
+                     collisions: FrozenSet[str],
+                     skip_fields: bool = False,
                      ) -> 'MessageType':
         """Return a derivative of this message with the provided context.
 
@@ -301,7 +302,8 @@ class MessageType:
         underlying fields. This provides for an "exit" in the case of circular
         references.
         """
-        return dataclasses.replace(self,
+        return dataclasses.replace(
+            self,
             fields=collections.OrderedDict([
                 (k, v.with_context(collisions=collisions))
                 for k, v in self.fields.items()
@@ -355,7 +357,7 @@ class EnumType:
         the file being written.
         """
         return dataclasses.replace(self,
-            meta=self.meta.with_context(collisions=collisions),
+                                   meta=self.meta.with_context(collisions=collisions),
                                    )
 
 
@@ -540,6 +542,15 @@ class Method:
         # Done; return the flattened fields
         return answer
 
+    @utils.cached_property
+    def legacy_flattened_fields(self) -> Mapping[str, Field]:
+        """Return the legacy flattening interface: top level fields only,
+        required fields first"""
+        required, optional = utils.partition(lambda f: f.required,
+                                             self.input.fields.values())
+        return collections.OrderedDict((f.name, f)
+                                       for f in chain(required, optional))
+
     @property
     def grpc_stub_type(self) -> str:
         """Return the type of gRPC stub to use."""
@@ -621,11 +632,12 @@ class Method:
         ``Method`` object aliases module names to avoid naming collisions
         in the file being written.
         """
-        return dataclasses.replace(self,
+        return dataclasses.replace(
+            self,
             input=self.input.with_context(collisions=collisions),
             output=self.output.with_context(collisions=collisions),
             meta=self.meta.with_context(collisions=collisions),
-                                   )
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -670,8 +682,8 @@ class Service:
         """
         # Return the OAuth scopes, split on comma.
         return tuple([i.strip() for i in
-            self.options.Extensions[client_pb2.oauth_scopes].split(',')
-            if i])
+                      self.options.Extensions[client_pb2.oauth_scopes].split(',')
+                      if i])
 
     @property
     def module_name(self) -> str:
@@ -715,7 +727,8 @@ class Service:
         ``Service`` object aliases module names to avoid naming collisions
         in the file being written.
         """
-        return dataclasses.replace(self,
+        return dataclasses.replace(
+            self,
             methods=collections.OrderedDict([
                 (k, v.with_context(collisions=collisions))
                 for k, v in self.methods.items()
