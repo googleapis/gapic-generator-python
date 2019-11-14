@@ -218,7 +218,7 @@ def test_method_legacy_flattened_fields():
         ]
     )
 
-    # Use a default dict because ordering is important:
+    # Use an ordered dict because ordering is important:
     # required fields should come first.
     expected = collections.OrderedDict([
         ("squid", squid),

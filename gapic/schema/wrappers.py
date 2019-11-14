@@ -594,8 +594,7 @@ class Method:
         # We found no repeated fields. Return None.
         return None
 
-    @utils.cached_property
-    def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
+    def _ref_types(self, use_legacy: bool = False) -> Sequence[Union[MessageType, EnumType]]:
         """Return types referenced by this method."""
         # Begin with the input (request) and output (response) messages.
         answer = [self.input]
@@ -607,7 +606,8 @@ class Method:
         #
         # This entails adding the module for any field on the signature
         # unless the field is a primitive.
-        for field in self.flattened_fields.values():
+        flattening = self.legacy_flattened_fields if use_legacy else self.flattened_fields
+        for field in flattening.values():
             if field.message or field.enum:
                 answer.append(field.type)
 
@@ -619,6 +619,14 @@ class Method:
 
         # Done; return the answer.
         return tuple(answer)
+
+    @utils.cached_property
+    def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
+        return self._ref_types()
+
+    @utils.cached_property
+    def ref_types_legacy(self) -> Sequence[Union[MessageType, EnumType]]:
+        return self._ref_types(use_legacy=True)
 
     @property
     def void(self) -> bool:
