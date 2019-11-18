@@ -99,12 +99,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 automatically.
             client_options (ClientOptions): Custom options for the client.
         """
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
         if isinstance(client_options, dict):
             client_options = ClientOptions.from_dict(client_options)
 
+        # Save or instantiate the transport.
+        # Ordinarily, we provide the transport, but allowing a custom transport
+        # instance provides an extensibility point for unusual situations.
         if isinstance(transport, {{ service.name }}Transport):
             if credentials:
                 raise ValueError('When providing a transport instance, '
