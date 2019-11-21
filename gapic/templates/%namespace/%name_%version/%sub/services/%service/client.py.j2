@@ -120,11 +120,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% for method in service.methods.values() -%}
     def {{ method.name|snake_case }}(self,
             {% for field in method.legacy_flattened_fields.values() -%}
-            {% if field.required -%}
-            {{ field.name }}: {{ field.ident }},
-            {% else -%}
             {{ field.name }}: {{ field.ident }} = None,
-            {% endif -%}
             {% endfor -%}
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -141,8 +137,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             {{ field.name }} (:class:`{{ field.ident.sphinx }}`):
                 {{ field.meta.doc|rst(width=72, indent=16, nl=False) }}
                 This corresponds to the ``{{ key }}`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
+                on the ``request`` instance.
             {% endfor -%}
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

@@ -31,6 +31,14 @@ setuptools.setup(
         'Topic :: Internet',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
+    scripts=[
+        {% for service in api.services.values() -%}
+        'scripts/fixup_{{ service.module_name }}_keywords.py',
+        {% endfor -%}
+    ],
+    setup_requires=[
+        'libcst == 0.2.4',
+    ],
     zip_safe=False,
 )
 {% endblock %}
