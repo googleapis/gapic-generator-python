@@ -132,7 +132,7 @@ class Field:
             bool: Whether this field is repeated.
         """
         return self.label == \
-            descriptor_pb2.FieldDescriptorProto.Label.Value(b'LABEL_REPEATED')
+            descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
 
     @property
     def required(self) -> bool:
