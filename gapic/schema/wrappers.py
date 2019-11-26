@@ -34,10 +34,10 @@ from itertools import chain
 from typing import (cast, Dict, FrozenSet, List, Mapping, Optional,
                     Sequence, Set, Union)
 
-from google.api import annotations_pb2     # type: ignore
+from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
-from google.api_core import exceptions     # type: ignore
+from google.api_core import exceptions      # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
 
 from gapic import utils
@@ -132,7 +132,7 @@ class Field:
             bool: Whether this field is repeated.
         """
         return self.label == \
-            descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
+            descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')   # type: ignore
 
     @property
     def required(self) -> bool:
