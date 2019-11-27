@@ -17,6 +17,7 @@ from typing import Sequence, Tuple
 
 import pytest
 
+from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
@@ -124,6 +125,18 @@ def test_get_field_nonterminal_repeated_error():
         assert outer.get_field('inner', 'one') == inner_fields[1]
 
 
+def test_resource_path():
+    options = descriptor_pb2.MessageOptions()
+    patterns = options.Extensions[resource_pb2.resource].pattern
+    patterns.append("kingdom/{kingdom}/phylum/{phylum}/class/{klass}")
+    patterns.append("kingdom/{kingdom}/division/{division}/class/{klass}")
+    resource = make_message('Squid', options=options)
+
+    assert resource.resource_path == "kingdom/{kingdom}/phylum/{phylum}/class/{klass}"
+
+    assert resource.resource_path_args == ["kingdom", "phylum", "klass"]
+
+
 def test_field_map():
     # Create an Entry message.
     entry_msg = make_message(
@@ -140,8 +153,8 @@ def test_field_map():
 
 
 def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
-        fields: Sequence[wrappers.Field] = (), meta: metadata.Metadata = None,
-        options: descriptor_pb2.MethodOptions = None,
+                 fields: Sequence[wrappers.Field] = (), meta: metadata.Metadata = None,
+                 options: descriptor_pb2.MethodOptions = None,
                  ) -> wrappers.MessageType:
     message_pb = descriptor_pb2.DescriptorProto(
         name=name,
@@ -183,7 +196,7 @@ def make_field(name: str, repeated: bool = False,
 
 
 def make_enum(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
-        values: Tuple[str, int] = (), meta: metadata.Metadata = None,
+              values: Tuple[str, int] = (), meta: metadata.Metadata = None,
               ) -> wrappers.EnumType:
     enum_value_pbs = [
         descriptor_pb2.EnumValueDescriptorProto(name=i[0], number=i[1])

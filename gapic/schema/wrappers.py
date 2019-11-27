@@ -37,6 +37,7 @@ from typing import (cast, Dict, FrozenSet, List, Mapping, Optional,
 from google.api import annotations_pb2  # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
+from google.api import resource_pb2
 from google.api_core import exceptions  # type: ignore
 from google.protobuf import descriptor_pb2
 
@@ -211,6 +212,9 @@ class MessageType:
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
 
+    def __hash__(self):
+        return hash(self.name)
+
     @utils.cached_property
     def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
         """Return all composite fields used in this proto's messages."""
@@ -229,6 +233,20 @@ class MessageType:
     def ident(self) -> metadata.Address:
         """Return the identifier data to be used in templates."""
         return self.meta.address
+
+    @property
+    def resource_path(self) -> Optional[str]:
+        """If this message describes a resource, return the path to the resource.
+        If there are multiple paths, returns the first one."""
+        return next(
+            iter(self.options.Extensions[resource_pb2.resource].pattern),
+            None
+        )
+
+    @property
+    def resource_path_args(self) -> Sequence[str]:
+        path_arg_re = re.compile(r'\{([a-zA-Z0-9_-]+)\}')
+        return path_arg_re.findall(self.resource_path or '')
 
     def get_field(self, *field_path: str,
                   collisions: FrozenSet[str] = frozenset()) -> Field:
@@ -730,6 +748,17 @@ class Service:
 
         # Done; return the answer.
         return frozenset(answer)
+
+    @utils.cached_property
+    def resource_messages(self) -> FrozenSet[MessageType]:
+        """Returns all the resource message types used in all
+        request fields in the service."""
+        return frozenset(
+            field.message
+            for method in self.methods.values()
+            for field in method.input.fields.values()
+            if field.message and field.message.resource_path
+        )
 
     def with_context(self, *, collisions: FrozenSet[str]) -> 'Service':
         """Return a derivative of this service with the provided context.
