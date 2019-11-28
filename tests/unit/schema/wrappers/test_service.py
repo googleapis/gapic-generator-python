@@ -151,13 +151,16 @@ def test_module_name():
 def test_resource_messages():
     # Resources
     squid_options = descriptor_pb2.MessageOptions()
-    squid_options.Extensions[resource_pb2.resource].pattern.append("squid/{squid}")
+    squid_options.Extensions[resource_pb2.resource].pattern.append(
+        "squid/{squid}")
     squid_message = make_message("Squid", options=squid_options)
     clam_options = descriptor_pb2.MessageOptions()
-    clam_options.Extensions[resource_pb2.resource].pattern.append("clam/{clam}")
+    clam_options.Extensions[resource_pb2.resource].pattern.append(
+        "clam/{clam}")
     clam_message = make_message("Clam", options=clam_options)
     whelk_options = descriptor_pb2.MessageOptions()
-    whelk_options.Extensions[resource_pb2.resource].pattern.append("whelk/{whelk}")
+    whelk_options.Extensions[resource_pb2.resource].pattern.append(
+        "whelk/{whelk}")
     whelk_message = make_message("Whelk", options=whelk_options)
 
     # Not resources
