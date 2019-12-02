@@ -429,7 +429,7 @@ def test_{{ message.name|snake_case }}_path():
   {% for arg in message.resource_path_args -%}
   {{ arg }} = "{{ molluscs.next() }}"
   {% endfor %}
-  expected = f"{{ message.resource_path }}"
+  expected = "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
   actual = {{ service.client_name }}.{{ message.name|snake_case }}_path({{message.resource_path_args|join(", ") }})
   assert expected == actual
 
