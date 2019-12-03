@@ -127,14 +127,15 @@ def test_get_field_nonterminal_repeated_error():
 
 def test_resource_path():
     options = descriptor_pb2.MessageOptions()
-    patterns = options.Extensions[resource_pb2.resource].pattern
-    patterns.append("kingdom/{kingdom}/phylum/{phylum}/class/{klass}")
-    patterns.append("kingdom/{kingdom}/division/{division}/class/{klass}")
-    resource = make_message('Squid', options=options)
+    resource = options.Extensions[resource_pb2.resource]
+    resource.pattern.append("kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}")
+    resource.pattern.append("kingdoms/{kingdom}/divisions/{division}/classes/{klass}")
+    resource.type = "taxonomy.biology.com/Class"
+    message = make_message('Squid', options=options)
 
-    assert resource.resource_path == "kingdom/{kingdom}/phylum/{phylum}/class/{klass}"
-
-    assert resource.resource_path_args == ["kingdom", "phylum", "klass"]
+    assert message.resource_path == "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}"
+    assert message.resource_path_args == ["kingdom", "phylum", "klass"]
+    assert message.resource_type == "Class"
 
 
 def test_field_map():

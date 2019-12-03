@@ -244,6 +244,11 @@ class MessageType:
         )
 
     @property
+    def resource_type(self) -> Optional[str]:
+        resource = self.options.Extensions[resource_pb2.resource]
+        return resource.type[resource.type.find('/') + 1:] if resource else None
+
+    @property
     def resource_path_args(self) -> Sequence[str]:
         path_arg_re = re.compile(r'\{([a-zA-Z0-9_-]+)\}')
         return path_arg_re.findall(self.resource_path or '')
