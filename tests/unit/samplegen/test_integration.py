@@ -76,7 +76,9 @@ def test_generate_sample_basic():
             "Classify": DummyMethod(
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
-                flattened_fields={"classify_target": DummyField(name="classify_target")}
+                flattened_fields={
+                    "classify_target": DummyField(name="classify_target")
+                }
             )
         }
     )
