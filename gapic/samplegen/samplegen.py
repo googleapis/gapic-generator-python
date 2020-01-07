@@ -27,7 +27,7 @@ from gapic.samplegen_utils import types
 from gapic.schema import wrappers
 
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
-from typing import (ChainMap, Dict, List, Mapping, Optional, Set, Tuple)
+from typing import (ChainMap, Dict, FrozenSet, List, Mapping, Optional, Tuple)
 
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
@@ -269,8 +269,8 @@ class Validator:
         sample.setdefault("response", [{"print": ["%s", "$resp"]}])
 
     @utils.cached_property
-    def flattenable_fields(self) -> Set[str]:
-        return set(
+    def flattenable_fields(self) -> FrozenSet[str]:
+        return frozenset(
             field.name for field in self.method.flattened_fields.values()
         )
 
