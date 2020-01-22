@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import textwrap
+from typing import Iterable
 
 
 def sort_lines(text: str, dedupe: bool = True) -> str:
@@ -27,7 +28,7 @@ def sort_lines(text: str, dedupe: bool = True) -> str:
     trailing = '\n' if text.endswith('\n') else ''
 
     # Split the text into individual lines, throwing away any empty lines.
-    lines = (i for i in text.strip().split('\n') if i.strip())
+    lines: Iterable[str] = (i for i in text.strip().split('\n') if i.strip())
 
     # De-duplicate the lines if requested.
     if dedupe:
