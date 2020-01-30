@@ -131,7 +131,9 @@ def test_get_response_enumerates_services():
                 api_schema=make_api(make_proto(
                     descriptor_pb2.FileDescriptorProto(service=[
                         descriptor_pb2.ServiceDescriptorProto(name='Spam'),
-                        descriptor_pb2.ServiceDescriptorProto(name='EggsService'),
+                        descriptor_pb2.ServiceDescriptorProto(
+                            name='EggsService'
+                        ),
                     ]),
                 )), opts=options.Options.build(''))
     assert len(cgr.file) == 2
