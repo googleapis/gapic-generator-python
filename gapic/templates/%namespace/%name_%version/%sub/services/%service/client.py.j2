@@ -197,7 +197,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             request.{{ key }} = {{ field.name }}
         {%- endfor %}
         {%- else %}
-        requests = ({{ method.input.ident }}(r) for r in requests)
+        requests = ({{ method.input.ident }}(r) for r in requests) if requests else None
         {%- endif %}
 
         # Wrap the RPC method; this adds retry and timeout information,
