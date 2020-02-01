@@ -14,6 +14,7 @@
 
 from google import showcase
 
+
 def test_unary_stream(echo):
     content = 'The hail in Wales falls mainly on the snails.'
     responses = echo.expand({
@@ -30,6 +31,7 @@ def test_unary_stream(echo):
     # server returns non-empty trailing metadata.
     assert len(responses.trailing_metadata()) == 0
 
+
 def test_stream_unary(echo):
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
@@ -37,10 +39,12 @@ def test_stream_unary(echo):
     response = echo.collect(iter(requests))
     assert response.content == 'hello world!'
 
+
 def test_stream_unary_passing_dict(echo):
     requests = [{'content': 'hello'}, {'content': 'world!'}]
     response = echo.collect(iter(requests))
     assert response.content == 'hello world!'
+
 
 def test_stream_stream(echo):
     requests = []
@@ -56,6 +60,7 @@ def test_stream_stream(echo):
     # TODO. Check responses.trailing_metadata() content once gapic-showcase
     # server returns non-empty trailing metadata.
     assert len(responses.trailing_metadata()) == 0
+
 
 def test_stream_stream_passing_dict(echo):
     requests = [{'content': 'hello'}, {'content': 'world!'}]
