@@ -81,7 +81,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         Returns:
             grpc.Channel: A gRPC channel object.
         """
-         return grpc_helpers.create_channel(
+        return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             scopes=cls.AUTH_SCOPES,
