@@ -98,7 +98,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         # Sanity check: Only create a new channel if we do not already
         # have one.
         if not hasattr(self, '_grpc_channel'):
-            self._grpc_channel = self.create_grpc_channel(
+            self._grpc_channel = self.create_channel(
                 self._host,
                 credentials=self._credentials,
             )
