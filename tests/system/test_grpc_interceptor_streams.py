@@ -40,9 +40,7 @@ def test_stream_stream(intercepted_echo):
     requests.append(showcase.EchoRequest(content="world!"))
     responses = intercepted_echo.chat(iter(requests))
 
-    contents = []
-    for response in responses:
-        contents.append(response.content)
+    contents = [response.content for response in responses]
     assert contents == ['hello', 'world!']
 
     assert responses.trailing_metadata() == intercepted_metadata
