@@ -222,9 +222,9 @@ def test_proto_builder_constructor():
 
 def test_not_target_file():
     """Establish that services are not ignored for untargeted protos."""
-    message_pb = make_message_pb2(name='Foo',
-                                  fields=(make_field_pb2(name='bar', type=3, number=1),)
-                                  )
+    message_pb = make_message_pb2(
+        name='Foo', fields=(make_field_pb2(name='bar', type=3, number=1),)
+    )
     service_pb = descriptor_pb2.ServiceDescriptorProto()
     fdp = make_file_pb2(messages=(message_pb,), services=(service_pb,))
 
@@ -239,9 +239,9 @@ def test_not_target_file():
 def test_messages():
     L = descriptor_pb2.SourceCodeInfo.Location
 
-    message_pb = make_message_pb2(name='Foo',
-                                  fields=(make_field_pb2(name='bar', type=3, number=1),)
-                                  )
+    message_pb = make_message_pb2(
+        name='Foo', fields=(make_field_pb2(name='bar', type=3, number=1),)
+    )
     locations = (
         L(path=(4, 0), leading_comments='This is the Foo message.'),
         L(path=(4, 0, 2, 0), leading_comments='This is the bar field.'),
@@ -436,9 +436,9 @@ def test_services():
     ]})
 
     # Set up messages for our RPC.
-    request_message_pb = make_message_pb2(name='GetFooRequest',
-                                          fields=(make_field_pb2(name='name', type=9, number=1),)
-                                          )
+    request_message_pb = make_message_pb2(
+        name='GetFooRequest', fields=(make_field_pb2(name='name', type=9, number=1),)
+    )
     response_message_pb = make_message_pb2(name='GetFooResponse', fields=())
 
     # Set up the service with an RPC.
