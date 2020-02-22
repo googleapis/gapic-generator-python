@@ -556,7 +556,7 @@ class Method:
             (f.strip(), self.input.get_field(*f.strip().split('.')))
             for sig in signatures
             # Special case for an empty signature check
-            for f in (sig.split(',') if sig else [])
+            for f in sig.split(',') if f
         )
 
         return answer
