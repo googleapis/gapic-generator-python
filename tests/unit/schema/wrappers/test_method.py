@@ -206,7 +206,8 @@ def test_method_flattened_fields_different_package_non_primitive():
 
 def test_method_include_flattened_message_fields():
     a = make_field('a', type=5)
-    b = make_field('b', type=11, type_name='Eggs', message=make_message('Eggs'))
+    b = make_field('b', type=11, type_name='Eggs',
+                   message=make_message('Eggs'))
     input_msg = make_message('Z', fields=(a, b))
     method = make_method('F', input_message=input_msg, signatures=('a,b',))
     assert len(method.flattened_fields) == 2
