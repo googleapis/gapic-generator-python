@@ -556,7 +556,7 @@ class Method:
         def filter_fields(sig):
             for f in sig.split(','):
                 if not f:
-                  # Special case for an empty signature
+                    # Special case for an empty signature
                     continue
                 name = f.strip()
                 field = self.input.get_field(*name.split('.'))
