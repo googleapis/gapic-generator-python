@@ -157,11 +157,26 @@ def test_proto_keyword_fname():
             package='google.keywords.v1',
             messages=(make_message_pb2(name='ImportUnderRequest', fields=()),),
         ),
+        make_file_pb2(
+            name='class_.proto',
+            package='google.keywords.v1',
+            messages=(make_message_pb2(name='ClassUnderRequest', fields=()),),
+        ),
+        make_file_pb2(
+            name='class.proto',
+            package='google.keywords.v1',
+            messages=(make_message_pb2(name='ClassRequest', fields=()),),
+        )
     )
 
     # We can't create new collisions, so check that renames cascade.
     api_schema = api.API.build(fd, package='google.keywords.v1')
-    assert set(api_schema.protos.keys()) == {'import_.proto', 'import__.proto'}
+    assert set(api_schema.protos.keys()) == {
+        'import_.proto',
+        'import__.proto',
+        'class_.proto',
+        'class__.proto',
+    }
 
 
 def test_proto_names_import_collision():
