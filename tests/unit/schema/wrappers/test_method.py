@@ -140,7 +140,11 @@ def test_method_paged_result_ref_types():
     )
 
     ref_type_names = {t.name for t in method.ref_types}
-    assert ref_type_names == {'ListSquidsRequest', 'ListSquidsPager', 'Mollusc'}
+    assert ref_type_names == {
+        'ListSquidsRequest',
+        'ListSquidsPager',
+        'Mollusc',
+    }
 
 
 def test_method_field_headers_none():
