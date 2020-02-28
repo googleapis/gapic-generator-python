@@ -592,6 +592,46 @@ class _ProtoBuilder:
 
         return retry, timeout
 
+    def _maybe_get_lro(
+        self,
+        service_address: metadata.Address,
+        meth_pb: descriptor_pb2.MethodDescriptorProto
+    ) -> Optional[wrappers.OperationInfo]:
+        """Determines whether a method is a Long Running Operation (aka LRO)
+               and, if it is, return an OperationInfo that includes the response
+               and metadata types.
+
+        Args:
+            service_address (~.metadata.Address): An address object for the
+                service, denoting the location of these methods.
+            meth_pb (~.descriptor_pb2.MethodDescriptorProto): A
+                protobuf method objects.
+
+        Returns:
+            Optional[~.wrappers.OperationInfo]: The info for the long-running
+                operation, if the passed method is an LRO.
+        """
+        lro = None
+
+        # If the output type is google.longrunning.Operation, we use
+        # a specialized object in its place.
+        if meth_pb.output_type.endswith('google.longrunning.Operation'):
+            op = meth_pb.options.Extensions[operations_pb2.operation_info]
+            if not op.response_type or not op.metadata_type:
+                raise TypeError(
+                    f'rpc {meth_pb.name} returns a google.longrunning.'
+                    'Operation, but is missing a response type or '
+                    'metadata type.',
+                )
+            response_key = service_address.resolve(op.response_type)
+            metadata_key = service_address.resolve(op.metadata_type)
+            lro = wrappers.OperationInfo(
+                response_type=self.api_messages[response_key],
+                metadata_type=self.api_messages[metadata_key],
+            )
+
+        return lro
+
     def _get_methods(self,
                      methods: Sequence[descriptor_pb2.MethodDescriptorProto],
                      service_address: metadata.Address, path: Tuple[int, ...],
@@ -613,25 +653,7 @@ class _ProtoBuilder:
         # Iterate over the methods and collect them into a dictionary.
         answer: Dict[str, wrappers.Method] = collections.OrderedDict()
         for i, meth_pb in enumerate(methods):
-            lro = None
-
-            # If the output type is google.longrunning.Operation, we use
-            # a specialized object in its place.
-            if meth_pb.output_type.endswith('google.longrunning.Operation'):
-                op = meth_pb.options.Extensions[operations_pb2.operation_info]
-                if not op.response_type or not op.metadata_type:
-                    raise TypeError(
-                        f'rpc {meth_pb.name} returns a google.longrunning.'
-                        'Operation, but is missing a response type or '
-                        'metadata type.',
-                    )
-                response_key = service_address.resolve(op.response_type)
-                metadata_key = service_address.resolve(op.metadata_type)
-                lro = wrappers.OperationInfo(
-                    response_type=self.api_messages[response_key],
-                    metadata_type=self.api_messages[metadata_key],
-                )
-
+            lro = self._maybe_get_lro(service_address, meth_pb)
             retry, timeout = self._get_retry_and_timeout(
                 service_address,
                 meth_pb
