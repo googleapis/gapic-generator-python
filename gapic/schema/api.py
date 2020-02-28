@@ -58,6 +58,7 @@ class Proto:
     @classmethod
     def build(cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
               file_to_generate: bool, naming: api_naming.Naming,
+              opts: options.Options = options.Options(),
               prior_protos: Mapping[str, 'Proto'] = None,
               ) -> 'Proto':
         """Build and return a Proto instance.
@@ -75,6 +76,7 @@ class Proto:
         return _ProtoBuilder(file_descriptor,
                              file_to_generate=file_to_generate,
                              naming=naming,
+                             opts=opts,
                              prior_protos=prior_protos or {},
                              ).proto
 
@@ -221,16 +223,27 @@ class API:
 
         # Iterate over each FileDescriptorProto and fill out a Proto
         # object describing it, and save these to the instance.
+        # pre_protos: Dict[str, Proto] = {}
+        # for fd in file_descriptors:
+        #     fd.name = disambiguate_keyword_fname(fd.name, protos)
+        #     pre_protos[fd.name] = _ProtoBuilder(
+        #         file_descriptor=fd,
+        #         file_to_generate=fd.package.startswith(package),
+        #         naming=naming,
+        #         opts=opts,
+        #         prior_protos=pre_protos,
+        #     ).proto
+
         protos: Dict[str, Proto] = {}
         for fd in file_descriptors:
             fd.name = disambiguate_keyword_fname(fd.name, protos)
-            protos[fd.name] = _ProtoBuilder(
+            protos[fd.name] = Proto.build(
                 file_descriptor=fd,
                 file_to_generate=fd.package.startswith(package),
                 naming=naming,
                 opts=opts,
                 prior_protos=protos,
-            ).proto
+            )
 
         # Done; return the API.
         return cls(naming=naming, all_protos=protos)
