@@ -56,11 +56,13 @@ class Proto:
         return getattr(self.file_pb2, name)
 
     @classmethod
-    def build(cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
-              file_to_generate: bool, naming: api_naming.Naming,
-              opts: options.Options = options.Options(),
-              prior_protos: Mapping[str, 'Proto'] = None,
-              ) -> 'Proto':
+    def build(
+        cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
+        file_to_generate: bool, naming: api_naming.Naming,
+        opts: options.Options = options.Options(),
+        prior_protos: Mapping[str, 'Proto'] = None,
+        load_services: bool = True
+    ) -> 'Proto':
         """Build and return a Proto instance.
 
         Args:
@@ -72,13 +74,18 @@ class Proto:
                 with the API.
             prior_protos (~.Proto): Previous, already processed protos.
                 These are needed to look up messages in imported protos.
+            load_services (bool): Toggle whether the proto file should
+                load its services. Not doing so enables a two-pass fix for
+                LRO response and metadata types in certain situations.
         """
-        return _ProtoBuilder(file_descriptor,
-                             file_to_generate=file_to_generate,
-                             naming=naming,
-                             opts=opts,
-                             prior_protos=prior_protos or {},
-                             ).proto
+        return _ProtoBuilder(
+            file_descriptor,
+            file_to_generate=file_to_generate,
+            naming=naming,
+            opts=opts,
+            prior_protos=prior_protos or {},
+            load_services=load_services
+        ).proto
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
@@ -186,10 +193,13 @@ class API:
     subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
 
     @classmethod
-    def build(cls,
-              file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
-              package: str = '',
-              opts: options.Options = options.Options()) -> 'API':
+    def build(
+        cls,
+        file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
+        package: str = '',
+        opts: options.Options = options.Options(),
+        prior_protos: Mapping[str, 'Proto'] = None,
+    ) -> 'API':
         """Build the internal API schema based on the request.
 
         Args:
@@ -201,6 +211,9 @@ class API:
                 Protos with packages outside this list are considered imports
                 rather than explicit targets.
             opts (~.options.Options): CLI options passed to the generator.
+            prior_protos (~.Proto): Previous, already processed protos.
+                These are needed to look up messages in imported protos.
+                Primarily used for testing.
         """
         # Save information about the overall naming for this API.
         naming = api_naming.Naming.build(*filter(
@@ -223,27 +236,43 @@ class API:
 
         # Iterate over each FileDescriptorProto and fill out a Proto
         # object describing it, and save these to the instance.
-        # pre_protos: Dict[str, Proto] = {}
-        # for fd in file_descriptors:
-        #     fd.name = disambiguate_keyword_fname(fd.name, protos)
-        #     pre_protos[fd.name] = _ProtoBuilder(
-        #         file_descriptor=fd,
-        #         file_to_generate=fd.package.startswith(package),
-        #         naming=naming,
-        #         opts=opts,
-        #         prior_protos=pre_protos,
-        #     ).proto
-
-        protos: Dict[str, Proto] = {}
+        #
+        # The first pass gathers messages and enums but NOT services or methods.
+        # This is a workaround for a limitation in protobuf annotations for
+        # long running operations: the annotations are strings that reference
+        # message types but do not require a proto import.
+        # This hack attempts to address a common case where API authors,
+        # not wishing to generate an 'unused import' warning,
+        # don't import the proto file defining the real response or metadata
+        # type into the proto file that defines an LRO.
+        # We just load all the APIs types first and then
+        # load the services and methods with the full scope of types.
+        pre_protos: Dict[str, Proto] = prior_protos or {}
         for fd in file_descriptors:
-            fd.name = disambiguate_keyword_fname(fd.name, protos)
-            protos[fd.name] = Proto.build(
+            fd.name = disambiguate_keyword_fname(fd.name, pre_protos)
+            pre_protos[fd.name] = Proto.build(
                 file_descriptor=fd,
                 file_to_generate=fd.package.startswith(package),
                 naming=naming,
                 opts=opts,
-                prior_protos=protos,
+                prior_protos=pre_protos,
+                # Ugly, ugly hack.
+                load_services=False,
             )
+
+        # Second pass uses all the messages and enums defined in the entire API.
+        # This allows LRO returning methods to see all the types in the API,
+        # bypassing the above missing import problem.
+        protos: Dict[str, Proto] = {
+            name: Proto.build(
+                file_descriptor=proto.file_pb2,
+                file_to_generate=proto.file_to_generate,
+                naming=naming,
+                opts=opts,
+                prior_protos=pre_protos,
+            )
+            for name, proto in pre_protos.items()
+        }
 
         # Done; return the API.
         return cls(naming=naming, all_protos=protos)
@@ -332,11 +361,15 @@ class _ProtoBuilder:
     """
     EMPTY = descriptor_pb2.SourceCodeInfo.Location()
 
-    def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
-                 file_to_generate: bool,
-                 naming: api_naming.Naming,
-                 opts: options.Options = options.Options(),
-                 prior_protos: Mapping[str, Proto] = None):
+    def __init__(
+        self,
+        file_descriptor: descriptor_pb2.FileDescriptorProto,
+        file_to_generate: bool,
+        naming: api_naming.Naming,
+        opts: options.Options = options.Options(),
+        prior_protos: Mapping[str, Proto] = None,
+        load_services: bool = True
+    ):
         self.proto_messages: Dict[str, wrappers.MessageType] = {}
         self.proto_enums: Dict[str, wrappers.EnumType] = {}
         self.proto_services: Dict[str, wrappers.Service] = {}
@@ -401,7 +434,7 @@ class _ProtoBuilder:
         # This prevents us from generating common services (e.g. LRO) when
         # they are being used as an import just to get types declared in the
         # same files.
-        if file_to_generate:
+        if file_to_generate and load_services:
             self._load_children(file_descriptor.service, self._load_service,
                                 address=self.address, path=(6,))
         # TODO(lukesneeringer): oneofs are on path 7.
