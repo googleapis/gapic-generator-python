@@ -23,7 +23,7 @@ import keyword
 import os
 import sys
 from itertools import chain
-from typing import Callable, Container, Dict, FrozenSet, Mapping, Sequence, Set, Tuple
+from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
 
 from google.api_core import exceptions  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
@@ -522,6 +522,76 @@ class _ProtoBuilder:
         # Done; return the answer.
         return answer
 
+    def _get_retry_and_timeout(
+        self,
+        service_address: metadata.Address,
+        meth_pb: descriptor_pb2.MethodDescriptorProto
+    ) -> Tuple[Optional[wrappers.RetryInfo], Optional[float]]:
+        """Returns the retry and timeout configuration of a method if it exists.
+
+        Args:
+            service_address (~.metadata.Address): An address object for the
+                service, denoting the location of these methods.
+            meth_pb (~.descriptor_pb2.MethodDescriptorProto): A
+                protobuf method objects.
+
+        Returns:
+            Tuple[Optional[~.wrappers.RetryInfo], Optional[float]]: The retry
+                and timeout information for the method if it exists.
+        """
+
+        # If we got a gRPC service config, get the appropriate retry
+        # and timeout information from it.
+        retry = None
+        timeout = None
+
+        # This object should be a dictionary that conforms to the
+        # gRPC service config proto:
+        #   Repo: https://github.com/grpc/grpc-proto/
+        #   Filename: grpc/service_config/service_config.proto
+        #
+        # We only care about a small piece, so we are just leaving
+        # it as a dictionary and parsing accordingly.
+        if self.opts.retry:
+            # The gRPC service config uses a repeated `name` field
+            # with a particular format, which we match against.
+            # This defines the expected selector for *this* method.
+            selector = {
+                'service': '{package}.{service_name}'.format(
+                    package='.'.join(service_address.package),
+                    service_name=service_address.name,
+                ),
+                'method': meth_pb.name,
+            }
+
+            # Find the method config that applies to us, if any.
+            mc = next((c for c in self.opts.retry.get('methodConfig', [])
+                       if selector in c.get('name')), None)
+            if mc:
+                # Set the timeout according to this method config.
+                if mc.get('timeout'):
+                    timeout = self._to_float(mc['timeout'])
+
+                # Set the retry according to this method config.
+                if 'retryPolicy' in mc:
+                    r = mc['retryPolicy']
+                    retry = wrappers.RetryInfo(
+                        max_attempts=r.get('maxAttempts', 0),
+                        initial_backoff=self._to_float(
+                            r.get('initialBackoff', '0s'),
+                        ),
+                        max_backoff=self._to_float(r.get('maxBackoff', '0s')),
+                        backoff_multiplier=r.get('backoffMultiplier', 0.0),
+                        retryable_exceptions=frozenset(
+                            exceptions.exception_class_for_grpc_status(
+                                getattr(grpc.StatusCode, code),
+                            )
+                            for code in r.get('retryableStatusCodes', [])
+                        ),
+                    )
+
+        return retry, timeout
+
     def _get_methods(self,
                      methods: Sequence[descriptor_pb2.MethodDescriptorProto],
                      service_address: metadata.Address, path: Tuple[int, ...],
@@ -542,7 +612,7 @@ class _ProtoBuilder:
         """
         # Iterate over the methods and collect them into a dictionary.
         answer: Dict[str, wrappers.Method] = collections.OrderedDict()
-        for meth_pb, i in zip(methods, range(0, sys.maxsize)):
+        for i, meth_pb in enumerate(methods):
             lro = None
 
             # If the output type is google.longrunning.Operation, we use
@@ -555,66 +625,17 @@ class _ProtoBuilder:
                         'Operation, but is missing a response type or '
                         'metadata type.',
                     )
+                response_key = service_address.resolve(op.response_type)
+                metadata_key = service_address.resolve(op.metadata_type)
                 lro = wrappers.OperationInfo(
-                    response_type=self.api_messages[service_address.resolve(
-                        op.response_type,
-                    )],
-                    metadata_type=self.api_messages[service_address.resolve(
-                        op.metadata_type,
-                    )],
+                    response_type=self.api_messages[response_key],
+                    metadata_type=self.api_messages[metadata_key],
                 )
 
-            # If we got a gRPC service config, get the appropriate retry
-            # and timeout information from it.
-            retry = None
-            timeout = None
-
-            # This object should be a dictionary that conforms to the
-            # gRPC service config proto:
-            #   Repo: https://github.com/grpc/grpc-proto/
-            #   Filename: grpc/service_config/service_config.proto
-            #
-            # We only care about a small piece, so we are just leaving
-            # it as a dictionary and parsing accordingly.
-            if self.opts.retry:
-                # The gRPC service config uses a repeated `name` field
-                # with a particular format, which we match against.
-                # This defines the expected selector for *this* method.
-                selector = {
-                    'service': '{package}.{service_name}'.format(
-                        package='.'.join(service_address.package),
-                        service_name=service_address.name,
-                    ),
-                    'method': meth_pb.name,
-                }
-
-                # Find the method config that applies to us, if any.
-                mc = next((i for i in self.opts.retry.get('methodConfig', [])
-                           if selector in i.get('name')), None)
-                if mc:
-                    # Set the timeout according to this method config.
-                    if mc.get('timeout'):
-                        timeout = self._to_float(mc['timeout'])
-
-                    # Set the retry according to this method config.
-                    if 'retryPolicy' in mc:
-                        r = mc['retryPolicy']
-                        retry = wrappers.RetryInfo(
-                            max_attempts=r.get('maxAttempts', 0),
-                            initial_backoff=self._to_float(
-                                r.get('initialBackoff', '0s'),
-                            ),
-                            max_backoff=self._to_float(
-                                r.get('maxBackoff', '0s'),
-                            ),
-                            backoff_multiplier=r.get('backoffMultiplier', 0.0),
-                            retryable_exceptions=frozenset(
-                                exceptions.exception_class_for_grpc_status(
-                                    getattr(grpc.StatusCode, code),
-                                )
-                                for code in r.get('retryableStatusCodes', [])
-                            ),
-                        )
+            retry, timeout = self._get_retry_and_timeout(
+                service_address,
+                meth_pb
+            )
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
