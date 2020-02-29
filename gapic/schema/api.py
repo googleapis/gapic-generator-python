@@ -247,7 +247,7 @@ class API:
         # type into the proto file that defines an LRO.
         # We just load all the APIs types first and then
         # load the services and methods with the full scope of types.
-        pre_protos: Dict[str, Proto] = prior_protos or {}
+        pre_protos: Dict[str, Proto] = dict(prior_protos or {})
         for fd in file_descriptors:
             fd.name = disambiguate_keyword_fname(fd.name, pre_protos)
             pre_protos[fd.name] = Proto.build(
@@ -699,7 +699,6 @@ class _ProtoBuilder:
         # Iterate over the methods and collect them into a dictionary.
         answer: Dict[str, wrappers.Method] = collections.OrderedDict()
         for i, meth_pb in enumerate(methods):
-            lro = self._maybe_get_lro(service_address, meth_pb)
             retry, timeout = self._get_retry_and_timeout(
                 service_address,
                 meth_pb
@@ -708,7 +707,7 @@ class _ProtoBuilder:
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
                 input=self.api_messages[meth_pb.input_type.lstrip('.')],
-                lro=lro,
+                lro=self._maybe_get_lro(service_address, meth_pb),
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=service_address.child(meth_pb.name, path + (i,)),
