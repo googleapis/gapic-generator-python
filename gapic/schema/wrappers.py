@@ -330,18 +330,19 @@ class MessageType:
         """
         return dataclasses.replace(
             self,
-            fields=collections.OrderedDict([
+            fields=collections.OrderedDict(
                 (k, v.with_context(collisions=collisions))
                 for k, v in self.fields.items()
-            ]) if not skip_fields else self.fields,
-            nested_enums=collections.OrderedDict([
+            ) if not skip_fields else self.fields,
+            nested_enums=collections.OrderedDict(
                 (k, v.with_context(collisions=collisions))
                 for k, v in self.nested_enums.items()
-            ]),
-            nested_messages=collections.OrderedDict([(k, v.with_context(
-                collisions=collisions,
-                skip_fields=skip_fields,
-            )) for k, v in self.nested_messages.items()]),
+            ),
+            nested_messages=collections.OrderedDict(
+                (k, v.with_context(
+                    collisions=collisions,
+                    skip_fields=skip_fields,))
+                for k, v in self.nested_messages.items()),
             meta=self.meta.with_context(collisions=collisions),
         )
 

@@ -84,11 +84,16 @@ class Address:
         to users (albeit looking auto-generated).
         """
         if self.module in self.collisions:
-            return '_'.join((
-                ''.join([i[0] for i in self.package
-                         if i != self.api_naming.version]),
-                self.module,
-            ))
+            return '_'.join(
+                (
+                    ''.join(
+                        i[0]
+                        for i in self.package
+                        if i != self.api_naming.version
+                    ),
+                    self.module,
+                )
+            )
         return ''
 
     @property
@@ -162,10 +167,10 @@ class Address:
             ~.Address: The new address object.
         """
         return dataclasses.replace(self,
-            module_path=self.module_path + path,
-            name=child_name,
-            parent=self.parent + (self.name,) if self.name else self.parent,
-        )
+                                   module_path=self.module_path + path,
+                                   name=child_name,
+                                   parent=self.parent + (self.name,) if self.name else self.parent,
+                                   )
 
     def rel(self, address: 'Address') -> str:
         """Return an identifier for this type, relative to the given address.
@@ -279,7 +284,7 @@ class Metadata:
         the file being written.
         """
         return dataclasses.replace(self,
-            address=self.address.with_context(collisions=collisions),
+                                   address=self.address.with_context(collisions=collisions),
                                    )
 
 
