@@ -811,9 +811,13 @@ class Service:
         """
         return dataclasses.replace(
             self,
-            methods=collections.OrderedDict([
-                (k, v.with_context(collisions=collisions))
+            methods=collections.OrderedDict(
+                (k, v.with_context(
+                    # A methodd's flattened fields create additional names
+                    # that may conflict with module imports.
+                    collisions=collisions | frozenset(v.flattened_fields.keys()))
+                 )
                 for k, v in self.methods.items()
-            ]),
+            ),
             meta=self.meta.with_context(collisions=collisions),
         )
