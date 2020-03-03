@@ -17,6 +17,7 @@ from unittest import mock
 
 import pytest
 
+from google.api import client_pb2
 from google.api_core import exceptions
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
@@ -217,6 +218,73 @@ def test_proto_names_import_collision():
     proto = api_schema.protos['foo.proto']
     assert proto.names == {'Foo', 'Bar', 'Baz', 'foo', 'imported_message',
                            'other_message', 'primitive', 'spam'}
+
+
+def test_proto_names_import_collision_flattening():
+    fd = (
+        make_file_pb2(
+            name='mollusc.proto',
+            package='google.animalia.mollusca',
+            messages=(make_message_pb2(name='Mollusc', fields=(),),),
+        ),
+        make_file_pb2(
+            name='squid.proto',
+            package='google.animalia.mollusca',
+            messages=(
+                make_message_pb2(
+                    name='IdentifySquidRequest',
+                    fields=(
+                        make_field_pb2(
+                            name='mollusc',
+                            number=1,
+                            type_name='.google.animalia.mollusca.Mollusc'
+                        ),
+                    ),
+                ),
+                make_message_pb2(
+                    name='IdentifySquidResponse',
+                    fields=(),
+                ),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='SquidIdentificationService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='IdentifyMollusc',
+                            input_type='google.animalia.mollusca.IdentifySquidRequest',
+                            output_type='google.animalia.mollusca.IdentifySquidResponse',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    fd[1].service[0].method[0].options.Extensions[client_pb2.method_signature].append('mollusc')
+    api_schema = api.API.build(fd, package='google.animalia.mollusca')
+
+    actual_imports = {
+        ref_type.ident.python_import
+        for service in api_schema.services.values()
+        for method in service.methods.values()
+        for ref_type in method.ref_types
+    }
+
+    expected_imports = {
+        imp.Import(
+            package=('google', 'animalia', 'mollusca', 'types'),
+            module='mollusc',
+            alias='gam_mollusc',
+        ),
+        imp.Import(
+            package=('google', 'animalia', 'mollusca', 'types'),
+            module='squid',
+            alias='',
+        ),
+    }
+
+    assert expected_imports == actual_imports
 
 
 def test_proto_builder_constructor():
