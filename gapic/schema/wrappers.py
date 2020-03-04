@@ -465,8 +465,12 @@ class OperationInfo:
           """
         return dataclasses.replace(
             self,
-            response_type=self.response_type.with_context(collisions=collisions),
-            metadata_type=self.metadata_type.with_context(collisions=collisions),
+            response_type=self.response_type.with_context(
+                collisions=collisions
+            ),
+            metadata_type=self.metadata_type.with_context(
+                collisions=collisions
+            ),
         )
 
 

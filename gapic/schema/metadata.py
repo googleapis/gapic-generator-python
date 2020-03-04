@@ -284,9 +284,10 @@ class Metadata:
         ``Address`` object aliases module names to avoid naming collisions in
         the file being written.
         """
-        return dataclasses.replace(self,
-                                   address=self.address.with_context(collisions=collisions),
-                                   )
+        return dataclasses.replace(
+            self,
+            address=self.address.with_context(collisions=collisions),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
