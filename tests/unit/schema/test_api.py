@@ -221,11 +221,20 @@ def test_proto_names_import_collision():
 
 
 def test_proto_names_import_collision_flattening():
+    lro_proto = api.Proto.build(make_file_pb2(
+        name='operations.proto', package='google.longrunning',
+        messages=(make_message_pb2(name='Operation'),),
+    ), file_to_generate=False, naming=make_naming())
+
     fd = (
         make_file_pb2(
             name='mollusc.proto',
             package='google.animalia.mollusca',
-            messages=(make_message_pb2(name='Mollusc', fields=(),),),
+            messages=(
+                make_message_pb2(name='Mollusc',),
+                make_message_pb2(name='MolluscResponse',),
+                make_message_pb2(name='MolluscMetadata',),
+            ),
         ),
         make_file_pb2(
             name='squid.proto',
@@ -253,7 +262,7 @@ def test_proto_names_import_collision_flattening():
                         descriptor_pb2.MethodDescriptorProto(
                             name='IdentifyMollusc',
                             input_type='google.animalia.mollusca.IdentifySquidRequest',
-                            output_type='google.animalia.mollusca.IdentifySquidResponse',
+                            output_type='google.longrunning.Operation',
                         ),
                     ),
                 ),
@@ -261,8 +270,22 @@ def test_proto_names_import_collision_flattening():
         ),
     )
 
-    fd[1].service[0].method[0].options.Extensions[client_pb2.method_signature].append('mollusc')
-    api_schema = api.API.build(fd, package='google.animalia.mollusca')
+    method_options = fd[1].service[0].method[0].options
+    # Notice that a signature field collides with the name of an imported module
+    method_options.Extensions[client_pb2.method_signature].append('mollusc')
+    method_options.Extensions[operations_pb2.operation_info].MergeFrom(
+        operations_pb2.OperationInfo(
+            response_type='google.animalia.mollusca.MolluscResponse',
+            metadata_type='google.animalia.mollusca.MolluscMetadata',
+        )
+    )
+    api_schema = api.API.build(
+        fd,
+        package='google.animalia.mollusca',
+        prior_protos={
+            'google/longrunning/operations.proto': lro_proto,
+        }
+    )
 
     actual_imports = {
         ref_type.ident.python_import
@@ -280,11 +303,25 @@ def test_proto_names_import_collision_flattening():
         imp.Import(
             package=('google', 'animalia', 'mollusca', 'types'),
             module='squid',
-            alias='',
         ),
+        imp.Import(package=('google', 'api_core'), module='operation',),
     }
 
     assert expected_imports == actual_imports
+
+    method = (
+        api_schema
+        .services['google.animalia.mollusca.SquidIdentificationService']
+        .methods['IdentifyMollusc']
+    )
+
+    actual_response_import = method.lro.response_type.ident.python_import
+    expected_response_import = imp.Import(
+        package=('google', 'animalia', 'mollusca', 'types'),
+        module='mollusc',
+        alias='gam_mollusc',
+    )
+    assert actual_response_import == expected_response_import
 
 
 def test_proto_builder_constructor():
