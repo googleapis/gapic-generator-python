@@ -166,11 +166,12 @@ class Address:
         Returns:
             ~.Address: The new address object.
         """
-        return dataclasses.replace(self,
-                                   module_path=self.module_path + path,
-                                   name=child_name,
-                                   parent=self.parent + (self.name,) if self.name else self.parent,
-                                   )
+        return dataclasses.replace(
+            self,
+            module_path=self.module_path + path,
+            name=child_name,
+            parent=self.parent + (self.name,) if self.name else self.parent,
+        )
 
     def rel(self, address: 'Address') -> str:
         """Return an identifier for this type, relative to the given address.
