@@ -27,12 +27,19 @@ showcase_version = '0.6.1'
 def unit(session):
     """Run the unit test suite."""
 
-    session.install('coverage', 'pytest', 'pytest-cov', 'pyfakefs')
+    session.install(
+        'coverage',
+        'pytest',
+        'pytest-cov',
+        'pytest-xdist',
+        'pyfakefs',
+    )
     session.install('-e', '.')
 
     session.run(
         'py.test',
         '-vv',
+        '-n=auto',
         '--cov=gapic',
         '--cov-config=.coveragerc',
         '--cov-report=term',
@@ -102,7 +109,7 @@ def showcase_unit(session, templates='DEFAULT', other_opts=()):
     """Run the generated unit tests against the Showcase library."""
 
     # Install pytest and gapic-generator-python
-    session.install('coverage', 'pytest', 'pytest-cov')
+    session.install('coverage', 'pytest', 'pytest-cov', 'pytest-xdist',)
     session.install('.')
 
     # Install a client library for Showcase.
@@ -147,6 +154,7 @@ def showcase_unit(session, templates='DEFAULT', other_opts=()):
         # Run the tests.
         session.run(
             'py.test',
+            '-n=auto',
             '--quiet',
             '--cov=google',
             '--cov-report=term',
