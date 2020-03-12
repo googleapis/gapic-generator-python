@@ -170,9 +170,10 @@ def test_cli_override_name_underscores():
 def test_cli_override_namespace():
     FileDesc = descriptor_pb2.FileDescriptorProto
     proto1 = FileDesc(package='google.spanner.v1')
-    n = naming.Naming.build(proto1,
-                            opts=options.Options(namespace=('google', 'cloud')),
-                            )
+    n = naming.Naming.build(
+        proto1,
+        opts=options.Options(namespace=('google', 'cloud')),
+    )
     assert n.namespace == ('Google', 'Cloud')
     assert n.name == 'Spanner'
     assert n.version == 'v1'
@@ -192,9 +193,12 @@ def test_cli_override_namespace_dotted():
 def test_cli_override_name_and_namespace():
     FileDesc = descriptor_pb2.FileDescriptorProto
     proto1 = FileDesc(package='google.translation.v2')
-    n = naming.Naming.build(proto1,
-                            opts=options.Options(namespace=('google', 'cloud'), name='translate'),
-                            )
+    n = naming.Naming.build(
+        proto1,
+        opts=options.Options(
+            namespace=('google', 'cloud'), name='translate'
+        ),
+    )
     assert n.namespace == ('Google', 'Cloud')
     assert n.name == 'Translate'
     assert n.version == 'v2'
@@ -213,7 +217,9 @@ def test_cli_override_name_and_namespace_versionless():
 
 
 def test_build_factory():
-    proto = descriptor_pb2.FileDescriptorProto(package='google.mollusc.v1alpha1')
+    proto = descriptor_pb2.FileDescriptorProto(
+        package='google.mollusc.v1alpha1'
+    )
     old = naming.Naming.build(
         proto,
         opts=options.Options(old_naming=True)
