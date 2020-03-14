@@ -1,7 +1,7 @@
 load("@gapic_generator_python_pip_deps//:requirements.bzl", "requirement")
 
 py_binary(
-    name = "gapic_generator_python",
+    name = "gapic_plugin",
     srcs = glob(["gapic/**/*.py"]),
     data = glob(["gapic/**/*.j2"]),
     main = "gapic/cli/generate.py",
@@ -12,7 +12,6 @@ py_binary(
         requirement("google-api-core"),
         requirement("googleapis-common-protos"),
         requirement("grpcio"),
-        requirement("protobuf"),
         requirement("jinja2"),
         requirement("pypandoc"),
         requirement("PyYAML"),

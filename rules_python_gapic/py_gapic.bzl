@@ -8,7 +8,7 @@ def py_gapic_library2(name, srcs, **kwargs):
     proto_custom_library(
         name = srcjar_target_name,
         deps = srcs,
-        plugin = Label("@gapic_generator_python//:gapic_generator_python"),
+        plugin = Label("@gapic_generator_python//:gapic_plugin"),
         plugin_args = [],
         plugin_file_args = {},
         output_type = "python_gapic",
