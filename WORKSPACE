@@ -24,7 +24,7 @@ pip_repositories()
 #
 load("//:repositories.bzl", "gapic_generator_python")
 
-gapic_generator_python();
+gapic_generator_python()
 
 load("@gapic_generator_python_pip_deps//:requirements.bzl", "pip_install")
 
