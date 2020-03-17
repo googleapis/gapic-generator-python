@@ -70,7 +70,12 @@ def test_get_field():
 
 def test_field_types():
     # Create the inner message.
-    inner_msg = make_message('InnerMessage', fields=())
+    inner_msg = make_message(
+        'InnerMessage',
+        fields=(
+            make_field('hidden_message', message=make_message('HiddenMessage')),
+        )
+    )
     inner_enum = make_enum('InnerEnum')
 
     # Create the outer message, which contains an Inner as a field.
@@ -85,6 +90,33 @@ def test_field_types():
     assert len(outer.field_types) == 2
     assert inner_msg in outer.field_types
     assert inner_enum in outer.field_types
+
+
+def test_field_types_recursive():
+    enumeration = make_enum('Enumeration')
+    innest_msg = make_message(
+        'InnestMessage',
+        fields=(
+            make_field('enumeration', enum=enumeration),
+        )
+    )
+    inner_msg = make_message(
+        'InnerMessage',
+        fields=(
+            make_field('innest_message', message=innest_msg),
+        )
+    )
+    topmost_msg = make_message(
+        'TopmostMessage',
+        fields=(
+            make_field('inner_message', message=inner_msg),
+            make_field('uninteresting')
+        )
+    )
+
+    actual = sorted(topmost_msg.recursive_field_types, key=lambda t: t.name)
+    expected = sorted((enumeration, innest_msg, inner_msg), key=lambda t: t.name)
+    assert actual == expected
 
 
 def test_get_field_recursive():
