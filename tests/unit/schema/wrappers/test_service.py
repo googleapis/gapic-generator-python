@@ -84,7 +84,7 @@ def test_service_no_scopes():
 
 def test_service_python_modules():
     service = make_service(methods=(
-        get_method('DoThing', 'foo.bar.ThingRequest', 'foo.baz.ThingResponse',),
+        get_method('DoThing', 'foo.bar.ThingRequest', 'foo.baz.ThingResponse'),
         get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
         get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
     ))
