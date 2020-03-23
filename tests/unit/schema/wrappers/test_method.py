@@ -164,8 +164,16 @@ def test_flattened_ref_types():
                         'Cephalopod',
                         fields=(
                             make_field('mass_kg', type='TYPE_INT32'),
-                            make_field('squid', number=2, message=make_message('Squid'),),
-                            make_field('clam', number=3, message=make_message('Clam'),),
+                            make_field(
+                                'squid',
+                                number=2,
+                                message=make_message('Squid'),
+                            ),
+                            make_field(
+                                'clam',
+                                number=3,
+                                message=make_message('Clam'),
+                            ),
                         ),
                     ),
                 ),
