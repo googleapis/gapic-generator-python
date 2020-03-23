@@ -73,7 +73,10 @@ def test_field_types():
     inner_msg = make_message(
         'InnerMessage',
         fields=(
-            make_field('hidden_message', message=make_message('HiddenMessage')),
+            make_field(
+                'hidden_message',
+                message=make_message('HiddenMessage'),
+            ),
         )
     )
     inner_enum = make_enum('InnerEnum')
@@ -114,8 +117,8 @@ def test_field_types_recursive():
         )
     )
 
-    actual = sorted(topmost_msg.recursive_field_types, key=lambda t: t.name)
-    expected = sorted((enumeration, innest_msg, inner_msg), key=lambda t: t.name)
+    actual = {t.name for t in topmost_msg.recursive_field_types}
+    expected = {t.name for t in (enumeration, innest_msg, inner_msg)}
     assert actual == expected
 
 
