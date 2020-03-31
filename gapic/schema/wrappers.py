@@ -606,7 +606,7 @@ class Method:
         """Return the signature defined for this method."""
         cross_pkg_request = self.input.ident.package != self.ident.package
 
-        def filter_fields(sig: str) -> Tuple[str, Field]:
+        def filter_fields(sig: str) -> Iterable[Tuple[str, Field]]:
             for f in sig.split(','):
                 if not f:
                     # Special case for an empty signature
