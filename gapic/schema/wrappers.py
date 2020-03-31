@@ -32,7 +32,7 @@ import dataclasses
 import re
 from itertools import chain
 from typing import (cast, Dict, FrozenSet, Iterable, List, Mapping, Optional,
-                    Sequence, Set, Union)
+                    Sequence, Set, Tuple, Union)
 
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
