@@ -39,7 +39,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
             credentials: credentials.Credentials = None,
             channel: grpc.Channel = None,
             api_mtls_endpoint: str = None,
-            client_cert_callback: Callable[[], Tuple[bytes, bytes]] = None) -> None:
+            client_cert_source: Callable[[], Tuple[bytes, bytes]] = None) -> None:
         """Instantiate the transport.
 
         Args:
