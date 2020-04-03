@@ -229,7 +229,7 @@ jobs:
       - run:
           name: Run showcase tests.
           command: nox -s showcase
-  showcase:
+  showcase-alternative-templates:
     docker:
       - image: python:3.8-slim
       - image: gcr.io/gapic-images/gapic-showcase:0.6.1
