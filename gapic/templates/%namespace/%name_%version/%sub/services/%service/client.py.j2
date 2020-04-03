@@ -50,7 +50,7 @@ def _get_default_mtls_endpoint(api_endpoint):
     return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
 
-_DEFAULT_ENDPOINT = {% if service.host %}'{{ service.host }}'{% else }None{% endif %}
+_DEFAULT_ENDPOINT = {% if service.host %}'{{ service.host }}'{% else %}None{% endif %}
 _DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint(_DEFAULT_ENDPOINT)
 
 
@@ -146,7 +146,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 transport will be created if client SSL credentials are found.
                 Client SSL credentials are obtained from ``client_cert_source``
                 or application default SSL credentials.
-        
+
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
@@ -169,6 +169,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             self._transport = transport
         elif transport is not None:
             # transport is a string representing the name.
+            Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials, host=client_options.api_endpoint
             )
