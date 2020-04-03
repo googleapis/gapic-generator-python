@@ -71,7 +71,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
     assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == {% if service.host %}'{{ service.host }}'{% else %}None{% endif %}
     assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == _DEFAULT_ENDPOINT
 
-    # Check that the given channel is used.
+    # Check that if channel is provided we won't create a new one.
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
         transport = transports.{{ service.name }}GrpcTransport(
             credentials=credentials.AnonymousCredentials()
@@ -85,18 +85,16 @@ def test_{{ service.client_name|snake_case }}_client_options():
         transport = gtc.return_value = mock.MagicMock()
         client = {{ service.client_name }}(client_options=options)
         transport.assert_called_once_with(
-            api_mtls_endpoint=None,
-            client_cert_source=None,
             credentials=None,
             host=_DEFAULT_ENDPOINT,
         )
 
     # Check mTLS is triggered with api endpoint override.
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
-    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
-        transport = gtc.return_value = mock.MagicMock()
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
+        grpc_transport.return_value = None
         client = {{ service.client_name }}(client_options=options)
-        transport.assert_called_once_with(
+        grpc_transport.assert_called_once_with(
             api_mtls_endpoint="squid.clam.whelk",
             client_cert_source=None,
             credentials=None,
@@ -107,10 +105,10 @@ def test_{{ service.client_name|snake_case }}_client_options():
     options = client_options.ClientOptions(
         client_cert_source=client_cert_source_callback
     )
-    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
-        transport = gtc.return_value = mock.MagicMock()
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
+        grpc_transport.return_value = None
         client = {{ service.client_name }}(client_options=options)
-        transport.assert_called_once_with(
+        grpc_transport.assert_called_once_with(
             api_mtls_endpoint=_DEFAULT_MTLS_ENDPOINT,
             client_cert_source=client_cert_source_callback,
             credentials=None,
@@ -118,12 +116,12 @@ def test_{{ service.client_name|snake_case }}_client_options():
         )
 
 def test_{{ service.client_name|snake_case }}_client_options_from_dict():
-    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
-        transport = gtc.return_value = mock.MagicMock()
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
+        grpc_transport.return_value = None
         client = {{ service.client_name }}(
             client_options={'api_endpoint': 'squid.clam.whelk'}
         )
-        transport.assert_called_once_with(
+        grpc_transport.assert_called_once_with(
             api_mtls_endpoint="squid.clam.whelk",
             client_cert_source=None,
             credentials=None,
