@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 import os
 import tempfile
+import typing
 import nox  # type: ignore
 
 from os import path
@@ -49,7 +50,11 @@ def unit(session):
 
 
 @nox.session(python='3.8')
-def showcase(session, templates='DEFAULT', other_opts=()):
+def showcase(
+    session,
+    templates='DEFAULT',
+    other_opts: typing.Iterable[str] = (),
+):
     """Run the Showcase test suite."""
 
     # Try to make it clear if Showcase is not running, so that
@@ -105,7 +110,11 @@ def showcase_alternative_templates(session):
 
 
 @nox.session(python=['3.6', '3.7', '3.8'])
-def showcase_unit(session, templates='DEFAULT', other_opts=()):
+def showcase_unit(
+    session,
+    templates='DEFAULT',
+    other_opts: typing.Iterable[str] = (),
+):
     """Run the generated unit tests against the Showcase library."""
 
     # Install pytest and gapic-generator-python
@@ -169,7 +178,10 @@ def showcase_unit_alternative_templates(session):
 
 
 @nox.session(python='3.8')
-def showcase_mypy(session, templates='DEFAULT', other_opts=()):
+def showcase_mypy(
+    session, templates='DEFAULT',
+    other_opts: typing.Iterable[str] = (),
+):
     """Perform typecheck analysis on the generated Showcase library."""
 
     # Install pytest and gapic-generator-python
@@ -214,7 +226,7 @@ def showcase_mypy(session, templates='DEFAULT', other_opts=()):
 @nox.session(python='3.8')
 def showcase_mypy_alternative_templates(session):
     templates = path.join(path.dirname(__file__), 'gapic', 'ads-templates')
-    showcase_mypy(session, templates=templates, other_opts=('old-naming'))
+    showcase_mypy(session, templates=templates, other_opts=('old-naming',))
 
 
 @nox.session(python='3.6')
