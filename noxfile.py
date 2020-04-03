@@ -201,7 +201,7 @@ def showcase_mypy(
         )
         # Write out a client library for Showcase.
         template_opt = f'python-gapic-templates={templates}'
-        gapic_opts = f'--python_gapic_opt={template_opt},',
+        gapic_opts = f'--python_gapic_opt={template_opt},'
         gapic_opts += ','.join(other_opts)
         session.run(
             'protoc',
