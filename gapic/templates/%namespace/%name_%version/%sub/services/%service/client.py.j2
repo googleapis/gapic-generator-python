@@ -174,7 +174,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 credentials=credentials, host=client_options.api_endpoint
             )
         else:
-            # transport is None, we will create a transport instance.
+            # transport is None, we will figure out if mTLS channel should be
+            # created, and create a proper {{ service.name }}GrpcTransport instance.
+
             # Figure out if mTLS channel should be created.
             api_mtls_endpoint = None
 
@@ -186,8 +188,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             elif client_options.client_cert_source:
                 api_mtls_endpoint = _DEFAULT_MTLS_ENDPOINT
 
-            Transport = type(self).get_transport_class()
-            self._transport = Transport(
+            self._transport = {{ service.name }}GrpcTransport(
                 credentials=credentials,
                 host=client_options.api_endpoint,
                 api_mtls_endpoint=api_mtls_endpoint,
