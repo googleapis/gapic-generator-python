@@ -14,9 +14,6 @@ from google.auth import credentials
 from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
-from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.client import _get_default_mtls_endpoint
-from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.client import _DEFAULT_ENDPOINT
-from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.client import _DEFAULT_MTLS_ENDPOINT
 from google.api_core import client_options
 from google.api_core import grpc_helpers
 {% if service.has_lro -%}
@@ -45,12 +42,12 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert _get_default_mtls_endpoint(None) == None
-    assert _get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert _get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert _get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert _get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert _get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert {{ service.client_name }}._get_default_mtls_endpoint(None) == None
+    assert {{ service.client_name }}._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert {{ service.client_name }}._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert {{ service.client_name }}._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert {{ service.client_name }}._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
+    assert {{ service.client_name }}._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test_{{ service.client_name|snake_case }}_from_service_account_file():
@@ -69,7 +66,7 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file():
 def test_{{ service.client_name|snake_case }}_client_options():
     # Check the default options have their expected values.
     assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == {% if service.host %}'{{ service.host }}'{% else %}None{% endif %}
-    assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == _DEFAULT_ENDPOINT
+    assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == {{ service.client_name }}.DEFAULT_ENDPOINT
 
     # Check that if channel is provided we won't create a new one.
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
@@ -86,7 +83,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
         client = {{ service.client_name }}(client_options=options)
         transport.assert_called_once_with(
             credentials=None,
-            host=_DEFAULT_ENDPOINT,
+            host={{ service.client_name }}.DEFAULT_ENDPOINT,
         )
 
     # Check mTLS is triggered with api endpoint override.
@@ -109,10 +106,10 @@ def test_{{ service.client_name|snake_case }}_client_options():
         grpc_transport.return_value = None
         client = {{ service.client_name }}(client_options=options)
         grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=_DEFAULT_MTLS_ENDPOINT,
+            api_mtls_endpoint={{ service.client_name }}.DEFAULT_MTLS_ENDPOINT,
             client_cert_source=client_cert_source_callback,
             credentials=None,
-            host=_DEFAULT_ENDPOINT,
+            host={{ service.client_name }}.DEFAULT_ENDPOINT,
         )
 
 def test_{{ service.client_name|snake_case }}_client_options_from_dict():
@@ -624,8 +621,13 @@ def test_{{ service.name|snake_case }}_grpc_transport_channel_mtls_with_client_c
     assert transport.grpc_channel == mock_grpc_channel
 
 
+@pytest.mark.parametrize(
+    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+)
 @mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_{{ service.name|snake_case }}_grpc_transport_channel_mtls_with_adc(grpc_create_channel):
+def test_{{ service.name|snake_case }}_grpc_transport_channel_mtls_with_adc(
+    grpc_create_channel, api_mtls_endpoint
+):
     # Check that if channel and client_cert_source are None, but api_mtls_endpoint
     # is provided, then a mTLS channel will be created with SSL ADC.
     mock_grpc_channel = mock.Mock()
@@ -642,7 +644,7 @@ def test_{{ service.name|snake_case }}_grpc_transport_channel_mtls_with_adc(grpc
         transport = transports.{{ service.name }}GrpcTransport(
             host="squid.clam.whelk",
             credentials=mock_cred,
-            api_mtls_endpoint="mtls.squid.clam.whelk",
+            api_mtls_endpoint=api_mtls_endpoint,
             client_cert_source=None,
         )
         grpc_create_channel.assert_called_once_with(
