@@ -83,7 +83,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
         client = {{ service.client_name }}(client_options=options)
         transport.assert_called_once_with(
             credentials=None,
-            host={{ service.client_name }}.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_ENDPOINT,
         )
 
     # Check mTLS is triggered with api endpoint override.
@@ -106,10 +106,10 @@ def test_{{ service.client_name|snake_case }}_client_options():
         grpc_transport.return_value = None
         client = {{ service.client_name }}(client_options=options)
         grpc_transport.assert_called_once_with(
-            api_mtls_endpoint={{ service.client_name }}.DEFAULT_MTLS_ENDPOINT,
+            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
             client_cert_source=client_cert_source_callback,
             credentials=None,
-            host={{ service.client_name }}.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_ENDPOINT,
         )
 
 def test_{{ service.client_name|snake_case }}_client_options_from_dict():

@@ -159,7 +159,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         # Set default api endpoint if not set.
         if client_options.api_endpoint is None:
-            client_options.api_endpoint = {{ service.client_name }}.DEFAULT_ENDPOINT
+            client_options.api_endpoint = self.DEFAULT_ENDPOINT
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -171,7 +171,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                                  'provide its credentials directly.')
             self._transport = transport
         elif transport is not None or (
-            client_options.api_endpoint == {{ service.client_name }}.DEFAULT_ENDPOINT
+            client_options.api_endpoint == self.DEFAULT_ENDPOINT
             and client_options.client_cert_source is None
         ):
             # Don't trigger mTLS.
@@ -182,10 +182,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         else:
             # Trigger mTLS. If the user overrides endpoint, use it as the mTLS
             # endpoint, otherwise use the default mTLS endpoint.
-            if client_options.api_endpoint != {{ service.client_name }}.DEFAULT_ENDPOINT:
-                api_mtls_endpoint = client_options.api_endpoint
-            else:
-                api_mtls_endpoint = {{ service.client_name }}.DEFAULT_MTLS_ENDPOINT
+            option_endpoint = client_options.api_endpoint
+            api_mtls_endpoint = self.DEFAULT_MTLS_ENDPOINT if option_endpoint == self.DEFAULT_ENDPOINT else option_endpoint
 
             self._transport = {{ service.name }}GrpcTransport(
                 credentials=credentials,
