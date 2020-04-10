@@ -142,11 +142,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client.
                 (2) If ``transport`` argument is None, ``client_options`` can be
-                used to create a mutual TLS transport. If ``api_endpoint`` is
-                provided or the ``client_cert_source`` property is provided,
-                mutual TLS transport will be created if client SSL credentials
-                are found. Client SSL credentials are obtained from
-                ``client_cert_source`` or application default SSL credentials.
+                used to create a mutual TLS transport. If ``client_cert_source``
+                is provided, mutual TLS transport will be created with the given
+                ``api_endpoint`` or the default mTLS endpoint, and the client
+                SSL credentials obtained from ``client_cert_source``.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -174,13 +173,23 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 credentials=credentials, host=self.DEFAULT_ENDPOINT
             )
         else:
-            # We have a non-empty ClientOptions, trigger mTLS. If the user
-            # doesn't provide endpoint, use the default mTLS endpoint.
-            if client_options.api_endpoint:
-                api_endpoint = api_mtls_endpoint = client_options.api_endpoint
+            # We have a non-empty ClientOptions. If client_cert_source is
+            # provided, trigger mTLS with user provided endpoint or the default
+            # mTLS endpoint.
+            if client_options.client_cert_source:
+                api_mtls_endpoint = (
+                    client_options.api_endpoint
+                    if client_options.api_endpoint
+                    else self.DEFAULT_MTLS_ENDPOINT
+                )
             else:
-                api_endpoint = self.DEFAULT_ENDPOINT
-                api_mtls_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                api_mtls_endpoint = None
+
+            api_endpoint = (
+                client_options.api_endpoint
+                if client_options.api_endpoint
+                else self.DEFAULT_ENDPOINT
+            )
 
             self._transport = {{ service.name }}GrpcTransport(
                 credentials=credentials,
