@@ -121,6 +121,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         return "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
 
 
+    @staticmethod
     def parse_{{ message.resource_type|snake_case }}_path(path: str) -> Dict[str,str]:
         """Parse a {{ message.resource_type|snake_case }} path into its component segments."""
         m = re.match(r"{{ message.path_regex_str }}", path)
