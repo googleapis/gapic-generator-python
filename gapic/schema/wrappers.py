@@ -286,14 +286,6 @@ class MessageType:
 
     @utils.cached_property
     def path_regex_str(self) -> str:
-        def gen_component_re(m: re.Match) -> str:
-            # We can't just use (?P<name>[^/]+) because segments may be
-            # separated by delimiters other than '/'.
-            # Multiple delimiter characters within one schema are allowed, e.g.
-            # as/{a}-{b}/cs/{c}%{d}_{e}
-            # This is discouraged but permitted by AIP4231
-            return "(?P<{name}>.+?)".format(name=m.groups()[0])
-
         # The indirection here is a little confusing:
         # we're using the resource path template as the base of a regex,
         # with each resource ID segment being captured by a regex.
@@ -304,7 +296,13 @@ class MessageType:
         parsing_regex_str = (
             "^" +
             self.PATH_ARG_RE.sub(
-                gen_component_re,
+                # We can't just use (?P<name>[^/]+) because segments may be
+                # separated by delimiters other than '/'.
+                # Multiple delimiter characters within one schema are allowed,
+                # e.g.
+                # as/{a}-{b}/cs/{c}%{d}_{e}
+                # This is discouraged but permitted by AIP4231
+                lambda m: "(?P<{name}>.+?)".format(name=m.groups()[0]),
                 self.resource_path or ''
             ) +
             "$"
