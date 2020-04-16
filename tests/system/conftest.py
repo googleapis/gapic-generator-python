@@ -141,10 +141,12 @@ def intercepted_echo(use_mtls):
     # echos any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
     interceptor = MetadataClientInterceptor("showcase-trailer", "intercepted")
-    if use_mtls:
-        channel = grpc.secure_channel("localhost:7469", ssl_credentials)
-    else:
-        channel = grpc.insecure_channel("localhost:7469")
+    host = "localhost:7469"
+    channel = (
+        grpc.secure_channel(host, ssl_credentials)
+        if use_mtls
+        else grpc.insecure_channel(host)
+    )
     intercept_channel = grpc.intercept_channel(channel, interceptor)
     transport = EchoClient.get_transport_class("grpc")(
         channel=intercept_channel
