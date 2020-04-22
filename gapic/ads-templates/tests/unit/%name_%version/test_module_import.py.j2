@@ -36,7 +36,7 @@ def test_module_level_imports():
 
 
     # Verify the logic for handling non-existant names
-    with pytest.raises(AttributeError):
+    with pytest.raises(ImportError):
         from {{ api.naming.module_namespace|join('.' )}}.{{ api.naming.module_name }} import GiantSquid
 
 
@@ -71,7 +71,7 @@ def test_versionsed_module_level_imports():
     assert expected_names == actual_names
 
     # Verify the logic for handling non-existant names
-    with pytest.raises(AttributeError):
+    with pytest.raises(ImportError):
         from {{ api.naming.module_namespace|join('.' )}}.{{ api.naming.versioned_module_name }} import GiantSquid
     
     
