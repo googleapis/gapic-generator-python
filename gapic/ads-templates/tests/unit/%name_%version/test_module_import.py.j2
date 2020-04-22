@@ -1,6 +1,9 @@
 {% extends "_base.py.j2" %}
 {% block content %}
 {% if opts.lazy_import -%} {# lazy import #}
+import pytest
+  
+
 def test_module_level_imports():
     expected_names = []
 
@@ -32,6 +35,11 @@ def test_module_level_imports():
     assert expected_names == actual_names
 
 
+    # Verify the logic for handling non-existant names
+    with pytest.raises(AttributeError):
+        from {{ api.naming.module_namespace|join('.' )}}.{{ api.naming.module_name }} import GiantSquid
+
+
 def test_versionsed_module_level_imports():
     expected_names = []
 
@@ -61,8 +69,11 @@ def test_versionsed_module_level_imports():
     from {{ api.naming.module_namespace|join('.') }}.{{ api.naming.module_name }} import {{ api.naming.version }}
     actual_names = dir({{ api.naming.version }})
     assert expected_names == actual_names
-   
 
+    # Verify the logic for handling non-existant names
+    with pytest.raises(AttributeError):
+        from {{ api.naming.module_namespace|join('.' )}}.{{ api.naming.versioned_module_name }} import GiantSquid
+    
     
 {% endif -%} {# lazy import #}
 {% endblock %}
