@@ -1,17 +1,43 @@
+load("//:gapic_generator_python.bzl", "pandoc_binary", "pandoc_toolchain")
 load("@gapic_generator_python_pip_deps//:requirements.bzl", "requirement")
+
+toolchain_type(
+    name = "pandoc_toolchain_type",
+    visibility = ["//visibility:public"],
+)
+
+pandoc_toolchain(
+    exec_compatible_with = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:x86_64",
+    ],
+    platform = "linux",
+)
+
+pandoc_toolchain(
+    exec_compatible_with = [
+        "@bazel_tools//platforms:osx",
+        "@bazel_tools//platforms:x86_64",
+    ],
+    platform = "macOS",
+)
+
+pandoc_binary(
+    name = "pandoc_binary"
+)
 
 py_binary(
     name = "gapic_plugin",
     srcs = glob(["gapic/**/*.py"]),
-    data = glob(["gapic/**/*.j2"]),
-    main = "gapic/cli/generate.py",
+    data = [":pandoc_binary"] + glob(["gapic/**/*.j2"]),
+    main = "gapic/cli/generate_with_pandoc.py",
     visibility = ["//visibility:public"],
     deps = [
         "@com_google_protobuf//:protobuf_python",
+        "@com_github_grpc_grpc//src/python/grpcio/grpc:grpcio",
         requirement("click"),
         requirement("google-api-core"),
         requirement("googleapis-common-protos"),
-        requirement("grpcio"),
         requirement("jinja2"),
         requirement("MarkupSafe"),
         requirement("pypandoc"),
