@@ -23,7 +23,12 @@ pandoc_toolchain(
 )
 
 pandoc_binary(
-    name = "pandoc_binary"
+    name = "pandoc_binary",
+)
+
+config_setting(
+    name = "gapic_gen_python_3_6",
+    values = {"define": "gapic_gen_python=3.6"},
 )
 
 py_binary(
@@ -31,6 +36,7 @@ py_binary(
     srcs = glob(["gapic/**/*.py"]),
     data = [":pandoc_binary"] + glob(["gapic/**/*.j2"]),
     main = "gapic/cli/generate_with_pandoc.py",
+    python_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
         "@com_google_protobuf//:protobuf_python",
@@ -42,6 +48,8 @@ py_binary(
         requirement("MarkupSafe"),
         requirement("pypandoc"),
         requirement("PyYAML"),
-    ],
-    python_version = "PY3",
+    ] + select({
+        ":gapic_gen_python_3_6": [requirement("dataclasses")],
+        "//conditions:default": [],
+    }),
 )
