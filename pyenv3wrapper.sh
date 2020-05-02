@@ -1,3 +1,4 @@
 #!/bin/sh
 
-exec ~/.pyenv/shims/python3 "$@"
+HOME_DIR=$(getent passwd "$(whoami)" | cut -d: -f6)
+exec "$HOME_DIR/.pyenv/shims/python3" "$@"
