@@ -43,7 +43,7 @@ protobuf_deps()
 
 #
 # Import grpc as a native bazel dependency. This avoids duplication and also
-# spedds up loading phase a lot (otherwise python_rules will be building grpcio
+# speeds up loading phase a lot (otherwise python_rules will be building grpcio
 # from sources in a single-core speed, which takes around 5 minutes on a regular
 # workstation)
 #
