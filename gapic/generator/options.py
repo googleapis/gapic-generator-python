@@ -99,7 +99,7 @@ class Options:
             os.path.join(os.path.dirname(__file__), '..', 'templates'),
         )
         templates = [
-            (default_path if path == default_token else path)
+            (default_path if path == default_token else os.path.abspath(path))
             for path in templates
         ]
 
