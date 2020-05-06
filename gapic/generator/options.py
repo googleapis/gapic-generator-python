@@ -113,7 +113,7 @@ class Options:
         retry_cfg = None
         retry_paths = opts.pop('retry-config', None)
         if retry_paths:
-                # Just use the last config specified.
+            # Just use the last config specified.
             with open(retry_paths[-1]) as f:
                 retry_cfg = json.load(f)
 
