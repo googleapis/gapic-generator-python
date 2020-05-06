@@ -36,9 +36,9 @@ def test_options_replace_templates():
 
 
 def test_options_relative_templates():
-    opts = options.Options.build('python-gapic-templates=../squid/clam')
+    opts = options.Options.build('python-gapic-templates=../../squid/clam')
 
-    expected = (os.path.abspath('../gapic-generator-python/squid/clam'),)
+    expected = (os.path.abspath('../squid/clam'),)
     assert opts.templates == expected
 
 
