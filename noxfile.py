@@ -40,7 +40,7 @@ def unit(session):
     session.run(
         'py.test',
         '-vv',
-        '-n=auto',
+        # '-n=auto',
         '--cov=gapic',
         '--cov-config=.coveragerc',
         '--cov-report=term',
@@ -225,7 +225,7 @@ def showcase_unit(
         # Run the tests.
         session.run(
             'py.test',
-            '-n=auto',
+            # '-n=auto',
             '--quiet',
             '--cov=google',
             '--cov-report=term',
