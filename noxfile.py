@@ -21,7 +21,7 @@ import nox  # type: ignore
 from os import path
 
 
-showcase_version = "0.6.1"
+showcase_version = "0.11.0"
 
 
 @nox.session(python=["3.6", "3.7", "3.8"])
@@ -86,6 +86,7 @@ def showcase(
         opts += ",".join(other_opts + ("lazy-import",))
         session.run(
             "protoc",
+            "--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             f"--python_gapic_out={tmp_dir}",
             "google/showcase/v1beta1/echo.proto",
@@ -143,6 +144,7 @@ def showcase_mtls(
         opts += ",".join(other_opts + ("lazy-import",))
         session.run(
             "protoc",
+            "--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             f"--python_gapic_out={tmp_dir}",
             "google/showcase/v1beta1/echo.proto",
@@ -213,6 +215,7 @@ def showcase_unit(
 
         session.run(
             "protoc",
+            "--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             f"--python_gapic_out={tmp_dir}",
             opt_str,
@@ -274,6 +277,7 @@ def showcase_mypy(
         gapic_opts += ",".join(other_opts)
         session.run(
             "protoc",
+            "--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             f"--python_gapic_out={tmp_dir}",
             gapic_opts,
