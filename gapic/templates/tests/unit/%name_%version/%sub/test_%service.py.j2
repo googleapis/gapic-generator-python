@@ -171,7 +171,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         )
         {% endif -%}
         {% if method.client_streaming %}
-        respons e= client.{{ method.name|snake_case }}(iter(requests))
+        response= client.{{ method.name|snake_case }}(iter(requests))
         {% else %}
         response = client.{{ method.name|snake_case }}(request)
         {% endif %}
