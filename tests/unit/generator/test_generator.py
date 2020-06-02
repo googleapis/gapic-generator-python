@@ -49,9 +49,9 @@ def test_get_response():
                                  opts=options.Options.build(""))
             lt.assert_called_once()
             gt.assert_has_calls(
-                [n
-                 mock.call("foo/bar/baz.py.j2"),
-                 mock.call("molluscs/squid/sample.py.j2"),
+                [
+                    mock.call("foo/bar/baz.py.j2"),
+                    mock.call("molluscs/squid/sample.py.j2"),
                 ]
             )
             assert len(cgr.file) == 1
