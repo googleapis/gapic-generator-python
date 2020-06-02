@@ -105,8 +105,8 @@ class Generator:
         )
 
         # Return the CodeGeneratorResponse output.
-        res = CodeGeneratorResponse(file=[i for i in output_files.values()])
-        res.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
+        res = CodeGeneratorResponse(file=[i for i in output_files.values()]) # type: ignore
+        res.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL# type: ignore
         return res
 
     def _generate_samples_and_manifest(
