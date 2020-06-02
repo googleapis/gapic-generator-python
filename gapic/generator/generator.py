@@ -30,7 +30,7 @@ from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 
 class Generator:
-  """A protoc code generator for client libraries.
+    """A protoc code generator for client libraries.
 
     This class provides an interface for getting a
     :class:`~.plugin_pb2.CodeGeneratorResponse` for an :class:`~api.API`
@@ -83,39 +83,39 @@ class Generator:
           self._env.loader.list_templates(),
       )
 
-        # Iterate over each template and add the appropriate output files
-        # based on that template.
-        # Sample templates work differently: there's (usually) only one,
-        # and instead of iterating over it/them, we iterate over samples
-        # and plug those into the template.
-        for template_name in client_templates:
+      # Iterate over each template and add the appropriate output files
+      # based on that template.
+      # Sample templates work differently: there's (usually) only one,
+      # and instead of iterating over it/them, we iterate over samples
+      # and plug those into the template.
+      for template_name in client_templates:
           # Sanity check: Skip "private" templates.
-            filename = template_name.split("/")[-1]
-            if filename.startswith("_") and filename != "__init__.py.j2":
-                continue
+          filename = template_name.split("/")[-1]
+          if filename.startswith("_") and filename != "__init__.py.j2":
+              continue
 
-            # Append to the output files dictionary.
-            output_files.update(
-                self._render_template(
-                    template_name, api_schema=api_schema, opts=opts)
-            )
+          # Append to the output files dictionary.
+          output_files.update(
+              self._render_template(
+                  template_name, api_schema=api_schema, opts=opts)
+          )
 
-        output_files.update(
-            self._generate_samples_and_manifest(
-                api_schema, self._env.get_template(sample_templates[0]),
-            )
-        )
+          output_files.update(
+              self._generate_samples_and_manifest(
+                  api_schema, self._env.get_template(sample_templates[0]),
+              )
+          )
 
-        # Return the CodeGeneratorResponse output.
-        res = CodeGeneratorResponse(
-            file=[i for i in output_files.values()])  # type: ignore
-        res.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL  # type: ignore
-        return res
+      # Return the CodeGeneratorResponse output.
+      res = CodeGeneratorResponse(
+          file=[i for i in output_files.values()])  # type: ignore
+      res.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL  # type: ignore
+      return res
 
     def _generate_samples_and_manifest(
         self, api_schema: api.API, sample_template: jinja2.Template,
     ) -> Dict[str, CodeGeneratorResponse.File]:
-      """Generate samples and samplegen manifest for the API.
+        """Generate samples and samplegen manifest for the API.
 
         Arguments:
             api_schema (api.API): The schema for the API to which the samples belong.
@@ -123,9 +123,9 @@ class Generator:
         Returns:
             Dict[str, CodeGeneratorResponse.File]: A dict mapping filepath to rendered file.
         """
-      # The two-layer data structure lets us do two things:
-      # * detect duplicate samples, which is an error
-      # * detect distinct samples with the same ID, which are disambiguated
+        # The two-layer data structure lets us do two things:
+        # * detect duplicate samples, which is an error
+        # * detect distinct samples with the same ID, which are disambiguated
         id_to_hash_to_spec: DefaultDict[str,
                                         Dict[str, Any]] = defaultdict(dict)
 
@@ -172,16 +172,16 @@ class Generator:
               id_is_unique = len(hash_to_spec) == 1
               # The ID is used to generate the file name and by sample tester
               # to link filenames to invoked samples. It must be globally unique.
-                if not id_is_unique:
+              if not id_is_unique:
                   spec["id"] += f"_{spec_hash}"
 
-                sample = samplegen.generate_sample(spec, api_schema, sample_template,)
+              sample = samplegen.generate_sample(spec, api_schema, sample_template,)
 
-                fpath = spec["id"] + ".py"
-                fpath_to_spec_and_rendered[os.path.join(out_dir, fpath)] = (
-                    spec,
-                    sample,
-                )
+              fpath = spec["id"] + ".py"
+              fpath_to_spec_and_rendered[os.path.join(out_dir, fpath)] = (
+                  spec,
+                  sample,
+              )
 
         output_files = {
             fname: CodeGeneratorResponse.File(
@@ -192,13 +192,13 @@ class Generator:
 
         # Only generate a manifest if we generated samples.
         if output_files:
-          manifest_fname, manifest_doc = manifest.generate(
-              (
-                  (fname, spec)
+            manifest_fname, manifest_doc = manifest.generate(
+                (
+                    (fname, spec)
                     for fname, (spec, _) in fpath_to_spec_and_rendered.items()
-              ),
-              api_schema,
-          )
+                ),
+                api_schema,
+            )
 
             manifest_fname = os.path.join(out_dir, manifest_fname)
             output_files[manifest_fname] = CodeGeneratorResponse.File(
@@ -208,9 +208,9 @@ class Generator:
         return output_files
 
     def _render_template(
-        self, template_name: str, *, api_schema: api.API, opts: options.Options,
+            self, template_name: str, *, api_schema: api.API, opts: options.Options,
     ) -> Dict[str, CodeGeneratorResponse.File]:
-      """Render the requested templates.
+        """Render the requested templates.
 
         Args:
             template_name (str): The template to be rendered.
@@ -224,8 +224,8 @@ class Generator:
             Sequence[~.CodeGeneratorResponse.File]: A sequence of File
                 objects for inclusion in the final response.
         """
-      answer: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
-      skip_subpackages = False
+        answer: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
+        skip_subpackages = False
 
         # Sanity check: Rendering per service and per proto would be a
         # combinatorial explosion and is almost certainly not what anyone
@@ -241,27 +241,29 @@ class Generator:
         # services and protos we pull from for the remainder of the method).
         if "%sub" in template_name:
             for subpackage in api_schema.subpackages.values():
-              answer.update(
-                  self._render_template(
-                      template_name, api_schema=subpackage, opts=opts
-                  )
-              )
-              skip_subpackages = True
+                answer.update(
+                    self._render_template(
+                        template_name, api_schema=subpackage, opts=opts
+                    )
+                )
+                skip_subpackages = True
 
         # If this template should be rendered once per proto, iterate over
         # all protos to be rendered
         if "%proto" in template_name:
             for proto in api_schema.protos.values():
                 if (
-                    skip_subpackages
-                    and proto.meta.address.subpackage != api_schema.subpackage_view
+                        skip_subpackages
+                        and proto.meta.address.subpackage != api_schema.subpackage_view
                 ):
                     continue
-                  answer.update(
-                      self._get_file(
-                          template_name, api_schema=api_schema, proto=proto, opts=opts
-                      )
-                  )
+                
+                answer.update(
+                    self._get_file(
+                        template_name, api_schema=api_schema, proto=proto, opts=opts
+                    )
+                )
+                
             return answer
 
         # If this template should be rendered once per service, iterate
@@ -269,19 +271,20 @@ class Generator:
         if "%service" in template_name:
             for service in api_schema.services.values():
                 if (
-                    skip_subpackages
-                    and service.meta.address.subpackage != api_schema.subpackage_view
+                        skip_subpackages
+                        and service.meta.address.subpackage != api_schema.subpackage_view
                 ):
                     continue
-                  answer.update(
-                      self._get_file(
-                          template_name,
-                          api_schema=api_schema,
-                          service=service,
-                          opts=opts,
-                      )
-                  )
-            return answer
+                
+                answer.update(
+                    self._get_file(
+                        template_name,
+                        api_schema=api_schema,
+                        service=service,
+                        opts=opts,
+                    )
+                )
+                return answer
 
         # This file is not iterating over anything else; return back
         # the one applicable file.
@@ -297,8 +300,8 @@ class Generator:
         api_schema=api.API,
         **context: Mapping,
     ):
-      """Render a template to a protobuf plugin File object."""
-      # Determine the target filename.
+        """Render a template to a protobuf plugin File object."""
+        # Determine the target filename.
         fn = self._get_filename(
             template_name, api_schema=api_schema, context=context,)
 
@@ -325,7 +328,7 @@ class Generator:
     def _get_filename(
         self, template_name: str, *, api_schema: api.API, context: dict = None,
     ) -> str:
-      """Return the appropriate output filename for this template.
+        """Return the appropriate output filename for this template.
 
         This entails running the template name through a series of
         replacements to replace the "filename variables" (``%name``,
@@ -345,7 +348,7 @@ class Generator:
         Returns:
             str: The appropriate output filename.
         """
-      filename = template_name[: -len(".j2")]
+        filename = template_name[: -len(".j2")]
 
         # Replace the %namespace variable.
         filename = filename.replace(
