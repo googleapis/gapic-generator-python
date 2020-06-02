@@ -45,14 +45,18 @@ def test_get_response():
         lt.return_value = ["foo/bar/baz.py.j2", "molluscs/squid/sample.py.j2"]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("I am a template result.")
-            cgr = g.get_response(api_schema=make_api(), opts=options.Options.build(""))
-    lt.assert_called_once()
-    gt.assert_has_calls(
-        [mock.call("foo/bar/baz.py.j2"), mock.call("molluscs/squid/sample.py.j2")]
-    )
-    assert len(cgr.file) == 1
-    assert cgr.file[0].name == "foo/bar/baz.py"
-    assert cgr.file[0].content == "I am a template result.\n"
+            cgr = g.get_response(api_schema=make_api(),
+                                 opts=options.Options.build(""))
+            lt.assert_called_once()
+            gt.assert_has_calls(
+                [n
+                 mock.call("foo/bar/baz.py.j2"),
+                 mock.call("molluscs/squid/sample.py.j2"),
+                ]
+            )
+            assert len(cgr.file) == 1
+            assert cgr.file[0].name == "foo/bar/baz.py"
+            assert cgr.file[0].content == "I am a template result.\n"
 
 
 def test_get_response_ignores_empty_files():
@@ -61,12 +65,16 @@ def test_get_response_ignores_empty_files():
         lt.return_value = ["foo/bar/baz.py.j2", "molluscs/squid/sample.py.j2"]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("# Meaningless comment")
-            cgr = g.get_response(api_schema=make_api(), opts=options.Options.build(""))
-    lt.assert_called_once()
-    gt.assert_has_calls(
-        [mock.call("foo/bar/baz.py.j2"), mock.call("molluscs/squid/sample.py.j2")]
-    )
-    assert len(cgr.file) == 0
+            cgr = g.get_response(api_schema=make_api(),
+                                 opts=options.Options.build(""))
+            lt.assert_called_once()
+            gt.assert_has_calls(
+                [
+                    mock.call("foo/bar/baz.py.j2"),
+                    mock.call("molluscs/squid/sample.py.j2"),
+                ]
+            )
+            assert len(cgr.file) == 0
 
 
 def test_get_response_ignores_private_files():
@@ -80,13 +88,16 @@ def test_get_response_ignores_private_files():
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("I am a template result.")
             cgr = g.get_response(api_schema=make_api(), opts=options.Options.build(""))
-    lt.assert_called_once()
-    gt.assert_has_calls(
-        [mock.call("foo/bar/baz.py.j2"), mock.call("molluscs/squid/sample.py.j2")]
-    )
-    assert len(cgr.file) == 1
-    assert cgr.file[0].name == "foo/bar/baz.py"
-    assert cgr.file[0].content == "I am a template result.\n"
+            lt.assert_called_once()
+            gt.assert_has_calls(
+                [
+                    mock.call("foo/bar/baz.py.j2"),
+                    mock.call("molluscs/squid/sample.py.j2"),
+                ]
+            )
+            assert len(cgr.file) == 1
+            assert cgr.file[0].name == "foo/bar/baz.py"
+            assert cgr.file[0].content == "I am a template result.\n"
 
 
 def test_get_response_fails_invalid_file_paths():
@@ -117,7 +128,8 @@ def test_get_response_enumerates_services():
                     make_proto(
                         descriptor_pb2.FileDescriptorProto(
                             service=[
-                                descriptor_pb2.ServiceDescriptorProto(name="Spam"),
+                                descriptor_pb2.ServiceDescriptorProto(
+                                    name="Spam"),
                                 descriptor_pb2.ServiceDescriptorProto(
                                     name="EggsService"
                                 ),
@@ -127,11 +139,11 @@ def test_get_response_enumerates_services():
                 ),
                 opts=options.Options.build(""),
             )
-    assert len(cgr.file) == 2
-    assert {i.name for i in cgr.file} == {
-        "foo/spam/baz.py",
-        "foo/eggs_service/baz.py",
-    }
+            assert len(cgr.file) == 2
+            assert {i.name for i in cgr.file} == {
+                "foo/spam/baz.py",
+                "foo/eggs_service/baz.py",
+            }
 
 
 def test_get_response_enumerates_proto():
@@ -145,13 +157,15 @@ def test_get_response_enumerates_proto():
             gt.return_value = jinja2.Template("Proto: {{ proto.module_name }}")
             cgr = g.get_response(
                 api_schema=make_api(
-                    make_proto(descriptor_pb2.FileDescriptorProto(name="a.proto")),
-                    make_proto(descriptor_pb2.FileDescriptorProto(name="b.proto")),
+                    make_proto(
+                        descriptor_pb2.FileDescriptorProto(name="a.proto")),
+                    make_proto(
+                        descriptor_pb2.FileDescriptorProto(name="b.proto")),
                 ),
                 opts=options.Options.build(""),
             )
-    assert len(cgr.file) == 2
-    assert {i.name for i in cgr.file} == {"foo/a.py", "foo/b.py"}
+            assert len(cgr.file) == 2
+            assert {i.name for i in cgr.file} == {"foo/a.py", "foo/b.py"}
 
 
 def test_get_response_divides_subpackages():
@@ -188,16 +202,17 @@ def test_get_response_divides_subpackages():
                 {{- '' }}Subpackage: {{ '.'.join(api.subpackage_view) }}
             """.strip()
             )
-            cgr = g.get_response(api_schema=api_schema, opts=options.Options.build(""))
-    assert len(cgr.file) == 6
-    assert {i.name for i in cgr.file} == {
-        "foo/types/top.py",
-        "foo/services/top.py",
-        "foo/spam/types/ham.py",
-        "foo/spam/services/bacon.py",
-        "foo/eggs/types/yolk.py",
-        "foo/eggs/services/scramble.py",
-    }
+            cgr = g.get_response(api_schema=api_schema,
+                                 opts=options.Options.build(""))
+            assert len(cgr.file) == 6
+            assert {i.name for i in cgr.file} == {
+                "foo/types/top.py",
+                "foo/services/top.py",
+                "foo/spam/types/ham.py",
+                "foo/spam/services/bacon.py",
+                "foo/eggs/types/yolk.py",
+                "foo/eggs/services/scramble.py",
+            }
 
 
 def test_get_filename():
@@ -242,7 +257,8 @@ def test_get_filename_with_service():
             context={
                 "service": wrappers.Service(
                     methods=[],
-                    service_pb=descriptor_pb2.ServiceDescriptorProto(name="Eggs"),
+                    service_pb=descriptor_pb2.ServiceDescriptorProto(
+                        name="Eggs"),
                 ),
             },
         )
@@ -350,12 +366,16 @@ def test_samplegen_config_to_output_files(
     # Need to have the sample template visible to the generator.
     g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
 
-    api_schema = make_api(naming=naming.NewNaming(name="Mollusc", version="v6"))
-    actual_response = g.get_response(api_schema, opts=options.Options.build(""))
+    api_schema = make_api(naming=naming.NewNaming(
+        name="Mollusc", version="v6"))
+    actual_response = g.get_response(
+        api_schema, opts=options.Options.build(""))
     expected_response = CodeGeneratorResponse(
         file=[
-            CodeGeneratorResponse.File(name="samples/squid_sample.py", content="\n",),
-            CodeGeneratorResponse.File(name="samples/clam_sample.py", content="\n",),
+            CodeGeneratorResponse.File(
+                name="samples/squid_sample.py", content="\n",),
+            CodeGeneratorResponse.File(
+                name="samples/clam_sample.py", content="\n",),
             CodeGeneratorResponse.File(
                 name="samples/mollusc.v6.python.21120601.131313.manifest.yaml",
                 content=dedent(
@@ -432,8 +452,10 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
     # Need to have the sample template visible to the generator.
     g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
 
-    api_schema = make_api(naming=naming.NewNaming(name="Mollusc", version="v6"))
-    actual_response = g.get_response(api_schema, opts=options.Options.build(""))
+    api_schema = make_api(naming=naming.NewNaming(
+        name="Mollusc", version="v6"))
+    actual_response = g.get_response(api_schema,
+                                     opts=options.Options.build(""))
     expected_response = CodeGeneratorResponse(
         file=[
             CodeGeneratorResponse.File(
@@ -442,7 +464,8 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
             CodeGeneratorResponse.File(
                 name="samples/squid_sample_55051b38.py", content="\n",
             ),
-            CodeGeneratorResponse.File(name="samples/157884ee.py", content="\n",),
+            CodeGeneratorResponse.File(name="samples/157884ee.py",
+                                       content="\n",),
             CodeGeneratorResponse.File(
                 name="samples/mollusc.v6.python.21120601.131313.manifest.yaml",
                 content=dedent(
@@ -559,7 +582,8 @@ def test_dont_generate_in_code_samples(mock_gmtime, mock_generate_sample, fs):
             descriptor_pb2.FileDescriptorProto(
                 name="mollusc.proto",
                 package="Mollusc.v1",
-                service=[descriptor_pb2.ServiceDescriptorProto(name="Mollusc")],
+                service=[descriptor_pb2.ServiceDescriptorProto(
+                    name="Mollusc")],
             ),
         ),
         naming=naming.NewNaming(name="Mollusc", version="v6"),
@@ -573,9 +597,12 @@ def test_dont_generate_in_code_samples(mock_gmtime, mock_generate_sample, fs):
     # 4) Implicit standalone sample type.
     expected = CodeGeneratorResponse(
         file=[
-            CodeGeneratorResponse.File(name="samples/squid_sample.py", content="\n",),
-            CodeGeneratorResponse.File(name="samples/whelk_sample.py", content="\n",),
-            CodeGeneratorResponse.File(name="samples/octopus_sample.py", content="\n",),
+            CodeGeneratorResponse.File(
+                name="samples/squid_sample.py", content="\n",),
+            CodeGeneratorResponse.File(
+                name="samples/whelk_sample.py", content="\n",),
+            CodeGeneratorResponse.File(
+                name="samples/octopus_sample.py", content="\n",),
             CodeGeneratorResponse.File(
                 name="samples/mollusc.v6.python.21120601.131313.manifest.yaml",
                 content=dedent(
