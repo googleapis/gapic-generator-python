@@ -132,7 +132,7 @@ class Generator:
         STANDALONE_TYPE = "standalone"
         for config_fpath in self._sample_configs:
             with open(config_fpath) as f:
-              configs = yaml.safe_load_all(f.read())
+                configs = yaml.safe_load_all(f.read())
 
             spec_generator = (
                 spec
@@ -175,7 +175,8 @@ class Generator:
                 if not id_is_unique:
                     spec["id"] += f"_{spec_hash}"
 
-                sample = samplegen.generate_sample(spec, api_schema, sample_template,)
+                sample = samplegen.generate_sample(
+                    spec, api_schema, sample_template,)
 
                 fpath = spec["id"] + ".py"
                 fpath_to_spec_and_rendered[os.path.join(out_dir, fpath)] = (
@@ -367,14 +368,14 @@ class Generator:
 
         # Replace the %service variable if applicable.
         if context and "service" in context:
-          filename = filename.replace(
-              "%service", context["service"].module_name,)
+            filename = filename.replace(
+                "%service", context["service"].module_name,)
 
         # Replace the %proto variable if appliable.
         # In the cases of protos, we also honor subpackages.
         if context and "proto" in context:
-          filename = filename.replace(
-              "%proto", context["proto"].module_name,)
+            filename = filename.replace(
+                "%proto", context["proto"].module_name,)
 
         # Paths may have empty path segments if components are empty
         # (e.g. no %version); handle this.
