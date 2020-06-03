@@ -93,7 +93,7 @@ class Generator:
             filename = template_name.split("/")[-1]
             if filename.startswith("_") and filename != "__init__.py.j2":
                 continue
-          
+
             # Append to the output files dictionary.
             output_files.update(
                 self._render_template(
@@ -264,7 +264,7 @@ class Generator:
                         template_name, api_schema=api_schema, proto=proto, opts=opts
                     )
                 )
-                
+
             return answer
 
         # If this template should be rendered once per service, iterate
