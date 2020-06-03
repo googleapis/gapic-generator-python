@@ -1,7 +1,7 @@
 .. _getting-started/bazel:
 
 Bazel Build
-==================
+===========
 
 This generator can be called from `Bazel`_, which is a recommended way of using
 it inside a continuous integration build or any other automated pipeline.
