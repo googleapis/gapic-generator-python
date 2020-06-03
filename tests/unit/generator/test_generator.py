@@ -87,7 +87,8 @@ def test_get_response_ignores_private_files():
         ]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("I am a template result.")
-            cgr = g.get_response(api_schema=make_api(), opts=options.Options.build(""))
+            cgr = g.get_response(api_schema=make_api(),
+                                 opts=options.Options.build(""))
             lt.assert_called_once()
             gt.assert_has_calls(
                 [
@@ -108,7 +109,8 @@ def test_get_response_fails_invalid_file_paths():
             "molluscs/squid/sample.py.j2",
         ]
         with pytest.raises(ValueError) as ex:
-            g.get_response(api_schema=make_api(), opts=options.Options.build(""))
+            g.get_response(api_schema=make_api(),
+                           opts=options.Options.build(""))
 
         ex_str = str(ex.value)
         assert "%proto" in ex_str and "%service" in ex_str
@@ -185,7 +187,8 @@ def test_get_response_divides_subpackages():
             descriptor_pb2.FileDescriptorProto(
                 name="a/eggs/yolk.proto",
                 package="foo.v1.eggs",
-                service=[descriptor_pb2.ServiceDescriptorProto(name="Scramble")],
+                service=[descriptor_pb2.ServiceDescriptorProto(
+                    name="Scramble")],
             ),
         ],
         package="foo.v1",
@@ -524,10 +527,12 @@ def test_generator_duplicate_samples(fs):
 
     generator = make_generator("samples=samples.yaml")
     generator._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
-    api_schema = make_api(naming=naming.NewNaming(name="Mollusc", version="v6"))
+    api_schema = make_api(naming=naming.NewNaming(
+        name="Mollusc", version="v6"))
 
     with pytest.raises(types.DuplicateSample):
-        generator.get_response(api_schema=api_schema, opts=options.Options.build(""))
+        generator.get_response(api_schema=api_schema,
+                               opts=options.Options.build(""))
 
 
 @mock.patch("gapic.samplegen.samplegen.generate_sample", return_value="")
