@@ -100,11 +100,11 @@ class Generator:
                   template_name, api_schema=api_schema, opts=opts)
           )
 
-          output_files.update(
-              self._generate_samples_and_manifest(
-                  api_schema, self._env.get_template(sample_templates[0]),
-              )
+      output_files.update(
+          self._generate_samples_and_manifest(
+              api_schema, self._env.get_template(sample_templates[0]),
           )
+      )
 
       # Return the CodeGeneratorResponse output.
       res = CodeGeneratorResponse(
@@ -284,7 +284,7 @@ class Generator:
                         opts=opts,
                     )
                 )
-                return answer
+            return answer
 
         # This file is not iterating over anything else; return back
         # the one applicable file.
