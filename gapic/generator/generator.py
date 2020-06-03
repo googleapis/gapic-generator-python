@@ -76,41 +76,41 @@ class Generator:
             ~.CodeGeneratorResponse: A response describing appropriate
             files and contents. See ``plugin.proto``.
         """
-      output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
-      sample_templates, client_templates = utils.partition(
-          lambda fname: os.path.basename(
-              fname) == samplegen.DEFAULT_TEMPLATE_NAME,
-          self._env.loader.list_templates(),
-      )
+        output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
+        sample_templates, client_templates = utils.partition(
+            lambda fname: os.path.basename(
+                fname) == samplegen.DEFAULT_TEMPLATE_NAME,
+            self._env.loader.list_templates(),
+        )
 
-      # Iterate over each template and add the appropriate output files
-      # based on that template.
-      # Sample templates work differently: there's (usually) only one,
-      # and instead of iterating over it/them, we iterate over samples
-      # and plug those into the template.
-      for template_name in client_templates:
-          # Sanity check: Skip "private" templates.
-          filename = template_name.split("/")[-1]
-          if filename.startswith("_") and filename != "__init__.py.j2":
-              continue
+        # Iterate over each template and add the appropriate output files
+        # based on that template.
+        # Sample templates work differently: there's (usually) only one,
+        # and instead of iterating over it/them, we iterate over samples
+        # and plug those into the template.
+        for template_name in client_templates:
+            # Sanity check: Skip "private" templates.
+            filename = template_name.split("/")[-1]
+            if filename.startswith("_") and filename != "__init__.py.j2":
+                continue
+          
+            # Append to the output files dictionary.
+            output_files.update(
+                self._render_template(
+                    template_name, api_schema=api_schema, opts=opts)
+            )
 
-          # Append to the output files dictionary.
-          output_files.update(
-              self._render_template(
-                  template_name, api_schema=api_schema, opts=opts)
-          )
+        output_files.update(
+            self._generate_samples_and_manifest(
+                api_schema, self._env.get_template(sample_templates[0]),
+            )
+        )
 
-      output_files.update(
-          self._generate_samples_and_manifest(
-              api_schema, self._env.get_template(sample_templates[0]),
-          )
-      )
-
-      # Return the CodeGeneratorResponse output.
-      res = CodeGeneratorResponse(
-          file=[i for i in output_files.values()])  # type: ignore
-      res.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL  # type: ignore
-      return res
+        # Return the CodeGeneratorResponse output.
+        res = CodeGeneratorResponse(
+            file=[i for i in output_files.values()])  # type: ignore
+        res.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL  # type: ignore
+        return res
 
     def _generate_samples_and_manifest(
         self, api_schema: api.API, sample_template: jinja2.Template,
