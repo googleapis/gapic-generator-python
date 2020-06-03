@@ -63,7 +63,7 @@ class Generator:
     def get_response(
         self, api_schema: api.API, opts: options.Options
     ) -> CodeGeneratorResponse:
-      """Return a :class:`~.CodeGeneratorResponse` for this library.
+        """Return a :class:`~.CodeGeneratorResponse` for this library.
 
         This is a complete response to be written to (usually) stdout, and
         thus read by ``protoc``.
@@ -146,13 +146,13 @@ class Generator:
             )
 
             for spec in spec_generator:
-              # Every sample requires an ID, preferably provided by the
-              # samplegen config author.
-              # If no ID is provided, fall back to the region tag.
-              # If there's no region tag, generate a unique ID.
-              #
-              # Ideally the sample author should pick a descriptive, unique ID,
-              # but this may be impractical and can be error-prone.
+                # Every sample requires an ID, preferably provided by the
+                # samplegen config author.
+                # If no ID is provided, fall back to the region tag.
+                # If there's no region tag, generate a unique ID.
+                #
+                # Ideally the sample author should pick a descriptive, unique ID,
+                # but this may be impractical and can be error-prone.
                 spec_hash = sha256(str(spec).encode("utf8")).hexdigest()[:8]
                 sample_id = spec.get("id") or spec.get(
                     "region_tag") or spec_hash
@@ -169,19 +169,19 @@ class Generator:
         fpath_to_spec_and_rendered = {}
         for hash_to_spec in id_to_hash_to_spec.values():
             for spec_hash, spec in hash_to_spec.items():
-              id_is_unique = len(hash_to_spec) == 1
-              # The ID is used to generate the file name and by sample tester
-              # to link filenames to invoked samples. It must be globally unique.
-              if not id_is_unique:
-                  spec["id"] += f"_{spec_hash}"
+                id_is_unique = len(hash_to_spec) == 1
+                # The ID is used to generate the file name and by sample tester
+                # to link filenames to invoked samples. It must be globally unique.
+                if not id_is_unique:
+                    spec["id"] += f"_{spec_hash}"
 
-              sample = samplegen.generate_sample(spec, api_schema, sample_template,)
+                sample = samplegen.generate_sample(spec, api_schema, sample_template,)
 
-              fpath = spec["id"] + ".py"
-              fpath_to_spec_and_rendered[os.path.join(out_dir, fpath)] = (
-                  spec,
-                  sample,
-              )
+                fpath = spec["id"] + ".py"
+                fpath_to_spec_and_rendered[os.path.join(out_dir, fpath)] = (
+                    spec,
+                    sample,
+                )
 
         output_files = {
             fname: CodeGeneratorResponse.File(
@@ -257,7 +257,7 @@ class Generator:
                         and proto.meta.address.subpackage != api_schema.subpackage_view
                 ):
                     continue
-                
+
                 answer.update(
                     self._get_file(
                         template_name, api_schema=api_schema, proto=proto, opts=opts
@@ -275,7 +275,7 @@ class Generator:
                         and service.meta.address.subpackage != api_schema.subpackage_view
                 ):
                     continue
-                
+
                 answer.update(
                     self._get_file(
                         template_name,
@@ -362,7 +362,8 @@ class Generator:
         )
         filename = filename.replace("%version", api_schema.naming.version)
         filename = filename.replace("%name", api_schema.naming.module_name)
-        filename = filename.replace("%sub", "/".join(api_schema.subpackage_view))
+        filename = filename.replace(
+            "%sub", "/".join(api_schema.subpackage_view))
 
         # Replace the %service variable if applicable.
         if context and "service" in context:
