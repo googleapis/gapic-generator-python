@@ -235,7 +235,8 @@ def test_method_field_headers_present_patch():
 
 
 def test_method_field_headers_present_custom():
-    custom_pattern = http_pb2.CustomHttpPattern(kind="custom", path='/v1/{parent=projects/*}/topics')
+    custom_pattern = http_pb2.CustomHttpPattern(kind='custom',
+        path='/v1/{parent=projects/*}/topics')
     http_rule = http_pb2.HttpRule(custom=custom_pattern)
     method = make_method('DoSomething', http_rule=http_rule)
     assert method.field_headers == ('parent',)

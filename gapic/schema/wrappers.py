@@ -638,7 +638,7 @@ class Method:
             return tuple(pattern.findall(http.delete))
         elif http.patch:
             return tuple(pattern.findall(http.patch))
-        elif http.custom:
+        elif http.custom.path:
             return tuple(pattern.findall(http.custom.path))
 
         return ()
