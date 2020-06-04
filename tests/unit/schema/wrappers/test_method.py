@@ -204,8 +204,39 @@ def test_method_field_headers_none():
     assert isinstance(method.field_headers, collections.abc.Sequence)
 
 
-def test_method_field_headers_present():
+def test_method_field_headers_present_get():
     http_rule = http_pb2.HttpRule(get='/v1/{parent=projects/*}/topics')
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.field_headers == ('parent',)
+
+
+def test_method_field_headers_present_put():
+    http_rule = http_pb2.HttpRule(put='/v1/{parent=projects/*}/topics')
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.field_headers == ('parent',)
+
+
+def test_method_field_headers_present_post():
+    http_rule = http_pb2.HttpRule(post='/v1/{parent=projects/*}/topics')
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.field_headers == ('parent',)
+
+
+def test_method_field_headers_present_delete():
+    http_rule = http_pb2.HttpRule(delete='/v1/{parent=projects/*}/topics')
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.field_headers == ('parent',)
+
+
+def test_method_field_headers_present_patch():
+    http_rule = http_pb2.HttpRule(patch='/v1/{parent=projects/*}/topics')
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.field_headers == ('parent',)
+
+
+def test_method_field_headers_present_custom():
+    custom_pattern = http_pb2.CustomHttpPattern(kind="custom", path='/v1/{parent=projects/*}/topics')
+    http_rule = http_pb2.HttpRule(custom=custom_pattern)
     method = make_method('DoSomething', http_rule=http_rule)
     assert method.field_headers == ('parent',)
 

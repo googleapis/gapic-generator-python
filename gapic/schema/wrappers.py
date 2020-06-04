@@ -625,8 +625,22 @@ class Method:
     def field_headers(self) -> Sequence[str]:
         """Return the field headers defined for this method."""
         http = self.options.Extensions[annotations_pb2.http]
+
+        pattern = re.compile(r'\{([a-z][\w\d_.]+)=')
+
         if http.get:
-            return tuple(re.findall(r'\{([a-z][\w\d_.]+)=', http.get))
+            return tuple(pattern.findall(http.get))
+        elif http.put:
+            return tuple(pattern.findall(http.put))
+        elif http.post:
+            return tuple(pattern.findall(http.post))
+        elif http.delete:
+            return tuple(pattern.findall(http.delete))
+        elif http.patch:
+            return tuple(pattern.findall(http.patch))
+        elif http.custom:
+            return tuple(pattern.findall(http.custom.path))
+
         return ()
 
     @utils.cached_property
