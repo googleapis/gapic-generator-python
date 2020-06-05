@@ -628,20 +628,16 @@ class Method:
 
         pattern = re.compile(r'\{([a-z][\w\d_.]+)=')
 
-        if http.get:
-            return tuple(pattern.findall(http.get))
-        elif http.put:
-            return tuple(pattern.findall(http.put))
-        elif http.post:
-            return tuple(pattern.findall(http.post))
-        elif http.delete:
-            return tuple(pattern.findall(http.delete))
-        elif http.patch:
-            return tuple(pattern.findall(http.patch))
-        elif http.custom.path:
-            return tuple(pattern.findall(http.custom.path))
+        potential_verbs = [
+            http.get,
+            http.put,
+            http.post,
+            http.delete,
+            http.patch,
+            http.custom.path,
+        ]
 
-        return ()
+        return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
