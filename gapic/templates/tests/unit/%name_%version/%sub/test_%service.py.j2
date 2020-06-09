@@ -258,7 +258,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
     {% endfor %}
     {% endif %}
 
-{% if method.field_headers %}
+{% if method.field_headers and not method.client_streaming %}
 def test_{{ method.name|snake_case }}_field_headers():
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
