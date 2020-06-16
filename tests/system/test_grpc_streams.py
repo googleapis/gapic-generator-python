@@ -79,7 +79,6 @@ def test_stream_stream_passing_dict(echo):
 
 @pytest.mark.asyncio
 async def test_async_unary_stream_reader(async_echo):
-                  threading.current_thread(), asyncio.get_event_loop())
     content = 'The hail in Wales falls mainly on the snails.'
     call = await async_echo.expand({
         'content': content,

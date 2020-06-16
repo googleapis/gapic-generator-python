@@ -1,7 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-from typing import Awaitable, Callable, Dict, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
 from google.api_core import grpc_helpers_async         # type: ignore
 {%- if service.has_lro %}
@@ -47,7 +47,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                        **kwargs) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
-            address (Optionsl[str]): The host for the channel to use.
+            address (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
