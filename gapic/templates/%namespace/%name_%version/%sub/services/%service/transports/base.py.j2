@@ -31,8 +31,9 @@ class {{ service.name }}Transport(abc.ABC):
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
             credentials_file: str = None,
-            scopes: Sequence[str] = self.AUTH_SCOPES,
+            scopes: Sequence[str] = AUTH_SCOPES,
             **kwargs,
+
             ) -> None:
         """Instantiate the transport.
 
