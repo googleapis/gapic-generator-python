@@ -79,31 +79,25 @@ def test_stream_stream_passing_dict(echo):
 
 @pytest.mark.asyncio
 async def test_async_unary_stream_reader(async_echo):
-    logging.debug('test_async_unary_stream_reader %s %s',
                   threading.current_thread(), asyncio.get_event_loop())
     content = 'The hail in Wales falls mainly on the snails.'
     call = await async_echo.expand({
         'content': content,
     }, metadata=metadata)
-    logging.debug('test_async_unary_stream_reader 2')
 
     # Consume the response and ensure it matches what we expect.
     # with pytest.raises(exceptions.NotFound) as exc:
     for ground_truth in content.split(' '):
-        logging.debug('test_async_unary_stream_reader 3')
         response = await call.read()
         assert response.content == ground_truth
-    logging.debug('test_async_unary_stream_reader 4')
     assert ground_truth == 'snails.'
 
-    logging.debug('test_async_unary_stream_reader 5')
     trailing_metadata = await call.trailing_metadata()
     assert trailing_metadata == metadata
 
 
 @pytest.mark.asyncio
 async def test_async_unary_stream_async_generator(async_echo):
-    logging.debug('test_async_unary_stream_async_generator')
     content = 'The hail in Wales falls mainly on the snails.'
     call = await async_echo.expand({
         'content': content,
@@ -123,7 +117,6 @@ async def test_async_unary_stream_async_generator(async_echo):
 
 @pytest.mark.asyncio
 async def test_async_stream_unary_iterable(async_echo):
-    logging.debug('test_async_stream_unary_iterable')
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
@@ -135,7 +128,6 @@ async def test_async_stream_unary_iterable(async_echo):
 
 @pytest.mark.asyncio
 async def test_async_stream_unary_async_generator(async_echo):
-    logging.debug('test_async_stream_unary_async_generator')
 
     async def async_generator():
         yield showcase.EchoRequest(content="hello")
@@ -148,7 +140,6 @@ async def test_async_stream_unary_async_generator(async_echo):
 
 @pytest.mark.asyncio
 async def test_async_stream_unary_writer(async_echo):
-    logging.debug('test_async_stream_unary_writer')
     call = await async_echo.collect()
     await call.write(showcase.EchoRequest(content="hello"))
     await call.write(showcase.EchoRequest(content="world!"))
@@ -160,7 +151,6 @@ async def test_async_stream_unary_writer(async_echo):
 
 @pytest.mark.asyncio
 async def test_async_stream_unary_passing_dict(async_echo):
-    logging.debug('test_async_stream_unary_passing_dict')
     requests = [{'content': 'hello'}, {'content': 'world!'}]
     call = await async_echo.collect(iter(requests))
     response = await call
@@ -169,7 +159,6 @@ async def test_async_stream_unary_passing_dict(async_echo):
 
 @pytest.mark.asyncio
 async def test_async_stream_stream_reader_writier(async_echo):
-    logging.debug('test_async_stream_stream_reader_writier')
     call = await async_echo.chat(metadata=metadata)
     await call.write(showcase.EchoRequest(content="hello"))
     await call.write(showcase.EchoRequest(content="world!"))
@@ -187,7 +176,6 @@ async def test_async_stream_stream_reader_writier(async_echo):
 
 @pytest.mark.asyncio
 async def test_async_stream_stream_async_generator(async_echo):
-    logging.debug('test_async_stream_stream_async_generator')
 
     async def async_generator():
         yield showcase.EchoRequest(content="hello")
@@ -206,7 +194,6 @@ async def test_async_stream_stream_async_generator(async_echo):
 
 @pytest.mark.asyncio
 async def test_async_stream_stream_passing_dict(async_echo):
-    logging.debug('test_async_stream_stream_passing_dict')
     requests = [{'content': 'hello'}, {'content': 'world!'}]
     call = await async_echo.chat(iter(requests), metadata=metadata)
 

@@ -108,7 +108,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     def create_channel(cls,
                        host: str{% if service.host %} = '{{ service.host }}'{% endif %},
                        credentials: credentials.Credentials = None,
-                       scopes: Sequence[str] = None,
+                       scopes: Optional[Sequence[str]] = None,
                        **kwargs) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
@@ -118,7 +118,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
-            scopes (Sequence[str]): A optional list of scopes needed for this
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
             kwargs (Optional[dict]): Keyword arguments, which are passed to the

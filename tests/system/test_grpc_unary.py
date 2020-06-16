@@ -14,7 +14,6 @@
 
 import pytest
 import asyncio
-import logging
 
 from google.api_core import exceptions
 from google.rpc import code_pb2
