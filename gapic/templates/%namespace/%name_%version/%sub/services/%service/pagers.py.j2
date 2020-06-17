@@ -38,7 +38,9 @@ class {{ method.name }}Pager:
             method: Callable[[{{ method.input.ident }}],
                 {{ method.output.ident }}],
             request: {{ method.input.ident }},
-            response: {{ method.output.ident }}):
+            response: {{ method.output.ident }},
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -52,6 +54,7 @@ class {{ method.name }}Pager:
         self._method = method
         self._request = {{ method.input.ident }}(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
@@ -61,7 +64,7 @@ class {{ method.name }}Pager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request)
+            self._response = self._method(self._request, metadata=metadata)
             yield self._response
 
     def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterable') }}:
@@ -93,7 +96,9 @@ class {{ method.name }}AsyncPager:
             method: Callable[[{{ method.input.ident }}],
                 Awaitable[{{ method.output.ident }}]],
             request: {{ method.input.ident }},
-            response: {{ method.output.ident }}):
+            response: {{ method.output.ident }},
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -107,6 +112,7 @@ class {{ method.name }}AsyncPager:
         self._method = method
         self._request = {{ method.input.ident }}(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
@@ -116,7 +122,7 @@ class {{ method.name }}AsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request)
+            self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'AsyncIterable') }}:
