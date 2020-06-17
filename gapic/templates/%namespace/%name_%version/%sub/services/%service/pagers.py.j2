@@ -35,8 +35,7 @@ class {{ method.name }}Pager:
     the most recent response is retained, and thus used for attribute lookup.
     """
     def __init__(self,
-            method: Callable[[{{ method.input.ident }}],
-                {{ method.output.ident }}],
+            method: Callable[..., {{ method.output.ident }}],
             request: {{ method.input.ident }},
             response: {{ method.output.ident }},
             *,
@@ -95,8 +94,7 @@ class {{ method.name }}AsyncPager:
     the most recent response is retained, and thus used for attribute lookup.
     """
     def __init__(self,
-            method: Callable[[{{ method.input.ident }}],
-                Awaitable[{{ method.output.ident }}]],
+            method: Callable[..., Awaitable[{{ method.output.ident }}]],
             request: {{ method.input.ident }},
             response: {{ method.output.ident }},
             *,
