@@ -50,6 +50,8 @@ class {{ method.name }}Pager:
                 The initial request object.
             response (:class:`{{ method.output.ident.sphinx }}`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = {{ method.input.ident }}(request)
@@ -108,6 +110,8 @@ class {{ method.name }}AsyncPager:
                 The initial request object.
             response (:class:`{{ method.output.ident.sphinx }}`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = {{ method.input.ident }}(request)
