@@ -159,7 +159,7 @@ def showcase_unit(
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
-        
+
         # Run the tests.
         session.run(
             "py.test",
