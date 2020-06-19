@@ -5,6 +5,7 @@ import abc
 import typing
 
 from google import auth
+from google.api_core import exceptions  # type: ignore
 {%- if service.has_lro %}
 from google.api_core import operations_v1  # type: ignore
 {%- endif %}
@@ -57,7 +58,7 @@ class {{ service.name }}Transport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise ValueError("'credentials_file' and 'credentials' are mutually exclusive")
+            raise exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
         
         if credentials_file is not None:
             credentials, _ = auth.load_credentials_from_file(credentials_file, scopes=scopes)
