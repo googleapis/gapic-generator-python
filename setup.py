@@ -52,6 +52,7 @@ setup(
         "pypandoc >= 1.4",
         "PyYAML >= 5.1.1",
     ),
+    extras_require={':python_version<"3.7"': ("dataclasses >= 0.4",),},
     tests_require=("pyfakefs >= 3.6",),
     python_requires=">=3.6",
     classifiers=(
