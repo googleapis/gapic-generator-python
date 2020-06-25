@@ -15,15 +15,19 @@
 from __future__ import absolute_import
 import os
 import tempfile
+import subprocess
+import re
 import typing
 import nox  # type: ignore
 
 from contextlib import contextmanager
 from os import path
+from packaging.version import Version
 
 
 showcase_version = "0.11.0"
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
+MIN_PROTOC_VERSION = "3.12.0"
 
 
 @nox.session(python=["3.6", "3.7", "3.8"])
@@ -47,6 +51,27 @@ def unit(session):
     )
 
 
+def check_protoc(session):
+    """Make sure the Protocol Compiler (protoc) is installed"""
+    session.install("packaging")
+    try:
+        output = subprocess.check_output(["protoc", "--version"], encoding="utf-8")
+
+    except subprocess.CalledProcessError:
+        session.error(
+            f"These tests require protoc >= {MIN_PROTOC_VERSION}."
+            f"See CONTRIBUTING.md for details"
+        )
+
+    version_str = re.match("\D* (?P<version>\d.*)", output).group("version")
+
+    if Version(version_str) < Version(MIN_PROTOC_VERSION):
+        session.error(
+            f"You have protoc {version_str}. These tests require"
+            f" protoc >= {MIN_PROTOC_VERSION}. See CONTRIBUTING.md"
+            f" for details"
+        )
+
 @contextmanager
 def showcase_library(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = ()
@@ -61,6 +86,9 @@ def showcase_library(
         session.log("Note: Showcase must be running for these tests to work.")
         session.log("See https://github.com/googleapis/gapic-showcase")
         session.log("-" * 70)
+
+    # Fail if protoc is not installed or is too old
+    check_protoc(session)
 
     # Install gapic-generator-python
     session.install("-e", ".")
