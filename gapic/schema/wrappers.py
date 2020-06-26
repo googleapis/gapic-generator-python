@@ -54,7 +54,7 @@ class Field:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
-    oneof:bool = False
+    oneof: bool = False
 
 
     def __getattr__(self, name):
