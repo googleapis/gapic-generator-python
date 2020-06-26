@@ -56,7 +56,6 @@ class Field:
     )
     oneof: bool = False
 
-
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
 
