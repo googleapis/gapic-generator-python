@@ -556,14 +556,43 @@ class _ProtoBuilder:
             answer[wrapped.name] = wrapped
         return answer
 
+    def _get_oneofs(self,
+                    oneof_pbs: Sequence[descriptor_pb2.OneofDescriptorProto],
+                    address: metadata.Address, path: Tuple[int, ...],
+                    ) -> Dict[str, wrappers.Oneof]:
+        """Return a dictionary of wrapped oneofs for the given message.
+
+        Args:
+            oneof_fields (Sequence[~.descriptor_pb2.OneofDescriptorProto]): A
+                sequence of protobuf field objects.
+            address (~.metadata.Address): An address object denoting the
+                location of these oneofs.
+            path (Tuple[int]): The source location path thus far, as
+                understood by ``SourceCodeInfo.Location``.
+
+        Returns:
+            Mapping[str, ~.wrappers.Oneof]: A ordered mapping of
+                :class:`~.wrappers.Oneof` objects.
+        """
+        # Iterate over the oneofs and collect them into a dictionary.
+        answer: Dict[str, wrappers.Oneof] = collections.OrderedDict()
+        for oneof_pb, i in zip(oneof_pbs, range(0, sys.maxsize)):
+            answer[oneof_pb.name] = wrappers.Oneof(
+                oneof_pb=oneof_pb,
+            )
+
+        # Done; return the answer.
+        return answer
+
     def _get_fields(self,
                     field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
                     address: metadata.Address, path: Tuple[int, ...],
+                    oneofs = None
                     ) -> Dict[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
 
         Args:
-            fields (Sequence[~.descriptor_pb2.FieldDescriptorProto]): A
+            field_pbs (Sequence[~.descriptor_pb2.FieldDescriptorProto]): A
                 sequence of protobuf field objects.
             address (~.metadata.Address): An address object denoting the
                 location of these fields.
@@ -586,14 +615,19 @@ class _ProtoBuilder:
         # `_load_message` method.
         answer: Dict[str, wrappers.Field] = collections.OrderedDict()
         for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
+            oneof_name = None
+            if getattr(field_pb, 'oneof_index', -1) >= 0 and oneofs:
+                    oneof_name = list(oneofs.keys())[field_pb.oneof_index]
+
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
                 enum=self.api_enums.get(field_pb.type_name.lstrip('.')),
                 message=self.api_messages.get(field_pb.type_name.lstrip('.')),
-                meta=metadata.Metadata(
+                metaexit=metadata.Metadata(
                     address=address.child(field_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
+                oneof=oneof_name,
             )
 
         # Done; return the answer.
@@ -779,19 +813,25 @@ class _ProtoBuilder:
             loader=self._load_message,
             path=path + (3,),
         )
-        # self._load_children(message.oneof_decl, loader=self._load_field,
-        #                     address=nested_addr, info=info.get(8, {}))
+
+        oneofs = self._get_oneofs(
+            message_pb.oneof_decl,
+            address=address,
+            path=path + (8,),
+        )
 
         # Create a dictionary of all the fields for this message.
         fields = self._get_fields(
             message_pb.field,
             address=address,
             path=path + (2,),
+            oneofs=oneofs,
         )
         fields.update(self._get_fields(
             message_pb.extension,
             address=address,
             path=path + (6,),
+            oneofs=oneofs,
         ))
 
         # Create a message correspoding to this descriptor.
@@ -804,6 +844,7 @@ class _ProtoBuilder:
                 address=address,
                 documentation=self.docs.get(path, self.EMPTY),
             ),
+            oneofs=oneofs,
         )
         return self.proto_messages[address.proto]
 
