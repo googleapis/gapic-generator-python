@@ -230,7 +230,7 @@ class MessageType:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
-    oneofs: Optional[List[str]] = None
+    oneofs: Optional[Mapping[str, 'Oneof']] = None
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)

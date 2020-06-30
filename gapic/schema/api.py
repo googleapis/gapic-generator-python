@@ -587,7 +587,7 @@ class _ProtoBuilder:
     def _get_fields(self,
                     field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
                     address: metadata.Address, path: Tuple[int, ...],
-                    oneofs = None
+                    oneofs=None
                     ) -> Dict[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
 
@@ -617,7 +617,7 @@ class _ProtoBuilder:
         for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
             oneof_name = None
             if getattr(field_pb, 'oneof_index', -1) >= 0 and oneofs:
-                    oneof_name = list(oneofs.keys())[field_pb.oneof_index]
+                oneof_name = list(oneofs.keys())[field_pb.oneof_index]
 
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
