@@ -575,11 +575,10 @@ class _ProtoBuilder:
                 :class:`~.wrappers.Oneof` objects.
         """
         # Iterate over the oneofs and collect them into a dictionary.
-        answer: Dict[str, wrappers.Oneof] = collections.OrderedDict()
-        for oneof_pb, i in zip(oneof_pbs, range(0, sys.maxsize)):
-            answer[oneof_pb.name] = wrappers.Oneof(
-                oneof_pb=oneof_pb,
-            )
+        answer = collections.OrderedDict(
+            (oneof_pb.name, wrappers.Oneof(oneof_pb=oneof_pb))
+            for i, oneof_pb in enumerate(oneof_pbs)
+        )
 
         # Done; return the answer.
         return answer
@@ -587,7 +586,7 @@ class _ProtoBuilder:
     def _get_fields(self,
                     field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
                     address: metadata.Address, path: Tuple[int, ...],
-                    oneofs=None
+                    oneofs: Optional[Dict[str, wrappers.Oneof]]=None
                     ) -> Dict[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
 
