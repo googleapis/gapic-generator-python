@@ -23,8 +23,6 @@ from gapic.schema import metadata
 from gapic.schema import wrappers
 
 from test_utils.test_utils import (
-    #make_field,
-    #make_message,
     make_oneof_pb2,
 )
 
