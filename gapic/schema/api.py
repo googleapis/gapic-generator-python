@@ -586,7 +586,7 @@ class _ProtoBuilder:
     def _get_fields(self,
                     field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
                     address: metadata.Address, path: Tuple[int, ...],
-                    oneofs: Optional[Dict[str, wrappers.Oneof]] = None 
+                    oneofs: Optional[Dict[str, wrappers.Oneof]] = None
                     ) -> Dict[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
 
