@@ -239,6 +239,7 @@ def test_proto_keyword_fname():
         'class__.proto',
     }
 
+
 def test_proto_oneof():
     # Put together a couple of minimal protos.
     fd = (
