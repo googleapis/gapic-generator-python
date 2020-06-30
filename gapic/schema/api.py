@@ -623,7 +623,7 @@ class _ProtoBuilder:
                 field_pb=field_pb,
                 enum=self.api_enums.get(field_pb.type_name.lstrip('.')),
                 message=self.api_messages.get(field_pb.type_name.lstrip('.')),
-                metaexit=metadata.Metadata(
+                meta=metadata.Metadata(
                     address=address.child(field_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
