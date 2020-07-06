@@ -34,6 +34,7 @@ from gapic.schema import metadata
 from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
 from gapic.utils import cached_property
+from gapic.utils import nth
 from gapic.utils import to_snake_case
 from gapic.utils import RESERVED_NAMES
 
@@ -614,9 +615,8 @@ class _ProtoBuilder:
         # `_load_message` method.
         answer: Dict[str, wrappers.Field] = collections.OrderedDict()
         for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
-            oneof_name = None
-            if getattr(field_pb, 'oneof_index', -1) >= 0 and oneofs:
-                oneof_name = list(oneofs.keys())[field_pb.oneof_index]
+            oneofs_exist = oneofs and getattr(field_pb, 'oneof_index', -1) > 0
+            oneof_name = nth(oneofs, field_pb.oneof_index) if oneofs_exist else None
 
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
@@ -816,7 +816,7 @@ class _ProtoBuilder:
         oneofs = self._get_oneofs(
             message_pb.oneof_decl,
             address=address,
-            path=path + (8,),
+            path=path + (7,),
         )
 
         # Create a dictionary of all the fields for this message.
