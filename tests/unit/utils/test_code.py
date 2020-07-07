@@ -37,8 +37,8 @@ def test_empty_code():
 
 def test_nth():
     # list
-    assert code.nth([i*i for i in range(20)], 4) == 16
+    assert code.nth([i * i for i in range(20)], 4) == 16
     # generator
-    assert code.nth((i*i for i in range(20)), 4) == 16
+    assert code.nth((i * i for i in range(20)), 4) == 16
     # default
-    assert code.nth((i*i for i in range(20)), 30, 2112) == 2112
+    assert code.nth((i * i for i in range(20)), 30, 2112) == 2112

@@ -15,6 +15,7 @@
 from typing import (Callable, Iterable, List, Optional, Tuple, TypeVar)
 import itertools
 
+
 def empty(content: str) -> bool:
     """Return True if this file has no Python statements, False otherwise.
 
@@ -52,7 +53,7 @@ def partition(predicate: Callable[[T], bool],
     return results[1], results[0]
 
 
-def nth(iterable: Iterable[T], n: int, default: Optional[T]=None) -> Optional[T]:
+def nth(iterable: Iterable[T], n: int, default: Optional[T] = None) -> Optional[T]:
     """Return the nth element of an iterable or a default value.
 
     Args
