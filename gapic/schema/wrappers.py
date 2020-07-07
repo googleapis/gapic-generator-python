@@ -54,6 +54,7 @@ class Field:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+    oneof: Optional[str] = None
 
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
@@ -207,6 +208,15 @@ class Field:
 
 
 @dataclasses.dataclass(frozen=True)
+class Oneof:
+    """Description of a field."""
+    oneof_pb: descriptor_pb2.OneofDescriptorProto
+
+    def __getattr__(self, name):
+        return getattr(self.oneof_pb, name)
+
+
+@dataclasses.dataclass(frozen=True)
 class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
     # Class attributes
@@ -220,6 +230,7 @@ class MessageType:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+    oneofs: Optional[Mapping[str, 'Oneof']] = None
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
@@ -566,6 +577,13 @@ class Method:
 
     @utils.cached_property
     def client_output(self):
+        return self._client_output(enable_asyncio=False)
+
+    @utils.cached_property
+    def client_output_async(self):
+        return self._client_output(enable_asyncio=True)
+
+    def _client_output(self, enable_asyncio: bool):
         """Return the output from the client layer.
 
         This takes into account transformations made by the outer GAPIC
@@ -584,8 +602,8 @@ class Method:
         if self.lro:
             return PythonType(meta=metadata.Metadata(
                 address=metadata.Address(
-                    name='Operation',
-                    module='operation',
+                    name='AsyncOperation' if enable_asyncio else 'Operation',
+                    module='operation_async' if enable_asyncio else 'operation',
                     package=('google', 'api_core'),
                     collisions=self.lro.response_type.ident.collisions,
                 ),
@@ -603,7 +621,7 @@ class Method:
         if self.paged_result_field:
             return PythonType(meta=metadata.Metadata(
                 address=metadata.Address(
-                    name=f'{self.name}Pager',
+                    name=f'{self.name}AsyncPager' if enable_asyncio else f'{self.name}Pager',
                     package=self.ident.api_naming.module_namespace + (self.ident.api_naming.versioned_module_name,) + self.ident.subpackage + (
                         'services',
                         utils.to_snake_case(self.ident.parent[-1]),
@@ -625,9 +643,19 @@ class Method:
     def field_headers(self) -> Sequence[str]:
         """Return the field headers defined for this method."""
         http = self.options.Extensions[annotations_pb2.http]
-        if http.get:
-            return tuple(re.findall(r'\{([a-z][\w\d_.]+)=', http.get))
-        return ()
+
+        pattern = re.compile(r'\{([a-z][\w\d_.]+)=')
+
+        potential_verbs = [
+            http.get,
+            http.put,
+            http.post,
+            http.delete,
+            http.patch,
+            http.custom.path,
+        ]
+
+        return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
@@ -734,6 +762,8 @@ class Method:
         if not self.void:
             answer.append(self.client_output)
             answer.extend(self.client_output.field_types)
+            answer.append(self.client_output_async)
+            answer.extend(self.client_output_async.field_types)
 
         # If this method has LRO, it is possible (albeit unlikely) that
         # the LRO messages reside in a different module.
@@ -792,6 +822,11 @@ class Service:
         return self.name + "Client"
 
     @property
+    def async_client_name(self) -> str:
+        """Returns the name of the generated AsyncIO client class"""
+        return self.name + "AsyncClient"
+
+    @property
     def transport_name(self):
         return self.name + "Transport"
 
@@ -800,9 +835,18 @@ class Service:
         return self.name + "GrpcTransport"
 
     @property
+    def grpc_asyncio_transport_name(self):
+        return self.name + "GrpcAsyncIOTransport"
+
+    @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
         return any([m.lro for m in self.methods.values()])
+
+    @property
+    def has_pagers(self) -> bool:
+        """Return whether the service has paged methods."""
+        return any(m.paged_result_field for m in self.methods.values())
 
     @property
     def host(self) -> str:
@@ -846,7 +890,7 @@ class Service:
         used for imports.
         """
         # Put together a set of the service and method names.
-        answer = {self.name, self.client_name}
+        answer = {self.name, self.client_name, self.async_client_name}
         answer.update(
             utils.to_snake_case(i.name) for i in self.methods.values()
         )

@@ -20,12 +20,14 @@ from setuptools import find_packages, setup  # type: ignore
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
+version = "0.26.2"
+
 with io.open(os.path.join(PACKAGE_ROOT, "README.rst")) as file_obj:
     README = file_obj.read()
 
 setup(
     name="gapic-generator",
-    version="0.23.0",
+    version=version,
     license="Apache 2.0",
     author="Dov Shlachter",
     author_email="dovs@google.com",
@@ -49,9 +51,11 @@ setup(
         "protobuf >= 3.12.0",
         "pypandoc >= 1.4",
         "PyYAML >= 5.1.1",
+        "dataclasses<0.8; python_version < '3.7'"
     ),
     extras_require={':python_version<"3.7"': ("dataclasses >= 0.4",),},
     tests_require=("pyfakefs >= 3.6",),
+    python_requires=">=3.6",
     classifiers=(
         "Development Status :: 4 - Beta",
         "Environment :: Console",
@@ -60,6 +64,7 @@ setup(
         "Operating System :: POSIX",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Software Development :: Code Generators",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ),

@@ -83,6 +83,12 @@ def test_method_client_output_paged():
     assert method.client_output.ident.name == 'ListFoosPager'
 
 
+def test_method_client_output_async_empty():
+    empty = make_message(name='Empty', package='google.protobuf')
+    method = make_method('Meh', output_message=empty)
+    assert method.client_output_async == wrappers.PrimitiveType.build(None)
+
+
 def test_method_paged_result_field_not_first():
     paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
     input_msg = make_message(name='ListFoosRequest', fields=(
@@ -148,6 +154,7 @@ def test_method_paged_result_ref_types():
     assert ref_type_names == {
         'ListSquidsRequest',
         'ListSquidsPager',
+        'ListSquidsAsyncPager',
         'Mollusc',
     }
 
@@ -205,9 +212,18 @@ def test_method_field_headers_none():
 
 
 def test_method_field_headers_present():
-    http_rule = http_pb2.HttpRule(get='/v1/{parent=projects/*}/topics')
-    method = make_method('DoSomething', http_rule=http_rule)
-    assert method.field_headers == ('parent',)
+    verbs = [
+        'get',
+        'put',
+        'post',
+        'delete',
+        'patch',
+    ]
+
+    for v in verbs:
+        rule = http_pb2.HttpRule(**{v: '/v1/{parent=projects/*}/topics'})
+        method = make_method('DoSomething', http_rule=rule)
+        assert method.field_headers == ('parent',)
 
 
 def test_method_idempotent_yes():

@@ -36,8 +36,10 @@ def test_service_properties():
     service = make_service(name='ThingDoer')
     assert service.name == 'ThingDoer'
     assert service.client_name == 'ThingDoerClient'
+    assert service.async_client_name == 'ThingDoerAsyncClient'
     assert service.transport_name == 'ThingDoerTransport'
     assert service.grpc_transport_name == 'ThingDoerGrpcTransport'
+    assert service.grpc_asyncio_transport_name == 'ThingDoerGrpcAsyncIOTransport'
 
 
 def test_service_host():
@@ -62,7 +64,7 @@ def test_service_names():
         get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
         get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
     ))
-    expected_names = {'ThingDoer', 'ThingDoerClient',
+    expected_names = {'ThingDoer', 'ThingDoerClient', 'ThingDoerAsyncClient',
                       'do_thing', 'jump', 'yawn'}
     assert service.names == expected_names
 
@@ -73,7 +75,7 @@ def test_service_name_colliding_modules():
         get_method('Jump', 'bacon.bar.JumpRequest', 'bacon.bar.JumpResponse'),
         get_method('Yawn', 'a.b.v1.c.YawnRequest', 'a.b.v1.c.YawnResponse'),
     ))
-    expected_names = {'ThingDoer', 'ThingDoerClient',
+    expected_names = {'ThingDoer', 'ThingDoerClient', 'ThingDoerAsyncClient',
                       'do_thing', 'jump', 'yawn', 'bar'}
     assert service.names == expected_names
 
@@ -112,6 +114,7 @@ def test_service_python_modules_lro():
         imp.Import(package=('foo',), module='baz'),
         imp.Import(package=('foo',), module='qux'),
         imp.Import(package=('google', 'api_core'), module='operation'),
+        imp.Import(package=('google', 'api_core'), module='operation_async'),
     }
 
 
@@ -138,6 +141,7 @@ def test_service_python_modules_signature():
         imp.Import(package=('foo',), module='baz'),
         imp.Import(package=('foo',), module='qux'),
         imp.Import(package=('google', 'api_core'), module='operation'),
+        imp.Import(package=('google', 'api_core'), module='operation_async'),
     }
 
 
@@ -256,3 +260,38 @@ def test_service_any_streaming():
 
         assert service.any_client_streaming == client
         assert service.any_server_streaming == server
+
+
+def test_has_pagers():
+    paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
+    input_msg = make_message(
+        name='ListFoosRequest',
+        fields=(
+            make_field(name='parent', type=9),      # str
+            make_field(name='page_size', type=5),   # int
+            make_field(name='page_token', type=9),  # str
+        ),
+    )
+    output_msg = make_message(
+        name='ListFoosResponse',
+        fields=(
+            paged,
+            make_field(name='next_page_token', type=9),  # str
+        ),
+    )
+    method = make_method(
+        'ListFoos',
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+
+    service = make_service(name="Fooer", methods=(method,),)
+    assert service.has_pagers
+
+    other_service = make_service(
+        name="Unfooer",
+        methods=(
+            get_method("Unfoo", "foo.bar.UnfooReq", "foo.bar.UnFooResp"),
+        ),
+    )
+    assert not other_service.has_pagers
