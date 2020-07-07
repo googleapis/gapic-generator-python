@@ -617,7 +617,7 @@ class _ProtoBuilder:
         for i, field_pb in enumerate(field_pbs):
             is_oneof = oneofs and field_pb.oneof_index > 0
             oneof_name = nth(
-                iter(oneofs),
+                (oneofs or {}).keys(),
                 field_pb.oneof_index
             ) if is_oneof else None
 
