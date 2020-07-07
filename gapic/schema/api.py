@@ -620,7 +620,7 @@ class _ProtoBuilder:
                 iter(oneofs),
                 field_pb.oneof_index
             ) if is_oneof else None
-            
+
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
                 enum=self.api_enums.get(field_pb.type_name.lstrip('.')),
