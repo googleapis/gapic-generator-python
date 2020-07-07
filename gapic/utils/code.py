@@ -53,12 +53,12 @@ def partition(predicate: Callable[[T], bool],
     return results[1], results[0]
 
 
-def nth(iterable: Iterable[T], n: Optional[int] = None, default: Optional[T] = None) -> Optional[T]:
+def nth(iterable: Iterable[T], n: int, default: Optional[T] = None) -> Optional[T]:
     """Return the nth element of an iterable or a default value.
 
     Args
         iterable (Iterable(T)): An iterable on any type.
-        n (Optional(int)):      The 'index' of the lement to retrieve.
+        n (int):                The 'index' of the lement to retrieve.
         default (Optional(T)):  An optional default elemnt if the iterable has
                                  fewer than n elements.
     """
