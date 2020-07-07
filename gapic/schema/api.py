@@ -615,9 +615,11 @@ class _ProtoBuilder:
         # `_load_message` method.
         answer: Dict[str, wrappers.Field] = collections.OrderedDict()
         for i, field_pb in enumerate(field_pbs):
-            oneofs_exist = oneofs and getattr(field_pb, 'oneof_index', -1) > 0
-            oneof_name = nth(oneofs,
-                             field_pb.oneof_index) if oneofs_exist else None
+            oneof_name = nth(
+                iter(oneofs or {}),
+                field_pb.oneof_index if getattr(field_pb, 'oneof_index', -1) > 0 else None,
+                None
+            )
 
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,

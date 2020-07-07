@@ -35,6 +35,7 @@ def test_empty_whitespace_comments():
 def test_empty_code():
     assert not code.empty('import this')
 
+
 def test_nth():
     # list
     assert code.nth([i * i for i in range(20)], 4) == 16
