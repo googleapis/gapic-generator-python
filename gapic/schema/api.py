@@ -617,7 +617,11 @@ class _ProtoBuilder:
         for i, field_pb in enumerate(field_pbs):
             oneof_name = nth(
                 iter(oneofs or {}),
-                field_pb.oneof_index if getattr(field_pb, 'oneof_index', -1) > 0 else None,
+                field_pb.oneof_index if getattr(
+                    field_pb,
+                    'oneof_index',
+                    -1
+                ) > 0 else None,
                 None
             )
 
