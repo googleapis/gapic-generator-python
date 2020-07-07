@@ -835,7 +835,7 @@ class Service:
     @property
     def has_pagers(self) -> bool:
         """Return whether the service has paged methods."""
-        return any([m.paged_result_field for m in self.methods.values()])
+        return any(m.paged_result_field for m in self.methods.values())
 
     @property
     def host(self) -> str:
