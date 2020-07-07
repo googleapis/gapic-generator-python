@@ -614,7 +614,7 @@ class _ProtoBuilder:
         # first) and this will be None. This case is addressed in the
         # `_load_message` method.
         answer: Dict[str, wrappers.Field] = collections.OrderedDict()
-        for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
+        for i, field_pb in enumerate(field_pbs):
             oneofs_exist = oneofs and getattr(field_pb, 'oneof_index', -1) > 0
             oneof_name = nth(oneofs, field_pb.oneof_index) if oneofs_exist else None
 
