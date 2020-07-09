@@ -369,10 +369,10 @@ def test_method_legacy_flattened_fields():
 def test_flattened_oneof_fields():
     mass_kg = make_field(name="mass_kg", oneof="mass", type=5)
     mass_lbs = make_field(name="mass_lbs", oneof="mass", type=5)
-    
+
     length_m = make_field(name="length_m", oneof="length", type=5)
     length_f = make_field(name="length_f", oneof="length", type=5)
-    
+
     color = make_field(name="color", type=5)
     mantle = make_field(
         name="mantle",
