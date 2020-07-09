@@ -254,4 +254,7 @@ def test_oneof_fields():
         ),
     )
     actual_oneofs = request.oneof_fields()
-    expected_oneofs = {"mass": [mass_kg, mass_lbs], "length": [length_m, length_f]}
+    expected_oneofs = {
+        "mass": [mass_kg, mass_lbs],
+        "length": [length_m, length_f],
+    }
