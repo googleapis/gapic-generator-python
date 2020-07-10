@@ -26,7 +26,6 @@ from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequ
 from google.api_core import exceptions  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
-from google.protobuf.json_format import MessageToDict
 
 import grpc  # type: ignore
 
@@ -615,18 +614,8 @@ class _ProtoBuilder:
         # first) and this will be None. This case is addressed in the
         # `_load_message` method.
         answer: Dict[str, wrappers.Field] = collections.OrderedDict()
-
-        def oneof_p(field_pb):
-            # This is the _only_ way I have found to determine whether
-            # a FieldDescriptor's oneof_index is 0 or unset.
-            # It's frustrating, misdocumented, and it feels like there should
-            # be a better solution by digging through the field or its class,
-            # but at this point I've just given up.
-            # Protobuf has won this round.
-            return "oneofIndex" in MessageToDict(field_pb)
-
         for i, field_pb in enumerate(field_pbs):
-            is_oneof = oneofs and oneof_p(field_pb)
+            is_oneof = oneofs and field_pb.HasField('oneof_index')
             oneof_name = nth(
                 (oneofs or {}).keys(),
                 field_pb.oneof_index
