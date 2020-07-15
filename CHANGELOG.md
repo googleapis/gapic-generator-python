@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.27.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.27.0...v0.27.1) (2020-07-15)
+
+
+### Bug Fixes
+
+* paged code and templates are no longer message centric ([#527](https://www.github.com/googleapis/gapic-generator-python/issues/527)) ([00ba77c](https://www.github.com/googleapis/gapic-generator-python/commit/00ba77c3d27ef9a0b8742db3660983b80a68c672))
+
 ## [0.27.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.26.6...v0.27.0) (2020-07-13)
 
 
