@@ -1182,6 +1182,7 @@ def test_{{ service.name|snake_case }}_grpc_transport_channel_mtls_with_adc(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
+        is_mtls=mock.PropertyMock(return_value=True),
     ):
         mock_cred = mock.Mock()
         transport = transports.{{ service.name }}GrpcTransport(

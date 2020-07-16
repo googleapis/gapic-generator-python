@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+import logging  # type: ignore
 from typing import Callable, Dict, Tuple
 
 from google.api_core import grpc_helpers   # type: ignore
@@ -74,6 +75,9 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
+
+            LOGGER.debug("Api endpoint: %s", host)
+            LOGGER.debug("Client certificate: None")
         elif api_mtls_endpoint:
             host = api_mtls_endpoint if ":" in api_mtls_endpoint else api_mtls_endpoint + ":443"
 
@@ -87,8 +91,12 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 ssl_credentials = grpc.ssl_channel_credentials(
                     certificate_chain=cert, private_key=key
                 )
+                LOGGER.debug("Client certificate: from client_options.client_cert_source")
             else:
-                ssl_credentials = SslCredentials().ssl_credentials
+                client_credentials = SslCredentials()
+                ssl_credentials = client_credentials.ssl_credentials
+                cert_location = "from ADC" if client_credentials.is_mtls else "None"
+                LOGGER.debug("Client certificate: {}".format(cert_location))
 
             # create a new channel. The provided one is ignored.
             self._grpc_channel = grpc_helpers.create_channel(
