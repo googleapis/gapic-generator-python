@@ -16,11 +16,7 @@ setuptools.setup(
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
-<<<<<<< HEAD
-        'google-api-core[grpc] >= 1.21.0, < 2.0.0dev',
-=======
         'google-api-core[grpc] >= 1.22.0, < 2.0.0dev',
->>>>>>> 4a11c8b... chore(deps): bump api-core version
         'libcst >= 0.2.5',
         'proto-plus >= 1.1.0',
     {%- if api.requires_package(('google', 'iam', 'v1')) %}
