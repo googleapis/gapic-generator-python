@@ -98,10 +98,6 @@ def showcase_library(
         # Install the library.
         session.install(tmp_dir)
 
-        # REMOVE ME: temporarily install api-core and auth from branches
-        session.install("--force-reinstall", "git+https://github.com/googleapis/python-api-core/@quota-project-override")
-        session.install("--force-reinstall", "git+https://github.com/googleapis/google-auth-library-python.git@more-quota-project")
-
         yield tmp_dir
 
 
