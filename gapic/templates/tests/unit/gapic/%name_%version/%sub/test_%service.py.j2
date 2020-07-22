@@ -38,6 +38,11 @@ from google.api_core import gapic_v1
 {{ ref_type.ident.python_import }}
 {% endfor -%}
 {% endfor -%}
+{% if opts.add_iam_methods %}
+from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
+from google.iam.v1 import options_pb2 as options  # type: ignore
+from google.iam.v1 import policy_pb2 as policy  # type: ignore
+{% endif %}
 {% endfilter %}
 
 
@@ -982,12 +987,11 @@ def test_{{ service.name|snake_case }}_base_transport():
         {% for method in service.methods.values() -%}
         '{{ method.name|snake_case }}',
         {% endfor -%}
-        {% if opts.add_iam_methods %}
-        "set_iam_policy",
-        "get_iam_policy",
-        "test_iam_permissions",
-        {% endif %}
-
+        {%- if opts.add_iam_methods -%}
+        'set_iam_policy',
+        'get_iam_policy',
+        'test_iam_permissions',
+        {% endif -%}
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
