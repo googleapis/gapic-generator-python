@@ -176,7 +176,7 @@ def showcase_unit_alternative_templates(session):
     showcase_unit(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
 
 
-@nox.session(python=["3.6", "3.7", "3.8"])
+@nox.session(python=["3.8"])
 def showcase_unit_add_iam_methods(session):
     showcase_unit(session, other_opts=("add-iam-methods",))
 
