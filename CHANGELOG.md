@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.28.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.28.1...v0.28.2) (2020-07-22)
+
+
+### Bug Fixes
+
+* make # after alpha/beta optional ([#540](https://www.github.com/googleapis/gapic-generator-python/issues/540)) ([f86a47b](https://www.github.com/googleapis/gapic-generator-python/commit/f86a47b6431e374ae1797061511b49fe6bf22daf))
+
 ### [0.28.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.28.0...v0.28.1) (2020-07-16)
 
 
