@@ -85,7 +85,6 @@ def test_{{ service.client_name|snake_case }}_get_transport_class():
 
 
 @mock.patch.object({{ service.client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.client_name }}))
-@mock.patch.object({{ service.async_client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.async_client_name }}))
 def test_{{ service.client_name|snake_case }}_client_options():
     # Check that if channel is provided we won't create a new one.
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
