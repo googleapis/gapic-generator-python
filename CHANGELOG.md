@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.30.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.30.0...v0.30.1) (2020-07-28)
+
+
+### Bug Fixes
+
+* add google.api_core.retry import to base.py ([#555](https://www.github.com/googleapis/gapic-generator-python/issues/555)) ([1d08e60](https://www.github.com/googleapis/gapic-generator-python/commit/1d08e60cea4c5b3fa2555a4952161b0115d686f2))
+
 ## [0.30.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.29.2...v0.30.0) (2020-07-27)
 
 
