@@ -3,7 +3,7 @@ API Client Generator for Python
 
 |release level| |ci| |docs| |codecov|
 
-    A generator for protocol buffer described APIs for and in Python 3.
+    AA generator for protocol buffer described APIs for and in Python 3.
 
 This is a generator for API client libraries for APIs
 specified by `protocol buffers`_, such as those inside Google.
