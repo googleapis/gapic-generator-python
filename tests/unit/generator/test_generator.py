@@ -218,6 +218,26 @@ def test_get_response_divides_subpackages():
             }
 
 
+def test_get_gapic_version():
+    setup_file_data = """
+    import io
+    import os
+
+    from setuptools import find_packages, setup  # type: ignore
+
+
+    PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+    version = "0.10.20"
+
+    with io.open(os.path.join(PACKAGE_ROOT, "README.rst")) as file_obj:
+        README = file_obj.read()"""
+
+    with mock.patch("builtins.open", mock.mock_open(read_data=setup_file_data)) as mock_file:
+        g = make_generator()
+        assert g._gapic_generator_version == "0.10.20"
+
+
 def test_get_filename():
     g = make_generator()
     template_name = "%namespace/%name_%version/foo.py.j2"

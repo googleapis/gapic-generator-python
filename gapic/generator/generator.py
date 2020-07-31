@@ -60,6 +60,13 @@ class Generator:
 
         self._sample_configs = opts.sample_configs
 
+        # Extract gapic generator version number from setup.py.
+        setup_file_path = os.path.join(
+            os.path.dirname(__file__), "../../setup.py")
+        with open(setup_file_path, "r") as setup_file:
+            self._gapic_generator_version = re.search(
+                "version = \"([\d\.]+)\"", setup_file.read())[1]
+
     def get_response(
         self, api_schema: api.API, opts: options.Options
     ) -> CodeGeneratorResponse:
@@ -305,6 +312,8 @@ class Generator:
         # Determine the target filename.
         fn = self._get_filename(
             template_name, api_schema=api_schema, context=context,)
+
+        context["gapic_generator_version"] = self._gapic_generator_version
 
         # Render the file contents.
         cgr_file = CodeGeneratorResponse.File(
