@@ -98,7 +98,6 @@ class Field:
 
         return answer
 
-
     def inner_mock(self, stack, depth):
         """Return a repr of a valid, usually truthy mock value."""
         # For primitives, send a truthy value computed from the
@@ -155,7 +154,6 @@ class Field:
 
         # Done; return the mock value.
         return answer
-
 
     @property
     def proto_type(self) -> str:
