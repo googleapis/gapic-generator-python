@@ -56,7 +56,8 @@ class Field:
     )
     oneof: Optional[str] = None
 
-    MAX_MOCK_DEPTH: int = 20    # Arbitrary cap set via heuristic rule of thumb.
+    # Arbitrary cap set via heuristic rule of thumb.
+    MAX_MOCK_DEPTH: int = 20
 
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
