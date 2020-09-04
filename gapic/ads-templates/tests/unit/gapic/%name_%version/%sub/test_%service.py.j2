@@ -151,8 +151,11 @@ def test_{{ service.client_name|snake_case }}_client_options():
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 @pytest.mark.parametrize("use_client_cert_env", ["true", "false"])
 def test_{{ service.client_name|snake_case }}_mtls_env_auto(use_client_cert_env):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
     # Check the case client_cert_source is provided. Whether client cert is used depends on
-    # GOOGLE_API_USE_MTLS_ENDPOINT value.
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
@@ -176,7 +179,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(use_client_cert_env)
                 )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
-    # GOOGLE_API_USE_MTLS_ENDPOINT value.
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
             with mock.patch('google.auth.transport.grpc.SslCredentials.__init__', return_value=None):                
