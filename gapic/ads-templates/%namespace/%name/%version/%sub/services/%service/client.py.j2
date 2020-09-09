@@ -2,6 +2,7 @@
 
 {% block content %}
 from collections import OrderedDict
+from distutils import util
 import os
 import re
 from typing import Callable, Dict, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
@@ -181,18 +182,14 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             client_options = ClientOptions.ClientOptions()
         
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-        if not use_client_cert in ["true", "false"]:
-            raise MutualTLSChannelError(
-                "Unsupported GOOGLE_API_USE_CLIENT_CERTIFICATE value. Accepted values: true, false"
-            )
+        use_client_cert = bool(util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")))
 
         ssl_credentials = None
         is_mtls = False
-        if use_client_cert == "true":
+        if use_client_cert:
             if client_options.client_cert_source:
                 import grpc  # type: ignore
-                
+
                 cert, key = client_options.client_cert_source()
                 ssl_credentials = grpc.ssl_channel_credentials(
                     certificate_chain=cert, private_key=key
