@@ -167,7 +167,6 @@ def test_metadata_with_context():
     assert collisions == {'foo', 'bar'}
 
 
-
 def test_address_name_builtin_keyword():
     addr_builtin = metadata.Address(
         name="Any",
@@ -184,8 +183,8 @@ def test_address_name_builtin_keyword():
         api_naming=naming.NewNaming(proto_package="foo.bar.baz.v1"),
     )
     assert addr_kword.module_alias == "gp_class"
-    
-    
+
+
 def test_doc_nothing():
     meta = metadata.Metadata()
     assert meta.doc == ''
