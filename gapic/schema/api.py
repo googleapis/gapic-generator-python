@@ -19,6 +19,7 @@ through an :class:`~.API` object.
 
 import collections
 import dataclasses
+import keyword
 import os
 import sys
 from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
@@ -229,7 +230,7 @@ class API:
                 visited_names: Container[str]) -> str:
             path, fname = os.path.split(full_path)
             name, ext = os.path.splitext(fname)
-            if name in RESERVED_NAMES or full_path in visited_names:
+            if name in keyword.kwlist or full_path in visited_names:
                 name += "_"
                 full_path = os.path.join(path, name + ext)
                 if full_path in visited_names:
@@ -615,13 +616,13 @@ class _ProtoBuilder:
         # `_load_message` method.
         answer: Dict[str, wrappers.Field] = collections.OrderedDict()
         for i, field_pb in enumerate(field_pbs):
-            is_oneof = oneofs and field_pb.oneof_index > 0
+            is_oneof = oneofs and field_pb.HasField('oneof_index')
             oneof_name = nth(
                 (oneofs or {}).keys(),
                 field_pb.oneof_index
             ) if is_oneof else None
 
-            answer[field_pb.name] = wrappers.Field(
+            field = wrappers.Field(
                 field_pb=field_pb,
                 enum=self.api_enums.get(field_pb.type_name.lstrip('.')),
                 message=self.api_messages.get(field_pb.type_name.lstrip('.')),
@@ -631,6 +632,7 @@ class _ProtoBuilder:
                 ),
                 oneof=oneof_name,
             )
+            answer[field.name] = field
 
         # Done; return the answer.
         return answer

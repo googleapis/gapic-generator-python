@@ -56,8 +56,17 @@ class Field:
     )
     oneof: Optional[str] = None
 
+    # Arbitrary cap set via heuristic rule of thumb.
+    MAX_MOCK_DEPTH: int = 20
+
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
+
+    @property
+    def name(self) -> str:
+        """Used to prevent collisions with python keywords"""
+        name = self.field_pb.name
+        return name + "_" if name in utils.RESERVED_NAMES else name
 
     @utils.cached_property
     def ident(self) -> metadata.FieldIdentifier:
@@ -79,6 +88,17 @@ class Field:
 
     @utils.cached_property
     def mock_value(self) -> str:
+        depth = 0
+        stack = [self]
+        answer = "{}"
+        while stack:
+            expr = stack.pop()
+            answer = answer.format(expr.inner_mock(stack, depth))
+            depth += 1
+
+        return answer
+
+    def inner_mock(self, stack, depth):
         """Return a repr of a valid, usually truthy mock value."""
         # For primitives, send a truthy value computed from the
         # field name.
@@ -107,9 +127,18 @@ class Field:
             answer = f'{self.type.ident}.{mock_value.name}'
 
         # If this is another message, set one value on the message.
-        if isinstance(self.type, MessageType) and len(self.type.fields):
+        if (
+                not self.map    # Maps are handled separately
+                and isinstance(self.type, MessageType)
+                and len(self.type.fields)
+                # Nested message types need to terminate eventually
+                and depth < self.MAX_MOCK_DEPTH
+        ):
             sub = next(iter(self.type.fields.values()))
-            answer = f'{self.type.ident}({sub.name}={sub.mock_value})'
+            stack.append(sub)
+            # Don't do the recursive rendering here, just set up
+            # where the nested value should go with the double {}.
+            answer = f'{self.type.ident}({sub.name}={{}})'
 
         if self.map:
             # Maps are a special case beacuse they're represented internally as
@@ -238,6 +267,15 @@ class MessageType:
     def __hash__(self):
         # Identity is sufficiently unambiguous.
         return hash(self.ident)
+
+    def oneof_fields(self, include_optional=False):
+        oneof_fields = collections.defaultdict(list)
+        for field in self.fields.values():
+            # Only include proto3 optional oneofs if explicitly looked for.
+            if field.oneof and not field.proto3_optional or include_optional:
+                oneof_fields[field.oneof].append(field)
+
+        return oneof_fields
 
     @utils.cached_property
     def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
@@ -583,6 +621,15 @@ class Method:
     def client_output_async(self):
         return self._client_output(enable_asyncio=True)
 
+    def flattened_oneof_fields(self, include_optional=False):
+        oneof_fields = collections.defaultdict(list)
+        for field in self.flattened_fields.values():
+            # Only include proto3 optional oneofs if explicitly looked for.
+            if field.oneof and not field.proto3_optional or include_optional:
+                oneof_fields[field.oneof].append(field)
+
+        return oneof_fields
+
     def _client_output(self, enable_asyncio: bool):
         """Return the output from the client layer.
 
@@ -686,6 +733,10 @@ class Method:
         return answer
 
     @utils.cached_property
+    def flattened_field_to_key(self):
+        return {field.name: key for key, field in self.flattened_fields.items()}
+
+    @utils.cached_property
     def legacy_flattened_fields(self) -> Mapping[str, Field]:
         """Return the legacy flattening interface: top level fields only,
         required fields first"""
@@ -731,7 +782,7 @@ class Method:
 
         # Return the first repeated field.
         for field in self.output.fields.values():
-            if field.repeated and field.message:
+            if field.repeated:
                 return field
 
         # We found no repeated fields. Return None.
@@ -773,7 +824,7 @@ class Method:
 
         # If this message paginates its responses, it is possible
         # that the individual result messages reside in a different module.
-        if self.paged_result_field:
+        if self.paged_result_field and self.paged_result_field.message:
             answer.append(self.paged_result_field.message)
 
         # Done; return the answer.

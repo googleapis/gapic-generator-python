@@ -23,23 +23,17 @@ workflows:
       - showcase-unit-3.6:
           requires:
             - unit-3.6
-            - unit-3.7
-            - unit-3.8
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-3.7:
           requires:
-            - unit-3.6
             - unit-3.7
-            - unit-3.8
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-3.8:
           requires:
-            - unit-3.6
-            - unit-3.7
             - unit-3.8
           filters:
             tags:
@@ -47,23 +41,23 @@ workflows:
       - showcase-unit-alternative-templates-3.6:
           requires:
             - unit-3.6
-            - unit-3.7
-            - unit-3.8
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-alternative-templates-3.7:
           requires:
-            - unit-3.6
             - unit-3.7
-            - unit-3.8
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-alternative-templates-3.8:
           requires:
-            - unit-3.6
-            - unit-3.7
+            - unit-3.8
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
+      - showcase-unit-add-iam-methods:
+          requires:
             - unit-3.8
           filters:
             tags:
@@ -236,7 +230,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install nox.
           command: pip install nox
@@ -261,7 +255,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install nox.
           command: pip install nox
@@ -302,7 +296,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install nox.
           command: pip install nox
@@ -327,7 +321,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install nox.
           command: pip install nox
@@ -367,7 +361,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install protoc 3.12.1.
           command: |
@@ -391,7 +385,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install protoc 3.12.1.
           command: |
@@ -415,7 +409,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install protoc 3.12.1.
           command: |
@@ -439,7 +433,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install protoc 3.12.1.
           command: |
@@ -463,7 +457,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install protoc 3.12.1.
           command: |
@@ -487,7 +481,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install protoc 3.12.1.
           command: |
@@ -502,6 +496,30 @@ jobs:
       - run:
           name: Run unit tests.
           command: nox -s showcase_unit_alternative_templates-3.8
+  showcase-unit-add-iam-methods:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies.
+          command: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - run:
+          name: Install protoc 3.12.1.
+          command: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - run:
+          name: Install nox.
+          command: pip install nox
+      - run:
+          name: Run unit tests.
+          command: nox -s showcase_unit_add_iam_methods-3.8
   showcase-mypy:
     docker:
       - image: python:3.8-slim
@@ -511,7 +529,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install protoc 3.12.1.
           command: |
@@ -535,7 +553,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip gcc
       - run:
           name: Install protoc 3.12.1.
           command: |
@@ -559,7 +577,7 @@ jobs:
           name: Install pandoc
           command: |
             apt-get update
-            apt-get install -y pandoc
+            apt-get install -y pandoc gcc
       - run:
           name: Install nox and codecov.
           command: |
@@ -581,7 +599,7 @@ jobs:
           name: Install pandoc
           command: |
             apt-get update
-            apt-get install -y pandoc
+            apt-get install -y pandoc gcc
       - run:
           name: Install nox and codecov.
           command: |
@@ -603,7 +621,7 @@ jobs:
           name: Install pandoc
           command: |
             apt-get update
-            apt-get install -y pandoc
+            apt-get install -y pandoc gcc
       - run:
           name: Install nox and codecov.
           command: |

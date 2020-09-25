@@ -206,6 +206,29 @@ def test_flattened_ref_types():
     assert expected_flat_ref_type_names == actual_flat_ref_type_names
 
 
+def test_method_paged_result_primitive():
+    paged = make_field(name='squids', type=9, repeated=True)
+    input_msg = make_message(
+        name='ListSquidsRequest',
+        fields=(
+            make_field(name='parent', type=9),      # str
+            make_field(name='page_size', type=5),   # int
+            make_field(name='page_token', type=9),  # str
+        ),
+    )
+    output_msg = make_message(name='ListFoosResponse', fields=(
+        paged,
+        make_field(name='next_page_token', type=9),  # str
+    ))
+    method = make_method(
+        'ListSquids',
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+    assert method.paged_result_field == paged
+    assert method.client_output.ident.name == 'ListSquidsPager'
+
+
 def test_method_field_headers_none():
     method = make_method('DoSomething')
     assert isinstance(method.field_headers, collections.abc.Sequence)
@@ -364,3 +387,59 @@ def test_method_legacy_flattened_fields():
     ])
 
     assert method.legacy_flattened_fields == expected
+
+
+def test_flattened_oneof_fields():
+    mass_kg = make_field(name="mass_kg", oneof="mass", type=5)
+    mass_lbs = make_field(name="mass_lbs", oneof="mass", type=5)
+
+    length_m = make_field(name="length_m", oneof="length", type=5)
+    length_f = make_field(name="length_f", oneof="length", type=5)
+
+    color = make_field(name="color", type=5)
+    mantle = make_field(
+        name="mantle",
+        message=make_message(
+            name="Mantle",
+            fields=(
+                make_field(name="color", type=5),
+                mass_kg,
+                mass_lbs,
+            ),
+        ),
+    )
+    request = make_message(
+        name="CreateMolluscReuqest",
+        fields=(
+            length_m,
+            length_f,
+            color,
+            mantle,
+        ),
+    )
+    method = make_method(
+        name="CreateMollusc",
+        input_message=request,
+        signatures=[
+            "length_m,",
+            "length_f,",
+            "mantle.mass_kg,",
+            "mantle.mass_lbs,",
+            "color",
+        ]
+    )
+
+    expected = {"mass": [mass_kg, mass_lbs], "length": [length_m, length_f]}
+    actual = method.flattened_oneof_fields()
+    assert expected == actual
+
+    # Check this method too becasue the setup is a lot of work.
+    expected = {
+        "color": "color",
+        "length_m": "length_m",
+        "length_f": "length_f",
+        "mass_kg": "mantle.mass_kg",
+        "mass_lbs": "mantle.mass_lbs",
+    }
+    actual = method.flattened_field_to_key
+    assert expected == actual

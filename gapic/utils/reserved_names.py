@@ -12,7 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import builtins
+import itertools
 import keyword
 
 
-RESERVED_NAMES = frozenset(keyword.kwlist)
+# The exceptions to builtins are frequent and useful.
+# They are explicitly allowed message, module, and field names.
+RESERVED_NAMES = frozenset(
+    itertools.chain(
+        keyword.kwlist,
+        set(dir(builtins)) - {"filter", "map", "id", "property"},
+    )
+)
