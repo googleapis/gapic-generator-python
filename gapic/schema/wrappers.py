@@ -884,27 +884,31 @@ class Service:
         default_factory=metadata.Metadata,
     )
 
-    common_resources: ClassVar[Sequence[CommonResource]] = (
-        CommonResource(
-            "cloudresourcemanager.googleapis.com/Project",
-            "projects/{project}",
+    common_resources: ClassVar[Sequence[CommonResource]] = dataclasses.field(
+        default=(
+            CommonResource(
+                "cloudresourcemanager.googleapis.com/Project",
+                "projects/{project}",
+            ),
+            CommonResource(
+                "cloudresourcemanager.googleapis.com/Organization",
+                "organizations/{organization}",
+            ),
+            CommonResource(
+                "cloudresourcemanager.googleapis.com/Folder",
+                "folders/{folder}",
+            ),
+            CommonResource(
+                "cloudbilling.googleapis.com/BillingAccount",
+                "billingAccounts/{billing_account}",
+            ),
+            CommonResource(
+                "locations.googleapis.com/Location",
+                "projects/{project}/locations/{location}",
+            ),
         ),
-        CommonResource(
-            "cloudresourcemanager.googleapis.com/Organization",
-            "organizations/{organization}",
-        ),
-        CommonResource(
-            "cloudresourcemanager.googleapis.com/Folder",
-            "folders/{folder}",
-        ),
-        CommonResource(
-            "cloudbilling.googleapis.com/BillingAccount",
-            "billingAccounts/{billing_account}",
-        ),
-        CommonResource(
-            "locations.googleapis.com/Location",
-            "projects/{project}/locations/{location}",
-        ),
+        init=False,
+        compare=False,
     )
 
     def __getattr__(self, name):
