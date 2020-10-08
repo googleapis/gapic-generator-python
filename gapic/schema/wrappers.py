@@ -311,7 +311,7 @@ class MessageType:
         return tuple(types)
 
     @utils.cached_property
-    def recursive_fields(self) -> Sequence[Field]:
+    def recursive_fields(self) -> FrozenSet[Field]:
         return frozenset(chain(
             self.fields.values(),
             (field

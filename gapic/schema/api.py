@@ -68,7 +68,7 @@ class Proto:
             opts: Options = Options(),
             prior_protos: Mapping[str, 'Proto'] = None,
             load_services: bool = True,
-            all_resources: Optional[Mapping[str, wrappers.CommonResource]] = None,
+            all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ) -> 'Proto':
         """Build and return a Proto instance.
 
@@ -424,7 +424,7 @@ class _ProtoBuilder:
         opts: Options = Options(),
         prior_protos: Mapping[str, Proto] = None,
         load_services: bool = True,
-        all_resources: Optional[Mapping[str, wrappers.CommonResource]] = None,
+        all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ):
         self.proto_messages: Dict[str, wrappers.MessageType] = {}
         self.proto_enums: Dict[str, wrappers.EnumType] = {}
@@ -466,9 +466,11 @@ class _ProtoBuilder:
         # below is because `repeated DescriptorProto message_type = 4;` in
         # descriptor.proto itself).
         self._load_children(file_descriptor.enum_type, self._load_enum,
-                            address=self.address, path=(5,), resources=all_resources)
+                            address=self.address, path=(5,),
+                            resources=all_resources or {})
         self._load_children(file_descriptor.message_type, self._load_message,
-                            address=self.address, path=(4,), resources=all_resources)
+                            address=self.address, path=(4,),
+                            resources=all_resources or {})
 
         # Edge case: Protocol buffers is not particularly picky about
         # ordering, and it is possible that a message will have had a field
@@ -503,7 +505,8 @@ class _ProtoBuilder:
         # same files.
         if file_to_generate and load_services:
             self._load_children(file_descriptor.service, self._load_service,
-                                address=self.address, path=(6,), resources=all_resources)
+                                address=self.address, path=(6,),
+                                resources=all_resources or {})
         # TODO(lukesneeringer): oneofs are on path 7.
 
     @property
@@ -563,7 +566,7 @@ class _ProtoBuilder:
     def _load_children(self,
                        children: Sequence, loader: Callable, *,
                        address: metadata.Address, path: Tuple[int, ...],
-                       resources: Mapping[str, wrappers.CommonResource]) -> Mapping:
+                       resources: Mapping[str, wrappers.MessageType]) -> Mapping:
         """Return wrapped versions of arbitrary children from a Descriptor.
 
         Args:
@@ -830,7 +833,7 @@ class _ProtoBuilder:
                       message_pb: descriptor_pb2.DescriptorProto,
                       address: metadata.Address,
                       path: Tuple[int],
-                      resources: Mapping[str, wrappers.CommonResource],
+                      resources: Mapping[str, wrappers.MessageType],
                       ) -> wrappers.MessageType:
         """Load message descriptions from DescriptorProtos."""
         address = address.child(message_pb.name, path)
@@ -895,7 +898,7 @@ class _ProtoBuilder:
                    enum: descriptor_pb2.EnumDescriptorProto,
                    address: metadata.Address,
                    path: Tuple[int],
-                   resources: Mapping[str, wrappers.CommonResource],
+                   resources: Mapping[str, wrappers.MessageType],
                    ) -> wrappers.EnumType:
         """Load enum descriptions from EnumDescriptorProtos."""
         address = address.child(enum.name, path)
@@ -926,7 +929,7 @@ class _ProtoBuilder:
                       service: descriptor_pb2.ServiceDescriptorProto,
                       address: metadata.Address,
                       path: Tuple[int],
-                      resources: Mapping[str, wrappers.CommonResource],
+                      resources: Mapping[str, wrappers.MessageType],
                       ) -> wrappers.Service:
         """Load comments for a service and its methods."""
         address = address.child(service.name, path)
