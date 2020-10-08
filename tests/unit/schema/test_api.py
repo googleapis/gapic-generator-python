@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
+
 from typing import Sequence
 from unittest import mock
 
@@ -1129,7 +1131,7 @@ def test_file_level_resources():
 
     api_schema = api.API.build([fdp], package='nomenclature.linneaen.v1')
     actual = api_schema.protos['nomenclature.proto'].resource_messages
-    expected = {
+    expected = collections.OrderedDict(
         "nomenclature.linnaen.com/Species": wrappers.CommonResource(
             type_name="nomenclature.linnaen.com/Species",
             pattern="families/{family}/genera/{genus}/species/{species}"
@@ -1138,7 +1140,7 @@ def test_file_level_resources():
             type_name="nomenclature.linnaen.com/Phylum",
             pattern="kingdoms/{kingdom}/phyla/{phylum}"
         ).message_type,
-    }
+    )
 
     assert actual == expected
 
@@ -1172,7 +1174,7 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
                 ),
             ),
             make_message_pb2(
-                name="CreateSpeciesResponse"  ,
+                name="CreateSpeciesResponse",
             ),
         ),
         services=(
