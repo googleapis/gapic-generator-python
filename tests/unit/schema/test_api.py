@@ -1143,8 +1143,6 @@ def test_file_level_resources():
          ).message_type),
     ))
 
-    act_vals = next(iter(actual.values()))
-    expc_vals = next(iter(expected.values()))
     assert actual == expected
 
     # The proto file _owns_ the file level resources, but the service needs to
