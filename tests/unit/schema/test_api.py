@@ -1124,7 +1124,6 @@ def test_file_level_resources():
         resource_definition.type = type_
         resource_definition.pattern.append(pattern)
 
-
     species_field = fdp.message_type[0].field[0]
     resource_reference = species_field.options.Extensions[resource_pb2.resource_reference]
     resource_reference.type = "nomenclature.linnaen.com/Species"
