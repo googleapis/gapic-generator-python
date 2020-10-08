@@ -313,11 +313,11 @@ class MessageType:
     @utils.cached_property
     def recursive_fields(self) -> Sequence[Field]:
         return frozenset(chain(
-                self.fields.values(),
-                (field
-                 for t in self.recursive_field_types if isinstance(t, MessageType)
-                 for field in t.fields.values()),
-            ))
+            self.fields.values(),
+            (field
+             for t in self.recursive_field_types if isinstance(t, MessageType)
+             for field in t.fields.values()),
+        ))
 
     @property
     def map(self) -> bool:

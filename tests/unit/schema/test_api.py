@@ -1094,7 +1094,7 @@ def test_file_level_resources():
                 ),
             ),
             make_message_pb2(
-                name="CreateSpeciesResponse"  ,
+                name="CreateSpeciesResponse",
             ),
         ),
         services=(
@@ -1112,8 +1112,10 @@ def test_file_level_resources():
     )
     res_pb2 = fdp.options.Extensions[resource_pb2.resource_definition]
     definitions = [
-        ("nomenclature.linnaen.com/Species", "families/{family}/genera/{genus}/species/{species}"),
-        ("nomenclature.linnaen.com/Phylum", "kingdoms/{kingdom}/phyla/{phylum}")
+        ("nomenclature.linnaen.com/Species",
+         "families/{family}/genera/{genus}/speecies/{species}"),
+        ("nomenclature.linnaen.com/Phylum",
+         "kingdoms/{kingdom}/phyla/{phylum}"),
     ]
     for type_, pattern in definitions:
         resource_definition = res_pb2.add()
@@ -1190,7 +1192,8 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
     # Set up the resource
     species_resource_opts = fdp.message_type[0].options.Extensions[resource_pb2.resource]
     species_resource_opts.type = "nomenclature.linnaen.com/Species"
-    species_resource_opts.pattern.append("families/{family}/genera/{genus}/species/{species}")
+    species_resource_opts.pattern.append(
+        "families/{family}/genera/{genus}/species/{species}")
 
     # Set up the reference
     name_resource_opts = fdp.message_type[1].field[0].options.Extensions[resource_pb2.resource_reference]

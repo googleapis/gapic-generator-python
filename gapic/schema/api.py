@@ -589,7 +589,8 @@ class _ProtoBuilder:
         # applicable loader function on each.
         answer = {}
         for child, i in zip(children, range(0, sys.maxsize)):
-            wrapped = loader(child, address=address, path=path + (i,), resources=resources)
+            wrapped = loader(child, address=address, path=path + (i,),
+                             resources=resources)
             answer[wrapped.name] = wrapped
         return answer
 
