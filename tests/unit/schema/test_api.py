@@ -1115,7 +1115,7 @@ def test_file_level_resources():
     res_pb2 = fdp.options.Extensions[resource_pb2.resource_definition]
     definitions = [
         ("nomenclature.linnaen.com/Species",
-         "families/{family}/genera/{genus}/speecies/{species}"),
+         "families/{family}/genera/{genus}/species/{species}"),
         ("nomenclature.linnaen.com/Phylum",
          "kingdoms/{kingdom}/phyla/{phylum}"),
     ]
@@ -1131,17 +1131,21 @@ def test_file_level_resources():
 
     api_schema = api.API.build([fdp], package='nomenclature.linneaen.v1')
     actual = api_schema.protos['nomenclature.proto'].resource_messages
-    expected = collections.OrderedDict(
-        "nomenclature.linnaen.com/Species": wrappers.CommonResource(
-            type_name="nomenclature.linnaen.com/Species",
-            pattern="families/{family}/genera/{genus}/species/{species}"
-        ).message_type,
-        "nomenclature.linnaen.com/Phylum": wrappers.CommonResource(
-            type_name="nomenclature.linnaen.com/Phylum",
-            pattern="kingdoms/{kingdom}/phyla/{phylum}"
-        ).message_type,
-    )
+    expected = collections.OrderedDict((
+        ("nomenclature.linnaen.com/Species",
+         wrappers.CommonResource(
+             type_name="nomenclature.linnaen.com/Species",
+             pattern="families/{family}/genera/{genus}/species/{species}"
+         ).message_type),
+        ("nomenclature.linnaen.com/Phylum",
+         wrappers.CommonResource(
+             type_name="nomenclature.linnaen.com/Phylum",
+             pattern="kingdoms/{kingdom}/phyla/{phylum}"
+         ).message_type),
+    ))
 
+    act_vals = next(iter(actual.values()))
+    expc_vals = next(iter(expected.values()))
     assert actual == expected
 
     # The proto file _owns_ the file level resources, but the service needs to

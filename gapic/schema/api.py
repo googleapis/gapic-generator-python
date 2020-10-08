@@ -27,7 +27,7 @@ from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequ
 from types import MappingProxyType
 
 from google.api_core import exceptions  # type: ignore
-from google.api import resource_pb2
+from google.api import resource_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
 
