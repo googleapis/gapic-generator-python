@@ -129,7 +129,10 @@ def showcase(
 
 @nox.session(python="3.8")
 def showcase_mtls(
-    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = None,
 ):
     """Run the Showcase mtls test suite."""
 
@@ -140,6 +143,7 @@ def showcase_mtls(
             "--quiet",
             "--mtls",
             *(session.posargs or [path.join("tests", "system")]),
+            env=env,
         )
 
 
