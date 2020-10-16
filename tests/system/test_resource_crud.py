@@ -77,6 +77,7 @@ def test_path_parsing(messaging):
     )
     assert expected == actual
 
+
 if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
 
     @pytest.mark.asyncio
@@ -98,7 +99,6 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
         finally:
             await async_identity.delete_user({'name': user.name})
 
-
     @pytest.mark.asyncio
     async def test_crud_flattened_async(async_identity):
         count = len((await async_identity.list_users()).users)
@@ -113,7 +113,6 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
             assert (await async_identity.get_user(name=user.name)).display_name == 'Monty Python'
         finally:
             await async_identity.delete_user(name=user.name)
-
 
     def test_path_methods_async(async_identity):
         expected = "users/bdfl"

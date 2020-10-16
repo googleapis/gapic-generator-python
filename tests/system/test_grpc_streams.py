@@ -98,7 +98,6 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
         trailing_metadata = await call.trailing_metadata()
         assert trailing_metadata == metadata
 
-
     @pytest.mark.asyncio
     async def test_async_unary_stream_async_generator(async_echo):
         content = 'The hail in Wales falls mainly on the snails.'
@@ -117,7 +116,6 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
         trailing_metadata = await call.trailing_metadata()
         assert trailing_metadata == metadata
 
-
     @pytest.mark.asyncio
     async def test_async_stream_unary_iterable(async_echo):
         requests = []
@@ -127,7 +125,6 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
         call = await async_echo.collect(requests)
         response = await call
         assert response.content == 'hello world!'
-
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_async_generator(async_echo):
@@ -140,7 +137,6 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
         response = await call
         assert response.content == 'hello world!'
 
-
     @pytest.mark.asyncio
     async def test_async_stream_unary_writer(async_echo):
         call = await async_echo.collect()
@@ -151,14 +147,12 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
         response = await call
         assert response.content == 'hello world!'
 
-
     @pytest.mark.asyncio
     async def test_async_stream_unary_passing_dict(async_echo):
         requests = [{'content': 'hello'}, {'content': 'world!'}]
         call = await async_echo.collect(iter(requests))
         response = await call
         assert response.content == 'hello world!'
-
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_reader_writier(async_echo):
@@ -176,7 +170,6 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
         trailing_metadata = await call.trailing_metadata()
         assert trailing_metadata == metadata
 
-
     @pytest.mark.asyncio
     async def test_async_stream_stream_async_generator(async_echo):
 
@@ -193,7 +186,6 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
 
         trailing_metadata = await call.trailing_metadata()
         assert trailing_metadata == metadata
-
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_passing_dict(async_echo):

@@ -64,7 +64,6 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
         assert results == [showcase.EchoResponse(content=i)
                            for i in text.split(' ')]
 
-
     @pytest.mark.asyncio
     async def test_pagination_pages_async(async_echo):
         text = "The hail in Wales falls mainly on the snails."

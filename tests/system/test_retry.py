@@ -29,6 +29,7 @@ def test_retry_bubble(echo):
             },
         })
 
+
 if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
 
     @pytest.mark.asyncio

@@ -48,6 +48,7 @@ def test_unary_error(echo):
         assert exc.value.code == 400
         assert exc.value.message == message
 
+
 if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
     import asyncio
 
@@ -58,14 +59,12 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
         ), timeout=1)
         assert response.content == 'The hail in Wales falls mainly on the snails.'
 
-
     @pytest.mark.asyncio
     async def test_async_unary_with_dict(async_echo):
         response = await async_echo.echo({
             'content': 'The hail in Wales falls mainly on the snails.',
         })
         assert response.content == 'The hail in Wales falls mainly on the snails.'
-
 
     @pytest.mark.asyncio
     async def test_async_unary_error(async_echo):
