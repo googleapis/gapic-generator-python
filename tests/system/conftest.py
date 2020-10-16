@@ -14,6 +14,7 @@
 
 import collections
 import distutils
+import grpc
 import mock
 import os
 import pytest
@@ -25,6 +26,7 @@ from google.showcase import IdentityClient
 from google.showcase import MessagingClient
 
 if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+    from grpc.experimental import aio
     import asyncio
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
@@ -54,15 +56,11 @@ if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
     # to it. So, the event loop might close before tests finishes. In the
     # customized version, we don't close the event loop.
 
-
     @pytest.fixture
     def event_loop():
         asyncio.set_event_loop(_test_event_loop)
         return asyncio.get_event_loop()
 
-
-import grpc
-from grpc.experimental import aio
 
 dir = os.path.dirname(__file__)
 with open(os.path.join(dir, "../cert/mtls.crt"), "rb") as fh:
@@ -120,7 +118,6 @@ def use_mtls(request):
 @pytest.fixture
 def echo(use_mtls):
     return construct_client(EchoClient, use_mtls)
-
 
 
 @pytest.fixture
