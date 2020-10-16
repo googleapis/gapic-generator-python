@@ -88,7 +88,7 @@ def showcase_library(
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="
-        opts += ",".join(other_opts + ("lazy-import", f"{template_opt}"))
+        opts += ",".join(other_opts + (f"{template_opt}",))
         cmd_tup = (
             f"protoc",
             f"--experimental_allow_proto3_optional",
