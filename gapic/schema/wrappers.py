@@ -981,6 +981,10 @@ class Service:
         return self.name + "GrpcAsyncIOTransport"
 
     @property
+    def rest_transport_name(self):
+        return self.name + "RestTransport"
+
+    @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
         return any([m.lro for m in self.methods.values()])
