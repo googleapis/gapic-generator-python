@@ -42,7 +42,6 @@ def generate(
 
     # Pull apart arguments in the request.
     opts = Options.build(req.parameter)
-
     # Determine the appropriate package.
     # This generator uses a slightly different mechanism for determining
     # which files to generate; it tracks at package level rather than file

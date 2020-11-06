@@ -42,8 +42,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
+    {# TODO(yonmg): handle mtls stuff if that's relevant for rest transport #}
     def __init__(self, *,
-            host: str = 'compute.googleapis.com',
+            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
             credentials_file: str = None,
             scopes: Sequence[str] = None,
@@ -79,8 +80,12 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         """
         super().__init__(host=host, credentials=credentials)
         self._session = AuthorizedSession(self._credentials)
-    {%- if service.has_lro %}
+        {%- if service.has_lro %}
+        self._operations_client = None
+        {%- endif %}
 
+    {%- if service.has_lro %}
+    
     @property
     def operations_client(self) -> operations_v1.OperationsClient:
         """Create the client designed to process long-running operations.
@@ -89,9 +94,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         client.
         """
         # Sanity check: Only create a new client if we do not already have one.
-        if 'operations_client' not in self.__dict__:
+        if self._operations_client is None:
             from google.api_core import grpc_helpers
-            self.__dict__['operations_client'] = operations_v1.OperationsClient(
+            self._operations_client = operations_v1.OperationsClient(
                 grpc_helpers.create_channel(
                     self._host,
                     credentials=self._credentials,
@@ -100,22 +105,12 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             )
 
         # Return the client from cache.
-        return self.__dict__['operations_client']
+        return self._operations_client
     {%- endif %}
 
 
     {%- for method in service.methods.values() %}
-    {# TODO(yonmg): consider using enums #}
-        {%- set ns = namespace(http=None) %}
-        {%- for option in method.options.ListFields() %}
-            {%- if option[0].name == 'http' %}
-                {%- set ns.http = option[1] %}
-            {%- endif %}
-        {%- endfor %}
-
-        {%- if ns.http %}
-
-    
+    {%- if method.http_opt %}
     def {{ method.name|snake_case }}(self,
             request: {{ method.input.ident }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -139,27 +134,10 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {%- endif %}
         """
 
-        # Check which http method to use
-        {%- if ns.http.get != '' %}
-            {%- set ns.httpMethod = {'method':'get','url':ns.http.get} %}
-        {%- elif ns.http.put != '' %}
-            {%- set ns.httpMethod = {'method':'put','url':ns.http.put} %}
-        {%- elif ns.http.post != '' %}
-            {%- set ns.httpMethod = {'method':'post','url':ns.http.post} %}
-        {%- elif ns.http.delete != '' %}
-            {%- set ns.httpMethod = {'method':'delete','url':ns.http.delete} %}
-        {%- elif ns.http.patch != '' %}
-            {%- set ns.httpMethod = {'method':'patch','url':ns.http.patch} %}
-        {%- elif ns.http.custom != '' %}
-            {%- set ns.httpMethod = {'method':'custom','url':ns.http.custom} %}
-        {%- else %}
-            {%- set ns.httpMethod = None %}
-        {%- endif %}
-
-        {%- if ns.http.body != '' %}
+        {%- if 'body' in method.http_opt.keys() %}
         # Jsonify the input
         data = {{ method.output.ident }}.to_json(
-            {%- if ns.http.body == '*' %}
+            {%- if method.http_opt['body'] == '*' %}
             request
             {%- else %}
             request.body
@@ -171,15 +149,15 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # TODO(yonmg): need to handle grpc transcoding and parse url correctly
         #              current impl assumes simpler version of grpc transcoding
         # Send the request
-        url = 'https://{host}{{ ns.httpMethod['url'] }}'.format(
+        url = 'https://{host}{{ method.http_opt['url'] }}'.format(
             host=self._host,
             {%- for field in method.input.fields.keys() %}
             {{ field }}=request.{{ field }},
             {%- endfor %}
         )
-        {% if not method.void %}response = {% endif %}self._session.{{ ns.httpMethod['method'] }}(
+        {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['method'] }}(
             url,
-            {%- if ns.http.body != '' %}
+            {%- if 'body' in method.http_opt.keys() %}
             json=data,
             {%- endif %}
         )
@@ -189,8 +167,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # Return the response
         return {{ method.output.ident }}.from_json(response.content)
         {%- else %}
-    # No http annotation found for method {{ method.name|snake_case }}()  
-        {%- endif %}
+    {%- endif %}
     {%- endfor %}
 
 

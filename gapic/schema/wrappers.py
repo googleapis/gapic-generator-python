@@ -719,6 +719,7 @@ class Method:
         # Return the usual output.
         return self.output
 
+    # TODO(yonmg): remove or rewrite. don't think it performs as intended
     @property
     def field_headers(self) -> Sequence[str]:
         """Return the field headers defined for this method."""
@@ -736,7 +737,28 @@ class Method:
         ]
 
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
+    
+    @property
+    def http_opt(self) -> Dict[str, str]:
+        """Return the http option for this method."""
+        http = self.options.Extensions[annotations_pb2.http].ListFields()
+        if len(http) < 1:
+            return None
 
+        http_method = http[0]
+        answer: Dict[str, str] = {
+            'method':http_method[0].name,
+            'url':http_method[1],
+        }
+        if len(http) > 1:
+            http_opt = http[1]
+            answer[http_opt[0].name] = http_opt[1]
+
+        # TODO(yonmg): handle nested fields & fields past body i.e. 'additional bindings'
+        # TODO(yonmg): enums for http verbs?
+        return answer
+
+    # TODO(yonmg): refactor as there may be more than one method signature
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
         """Return the signature defined for this method."""
@@ -786,6 +808,7 @@ class Method:
             server='stream' if self.server_streaming else 'unary',
         )
 
+    # TODO(yonmg): figure out why idempotent is reliant on http annotation
     @utils.cached_property
     def idempotent(self) -> bool:
         """Return True if we know this method is idempotent, False otherwise.
