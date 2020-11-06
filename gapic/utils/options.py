@@ -14,7 +14,7 @@
 
 from collections import defaultdict
 from os import path
-from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple
+from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple, Set
 
 import dataclasses
 import json
@@ -40,6 +40,8 @@ class Options:
     lazy_import: bool = False
     old_naming: bool = False
     add_iam_methods: bool = False
+    # TODO(yonmg): should there be an enum for transport type?
+    transport: List[str] = None
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
@@ -49,6 +51,7 @@ class Options:
         'samples',              # output dir
         'lazy-import',          # requires >= 3.7
         'add-iam-methods',      # microgenerator implementation for `reroute_to_grpc_interface`
+        'transport',            # transport type (i.e. grpc, rest, custom.[something], etc?)
     ))
 
     @classmethod
@@ -86,7 +89,7 @@ class Options:
             # Throw away other options not meant for us.
             if not opt.startswith(cls.PYTHON_GAPIC_PREFIX):
                 continue
-
+            
             # Set the option, using a key with the "python-gapic-" prefix
             # stripped.
             #
@@ -121,6 +124,7 @@ class Options:
 
         # Build the options instance.
         sample_paths = opts.pop('samples', [])
+
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
@@ -134,6 +138,7 @@ class Options:
             lazy_import=bool(opts.pop('lazy-import', False)),
             old_naming=bool(opts.pop('old-naming', False)),
             add_iam_methods=bool(opts.pop('add-iam-methods', False)),
+            transport=opts.pop('transport', ['grpc'])[0].split('+')
         )
 
         # Note: if we ever need to recursively check directories for sample

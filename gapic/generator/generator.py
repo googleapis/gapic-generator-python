@@ -274,6 +274,10 @@ class Generator:
                 if (
                         skip_subpackages
                         and service.meta.address.subpackage != api_schema.subpackage_view
+                        or
+                        'grpc' in template_name and 'grpc' not in opts.transport
+                        or
+                        'rest' in template_name and 'rest' not in opts.transport
                 ):
                     continue
 
