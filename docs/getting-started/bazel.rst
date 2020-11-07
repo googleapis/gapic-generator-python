@@ -67,7 +67,7 @@ available in the ``google/cloud/documentai/v1beta2/`` subdirectory.
 Creating the Targets
 ~~~~~~~~~~~~~~~~~~~~
 
-To build somethign with bazel you need to create the corresponding targets in
+To build something with bazel you need to create the corresponding targets in
 your ``BUILD.bazel`` file. You can use the Python section of the Document AI
 `BUILD.bazel`_ file as an example:
 
