@@ -742,13 +742,14 @@ class Method:
     def http_opt(self) -> Dict[str, str]:
         """Return the http option for this method."""
         http = self.options.Extensions[annotations_pb2.http].ListFields()
+        answer: Dict[str, str] = None
         if len(http) < 1:
-            return None
+            return answer
 
         http_method = http[0]
-        answer: Dict[str, str] = {
-            'method':http_method[0].name,
-            'url':http_method[1],
+        answer = {
+            'method': http_method[0].name,
+            'url': http_method[1],
         }
         if len(http) > 1:
             http_opt = http[1]

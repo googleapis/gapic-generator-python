@@ -107,10 +107,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # Return the client from cache.
         return self._operations_client
     {%- endif %}
-
-
     {%- for method in service.methods.values() %}
     {%- if method.http_opt %}
+
     def {{ method.name|snake_case }}(self,
             request: {{ method.input.ident }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -162,11 +161,10 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             {%- endif %}
         )
         {%- if not method.void %}
-        {%- endif %}
 
         # Return the response
         return {{ method.output.ident }}.from_json(response.content)
-        {%- else %}
+        {%- endif %}
     {%- endif %}
     {%- endfor %}
 

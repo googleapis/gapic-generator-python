@@ -40,8 +40,8 @@ class Options:
     lazy_import: bool = False
     old_naming: bool = False
     add_iam_methods: bool = False
-    # TODO(yonmg): should there be an enum for transport type?
-    transport: List[str] = None
+    # TODO(yon-mg): should there be an enum for transport type?
+    transport: List[str] = dataclasses.field(default_factory=lambda: [])
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
@@ -138,6 +138,7 @@ class Options:
             lazy_import=bool(opts.pop('lazy-import', False)),
             old_naming=bool(opts.pop('old-naming', False)),
             add_iam_methods=bool(opts.pop('add-iam-methods', False)),
+            # transport should include desired transports delimited by '+', e.g. transport='grpc+rest'
             transport=opts.pop('transport', ['grpc'])[0].split('+')
         )
 
