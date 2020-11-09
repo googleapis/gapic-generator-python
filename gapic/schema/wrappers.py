@@ -739,15 +739,14 @@ class Method:
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
     
     @property
-    def http_opt(self) -> Dict[str, str]:
+    def http_opt(self) -> Optional[Dict[str, str]]:
         """Return the http option for this method."""
         http = self.options.Extensions[annotations_pb2.http].ListFields()
-        answer: Dict[str, str] = None
         if len(http) < 1:
-            return answer
+            return None
 
         http_method = http[0]
-        answer = {
+        answer: Dict[str, str] = {
             'method': http_method[0].name,
             'url': http_method[1],
         }
