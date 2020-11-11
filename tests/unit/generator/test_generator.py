@@ -128,17 +128,19 @@ def test_get_response_ignores_unwanted_transports():
         ]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("Service: {{ service.name }}")
-            cgr = g.get_response(api_schema=make_api(
-                                    make_proto(
-                                        descriptor_pb2.FileDescriptorProto(
-                                            service=[
-                                                descriptor_pb2.ServiceDescriptorProto(
-                                                    name="SomeService"),
-                                            ]
-                                        ),
-                                    )
-                                ),
-                                 opts=Options.build("transport=river+car"))
+            cgr = g.get_response(  
+                api_schema=make_api(
+                    make_proto(
+                        descriptor_pb2.FileDescriptorProto(
+                            service=[
+                                descriptor_pb2.ServiceDescriptorProto(
+                                    name="SomeService"),
+                            ]
+                        ),
+                    )
+                ),
+                opts=Options.build("transport=river+car")
+            )
             assert len(cgr.file) == 4
             assert {i.name for i in cgr.file} == {
                 "foo/some_service/transports/river.py",

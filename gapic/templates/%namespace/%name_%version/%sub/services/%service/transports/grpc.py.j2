@@ -151,7 +151,9 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
             )
 
         self._stubs = {}  # type: Dict[str, Callable]
-        {%- if service.has_lro %} self._operations_client = None {%- endif %}
+        {%- if service.has_lro %}
+        self._operations_client = None
+        {%- endif %}
 
         # Run the base constructor.
         super().__init__(
