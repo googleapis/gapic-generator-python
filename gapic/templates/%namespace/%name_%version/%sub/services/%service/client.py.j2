@@ -31,11 +31,11 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 {% endfilter %}
 from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 {%- if 'grpc' in opts.transport %}
-from .grpc import {{ service.name }}GrpcTransport
-from .grpc_asyncio import {{ service.name }}GrpcAsyncIOTransport
+from .transports.grpc import {{ service.name }}GrpcTransport
+from .transports.grpc_asyncio import {{ service.name }}GrpcAsyncIOTransport
 {%- endif %}
 {%- if 'rest' in opts.transport %}
-from .rest import {{ service.name }}RestTransport
+from .transports.rest import {{ service.name }}RestTransport
 {%- endif %}
 
 
