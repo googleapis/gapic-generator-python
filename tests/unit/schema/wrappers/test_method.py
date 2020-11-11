@@ -248,9 +248,7 @@ def test_method_field_headers_present():
         method = make_method('DoSomething', http_rule=rule)
         assert method.field_headers == ('parent',)
 
-# TODO(yonmg) to test:  grpc transcoding,
-#                       correct handling of path/query params
-#                       correct handling of body & additional binding
+
 def test_method_http_opt():
     http_rule = http_pb2.HttpRule(
         post='/v1/{parent=projects/*}/topics',
@@ -262,6 +260,10 @@ def test_method_http_opt():
         'url': '/v1/{parent=projects/*}/topics',
         'body': '*'
     }
+# TODO(yonmg) to test:  grpc transcoding,
+#                       correct handling of path/query params
+#                       correct handling of body & additional binding
+
 
 def test_method_http_opt_no_body():
     http_rule = http_pb2.HttpRule(post='/v1/{parent=projects/*}/topics')
@@ -270,6 +272,7 @@ def test_method_http_opt_no_body():
         'method': 'post',
         'url': '/v1/{parent=projects/*}/topics'
     }
+
 
 def test_method_http_opt_no_http_rule():
     method = make_method('DoSomething')

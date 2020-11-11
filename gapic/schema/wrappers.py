@@ -737,7 +737,7 @@ class Method:
         ]
 
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
-    
+
     @property
     def http_opt(self) -> Optional[Dict[str, str]]:
         """Return the http option for this method."""

@@ -89,7 +89,7 @@ class Options:
             # Throw away other options not meant for us.
             if not opt.startswith(cls.PYTHON_GAPIC_PREFIX):
                 continue
-            
+
             # Set the option, using a key with the "python-gapic-" prefix
             # stripped.
             #
