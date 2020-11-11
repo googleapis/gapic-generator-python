@@ -51,7 +51,8 @@ class Options:
         'samples',              # output dir
         'lazy-import',          # requires >= 3.7
         'add-iam-methods',      # microgenerator implementation for `reroute_to_grpc_interface`
-        'transport',            # transport type (i.e. grpc, rest, custom.[something], etc?)
+        # transport type (i.e. grpc, rest, custom.[something], etc?)
+        'transport',
     ))
 
     @classmethod
