@@ -205,7 +205,9 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         )
 
         self._stubs = {}
-        {%- if service.has_lro %} self._operations_client = None {%- endif %}
+        {%- if service.has_lro %}
+        self._operations_client = None
+        {%- endif %}
 
     @property
     def grpc_channel(self) -> aio.Channel:
