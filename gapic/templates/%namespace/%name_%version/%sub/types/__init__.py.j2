@@ -4,9 +4,9 @@
 {%- for proto in api.protos.values() if proto.file_to_generate and proto.messages %}
 from .{{proto.module_name }} import (
   {%- for message in proto.messages.values() %}
-  {{message.name }}, {% endfor %}
+    {{message.name }}, {% endfor %}
   {%- for enum in proto.enums.values() %}
-  {{ enum.name }}, {% endfor %}
+    {{ enum.name }}, {% endfor %}
 ){% endfor %}
 
 __all__ = (
