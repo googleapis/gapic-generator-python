@@ -256,7 +256,7 @@ def test_method_http_opt():
     )
     method = make_method('DoSomething', http_rule=http_rule)
     assert method.http_opt == {
-        'method': 'post',
+        'verb': 'post',
         'url': '/v1/{parent=projects/*}/topics',
         'body': '*'
     }
@@ -269,7 +269,7 @@ def test_method_http_opt_no_body():
     http_rule = http_pb2.HttpRule(post='/v1/{parent=projects/*}/topics')
     method = make_method('DoSomething', http_rule=http_rule)
     assert method.http_opt == {
-        'method': 'post',
+        'verb': 'post',
         'url': '/v1/{parent=projects/*}/topics'
     }
 
