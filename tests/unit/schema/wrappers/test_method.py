@@ -260,7 +260,7 @@ def test_method_http_opt():
         'url': '/v1/{parent=projects/*}/topics',
         'body': '*'
     }
-# TODO(yonmg) to test:  grpc transcoding,
+# TODO(yon-mg) to test:  grpc transcoding,
 #                       correct handling of path/query params
 #                       correct handling of body & additional binding
 

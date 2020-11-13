@@ -14,7 +14,7 @@
 
 from collections import defaultdict
 from os import path
-from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple, Set
+from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple
 
 import dataclasses
 import json
@@ -51,7 +51,7 @@ class Options:
         'samples',              # output dir
         'lazy-import',          # requires >= 3.7
         'add-iam-methods',      # microgenerator implementation for `reroute_to_grpc_interface`
-        # transport type (i.e. grpc, rest, custom.[something], etc?)
+        # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
         'transport',
     ))
 

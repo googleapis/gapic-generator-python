@@ -16,7 +16,7 @@ import grpc  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession
 
-{# TODO: re-add python_import/ python_modules from removed diff/current grpc template code #}
+{# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
 {{ method.input.ident.python_import }}
@@ -42,7 +42,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
-    {# TODO(yonmg): handle mtls stuff if that's relevant for rest transport #}
+    {# TODO(yon-mg): handle mtls stuff if that's relevant for rest transport #}
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
@@ -144,8 +144,8 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         )
         {%- endif %}
 
-        {# TODO(yonmg): Write helper method for handling grpc transcoding url #}
-        # TODO(yonmg): need to handle grpc transcoding and parse url correctly
+        {# TODO(yon-mg): Write helper method for handling grpc transcoding url #}
+        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
         #              current impl assumes simpler version of grpc transcoding
         # Send the request
         url = 'https://{host}{{ method.http_opt['url'] }}'.format(
@@ -154,7 +154,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             {{ field }}=request.{{ field }},
             {%- endfor %}
         )
-        {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['method'] }}(
+        {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
             url,
             {%- if 'body' in method.http_opt.keys() %}
             json=data,

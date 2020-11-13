@@ -31,8 +31,8 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 {% endfilter %}
 from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 {%- if 'grpc' in opts.transport %}
-from .transports.grpc import {{ service.name }}GrpcTransport
-from .transports.grpc_asyncio import {{ service.name }}GrpcAsyncIOTransport
+from .transports.grpc import {{ service.grpc_transport_name }}
+from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 {%- endif %}
 {%- if 'rest' in opts.transport %}
 from .transports.rest import {{ service.name }}RestTransport
@@ -48,8 +48,8 @@ class {{ service.client_name }}Meta(type):
     """
     _transport_registry = OrderedDict()  # type: Dict[str, Type[{{ service.name }}Transport]]
     {%- if 'grpc' in opts.transport %}
-    _transport_registry['grpc'] = {{ service.name }}GrpcTransport
-    _transport_registry['grpc_asyncio'] = {{ service.name }}GrpcAsyncIOTransport
+    _transport_registry['grpc'] = {{ service.grpc_transport_name }}
+    _transport_registry['grpc_asyncio'] = {{ service.grpc_asyncio_transport_name }}
     {%- endif %}
     {%- if 'rest' in opts.transport %}
     _transport_registry['rest'] = {{ service.name }}RestTransport

@@ -272,11 +272,11 @@ class Generator:
         if "%service" in template_name:
             for service in api_schema.services.values():
                 if (
-                        skip_subpackages
-                        and service.meta.address.subpackage != api_schema.subpackage_view
+                        (skip_subpackages
+                        and service.meta.address.subpackage != api_schema.subpackage_view)
                         or
-                        'transport' in template_name
-                        and not self._is_desired_transport(template_name, opts)
+                        ('transport' in template_name
+                        and not self._is_desired_transport(template_name, opts))
                 ):
                     continue
 
