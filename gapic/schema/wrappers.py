@@ -746,7 +746,7 @@ class Method:
         e.g. {'verb': 'post'
               'url': '/some/path'
               'body': '*'}
-              
+
         """
         http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]
         http = self.options.Extensions[annotations_pb2.http].ListFields()

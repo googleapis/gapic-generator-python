@@ -143,7 +143,7 @@ def test_get_response_ignores_unwanted_transports():
                 ),
                 opts=Options.build("transport=river+car")
             )
-            
+
             assert len(cgr.file) == 4
             assert {i.name for i in cgr.file} == {
                 "foo/some_service/transports/river.py",
