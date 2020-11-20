@@ -325,7 +325,7 @@ def test_method_query_params_no_body():
 
 def test_method_query_params_no_http_rule():
     method = make_method('DoSomething')
-    assert method.query_params == {}
+    assert method.query_params == set()
 
 
 def test_method_idempotent_yes():

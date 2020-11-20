@@ -777,12 +777,12 @@ class Method:
     @property
     def query_params(self) -> Set[str]:
         if self.http_opt is None:
-            return {}
+            return set()
         body = []
         if 'body' in self.http_opt.keys():
             body.append(self.http_opt['body'])
         all_params = self.input.fields.keys()
-        return set(all_params) ^ set(body + self.path_params)
+        return set(all_params) ^ set(body + list(self.path_params))
 
     # TODO(yon-mg): refactor as there may be more than one method signature
     @utils.cached_property
