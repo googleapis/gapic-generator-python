@@ -767,6 +767,23 @@ class Method:
         # TODO(yon-mg): enums for http verbs?
         return answer
 
+    @property
+    def path_params(self) -> Sequence[str]:
+        if self.http_opt is None:
+            return []
+        pattern = r'\{\w+\}'
+        return [x[1:-1] for x in re.findall(pattern, self.http_opt['url'])]
+
+    @property
+    def query_params(self) -> Set[str]:
+        if self.http_opt is None:
+            return {}
+        body = []
+        if 'body' in self.http_opt.keys():
+            body.append(self.http_opt['body'])
+        all_params = self.input.fields.keys()
+        return set(all_params) ^ set(body + self.path_params)
+
     # TODO(yon-mg): refactor as there may be more than one method signature
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:

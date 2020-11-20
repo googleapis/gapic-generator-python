@@ -135,28 +135,42 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
 
         {%- if 'body' in method.http_opt.keys() %}
         # Jsonify the input
-        data = {{ method.output.ident }}.to_json(
-            {%- if method.http_opt['body'] == '*' %}
-            request
-            {%- else %}
-            request.body
-            {%- endif %}
+        {%- if method.http_opt['body'] != '*' %}
+        data = {{ method.input.fields[method.http_opt['body']].type.ident }}.to_json(
+            request.{{ method.http_opt['body'] }},
+            including_default_value_fields=False
         )
+        {%- else %}
+        data = {{ method.input.ident }}.to_json(
+            request
+        )
+        {%- endif %}
         {%- endif %}
 
         {# TODO(yon-mg): Write helper method for handling grpc transcoding url #}
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #              current impl assumes simpler version of grpc transcoding
+        #               current impl assumes basic case of grpc transcoding
         # Send the request
         url = 'https://{host}{{ method.http_opt['url'] }}'.format(
             host=self._host,
-            {%- for field in method.input.fields.keys() %}
+            {%- for field in method.path_params %}
             {{ field }}=request.{{ field }},
             {%- endfor %}
         )
+
+        potentialParams = {
+            {%- for field in method.query_params %}
+            '{{ field|camel_case }}': request.{{ field }},
+            {%- endfor %}
+        }
+        potentialParams = {k: v for k, v in potentialParams.items() if v}
+        for i, (param_name, param_value) in enumerate(potentialParams.items()):
+            q = '?' if i == 0 else '&'
+            url += q + param_name + '=' + str(param_value).replace(' ', '+')
+
         {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
-            url,
-            {%- if 'body' in method.http_opt.keys() %}
+            url
+            {%- if 'body' in method.http_opt.keys() %},
             json=data,
             {%- endif %}
         )

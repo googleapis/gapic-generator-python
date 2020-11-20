@@ -54,6 +54,7 @@ class Generator:
         # Add filters which templates require.
         self._env.filters["rst"] = utils.rst
         self._env.filters["snake_case"] = utils.to_snake_case
+        self._env.filters["camel_case"] = utils.to_camel_case
         self._env.filters["sort_lines"] = utils.sort_lines
         self._env.filters["wrap"] = utils.wrap
         self._env.filters["coerce_response_name"] = coerce_response_name
@@ -288,6 +289,8 @@ class Generator:
                         opts=opts,
                     )
                 )
+                #for method in service.methods.values():
+                    #breakpoint()
             return answer
 
         # This file is not iterating over anything else; return back
