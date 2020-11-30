@@ -133,7 +133,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {%- endif %}
         """
 
-        {%- if 'body' in method.http_opt.keys() %}
+        {%- if 'body' in method.http_opt %}
         # Jsonify the input
         {%- if method.http_opt['body'] != '*' %}
         data = {{ method.input.fields[method.http_opt['body']].type.ident }}.to_json(
@@ -163,14 +163,14 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             '{{ field|camel_case }}': request.{{ field }},
             {%- endfor %}
         }
-        potentialParams = {k: v for k, v in potentialParams.items() if v}
-        for i, (param_name, param_value) in enumerate(potentialParams.items()):
+        potentialParams = ((k, v) for k, v in potentialParams.items() if v)
+        for i, (param_name, param_value) in enumerate(potentialParams):
             q = '?' if i == 0 else '&'
-            url += q + param_name + '=' + str(param_value).replace(' ', '+')
+            url += "{q}{name}={value}".format(q=q, name=param_name, value=param_value.replace(' ', '+'))
 
         {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
             url
-            {%- if 'body' in method.http_opt.keys() %},
+            {%- if 'body' in method.http_opt %},
             json=data,
             {%- endif %}
         )

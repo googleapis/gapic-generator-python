@@ -305,7 +305,8 @@ def test_method_query_params():
             make_field('address')
         )
     )
-    method = make_method('DoSomething', http_rule=http_rule, input_message=input_message)
+    method = make_method('DoSomething', http_rule=http_rule,
+                         input_message=input_message)
     assert method.query_params == {'region'}
 
 
@@ -319,7 +320,8 @@ def test_method_query_params_no_body():
             make_field('project'),
         )
     )
-    method = make_method('DoSomething', http_rule=http_rule, input_message=input_message)
+    method = make_method('DoSomething', http_rule=http_rule,
+                         input_message=input_message)
     assert method.query_params == {'region'}
 
 

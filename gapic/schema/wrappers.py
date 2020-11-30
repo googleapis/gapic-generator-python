@@ -769,20 +769,26 @@ class Method:
 
     @property
     def path_params(self) -> Sequence[str]:
+        """Return the path parameters found in the http annotation url"""
+        # TODO(yon-mg): fully implement grpc transcoding (currently only handles basic case)
         if self.http_opt is None:
             return []
         pattern = r'\{\w+\}'
+
         return [x[1:-1] for x in re.findall(pattern, self.http_opt['url'])]
 
     @property
     def query_params(self) -> Set[str]:
+        """Return query parameters for API call as determined by http annotation and grpc transcoding"""
+        # TODO(yon-mg): fully implement grpc transcoding (currently only handles basic case)
         if self.http_opt is None:
             return set()
-        body = []
-        if 'body' in self.http_opt.keys():
-            body.append(self.http_opt['body'])
-        all_params = self.input.fields.keys()
-        return set(all_params) ^ set(body + list(self.path_params))
+        params = set(self.path_params)
+        body = self.http_opt.get('body')
+        if body:
+            params.add(body)
+
+        return set(self.input.fields) ^ params
 
     # TODO(yon-mg): refactor as there may be more than one method signature
     @utils.cached_property

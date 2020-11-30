@@ -289,8 +289,6 @@ class Generator:
                         opts=opts,
                     )
                 )
-                #for method in service.methods.values():
-                    #breakpoint()
             return answer
 
         # This file is not iterating over anything else; return back
