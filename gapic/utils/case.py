@@ -59,4 +59,4 @@ def to_camel_case(s: str) -> str:
         str: The string in lower camel case with the first letter unchanged.
     '''
     items = re.split(r'[_-]', s)
-    return items[0] + "".join(x.capitalize() for x in items[1:])
+    return items[0].capitalize() + "".join(x.capitalize() for x in items[1:])
