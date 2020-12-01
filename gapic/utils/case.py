@@ -56,7 +56,8 @@ def to_camel_case(s: str) -> str:
         s (str): The input string, provided in any sane case system
 
     Returns:
-        str: The string in lower camel case with the first letter unchanged.
+        str: The string in lower camel case.
     '''
-    items = re.split(r'[_-]', s)
-    return items[0].capitalize() + "".join(x.capitalize() for x in items[1:])
+
+    items = re.split(r'[_-]', to_snake_case(s))
+    return items[0].lower() + "".join(x.capitalize() for x in items[1:])
