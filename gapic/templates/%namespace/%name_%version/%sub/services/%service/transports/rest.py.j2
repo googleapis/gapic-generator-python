@@ -133,15 +133,21 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {%- endif %}
         """
 
+        {# TODO(yon-mg): refactor when implementing grpc transcoding 
+                         - parse request pb & assign body, path params
+                         - shove leftovers into query params
+                         - make sure dotted nested fields preserved
+                         - format url and send the request
+        #}
         {%- if 'body' in method.http_opt %}
-        # Jsonify the input
+        # Jsonify the request body
         {%- if method.http_opt['body'] != '*' %}
-        data = {{ method.input.fields[method.http_opt['body']].type.ident }}.to_json(
+        body = {{ method.input.fields[method.http_opt['body']].type.ident }}.to_json(
             request.{{ method.http_opt['body'] }},
             including_default_value_fields=False
         )
         {%- else %}
-        data = {{ method.input.ident }}.to_json(
+        body = {{ method.input.ident }}.to_json(
             request
         )
         {%- endif %}
@@ -150,7 +156,6 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {# TODO(yon-mg): Write helper method for handling grpc transcoding url #}
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
         #               current impl assumes basic case of grpc transcoding
-        # Send the request
         url = 'https://{host}{{ method.http_opt['url'] }}'.format(
             host=self._host,
             {%- for field in method.path_params %}
@@ -158,6 +163,11 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             {%- endfor %}
         )
 
+        {# TODO(yon-mg): move all query param logic out of wrappers into here to handle
+                         nested fields correctly (can't just use set of top level fields
+        #}
+        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
+        #               not required for GCE
         potentialParams = {
             {%- for field in method.query_params %}
             '{{ field|camel_case }}': request.{{ field }},
@@ -168,10 +178,11 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             q = '?' if i == 0 else '&'
             url += "{q}{name}={value}".format(q=q, name=param_name, value=param_value.replace(' ', '+'))
 
+        # Send the request
         {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
             url
             {%- if 'body' in method.http_opt %},
-            json=data,
+            json=body,
             {%- endif %}
         )
         {%- if not method.void %}

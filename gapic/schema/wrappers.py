@@ -781,6 +781,7 @@ class Method:
     def query_params(self) -> Set[str]:
         """Return query parameters for API call as determined by http annotation and grpc transcoding"""
         # TODO(yon-mg): fully implement grpc transcoding (currently only handles basic case)
+        # TODO(yon-mg): remove this method and move logic to generated client
         if self.http_opt is None:
             return set()
         params = set(self.path_params)
@@ -788,7 +789,7 @@ class Method:
         if body:
             params.add(body)
 
-        return set(self.input.fields) ^ params
+        return set(self.input.fields) - params
 
     # TODO(yon-mg): refactor as there may be more than one method signature
     @utils.cached_property
