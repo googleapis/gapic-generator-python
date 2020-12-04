@@ -168,13 +168,16 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         #}
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        potentialParams = {
+        query_params = {
             {%- for field in method.query_params %}
             '{{ field|camel_case }}': request.{{ field }},
             {%- endfor %}
         }
-        potentialParams = ((k, v) for k, v in potentialParams.items() if v)
-        for i, (param_name, param_value) in enumerate(potentialParams):
+        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
+        #               discards default values
+        # TODO(yon-mg): add test for proper url encoded strings
+        query_params = ((k, v) for k, v in query_params.items() if v)
+        for i, (param_name, param_value) in enumerate(query_params):
             q = '?' if i == 0 else '&'
             url += "{q}{name}={value}".format(q=q, name=param_name, value=param_value.replace(' ', '+'))
 
