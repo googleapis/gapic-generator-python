@@ -784,6 +784,7 @@ class Method:
         # TODO(yon-mg): remove this method and move logic to generated client
         if self.http_opt is None:
             return set()
+
         params = set(self.path_params)
         body = self.http_opt.get('body')
         if body:
