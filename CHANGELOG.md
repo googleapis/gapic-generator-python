@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.38.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.37.1...v0.38.0) (2020-12-16)
+
+
+### Features
+
+* add 'from_service_account_info' factory to clients ([#706](https://www.github.com/googleapis/gapic-generator-python/issues/706)) ([94d5f0c](https://www.github.com/googleapis/gapic-generator-python/commit/94d5f0c11b8041cbae8e4a89bb504d6c6e200a95)), closes [#705](https://www.github.com/googleapis/gapic-generator-python/issues/705)
+
+### [0.37.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.37.0...v0.37.1) (2020-12-10)
+
+
+### Bug Fixes
+
+* remove client recv msg limit ([#704](https://www.github.com/googleapis/gapic-generator-python/issues/704)) ([80147ce](https://www.github.com/googleapis/gapic-generator-python/commit/80147ce177ce435dcb1b611181e80dc35f915293))
+
+## [0.37.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.36.0...v0.37.0) (2020-12-08)
+
+
+### Features
+
+* add proper handling of query/path/body parameters for rest transport ([#702](https://www.github.com/googleapis/gapic-generator-python/issues/702)) ([6b2de5d](https://www.github.com/googleapis/gapic-generator-python/commit/6b2de5dd9fbf15e6b0a42b428b01eb03f1a3820a))
+
 ## [0.36.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.11...v0.36.0) (2020-11-14)
 
 
