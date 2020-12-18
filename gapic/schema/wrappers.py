@@ -411,7 +411,8 @@ class MessageType:
         collisions = collisions or self.meta.address.collisions
 
         # Get the first field in the path.
-        cursor = self.fields[field_path[0]]
+        first_field = field_path[0]
+        cursor = self.fields[first_field+('_' if first_field in utils.RESERVED_NAMES else '')]
 
         # Base case: If this is the last field in the path, return it outright.
         if len(field_path) == 1:
