@@ -176,7 +176,7 @@ class Address:
 
         if not self.api_naming:
             if self.package:
-                return ".".join(self.package + (self.module, self.name))
+                return '.'.join(self.package + (self.module, self.name))
             else:
                 return str(self)
 
