@@ -329,7 +329,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             {%- else %}
             Iterable[{{ method.client_output.ident.sphinx }}]:
             {%- endif %}
-                {{ method.client_output.meta.doc|rst(width=72, indent=16) }}
+                {{ method.client_output.meta.doc|rst(width=72, indent=16, source_format='rst') }}
         {%- endif %}
         """
         {%- if not method.client_streaming %}
