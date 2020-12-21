@@ -68,9 +68,6 @@ def test_message_pb2_sphinx_ident():
             package=('google', 'protobuf'),
             module='timestamp',
             api_naming=naming.NewNaming(
-                name='foo',
-                namespace='bar',
-                version='v1',
                 proto_package="foo.bar"
             )
         )
