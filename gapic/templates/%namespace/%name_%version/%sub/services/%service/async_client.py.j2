@@ -163,7 +163,7 @@ class {{ service.async_client_name }}:
             {%- else %}
             AsyncIterable[{{ method.client_output_async.ident.sphinx }}]:
             {%- endif %}
-                {{ method.client_output.meta.doc|rst(width=72, indent=16, source_format='rst') }}
+                {{ method.client_output_async.meta.doc|rst(width=72, indent=16, source_format='rst') }}
         {%- endif %}
         """
         {%- if not method.client_streaming %}
