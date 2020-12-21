@@ -184,7 +184,7 @@ class Address:
         # Use the original module name rather than the module_alias
         if self.proto_package.startswith(self.api_naming.proto_package):
             return '.'.join(self.api_naming.module_namespace + (
-                    self.api_naming.versioned_module_name,
+                self.api_naming.versioned_module_name,
                 ) + self.subpackage + ('types',) + self.parent + (self.name, ))
 
         # Anything left is a standard _pb2 type
