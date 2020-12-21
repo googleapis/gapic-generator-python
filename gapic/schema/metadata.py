@@ -174,22 +174,21 @@ class Address:
     def sphinx(self) -> str:
         """Return the Sphinx identifier for this type."""
 
-        # Return std lib types right away
-        if not self.package:
-            return self
+        if not self.api_naming:
+            if self.package:
+                return ".".join(self.package + (self.module, self.name))
+            else:
+                return str(self)
 
-        # Check if this is a 'google.protobuf' or 'google.rpc' type
-        # The output should look like: google.protobuf.timestamp_pb2.Timestamp
-        if self.proto_package.startswith("google.protobuf") or self.proto_package.startswith("google.rpc"):
-            return f"{self.proto_package}.{self.module}_pb2.{self.name}"
-
-        # Check if this is a library type
-        # Output should look like: google.cloud.vision_v1.types.FooBar
+        # Check if this is a generated type
+        # Use the original module name rather than the module_alias
         if self.proto_package.startswith(self.api_naming.proto_package):
-            package = self.api_naming.module_namespace + (
+            return '.'.join(self.api_naming.module_namespace + (
                     self.api_naming.versioned_module_name,
-                ) + self.subpackage
-            return ".".join(package) + f".types.{self.name}"
+                ) + self.subpackage + ('types', self.name))
+
+        # Anything left is a standard _pb2 type
+        return f'{self.proto_package}.{self.module}_pb2.{self.name}'
 
     @property
     def subpackage(self) -> Tuple[str, ...]:

@@ -50,7 +50,7 @@ def test_message_docstring():
 def test_message_ident():
     message = make_message('Baz', package='foo.v1', module='bar')
     assert str(message.ident) == 'bar.Baz'
-    assert message.ident.sphinx == '~.bar.Baz'
+    assert message.ident.sphinx == 'foo.v1.bar.Baz'
 
 
 def test_message_ident_collisions():
@@ -58,7 +58,7 @@ def test_message_ident_collisions():
         collisions={'bar'},
     )
     assert str(message.ident) == 'fv_bar.Baz'
-    assert message.ident.sphinx == '~.fv_bar.Baz'
+    assert message.ident.sphinx == 'foo.v1.bar.Baz'
 
 
 def test_get_field():
