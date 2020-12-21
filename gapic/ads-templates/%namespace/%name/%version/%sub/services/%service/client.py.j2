@@ -107,7 +107,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            {{ service.client_name }}: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -125,7 +125,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            {{ service.client_name }}: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(
             filename)

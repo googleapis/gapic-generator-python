@@ -185,7 +185,7 @@ class Address:
         if self.proto_package.startswith(self.api_naming.proto_package):
             return '.'.join(self.api_naming.module_namespace + (
                     self.api_naming.versioned_module_name,
-                ) + self.subpackage + ('types', self.name))
+                ) + self.subpackage + ('types',) + self.parent + (self.name, ))
 
         # Anything left is a standard _pb2 type
         return f'{self.proto_package}.{self.module}_pb2.{self.name}'
