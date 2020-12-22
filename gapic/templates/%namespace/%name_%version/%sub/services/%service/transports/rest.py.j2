@@ -169,7 +169,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         url = 'https://{host}{{ method.http_opt['url'] }}'.format(
             host=self._host,
             {%- for field in method.path_params %}
-            {{ field }}=request.{{ field }},
+            {{ field.field_pb.name }}=request.{{ field.name }},
             {%- endfor %}
         )
 

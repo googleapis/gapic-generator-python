@@ -10,8 +10,10 @@ import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
+{%- if 'rest' in opts.transport %}
 from requests import Response
 from requests.sessions import Session
+{%- endif %}
 
 {# Import the service itself as well as every proto module that it imports. -#}
 {% filter sort_lines -%}
@@ -1123,24 +1125,30 @@ def test_{{ method.name|snake_case }}_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
+        {%- for field in method.flattened_fields.values() if field.mock_value is obj %}
+        {{ field.name }} = {{ field.mock_value }}
+        {% endfor %}
         client.{{ method.name|snake_case }}(
             {%- for field in method.flattened_fields.values() %}
-            {{ field.name }}={{ field.mock_value }},
+            {% if field.mock_value is obj %}{{ field.name }}={{ field.name }},{% else %}{{ field.name }}={{ field.mock_value }},{% endif %}
             {%- endfor %}
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
+        _, http_call, http_params = req.mock_calls[0]
+        body = http_params.get('json')
         {% for key, field in method.flattened_fields.items() -%}{%- if not field.oneof or field.proto3_optional %}
         {% if field.ident|string() == 'timestamp.Timestamp' -%}
-        assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        assert TimestampRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
         {% elif field.ident|string() == 'duration.Duration' -%}
-        assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        assert DurationRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
         {% else -%}
-        {# TODO(yon-mg): 'is string' test not working as expected; Investigate #}
-        assert {% if field.mock_value is string %}str({{ field.mock_value|string() }}){%- else %}str({{ field.mock_value }}){%- endif %} in args[1]
+        assert {% if field.mock_value is obj %}{{ field.ident }}.to_json({{ field.name }}, including_default_value_fields=False)
+               {%- elif field.mock_value is str %}{{ field.mock_value }}
+               {%- else %}str({{ field.mock_value }})
+               {%- endif %} in http_call[1] + str(body)
         {% endif %}
         {% endif %}{% endfor %}
 

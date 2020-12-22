@@ -389,18 +389,18 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             {% endif -%}
             {%- for key, field in method.flattened_fields.items() if not field.repeated and method.input.ident.package == method.ident.package %}
             if {{ field.name }} is not None:
-                request.{{ key }} = {{ field.name }}
+                request.{{ field.name }} = {{ field.name }}
             {%- endfor %}
 	    {# Map-y fields can be _updated_, however #}
             {%- for key, field in method.flattened_fields.items() if field.map and method.input.ident.package == method.ident.package %}
 
             if {{ field.name }}:
-                request.{{ key }}.update({{ field.name }})
+                request.{{ field.name }}.update({{ field.name }})
             {%- endfor %}
             {# And list-y fields can be _extended_ -#}
             {%- for key, field in method.flattened_fields.items() if field.repeated and not field.map and method.input.ident.package == method.ident.package %}
             if {{ field.name }}:
-                request.{{ key }}.extend({{ field.name }})
+                request.{{ field.name }}.extend({{ field.name }})
             {%- endfor %}
             {%- endif %}
 

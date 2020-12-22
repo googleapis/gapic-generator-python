@@ -412,7 +412,8 @@ class MessageType:
 
         # Get the first field in the path.
         first_field = field_path[0]
-        cursor = self.fields[first_field+('_' if first_field in utils.RESERVED_NAMES else '')]
+        cursor = self.fields[first_field +
+            ('_' if first_field in utils.RESERVED_NAMES else '')]
 
         # Base case: If this is the last field in the path, return it outright.
         if len(field_path) == 1:
@@ -769,14 +770,14 @@ class Method:
         return answer
 
     @property
-    def path_params(self) -> Sequence[str]:
+    def path_params(self) -> Sequence[Field]:
         """Return the path parameters found in the http annotation path template"""
         # TODO(yon-mg): fully implement grpc transcoding (currently only handles basic case)
         if self.http_opt is None:
             return []
 
         pattern = r'\{(\w+)\}'
-        return re.findall(pattern, self.http_opt['url'])
+        return [self.input.get_field(field) for field in re.findall(pattern, self.http_opt['url'])]
 
     @property
     def query_params(self) -> Set[str]:

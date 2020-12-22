@@ -132,7 +132,7 @@ def test_get_response_ignores_unwanted_transports_and_clients():
 
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("Service: {{ service.name }}")
-            api_schema=make_api(
+            api_schema = make_api(
                 make_proto(
                     descriptor_pb2.FileDescriptorProto(
                         service=[

@@ -59,6 +59,13 @@ class Generator:
         self._env.filters["wrap"] = utils.wrap
         self._env.filters["coerce_response_name"] = coerce_response_name
 
+        # Add tests to determine type of expressions stored in strings
+        self._env.tests["str"] = lambda val: re.fullmatch(
+            r'\'.*\'|\".*\"', val)
+        self._env.tests["int"] = lambda val: re.fullmatch(r'[0-9]+', val)
+        self._env.tests["obj"] = lambda val: re.fullmatch(
+            r'\w+(\.\w+)*\(.*\)', val)
+
         self._sample_configs = opts.sample_configs
 
     def get_response(
