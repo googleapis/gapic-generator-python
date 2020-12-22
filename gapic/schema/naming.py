@@ -145,7 +145,7 @@ class Naming(abc.ABC):
         if opts.warehouse_package_name:
             package_info = dataclasses.replace(package_info,
                 _warehouse_package_name=opts.warehouse_package_name
-            )
+                                               )
 
         # Done; return the naming information.
         return package_info
