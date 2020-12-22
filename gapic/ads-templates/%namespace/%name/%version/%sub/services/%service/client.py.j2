@@ -306,7 +306,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% for key, field in method.flattened_fields.items() -%}
             {{ field.name }} (:class:`{{ field.ident.sphinx }}`):
-                {{ field.meta.doc|rst(width=72, indent=16, nl=False) }}
+                {{ field.meta.doc|rst(width=72, indent=16) }}
                 This corresponds to the ``{{ key }}`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
