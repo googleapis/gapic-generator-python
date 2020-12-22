@@ -217,6 +217,16 @@ def test_cli_override_name_and_namespace_versionless():
     assert n.name == 'Translate'
     assert not n.version
 
+def test_cli_override_warehouse_package_name():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.translation')
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(warehouse_package_name='google-cloud-foo'),
+    )
+    assert n.warehouse_package_name == "google-cloud-foo"
+
+
 
 def test_build_factory():
     proto = descriptor_pb2.FileDescriptorProto(
