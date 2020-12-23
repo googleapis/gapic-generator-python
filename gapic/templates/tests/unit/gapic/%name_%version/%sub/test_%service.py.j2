@@ -1125,12 +1125,12 @@ def test_{{ method.name|snake_case }}_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        {%- for field in method.flattened_fields.values() if field.mock_value is obj %}
+        {%- for field in method.flattened_fields.values() if field.mock_value is call %}
         {{ field.name }} = {{ field.mock_value }}
         {% endfor %}
         client.{{ method.name|snake_case }}(
             {%- for field in method.flattened_fields.values() %}
-            {% if field.mock_value is obj %}{{ field.name }}={{ field.name }},{% else %}{{ field.name }}={{ field.mock_value }},{% endif %}
+            {% if field.mock_value is call %}{{ field.name }}={{ field.name }},{% else %}{{ field.name }}={{ field.mock_value }},{% endif %}
             {%- endfor %}
         )
 
@@ -1145,7 +1145,7 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         {% elif field.ident|string() == 'duration.Duration' -%}
         assert DurationRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
         {% else -%}
-        assert {% if field.mock_value is obj %}{{ field.ident }}.to_json({{ field.name }}, including_default_value_fields=False)
+        assert {% if field.mock_value is call %}{{ field.ident }}.to_json({{ field.name }}, including_default_value_fields=False)
                {%- elif field.mock_value is str %}{{ field.mock_value }}
                {%- else %}str({{ field.mock_value }})
                {%- endif %} in http_call[1] + str(body)

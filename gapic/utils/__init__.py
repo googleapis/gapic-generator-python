@@ -15,6 +15,9 @@
 from gapic.utils.cache import cached_property
 from gapic.utils.case import to_snake_case
 from gapic.utils.case import to_camel_case
+from gapic.utils.checks import is_int
+from gapic.utils.checks import is_call
+from gapic.utils.checks import is_str
 from gapic.utils.code import empty
 from gapic.utils.code import nth
 from gapic.utils.code import partition
@@ -32,6 +35,9 @@ __all__ = (
     'cached_property',
     'doc',
     'empty',
+    'is_int',
+    'is_call',
+    'is_str',
     'nth',
     'Options',
     'partition',

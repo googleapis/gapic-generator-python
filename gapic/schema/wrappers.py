@@ -770,14 +770,14 @@ class Method:
         return answer
 
     @property
-    def path_params(self) -> Sequence[Field]:
+    def path_params(self) -> Sequence[str]:
         """Return the path parameters found in the http annotation path template"""
         # TODO(yon-mg): fully implement grpc transcoding (currently only handles basic case)
         if self.http_opt is None:
             return []
 
         pattern = r'\{(\w+)\}'
-        return [self.input.get_field(field) for field in re.findall(pattern, self.http_opt['url'])]
+        return re.findall(pattern, self.http_opt['url'])
 
     @property
     def query_params(self) -> Set[str]:
