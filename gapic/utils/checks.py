@@ -21,7 +21,7 @@ def is_str(expr: str) -> bool:
     Args:
         expr (str): An expression of any type stored in a string.
     """
-    return re.fullmatch(r'\'.*\'|\".*\"', expr)
+    return bool(re.fullmatch(r'\'.*\'|\".*\"', expr))
 
 
 def is_call(expr: str) -> bool:
@@ -30,7 +30,7 @@ def is_call(expr: str) -> bool:
     Args:
         expr (str): An expression of any type stored in a string.
     """
-    return re.fullmatch(r'\w+(\.\w+)*\(.*\)', expr)
+    return bool(re.fullmatch(r'\w+(\.\w+)*\(.*\)', expr))
 
 
 def is_int(expr: str) -> bool:
@@ -39,4 +39,4 @@ def is_int(expr: str) -> bool:
     Args:
         expr (str): An expression of any type stored in a string.
     """
-    return re.fullmatch(r'[0-9]+', expr)
+    return bool(re.fullmatch(r'[0-9]+', expr))
