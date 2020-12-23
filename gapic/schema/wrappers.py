@@ -807,6 +807,7 @@ class Method:
                     continue
                 name = f.strip()
                 field = self.input.get_field(*name.split('.'))
+                name += '_' if field.field_pb.name in utils.RESERVED_NAMES else ''
                 if cross_pkg_request and not field.is_primitive:
                     # This is not a proto-plus wrapped message type,
                     # and setting a non-primitive field directly is verboten.
