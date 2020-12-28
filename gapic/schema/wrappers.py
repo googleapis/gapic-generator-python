@@ -410,7 +410,8 @@ class MessageType:
         # binds deeply in the one spot where that might be a problem).
         collisions = collisions or self.meta.address.collisions
 
-        field_path = [name + "_" if name in utils.RESERVED_NAMES else name for name in field_path]
+        field_path = [
+            name + "_" if name in utils.RESERVED_NAMES else name for name in field_path]
 
         # Get the first field in the path.
         cursor = self.fields[field_path[0]]
