@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,22 @@
 # limitations under the License.
 
 from gapic.utils import checks
+from test_utils.test_utils import make_field, make_message
 
 
-def test_is_str():
-    assert checks.is_str("'some string'")
-    assert not checks.is_str("234")
+def test_is_str_field_pb():
+    msg_field = make_field('msg_field', message=make_message('test_msg'))
+    str_field = make_field('str_field', type=9)
+    int_field = make_field('int_field', type=5)
+    assert not checks.is_str_field_pb(msg_field.field_pb)
+    assert checks.is_str_field_pb(str_field.field_pb)
+    assert not checks.is_str_field_pb(int_field.field_pb)
 
 
-def test_is_int():
-    assert checks.is_int("234")
-    assert not checks.is_str("23.4")
-
-
-def test_is_call():
-    assert checks.is_call("module.foo('bar')")
-    assert not checks.is_call("{'some':'dict'}")
+def test_is_msg_field_pb():
+    msg_field = make_field('msg_field', message=make_message('test_msg'))
+    str_field = make_field('str_field', type=9)
+    int_field = make_field('int_field', type=5)
+    assert checks.is_msg_field_pb(msg_field.field_pb)
+    assert not checks.is_msg_field_pb(str_field.field_pb)
+    assert not checks.is_msg_field_pb(int_field.field_pb)

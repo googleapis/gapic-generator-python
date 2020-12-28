@@ -60,9 +60,8 @@ class Generator:
         self._env.filters["coerce_response_name"] = coerce_response_name
 
         # Add tests to determine type of expressions stored in strings
-        self._env.tests["int"] = utils.is_int
-        self._env.tests["call"] = utils.is_call
-        self._env.tests["str"] = utils.is_str
+        self._env.tests["str_field_pb"] = utils.is_str_field_pb
+        self._env.tests["msg_field_pb"] = utils.is_msg_field_pb
 
         self._sample_configs = opts.sample_configs
 

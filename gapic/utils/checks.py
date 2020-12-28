@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,31 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import re
+from google.protobuf.descriptor_pb2 import FieldDescriptorProto
 
 
-def is_str(expr: str) -> bool:
-    """Determine if the expression stored in expr is a string literal.
-
-    Args:
-        expr (str): An expression of any type stored in a string.
-    """
-    return bool(re.fullmatch(r'\'.*\'|\".*\"', expr))
-
-
-def is_call(expr: str) -> bool:
-    """Determine if the expression stored in expr is a constructor or method call.
+def is_str_field_pb(field_pb: FieldDescriptorProto) -> bool:
+    """Determine if field_pb is of type string.
 
     Args:
-        expr (str): An expression of any type stored in a string.
+        field (Field): The input field as a FieldDescriptorProto
     """
-    return bool(re.fullmatch(r'\w+(\.\w+)*\(.*\)', expr))
+    return field_pb.type == FieldDescriptorProto.TYPE_STRING
 
 
-def is_int(expr: str) -> bool:
-    """Determine if the expression stored in expr is an int.
+def is_msg_field_pb(field_pb: FieldDescriptorProto) -> bool:
+    """Determine if field_pb is of type Message.
 
     Args:
-        expr (str): An expression of any type stored in a string.
+        field (Field): The input field as a FieldDescriptorProto.
     """
-    return bool(re.fullmatch(r'[0-9]+', expr))
+    return field_pb.type == FieldDescriptorProto.TYPE_MESSAGE
