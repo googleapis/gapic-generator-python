@@ -154,6 +154,15 @@ def test_get_field_recursive():
     assert outer.get_field('inner', 'one') == inner_fields[1]
 
 
+def test_get_field_reserved_name():
+    # 'input' is a reserved word and will be renamed to 'input_'
+    fields = (make_field('input_'), make_field('one'))
+    msg = make_message('Inner', fields=fields, package='foo.v1')
+
+    # Assert that retrieval with the regular field path works
+    assert msg.get_field('input') is not None
+
+
 def test_get_field_nested_not_found_error():
     # Create the inner message.
     inner_field = make_field('zero')
