@@ -441,6 +441,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             self._transport.operations_client,
             {{ method.lro.response_type.ident }},
             metadata_type={{ method.lro.metadata_type.ident }},
+            {%- if method.field_headers %}
+            grpc_metadata=metadata,
+            {%- endif %}
         )
         {%- elif method.paged_result_field %}
 

@@ -346,8 +346,8 @@ def test_{{ method.name|snake_case }}_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.name|snake_case }}),
-            '__call__') as call:
+        type(client.transport.{{ method.name|snake_case }}), "__call__"
+    ) as call, mock.patch("google.api_core.operation.from_gapic") as from_gapic:
         {% if method.void -%}
         call.return_value = None
         {% elif method.lro -%}
@@ -373,6 +373,17 @@ def test_{{ method.name|snake_case }}_field_headers():
         {%- if not loop.last %}&{% endif -%}
         {%- endfor %}',
     ) in kw['metadata']
+
+     # Assert that the field header was also passed to the operations client
+    assert len(from_gapic.mock_calls) == 1
+     _, _, from_gapic_kw = from_gapic.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        '{% for field_header in method.field_headers -%}
+        {{ field_header }}={{ field_header }}/value
+        {%- if not loop.last %}&{% endif -%}
+        {%- endfor %}',
+    ) in from_gapic_kw['metadata']
 {% endif %}
 
 {% if method.ident.package != method.input.ident.package %}
