@@ -1443,8 +1443,8 @@ def test_{{ service.name|snake_case }}_grpc_asyncio_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source, 
-# ssl_channel_credentials) are removed in grpc/grpc_asyncio transport constructor.
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize("transport_class", [transports.{{ service.grpc_transport_name }}, transports.{{ service.grpc_asyncio_transport_name }}])
 def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_source(
     transport_class
@@ -1491,8 +1491,8 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_s
             assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
-# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source, 
-# ssl_channel_credentials) are removed in grpc/grpc_asyncio transport constructor.
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize("transport_class", [transports.{{ service.grpc_transport_name }}, transports.{{ service.grpc_asyncio_transport_name }}])
 def test_{{ service.name|snake_case }}_transport_channel_mtls_with_adc(
     transport_class
