@@ -1386,11 +1386,11 @@ def test_{{ service.name|snake_case }}_grpc_transport_client_cert_source_for_mtl
             )
 {% endif %}
 
-{% if 'http' in opts.transport %}
+{% if 'rest' in opts.transport %}
 def test_{{ service.name|snake_case }}_http_transport_client_cert_source_for_mtls():
     cred = credentials.AnonymousCredentials()
     with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
-        transports.{{ service.grpc_transport_name }} (
+        transports.{{ service.rest_transport_name }} (
             credentials=cred,
             client_cert_source_for_mtls=client_cert_source_callback
         )
