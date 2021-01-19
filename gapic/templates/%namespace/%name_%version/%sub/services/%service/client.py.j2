@@ -239,15 +239,15 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # Create SSL credentials for mutual TLS if needed.
         use_client_cert = bool(util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")))
 
-        client_cert_source = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
                 is_mtls = True
-                client_cert_source = client_options.client_cert_source                
+                client_cert_source_func = client_options.client_cert_source                
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source = mtls.default_client_cert_source() if is_mtls else None
+                client_cert_source_func = mtls.default_client_cert_source() if is_mtls else None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -286,7 +286,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                client_cert_source_for_mtls=client_cert_source,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
