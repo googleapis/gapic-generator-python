@@ -43,7 +43,7 @@ pypandoc==1.5
     # via gapic-generator (setup.py)
 pytz==2020.5
     # via google-api-core
-pyyaml==5.4
+pyyaml==5.3.1  # was 5.4
     # via gapic-generator (setup.py)
 requests==2.25.1
     # via google-api-core
