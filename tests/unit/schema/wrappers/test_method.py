@@ -131,7 +131,7 @@ def test_method_paged_result_field_no_page_field():
                              make_field(name='next_page_token', type=9),  # str
                          ))
                          )
-    assert method.paged_result_field == None
+    assert method.paged_result_field is None
 
 
 def test_method_paged_result_ref_types():
