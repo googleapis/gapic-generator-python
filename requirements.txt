@@ -63,3 +63,6 @@ wheel==0.36.2
 # The following packages are considered to be unsafe in a requirements file:
 # pip
 # setuptools
+
+# added manually
+dataclasses==0.8
