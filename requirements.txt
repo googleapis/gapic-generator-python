@@ -65,4 +65,4 @@ wheel==0.36.2
 # setuptools
 
 # added manually
-dataclasses==0.8
+dataclasses==0.6
