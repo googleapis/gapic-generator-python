@@ -262,4 +262,4 @@ def mypy(session):
 
     session.install("mypy")
     session.install(".")
-    session.run("mypy", "-p", "gapic")
+    session.run("mypy", "gapic")
