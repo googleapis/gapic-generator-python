@@ -866,16 +866,19 @@ class Method:
         """Return the response pagination field if the method is paginated."""
         # If the request field lacks any of the expected pagination fields,
         # then the method is not paginated.
-        for page_field_token in ((self.input, str, 'page_token'),
+
+        # The request must have page_token and next_page_token as they keep track of pages
+        for source, source_type, name in ((self.input, str, 'page_token'),
                            (self.output, str, 'next_page_token')):
-            field = page_field_token[0].fields.get(page_field_token[2], None)
-            if not field or field.type != page_field_token[1]:
+            field = source.fields.get(name, None)
+            if not field or field.type != source_type:
                 return None
 
+        # The request must have max_results or page_size
         page_fields = (self.input.fields.get('max_results', None),
                        self.input.fields.get('page_size', None))
         page_field_size = next(
-            (field for field in page_fields if field is not None), None)
+            (field for field in page_fields if field), None)
         if not page_field_size or page_field_size.type != int:
             return None
 

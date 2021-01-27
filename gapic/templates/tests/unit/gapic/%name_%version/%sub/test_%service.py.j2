@@ -1230,11 +1230,12 @@ def test_{{ method.name|snake_case }}_pager():
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(map(lambda x: {{ method.output.ident }}.to_json(x), response))
-        side_effect = tuple(map(lambda x: Response(), response))
-        for return_val, response_val in zip(side_effect, response):
+        response = tuple({{ method.output.ident }}.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode('UTF-8')
-        req.side_effect = side_effect
+            return_val.status_code = 200
+        req.side_effect = return_values
 
         metadata = ()
         {% if method.field_headers -%}
@@ -1257,13 +1258,16 @@ def test_{{ method.name|snake_case }}_pager():
         assert pager.get('h') is None
         {% endif %}
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         {% if method.paged_result_field.map %}
         assert all(
-            isinstance(i, tuple) and
-            tuple(map(lambda x: type(x), results[0])) == (str, {{ method.paged_result_field.type.fields.get('value').ident }})
+            isinstance(i, tuple)
                    for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (str, {{ method.paged_result_field.type.fields.get('value').ident }})
+        
         assert pager.get('a') is None
         assert isinstance(pager.get('h'), {{ method.paged_result_field.type.fields.get('value').ident }})
         {% else %}
