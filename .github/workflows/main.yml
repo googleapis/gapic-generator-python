@@ -103,7 +103,6 @@ jobs:
       - name: Run showcase tests.
         run: nox -s showcase
   showcase-mtls:
-    working_directory: /tmp/workspace
     runs-on: ubuntu-latest
     container: python:3.8-slim
     steps:
@@ -161,7 +160,6 @@ jobs:
       - name: Run showcase tests.
         run: nox -s showcase_alternative_templates
   showcase-mtls-alternative-templates:
-    working_directory: /tmp/workspace
     runs-on: ubuntu-latest
     container: python:3.8-slim
     steps:
