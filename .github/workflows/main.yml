@@ -1,0 +1,341 @@
+# WIP github actions
+name: Tests
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  docs:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install nox.
+        run: pip install nox
+      - name: Build the documentation.
+        run: nox -s docs
+  mypy:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install nox.
+        run: pip install nox
+      - name: Check type annotations.
+        run: nox -s mypy
+  publish_image:
+    docker:
+      - image: docker
+    steps:
+      - uses: actions/checkout@v2
+      - setup_remote_docker
+      - name: Build Docker image.
+        run: docker build . -t gcr.io/gapic-images/gapic-generator-python:latest
+      - name: Download curl
+        run: apk add --no-cache curl
+      - name: Download the GCR credential helper.
+        run: |
+            curl -fsSL https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v1.5.0/docker-credential-gcr_linux_amd64-1.5.0.tar.gz \
+              | tar xz --to-stdout ./docker-credential-gcr \
+              > /usr/bin/docker-credential-gcr && chmod a+x /usr/bin/docker-credential-gcr
+      - name: Set up authentication to Google Container Registry.
+        run: |
+            echo ${GCLOUD_SERVICE_KEY} > ${GOOGLE_APPLICATION_CREDENTIALS}
+            docker-credential-gcr configure-docker
+      - name: Tag the Docker image and push it to Google Container Registry.
+        run: |
+            if [ -n "$CIRCLE_TAG" ]; then
+              export MAJOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $1; }'`
+              export MINOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $2; }'`
+              export PATCH=`echo $CIRCLE_TAG | awk -F '.' '{ print $3; }'`
+              docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
+              docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
+              docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR
+              docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
+              docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
+              docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR
+            fi
+            docker push gcr.io/gapic-images/gapic-generator-python:latest
+  publish_package:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Decrypt the PyPI key.
+        shell: bash
+        env:
+          # TODO(dovs): sort this out
+          PYPIRC_ENCRIPTION_KEY: ${{ secrets.PYPIRC_ENCRIPTION_KEY }}
+        run: |
+            openssl aes-256-cbc -d \
+              -in .circleci/.pypirc.enc \
+              -out ~/.pypirc \
+              -k "${PYPIRC_ENCRYPTION_KEY}"
+      - name: Publish to PyPI.
+        run: python setup.py sdist upload
+  showcase:
+    docker:
+      - image: python:3.8-slim
+      - image: gcr.io/gapic-images/gapic-showcase:0.11.0
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install system dependencies.
+        run: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - name: Install nox.
+        run: pip install nox
+      - name: Install protoc 3.12.1.
+        run: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run showcase tests.
+        run: nox -s showcase
+  showcase-mtls:
+    working_directory: /tmp/workspace
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install system dependencies.
+        run: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - name: Install nox.
+        run: pip install nox
+      - name: Install protoc 3.12.1.
+        run: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run showcase tests.
+        run:  |
+            mkdir gapic_showcase
+            cd gapic_showcase
+            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.11.0/gapic-showcase-0.11.0-linux-amd64.tar.gz | tar xz
+            ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
+            showcase_pid=$!
+
+            cleanup() {
+              echo "kill showcase server"
+            	kill $showcase_pid
+            	# Wait for the process to die, but don't report error from the kill.
+            	wait $showcase_pid || exit $exit_code
+            }
+            trap cleanup EXIT
+
+            cd ..
+            nox -s showcase_mtls
+  showcase-alternative-templates:
+    docker:
+      - image: python:3.8-slim
+      - image: gcr.io/gapic-images/gapic-showcase:0.11.0
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install system dependencies.
+        run: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - name: Install nox.
+        run: pip install nox
+      - name: Install protoc 3.12.1.
+        run: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run showcase tests.
+        run: nox -s showcase_alternative_templates
+  showcase-mtls-alternative-templates:
+    working_directory: /tmp/workspace
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install system dependencies.
+        run: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - name: Install nox.
+        run: pip install nox
+      - name: Install protoc 3.12.1.
+        run: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run showcase tests.
+        run:  |
+            mkdir gapic_showcase
+            cd gapic_showcase
+            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.11.0/gapic-showcase-0.11.0-linux-amd64.tar.gz | tar xz
+            ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
+            showcase_pid=$!
+
+            cleanup() {
+              echo "kill showcase server"
+            	kill $showcase_pid
+            	# Wait for the process to die, but don't report error from the kill.
+            	wait $showcase_pid || exit $exit_code
+            }
+            trap cleanup EXIT
+
+            cd ..
+            nox -s showcase_mtls_alternative_templates
+  # TODO(yon-mg): add compute unit tests
+  showcase-unit:
+    matrix:
+      python: [3.6, 3.7, 3.8, 3.9]
+    docker:
+      - image: python:${{ matrix.python }}-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install system dependencies.
+        run: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: pip install nox
+      - name: Run unit tests.
+        run: nox -s showcase_unit-${{ matrix.python }}
+  showcase-unit-alternative-templates:
+    matrix:
+      python: [3.7, 3.8, 3.9]
+    docker:
+      - image: python:${{ matrix.python }}-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install system dependencies.
+        run: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: pip install nox
+      - name: Run unit tests.
+        run: nox -s showcase_unit_alternative_templates-${{ matrix.python }}
+  showcase-unit-add-iam-methods:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install system dependencies.
+        run: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: pip install nox
+      - name: Run unit tests.
+        run: nox -s showcase_unit_add_iam_methods-3.8
+  showcase-mypy:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install system dependencies.
+        run: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: pip install nox
+      - name: Typecheck the generated output.
+        run: nox -s showcase_mypy
+  showcase-mypy-alternative-templates:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install system dependencies.
+        run: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: pip install nox
+      - name: Typecheck the generated output.
+        run: nox -s showcase_mypy_alternative_templates
+  unit:
+    matrix:
+      python: [3.6, 3.7, 3.8, 3.9]
+    docker:
+      - image: python:${{ matrix.python }}-slim
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install pandoc
+        run: |
+            apt-get update
+            apt-get install -y pandoc gcc git
+      - name: Install nox and codecov.
+        run: |
+            pip install nox
+            pip install codecov
+      - name: Run unit tests.
+        run: nox -s unit-${{ matrix.python }}
+      - name: Submit coverage data to codecov.
+        run: codecov
+          when: always
+  style-check:
+    docker:
+      - image: python:3.8-alpine
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install git
+        run: |
+            apk add git
+      - name: Install autopep8
+        run: |
+            pip install autopep8
+      - name: Format files
+        run: |
+            find gapic tests -name "*.py" | xargs autopep8 --in-place
+      - name: Check diff
+        run: |
+            git diff --ignore-submodules=all --color --exit-code .
