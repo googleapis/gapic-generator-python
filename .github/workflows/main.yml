@@ -153,7 +153,7 @@ jobs:
             nox -s showcase_mtls
   showcase-alternative-templates:
     services:
-      showcase:
+      showcase-server:
         image: gcr.io/gapic-images/gapic-showcase:0.12.0
         ports:
           - "7469:7469"
@@ -161,7 +161,6 @@ jobs:
     #   - [docs, mypy, unit, showcase-unit-alternative-templates, showcase-mypy]
     runs-on: ubuntu-latest
     container: python:3.8-slim
-    container: gcr.io/gapic-images/gapic-showcase:0.11.0
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -181,7 +180,7 @@ jobs:
         run: nox -s showcase_alternative_templates
   showcase-mtls-alternative-templates:
     services:
-      showcase:
+      showcase-server:
         image: gcr.io/gapic-images/gapic-showcase:0.12.0
         ports:
           - "7469:7469"
@@ -228,8 +227,8 @@ jobs:
     #   - [docs, mypy, unit, showcase-mypy]
     matrix:
       python: [3.6, 3.7, 3.8, 3.9]
-      runs-on: ubuntu-latest
-      container: python:${{ matrix.python }}-slim
+    runs-on: ubuntu-latest
+    container: python:${{ matrix.python }}-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
