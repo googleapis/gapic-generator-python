@@ -321,7 +321,7 @@ jobs:
         run: nox -s unit-${{ matrix.python }}
       - name: Submit coverage data to codecov.
         run: codecov
-          when: always
+        when: always
   style-check:
     docker:
       - image: python:3.8-alpine
