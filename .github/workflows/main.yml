@@ -225,8 +225,9 @@ jobs:
   showcase-unit:
     # needs:
     #   - [docs, mypy, unit, showcase-mypy]
-    matrix:
-      python: [3.6, 3.7, 3.8, 3.9]
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9]
     runs-on: ubuntu-latest
     container: python:${{ matrix.python }}-slim
     steps:
@@ -249,8 +250,9 @@ jobs:
   showcase-unit-alternative-templates:
     # needs:
     #   - [docs, mypy, unit, showcase-mypy]
-    matrix:
-      python: [3.7, 3.8, 3.9]
+    strategy:
+      matrix:
+        python: [3.7, 3.8, 3.9]
     runs-on: ubuntu-latest
     container: python:${{ matrix.python }}-slim
     steps:
@@ -333,8 +335,9 @@ jobs:
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy_alternative_templates
   unit:
-    matrix:
-      python: [3.6, 3.7, 3.8, 3.9]
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9]
     runs-on: ubuntu-latest
     container: python:${{ matrix.python }}-slim
     steps:
