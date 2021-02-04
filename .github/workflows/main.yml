@@ -14,8 +14,7 @@ on:
 
 jobs:
   docs:
-    docker:
-      - image: python:3.8-slim
+    image: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install nox.
@@ -23,8 +22,7 @@ jobs:
       - name: Build the documentation.
         run: nox -s docs
   mypy:
-    docker:
-      - image: python:3.8-slim
+    image: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install nox.
@@ -32,8 +30,7 @@ jobs:
       - name: Check type annotations.
         run: nox -s mypy
   publish_image:
-    docker:
-      - image: docker
+    image: docker
     steps:
       - uses: actions/checkout@v2
       - setup_remote_docker
@@ -65,8 +62,7 @@ jobs:
             fi
             docker push gcr.io/gapic-images/gapic-generator-python:latest
   publish_package:
-    docker:
-      - image: python:3.8-slim
+    image: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
       - name: Decrypt the PyPI key.
@@ -82,9 +78,8 @@ jobs:
       - name: Publish to PyPI.
         run: python setup.py sdist upload
   showcase:
-    docker:
-      - image: python:3.8-slim
-      - image: gcr.io/gapic-images/gapic-showcase:0.11.0
+    image: python:3.8-slim
+    image: gcr.io/gapic-images/gapic-showcase:0.11.0
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -104,8 +99,7 @@ jobs:
         run: nox -s showcase
   showcase-mtls:
     working_directory: /tmp/workspace
-    docker:
-      - image: python:3.8-slim
+    image: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -140,9 +134,8 @@ jobs:
             cd ..
             nox -s showcase_mtls
   showcase-alternative-templates:
-    docker:
-      - image: python:3.8-slim
-      - image: gcr.io/gapic-images/gapic-showcase:0.11.0
+    image: python:3.8-slim
+    image: gcr.io/gapic-images/gapic-showcase:0.11.0
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -162,8 +155,7 @@ jobs:
         run: nox -s showcase_alternative_templates
   showcase-mtls-alternative-templates:
     working_directory: /tmp/workspace
-    docker:
-      - image: python:3.8-slim
+    image: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -201,8 +193,7 @@ jobs:
   showcase-unit:
     matrix:
       python: [3.6, 3.7, 3.8, 3.9]
-    docker:
-      - image: python:${{ matrix.python }}-slim
+    image: python:${{ matrix.python }}-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -223,8 +214,7 @@ jobs:
   showcase-unit-alternative-templates:
     matrix:
       python: [3.7, 3.8, 3.9]
-    docker:
-      - image: python:${{ matrix.python }}-slim
+    image: python:${{ matrix.python }}-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -243,8 +233,7 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit_alternative_templates-${{ matrix.python }}
   showcase-unit-add-iam-methods:
-    docker:
-      - image: python:3.8-slim
+    image: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -263,8 +252,7 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit_add_iam_methods-3.8
   showcase-mypy:
-    docker:
-      - image: python:3.8-slim
+    image: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -283,8 +271,7 @@ jobs:
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy
   showcase-mypy-alternative-templates:
-    docker:
-      - image: python:3.8-slim
+    image: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -305,8 +292,7 @@ jobs:
   unit:
     matrix:
       python: [3.6, 3.7, 3.8, 3.9]
-    docker:
-      - image: python:${{ matrix.python }}-slim
+    image: python:${{ matrix.python }}-slim
     steps:
       - uses: actions/checkout@v2
       - name: Install pandoc
@@ -323,8 +309,7 @@ jobs:
         run: codecov
         when: always
   style-check:
-    docker:
-      - image: python:3.8-alpine
+    image: python:3.8-alpine
     steps:
       - uses: actions/checkout@v2
       - name: Install git
