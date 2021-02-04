@@ -109,6 +109,7 @@ jobs:
       - name: Run showcase tests.
         run: nox -s showcase
   showcase-mtls:
+    working-directory: /tmp/workspace
     services:
       showcase:
         image: gcr.io/gapic-images/gapic-showcase:0.12.0
@@ -179,6 +180,7 @@ jobs:
       - name: Run showcase tests.
         run: nox -s showcase_alternative_templates
   showcase-mtls-alternative-templates:
+    working-directory: /tmp/workspace
     services:
       showcase-server:
         image: gcr.io/gapic-images/gapic-showcase:0.12.0
@@ -360,15 +362,9 @@ jobs:
     container: python:3.8-alpine
     steps:
       - uses: actions/checkout@v2
-      - name: Install git
-        run: |
-            apk add git
       - name: Install autopep8
         run: |
             pip install autopep8
-      - name: Format files
-        run: |
-            find gapic tests -name "*.py" | xargs autopep8 --in-place
       - name: Check diff
         run: |
-            git diff --ignore-submodules=all --color --exit-code .
+            find gapic tests -name "*.py" | xargs autopep8 --in-place --exit-code
