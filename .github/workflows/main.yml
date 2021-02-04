@@ -82,9 +82,15 @@ jobs:
       - name: Publish to PyPI.
         run: python setup.py sdist upload
   showcase:
+    services:
+      showcase:
+        image: gcr.io/gapic-images/gapic-showcase:0.12.0
+        ports:
+          - "7469:7469"
+    needs:
+      - [docs, mypy, unit, showcase-unit, showcase-mypy]
     runs-on: ubuntu-latest
     container: python:3.8-slim
-    container: gcr.io/gapic-images/gapic-showcase:0.11.0
     steps:
       - uses: actions/checkout@v2
       - name: Install system dependencies.
@@ -103,6 +109,13 @@ jobs:
       - name: Run showcase tests.
         run: nox -s showcase
   showcase-mtls:
+    services:
+      showcase:
+        image: gcr.io/gapic-images/gapic-showcase:0.12.0
+        ports:
+          - "7469:7469"
+    needs:
+      - [docs, mypy, unit, showcase-unit, showcase-mypy]
     runs-on: ubuntu-latest
     container: python:3.8-slim
     steps:
@@ -139,6 +152,13 @@ jobs:
             cd ..
             nox -s showcase_mtls
   showcase-alternative-templates:
+    services:
+      showcase:
+        image: gcr.io/gapic-images/gapic-showcase:0.12.0
+        ports:
+          - "7469:7469"
+    needs:
+      - [docs, mypy, unit, showcase-unit-alternative-templates, showcase-mypy]
     runs-on: ubuntu-latest
     container: python:3.8-slim
     container: gcr.io/gapic-images/gapic-showcase:0.11.0
@@ -160,6 +180,13 @@ jobs:
       - name: Run showcase tests.
         run: nox -s showcase_alternative_templates
   showcase-mtls-alternative-templates:
+    services:
+      showcase:
+        image: gcr.io/gapic-images/gapic-showcase:0.12.0
+        ports:
+          - "7469:7469"
+    needs:
+      - [docs, mypy, unit, showcase-unit-alternative-templates, showcase-mypy]
     runs-on: ubuntu-latest
     container: python:3.8-slim
     steps:
@@ -197,6 +224,8 @@ jobs:
             nox -s showcase_mtls_alternative_templates
   # TODO(yon-mg): add compute unit tests
   showcase-unit:
+    needs:
+      - [docs, mypy, unit, showcase-mypy]
     matrix:
       python: [3.6, 3.7, 3.8, 3.9]
       runs-on: ubuntu-latest
@@ -219,6 +248,8 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit-${{ matrix.python }}
   showcase-unit-alternative-templates:
+    needs:
+      - [docs, mypy, unit, showcase-mypy]
     matrix:
       python: [3.7, 3.8, 3.9]
     runs-on: ubuntu-latest
@@ -241,6 +272,8 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit_alternative_templates-${{ matrix.python }}
   showcase-unit-add-iam-methods:
+    needs:
+      - [docs, mypy, unit, showcase-mypy]
     runs-on: ubuntu-latest
     container: python:3.8-slim
     steps:
@@ -319,7 +352,7 @@ jobs:
         run: nox -s unit-${{ matrix.python }}
       - name: Submit coverage data to codecov.
         run: codecov
-        when: always
+        if: always()
   style-check:
     runs-on: ubuntu-latest
     container: python:3.8-alpine
