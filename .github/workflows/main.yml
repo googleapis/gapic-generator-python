@@ -93,6 +93,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
+        with:
+          sudo: false
       - name: Install system dependencies.
         run: |
           apt-get update
@@ -130,6 +132,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
+        with:
+          sudo: false
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
       - name: Install system dependencies.
