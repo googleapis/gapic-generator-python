@@ -99,6 +99,7 @@ jobs:
           cd /usr/src/showcase/
           tar -xf showcase-*
           ./gapic-showcase run &
+          cd -
       - name: Install nox.
         run: pip install nox
       - name: Install protoc 3.12.1.
@@ -116,7 +117,10 @@ jobs:
     runs-on: ubuntu-latest
     container: python:3.8-slim
     steps:
+      - name: Setup temp directory
+        run: mkdir -p /tmp/workspace
       - uses: actions/checkout@v2
+        working-directory: /tmp/workspace
       - name: Install system dependencies.
         run: |
             apt-get update
@@ -128,6 +132,7 @@ jobs:
           cd /usr/src/showcase/
           tar -xf showcase-*
           ./gapic-showcase run &
+          cd -
       - name: Install nox.
         run: pip install nox
       - name: Install protoc 3.12.1.
@@ -137,8 +142,6 @@ jobs:
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
-      - name: Setup showcase directory
-        run: mkdir -p /tmp/workspace
       - name: Run showcase tests.
         working-directory: /tmp/workspace
         run:  |
@@ -176,6 +179,7 @@ jobs:
           cd /usr/src/showcase/
           tar -xf showcase-*
           ./gapic-showcase run &
+          cd -
       - name: Install nox.
         run: pip install nox
       - name: Install protoc 3.12.1.
@@ -193,7 +197,10 @@ jobs:
     runs-on: ubuntu-latest
     container: python:3.8-slim
     steps:
+      - name: Setup temp directory
+        run: mkdir -p /tmp/workspace
       - uses: actions/checkout@v2
+        working-directory: /tmp/workspace
       - name: Install system dependencies.
         run: |
             apt-get update
@@ -207,12 +214,10 @@ jobs:
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
-      - name: Setup showcase directory
-        run: mkdir -p /tmp/workspace
       - name: Run showcase tests.
         working-directory: /tmp/workspace
         run:  |
-            mkdir gapic_showcase
+            mkdir -p  gapic_showcase
             cd gapic_showcase
             curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.11.0/gapic-showcase-0.11.0-linux-amd64.tar.gz | tar xz
             ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
