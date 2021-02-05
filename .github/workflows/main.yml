@@ -15,20 +15,26 @@ on:
 jobs:
   docs:
     runs-on: ubuntu-latest
-    container: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - name: Install nox.
-        run: pip install nox
+        run: python -m pip install nox
       - name: Build the documentation.
         run: nox -s docs
   mypy:
     runs-on: ubuntu-latest
-    container: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - name: Install nox.
-        run: pip install nox
+        run: python -m pip install nox
       - name: Check type annotations.
         run: nox -s mypy
   # publish_image:
@@ -66,9 +72,12 @@ jobs:
   #           docker push gcr.io/gapic-images/gapic-generator-python:latest
   publish_package:
     runs-on: ubuntu-latest
-    container: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - name: Decrypt the PyPI key.
         shell: bash
         env:
@@ -88,13 +97,12 @@ jobs:
     # needs:
     #   - [docs, mypy, unit, showcase-unit, showcase-mypy]
     runs-on: ubuntu-latest
-    container: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
         with:
-          sudo: false
+          python-version: 3.8
       - name: Install system dependencies.
         run: |
           apt-get update
@@ -108,7 +116,7 @@ jobs:
           ./gapic-showcase run &
           cd -
       - name: Install nox.
-        run: pip install nox
+        run: python -m pip install nox
       - name: Install protoc 3.12.1.
         run: |
             mkdir -p /usr/src/protoc/
@@ -130,10 +138,10 @@ jobs:
       - name: Setup temp directory
         run: mkdir -p /tmp/workspace/tests/cert/
       - uses: actions/checkout@v2
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
         with:
-          sudo: false
+          python-version: 3.8
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
       - name: Install system dependencies.
@@ -149,7 +157,7 @@ jobs:
           ./gapic-showcase run &
           cd -
       - name: Install nox.
-        run: pip install nox
+        run: python -m pip install nox
       - name: Install protoc 3.12.1.
         run: |
             mkdir -p /usr/src/protoc/
@@ -183,9 +191,12 @@ jobs:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9]
     runs-on: ubuntu-latest
-    container: python:${{ matrix.python }}-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
       - name: Install system dependencies.
         run: |
             apt-get update
@@ -198,7 +209,7 @@ jobs:
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
-        run: pip install nox
+        run: python -m pip install nox
       - name: Run unit tests.
         run: nox -s showcase_unit-${{ matrix.python }}
   showcase-unit-alternative-templates:
@@ -208,9 +219,12 @@ jobs:
       matrix:
         python: [3.7, 3.8, 3.9]
     runs-on: ubuntu-latest
-    container: python:${{ matrix.python }}-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
       - name: Install system dependencies.
         run: |
             apt-get update
@@ -223,16 +237,19 @@ jobs:
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
-        run: pip install nox
+        run: python -m pip install nox
       - name: Run unit tests.
         run: nox -s showcase_unit_alternative_templates-${{ matrix.python }}
   showcase-unit-add-iam-methods:
     # needs:
     #   - [docs, mypy, unit, showcase-mypy]
     runs-on: ubuntu-latest
-    container: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - name: Install system dependencies.
         run: |
             apt-get update
@@ -245,14 +262,17 @@ jobs:
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
-        run: pip install nox
+        run: python -m pip install nox
       - name: Run unit tests.
         run: nox -s showcase_unit_add_iam_methods-3.8
   showcase-mypy:
     runs-on: ubuntu-latest
-    container: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - name: Install system dependencies.
         run: |
             apt-get update
@@ -265,14 +285,17 @@ jobs:
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
-        run: pip install nox
+        run: python -m pip install nox
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy
   showcase-mypy-alternative-templates:
     runs-on: ubuntu-latest
-    container: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - name: Install system dependencies.
         run: |
             apt-get update
@@ -285,7 +308,7 @@ jobs:
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
-        run: pip install nox
+        run: python -m pip install nox
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy_alternative_templates
   unit:
@@ -293,17 +316,20 @@ jobs:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9]
     runs-on: ubuntu-latest
-    container: python:${{ matrix.python }}-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
       - name: Install pandoc
         run: |
             apt-get update
             apt-get install -y pandoc gcc git
       - name: Install nox and codecov.
         run: |
-            pip install nox
-            pip install codecov
+            python -m pip install nox
+            python -m pip install codecov
       - name: Run unit tests.
         run: nox -s unit-${{ matrix.python }}
       - name: Submit coverage data to codecov.
@@ -311,12 +337,15 @@ jobs:
         if: always()
   style-check:
     runs-on: ubuntu-latest
-    container: python:3.8-alpine
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - name: Install autopep8
         run: |
-            pip install autopep8
+            python -m pip install autopep8
       - name: Check diff
         run: |
             find gapic tests -name "*.py" | xargs autopep8 --in-place --exit-code
