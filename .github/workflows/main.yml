@@ -120,7 +120,8 @@ jobs:
         run: python -m pip install nox
       - name: Install protoc 3.12.1.
         run: |
-            mkdir -p /usr/src/protoc/
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
             curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
@@ -164,7 +165,8 @@ jobs:
           cd -
       - name: Run showcase tests.
         run:  |
-            mkdir gapic_showcase
+            sudo mkdir gapic_showcase
+            sudo chown ${USER} gapic_showcase
             cd gapic_showcase
             curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.11.0/gapic-showcase-0.11.0-linux-amd64.tar.gz | tar xz
             ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
@@ -200,7 +202,8 @@ jobs:
             sudo apt-get install -y curl pandoc unzip gcc
       - name: Install protoc 3.12.1.
         run: |
-            mkdir -p /usr/src/protoc/
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
             curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
@@ -228,7 +231,8 @@ jobs:
             sudo apt-get install -y curl pandoc unzip gcc
       - name: Install protoc 3.12.1.
         run: |
-            mkdir -p /usr/src/protoc/
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
             curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
@@ -253,7 +257,8 @@ jobs:
             sudo apt-get install -y curl pandoc unzip gcc
       - name: Install protoc 3.12.1.
         run: |
-            mkdir -p /usr/src/protoc/
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
             curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
@@ -276,7 +281,8 @@ jobs:
             sudo apt-get install -y curl pandoc unzip gcc
       - name: Install protoc 3.12.1.
         run: |
-            mkdir -p /usr/src/protoc/
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
             curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
@@ -299,7 +305,8 @@ jobs:
             sudo apt-get install -y curl pandoc unzip gcc
       - name: Install protoc 3.12.1.
         run: |
-            mkdir -p /usr/src/protoc/
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
             curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
