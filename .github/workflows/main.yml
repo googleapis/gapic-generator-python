@@ -91,12 +91,12 @@ jobs:
     container: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Install system dependencies.
         run: |
-            apt-get update
-            apt-get install -y curl pandoc unzip gcc
+          apt-get update
+          apt-get install -y curl pandoc unzip gcc
       - name: Install showcase
         run: |
           mkdir -p /usr/src/showcase
@@ -128,8 +128,8 @@ jobs:
       - name: Setup temp directory
         run: mkdir -p /tmp/workspace/tests/cert/
       - uses: actions/checkout@v2
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
       - name: Install system dependencies.
