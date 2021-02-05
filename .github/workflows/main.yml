@@ -109,7 +109,8 @@ jobs:
           sudo apt-get install -y curl pandoc unzip gcc
       - name: Install showcase
         run: |
-          mkdir -p /usr/src/showcase
+          sudo mkdir -p /usr/src/showcase
+          sudo chown -R ${USER} /usr/src/
           curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.12.0/gapic-showcase-0.12.0-linux-amd64.tar.gz --output /usr/src/showcase/showcase-0.12.0-linux-amd64.tar.gz
           cd /usr/src/showcase/
           tar -xf showcase-*
@@ -136,7 +137,9 @@ jobs:
     container: python:3.8-slim
     steps:
       - name: Setup temp directory
-        run: mkdir -p /tmp/workspace/tests/cert/
+        run: |
+          sudo mkdir -p /tmp/workspace/tests/cert/
+          sudo chown -R ${USER} /tmp/workspace/
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -146,25 +149,19 @@ jobs:
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
       - name: Install system dependencies.
         run: |
-            sudo apt-get update
-            sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install showcase
-        run: |
-          mkdir -p /usr/src/showcase
-          curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.12.0/gapic-showcase-0.12.0-linux-amd64.tar.gz --output /usr/src/showcase/showcase-0.12.0-linux-amd64.tar.gz
-          cd /usr/src/showcase/
-          tar -xf showcase-*
-          ./gapic-showcase run &
-          cd -
+          sudo apt-get update
+          sudo apt-get install -y curl pandoc unzip gcc
       - name: Install nox.
         run: python -m pip install nox
       - name: Install protoc 3.12.1.
         run: |
-            mkdir -p /usr/src/protoc/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
-            cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
-            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+          sudo mkdir -p /usr/src/protoc/
+          sudo chown -R ${USER} /usr/src
+          curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+          cd /usr/src/protoc/
+          unzip protoc-3.12.1.zip
+          ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+          cd -
       - name: Run showcase tests.
         run:  |
             mkdir gapic_showcase
