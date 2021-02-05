@@ -91,6 +91,8 @@ jobs:
     container: python:3.8-slim
     steps:
       - uses: actions/checkout@v2
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
       - name: Install system dependencies.
         run: |
             apt-get update
@@ -150,7 +152,6 @@ jobs:
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run showcase tests.
-        working-directory: /tmp/workspace
         run:  |
             mkdir gapic_showcase
             cd gapic_showcase
