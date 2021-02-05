@@ -82,11 +82,6 @@ jobs:
       - name: Publish to PyPI.
         run: python setup.py sdist upload
   showcase:
-    services:
-      showcase-server:
-        image: gcr.io/gapic-images/gapic-showcase:0.12.0
-        ports:
-          - "7469:7469"
     # needs:
     #   - [docs, mypy, unit, showcase-unit, showcase-mypy]
     runs-on: ubuntu-latest
@@ -97,6 +92,13 @@ jobs:
         run: |
             apt-get update
             apt-get install -y curl pandoc unzip gcc
+      - name: Install showcase
+        run: |
+          mkdir -p /usr/src/showcase
+          curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.12.0/gapic-showcase-0.12.0-linux-amd64.tar.gz --output /usr/src/showcase/showcase-0.12.0-linux-amd64.tar.gz
+          cd /usr/src/showcase/
+          tar -xdf showcase-*
+          ./gapic-showcase run &
       - name: Install nox.
         run: pip install nox
       - name: Install protoc 3.12.1.
@@ -109,11 +111,6 @@ jobs:
       - name: Run showcase tests.
         run: nox -s showcase
   showcase-mtls:
-    services:
-      showcase:
-        image: gcr.io/gapic-images/gapic-showcase:0.12.0
-        ports:
-          - "7469:7469"
     # needs:
     #   - [docs, mypy, unit, showcase-unit, showcase-mypy]
     runs-on: ubuntu-latest
@@ -124,6 +121,13 @@ jobs:
         run: |
             apt-get update
             apt-get install -y curl pandoc unzip gcc
+      - name: Install showcase
+        run: |
+          mkdir -p /usr/src/showcase
+          curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.12.0/gapic-showcase-0.12.0-linux-amd64.tar.gz --output /usr/src/showcase/showcase-0.12.0-linux-amd64.tar.gz
+          cd /usr/src/showcase/
+          tar -xdf showcase-*
+          ./gapic-showcase run &
       - name: Install nox.
         run: pip install nox
       - name: Install protoc 3.12.1.
@@ -133,6 +137,8 @@ jobs:
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Setup showcase directory
+        run: mkdir -p /tmp/workspace
       - name: Run showcase tests.
         working-directory: /tmp/workspace
         run:  |
@@ -153,11 +159,6 @@ jobs:
             cd ..
             nox -s showcase_mtls
   showcase-alternative-templates:
-    services:
-      showcase-server:
-        image: gcr.io/gapic-images/gapic-showcase:0.12.0
-        ports:
-          - "7469:7469"
     # needs:
     #   - [docs, mypy, unit, showcase-unit-alternative-templates, showcase-mypy]
     runs-on: ubuntu-latest
@@ -168,6 +169,13 @@ jobs:
         run: |
             apt-get update
             apt-get install -y curl pandoc unzip gcc
+      - name: Install showcase
+        run: |
+          mkdir -p /usr/src/showcase
+          curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.12.0/gapic-showcase-0.12.0-linux-amd64.tar.gz --output /usr/src/showcase/showcase-0.12.0-linux-amd64.tar.gz
+          cd /usr/src/showcase/
+          tar -xdf showcase-*
+          ./gapic-showcase run &
       - name: Install nox.
         run: pip install nox
       - name: Install protoc 3.12.1.
@@ -180,11 +188,6 @@ jobs:
       - name: Run showcase tests.
         run: nox -s showcase_alternative_templates
   showcase-mtls-alternative-templates:
-    services:
-      showcase-server:
-        image: gcr.io/gapic-images/gapic-showcase:0.12.0
-        ports:
-          - "7469:7469"
     # needs:
     #   - [docs, mypy, unit, showcase-unit-alternative-templates, showcase-mypy]
     runs-on: ubuntu-latest
@@ -204,6 +207,8 @@ jobs:
             cd /usr/src/protoc/
             unzip protoc-3.12.1.zip
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Setup showcase directory
+        run: mkdir -p /tmp/workspace
       - name: Run showcase tests.
         working-directory: /tmp/workspace
         run:  |
