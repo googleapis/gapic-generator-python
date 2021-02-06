@@ -71,8 +71,7 @@ jobs:
   #           fi
   #           docker push gcr.io/gapic-images/gapic-generator-python:latest
   publish_package:
-    needs:
-      - [docs, mypy, unit, showcase-unit, showcase-unit-add-iam-methods, showcase, showcase-mtls, showcase-mypy, showcase-mypy-alternative-templates, style-check]
+    needs: [docs, mypy, unit, showcase-unit, showcase-unit-add-iam-methods, showcase, showcase-mtls, showcase-mypy, showcase-mypy-alternative-templates, style-check]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
