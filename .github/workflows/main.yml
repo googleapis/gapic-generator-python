@@ -135,13 +135,12 @@ jobs:
     # needs:
     #   - [docs, mypy, unit, showcase-unit, showcase-mypy]
     runs-on: ubuntu-latest
-    container: python:3.8-slim
     steps:
+      - uses: actions/checkout@v2
       - name: Setup temp directory
         run: |
           sudo mkdir -p /tmp/workspace/tests/cert/
           sudo chown -R ${USER} /tmp/workspace/
-      - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
