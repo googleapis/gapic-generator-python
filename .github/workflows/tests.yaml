@@ -3,9 +3,6 @@ name: Tests
 
 # Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -70,27 +67,6 @@ jobs:
   #             docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR
   #           fi
   #           docker push gcr.io/gapic-images/gapic-generator-python:latest
-  publish_package:
-    needs: [docs, mypy, unit, showcase-unit, showcase-unit-alternative-templates, showcase-unit-add-iam-methods, showcase, showcase-mtls, showcase-mypy, showcase-mypy-alternative-templates, style-check]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Decrypt the PyPI key.
-        shell: bash
-        env:
-          # TODO(dovs): sort this out
-          PYPIRC_ENCRIPTION_KEY: ${{ secrets.PYPIRC_ENCRIPTION_KEY }}
-        run: |
-            openssl aes-256-cbc -d \
-              -in .circleci/.pypirc.enc \
-              -out ~/.pypirc \
-              -k "${PYPIRC_ENCRYPTION_KEY}"
-      - name: Publish to PyPI.
-        run: python setup.py sdist upload
   showcase:
     strategy:
       matrix:
