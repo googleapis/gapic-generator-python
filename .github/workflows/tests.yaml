@@ -70,8 +70,6 @@ jobs:
     strategy:
       matrix:
         target: [showcase, showcase_alternative_templates]
-    # needs:
-    #   - [docs, mypy, unit, showcase-unit, showcase-mypy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -108,8 +106,6 @@ jobs:
     strategy:
       matrix:
         target: [showcase_mtls, showcase_mtls_alternative_templates]
-    # needs:
-    #   - [docs, mypy, unit, showcase-unit, showcase-mypy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -159,8 +155,6 @@ jobs:
             nox -s ${{ matrix.target }}
   # TODO(yon-mg): add compute unit tests
   showcase-unit:
-    # needs:
-    #   - [docs, mypy, unit, showcase-mypy]
     strategy:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9]
@@ -188,8 +182,6 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit-${{ matrix.python }}
   showcase-unit-alternative-templates:
-    # needs:
-    #   - [docs, mypy, unit, showcase-mypy]
     strategy:
       matrix:
         python: [3.7, 3.8, 3.9]
@@ -217,8 +209,6 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit_alternative_templates-${{ matrix.python }}
   showcase-unit-add-iam-methods:
-    # needs:
-    #   - [docs, mypy, unit, showcase-mypy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
