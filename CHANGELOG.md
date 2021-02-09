@@ -1,5 +1,49 @@
 # Changelog
 
+### [0.40.8](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.7...v0.40.8) (2021-02-05)
+
+
+### Bug Fixes
+
+* body encoding for rest transport ([#768](https://www.github.com/googleapis/gapic-generator-python/issues/768)) ([cc55a18](https://www.github.com/googleapis/gapic-generator-python/commit/cc55a182b878d78f92aba259c067d47ab1d01e5b))
+* update paging implementation to handle unconventional pagination ([#750](https://www.github.com/googleapis/gapic-generator-python/issues/750)) ([eaac3e6](https://www.github.com/googleapis/gapic-generator-python/commit/eaac3e69d366b610ae7551d94d4f546819e24bc2))
+
+### [0.40.7](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.6...v0.40.7) (2021-02-03)
+
+
+### Bug Fixes
+
+* don't use integer for enums in json encoding ([#761](https://www.github.com/googleapis/gapic-generator-python/issues/761)) ([6d37a73](https://www.github.com/googleapis/gapic-generator-python/commit/6d37a7388995b90428ee6293bcce5d48cd9a48f8))
+
+### [0.40.6](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.5...v0.40.6) (2021-02-02)
+
+
+### Bug Fixes
+
+* remove duplicate assignment of certain flattened, repeated fields ([#760](https://www.github.com/googleapis/gapic-generator-python/issues/760)) ([cdbc221](https://www.github.com/googleapis/gapic-generator-python/commit/cdbc22130a176e733c529f60a6b8b1d224e82e89))
+
+### [0.40.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.4...v0.40.5) (2021-02-01)
+
+
+### Bug Fixes
+
+* Fix namespace packages conflict issue ([#757](https://www.github.com/googleapis/gapic-generator-python/issues/757)) ([8035662](https://www.github.com/googleapis/gapic-generator-python/commit/8035662bdcfbdffd1c294c5d28479733358407ca))
+
+### [0.40.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.3...v0.40.4) (2021-01-28)
+
+
+### Bug Fixes
+
+* Make gapic-generator-python compatible with protobuf 3.14.0 (packaged as native namespace package) ([#753](https://www.github.com/googleapis/gapic-generator-python/issues/753)) ([45212af](https://www.github.com/googleapis/gapic-generator-python/commit/45212afb9f523a416d86272798d71ce05dc292f0))
+* mypy 0.800 update errors ([#754](https://www.github.com/googleapis/gapic-generator-python/issues/754)) ([608275a](https://www.github.com/googleapis/gapic-generator-python/commit/608275aa923f495520dea8ebddb94a99f26e27a5))
+
+### [0.40.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.2...v0.40.3) (2021-01-21)
+
+
+### Bug Fixes
+
+* stabilize order of query_params ([#742](https://www.github.com/googleapis/gapic-generator-python/issues/742)) ([2835ddb](https://www.github.com/googleapis/gapic-generator-python/commit/2835ddbe62b520e2e4c84f02810b1ac936c9cbb9))
+
 ### [0.40.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.1...v0.40.2) (2021-01-21)
 
 
