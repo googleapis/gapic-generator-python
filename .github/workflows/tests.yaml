@@ -3,7 +3,6 @@ name: Tests
 # Controls when the action will run.
 on:
   pull_request:
-    branches: [ $default-branch ]
   push:
     branches: [ $default-branch ]
 
