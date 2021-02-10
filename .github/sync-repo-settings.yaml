@@ -14,10 +14,7 @@ branchProtectionRules:
     - 'showcase'
     - 'showcase-mtls'
     - 'showcase-unit'
-    - 'showcase-unit-alternative-templates'
-    - 'showcase-unit-add-iam-methods'
     - 'showcase-mypy'
-    - 'showcase-mypy-alternative-templates'
     - 'unit'
     - 'style-check'
   requiredApprovingReviewCount: 1
