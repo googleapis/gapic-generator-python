@@ -81,12 +81,14 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
+        # When custom host (api_endpoint) can be set, `scopes` must *also* be set on the
+        # credentials object 
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
         )
-        self._session = AuthorizedSession(self._credentials)
+        self._session = AuthorizedSession(self._credentials, default_host=cls.DEFAULT_HOST)
         {%- if service.has_lro %}
         self._operations_client = None
         {%- endif %}
@@ -110,7 +112,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
                 grpc_helpers.create_channel(
                     self._host,
                     credentials=self._credentials,
-                    scopes=self.AUTH_SCOPES,
+                    default_scopes=self.AUTH_SCOPES,
+                    scopes=scopes,
+                    default_host=cls.DEFAULT_HOST,
                     options=[
                         ("grpc.max_send_message_length", -1),
                         ("grpc.max_receive_message_length", -1),

@@ -12,6 +12,7 @@ from google.api_core import operations_v1              # type: ignore
 from google import auth                                # type: ignore
 from google.auth import credentials                    # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc                        # type: ignore
 from grpc.experimental import aio  # type: ignore
@@ -27,7 +28,10 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
+from .base import _GOOGLE_AUTH_VERSION, _API_CORE_VERSION
 from .grpc import {{ service.name }}GrpcTransport
+from .grpc import _API_CORE_VERSION
+from .grpc import _GOOGLE_AUTH_VERSION
 
 
 class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
@@ -75,13 +79,31 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+        # If a custom API endpoint is set, set scopes to ensure the auth
+        # library does not used the self-signed JWT flow for service
+        # accounts
+        if host != cls.DEFAULT_HOST and not scopes:
+            scopes = cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = {}
+
+        # TODO(busunkim): Remove this if/else once google-api-core >= 1.26.0 is required
+        if _API_CORE_VERSION and (
+            packaging.version.parse(_API_CORE_VERSION)
+            >= packaging.version.parse("1.26.0")
+        ):
+            self_signed_jwt_kwargs["default_scopes"] = cls.AUTH_SCOPES
+            self_signed_jwt_kwargs["scopes"] = scopes
+            self_signed_jwt_kwargs["default_host"] = cls.DEFAULT_HOST
+        else:
+            self_signed_jwt_kwargs["scopes"] = scopes or cls.AUTH_SCOPES
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs
         )
 
@@ -163,7 +185,6 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint

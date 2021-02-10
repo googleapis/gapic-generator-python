@@ -175,12 +175,7 @@ def showcase_mtls_alternative_templates(session):
     )
 
 
-@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
-def showcase_unit(
-    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
-):
-    """Run the generated unit tests against the Showcase library."""
-
+def run_showcase_unit_tests(session, fail_under=100):
     session.install(
         "coverage",
         "pytest",
@@ -190,28 +185,72 @@ def showcase_unit(
         "pytest-asyncio",
     )
 
+    # Run the tests.
+    session.run(
+        "py.test",
+        "-n=auto",
+        "--quiet",
+        "--cov=google",
+        "--cov-append",
+       f"--cov-fail-under={str(fail_under)}",
+        *(session.posargs or [path.join("tests", "unit")]),
+    )
+
+
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
+def showcase_unit(
+    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
+):
+    """Run the generated unit tests against the Showcase library."""
+
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
+        # It is not possible to reach 100% coverage on the default templates
+        # Because different dependency versions must be used to exercise
+        # all branches.
+        run_showcase_unit_tests(session, fail_under=0)
 
-        # Run the tests.
-        session.run(
-            "py.test",
-            "-n=auto",
-            "--quiet",
-            "--cov=google",
-            "--cov-report=term",
-            *(session.posargs or [path.join("tests", "unit")]),
-        )
+
+@nox.session(python="3.7")
+def showcase_unit_cover(session):
+    """Check that aggregate coverage for showcase unit tests reaches 100%.
+
+    This runs the unit tests multiple times with different dependencies
+    to reach all the code paths.
+    """
+
+    with showcase_library(session, templates="DEFAULT", other_opts=()) as lib:
+        # Generate a constraints file with declared lower bounds in setup.py
+        session.chdir(lib)
+
+        # 1. Run tests at lower bound of dependencies
+        session.install("nox")
+        session.run("nox", "-s", "update_lower_bounds")
+        session.install(".", "--force-reinstall", "-c", f"constraints.txt")
+        session.install("google-auth==1.21.1")  # google-auth is a transitive dependency through google-api-core
+        run_showcase_unit_tests(session, fail_under=0)
+
+        # 2. Run the tests again with latest version of dependencies
+        session.install(".", "--upgrade", "--force-reinstall")
+        run_showcase_unit_tests(session, fail_under=0)
+
+        # Get aggregate coverage report
+        session.run("coverage", "report", "--show-missing", "--fail-under=100")
+        session.run("coverage", "erase")
 
 
 @nox.session(python=["3.7", "3.8", "3.9"])
 def showcase_unit_alternative_templates(session):
-    showcase_unit(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
+    with showcase_library(session, templates=ADS_TEMPLATES, other_opts=("old-naming",)) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
 
 
 @nox.session(python=["3.8"])
 def showcase_unit_add_iam_methods(session):
-    showcase_unit(session, other_opts=("add-iam-methods",))
+    with showcase_library(session, other_opts=("add-iam-methods",)) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
 
 
 @nox.session(python="3.8")
