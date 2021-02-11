@@ -179,6 +179,8 @@ jobs:
         exclude:
           - python: [3.6, 3.7, 3.9]
             variant: _add_iam_methods
+          - python: 3.6
+            variant: _alternative_templates
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
