@@ -1,0 +1,41 @@
+{
+    "schema": "1.0",
+    "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+    "language": "python",
+    "protoPackage": "{{ api.naming.proto_package }}",
+    "libraryPackage": "{{ '.'.join(api.naming.module_namespace+(api.naming.versioned_module_name,)) }}",
+    "services": {
+        {% for service in api.services.values()|sort(attribute='name') -%}
+        "{{ service.name }}":{
+            {% if 'grpc' in opts.transport -%}
+            "grpc": {
+                "libraryClient": "{{ service.client_name }}",
+                "rpcs": {
+                    {% for method in service.methods.values() -%}
+                    "{{ method.name }}": ["{{ method.name|snake_case }}"]{{ "," if not loop.last else "" }}
+                    {% endfor -%}{# method -#}
+                }
+            },
+            "grpcAsync": {
+                "libraryClient": "{{ service.async_client_name }}",
+                "rpcs": {
+                    {% for method in service.methods.values() -%}
+                    "{{ method.name }}": ["{{ method.name|snake_case }}"]{{ "," if not loop.last else "" }}
+                    {% endfor -%}{# method -#}
+                }
+            }{{ "," if 'rest' in opts.transport else "" -}}
+            {% endif -%}
+            {% if 'rest' in opts.transport -%}
+            "rest": {
+                "libraryClient": "{{ service.client_name }}",
+                "rpcs": {
+                    {% for method in service.methods.values() -%}
+                    "{{ method.name }}": ["{{ method.name|snake_case }}"]{{ "," if not loop.last else "" }}
+                    {% endfor -%}{# method -#}
+                }
+            }
+            {% endif -%}{# opts.transport #}
+        }{{ "," if not loop.last else "" }}
+        {% endfor -%}{# service -#}
+    }
+}
