@@ -207,7 +207,6 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
   showcase-unit-add-iam-methods:
-    strategy:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
