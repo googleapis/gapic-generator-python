@@ -5,16 +5,17 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
 {% if service.has_lro %}
-from google.api_core import operations_v1
+from google.api_core import operations_v1                   # type: ignore
 {%- endif %}
-from google.api_core import gapic_v1       # type: ignore
-from google import auth                    # type: ignore
-from google.auth import credentials        # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.api_core import gapic_v1, path_template         # type: ignore
+from google import auth                                     # type: ignore
+from google.auth import credentials                         # type: ignore
+from google.auth.transport.grpc import SslCredentials       # type: ignore
 
 import grpc  # type: ignore
+import json
 
-from google.auth.transport.requests import AuthorizedSession
+from google.auth.transport.requests import AuthorizedSession    # type: ignore
 
 {# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
 {% filter sort_lines -%}
@@ -121,9 +122,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         return self._operations_client
     {%- endif %}
     {%- for method in service.methods.values() %}
-    {%- if method.http_opt %}
+    {%- if method.http_options and not method.lro and not (method.server_streaming or method.client_streaming) %}
 
-    def {{ method.name|snake_case }}(self,
+    def _{{ method.name|snake_case }}(self,
             request: {{ method.input.ident }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.ident }}:
@@ -146,57 +147,49 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {%- endif %}
         """
 
-        {# TODO(yon-mg): refactor when implementing grpc transcoding 
-                         - parse request pb & assign body, path params
-                         - shove leftovers into query params
-                         - make sure dotted nested fields preserved
-                         - format url and send the request
-        #}
-        {%- if 'body' in method.http_opt %}
-        # Jsonify the request body
-        {%- if method.http_opt['body'] != '*' %}
-        body = {{ method.input.fields[method.http_opt['body']].type.ident }}.to_json(
-            request.{{ method.http_opt['body'] }},
-            including_default_value_fields=False
-        )
-        {%- else %}
-        body = {{ method.input.ident }}.to_json(
-            request
-        )
-        {%- endif %}
-        {%- endif %}
+        http_options = [
+        {%- for rule in method.http_options %}{
+        {%- for field, argument in rule.items() | sort %}
+            '{{ field }}':'{{ argument }}',
+        {%- endfor %}
+        },
+        {%- endfor %}]
 
-        {# TODO(yon-mg): Write helper method for handling grpc transcoding url #}
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = 'https://{host}{{ method.http_opt['url'] }}'.format(
-            host=self._host,
-            {%- for field in method.path_params %}
-            {{ field }}=request.{{ method.input.get_field(field).name }},
-            {%- endfor %}
-        )
-
-        {# TODO(yon-mg): move all query param logic out of wrappers into here to handle
-                         nested fields correctly (can't just use set of top level fields
-        #}
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {
-            {%- for field in method.query_params | sort%}
-            '{{ field|camel_case }}': request.{{ field }},
-            {%- endfor %}
+        request_kwargs = {
+            field.name:value
+            for field, value
+            in {{ method.input.ident }}.pb(request).ListFields()
         }
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ['{k}={v}'.format(k=k, v=v) for k, v in query_params.items() if v]
-        url += '?{}'.format('&'.join(query_params)).replace(' ', '+')
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+        {%- if 'body' in method.http_options[0] %}
+
+        # Jsonify the request body
+        body = {% if method.http_options[0]['body'] == '*' -%}
+            {{ method.input.ident }}.to_json(
+            {{ method.input.ident }}(transcoded_request['body']),
+        {%- else -%}
+            {{ method.input.fields[method.http_opt['body']].type.ident }}.to_json(
+            {{ method.input.fields[method.http_opt['body']].type.ident }}(transcoded_request['body']),
+        {%- endif %}
+            including_default_value_fields=False,
+            use_integers_for_enums=False
+        )
+        {%- endif %}
+
+        # Jsonify the query params
+        query_params = json.loads({{ method.input.ident }}.to_json(
+            {{ method.input.ident }}(transcoded_request['query_params']),
+            including_default_value_fields=False,
+            use_integers_for_enums=False
+        ))
 
         # Send the request
-        {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
-            url
+        response = self._session.request(
+            transcoded_request['method'],
+            self._host.join(('https://', transcoded_request['uri'])),
+            params=query_params
             {%- if 'body' in method.http_opt %},
-            json=body,
+            data=body,
             {%- endif %}
         )
 
@@ -206,8 +199,37 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
 
         # Return the response
         return {{ method.output.ident }}.from_json(response.content)
+        {%- else %}
+
+        # Returh the response
+        return {{ method.output.ident }}()
+        {%- endif %}
+    {%- else %}
+
+    def _{{ method.name|snake_case }}(self,
+            request: {{ method.input.ident }}, *,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> {{ method.output.ident }}:
+        r"""Placeholder: Unable to implement over REST
+        """
+        {%- if not method.http_options %}
+        raise RuntimeError('Cannot define a method without a valid `google.api.http` annotation.')
+        {%- elif method.lro %}
+        raise NotImplementedError('LRO over REST is not yet defined for python client.')
+        {%- elif method.server_streaming or method.client_streaming %}
+        raise NotImplementedError('Streaming over REST is not yet defined for python client')
+        {%- else %}
+        raise NotImplementedError()
         {%- endif %}
     {%- endif %}
+    {%- endfor %}
+    {%- for method in service.methods.values() %}
+
+    @property
+    def {{ method.name|snake_case }}(self) -> Callable[
+            [{{ method.input.ident }}],
+            {{ method.output.ident }}]:
+        return self._{{ method.name|snake_case }}
     {%- endfor %}
 
 

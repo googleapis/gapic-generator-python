@@ -59,7 +59,7 @@ class Generator:
         self._env.filters["wrap"] = utils.wrap
         self._env.filters["coerce_response_name"] = coerce_response_name
 
-        # Add tests to determine type of expressions stored in strings
+        # Add tests to determine FieldDescriptorProto type
         self._env.tests["str_field_pb"] = utils.is_str_field_pb
         self._env.tests["msg_field_pb"] = utils.is_msg_field_pb
 

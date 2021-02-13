@@ -30,6 +30,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import dataclasses
 import re
+import copy
 from itertools import chain
 from typing import (cast, Dict, FrozenSet, Iterable, List, Mapping,
                     ClassVar, Optional, Sequence, Set, Tuple, Union)
@@ -740,6 +741,41 @@ class Method:
         ]
 
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
+
+    @property
+    def http_options(self) -> List[Dict[str, str]]:
+        """Return a list of the http options for this method.
+
+        e.g. [{'method': 'post'
+              'uri': '/some/path'
+              'body': '*'},]
+
+        """
+        http = self.options.Extensions[annotations_pb2.http]
+        http_options = copy.deepcopy(http.additional_bindings)
+        http_options.append(http)
+        answers : List[Dict[str, str]] = []
+
+        for http_rule in http_options:
+            try:
+                method, uri = next((method, uri) for method,uri in [
+                    ('get',http_rule.get),
+                    ('put',http_rule.put),
+                    ('post',http_rule.post),
+                    ('delete',http_rule.delete),
+                    ('patch',http_rule.patch),
+                    ('custom.path',http_rule.custom.path),
+                    ] if uri
+                )
+            except StopIteration:
+                continue
+            answer : Dict[str, str] = {}
+            answer['method'] = method
+            answer['uri'] = uri
+            if http_rule.body:
+                answer['body'] = http_rule.body
+            answers.append(answer)
+        return answers
 
     @property
     def http_opt(self) -> Optional[Dict[str, str]]:
