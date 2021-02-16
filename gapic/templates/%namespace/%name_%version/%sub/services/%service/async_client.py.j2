@@ -58,7 +58,7 @@ class {{ service.async_client_name }}:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {{ service.client_name }}: The constructed client.
+            {{ service.async_client_name }}: The constructed client.
         """
         return {{ service.client_name }}.from_service_account_info.__func__({{ service.async_client_name }}, info, *args, **kwargs)
 
@@ -74,7 +74,7 @@ class {{ service.async_client_name }}:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {{ service.client_name }}: The constructed client.
+            {{ service.async_client_name }}: The constructed client.
         """
         return {{ service.client_name }}.from_service_account_file.__func__({{ service.async_client_name }}, filename, *args, **kwargs)
 
