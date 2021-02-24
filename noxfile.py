@@ -213,7 +213,7 @@ def showcase_unit(
         # 1. Run tests at lower bound of dependencies
         session.install("nox")
         session.run("nox", "-s", "update_lower_bounds")
-        session.install(".", "--force-reinstall", "-c", f"constraints.txt")
+        session.install(".", "--force-reinstall", "-c", "constraints.txt")
         # Some code paths require an older version of google-auth.
         # google-auth is a transitive dependency so it isn't in the
         # lower bound constraints file produced above.
@@ -245,7 +245,7 @@ def showcase_unit_add_iam_methods(session):
         # 1. Run tests at lower bound of dependencies
         session.install("nox")
         session.run("nox", "-s", "update_lower_bounds")
-        session.install(".", "--force-reinstall", "-c", f"constraints.txt")
+        session.install(".", "--force-reinstall", "-c", "constraints.txt")
         # Some code paths require an older version of google-auth.
         # google-auth is a transitive dependency so it isn't in the
         # lower bound constraints file produced above.

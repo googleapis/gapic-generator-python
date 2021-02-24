@@ -81,7 +81,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
-        # When custom host (api_endpoint) can be set, `scopes` must *also* be set on the
+        # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object 
         super().__init__(
             host=host,
