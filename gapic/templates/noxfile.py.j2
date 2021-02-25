@@ -13,8 +13,17 @@ import nox  # type: ignore
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
-PACKAGE_NAME = package_name = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
+PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
 
+
+nox.sessions = [
+    "unit",
+    "cover",
+    "mypy",
+    "check_lower_bounds"
+    # exclude update_lower_bounds from default
+    "docs",
+]
 
 @nox.session(python=['3.6', '3.7', '3.8', '3.9'])
 def unit(session):

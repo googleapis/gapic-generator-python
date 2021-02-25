@@ -2,6 +2,7 @@
 
 {% block content %}
 import abc
+import re
 import typing
 import packaging.version
 import pkg_resources
@@ -46,6 +47,8 @@ except AttributeError:
         _GOOGLE_AUTH_VERSION = None
 
 _API_CORE_VERSION = google.api_core.__version__
+
+_HOST_RE = re.compile("(?P<host>[^:]+)(:(?P<port>\d+))?")
 
 class {{ service.name }}Transport(abc.ABC):
     """Abstract transport class for {{ service.name }}."""
@@ -97,6 +100,15 @@ class {{ service.name }}Transport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes or self.AUTH_SCOPES
+        # If a custom API endpoint is set, set scopes to ensure the auth
+        # library does not used the self-signed JWT flow for service
+        # accounts
+        if (
+            _HOST_RE.match(host).group("host")
+            != _HOST_RE.match(self.DEFAULT_HOST).group("host")
+            and not scopes
+        ):
+            scopes = self.AUTH_SCOPES
 
         # TODO: Remove this if/else once google-auth >= 1.25.0 is required
         if _GOOGLE_AUTH_VERSION and (

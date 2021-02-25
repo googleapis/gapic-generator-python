@@ -28,7 +28,7 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
-from .base import _GOOGLE_AUTH_VERSION, _API_CORE_VERSION
+from .base import _GOOGLE_AUTH_VERSION, _API_CORE_VERSION, _HOST_RE
 
 
 class {{ service.name }}GrpcTransport({{ service.name }}Transport):
