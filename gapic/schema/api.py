@@ -28,8 +28,10 @@ from types import MappingProxyType
 
 from google.api_core import exceptions  # type: ignore
 from google.api import resource_pb2  # type: ignore
+from google.gapic.metada import gapic_metadata_pb2 # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
+from google.protobuf.json_format import MessageToJson
 
 import grpc  # type: ignore
 
@@ -391,6 +393,42 @@ class API:
                                                       (subpkg_name,),
                                                       )
         return answer
+
+    def gapic_metadata(self, options: Options) -> gapic_metadata_pb2.GapicMetadata:
+        gm = GapicMetadata(
+            schema="1.0",
+            comment="This file maps proto services/RPCs to the corresponding library clients/methods",
+            language="python",
+            protoPackage=self.naming.proto_package,
+            libraryPackage=".".join(self.naming.module_namespace + self.naming.versioned_module_name,)
+        )
+
+        for service in sorted(self.services.values(), key=lambda s: s.name):
+            service_desc = gm.get_or_create(s.name)
+            if "grpc" in self.opts.transport:
+                for transport, client_name in [
+                        ("grpc", service.client_name),
+                        ("grpcAsync", service.async_client_name)
+                ]:
+                    transport = service_desc.clients.get_or_create(transport)
+                    transport.library_client = client_name
+                    for method in sorted(service.methods.values(), key=lambda m: m.name):
+                        method_desc = transport.rpcs.get_or_create(method.name)
+                        method_desc.methods.append(to_snake_case(method.name))
+
+            if "rest" in self.opts.transport:
+                transport = service_desc.clients.get_or_create("rest")
+                transport.library_client
+                for method in sorted(service.methods.values(), key=lambda m: m.name):
+                    method_desc = transport.rpcs.get_or_create(method.name)
+                    method_desc.methods.append(to_snake_case(method.name))
+
+        return gm
+
+
+    def gapic_metadata_json(self, options: Options) -> str:
+        return MessageToJson(self.gapic_metadata(options))
+
 
     def requires_package(self, pkg: Tuple[str, ...]) -> bool:
         return any(

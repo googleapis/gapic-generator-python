@@ -22,6 +22,7 @@ import pytest
 from google.api import client_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions
+from google.gapic.metada import gapic_metadata_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
@@ -260,8 +261,8 @@ def test_proto_oneof():
                     name='Bar',
                     fields=(
                         make_field_pb2(name='imported_message', number=1,
-                                   type_name='.google.dep.ImportedMessage',
-                                   oneof_index=0),
+                                       type_name='.google.dep.ImportedMessage',
+                                       oneof_index=0),
                         make_field_pb2(
                             name='primitive', number=2, type=1, oneof_index=0),
                     ),
@@ -1287,3 +1288,190 @@ def test_map_field_name_disambiguation():
     # The same module used in the same place should have the same import alias.
     # Because there's a "mollusc" name used, the import should be disambiguated.
     assert mollusc_ident == mollusc_map_ident == "am_mollusc.Mollusc"
+
+
+def test_gapic_metadata():
+    api = api.API.build(
+        file_descriptors=[
+            descriptor_pb2.FileDescriptorProto(
+                name="cephalopod.proto",
+                package="animalia.mollusca.v1",
+                service=[
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="Squid",
+                        method=[
+                            descriptor_pb2.MethodDescriptorProto(name="Ramshorn"),
+                            descriptor_pb2.MethodDescriptorProto(name="Humboldt"),
+                            descriptor_pb2.MethodDescriptorProto(name="Giant"),
+                        ],
+                    ),
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="Octopus",
+                        method=[
+                            descriptor_pb2.MethodDescriptorProto(name="GiantPacific"),
+                            descriptor_pb2.MethodDescriptorProto(name="BlueSpot"),
+                        ]
+                    ),
+                ],
+            )
+        ]
+    )
+
+    opts = Options.build("transport=grpc")
+    expected = gapic_metadata_pb2.GapicMetadata(
+        schma="1.0",
+        comment="This file maps proto services/RPCs to the corresponding library clients/methods",
+        language="python",
+        proto_package="animalia.mollusca",
+        library_package="animalia.mollusca.v1",
+        services={
+            "Octopus": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                clients={
+                    "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="OctopusClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+                    "grpcAsync": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="AsyncOctopusClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+                }
+            ),
+            "Squid": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                clients={
+                    "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="SquidClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+                    "grpcAsync": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="AsyncSquidClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+                }
+            ),
+        }
+    )
+    actual = api.gapic_metadata(opts)
+    assert expected == actual
+    expected = MessageToJson(expected)
+    actual = api.gapic_metadata_json(opts)
+    assert expected == actual
+
+    opts = Options.build("transport=rest")
+    expected = gapic_metadata_pb2.GapicMetadata(
+        schma="1.0",
+        comment="This file maps proto services/RPCs to the corresponding library clients/methods",
+        language="python",
+        proto_package="animalia.mollusca",
+        library_package="animalia.mollusca.v1",
+        services={
+            "Octopus": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                clients={
+                    "rest": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="OctopusClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    )
+                }
+            ),
+            "Squid": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                clients={
+                    "rest": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="SquidClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+
+                }
+            ),
+        }
+    )
+    actual = api.gapic_metadata(opts)
+    assert expected == actual
+    expected = MessageToJson(expected)
+    actual = api.gapic_metadata_json(opts)
+    assert expected == actual
+
+    opts = Options.build("transport=rest+grpc")
+    expected = gapic_metadata_pb2.GapicMetadata(
+        schma="1.0",
+        comment="This file maps proto services/RPCs to the corresponding library clients/methods",
+        language="python",
+        proto_package="animalia.mollusca",
+        library_package="animalia.mollusca.v1",
+        services={
+            "Octopus": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                clients={
+                    "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="OctopusClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+                    "grpcAsync": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="AsyncOctopusClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+                    "rest": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="OctopusClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    )
+                }
+            ),
+            "Squid": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
+                clients={
+                    "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="SquidClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+                    "grpcAsync": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="AsyncSquidClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+                    "rest": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                        library_client="SquidClient",
+                        rpcs={
+                            "BlueSpot": ["blue_spot"],
+                            "GiantPacific": ["giant_pacific"],
+                        },
+                    ),
+
+                }
+            ),
+        }
+    )
+
+    actual = api.gapic_metadata(opts)
+    assert expected == actual
+    expected = MessageToJson(expected)
+    actual = api.gapic_metadata_json(opts)
+    assert expected == actual
