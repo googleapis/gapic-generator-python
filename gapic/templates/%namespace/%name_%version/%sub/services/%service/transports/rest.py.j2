@@ -88,7 +88,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             credentials=credentials,
             client_info=client_info,
         )
-        self._session = AuthorizedSession(self._credentials, default_host=cls.DEFAULT_HOST)
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         {%- if service.has_lro %}
         self._operations_client = None
         {%- endif %}
@@ -114,7 +114,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
                     credentials=self._credentials,
                     default_scopes=self.AUTH_SCOPES,
                     scopes=scopes,
-                    default_host=cls.DEFAULT_HOST,
+                    default_host=self.DEFAULT_HOST,
                     options=[
                         ("grpc.max_send_message_length", -1),
                         ("grpc.max_receive_message_length", -1),
