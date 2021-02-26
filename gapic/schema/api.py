@@ -428,7 +428,7 @@ class API:
         return gm
 
     def gapic_metadata_json(self, options: Options) -> str:
-        return MessageToJson(self.gapic_metadata(options))
+        return MessageToJson(self.gapic_metadata(options), sort_keys=True)
 
     def requires_package(self, pkg: Tuple[str, ...]) -> bool:
         return any(

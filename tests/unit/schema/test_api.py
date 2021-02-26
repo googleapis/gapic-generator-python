@@ -1396,7 +1396,7 @@ def test_gapic_metadata():
     )
     actual = api_schema.gapic_metadata(opts)
     assert expected == actual
-    expected = MessageToJson(expected)
+    expected = MessageToJson(expected, sort_keys=True)
     actual = api_schema.gapic_metadata_json(opts)
     assert expected == actual
 
@@ -1436,7 +1436,7 @@ def test_gapic_metadata():
     )
     actual = api_schema.gapic_metadata(opts)
     assert expected == actual
-    expected = MessageToJson(expected)
+    expected = MessageToJson(expected, sort_keys=True)
     actual = api_schema.gapic_metadata_json(opts)
     assert expected == actual
 
@@ -1507,6 +1507,6 @@ def test_gapic_metadata():
 
     actual = api_schema.gapic_metadata(opts)
     assert expected == actual
-    expected = MessageToJson(expected)
+    expected = MessageToJson(expected, sort_keys=True)
     actual = api_schema.gapic_metadata_json(opts)
     assert expected == actual
