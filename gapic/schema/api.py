@@ -402,7 +402,7 @@ class API:
             proto_package=self.naming.proto_package,
             library_package=".".join(
                 self.naming.module_namespace +
-                (self.naming.versioned_module_name,)
+                    (self.naming.versioned_module_name,)
             ),
         )
 
