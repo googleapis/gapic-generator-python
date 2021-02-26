@@ -408,11 +408,11 @@ class API:
         for service in sorted(self.services.values(), key=lambda s: s.name):
             service_desc = gm.services.get_or_create(service.name)
             if "grpc" in options.transport:
-                for transport, client_name in [
+                for tprt, client_name in [
                         ("grpc", service.client_name),
                         ("grpcAsync", service.async_client_name)
                 ]:
-                    transport = service_desc.clients.get_or_create(transport)
+                    transport = service_desc.clients.get_or_create(tprt)
                     transport.library_client = client_name
                     for method in sorted(service.methods.values(), key=lambda m: m.name):
                         method_desc = transport.rpcs.get_or_create(method.name)
