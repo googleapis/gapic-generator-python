@@ -83,7 +83,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         if (
             host is not None
             and cls.DEFAULT_HOST is not None
-            and host.split(":")[0] != self.DEFAULT_HOST.split(":")[0]
+            and host.split(":")[0] != cls.DEFAULT_HOST.split(":")[0]
             and not scopes
         ):
             scopes = cls.AUTH_SCOPES
