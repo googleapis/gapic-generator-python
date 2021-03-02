@@ -48,7 +48,6 @@ except AttributeError:
 
 _API_CORE_VERSION = google.api_core.__version__
 
-_HOST_RE = re.compile("(?P<host>[^:]+)(:(?P<port>\d+))?")
 
 class {{ service.name }}Transport(abc.ABC):
     """Abstract transport class for {{ service.name }}."""
@@ -104,8 +103,9 @@ class {{ service.name }}Transport(abc.ABC):
         # library does not used the self-signed JWT flow for service
         # accounts
         if (
-            _HOST_RE.match(host).group("host")
-            != _HOST_RE.match(self.DEFAULT_HOST).group("host")
+            host is not None
+            and self.DEFAULT_HOST is not None
+            and host.split(":")[0] != self.DEFAULT_HOST.split(":")[0]
             and not scopes
         ):
             scopes = self.AUTH_SCOPES

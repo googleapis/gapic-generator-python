@@ -28,7 +28,7 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
-from .base import _GOOGLE_AUTH_VERSION, _API_CORE_VERSION, _HOST_RE
+from .base import _GOOGLE_AUTH_VERSION, _API_CORE_VERSION
 from .grpc import {{ service.name }}GrpcTransport
 
 
@@ -81,8 +81,9 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         # library does not used the self-signed JWT flow for service
         # accounts
         if (
-            _HOST_RE.match(host).group("host")
-            != _HOST_RE.match(cls.DEFAULT_HOST).group("host")
+            host is not None
+            and cls.DEFAULT_HOST is not None
+            and host.split(":")[0] != self.DEFAULT_HOST.split(":")[0]
             and not scopes
         ):
             scopes = cls.AUTH_SCOPES
