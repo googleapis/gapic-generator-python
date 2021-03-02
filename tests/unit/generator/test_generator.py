@@ -121,7 +121,8 @@ def test_get_response_ignore_gapic_metadata():
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = ["gapic/gapic_metadata.json.j2"]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
-            gt.return_value = jinja2.Template("This is not something we want to see")
+            gt.return_value = jinja2.Template(
+                "This is not something we want to see")
             res = g.get_response(
                 api_schema=make_api(),
                 opts=Options.build(""),
