@@ -420,10 +420,11 @@ class API:
             if "rest" in options.transport:
                 transports.append(("rest", service.client_name))
 
+            methods = sorted(service.methods.values(), key=lambda m: m.name)
             for tprt, client_name in transports:
                 transport = service_desc.clients.get_or_create(tprt)
                 transport.library_client = client_name
-                for method in sorted(service.methods.values(), key=lambda m: m.name):
+                for method in methods:
                     method_desc = transport.rpcs.get_or_create(method.name)
                     method_desc.methods.append(to_snake_case(method.name))
 
