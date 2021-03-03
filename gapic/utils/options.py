@@ -50,7 +50,7 @@ class Options:
     OPT_FLAGS: FrozenSet[str] = frozenset((
         'add-iam-methods',      # microgenerator implementation for `reroute_to_grpc_interface`
         'lazy-import',          # requires >= 3.7
-        'metadata',             # generate gapic metadata JSON file
+        'metadata',             # generate GAPIC metadata JSON file
         'old-naming',           # TODO(dovs): Come up with a better comment
         'retry-config',         # takes a path
         'samples',              # output dir

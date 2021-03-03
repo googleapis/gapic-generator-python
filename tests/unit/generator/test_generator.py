@@ -128,7 +128,7 @@ def test_get_response_ignore_gapic_metadata():
                 opts=Options.build(""),
             )
 
-            # We don't expect any files.
+            # We don't expect any files because opts.metadata is not set.
             assert res.file == CodeGeneratorResponse().file
 
 
