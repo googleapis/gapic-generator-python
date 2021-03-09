@@ -98,8 +98,8 @@ class {{ service.name }}Transport(abc.ABC):
         # Save the credentials.
         self._credentials = credentials
 
-        # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages(client_info)
+        # Save the scopes.
+        self._scopes = scopes or self.AUTH_SCOPES
 
 
     def _prep_wrapped_messages(self, client_info):
