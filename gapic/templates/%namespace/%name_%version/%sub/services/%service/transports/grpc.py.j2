@@ -165,7 +165,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 ],
             )
 
-        # Wrap messages
+        # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
 
