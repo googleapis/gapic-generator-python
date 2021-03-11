@@ -2,8 +2,7 @@
 
 {% block content %}
 import abc
-import re
-import typing
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import packaging.version
 import pkg_resources
 
@@ -58,15 +57,15 @@ class {{ service.name }}Transport(abc.ABC):
         {%- endfor %}
     )
 
-    DEFAULT_HOST = {% if service.host %}'{{ service.host }}'{% else %}{{ None }}{% endif %}
+    DEFAULT_HOST: str = {% if service.host %}'{{ service.host }}'{% else %}{{ '' }}{% endif %}
 
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,
             credentials: credentials.Credentials = None,
-            credentials_file: typing.Optional[str] = None,
-            scopes: typing.Optional[typing.Sequence[str]] = None,
-            quota_project_id: typing.Optional[str] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            quota_project_id: Optional[str] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             **kwargs,       
             ) -> None:
@@ -97,27 +96,10 @@ class {{ service.name }}Transport(abc.ABC):
             host += ':443'
         self._host = host
 
-        # Save the scopes.
-        self._scopes = scopes or self.AUTH_SCOPES
-        # If a custom API endpoint is set, set scopes to ensure the auth
-        # library does not used the self-signed JWT flow for service
-        # accounts
-        if (
-            host is not None
-            and self.DEFAULT_HOST is not None
-            and host.split(":")[0] != self.DEFAULT_HOST.split(":")[0]
-            and not scopes
-        ):
-            scopes = self.AUTH_SCOPES
+        scopes_kwargs = self._get_scopes_kwargs(self._host, scopes)
 
-        # TODO: Remove this if/else once google-auth >= 1.25.0 is required
-        if _GOOGLE_AUTH_VERSION and (
-            packaging.version.parse(_GOOGLE_AUTH_VERSION)
-            >= packaging.version.parse("1.25.0")
-        ):
-            scopes_kwargs = {"scopes": self._scopes, "default_scopes": self.AUTH_SCOPES}
-        else:
-            scopes_kwargs = {"scopes": self._scopes}
+        # Save the scopes.
+        self._scopes = scopes_kwargs["scopes"]
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -136,6 +118,62 @@ class {{ service.name }}Transport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
+
+
+    @classmethod
+    def _get_user_scopes(cls, host: str, scopes: Optional[Sequence[str]]) -> Optional[Sequence[str]]:
+        if scopes is None:
+            # If a custom API endpoint is set, set user scopes to ensure the auth
+            # library does not used the self-signed JWT flow for service
+            # accounts.
+            if host.split(":")[0] != cls.DEFAULT_HOST.split(":")[0]:
+                scopes = cls.AUTH_SCOPES
+        
+        return scopes
+
+
+    # TODO(busunkim): These two class methods are in the base transport 
+    # to avoid duplicating code across the transport classes. These functions
+    # should be deleted once the minimum required versions of google-api-core
+    # and google-auth are increased.
+
+    # TODO: Remove this function once google-auth >= 1.25.0 is required
+    @classmethod
+    def _get_scopes_kwargs(cls, host: str, scopes: Optional[Sequence[str]]) -> Dict[str, Optional[Sequence[str]]]:
+        """Returns scopes kwargs to pass to google-auth methods depending on the google-auth version"""
+
+        scopes = cls._get_user_scopes(host, scopes)
+        scopes_kwargs = {}
+
+        if _GOOGLE_AUTH_VERSION and (
+            packaging.version.parse(_GOOGLE_AUTH_VERSION)
+            >= packaging.version.parse("1.25.0")
+        ):
+            scopes_kwargs = {"scopes": scopes, "default_scopes": cls.AUTH_SCOPES}
+        else:
+            scopes_kwargs = {"scopes": scopes or cls.AUTH_SCOPES}
+        
+        return scopes_kwargs
+
+    # TODO: Remove this function once google-api-core >= 1.26.0 is required
+    @classmethod
+    def _get_self_signed_jwt_kwargs(cls, host: str, scopes: Optional[Sequence[str]]) -> Dict[str, Union[Optional[Sequence[str]], str]]:
+        """Returns kwargs to pass to grpc_helpers.create_channel depending on the google-api-core version"""
+        scopes = cls._get_user_scopes(host, scopes)
+
+        self_signed_jwt_kwargs: Dict[str, Union[Optional[Sequence[str]], str]] = {}
+        
+        if _API_CORE_VERSION and (
+            packaging.version.parse(_API_CORE_VERSION)
+            >= packaging.version.parse("1.26.0")
+        ):
+            self_signed_jwt_kwargs["default_scopes"] = cls.AUTH_SCOPES
+            self_signed_jwt_kwargs["scopes"] = scopes
+            self_signed_jwt_kwargs["default_host"] = cls.DEFAULT_HOST
+        else:
+            self_signed_jwt_kwargs["scopes"] = scopes or cls.AUTH_SCOPES
+        
+        return self_signed_jwt_kwargs
 
 
     def _prep_wrapped_messages(self, client_info):
@@ -173,11 +211,11 @@ class {{ service.name }}Transport(abc.ABC):
     {%- for method in service.methods.values() %}
 
     @property
-    def {{ method.name|snake_case }}(self) -> typing.Callable[
+    def {{ method.name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
-            typing.Union[
+            Union[
                 {{ method.output.ident }},
-                typing.Awaitable[{{ method.output.ident }}]
+                Awaitable[{{ method.output.ident }}]
             ]]:
         raise NotImplementedError()
     {%- endfor %}
@@ -187,29 +225,29 @@ class {{ service.name }}Transport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [iam_policy.SetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+        Union[policy.Policy, Awaitable[policy.Policy]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [iam_policy.GetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+        Union[policy.Policy, Awaitable[policy.Policy]],
     ]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [iam_policy.TestIamPermissionsRequest],
-        typing.Union[
+        Union[
             iam_policy.TestIamPermissionsResponse,
-            typing.Awaitable[iam_policy.TestIamPermissionsResponse],
+            Awaitable[iam_policy.TestIamPermissionsResponse],
         ],
     ]:
         raise NotImplementedError()
