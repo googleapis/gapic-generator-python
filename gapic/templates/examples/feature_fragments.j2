@@ -27,10 +27,14 @@ There is a little, but not enough for it to be important because
 
 {% macro sample_header(sample, calling_form) %}
 
-# DO NOT EDIT! This is a generated sample ("{{ calling_form }}",  "{{ sample.id }}")
+# Generated code. DO NOT EDIT!
 #
+# Snippet for {{ sample.rpc }}
+# NOTE: This snippet has been automatically generated for illustrative purposes only.
+# It may require modifications to work in your environment.
+
 # To install the latest published package dependency, execute the following:
-#   pip3 install {{ sample.package_name }}
+#   python3 -m pip install {{ sample.package_name }}
 {% endmacro %}
 
 {% macro print_string_formatting(string_list) %}

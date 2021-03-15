@@ -880,10 +880,7 @@ def generate_sample(
 
     return sample_template.render(
         sample=sample,
-        imports=[
-            "from google import auth",
-            "from google.auth import credentials",
-        ],
+        imports=[],
         calling_form=calling_form,
         calling_form_enum=types.CallingForm,
         api=api_schema,
