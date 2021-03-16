@@ -1,28 +1,3 @@
-{#
- # Copyright (C) 2019  Google LLC
- #
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
- #
- #     http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- # limitations under the License.
- #}
-
-{#
-A careful reader may comment that there is duplication of effort
-between the python verification step and the dispatch/rendering here.
-There is a little, but not enough for it to be important because
-1) Other python artifacts (client libraries, unit tests, and so forth)
-   are generated using templates, so doing the same for generated samples is consistent.
-2) Using jinja for anything requiring real logic or data structures is a bad idea.
-#}
-
 {# response handling macros #}
 
 {% macro sample_header(sample, calling_form) %}
@@ -152,29 +127,36 @@ with open({{ attr.input_parameter }}, "rb") as f:
   {% endif %}
 {% endmacro %}
 
-{% macro render_request_setup(full_request) %}
-{% for parameter_block in full_request.request_list if parameter_block.body %}
-{% if parameter_block.pattern -%}
+
+{% macro render_client_setup(api, service) %}
+# Create a client
+client = {{ api.naming.versioned_module_name }}.{{ service.client_name }}()
+{% endmacro %}}
+
+{% macro render_request_setup(full_request, api, rpc) %}
+# Initialize request argument(s)
+{%- for parameter_block in full_request.request_list if parameter_block.body %}
+  {% if parameter_block.pattern -%}
 {# This is a resource-name patterned lookup parameter #}
-{% with formals = [] -%} 
-{% for attr in parameter_block.body -%} 
-{% do formals.append("%s=%s"|format(attr.field, attr.input_parameter or attr.value)) -%} 
-{% endfor -%} 
+{% with formals = [] -%}
+{%- for attr in parameter_block.body -%}
+{% do formals.append("%s=%s"|format(attr.field, attr.input_parameter or attr.value)) -%}
+{% endfor -%}
 {{ parameter_block.base }} = "{{parameter_block.pattern }}".format({{ formals|join(", ") }})
-{% endwith -%}  
+{% endwith -%}
 {% else -%} {# End resource name construction #}
 {{ parameter_block.base }} = {}
-{% for attr in parameter_block.body %}
+{%- for attr in parameter_block.body %}
 {{ render_request_attr(parameter_block.base, attr) }}
 {% endfor %}
 {% endif -%}
 {% endfor %}
 {% if not full_request.flattenable -%}
-request = {
-{% for parameter in full_request.request_list %}
+request = {{ api.naming.versioned_module_name }}.{{ rpc.input.ident.name }}(
+{%- for parameter in full_request.request_list %}
     '{{ parameter.base  }}': {{ parameter.base if parameter.body else parameter.single }},
 {% endfor -%}
-}
+)
 {% endif -%}
 {% endmacro %}
 
@@ -220,32 +202,35 @@ client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request
 {# Setting up the method invocation is the responsibility of the caller: #}
 {# it's just easier to set up client side streaming and other things from outside this macro. #}
 {% macro render_calling_form(method_invocation_text, calling_form, calling_form_enum, response_statements ) %}
-{% if calling_form == calling_form_enum.Request %}
+# Make the request
+{%- if calling_form == calling_form_enum.Request %}
 response = {{ method_invocation_text|trim }}
-{% for statement in response_statements %}
+
+# Handle response
+{%- for statement in response_statements %}
 {{ dispatch_statement(statement)|trim }}
 {% endfor %}
-{% elif calling_form == calling_form_enum.RequestPagedAll %}
+{%- elif calling_form == calling_form_enum.RequestPagedAll %}
 page_result = {{ method_invocation_text|trim }}
 for response in page_result:
   {% for statement in response_statements %}
     {{ dispatch_statement(statement)|trim }}
   {% endfor %}
-{% elif calling_form == calling_form_enum.RequestPaged %}
+{%- elif calling_form == calling_form_enum.RequestPaged %}
 page_result = {{ method_invocation_text|trim }}
 for page in page_result.pages():
     for response in page:
   {% for statement in response_statements %}
         {{ dispatch_statement(statement)|trim }}
   {% endfor %}
-{% elif calling_form in [calling_form_enum.RequestStreamingServer,
+{%- elif calling_form in [calling_form_enum.RequestStreamingServer,
                         calling_form_enum.RequestStreamingBidi] %}
 stream = {{ method_invocation_text|trim }}
 for response in stream:
   {% for statement in response_statements %}
     {{ dispatch_statement(statement)|trim }}
   {% endfor %}
-{% elif calling_form == calling_form_enum.LongRunningRequestPromise %}
+{%- elif calling_form == calling_form_enum.LongRunningRequestPromise %}
 operation = {{ method_invocation_text|trim }}
 
 print("Waiting for operation to complete...")

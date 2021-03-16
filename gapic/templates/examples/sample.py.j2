@@ -14,21 +14,19 @@
 from {{ api.naming.module_namespace|join(".") }} import {{ api.naming.versioned_module_name }}
 
 {# also need calling form #}
-def sample_{{ frags.render_method_name(sample.rpc)|trim -}}({{ frags.print_input_params(sample.request)|trim -}}):
+def sample_{{ frags.render_method_name(sample.rpc)|trim }}({{ frags.print_input_params(sample.request)|trim }}):
     """{{ sample.description }}"""
 
-    # Create client
-    client = {{ api.naming.versioned_module_name }}.{{ service.client_name }}()
+    {{ frags.render_client_setup(api, service)|indent }}
 
-    {# TODO: Enable detailed request setup #}
-    {# {{ frags.render_request_setup(sample.request)|indent }} #}
-{% with method_call = frags.render_method_call(sample, calling_form, calling_form_enum) %} 
-    # Make the request
-    {{ frags.render_calling_form(method_call, calling_form, calling_form_enum, sample.response, )|indent -}} 
-{% endwith %} 
+    {{ frags.render_request_setup(sample.request, api, rpc)|indent }}
+
+    {% with method_call = frags.render_method_call(sample, calling_form, calling_form_enum) %}
+    {{ frags.render_calling_form(method_call, calling_form, calling_form_enum, sample.response, )|indent -}}
+    {% endwith %}
 
 # [END {{ sample.id }}]
 
 {# TODO: Enable main block (or decide to remove main block from python sample) #}
-{# {{ frags.render_main_block(sample.rpc, sample.request) }} #} 
+{# {{ frags.render_main_block(sample.rpc, sample.request) }} #}
 {%- endblock %}

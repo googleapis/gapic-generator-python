@@ -119,7 +119,7 @@ class Generator:
         res.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL  # type: ignore
         return res
 
-    
+
     def _generate_sample_specs(self, api_schema: api.API, *, opts):
         """Given an API, generate rudimentary sample specs."""
 
@@ -129,13 +129,16 @@ class Generator:
 
         # Loop through the method list
         for service_name, service in gapic_metadata.services.items():
-            raise Exception(f"duplicate entries for {service.clients}")
-            for client_name, client in service.clients.items():
-                
+            for transport_type, client in service.clients.items():
+                sample_type = "sync"
+                if transport_type == "grpc-async":
+                    sample_type = "async"
+                    # TODO(busunkim): Enable generation of async samples
+                    continue
                 for rpc_name, method_list in client.rpcs.items():
-                    # generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}
+                    # Region Tag Format: generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}
+                    region_tag = f"generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_{sample_type}"
 
-                    region_tag = f"generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_sync"
                     spec = {
                         "sample_type": "standalone",
                         "rpc": rpc_name,
@@ -150,7 +153,7 @@ class Generator:
 
         return sample_specs
 
-        
+
 
     def _generate_samples_and_manifest(
         self, api_schema: api.API, sample_template: jinja2.Template, *, opts: Options) -> Dict:
