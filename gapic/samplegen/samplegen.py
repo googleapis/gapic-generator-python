@@ -20,14 +20,17 @@ import keyword
 import os
 import re
 import time
+import yaml
 
 from gapic import utils
 
 from gapic.samplegen_utils import types
+from gapic.samplegen_utils.utils import is_valid_sample_cfg
+from gapic.schema import api
 from gapic.schema import wrappers
 
 from collections import defaultdict, namedtuple, ChainMap as chainmap
-from typing import ChainMap, Dict, FrozenSet, List, Mapping, Optional, Tuple
+from typing import Any, ChainMap, Dict, FrozenSet, Generator, List, Mapping, Optional, Tuple, Sequence
 
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
@@ -883,6 +886,61 @@ class Validator:
         "write_file": _validate_write_file,
         "loop": _validate_loop,
     }
+
+
+def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str, Any], None, None]:
+    """Parse a handwritten sample spec"""
+
+    STANDALONE_TYPE = "standalone"
+
+    for config_fpath in sample_configs:
+        with open(config_fpath) as f:
+            configs = yaml.safe_load_all(f.read())
+
+            for cfg in configs:
+                if is_valid_sample_cfg(cfg):
+                    for spec in cfg.get("samples", []):
+                        # If unspecified, assume a sample config describes a standalone.
+                        # If sample_types are specified, standalone samples must be
+                        # explicitly enabled.
+                        if STANDALONE_TYPE in spec.get("sample_type", [STANDALONE_TYPE]):
+                            yield spec
+
+
+def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, Any], None, None]:
+    """Given an API, generate basic sample specs for each method.
+
+    Args:
+        api_schema (api.API): The schema that defines the API.
+
+    Yields:
+        Dict[str, Any]: A sample spec.
+    """
+
+    gapic_metadata = api_schema.gapic_metadata(opts)
+
+    for service_name, service in gapic_metadata.services.items():
+        for transport_type, client in service.clients.items():
+            if transport_type == "grpc-async":
+                # TODO(busunkim): Enable generation of async samples
+                continue
+            for rpc_name, method_list in client.rpcs.items():
+                # Region Tag Format:
+                # [{START|END} generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
+                region_tag = f"generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_{transport_type}"
+
+                spec = {
+                    "sample_type": "standalone",
+                    "rpc": rpc_name,
+                    "request": [],
+                    "response": {},
+                    "service": f"{api_schema.naming.proto_package}.{service_name}",
+                    "region_tag": region_tag,
+                    "description": f"Snippet for {utils.to_snake_case(rpc_name)}"
+                }
+
+                yield spec
+
 
 
 def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str:

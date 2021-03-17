@@ -138,9 +138,8 @@ class Options:
             retry=retry_cfg,
             sample_configs=tuple(
                 cfg_path
-                for cfg_path in sample_paths
-                #for s in sample_paths
-                #for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
+                for s in sample_paths
+                for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
             templates=tuple(path.expanduser(i) for i in templates),
             lazy_import=bool(opts.pop('lazy-import', False)),
