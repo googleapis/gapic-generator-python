@@ -115,7 +115,9 @@ class Address:
             return '_'.join(
                 (
                     ''.join(
-                        i[0]
+                        ''.join(
+                            [partial_name[0] for partial_name in i.split("_")]
+                        )
                         for i in self.package
                         if i != self.api_naming.version
                     ),
