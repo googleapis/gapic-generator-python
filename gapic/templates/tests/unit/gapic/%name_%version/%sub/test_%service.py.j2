@@ -7,6 +7,7 @@ import mock
 import grpc
 from grpc.experimental import aio
 import math
+import warnings
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
@@ -713,7 +714,10 @@ def test_{{ method.name|snake_case }}_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.{{ method.name|snake_case }}),
-            '__call__') as call:
+            '__call__') as call
+            {%- if method.name|snake_case == "pull" -%}
+            , warnings.catch_warnings(record=True) as warned
+            {%- endif %}:
         # Designate an appropriate return value for the call.
         {% if method.void -%}
         call.return_value = None
@@ -751,6 +755,14 @@ def test_{{ method.name|snake_case }}_flattened():
         {%- endwith %}
         {%- endfor %}
 
+        {%- if method.name|snake_case == "pull" %}
+        # Setting the deprecated return_immediately flag to True should emit a warning.
+        assert len(warned) == 1
+        assert issubclass(warned[0].category, DeprecationWarning)
+        warning_msg = str(warned[0].message)
+        assert "return_immediately" in warning_msg
+        assert "deprecated" in warning_msg
+        {%- endif %}
 
 
 def test_{{ method.name|snake_case }}_flattened_error():
@@ -778,7 +790,10 @@ async def test_{{ method.name|snake_case }}_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.{{ method.name|snake_case }}),
-            '__call__') as call:
+            '__call__') as call
+            {%- if method.name|snake_case == "pull" -%}
+            , warnings.catch_warnings(record=True) as warned
+            {%- endif %}:
         # Designate an appropriate return value for the call.
         {% if method.void -%}
         call.return_value = None
@@ -835,6 +850,15 @@ async def test_{{ method.name|snake_case }}_flattened_async():
         assert args[0].{{ method.flattened_field_to_key[field.name] }} == {{ field.mock_value }}
         {%- endwith %}
         {%- endfor %}
+
+        {%- if method.name|snake_case == "pull" %}
+        # Setting the deprecated return_immediately flag to True should emit a warning.
+        assert len(warned) == 1
+        assert issubclass(warned[0].category, DeprecationWarning)
+        warning_msg = str(warned[0].message)
+        assert "return_immediately" in warning_msg
+        assert "deprecated" in warning_msg
+        {%- endif %}
 
 
 @pytest.mark.asyncio
