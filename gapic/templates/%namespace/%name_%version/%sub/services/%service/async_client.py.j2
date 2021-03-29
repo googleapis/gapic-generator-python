@@ -5,6 +5,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
+import warnings
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions # type: ignore
@@ -238,6 +239,14 @@ class {{ service.async_client_name }}:
         if {{ field.name }}:
             request.{{ key }}.extend({{ field.name }})
         {%- endfor %}
+        {%- endif %}
+
+        {%- if method.name|snake_case == "pull" %}
+        if request.return_immediately:
+            warnings.warn(
+                "The return_immediately flag is deprecated and should be set to False.",
+                category=DeprecationWarning,
+            )
         {%- endif %}
 
         # Wrap the RPC method; this adds retry and timeout information,
