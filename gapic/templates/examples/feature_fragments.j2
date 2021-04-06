@@ -210,6 +210,8 @@ response = {{ method_invocation_text|trim }}
 {%- for statement in response_statements %}
 {{ dispatch_statement(statement)|trim }}
 {% endfor %}
+
+return response
 {%- elif calling_form == calling_form_enum.RequestPagedAll %}
 page_result = {{ method_invocation_text|trim }}
 for response in page_result:

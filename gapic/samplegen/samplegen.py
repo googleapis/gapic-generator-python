@@ -974,6 +974,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
     # Add some reasonable defaults depending on the type of the sample
     if not sample["response"] and not rpc.void:
         # "normal" samples only for now
+        # TODO(busunkim) Add support for other types of samples
         if calling_form == types.CallingForm.Request:
             sample["response"] = [{"print": ["%s", "$resp"]},]
 
