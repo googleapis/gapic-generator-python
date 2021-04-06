@@ -520,8 +520,8 @@ class Validator:
                 request_entry = base_param_to_attrs[base_param]
                 request_entry.is_resource_request = True
                 request_entry.attrs.append(
-                    AttributeRequestSetup(**r_dup)
-                )  # type: ignore
+                    AttributeRequestSetup(**r_dup) # type: ignore
+                )
 
         client_streaming_forms = {
             types.CallingForm.RequestStreamingClient,

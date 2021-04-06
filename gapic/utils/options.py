@@ -143,7 +143,7 @@ class Options:
                 for s in sample_paths
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
-            autogen_snippets=opts.pop("autogen-snippets", False),
+            autogen_snippets=bool(opts.pop("autogen-snippets", False)),
             templates=tuple(path.expanduser(i) for i in templates),
             lazy_import=bool(opts.pop('lazy-import', False)),
             old_naming=bool(opts.pop('old-naming', False)),
