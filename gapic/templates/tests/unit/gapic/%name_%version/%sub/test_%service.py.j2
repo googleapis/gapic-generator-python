@@ -17,7 +17,7 @@ from requests import Response
 from requests.sessions import Session
 {% endif %}
 
-{# Import the service itself as well as every proto module that it imports. -#}
+{# Import the service itself as well as every proto module that it imports. #}
 {% filter sort_lines %}
 from google import auth
 from google.auth import credentials
@@ -118,7 +118,9 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info(client_c
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        {% if service.host %}assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'{% endif %}
+        {% if service.host %}
+        assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
+        {% endif %}
 
 
 @pytest.mark.parametrize("client_class", [
@@ -139,7 +141,9 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file(client_c
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        {% if service.host %}assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'{% endif %}
+        {% if service.host %}
+        assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
+        {% endif %}
 
 
 def test_{{ service.client_name|snake_case }}_get_transport_class():
@@ -440,10 +444,11 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ m
         call.return_value = iter([{{ method.output.ident }}()])
         {% else %}
         call.return_value = {{ method.output.ident }}(
-          {% for field in method.output.fields.values() | rejectattr('message')%}{% if not field.oneof or field.proto3_optional %}
+          {% for field in method.output.fields.values() | rejectattr('message')%}
+          {% if not field.oneof or field.proto3_optional %}
             {{ field.name }}={{ field.mock_value }},
             {% endif %}{% endfor %}
-            {#- This is a hack to only pick one field  #}
+            {# This is a hack to only pick one field  #}
             {% for oneof_fields in method.output.oneof_fields().values() %}
             {% with field = oneof_fields[0] %}
             {{ field.name }}={{ field.mock_value }},
@@ -480,15 +485,16 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ m
     assert response.raw_page is response
     {% endif %}
     assert isinstance(response, {{ method.client_output.ident }})
-    {% for field in method.output.fields.values() | rejectattr('message') %}{% if not field.oneof or field.proto3_optional %}
-    {% if field.field_pb.type in [1, 2] %} {# Use approx eq for floats -#}
+    {% for field in method.output.fields.values() | rejectattr('message') %}
+    {% if not field.oneof or field.proto3_optional %}
+    {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
-    {% elif field.field_pb.type == 8 %} {# Use 'is' for bools #}
+    {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
     assert response.{{ field.name }} == {{ field.mock_value }}
     {% endif %}
-    {% endif %} {# end oneof/optional #}
+    {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
 
@@ -558,7 +564,7 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
                 grpc_helpers_async.FakeUnaryUnaryCall
             {%- else -%}
                 grpc_helpers_async.FakeStreamUnaryCall
-            {% endif %}({{ method.output.ident }}(
+            {%- endif -%}({{ method.output.ident }}(
             {% for field in method.output.fields.values() | rejectattr('message') %}{% if not field.oneof or field.proto3_optional %}
             {{ field.name }}={{ field.mock_value }},
             {% endif %}
@@ -592,15 +598,16 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
     assert isinstance(message, {{ method.output.ident }})
     {% else %}
     assert isinstance(response, {{ method.client_output_async.ident }})
-    {% for field in method.output.fields.values() | rejectattr('message') %}{% if not field.oneof or field.proto3_optional %}
-    {% if field.field_pb.type in [1, 2] %} {# Use approx eq for floats -#}
+    {% for field in method.output.fields.values() | rejectattr('message') %}
+    {% if not field.oneof or field.proto3_optional %}
+    {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
-    {% elif field.field_pb.type == 8 %} {# Use 'is' for bools #}
+    {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
     assert response.{{ field.name }} == {{ field.mock_value }}
     {% endif %}
-    {% endif %} {# oneof/optional #}
+    {% endif %}{# oneof/optional #}
     {% endfor %}
     {% endif %}
 
@@ -648,10 +655,10 @@ def test_{{ method.name|snake_case }}_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        '{% for field_header in method.field_headers %}
+        '{% for field_header in method.field_headers -%}
         {{ field_header }}={{ field_header }}/value
-        {% if not loop.last %}&{% endif %}
-        {% endfor %}',
+        {%- if not loop.last %}&{% endif %}
+        {%- endfor -%}',
     ) in kw['metadata']
 
 
@@ -694,10 +701,10 @@ async def test_{{ method.name|snake_case }}_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        '{% for field_header in method.field_headers %}
+        '{% for field_header in method.field_headers -%}
         {{ field_header }}={{ field_header }}/value
-        {% if not loop.last %}&{% endif %}
-        {% endfor %}',
+        {%- if not loop.last %}&{% endif %}
+        {%- endfor -%}',
     ) in kw['metadata']
 {% endif %}
 
@@ -833,7 +840,7 @@ async def test_{{ method.name|snake_case }}_flattened_async():
                 grpc_helpers_async.FakeUnaryUnaryCall
             {%- else -%}
                 grpc_helpers_async.FakeStreamUnaryCall
-            {% endif %}({{ method.output.ident }}())
+            {%- endif -%}({{ method.output.ident }}())
         {% endif %}
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -1077,9 +1084,9 @@ async def test_{{ method.name|snake_case }}_async_pages():
 def test_{{ method.name|snake_case }}_raw_page_lro():
     response = {{ method.lro.response_type.ident }}()
     assert response.raw_page is response
-{% endif %} {#- method.paged_result_field #}
+{% endif %} {# method.paged_result_field #}
 
-{% endfor %} {#- method in methods for grpc #}
+{% endfor %} {# method in methods for grpc #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport %}
 def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type={{ method.input.ident }}):
@@ -1135,9 +1142,9 @@ def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type
     {% else %}
     assert isinstance(response, {{ method.client_output.ident }})
     {% for field in method.output.fields.values() %}
-    {% if field.field_pb.type in [1, 2] %} {# Use approx eq for floats -#}
+    {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
-    {% elif field.field_pb.type == 8 %} {# Use 'is' for bools #}
+    {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
     assert response.{{ field.name }} == {{ field.mock_value }}
@@ -1339,8 +1346,8 @@ def test_{{ method.name|snake_case }}_pager():
             assert page_.raw_page.next_page_token == token
 
 
-{% endif %} {# paged methods #}
-{% endfor %} {#- method in methods for rest #}
+{% endif %}{# paged methods #}
+{% endfor %}{# method in methods for rest #}
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport(

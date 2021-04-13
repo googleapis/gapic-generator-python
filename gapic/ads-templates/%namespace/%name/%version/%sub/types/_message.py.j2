@@ -10,7 +10,7 @@ class {{ message.name }}({{ p }}.Message):
     """
     {# Iterate over nested enums. -#}
     {% for enum in message.nested_enums.values() %}
-        {% filter indent %}
+        {% filter indent(first=True) %}
             {% include '%namespace/%name/%version/%sub/types/_enum.py.j2' %}
         {% endfilter %}
     {% endfor %}
@@ -18,7 +18,7 @@ class {{ message.name }}({{ p }}.Message):
     {# Iterate over nested messages. -#}
     {% for submessage in message.nested_messages.values() %}
         {% if not submessage.map %}
-        {% with message = submessage %}{% filter indent %}
+        {% with message = submessage %}{% filter indent(first=True) %}
             {% include '%namespace/%name/%version/%sub/types/_message.py.j2' %}
         {% endfilter %}{% endwith %}
         {% endif %}
@@ -37,8 +37,8 @@ class {{ message.name }}({{ p }}.Message):
     {{ field.name }} = {{ p }}.MapField(
         {{ p }}.{{ key_field.proto_type }},
         {{ p }}.{{ value_field.proto_type }},
-        number={{ field.number }}
-    {% if value_field.enum or value_field.message %},
+        number={{ field.number }},
+    {% if value_field.enum or value_field.message %}
         {{ value_field.proto_type.lower() }}={{ value_field.type.ident.rel(message.ident) }},
     {% endif %}
     )
@@ -52,9 +52,9 @@ class {{ message.name }}({{ p }}.Message):
         {% elif field.oneof %}
         oneof='{{ field.oneof }}',
         {% endif %}
-    {% if field.enum or field.message %},
+        {% if field.enum or field.message %}
         {{ field.proto_type.lower() }}={{ field.type.ident.rel(message.ident) }},
-    {% endif %}
+        {% endif %}
     )
     {% endif %}
     {% endfor %}
