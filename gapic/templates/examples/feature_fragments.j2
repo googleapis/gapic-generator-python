@@ -31,7 +31,7 @@
       {% do input_parameters.append(request.single.input_parameter) %}
     {% endif %}
   {% endfor %}
-{{ input_parameters|join(", ") }}
+{{ input_parameters|join(", ") -}}
 {% endwith %}
 {% endmacro %}
 
@@ -114,17 +114,17 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 {# to be the correct enum from the right module, if necessary. #}
 {# Python is also responsible for verifying that each input parameter is unique,#}
 {# no parameter is a reserved keyword #}
-  {% if attr.input_parameter %}
+{% if attr.input_parameter %}
 # {{ attr.input_parameter }} = {{ attr.value }}
-  {% if attr.value_is_file %}
+{% if attr.value_is_file %}
 with open({{ attr.input_parameter }}, "rb") as f:
     {{ base_name }}["{{ attr.field }}"] = f.read()
-    {% else %}
+{% else %}
 {{ base_name }}["{{ attr.field }}"] = {{ attr.input_parameter }}
-    {% endif %}
-  {% else %}
+{% endif %}
+{% else %}
 {{ base_name }}["{{ attr.field }}"] = {{ attr.value }}
-  {% endif %}
+{% endif %}
 {% endmacro %}
 
 
@@ -169,7 +169,7 @@ request = {{ api.naming.versioned_module_name }}.{{ rpc.input.ident.name }}(
     {% for r in request if r.single %}
       {% do params.append("%s=%s"|format(r.base, r.single.value)) %}
     {% endfor %}
-{{ params|join(", ") }}
+{{ params|join(", ") -}}
   {% endwith %}
 {% endmacro %}
 
