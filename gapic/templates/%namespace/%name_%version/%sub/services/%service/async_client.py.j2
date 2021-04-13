@@ -141,7 +141,7 @@ class {{ service.async_client_name }}:
         )
 
     {% for method in service.methods.values() %}
-    {% if not method.server_streaming %}async {% endif %}def {{ method.name|snake_case }}(self,
+    {%+ if not method.server_streaming %}async {% endif %}def {{ method.name|snake_case }}(self,
             {% if not method.client_streaming %}
             request: {{ method.input.ident }} = None,
             *,
@@ -219,7 +219,7 @@ class {{ service.async_client_name }}:
         request = {{ method.input.ident }}(request)
         {% endif %} {# different request package #}
 
-        {#- Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
+        {# Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
         {% if method.flattened_fields and method.input.ident.package == method.ident.package %}
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -234,7 +234,7 @@ class {{ service.async_client_name }}:
         if {{ field.name }}:
             request.{{ key }}.update({{ field.name }})
         {% endfor %}
-        {# And list-y fields can be _extended_ -#}
+        {# And list-y fields can be _extended_ #}
         {% for key, field in method.flattened_fields.items() if field.repeated and not field.map and method.input.ident.package == method.ident.package %}
         if {{ field.name }}:
             request.{{ key }}.extend({{ field.name }})
@@ -277,8 +277,7 @@ class {{ service.async_client_name }}:
         {% endif %}
 
         # Send the request.
-        {% if not method.void %}
-        response = {% endif %}
+        {%+ if not method.void %}response = {% endif %}
         {% if not method.server_streaming %}await {% endif %}rpc(
             {% if not method.client_streaming %}
             request,

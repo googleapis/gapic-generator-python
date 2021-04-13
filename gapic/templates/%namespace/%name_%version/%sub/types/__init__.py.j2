@@ -10,7 +10,8 @@ from .{{proto.module_name }} import (
   {% for _, enum in proto.enums|dictsort %}
     {{ enum.name }},
   {% endfor %}
-){% endfor %}
+)
+{% endfor %}
 
 __all__ = (
   {% for _, proto in api.protos|dictsort if proto.file_to_generate %}
