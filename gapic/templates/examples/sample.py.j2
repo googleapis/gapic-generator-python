@@ -45,5 +45,5 @@ def sample_{{ frags.render_method_name(sample.rpc)|trim }}({{ frags.print_input_
 
 # [END {{ sample.id }}]
 
-{{ frags.render_main_block(sample.rpc, sample.request) }}
+{{ frags.render_main_block(sample.rpc, sample.request) -}}
 {% endblock %}

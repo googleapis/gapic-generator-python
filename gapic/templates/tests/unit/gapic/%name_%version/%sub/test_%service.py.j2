@@ -1503,14 +1503,8 @@ def test_{{ service.name|snake_case }}_base_transport_with_credentials_file_old_
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
-<<<<<<< HEAD
-        load_creds.assert_called_once_with("credentials.json",
-            scopes=(
-            {%- for scope in service.oauth_scopes %}
-=======
         load_creds.assert_called_once_with("credentials.json", scopes=(
             {% for scope in service.oauth_scopes %}
->>>>>>> ab9188c (fix: use trim_blocks and lstrip_blocks for jinja templates)
             '{{ scope }}',
             {% endfor %}
             ),
