@@ -1,5 +1,35 @@
 # Changelog
 
+### [0.43.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.2...v0.43.3) (2021-04-12)
+
+
+### Bug Fixes
+
+* sort subpackages in %namespace/%name/__init__.py ([#836](https://www.github.com/googleapis/gapic-generator-python/issues/836)) ([90cf882](https://www.github.com/googleapis/gapic-generator-python/commit/90cf882b20f430499f692e6b9b23497b3555e928))
+
+### [0.43.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.1...v0.43.2) (2021-03-24)
+
+
+### Bug Fixes
+
+* add certain raw imports to RESERVED_NAMES ([#824](https://www.github.com/googleapis/gapic-generator-python/issues/824)) ([04bd8aa](https://www.github.com/googleapis/gapic-generator-python/commit/04bd8aaf0fc2c2c0615105cab39dc33266b66775))
+* Update module alias to resolve naming conflict ([#820](https://www.github.com/googleapis/gapic-generator-python/issues/820)) ([f5e9f36](https://www.github.com/googleapis/gapic-generator-python/commit/f5e9f367ec6a72b4272f559a93f6fbb3d7e54b8b)), closes [#819](https://www.github.com/googleapis/gapic-generator-python/issues/819)
+
+### [0.43.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.0...v0.43.1) (2021-03-19)
+
+
+### Bug Fixes
+
+* use correct retry deadline in publisher methods ([#814](https://www.github.com/googleapis/gapic-generator-python/issues/814)) ([92a2cfc](https://www.github.com/googleapis/gapic-generator-python/commit/92a2cfc47b24c4b1a041d5bbb944d69a67a962a2))
+
+## [0.43.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.42.2...v0.43.0) (2021-03-11)
+
+
+### Features
+
+* add bazel support for gapic metadata ([#811](https://www.github.com/googleapis/gapic-generator-python/issues/811)) ([7ced24a](https://www.github.com/googleapis/gapic-generator-python/commit/7ced24a0b20cb6505587b946c03b1b038eef4b4a))
+* update templates to permit enum aliases ([#809](https://www.github.com/googleapis/gapic-generator-python/issues/809)) ([2e7ea11](https://www.github.com/googleapis/gapic-generator-python/commit/2e7ea11f80210459106f9780e5f013e2a0381d29))
+
 ### [0.42.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.42.1...v0.42.2) (2021-03-05)
 
 
