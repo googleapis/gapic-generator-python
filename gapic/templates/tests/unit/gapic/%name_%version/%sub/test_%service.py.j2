@@ -1505,32 +1505,6 @@ def test_{{ service.name|snake_case }}_base_transport_with_credentials_file_old_
         )
 
 
-@requires_google_auth_gte_1_25_0
-def test_{{ service.name|snake_case }}_base_transport_custom_host():
-    # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, 'load_credentials_from_file', autospec=True) as load_creds, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
-        Transport.return_value = None
-        load_creds.return_value = (credentials.AnonymousCredentials(), None)
-        transport = transports.{{ service.name }}Transport(
-            host="squid.clam.whelk",
-            credentials_file="credentials.json",
-            quota_project_id="octopus",
-        )
-        load_creds.assert_called_once_with("credentials.json",
-            # scopes should be set since custom endpoint was passed
-            scopes=(
-            {%- for scope in service.oauth_scopes %}
-            '{{ scope }}',
-            {%- endfor %}
-            ),
-            default_scopes=(
-            {%- for scope in service.oauth_scopes %}
-            '{{ scope }}',
-            {%- endfor %}
-            ),
-            quota_project_id="octopus",
-        )
-
 def test_{{ service.name|snake_case }}_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(auth, 'default', autospec=True) as adc, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
@@ -1588,34 +1562,6 @@ def test_{{ service.name|snake_case }}_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=(
-                {%- for scope in service.oauth_scopes %}
-                '{{ scope }}',
-                {%- endfor %}),
-            quota_project_id="octopus",
-        )
-
-
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.{{ service.name }}GrpcTransport,
-        transports.{{ service.name }}GrpcAsyncIOTransport,
-    ],
-)
-@requires_google_auth_gte_1_25_0
-def test_{{ service.name|snake_case }}_transport_auth_adc_custom_host(transport_class):
-    # If credentials and host are not provided, the transport class should use
-    # ADC credentials.
-    with mock.patch.object(auth, 'default', autospec=True) as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
-        transport_class(host="squid.clam.whelk", quota_project_id="octopus")
-        adc.assert_called_once_with(
-            # scopes should be set since a custom endpoint (host) was set
-            scopes=(
-                {%- for scope in service.oauth_scopes %}
-                '{{ scope }}',
-                {%- endfor %}),
             default_scopes=(
                 {%- for scope in service.oauth_scopes %}
                 '{{ scope }}',
