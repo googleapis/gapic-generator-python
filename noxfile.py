@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from pathlib import Path
 import os
 import tempfile
 import typing
@@ -20,6 +21,7 @@ import nox  # type: ignore
 
 from contextlib import contextmanager
 from os import path
+import shutil
 
 
 showcase_version = "0.11.0"
@@ -277,6 +279,33 @@ def showcase_mypy(
 @nox.session(python="3.8")
 def showcase_mypy_alternative_templates(session):
     showcase_mypy(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
+
+
+@nox.session(python="3.8")
+def snippetgen(session):
+    # Clone googleapis/api-common-protos
+    api_common_protos = "api-common-protos"
+    try:
+        session.run("git", "-C", api_common_protos, "pull", external=True)
+    except nox.command.CommandFailed:
+        session.run(
+            "git",
+            "clone",
+            "--single-branch",
+            f"https://github.com/googleapis/{api_common_protos}",
+            external=True,
+        )
+
+    # Install gapic-generator-python
+    session.install("-e", ".")
+
+    session.install("mock", "pytest", "pytest-asyncio")
+
+    session.run(
+        "py.test",
+        "--quiet",
+        "tests/snippetgen"
+    )
 
 
 @nox.session(python="3.8")
