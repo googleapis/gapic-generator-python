@@ -74,7 +74,7 @@ def message_factory(exp: str,
     # used to describe the field and type hierarchy,
     # e.g. "mollusc.cephalopod.coleoid"
     toks = exp.split(".")
-    messages = [DummyMessage({}, tok.upper() + "_TYPE", ident=DummyIdent(name=exp)) for tok in toks]
+    messages = [DummyMessage({}, tok.upper() + "_TYPE") for tok in toks]
     if enum:
         messages[-1] = enum
 

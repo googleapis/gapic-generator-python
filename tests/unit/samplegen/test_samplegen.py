@@ -28,8 +28,8 @@ from gapic.schema import (api, metadata, naming)
 import gapic.schema.wrappers as wrappers
 from gapic.utils import Options
 
-from common_types import (DummyApiSchema, DummyField, DummyNaming, DummyMessage, DummyService,
-                          DummyMethod, message_factory, enum_factory)
+from common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage,
+                            DummyService, DummyMethod, message_factory, enum_factory)
 from gapic.samplegen_utils import utils
 
 
@@ -89,7 +89,7 @@ def test_preprocess_sample():
         naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-" ,versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
     )
 
-    rpc = DummyMethod(input=message_factory("mollusc.squid.mantle_length"))
+    rpc = DummyMethod(input=DummyMessage(ident=DummyIdent(name="ClassifyRequest")))
 
     samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
@@ -109,7 +109,7 @@ def test_preprocess_sample():
     assert client_name == "MolluscClient"
 
     request_type = sample.get("request_type")
-    assert request_type == "mollusc.squid.mantle_length"
+    assert request_type == "ClassifyRequest"
 
 
 def test_preprocess_sample_void_method():
@@ -120,7 +120,7 @@ def test_preprocess_sample_void_method():
         naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-" ,versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
     )
 
-    rpc = DummyMethod(input=message_factory("mollusc.squid.mantle_length"), void=True)
+    rpc = DummyMethod(void=True, input=DummyMessage(ident=DummyIdent(name="ClassifyRequest")))
 
     samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
