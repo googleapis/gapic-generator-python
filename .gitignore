@@ -66,6 +66,6 @@ pylintrc.test
 # pyenv
 .python-version
 
-# Test dependency / output
+# Test dependencies and output
 api-common-protos
 tests/snippetgen/.output

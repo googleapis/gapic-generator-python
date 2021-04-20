@@ -280,15 +280,27 @@ class Validator:
         )
 
     @staticmethod
-    def preprocess_sample(sample, api_schema):
+    def preprocess_sample(sample, api_schema, rpc):
         """Modify a sample to set default or missing fields.
 
         Args:
            sample (Any): A definition for a single sample generated from parsed yaml.
            api_schema (api.API): The schema that defines the API to which the sample belongs.
+           rpc (wrappers.Method): The rpc method used in the sample.
         """
         sample["package_name"] = api_schema.naming.warehouse_package_name
-        sample.setdefault("response", [{"print": ["%s", "$resp"]}])
+        sample["module_name"] = api_schema.naming.versioned_module_name
+        sample["module_namespace"] = api_schema.naming.module_namespace
+
+        sample["client_name"] = api_schema.services[sample["service"]].client_name
+        # the type of the request object passed to the rpc e.g, `ListRequest`
+        sample["request_type"] = rpc.input.ident.name
+
+        # If no response was specified in the config
+        # Add reasonable defaults depending on the type of the sample
+        # TODO(busunkim) Add defaults for other types of samples
+        if not rpc.void:
+            sample.setdefault("response", [{"print": ["%s", "$resp"]}])
 
     @utils.cached_property
     def flattenable_fields(self) -> FrozenSet[str]:
@@ -898,13 +910,15 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
             configs = yaml.safe_load_all(f.read())
 
             for cfg in configs:
-                if is_valid_sample_cfg(cfg):
-                    for spec in cfg.get("samples", []):
-                        # If unspecified, assume a sample config describes a standalone.
-                        # If sample_types are specified, standalone samples must be
-                        # explicitly enabled.
-                        if STANDALONE_TYPE in spec.get("sample_type", [STANDALONE_TYPE]):
-                            yield spec
+                valid = is_valid_sample_cfg(cfg)
+                if not valid:
+                    raise types.InvalidConfig("Sample config is invalid", valid)
+                for spec in cfg.get("samples", []):
+                    # If unspecified, assume a sample config describes a standalone.
+                    # If sample_types are specified, standalone samples must be
+                    # explicitly enabled.
+                    if STANDALONE_TYPE in spec.get("sample_type", [STANDALONE_TYPE]):
+                        yield spec
 
 
 def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, Any], None, None]:
@@ -928,12 +942,11 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 # Region Tag Format:
                 # [{START|END} generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
                 region_tag = f"generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_{transport_type}"
-
                 spec = {
                     "sample_type": "standalone",
                     "rpc": rpc_name,
                     "request": [],
-                    "response": {},
+                    # response is populated in `preprocess_sample`
                     "service": f"{api_schema.naming.proto_package}.{service_name}",
                     "region_tag": region_tag,
                     "description": f"Snippet for {utils.to_snake_case(rpc_name)}"
@@ -970,18 +983,10 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
 
     calling_form = types.CallingForm.method_default(rpc)
 
-    # If no response was specified in the config
-    # Add some reasonable defaults depending on the type of the sample
-    if not sample["response"] and not rpc.void:
-        # "normal" samples only for now
-        # TODO(busunkim) Add support for other types of samples
-        if calling_form == types.CallingForm.Request:
-            sample["response"] = [{"print": ["%s", "$resp"]},]
-
     v = Validator(rpc)
-    # Tweak some small aspects of the sample to set sane defaults for optional
+    # Tweak some small aspects of the sample to set defaults for optional
     # fields, add fields that are required for the template, and so forth.
-    v.preprocess_sample(sample, api_schema)
+    v.preprocess_sample(sample, api_schema, rpc)
     sample["request"] = v.validate_and_transform_request(
         calling_form, sample["request"]
     )
@@ -992,7 +997,6 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
         imports=[],
         calling_form=calling_form,
         calling_form_enum=types.CallingForm,
-        api=api_schema,
-        service=service,
-        rpc=rpc,
+        trim_blocks=True,
+        lstrip_blocks=True,
     )

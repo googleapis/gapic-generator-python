@@ -15,6 +15,7 @@
 import yaml
 import pytest
 
+from textwrap import dedent
 from typing import (TypeVar, Sequence)
 from collections import (OrderedDict, namedtuple)
 from google.api import resource_pb2
@@ -25,8 +26,9 @@ import gapic.samplegen_utils.types as types
 import gapic.samplegen_utils.yaml as gapic_yaml
 from gapic.schema import (api, metadata, naming)
 import gapic.schema.wrappers as wrappers
+from gapic.utils import Options
 
-from common_types import (DummyApiSchema, DummyField, DummyMessage,
+from common_types import (DummyApiSchema, DummyField, DummyNaming, DummyMessage, DummyService,
                           DummyMethod, message_factory, enum_factory)
 from gapic.samplegen_utils import utils
 
@@ -81,21 +83,48 @@ def test_define_redefinition():
 
 def test_preprocess_sample():
     # Verify that the default response is added.
-    sample = {}
-    api_schema = api.API(
-        naming.NewNaming(
-            namespace=("mollusc", "cephalopod", "teuthida")
-        ),
-        all_protos={},
+    sample = {"service": "Mollusc", "rpc": "Classify"}
+    api_schema = DummyApiSchema(
+        services={"Mollusc": DummyService(methods={}, client_name="MolluscClient")},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-" ,versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
     )
 
-    samplegen.Validator.preprocess_sample(sample, api_schema)
+    rpc = DummyMethod(input=message_factory("mollusc.squid.mantle_length"))
+
+    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
     response = sample.get("response")
     assert response == [{"print": ["%s", "$resp"]}]
 
     package_name = sample.get("package_name")
     assert package_name == "mollusc-cephalopod-teuthida-"
+
+    module_name = sample.get("module_name")
+    assert module_name == "teuthida_v1"
+
+    module_namespace = sample.get("module_namespace")
+    assert module_namespace == "mollusc.cephalopod"
+
+    client_name = sample.get("client_name")
+    assert client_name == "MolluscClient"
+
+    request_type = sample.get("request_type")
+    assert request_type == "mollusc.squid.mantle_length"
+
+
+def test_preprocess_sample_void_method():
+    # Verify no response is added for a void method
+    sample = {"service": "Mollusc", "rpc": "Classify"}
+    api_schema = DummyApiSchema(
+        services={"Mollusc": DummyService(methods={}, client_name="MolluscClient")},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-" ,versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+    )
+
+    rpc = DummyMethod(input=message_factory("mollusc.squid.mantle_length"), void=True)
+
+    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
+
+    assert "response" not in sample
 
 
 def test_define_input_param():
@@ -1819,6 +1848,66 @@ def test_validate_request_non_terminal_primitive_field():
     with pytest.raises(types.NonTerminalPrimitiveOrEnum):
         v.validate_and_transform_request(types.CallingForm.Request,
                                          request)
+
+def test_parse_invalid_handwritten_spec(fs):
+    fpath = "sampledir/sample.yaml"
+    fs.create_file(
+        fpath,
+        # spec is missing type
+        contents=dedent(
+            """
+            ---
+            schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            """
+        ),
+    )
+
+    with pytest.raises(types.InvalidConfig):
+        list(samplegen.parse_handwritten_specs(sample_configs=[fpath]))
+
+def test_generate_sample_spec_basic():
+    api_schema = api.API.build(
+        file_descriptors=[
+            descriptor_pb2.FileDescriptorProto(
+                name="cephalopod.proto",
+                package="animalia.mollusca.v1",
+                message_type=[
+                    descriptor_pb2.DescriptorProto(
+                        name="MolluscRequest",
+                    ),
+                    descriptor_pb2.DescriptorProto(
+                        name="Mollusc",
+                    ),
+                ],
+                service=[
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="Squid",
+                        method=[
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Ramshorn",
+                                input_type="animalia.mollusca.v1.MolluscRequest",
+                                output_type="animalia.mollusca.v1.Mollusc",
+                            ),
+                        ],
+                    ),
+                ],
+            )
+        ]
+    )
+    opts = Options.build("transport=grpc")
+    specs = list(samplegen.generate_sample_specs(api_schema, opts=opts))
+    assert len(specs) == 1
+
+    assert specs[0] == {
+        "sample_type": "standalone",
+        "rpc": "Ramshorn",
+        "request": [],
+        "service": "animalia.mollusca.v1.Squid",
+        "region_tag": "generated_mollusca_v1_Squid_Ramshorn_grpc",
+        "description": "Snippet for ramshorn"
+    }
 
 
 def make_message(name: str, package: str = 'animalia.mollusca.v1', module: str = 'cephalopoda',
