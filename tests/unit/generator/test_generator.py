@@ -451,6 +451,9 @@ def test_samplegen_config_to_output_files(
                 name="samples/generated_samples/squid_sample.py", content="\n",),
             CodeGeneratorResponse.File(
                 name="samples/generated_samples/clam_sample.py", content="\n",),
+            # TODO(busunkim): Re-enable manifest generation once metadata
+            # format has been formalized.
+            # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
             # CodeGeneratorResponse.File(
             #     name="samples/generated_samples/mollusc.v6.python.21120601.131313.manifest.yaml",
             #     content=dedent(
@@ -566,6 +569,9 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
             ),
             CodeGeneratorResponse.File(name="samples/generated_samples/157884ee.py",
                                        content="\n",),
+            # TODO(busunkim): Re-enable manifest generation once metadata
+            # format has been formalized.
+            # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
             # CodeGeneratorResponse.File(
             #     name="samples/generated_samples/mollusc.v6.python.21120601.131313.manifest.yaml",
             #     content=dedent(
@@ -705,6 +711,9 @@ def test_dont_generate_in_code_samples(mock_gmtime, mock_generate_sample, fs):
                 name="samples/generated_samples/whelk_sample.py", content="\n",),
             CodeGeneratorResponse.File(
                 name="samples/generated_samples/octopus_sample.py", content="\n",),
+            # TODO(busunkim): Re-enable manifest generation once metadata
+            # format has been formalized.
+            # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
             # CodeGeneratorResponse.File(
             #     name="samples/generated_samples/mollusc.v6.python.21120601.131313.manifest.yaml",
             #     content=dedent(

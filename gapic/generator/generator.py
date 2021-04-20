@@ -197,22 +197,23 @@ class Generator:
         }
 
         # TODO(busunkim): Re-enable manifest generation once metadata
-        # format has been formalized
-        # Format of output metadata is still under discussion
+        # format has been formalized.
+        # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
+        #
         # if output_files:
 
-        #     manifest_fname, manifest_doc = manifest.generate(
-        #         (
-        #             (fname, spec)
-        #             for fname, (spec, _) in fpath_to_spec_and_rendered.items()
-        #         ),
-        #         api_schema,
-        #     )
+        # manifest_fname, manifest_doc = manifest.generate(
+        #     (
+        #         (fname, spec)
+        #         for fname, (spec, _) in fpath_to_spec_and_rendered.items()
+        #     ),
+        #     api_schema,
+        # )
 
-        #     manifest_fname = os.path.join(out_dir, manifest_fname)
-        #     output_files[manifest_fname] = CodeGeneratorResponse.File(
-        #         content=manifest_doc.render(), name=manifest_fname
-        #     )
+        # manifest_fname = os.path.join(out_dir, manifest_fname)
+        # output_files[manifest_fname] = CodeGeneratorResponse.File(
+        #     content=manifest_doc.render(), name=manifest_fname
+        # )
 
         return output_files
 
