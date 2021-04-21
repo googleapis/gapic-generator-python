@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 from pathlib import Path
 import os
+import sys
 import tempfile
 import typing
 import nox  # type: ignore
@@ -76,6 +77,9 @@ def showcase_library(
     # Install gapic-generator-python
     session.install("-e", ".")
 
+    # Install grpcio-tools for protoc
+    session.install("grpcio-tools")
+
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
         # Download the Showcase descriptor.
@@ -98,7 +102,9 @@ def showcase_library(
         opts = "--python_gapic_opt="
         opts += ",".join(other_opts + (f"{template_opt}",))
         cmd_tup = (
-            f"protoc",
+            sys.executable,
+            "-m",
+            "grpc_tools.protoc",
             f"--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             opts,
@@ -283,7 +289,8 @@ def showcase_mypy_alternative_templates(session):
 
 @nox.session(python="3.8")
 def snippetgen(session):
-    # Clone googleapis/api-common-protos
+    # Clone googleapis/api-common-protos which are referenced by the snippet
+    # protos
     api_common_protos = "api-common-protos"
     try:
         session.run("git", "-C", api_common_protos, "pull", external=True)
@@ -299,7 +306,7 @@ def snippetgen(session):
     # Install gapic-generator-python
     session.install("-e", ".")
 
-    session.install("mock", "pytest", "pytest-asyncio")
+    session.install("grpcio-tools", "mock", "pytest", "pytest-asyncio")
 
     session.run(
         "py.test",

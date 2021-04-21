@@ -13,28 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-
-import pytest
 from pathlib import Path
 import shutil
-
+import subprocess
+import sys
 import tempfile
 
-import subprocess
+import pytest
 
 
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
 REPO_ROOT = CURRENT_DIRECTORY.parent.parent
 
 GOLDEN_SNIPPETS = CURRENT_DIRECTORY / "goldens"
-GENERATED_SNIPPETS = CURRENT_DIRECTORY / ".output"
+GENERATED_SNIPPETS = CURRENT_DIRECTORY / ".test_output"
 
 
 def setup_module(module):
-    """Run protoc on modules and copy the output samples into .output"""
+    """Run protoc on modules and copy the output samples into .test_output"""
 
-    # Delete any existing content in .output
+    # Delete any existing content in .test_output
     # We intentionally preserve this directory between test runs to make
     # it easier to inspect generated samples.
     shutil.rmtree(GENERATED_SNIPPETS, ignore_errors=True)
@@ -46,7 +44,9 @@ def setup_module(module):
         # Write out a client library and samples
         subprocess.check_output(
             [
-                f"protoc",
+                sys.executable,
+                "-m",
+                "grpc_tools.protoc",
                 f"--experimental_allow_proto3_optional",
                 "--python_gapic_opt=autogen-snippets",
                 f"--proto_path={CURRENT_DIRECTORY}",
@@ -60,6 +60,15 @@ def setup_module(module):
         generated_samples = Path(tmp_dir) / "samples" / "generated_samples"
 
         shutil.copytree(generated_samples, GENERATED_SNIPPETS)
+
+
+def test_file_existence():
+    # The golden directory and .test_output directory
+    # should have exactly the same number of entries
+    golden_files = [p.name for p in GOLDEN_SNIPPETS.glob("*.py")]
+    test_output_files = [p.name for p in GENERATED_SNIPPETS.glob("*.py")]
+
+    assert golden_files == test_output_files
 
 
 def test_goldens():

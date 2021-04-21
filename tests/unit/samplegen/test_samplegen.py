@@ -1249,7 +1249,8 @@ def test_regular_response_type():
 def test_paged_response_type():
     OutputType = TypeVar("OutputType")
     PagedType = TypeVar("PagedType")
-    method = DummyMethod(output=OutputType, paged_result_field=PagedType)
+    PagedField = DummyField(message=PagedType)
+    method = DummyMethod(output=OutputType, paged_result_field=PagedField)
 
     v = samplegen.Validator(method)
     assert v.var_field("$resp").message == PagedType

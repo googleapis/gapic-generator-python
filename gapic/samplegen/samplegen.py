@@ -256,7 +256,7 @@ class Validator:
         self.request_type_ = method.input
         response_type = method.output
         if method.paged_result_field:
-            response_type = method.paged_result_field
+            response_type = method.paged_result_field.message
         elif method.lro:
             response_type = method.lro.response_type
 
@@ -280,7 +280,7 @@ class Validator:
         )
 
     @staticmethod
-    def preprocess_sample(sample, api_schema, rpc):
+    def preprocess_sample(sample, api_schema: api.API, rpc: wrappers.Method):
         """Modify a sample to set default or missing fields.
 
         Args:
@@ -298,7 +298,6 @@ class Validator:
 
         # If no response was specified in the config
         # Add reasonable defaults depending on the type of the sample
-        # TODO(busunkim) Add defaults for other types of samples
         if not rpc.void:
             sample.setdefault("response", [{"print": ["%s", "$resp"]}])
 
@@ -626,7 +625,11 @@ class Validator:
                 bool(match.groupdict()["index"]),
                 bool(match.groupdict()["key"]),
             )
+            # NOTE(busunkim): In this basic case, name is `$resp`
+            # and the field retrieved is the MockField with
+            # message = ResponseType
             field = scope.get(name)
+
             if not field:
                 exception_class = (
                     types.BadAttributeLookup
@@ -651,8 +654,13 @@ class Validator:
                     )
                 )
 
+            # NOTE(busunkim): Message is `class Field`, it should be
+            # `class MessageType` so it has `fields` attributes
+            # `field` is type `MockField`
             message = field.message
+
             scope = dict(message.fields) if message else {}
+
             # Can only map message types, not enums
             if mapped:
                 # See https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto#L496
