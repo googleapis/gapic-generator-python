@@ -135,7 +135,11 @@ client = {{ module_name }}.{{ client_name }}()
 {% macro render_request_setup(full_request, module_name, request_type) %}
 # Initialize request argument(s)
 {% for parameter_block in full_request.request_list if parameter_block.body %}
+<<<<<<< HEAD
   {% if parameter_block.pattern %}
+=======
+{% if parameter_block.pattern %}
+>>>>>>> master
 {# This is a resource-name patterned lookup parameter #}
 {% with formals = [] %}
 {% for attr in parameter_block.body %}
@@ -151,16 +155,27 @@ client = {{ module_name }}.{{ client_name }}()
 {% endif %}
 {% endfor %}
 {% if not full_request.flattenable %}
+<<<<<<< HEAD
 request = {{ module_name }}.{{ request_type }}(
 {% for parameter in full_request.request_list %}
     {{ parameter.base }}={{ parameter.base if parameter.body else parameter.single }},
 {% endfor %}
 )
+=======
+request = {
+{% for parameter in full_request.request_list %}
+    '{{ parameter.base  }}': {{ parameter.base if parameter.body else parameter.single }},
+{% endfor %}}
+>>>>>>> master
 {% endif %}
 {% endmacro %}
 
 {% macro render_request_params(request) %}
+<<<<<<< HEAD
   {# Provide the top level parameters last and as keyword params #}
+=======
+{# Provide the top level parameters last and as keyword params #}
+>>>>>>> master
   {% with params = [] %}
     {% for r in request if r.body %}
       {% do params.append(r.base) %}
@@ -173,13 +188,21 @@ request = {{ module_name }}.{{ request_type }}(
 {% endmacro %}
 
 {% macro render_request_params_unary(request) %}
+<<<<<<< HEAD
   {# Provide the top level parameters last and as keyword params #}
+=======
+{# Provide the top level parameters last and as keyword params #}
+>>>>>>> master
   {% if request.flattenable %}
   {% with params = [] %}
     {% for r in request.request_list %}
       {% do params.append("%s=%s"|format(r.base, r.single.value if r.single else r.base)) %}
     {% endfor %}
+<<<<<<< HEAD
 {{ params|join(", ") -}}
+=======
+{{ params|join(", ") }}
+>>>>>>> master
   {% endwith %}
   {% else %}
 request=request
