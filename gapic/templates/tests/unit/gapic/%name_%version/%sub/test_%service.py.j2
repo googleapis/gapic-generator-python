@@ -1621,7 +1621,7 @@ def test_{{ service.name|snake_case }}_transport_create_channel(transport_class,
             scopes=["1", "2"]
         )
 
-        {% with host = (service.host|default('localhost', true)) -%}
+        {% with host = (service.host|default('localhost', true)) %}
         create_channel.assert_called_with(
             "{{ host }}",
             credentials=creds,
@@ -1660,7 +1660,7 @@ def test_{{ service.name|snake_case }}_transport_create_channel_old_api_core(tra
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus")
 
-        {% with host = (service.host|default('localhost', true)) -%}
+        {% with host = (service.host|default('localhost', true)) %}
         create_channel.assert_called_with(
             "{{ host }}",
             credentials=creds,
@@ -1695,7 +1695,7 @@ def test_{{ service.name|snake_case }}_transport_create_channel_user_scopes(tran
     ) as create_channel:
         creds = credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
-        {% with host = (service.host|default('localhost', true)) -%}
+        {% with host = (service.host|default('localhost', true)) %}
 
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
