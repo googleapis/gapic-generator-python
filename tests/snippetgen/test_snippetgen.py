@@ -44,7 +44,7 @@ def setup_module(module):
         # Write out a client library and samples
         subprocess.check_output(
             [
-                sys.executable,
+                "python",
                 "-m",
                 "grpc_tools.protoc",
                 f"--experimental_allow_proto3_optional",

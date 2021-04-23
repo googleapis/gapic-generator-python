@@ -102,7 +102,7 @@ def showcase_library(
         opts = "--python_gapic_opt="
         opts += ",".join(other_opts + (f"{template_opt}",))
         cmd_tup = (
-            sys.executable,
+            "python",
             "-m",
             "grpc_tools.protoc",
             f"--experimental_allow_proto3_optional",
@@ -213,11 +213,11 @@ def showcase_unit(
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
-    
+
         # Unit tests are run twice with different dependencies to exercise
         # all code paths.
         # TODO(busunkim): remove when default templates require google-auth>=1.25.0
-        
+
         # 1. Run tests at lower bound of dependencies
         session.install("nox")
         session.run("nox", "-s", "update_lower_bounds")
@@ -225,7 +225,7 @@ def showcase_unit(
         # Some code paths require an older version of google-auth.
         # google-auth is a transitive dependency so it isn't in the
         # lower bound constraints file produced above.
-        session.install("google-auth==1.21.1")  
+        session.install("google-auth==1.21.1")
         run_showcase_unit_tests(session, fail_under=0)
 
         # 2. Run the tests again with latest version of dependencies
@@ -249,7 +249,7 @@ def showcase_unit_add_iam_methods(session):
         # Unit tests are run twice with different dependencies to exercise
         # all code paths.
         # TODO(busunkim): remove when default templates require google-auth>=1.25.0
-        
+
         # 1. Run tests at lower bound of dependencies
         session.install("nox")
         session.run("nox", "-s", "update_lower_bounds")
@@ -257,7 +257,7 @@ def showcase_unit_add_iam_methods(session):
         # Some code paths require an older version of google-auth.
         # google-auth is a transitive dependency so it isn't in the
         # lower bound constraints file produced above.
-        session.install("google-auth==1.21.1")  
+        session.install("google-auth==1.21.1")
         run_showcase_unit_tests(session, fail_under=0)
 
         # 2. Run the tests again with latest version of dependencies
