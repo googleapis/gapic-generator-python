@@ -36,9 +36,11 @@ class DummyMethod:
     server_streaming: bool = False
     flattened_fields: Dict[str, Any] = dataclasses.field(default_factory=dict)
 
+
 DummyIdent = namedtuple("DummyIdent", ["name"])
 
-DummyMessage = namedtuple("DummyMessage", ["fields", "type", "options", "ident"])
+DummyMessage = namedtuple(
+    "DummyMessage", ["fields", "type", "options", "ident"])
 DummyMessage.__new__.__defaults__ = (False,) * len(DummyMessage._fields)
 
 DummyField = namedtuple("DummyField",

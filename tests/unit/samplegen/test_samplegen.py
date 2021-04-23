@@ -29,7 +29,7 @@ import gapic.schema.wrappers as wrappers
 from gapic.utils import Options
 
 from common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage,
-                            DummyService, DummyMethod, message_factory, enum_factory)
+                          DummyService, DummyMethod, message_factory, enum_factory)
 from gapic.samplegen_utils import utils
 
 
@@ -85,11 +85,14 @@ def test_preprocess_sample():
     # Verify that the default response is added.
     sample = {"service": "Mollusc", "rpc": "Classify"}
     api_schema = DummyApiSchema(
-        services={"Mollusc": DummyService(methods={}, client_name="MolluscClient")},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-" ,versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        services={"Mollusc": DummyService(
+            methods={}, client_name="MolluscClient")},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
     )
 
-    rpc = DummyMethod(input=DummyMessage(ident=DummyIdent(name="ClassifyRequest")))
+    rpc = DummyMethod(input=DummyMessage(
+        ident=DummyIdent(name="ClassifyRequest")))
 
     samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
@@ -116,11 +119,14 @@ def test_preprocess_sample_void_method():
     # Verify no response is added for a void method
     sample = {"service": "Mollusc", "rpc": "Classify"}
     api_schema = DummyApiSchema(
-        services={"Mollusc": DummyService(methods={}, client_name="MolluscClient")},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-" ,versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        services={"Mollusc": DummyService(
+            methods={}, client_name="MolluscClient")},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
     )
 
-    rpc = DummyMethod(void=True, input=DummyMessage(ident=DummyIdent(name="ClassifyRequest")))
+    rpc = DummyMethod(void=True, input=DummyMessage(
+        ident=DummyIdent(name="ClassifyRequest")))
 
     samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
@@ -1850,6 +1856,7 @@ def test_validate_request_non_terminal_primitive_field():
         v.validate_and_transform_request(types.CallingForm.Request,
                                          request)
 
+
 def test_parse_invalid_handwritten_spec(fs):
     fpath = "sampledir/sample.yaml"
     fs.create_file(
@@ -1867,6 +1874,7 @@ def test_parse_invalid_handwritten_spec(fs):
 
     with pytest.raises(types.InvalidConfig):
         list(samplegen.parse_handwritten_specs(sample_configs=[fpath]))
+
 
 def test_generate_sample_spec_basic():
     api_schema = api.API.build(

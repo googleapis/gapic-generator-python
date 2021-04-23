@@ -488,12 +488,12 @@ def test_samplegen_config_to_output_files(
 
 
 @mock.patch(
-    "gapic.samplegen.samplegen.generate_sample_specs", return_value = []
+    "gapic.samplegen.samplegen.generate_sample_specs", return_value=[]
 )
 @mock.patch(
     "gapic.samplegen.samplegen.generate_sample", return_value="",
 )
-def test_generate_autogen_samples( mock_generate_sample, mock_generate_specs):
+def test_generate_autogen_samples(mock_generate_sample, mock_generate_specs):
     opts = Options.build("autogen-snippets")
     g = generator.Generator(opts)
     # Need to have the sample template visible to the generator.

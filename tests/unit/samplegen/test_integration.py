@@ -50,6 +50,7 @@ def golden_snippet(filename: str) -> str:
     snippet_path = Path(__file__).parent / "golden_snippets" / filename
     return snippet_path.read_text()
 
+
 def test_generate_sample_basic():
     # Note: the sample integration tests are needfully large
     # and difficult to eyeball parse. They are intended to be integration tests

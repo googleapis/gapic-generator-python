@@ -212,7 +212,8 @@ class RequestEntry:
     Deliberatly NOT frozen: is_resource_request is mutable on purpose."""
 
     is_resource_request: bool = False
-    attrs: List[AttributeRequestSetup] = dataclasses.field(default_factory=list)
+    attrs: List[AttributeRequestSetup] = dataclasses.field(
+        default_factory=list)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -464,7 +465,8 @@ class Validator:
                                      construction.
 
         """
-        base_param_to_attrs: Dict[str, RequestEntry] = defaultdict(RequestEntry)
+        base_param_to_attrs: Dict[str,
+            RequestEntry] = defaultdict(RequestEntry)
         for r in request:
             r_dup = dict(r)
             val = r_dup.get("value")
@@ -491,7 +493,8 @@ class Validator:
             if input_parameter:
                 self._handle_lvalue(
                     input_parameter,
-                    wrappers.Field(field_pb=descriptor_pb2.FieldDescriptorProto()),
+                    wrappers.Field(
+                        field_pb=descriptor_pb2.FieldDescriptorProto()),
                 )
 
             # The percentage sign is used for setting up resource based requests
@@ -512,7 +515,7 @@ class Validator:
                 # It's a resource based request.
                 base_param, resource_attr = (
                     field[:percent_idx],
-                    field[percent_idx + 1 :],
+                    field[percent_idx + 1:],
                 )
                 request_entry = base_param_to_attrs.get(base_param)
                 if request_entry and not request_entry.is_resource_request:
@@ -531,7 +534,7 @@ class Validator:
                 request_entry = base_param_to_attrs[base_param]
                 request_entry.is_resource_request = True
                 request_entry.attrs.append(
-                    AttributeRequestSetup(**r_dup) # type: ignore
+                    AttributeRequestSetup(**r_dup)  # type: ignore
                 )
 
         client_streaming_forms = {
@@ -580,7 +583,8 @@ class Validator:
 
         for statement in response:
             if len(statement) != 1:
-                raise types.InvalidStatement("Invalid statement: {}".format(statement))
+                raise types.InvalidStatement(
+                    "Invalid statement: {}".format(statement))
 
             keyword, body = next(iter(statement.items()))
             validater = self.STATEMENT_DISPATCH_TABLE.get(keyword)
@@ -658,7 +662,8 @@ class Validator:
                 # See https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto#L496
                 # for a better understanding of how map attributes are handled in protobuf
                 if not message or not message.options.map_field:
-                    raise types.BadAttributeLookup(f"Badly formed mapped field: {base}")
+                    raise types.BadAttributeLookup(
+                        f"Badly formed mapped field: {base}")
 
                 value_field = message.fields.get("value")
                 if not value_field:
@@ -685,7 +690,7 @@ class Validator:
                     f"Non-terminal attribute is not a message: {base}"
                 )
 
-            return validate_recursively(expression[first_dot + 1 :], scope, depth + 1)
+            return validate_recursively(expression[first_dot + 1:], scope, depth + 1)
 
         return validate_recursively(exp, self.var_defs_)
 
@@ -697,13 +702,15 @@ class Validator:
         """
         if lval in RESERVED_WORDS:
             raise types.ReservedVariableName(
-                "Tried to define a variable with reserved name: {}".format(lval)
+                "Tried to define a variable with reserved name: {}".format(
+                    lval)
             )
 
         # Even though it's valid python to reassign variables to any rvalue,
         # the samplegen spec prohibits this.
         if lval in self.var_defs_:
-            raise types.RedefinedVariable("Tried to redefine variable: {}".format(lval))
+            raise types.RedefinedVariable(
+                "Tried to redefine variable: {}".format(lval))
 
         self.var_defs_[lval] = type_
 
@@ -863,7 +870,8 @@ class Validator:
             segments -= {self.KEY_KWORD, self.VAL_KWORD}
             if segments:
                 raise types.BadLoop(
-                    "Unexpected keywords in loop statement: {}".format(segments)
+                    "Unexpected keywords in loop statement: {}".format(
+                        segments)
                 )
 
             map_field = self.validate_expression(loop[self.MAP_KWORD])
@@ -912,7 +920,8 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
             for cfg in configs:
                 valid = is_valid_sample_cfg(cfg)
                 if not valid:
-                    raise types.InvalidConfig("Sample config is invalid", valid)
+                    raise types.InvalidConfig(
+                        "Sample config is invalid", valid)
                 for spec in cfg.get("samples", []):
                     # If unspecified, assume a sample config describes a standalone.
                     # If sample_types are specified, standalone samples must be
@@ -955,7 +964,6 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 yield spec
 
 
-
 def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str:
     """Generate a standalone, runnable sample.
 
@@ -978,7 +986,8 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
     rpc = service.methods.get(rpc_name)
     if not rpc:
         raise types.RpcMethodNotFound(
-            "Could not find rpc in service {}: {}".format(service_name, rpc_name)
+            "Could not find rpc in service {}: {}".format(
+                service_name, rpc_name)
         )
 
     calling_form = types.CallingForm.method_default(rpc)

@@ -33,7 +33,6 @@ def sample_classify(video, location):
     # Create a client
     client = molluscclient.MolluscServiceClient()
 
-
     # Initialize request argument(s)
     classify_target = {}
     # video = "path/to/mollusc/video.mkv"
