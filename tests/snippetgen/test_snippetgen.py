@@ -62,7 +62,7 @@ def setup_module(module):
         shutil.copytree(generated_samples, GENERATED_SNIPPETS)
 
 
-def test_file_existence():
+def test_files_exist():
     # The golden directory and .test_output directory
     # should have exactly the same number of entries
     golden_files = [p.name for p in GOLDEN_SNIPPETS.glob("*.py")]

@@ -625,9 +625,6 @@ class Validator:
                 bool(match.groupdict()["index"]),
                 bool(match.groupdict()["key"]),
             )
-            # NOTE(busunkim): In this basic case, name is `$resp`
-            # and the field retrieved is the MockField with
-            # message = ResponseType
             field = scope.get(name)
 
             if not field:
@@ -654,13 +651,8 @@ class Validator:
                     )
                 )
 
-            # NOTE(busunkim): Message is `class Field`, it should be
-            # `class MessageType` so it has `fields` attributes
-            # `field` is type `MockField`
             message = field.message
-
             scope = dict(message.fields) if message else {}
-
             # Can only map message types, not enums
             if mapped:
                 # See https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto#L496
