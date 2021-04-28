@@ -10,7 +10,7 @@ from google.api_core import grpc_helpers   # type: ignore
 from google.api_core import operations_v1  # type: ignore
 {% endif %}
 from google.api_core import gapic_v1       # type: ignore
-from google import auth                    # type: ignore
+import google.auth                         # type: ignore
 from google.auth import credentials        # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 

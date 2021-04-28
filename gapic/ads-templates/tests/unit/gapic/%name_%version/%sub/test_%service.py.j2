@@ -12,7 +12,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 {# Import the service itself as well as every proto module that it imports. -#}
 {% filter sort_lines %}
-from google import auth
+import google.auth
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
@@ -629,7 +629,7 @@ def test_transport_grpc_default():
 ])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, 'default') as adc:
+    with mock.patch.object(google.auth, 'default') as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
@@ -664,7 +664,7 @@ def test_{{ service.name|snake_case }}_base_transport():
 
 def test_{{ service.name|snake_case }}_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, 'default') as adc, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
+    with mock.patch.object(google.auth, 'default') as adc, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
         Transport.return_value = None
         adc.return_value = (credentials.AnonymousCredentials(), None)
         transport = transports.{{ service.name }}Transport()
@@ -673,7 +673,7 @@ def test_{{ service.name|snake_case }}_base_transport_with_adc():
 
 def test_{{ service.name|snake_case }}_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, 'default') as adc:
+    with mock.patch.object(google.auth, 'default') as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
         {{ service.client_name }}()
         adc.assert_called_once_with(scopes=(
@@ -686,7 +686,7 @@ def test_{{ service.name|snake_case }}_auth_adc():
 def test_{{ service.name|snake_case }}_transport_auth_adc():
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(auth, 'default') as adc:
+    with mock.patch.object(google.auth, 'default') as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
         transports.{{ service.name }}GrpcTransport(host="squid.clam.whelk")
         adc.assert_called_once_with(scopes=(
@@ -743,7 +743,7 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_s
 
             cred = credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
-                with mock.patch.object(auth, 'default') as adc:
+                with mock.patch.object(google.auth, 'default') as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
                         host="squid.clam.whelk",

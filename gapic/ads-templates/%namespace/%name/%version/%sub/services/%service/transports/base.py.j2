@@ -6,7 +6,7 @@ import abc
 import typing
 import pkg_resources
 
-from google import auth
+import google.auth
 from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 {% if service.has_lro %}
@@ -70,7 +70,7 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials is None:
-            credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+            credentials, _ = google.auth.default(scopes=self.AUTH_SCOPES)
 
         # Save the credentials.
         self._credentials = credentials

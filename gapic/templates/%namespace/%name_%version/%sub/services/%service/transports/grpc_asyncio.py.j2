@@ -10,7 +10,6 @@ from google.api_core import grpc_helpers_async         # type: ignore
 {% if service.has_lro %}
 from google.api_core import operations_v1              # type: ignore
 {% endif %}
-from google import auth                                # type: ignore
 from google.auth import credentials                    # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 import packaging.version

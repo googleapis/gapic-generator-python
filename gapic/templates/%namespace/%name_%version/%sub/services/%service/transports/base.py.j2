@@ -7,7 +7,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import packaging.version
 import pkg_resources
 
-from google import auth  # type: ignore
+import google.auth  # type: ignore
 import google.api_core  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1    # type: ignore
@@ -39,7 +39,7 @@ except pkg_resources.DistributionNotFound:
 
 try:
     # google.auth.__version__ was added in 1.26.0
-    _GOOGLE_AUTH_VERSION = auth.__version__
+    _GOOGLE_AUTH_VERSION = google.auth.__version__
 except AttributeError:
     try:  # try pkg_resources if it is available
         _GOOGLE_AUTH_VERSION = pkg_resources.get_distribution("google-auth").version
@@ -108,14 +108,14 @@ class {{ service.name }}Transport(abc.ABC):
             raise exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = auth.load_credentials_from_file(
+            credentials, _ = google.auth.load_credentials_from_file(
                                 credentials_file,
                                 **scopes_kwargs,
                                 quota_project_id=quota_project_id
                             )
 
         elif credentials is None:
-            credentials, _ = auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
 
         # Save the credentials.
         self._credentials = credentials
