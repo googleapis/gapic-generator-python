@@ -9,7 +9,7 @@ import pkg_resources
 
 import google.auth  # type: ignore
 import google.api_core  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 {% if service.has_lro %}
@@ -105,7 +105,7 @@ class {{ service.name }}Transport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
@@ -176,7 +176,7 @@ class {{ service.name }}Transport(abc.ABC):
                     {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
                     predicate=retries.if_exception_type(
                         {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
-                        exceptions.{{ ex.__name__ }},
+                        core_exceptions.{{ ex.__name__ }},
                         {% endfor %}
                     ),
                     deadline={{ method.timeout }},

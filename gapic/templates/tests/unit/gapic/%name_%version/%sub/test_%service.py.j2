@@ -31,7 +31,7 @@ from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + ser
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.base import _GOOGLE_AUTH_VERSION
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.base import _API_CORE_VERSION
 from google.api_core import client_options
-from google.api_core import exceptions
+from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 {% if service.has_lro %}
@@ -1433,7 +1433,7 @@ def test_transport_grpc_default():
 
 def test_{{ service.name|snake_case }}_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
-    with pytest.raises(exceptions.DuplicateCredentialArgs):
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.{{ service.name }}Transport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json"
