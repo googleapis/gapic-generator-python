@@ -6,7 +6,7 @@ import abc
 import typing
 import pkg_resources
 
-import google.auth
+import google.auth  # type: ignore
 from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 {% if service.has_lro %}

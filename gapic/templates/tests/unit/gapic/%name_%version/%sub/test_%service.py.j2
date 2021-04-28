@@ -50,7 +50,7 @@ from google.api_core import gapic_v1
 {% if opts.add_iam_methods %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 
@@ -2307,7 +2307,7 @@ def test_get_iam_policy_from_dict():
         response = client.get_iam_policy(
             request={
                 "resource": "resource_value",
-                "options": options.GetPolicyOptions(requested_policy_version=2598),
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
             }
         )
         call.assert_called()
@@ -2327,7 +2327,7 @@ async def test_get_iam_policy_from_dict_async():
         response = await client.get_iam_policy(
             request={
                 "resource": "resource_value",
-                "options": options.GetPolicyOptions(requested_policy_version=2598),
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
             }
         )
         call.assert_called()

@@ -34,7 +34,7 @@ def sample_{{ frags.render_method_name(sample.rpc)|trim }}({{ frags.print_input_
     """{{ sample.description }}"""
 
     client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
