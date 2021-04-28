@@ -48,8 +48,8 @@ from google.api_core import gapic_v1
 {% endfor %}
 {% endfor %}
 {% if opts.add_iam_methods %}
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import options_pb2 as options  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 {% endif %}
 {% endfilter %}
@@ -2023,12 +2023,12 @@ def test_set_iam_policy(transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.SetIamPolicyRequest()
+    request = iam_policy_pb2.SetIamPolicyRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
 
         response = client.set_iam_policy(request)
 
@@ -2039,7 +2039,7 @@ def test_set_iam_policy(transport: str = "grpc"):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, policy.Policy)
+    assert isinstance(response, policy_pb2.Policy)
 
     assert response.version == 774
 
@@ -2054,7 +2054,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.SetIamPolicyRequest()
+    request = iam_policy_pb2.SetIamPolicyRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2062,7 +2062,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(version=774, etag=b"etag_blob",)
         )
 
         response = await client.set_iam_policy(request)
@@ -2074,7 +2074,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, policy.Policy)
+    assert isinstance(response, policy_pb2.Policy)
 
     assert response.version == 774
 
@@ -2088,12 +2088,12 @@ def test_set_iam_policy_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = iam_policy.SetIamPolicyRequest()
+    request = iam_policy_pb2.SetIamPolicyRequest()
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value = policy.Policy()
+        call.return_value = policy_pb2.Policy()
 
         client.set_iam_policy(request)
 
@@ -2115,14 +2115,14 @@ async def test_set_iam_policy_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = iam_policy.SetIamPolicyRequest()
+    request = iam_policy_pb2.SetIamPolicyRequest()
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.set_iam_policy), "__call__"
     ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy.Policy())
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
 
         await client.set_iam_policy(request)
 
@@ -2143,12 +2143,12 @@ def test_set_iam_policy_from_dict():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy.Policy()
+        call.return_value = policy_pb2.Policy()
 
         response = client.set_iam_policy(
             request={
                 "resource": "resource_value",
-                "policy": policy.Policy(version=774),
+                "policy": policy_pb2.Policy(version=774),
             }
         )
         call.assert_called()
@@ -2163,13 +2163,13 @@ async def test_set_iam_policy_from_dict_async():
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy.Policy()
+            policy_pb2.Policy()
         )
 
         response = await client.set_iam_policy(
             request={
                 "resource": "resource_value",
-                "policy": policy.Policy(version=774),
+                "policy": policy_pb2.Policy(version=774),
             }
         )
         call.assert_called()
@@ -2182,12 +2182,12 @@ def test_get_iam_policy(transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.GetIamPolicyRequest()
+    request = iam_policy_pb2.GetIamPolicyRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
 
         response = client.get_iam_policy(request)
 
@@ -2198,7 +2198,7 @@ def test_get_iam_policy(transport: str = "grpc"):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, policy.Policy)
+    assert isinstance(response, policy_pb2.Policy)
 
     assert response.version == 774
 
@@ -2213,7 +2213,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.GetIamPolicyRequest()
+    request = iam_policy_pb2.GetIamPolicyRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2221,7 +2221,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(version=774, etag=b"etag_blob",)
         )
 
         response = await client.get_iam_policy(request)
@@ -2233,7 +2233,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, policy.Policy)
+    assert isinstance(response, policy_pb2.Policy)
 
     assert response.version == 774
 
@@ -2247,12 +2247,12 @@ def test_get_iam_policy_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = iam_policy.GetIamPolicyRequest()
+    request = iam_policy_pb2.GetIamPolicyRequest()
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value = policy.Policy()
+        call.return_value = policy_pb2.Policy()
 
         client.get_iam_policy(request)
 
@@ -2274,14 +2274,14 @@ async def test_get_iam_policy_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = iam_policy.GetIamPolicyRequest()
+    request = iam_policy_pb2.GetIamPolicyRequest()
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.get_iam_policy), "__call__"
     ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy.Policy())
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
 
         await client.get_iam_policy(request)
 
@@ -2302,7 +2302,7 @@ def test_get_iam_policy_from_dict():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy.Policy()
+        call.return_value = policy_pb2.Policy()
 
         response = client.get_iam_policy(
             request={
@@ -2321,7 +2321,7 @@ async def test_get_iam_policy_from_dict_async():
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy.Policy()
+            policy_pb2.Policy()
         )
 
         response = await client.get_iam_policy(
@@ -2340,14 +2340,14 @@ def test_test_iam_permissions(transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.TestIamPermissionsRequest()
+    request = iam_policy_pb2.TestIamPermissionsRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = iam_policy.TestIamPermissionsResponse(
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
             permissions=["permissions_value"],
         )
 
@@ -2360,7 +2360,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy.TestIamPermissionsResponse)
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
 
     assert response.permissions == ["permissions_value"]
 
@@ -2373,7 +2373,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.TestIamPermissionsRequest()
+    request = iam_policy_pb2.TestIamPermissionsRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2381,7 +2381,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy.TestIamPermissionsResponse(permissions=["permissions_value"],)
+            iam_policy_pb2.TestIamPermissionsResponse(permissions=["permissions_value"],)
         )
 
         response = await client.test_iam_permissions(request)
@@ -2393,7 +2393,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy.TestIamPermissionsResponse)
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
 
     assert response.permissions == ["permissions_value"]
 
@@ -2405,14 +2405,14 @@ def test_test_iam_permissions_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = iam_policy.TestIamPermissionsRequest()
+    request = iam_policy_pb2.TestIamPermissionsRequest()
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.test_iam_permissions), "__call__"
     ) as call:
-        call.return_value = iam_policy.TestIamPermissionsResponse()
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
 
         client.test_iam_permissions(request)
 
@@ -2434,7 +2434,7 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = iam_policy.TestIamPermissionsRequest()
+    request = iam_policy_pb2.TestIamPermissionsRequest()
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2442,7 +2442,7 @@ async def test_test_iam_permissions_field_headers_async():
         type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy.TestIamPermissionsResponse()
+            iam_policy_pb2.TestIamPermissionsResponse()
         )
 
         await client.test_iam_permissions(request)
@@ -2466,7 +2466,7 @@ def test_test_iam_permissions_from_dict():
         type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = iam_policy.TestIamPermissionsResponse()
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
 
         response = client.test_iam_permissions(
             request={
@@ -2487,7 +2487,7 @@ async def test_test_iam_permissions_from_dict_async():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy.TestIamPermissionsResponse()
+            iam_policy_pb2.TestIamPermissionsResponse()
         )
 
         response = await client.test_iam_permissions(
