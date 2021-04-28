@@ -21,7 +21,9 @@ import keyword
 # They are explicitly allowed message, module, and field names.
 RESERVED_NAMES = frozenset(
     itertools.chain(
+        # We CANNOT make exceptions for keywords.
         keyword.kwlist,
+        # We make SOME exceptions for certain names that collide with builtins.
         set(dir(builtins)) - {"filter", "map", "id", "input", "property"},
     )
 )
