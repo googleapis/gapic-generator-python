@@ -15,7 +15,7 @@ from google.api_core import retry as retries  # type: ignore
 {% if service.has_lro %}
 from google.api_core import operations_v1  # type: ignore
 {% endif %}
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 
 {% filter sort_lines %}
 {% for method in service.methods.values() %}
@@ -63,7 +63,7 @@ class {{ service.name }}Transport(abc.ABC):
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,
-            credentials: credentials.Credentials = None,
+            credentials: ga_credentials.Credentials = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
             quota_project_id: Optional[str] = None,

@@ -10,7 +10,7 @@ from google.api_core import grpc_helpers_async         # type: ignore
 {% if service.has_lro %}
 from google.api_core import operations_v1              # type: ignore
 {% endif %}
-from google.auth import credentials                    # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 import packaging.version
 
@@ -50,7 +50,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
     @classmethod
     def create_channel(cls,
                        host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-                       credentials: credentials.Credentials = None,
+                       credentials: ga_credentials.Credentials = None,
                        credentials_file: Optional[str] = None,
                        scopes: Optional[Sequence[str]] = None,
                        quota_project_id: Optional[str] = None,
@@ -90,7 +90,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-            credentials: credentials.Credentials = None,
+            credentials: ga_credentials.Credentials = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
             channel: aio.Channel = None,
