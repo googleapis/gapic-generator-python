@@ -37,7 +37,7 @@ def setup_module(module):
     # it easier to inspect generated samples.
     shutil.rmtree(GENERATED_SNIPPETS, ignore_errors=True)
 
-    protos = [str(p) for p in CURRENT_DIRECTORY.glob("*.proto")]
+    protos = {str(p) for p in CURRENT_DIRECTORY.glob("*.proto")}
     api_common_protos = Path(REPO_ROOT / "api-common-protos").absolute()
 
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -65,8 +65,8 @@ def setup_module(module):
 def test_files_exist():
     # The golden directory and .test_output directory
     # should have exactly the same number of entries
-    golden_files = [p.name for p in GOLDEN_SNIPPETS.glob("*.py")]
-    test_output_files = [p.name for p in GENERATED_SNIPPETS.glob("*.py")]
+    golden_files = {p.name for p in GOLDEN_SNIPPETS.glob("*.py")}
+    test_output_files = {p.name for p in GENERATED_SNIPPETS.glob("*.py")}
 
     assert golden_files == test_output_files
 

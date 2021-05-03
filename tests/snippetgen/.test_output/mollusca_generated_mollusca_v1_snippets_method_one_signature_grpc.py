@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for MethodLroSignatures
+# Snippet for MethodOneSignature
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,12 +23,12 @@
 #   python3 -m pip install animalia-mollusca
 
 
-# [START generated_mollusca_v1_Snippets_MethodLroSignatures_grpc]
+# [START mollusca_generated_mollusca_v1_Snippets_MethodOneSignature_grpc]
 from animalia import mollusca_v1
 
 
-def sample_method_lro_signatures():
-    """Snippet for method_lro_signatures"""
+def sample_method_one_signature():
+    """Snippet for method_one_signature"""
 
     # Create a client
     client = mollusca_v1.SnippetsClient()
@@ -38,11 +38,9 @@ def sample_method_lro_signatures():
     )
 
     # Make the request
-    operation = client.method_lro_signatures(request=request)
+    response = client.method_one_signature(request=request)
 
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    # Handle response
     print("{}".format(response))
 
-# [END generated_mollusca_v1_Snippets_MethodLroSignatures_grpc]
+# [END mollusca_generated_mollusca_v1_Snippets_MethodOneSignature_grpc]

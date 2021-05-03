@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for MethodOneSignature
+# Snippet for ListResources
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install animalia-mollusca
 
 
-# [START generated_mollusca_v1_Snippets_MethodOneSignature_grpc]
+# [START mollusca_generated_mollusca_v1_Snippets_ListResources_grpc]
 from animalia import mollusca_v1
 
 
-def sample_method_one_signature():
-    """Snippet for method_one_signature"""
+def sample_list_resources():
+    """Snippet for list_resources"""
 
     # Create a client
     client = mollusca_v1.SnippetsClient()
 
     # Initialize request argument(s)
-    request = mollusca_v1.SignatureRequest(
+    request = mollusca_v1.ListResourcesRequest(
     )
 
     # Make the request
-    response = client.method_one_signature(request=request)
+    page_result = client.list_resources(request=request)
+    for response in page_result:
+        print("{}".format(response))
 
-    # Handle response
-    print("{}".format(response))
-
-# [END generated_mollusca_v1_Snippets_MethodOneSignature_grpc]
+# [END mollusca_generated_mollusca_v1_Snippets_ListResources_grpc]

@@ -943,14 +943,15 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
     gapic_metadata = api_schema.gapic_metadata(opts)
 
     for service_name, service in gapic_metadata.services.items():
+        api_short_name = api_schema.services[f"{api_schema.naming.proto_package}.{service_name}"].shortname
         for transport_type, client in service.clients.items():
             if transport_type == "grpc-async":
                 # TODO(busunkim): Enable generation of async samples
                 continue
             for rpc_name, method_list in client.rpcs.items():
                 # Region Tag Format:
-                # [{START|END} generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
-                region_tag = f"generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_{transport_type}"
+                # [{START|END} ${apishortname}_generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
+                region_tag = f"{api_short_name}_generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_{transport_type}"
                 spec = {
                     "sample_type": "standalone",
                     "rpc": rpc_name,
