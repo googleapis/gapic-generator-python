@@ -18,6 +18,7 @@ import pytest
 from textwrap import dedent
 from typing import (TypeVar, Sequence)
 from collections import (OrderedDict, namedtuple)
+from google.api import client_pb2
 from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
 
@@ -1877,6 +1878,9 @@ def test_parse_invalid_handwritten_spec(fs):
 
 
 def test_generate_sample_spec_basic():
+    service_options = descriptor_pb2.ServiceOptions()
+    service_options.Extensions[client_pb2.default_host] = "example.googleapis.com"
+
     api_schema = api.API.build(
         file_descriptors=[
             descriptor_pb2.FileDescriptorProto(
@@ -1893,6 +1897,7 @@ def test_generate_sample_spec_basic():
                 service=[
                     descriptor_pb2.ServiceDescriptorProto(
                         name="Squid",
+                        options=service_options,
                         method=[
                             descriptor_pb2.MethodDescriptorProto(
                                 name="Ramshorn",
@@ -1914,7 +1919,7 @@ def test_generate_sample_spec_basic():
         "rpc": "Ramshorn",
         "request": [],
         "service": "animalia.mollusca.v1.Squid",
-        "region_tag": "generated_mollusca_v1_Squid_Ramshorn_grpc",
+        "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_grpc",
         "description": "Snippet for ramshorn"
     }
 
