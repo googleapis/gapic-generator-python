@@ -68,4 +68,4 @@ pylintrc.test
 
 # Test dependencies and output
 api-common-protos
-tests/snippetgen/.output
+tests/snippetgen/.test_output
