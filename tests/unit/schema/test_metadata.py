@@ -33,7 +33,7 @@ def test_address_str_with_context():
         package=('foo', 'bar'),
         module='baz',
         name='Bacon',
-    ).with_context(collisions={'baz'})
+    ).with_context(collisions=frozenset({'baz'}))
     assert str(addr) == 'fb_baz.Bacon'
 
 
@@ -41,6 +41,12 @@ def test_address_str_parent():
     addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon',
                             parent=('spam', 'eggs'))
     assert str(addr) == 'baz.spam.eggs.Bacon'
+
+
+def test_address_str_different_proto_package():
+    addr = metadata.Address(package=('google', 'iam', 'v1'), module='options', name='GetPolicyOptions',
+        api_naming=naming.NewNaming(proto_package='foo.bar.baz.v1'))
+    assert str(addr) == 'options_pb2.GetPolicyOptions'
 
 
 def test_address_proto():

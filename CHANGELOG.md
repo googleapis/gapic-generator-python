@@ -1,5 +1,26 @@
 # Changelog
 
+### [0.44.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.44.2...v0.44.3) (2021-05-03)
+
+
+### Performance Improvements
+
+* reduce unnecessary copies, optimize Address comparison ([#855](https://www.github.com/googleapis/gapic-generator-python/issues/855)) ([e843540](https://www.github.com/googleapis/gapic-generator-python/commit/e8435400257707458e83424019c9b1a16fac9a99))
+
+### [0.44.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.44.1...v0.44.2) (2021-04-30)
+
+
+### Bug Fixes
+
+* remove auth, policy, and options from the reserved names list ([#851](https://www.github.com/googleapis/gapic-generator-python/issues/851)) ([d3f31a0](https://www.github.com/googleapis/gapic-generator-python/commit/d3f31a0d33411b3248871ddbe51135e83b699a73))
+
+### [0.44.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.44.0...v0.44.1) (2021-04-28)
+
+
+### Bug Fixes
+
+* fix syntax errors and failing unit tests ([#849](https://www.github.com/googleapis/gapic-generator-python/issues/849)) ([9046261](https://www.github.com/googleapis/gapic-generator-python/commit/90462617e3e2b90eb8684210b6a70e890bdc0d96)), closes [#848](https://www.github.com/googleapis/gapic-generator-python/issues/848)
+
 ## [0.44.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.3...v0.44.0) (2021-04-23)
 
 
