@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListResources
+# Snippet for MethodLroSignatures
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,26 @@
 #   python3 -m pip install animalia-mollusca
 
 
-# [START mollusca_generated_mollusca_v1_Snippets_ListResources_grpc]
+# [START mollusca_generated_mollusca_v1_Snippets_MethodLroSignatures_async]
 from animalia import mollusca_v1
 
 
-def sample_list_resources():
-    """Snippet for list_resources"""
+async def sample_method_lro_signatures():
+    """Snippet for method_lro_signatures"""
 
     # Create a client
-    client = mollusca_v1.SnippetsClient()
+    client = mollusca_v1.SnippetsAsyncClient()
 
     # Initialize request argument(s)
-    request = mollusca_v1.ListResourcesRequest(
+    request = mollusca_v1.SignatureRequest(
     )
 
     # Make the request
-    page_result = client.list_resources(request=request)
-    for response in page_result:
-        print("{}".format(response))
+    operation = client.method_lro_signatures(request=request)
 
-# [END mollusca_generated_mollusca_v1_Snippets_ListResources_grpc]
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
+    print("{}".format(response))
+
+# [END mollusca_generated_mollusca_v1_Snippets_MethodLroSignatures_async]

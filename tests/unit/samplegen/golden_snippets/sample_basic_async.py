@@ -15,32 +15,41 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for MethodOneSignature
+# Snippet for Classify
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install animalia-mollusca
+#   python3 -m pip install molluscs-v1-molluscclient
 
 
-# [START mollusca_generated_mollusca_v1_Snippets_MethodOneSignature_grpc]
-from animalia import mollusca_v1
+# [START mollusc_classify_sync]
+from molluscs.v1 import molluscclient
 
 
-def sample_method_one_signature():
-    """Snippet for method_one_signature"""
+async def sample_classify(video, location):
+    """Determine the full taxonomy of input mollusc"""
 
     # Create a client
-    client = mollusca_v1.SnippetsClient()
+    client = molluscclient.MolluscServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = mollusca_v1.SignatureRequest(
+    classify_target = {}
+    # video = "path/to/mollusc/video.mkv"
+    with open(video, "rb") as f:
+        classify_target["video"] = f.read()
+
+    # location = "New Zealand"
+    classify_target["location_annotation"] = location
+
+    request = molluscclient.molluscs.v1.ClassifyRequest(
+        classify_target=classify_target,
     )
 
     # Make the request
-    response = client.method_one_signature(request=request)
+    response = await client.classify(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print("Mollusc is a \"{}\"".format(response.taxonomy))
 
-# [END mollusca_generated_mollusca_v1_Snippets_MethodOneSignature_grpc]
+# [END mollusc_classify_sync]

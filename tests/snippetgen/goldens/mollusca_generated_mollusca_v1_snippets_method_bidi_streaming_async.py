@@ -23,23 +23,23 @@
 #   python3 -m pip install animalia-mollusca
 
 
-# [START mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_grpc]
+# [START mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_async]
 from animalia import mollusca_v1
 
 
-def sample_method_bidi_streaming():
+async def sample_method_bidi_streaming():
     """Snippet for method_bidi_streaming"""
 
     # Create a client
-    client = mollusca_v1.SnippetsClient()
+    client = mollusca_v1.SnippetsAsyncClient()
 
     # Initialize request argument(s)
     request = mollusca_v1.SignatureRequest(
     )
 
     # Make the request
-    stream = client.method_bidi_streaming([])
-    for response in stream:
+    stream = await client.method_bidi_streaming([])
+    async for response in stream:
         print("{}".format(response))
 
-# [END mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_grpc]
+# [END mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_async]

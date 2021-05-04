@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for MethodServerStreaming
+# Snippet for MethodBidiStreaming
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,12 +23,12 @@
 #   python3 -m pip install animalia-mollusca
 
 
-# [START mollusca_generated_mollusca_v1_Snippets_MethodServerStreaming_grpc]
+# [START mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_sync]
 from animalia import mollusca_v1
 
 
-def sample_method_server_streaming():
-    """Snippet for method_server_streaming"""
+def sample_method_bidi_streaming():
+    """Snippet for method_bidi_streaming"""
 
     # Create a client
     client = mollusca_v1.SnippetsClient()
@@ -38,8 +38,8 @@ def sample_method_server_streaming():
     )
 
     # Make the request
-    stream = client.method_server_streaming(request=request)
+    stream = client.method_bidi_streaming([])
     for response in stream:
         print("{}".format(response))
 
-# [END mollusca_generated_mollusca_v1_Snippets_MethodServerStreaming_grpc]
+# [END mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_sync]
