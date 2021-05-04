@@ -785,7 +785,6 @@ def test_render_calling_form_streaming_server():
                    calling_form=CallingForm.RequestStreamingServer,
                    transport="grpc")
 
-
 def test_render_calling_form_streaming_server_async():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
@@ -839,7 +838,6 @@ def test_render_calling_form_longrunning():
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.LongRunningRequestPromise,
                    transport="grpc")
-
 
 def test_render_calling_form_longrunning_async():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
@@ -914,6 +912,33 @@ def test_render_method_call_basic_async():
         transport="grpc-async"
     )
 
+def test_render_method_call_basic_async():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+                                  calling_form, calling_form_enum, transport) }}
+        ''',
+        '''
+        await client.categorize_mollusc(request=request)
+        ''',
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="audio",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="guess",
+                                             body=True,
+                                             single=None)
+            ],
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.Request,
+        transport="grpc-async"
+    )
 
 def test_render_method_call_basic_flattenable():
     check_template(
@@ -969,7 +994,6 @@ def test_render_method_call_bidi():
         transport="grpc",
     )
 
-
 def test_render_method_call_bidi_async():
     check_template(
         '''
@@ -1018,7 +1042,6 @@ def test_render_method_call_client():
         calling_form=CallingForm.RequestStreamingClient,
         transport="grpc",
     )
-
 
 def test_render_method_call_client_async():
     check_template(
