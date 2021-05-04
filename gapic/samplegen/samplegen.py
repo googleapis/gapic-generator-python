@@ -298,7 +298,8 @@ class Validator:
             sample["transport"] = "grpc"
 
         if sample["transport"] == "grpc-async":
-            sample["client_name"] = api_schema.services[sample["service"]].async_client_name
+            sample["client_name"] = api_schema.services[sample["service"]
+                                                        ].async_client_name
         else:
             sample["client_name"] = api_schema.services[sample["service"]].client_name
 

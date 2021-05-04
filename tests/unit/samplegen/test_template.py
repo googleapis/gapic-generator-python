@@ -745,7 +745,6 @@ def test_render_calling_form_paged_all_async():
                    transport="grpc-async")
 
 
-
 def test_render_calling_form_paged():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
@@ -785,6 +784,7 @@ def test_render_calling_form_streaming_server():
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestStreamingServer,
                    transport="grpc")
+
 
 def test_render_calling_form_streaming_server_async():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
@@ -840,6 +840,7 @@ def test_render_calling_form_longrunning():
                    calling_form=CallingForm.LongRunningRequestPromise,
                    transport="grpc")
 
+
 def test_render_calling_form_longrunning_async():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
@@ -884,6 +885,7 @@ def test_render_method_call_basic():
         transport="grpc"
     )
 
+
 def test_render_method_call_basic_async():
     check_template(
         '''
@@ -911,6 +913,7 @@ def test_render_method_call_basic_async():
         calling_form=CallingForm.Request,
         transport="grpc-async"
     )
+
 
 def test_render_method_call_basic_flattenable():
     check_template(
@@ -966,6 +969,7 @@ def test_render_method_call_bidi():
         transport="grpc",
     )
 
+
 def test_render_method_call_bidi_async():
     check_template(
         '''
@@ -1014,6 +1018,7 @@ def test_render_method_call_client():
         calling_form=CallingForm.RequestStreamingClient,
         transport="grpc",
     )
+
 
 def test_render_method_call_client_async():
     check_template(
