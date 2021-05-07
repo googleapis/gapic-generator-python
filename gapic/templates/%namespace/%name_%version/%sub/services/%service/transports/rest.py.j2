@@ -196,7 +196,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             query_params['{{ field|camel_case }}'] = request.{{ field }}
         {% else %}
         if request.{{ field }}:
-          query_params['{{ field|camel_case }}'] = request.{{ field }}
+            query_params['{{ field|camel_case }}'] = request.{{ field }}
         {% endif %}
         {% endfor %}
 
