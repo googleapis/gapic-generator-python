@@ -33,8 +33,8 @@ from test_utils.test_utils import (
 def test_method_types():
     input_msg = make_message(name='Input', module='baz')
     output_msg = make_message(name='Output', module='baz')
-    method = make_method(
-        'DoSomething', input_msg, output_msg, package='foo.bar', module='bacon')
+    method = make_method('DoSomething', input_msg, output_msg,
+                         package='foo.bar', module='bacon')
     assert method.name == 'DoSomething'
     assert method.input.name == 'Input'
     assert method.output.name == 'Output'
@@ -71,22 +71,19 @@ def test_method_client_output_empty():
 
 def test_method_client_output_paged():
     paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
-    parent = make_field(name='parent', type=9)  # str
-    page_size = make_field(name='page_size', type=5)  # int
+    parent = make_field(name='parent', type=9)          # str
+    page_size = make_field(name='page_size', type=5)    # int
     page_token = make_field(name='page_token', type=9)  # str
 
-    input_msg = make_message(
-        name='ListFoosRequest', fields=(
-            parent,
-            page_size,
-            page_token,
-        ))
-    output_msg = make_message(
-        name='ListFoosResponse',
-        fields=(
-            paged,
-            make_field(name='next_page_token', type=9),  # str
-        ))
+    input_msg = make_message(name='ListFoosRequest', fields=(
+        parent,
+        page_size,
+        page_token,
+    ))
+    output_msg = make_message(name='ListFoosResponse', fields=(
+        paged,
+        make_field(name='next_page_token', type=9),  # str
+    ))
     method = make_method(
         'ListFoos',
         input_message=input_msg,
@@ -96,12 +93,11 @@ def test_method_client_output_paged():
     assert method.client_output.ident.name == 'ListFoosPager'
 
     max_results = make_field(name='max_results', type=5)  # int
-    input_msg = make_message(
-        name='ListFoosRequest', fields=(
-            parent,
-            max_results,
-            page_token,
-        ))
+    input_msg = make_message(name='ListFoosRequest', fields=(
+        parent,
+        max_results,
+        page_token,
+    ))
     method = make_method(
         'ListFoos',
         input_message=input_msg,
@@ -119,47 +115,36 @@ def test_method_client_output_async_empty():
 
 def test_method_paged_result_field_not_first():
     paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
-    input_msg = make_message(
-        name='ListFoosRequest',
-        fields=(
-            make_field(name='parent', type=9),  # str
-            make_field(name='page_size', type=5),  # int
-            make_field(name='page_token', type=9),  # str
-        ))
-    output_msg = make_message(
-        name='ListFoosResponse',
-        fields=(
-            make_field(name='next_page_token', type=9),  # str
-            paged,
-        ))
-    method = make_method(
-        'ListFoos',
-        input_message=input_msg,
-        output_message=output_msg,
-    )
+    input_msg = make_message(name='ListFoosRequest', fields=(
+        make_field(name='parent', type=9),      # str
+        make_field(name='page_size', type=5),   # int
+        make_field(name='page_token', type=9),  # str
+    ))
+    output_msg = make_message(name='ListFoosResponse', fields=(
+        make_field(name='next_page_token', type=9),  # str
+        paged,
+    ))
+    method = make_method('ListFoos',
+                         input_message=input_msg,
+                         output_message=output_msg,
+                         )
     assert method.paged_result_field == paged
 
 
 def test_method_paged_result_field_no_page_field():
-    input_msg = make_message(
-        name='ListFoosRequest',
-        fields=(
-            make_field(name='parent', type=9),  # str
-            make_field(name='page_size', type=5),  # int
-            make_field(name='page_token', type=9),  # str
-        ))
-    output_msg = make_message(
-        name='ListFoosResponse',
-        fields=(
-            make_field(name='foos', message=make_message(
-                'Foo'), repeated=False),
-            make_field(name='next_page_token', type=9),  # str
-        ))
-    method = make_method(
-        'ListFoos',
-        input_message=input_msg,
-        output_message=output_msg,
-    )
+    input_msg = make_message(name='ListFoosRequest', fields=(
+        make_field(name='parent', type=9),      # str
+        make_field(name='page_size', type=5),   # int
+        make_field(name='page_token', type=9),  # str
+    ))
+    output_msg = make_message(name='ListFoosResponse', fields=(
+        make_field(name='foos', message=make_message('Foo'), repeated=False),
+        make_field(name='next_page_token', type=9),  # str
+    ))
+    method = make_method('ListFoos',
+                         input_message=input_msg,
+                         output_message=output_msg,
+                         )
     assert method.paged_result_field is None
 
     method = make_method(
@@ -171,7 +156,8 @@ def test_method_paged_result_field_no_page_field():
         output_message=make_message(
             name='FooResponse',
             fields=(make_field(name='next_page_token', type=9),)  # str
-        ))
+        )
+    )
     assert method.paged_result_field is None
 
 
@@ -179,8 +165,8 @@ def test_method_paged_result_ref_types():
     input_msg = make_message(
         name='ListSquidsRequest',
         fields=(
-            make_field(name='parent', type=9),  # str
-            make_field(name='page_size', type=5),  # int
+            make_field(name='parent', type=9),      # str
+            make_field(name='page_size', type=5),   # int
             make_field(name='page_token', type=9),  # str
         ),
         module='squid',
@@ -192,12 +178,14 @@ def test_method_paged_result_ref_types():
             make_field(name='molluscs', message=mollusc_msg, repeated=True),
             make_field(name='next_page_token', type=9)  # str
         ),
-        module='mollusc')
+        module='mollusc'
+    )
     method = make_method(
         'ListSquids',
         input_message=input_msg,
         output_message=output_msg,
-        module='squid')
+        module='squid'
+    )
 
     ref_type_names = {t.name for t in method.ref_types}
     assert ref_type_names == {
@@ -233,7 +221,12 @@ def test_flattened_ref_types():
                         ),
                     ),
                 ),
-                make_field('stratum', enum=make_enum('Stratum',)),
+                make_field(
+                    'stratum',
+                    enum=make_enum(
+                        'Stratum',
+                    )
+                ),
             ),
         ),
         signatures=('cephalopod.squid,stratum',),
@@ -251,21 +244,19 @@ def test_flattened_ref_types():
 
 
 def test_method_paged_result_primitive():
-    paged = make_field(name='squids', type=9, repeated=True)  # str
+    paged = make_field(name='squids', type=9, repeated=True)    # str
     input_msg = make_message(
         name='ListSquidsRequest',
         fields=(
-            make_field(name='parent', type=9),  # str
-            make_field(name='page_size', type=5),  # int
+            make_field(name='parent', type=9),      # str
+            make_field(name='page_size', type=5),   # int
             make_field(name='page_token', type=9),  # str
         ),
     )
-    output_msg = make_message(
-        name='ListFoosResponse',
-        fields=(
-            paged,
-            make_field(name='next_page_token', type=9),  # str
-        ))
+    output_msg = make_message(name='ListFoosResponse', fields=(
+        paged,
+        make_field(name='next_page_token', type=9),  # str
+    ))
     method = make_method(
         'ListSquids',
         input_message=input_msg,
@@ -297,15 +288,15 @@ def test_method_field_headers_present():
 
 def test_method_http_opt():
     http_rule = http_pb2.HttpRule(
-        post='/v1/{parent=projects/*}/topics', body='*')
+        post='/v1/{parent=projects/*}/topics',
+        body='*'
+    )
     method = make_method('DoSomething', http_rule=http_rule)
     assert method.http_opt == {
         'verb': 'post',
         'url': '/v1/{parent=projects/*}/topics',
         'body': '*'
     }
-
-
 # TODO(yon-mg) to test:  grpc transcoding,
 #                       correct handling of path/query params
 #                       correct handling of body & additional binding
@@ -339,13 +330,20 @@ def test_method_path_params_no_http_rule():
 
 def test_method_query_params():
     # tests only the basic case of grpc transcoding
-    http_rule = http_pb2.HttpRule(post='/v1/{project}/topics', body='address')
+    http_rule = http_pb2.HttpRule(
+        post='/v1/{project}/topics',
+        body='address'
+    )
     input_message = make_message(
         'MethodInput',
-        fields=(make_field('region'), make_field('project'),
-                make_field('address')))
-    method = make_method(
-        'DoSomething', http_rule=http_rule, input_message=input_message)
+        fields=(
+            make_field('region'),
+            make_field('project'),
+            make_field('address')
+        )
+    )
+    method = make_method('DoSomething', http_rule=http_rule,
+                         input_message=input_message)
     assert method.query_params == {'region'}
 
 
@@ -353,12 +351,14 @@ def test_method_query_params_no_body():
     # tests only the basic case of grpc transcoding
     http_rule = http_pb2.HttpRule(post='/v1/{project}/topics')
     input_message = make_message(
-        'MethodInput', fields=(
+        'MethodInput',
+        fields=(
             make_field('region'),
             make_field('project'),
-        ))
-    method = make_method(
-        'DoSomething', http_rule=http_rule, input_message=input_message)
+        )
+    )
+    method = make_method('DoSomething', http_rule=http_rule,
+                         input_message=input_message)
     assert method.query_params == {'region'}
 
 
@@ -432,22 +432,18 @@ def test_method_flattened_fields_different_package_non_primitive():
     # directly to its fields, which complicates request construction.
     # The easiest solution in this case is to just prohibit these fields
     # in the method flattening.
-    message = make_message(
-        'Mantle', package='mollusc.cephalopod.v1', module='squid')
-    mantle = make_field(
-        'mantle', type=11, type_name='Mantle', message=message, meta=message.meta)
+    message = make_message('Mantle',
+                           package="mollusc.cephalopod.v1", module="squid")
+    mantle = make_field('mantle', type=11, type_name='Mantle',
+                        message=message, meta=message.meta)
     arms_count = make_field('arms_count', type=5, meta=message.meta)
     input_message = make_message(
-        'Squid',
-        fields=(mantle, arms_count),
-        package='.'.join(message.meta.address.package),
-        module=message.meta.address.module)
-    method = make_method(
-        'PutSquid',
-        input_message=input_message,
-        package='remote.package.v1',
-        module='module',
-        signatures=('mantle,arms_count',))
+        'Squid', fields=(mantle, arms_count),
+        package=".".join(message.meta.address.package),
+        module=message.meta.address.module
+    )
+    method = make_method('PutSquid', input_message=input_message,
+                         package="remote.package.v1", module="module", signatures=("mantle,arms_count",))
     assert set(method.flattened_fields) == {'arms_count'}
 
 
@@ -463,63 +459,75 @@ def test_method_include_flattened_message_fields():
 def test_method_legacy_flattened_fields():
     required_options = descriptor_pb2.FieldOptions()
     required_options.Extensions[field_behavior_pb2.field_behavior].append(
-        field_behavior_pb2.FieldBehavior.Value('REQUIRED'))
+        field_behavior_pb2.FieldBehavior.Value("REQUIRED"))
 
     # Cephalopods are required.
-    squid = make_field(name='squid', options=required_options)
+    squid = make_field(name="squid", options=required_options)
     octopus = make_field(
-        name='octopus',
+        name="octopus",
         message=make_message(
-            name='Octopus',
-            fields=[make_field(name='mass', options=required_options)]),
+            name="Octopus",
+            fields=[make_field(name="mass", options=required_options)]
+        ),
         options=required_options)
 
     # Bivalves are optional.
-    clam = make_field(name='clam')
+    clam = make_field(name="clam")
     oyster = make_field(
-        name='oyster',
+        name="oyster",
         message=make_message(
-            name='Oyster', fields=[make_field(name='has_pearl')]))
+            name="Oyster",
+            fields=[make_field(name="has_pearl")]
+        )
+    )
 
     # Interleave required and optional fields to make sure
     # that, in the legacy flattening, required fields are always first.
-    request = make_message('request', fields=[squid, clam, octopus, oyster])
+    request = make_message("request", fields=[squid, clam, octopus, oyster])
 
     method = make_method(
-        name='CreateMolluscs',
+        name="CreateMolluscs",
         input_message=request,
         # Signatures should be ignored.
-        signatures=['squid,octopus.mass', 'squid,octopus,oyster.has_pearl'])
+        signatures=[
+            "squid,octopus.mass",
+            "squid,octopus,oyster.has_pearl"
+        ]
+    )
 
     # Use an ordered dict because ordering is important:
     # required fields should come first.
-    expected = collections.OrderedDict([('squid', squid), ('octopus', octopus),
-                                        ('clam', clam), ('oyster', oyster)])
+    expected = collections.OrderedDict([
+        ("squid", squid),
+        ("octopus", octopus),
+        ("clam", clam),
+        ("oyster", oyster)
+    ])
 
     assert method.legacy_flattened_fields == expected
 
 
 def test_flattened_oneof_fields():
-    mass_kg = make_field(name='mass_kg', oneof='mass', type=5)
-    mass_lbs = make_field(name='mass_lbs', oneof='mass', type=5)
+    mass_kg = make_field(name="mass_kg", oneof="mass", type=5)
+    mass_lbs = make_field(name="mass_lbs", oneof="mass", type=5)
 
-    length_m = make_field(name='length_m', oneof='length', type=5)
-    length_f = make_field(name='length_f', oneof='length', type=5)
+    length_m = make_field(name="length_m", oneof="length", type=5)
+    length_f = make_field(name="length_f", oneof="length", type=5)
 
-    color = make_field(name='color', type=5)
+    color = make_field(name="color", type=5)
     mantle = make_field(
-        name='mantle',
+        name="mantle",
         message=make_message(
-            name='Mantle',
+            name="Mantle",
             fields=(
-                make_field(name='color', type=5),
+                make_field(name="color", type=5),
                 mass_kg,
                 mass_lbs,
             ),
         ),
     )
     request = make_message(
-        name='CreateMolluscReuqest',
+        name="CreateMolluscReuqest",
         fields=(
             length_m,
             length_f,
@@ -528,27 +536,28 @@ def test_flattened_oneof_fields():
         ),
     )
     method = make_method(
-        name='CreateMollusc',
+        name="CreateMollusc",
         input_message=request,
         signatures=[
-            'length_m,',
-            'length_f,',
-            'mantle.mass_kg,',
-            'mantle.mass_lbs,',
-            'color',
-        ])
+            "length_m,",
+            "length_f,",
+            "mantle.mass_kg,",
+            "mantle.mass_lbs,",
+            "color",
+        ]
+    )
 
-    expected = {'mass': [mass_kg, mass_lbs], 'length': [length_m, length_f]}
+    expected = {"mass": [mass_kg, mass_lbs], "length": [length_m, length_f]}
     actual = method.flattened_oneof_fields()
     assert expected == actual
 
     # Check this method too becasue the setup is a lot of work.
     expected = {
-        'color': 'color',
-        'length_m': 'length_m',
-        'length_f': 'length_f',
-        'mass_kg': 'mantle.mass_kg',
-        'mass_lbs': 'mantle.mass_lbs',
+        "color": "color",
+        "length_m": "length_m",
+        "length_f": "length_f",
+        "mass_kg": "mantle.mass_kg",
+        "mass_lbs": "mantle.mass_lbs",
     }
     actual = method.flattened_field_to_key
     assert expected == actual
