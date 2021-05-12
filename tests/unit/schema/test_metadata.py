@@ -56,7 +56,7 @@ def test_address_str_different_proto_package_with_collision():
         name='Status',
         api_naming=naming.NewNaming(proto_package='foo.bar.baz.v1')
     ).with_context(collisions=frozenset({'status'}))
-     # the module alias should be ignored for _pb2 types
+    # the module alias should be ignored for _pb2 types
     assert str(addr) == 'status_pb2.Status'
 
 
