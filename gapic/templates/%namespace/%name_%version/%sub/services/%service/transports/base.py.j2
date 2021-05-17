@@ -33,6 +33,12 @@ try:
         gapic_version=pkg_resources.get_distribution(
             '{{ api.naming.warehouse_package_name }}',
         ).version,
+        {% if 'grpc' not in opts.transport %}
+        grpc_version=None,
+        {% endif %}
+        {% if 'rest' in opts.transport %}
+        rest_version=pkg_resources.get_distribution("requests").version,
+        {% endif %}
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
