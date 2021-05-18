@@ -6,6 +6,9 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import packaging.version
 import pkg_resources
+{% if 'rest' in opts.transport %}
+from requests import __version__ as requests_version
+{% endif %}
 
 import google.auth  # type: ignore
 import google.api_core  # type: ignore
@@ -37,7 +40,7 @@ try:
         grpc_version=None,
         {% endif %}
         {% if 'rest' in opts.transport %}
-        rest_version=pkg_resources.get_distribution("requests").version,
+        rest_version=requests_version,
         {% endif %}
     )
 except pkg_resources.DistributionNotFound:
