@@ -202,7 +202,7 @@ class TransformedRequest:
                     f"Resource {resource_typestr} has no pattern with params: {attr_name_str}"
                 )
 
-            return cls(base=base, body=attrs, single=None, pattern=pattern)
+            return cls(base=base, body=attrs, single=None, pattern=pattern,  )
 
 
 @dataclasses.dataclass
@@ -293,6 +293,8 @@ class Validator:
         sample["module_name"] = api_schema.naming.versioned_module_name
         sample["module_namespace"] = api_schema.naming.module_namespace
 
+        service =  api_schema.services[sample["service"]]
+
         # Assume the gRPC transport if the transport is not specified
         sample.setdefault("transport", api.TRANSPORT_GRPC)
 
@@ -300,10 +302,15 @@ class Validator:
             sample["client_name"] = api_schema.services[sample["service"]
                                                         ].async_client_name
         else:
-            sample["client_name"] = api_schema.services[sample["service"]].client_name
+            sample["client_name"] = service.client_name
 
-        # the type of the request object passed to the rpc e.g, `ListRequest`
-        sample["request_type"] = rpc.input.ident.name
+        # the MessageType of the request object passed to the rpc e.g, `ListRequest`
+        sample["request_type"] = rpc.input
+
+        # If no request was specified in the config
+        # Add reasonable default values as placeholders
+        if "request" not in sample:
+            sample["request"] = generate_request_object(api_schema, service, rpc.input)
 
         # If no response was specified in the config
         # Add reasonable defaults depending on the type of the sample
@@ -938,6 +945,51 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                     # explicitly enabled.
                     if STANDALONE_TYPE in spec.get("sample_type", [STANDALONE_TYPE]):
                         yield spec
+
+
+
+def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str=""):
+    """Generate dummy input for a given message.
+
+    Args:
+        api_schema (api.API): The schema that defines the API.
+        service (wrappers.Service): The service object the message belongs to.
+        message (wrappers.MessageType): The message to generate a request object for.
+        field_name_prefix (str): A prefix to attach to the field name in the request.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dicts that can be turned into TransformedRequests.
+    """
+    request: List[Dict[str, Any]] = []
+
+    # Choose the first option for each oneof
+    selected_oneofs: List[wrappers.Field] = [oneof_fields[0] for oneof_fields in message.oneof_fields().values()]
+
+    request_fields: List[wrappers.Field] = selected_oneofs + message.required_fields
+
+    for field in request_fields:
+        # TransformedRequest expects nested fields to be referenced like
+        # `destination.input_config.name`
+        field_name = ".".join([field_name_prefix, field.name]).lstrip('.')
+
+        # TODO(busunkim): Properly handle map fields, enums
+        if field.is_primitive:
+            placeholder_value = field.mock_value_original_type
+            # If this field identifies a resource use the resource path
+            if service.resource_messages_dict.get(field.resource_reference):
+                placeholder_value = service.resource_messages_dict[field.resource_reference].resource_path
+            request.append({"field": field_name, "value": placeholder_value})
+
+        else:
+            # This is a message type, recurse
+            # TODO(busunkim): when optional fields are supported
+            # add a check to make sure nested messages terminate
+            request += generate_request_object(
+                api_schema, service, field.type,
+                field_name_prefix=field_name,
+            )
+
+    return request
 
 
 def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, Any], None, None]:

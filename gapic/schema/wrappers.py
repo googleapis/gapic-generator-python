@@ -31,7 +31,7 @@ import collections
 import dataclasses
 import re
 from itertools import chain
-from typing import (cast, Dict, FrozenSet, Iterable, List, Mapping,
+from typing import (Any, cast, Dict, FrozenSet, Iterable, List, Mapping,
                     ClassVar, Optional, Sequence, Set, Tuple, Union)
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
@@ -90,6 +90,12 @@ class Field:
         return bool(self.repeated and self.message and self.message.map)
 
     @utils.cached_property
+    def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
+        answer = self.inner_mock_as_original_type() or None
+
+        return answer
+
+    @utils.cached_property
     def mock_value(self) -> str:
         visited_fields: Set["Field"] = set()
         stack = [self]
@@ -100,7 +106,8 @@ class Field:
 
         return answer
 
-    def inner_mock(self, stack, visited_fields):
+
+    def inner_mock(self, stack, visited_fields) -> str:
         """Return a repr of a valid, usually truthy mock value."""
         # For primitives, send a truthy value computed from the
         # field name.
@@ -158,6 +165,45 @@ class Field:
         # Done; return the mock value.
         return answer
 
+
+    def inner_mock_as_original_type(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
+        """Like inner_mock, but return the original type rather than
+        a string.
+
+        Because it needs to return the original (Python) type,
+        this only works for primitives.
+        """
+        answer: Union[bool, str, bytes, int, float, List[Any], None] = None
+
+        if not isinstance(self.type, PrimitiveType):
+            raise TypeError(f"'inner_mock_as_original_type' can only be used for"
+                f"PrimitiveType, but type is {self.type}")
+
+        else:
+            if self.type.python_type == bool:
+                answer = True
+            elif self.type.python_type == str:
+                answer = f"{self.name}_value"
+            elif self.type.python_type == bytes:
+                answer = bytes(f"{self.name}_blob", encoding="utf-8")
+            elif self.type.python_type == int:
+                answer = sum([ord(i) for i in self.name])
+            elif self.type.python_type == float:
+                name_sum = sum([ord(i) for i in self.name])
+                # This is a bit convoluted to produce the same result as
+                # inner_mock()
+                answer = name_sum * pow(10, -1 * len(str(name_sum)))
+            else:  # Impossible; skip coverage checks.
+                raise TypeError('Unrecognized PrimitiveType. This should '
+                                'never happen; please file an issue.')
+
+        if self.repeated:
+            # If this is a repeated field, then the mock answer should
+            # be a list.
+            answer = [answer]
+
+        return answer
+
     @property
     def proto_type(self) -> str:
         """Return the proto type constant to be used in templates."""
@@ -185,6 +231,16 @@ class Field:
         """
         return (field_behavior_pb2.FieldBehavior.Value('REQUIRED') in
                 self.options.Extensions[field_behavior_pb2.field_behavior])
+
+    @property
+    def resource_reference(self) -> Optional[str]:
+        """Return a resource reference type if it exists.
+
+        This is only applicable for string fields.
+        Example: "translate.googleapis.com/Glossary"
+        """
+        return (self.options.Extensions[resource_pb2.resource_reference].type
+                or None)
 
     @utils.cached_property
     def type(self) -> Union['MessageType', 'EnumType', 'PrimitiveType']:
@@ -287,6 +343,12 @@ class MessageType:
         return oneof_fields
 
     @utils.cached_property
+    def required_fields(self) -> Sequence['Field']:
+        required_fields = [field for field in self.fields.values() if field.required]
+
+        return required_fields
+
+    @utils.cached_property
     def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
         answer = tuple(
             field.type
@@ -352,6 +414,11 @@ class MessageType:
     def resource_type(self) -> Optional[str]:
         resource = self.options.Extensions[resource_pb2.resource]
         return resource.type[resource.type.find('/') + 1:] if resource else None
+
+    @property
+    def resource_type_full_path(self) -> Optional[str]:
+        resource = self.options.Extensions[resource_pb2.resource]
+        return resource.type if resource else None
 
     @property
     def resource_path_args(self) -> Sequence[str]:
@@ -1198,6 +1265,29 @@ class Service:
                 ),
             )
         )
+
+    @utils.cached_property
+    def resource_messages_dict(self) -> Dict[str, MessageType]:
+        """Returns a dict from resource reference to
+        the message type. This *includes* the common resource messages.
+
+        Returns:
+            Dict[str, MessageType]: A mapping from resource path
+                string to the corresponding MessageType.
+                `{"locations.googleapis.com/Location": MessageType(...)}`
+        """
+        service_resource_messages = dict(
+            (r.resource_type_full_path, r)
+            for r in list(self.resource_messages)
+        )
+        common_resource_messages = dict(
+            (resource_path, resource.message_type)
+            for resource_path, resource in self.common_resources.items()
+        )
+
+        service_resource_messages.update(common_resource_messages)
+
+        return service_resource_messages
 
     @utils.cached_property
     def any_client_streaming(self) -> bool:

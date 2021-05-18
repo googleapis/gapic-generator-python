@@ -17,6 +17,7 @@ import collections
 import pytest
 
 from google.api import field_behavior_pb2
+from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import api
@@ -108,6 +109,13 @@ def test_ident_sphinx_repeated():
     assert field.ident.sphinx == 'Sequence[bool]'
 
 
+def test_resource_reference():
+    field = make_field(type='TYPE_STRING')
+    field.options.Extensions[resource_pb2.resource_reference].type = "translate.googleapis.com/Glossary"
+
+    assert field.resource_reference == "translate.googleapis.com/Glossary"
+
+
 def test_type_primitives():
     assert make_field(type='TYPE_FLOAT').type.python_type == float
     assert make_field(type='TYPE_INT64').type.python_type == int
@@ -153,6 +161,9 @@ def test_mock_value_int():
     field = make_field(name='foo_bar', type='TYPE_INT32')
     assert field.mock_value == '728'
 
+def test_mock_value_original_type_int():
+    field = make_field(name='foo_bar', type='TYPE_INT32')
+    assert field.mock_value_original_type == 728
 
 def test_oneof():
     REP = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
@@ -165,15 +176,25 @@ def test_mock_value_float():
     field = make_field(name='foo_bar', type='TYPE_DOUBLE')
     assert field.mock_value == '0.728'
 
+def test_mock_value_original_type_float():
+    field = make_field(name='foo_bar', type='TYPE_DOUBLE')
+    assert field.mock_value_original_type == 0.728
 
 def test_mock_value_bool():
     field = make_field(name='foo_bar', type='TYPE_BOOL')
     assert field.mock_value == 'True'
 
+def test_mock_value_original_type_bool():
+    field = make_field(name='foo_bar', type='TYPE_BOOL')
+    assert field.mock_value_original_type == True
 
 def test_mock_value_str():
     field = make_field(name='foo_bar', type='TYPE_STRING')
     assert field.mock_value == "'foo_bar_value'"
+
+def test_mock_value_original_type_str():
+    field = make_field(name='foo_bar', type='TYPE_STRING')
+    assert field.mock_value_original_type == "foo_bar_value"
 
 
 def test_mock_value_bytes():
@@ -181,9 +202,17 @@ def test_mock_value_bytes():
     assert field.mock_value == "b'foo_bar_blob'"
 
 
+def test_mock_value_original_type_bytes():
+    field = make_field(name='foo_bar', type='TYPE_BYTES')
+    assert field.mock_value_original_type == b"foo_bar_blob"
+
 def test_mock_value_repeated():
     field = make_field(name='foo_bar', type='TYPE_STRING', label=3)
     assert field.mock_value == "['foo_bar_value']"
+
+def test_mock_value_original_type_repeated():
+    field = make_field(name='foo_bar', type='TYPE_STRING', label=3)
+    assert field.mock_value_original_type == ["foo_bar_value"]
 
 
 def test_mock_value_map():
@@ -251,6 +280,32 @@ def test_mock_value_message():
     assert field.mock_value == 'bogus.Message(foo=324)'
 
 
+def test_mock_value_original_type_message_errors():
+    subfields = collections.OrderedDict((
+        ('foo', make_field(name='foo', type='TYPE_INT32')),
+        ('bar', make_field(name='bar', type='TYPE_STRING'))
+    ))
+    message = wrappers.MessageType(
+        fields=subfields,
+        message_pb=descriptor_pb2.DescriptorProto(name='Message', field=[
+            i.field_pb for i in subfields.values()
+        ]),
+        meta=metadata.Metadata(address=metadata.Address(
+            module='bogus',
+            name='Message',
+        )),
+        nested_enums={},
+        nested_messages={},
+    )
+    field = make_field(
+        type='TYPE_MESSAGE',
+        type_name='bogus.Message',
+        message=message,
+    )
+
+    with pytest.raises(TypeError):
+        mock = field.mock_value_original_type
+
 def test_mock_value_recursive():
     # The elaborate setup is an unfortunate requirement.
     file_pb = descriptor_pb2.FileDescriptorProto(
@@ -290,3 +345,6 @@ def test_field_name_kword_disambiguation():
         name="frum",
     )
     assert frum_field.name == "frum"
+
+def test_field_resource_reference():
+    field = make_field(name='parent', type='TYPE_STRING')

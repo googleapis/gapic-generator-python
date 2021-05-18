@@ -34,7 +34,15 @@ def sample_method_server_streaming():
     client = mollusca_v1.SnippetsClient()
 
     # Initialize request argument(s)
+    a_message = mollusca_v1.MessageWithNesting()
+    a_message.message.required_string = "required_string_value"
+    a_message.an_int = 633
+
     request = mollusca_v1.SignatureRequest(
+        a_string="a_string_value",
+        an_int=633,
+        a_bool=True,
+        a_message=a_message,
     )
 
     # Make the request

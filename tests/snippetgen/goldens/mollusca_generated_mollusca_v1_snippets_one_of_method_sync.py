@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for MethodBidiStreaming
+# Snippet for OneOfMethod
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,26 @@
 #   python3 -m pip install animalia-mollusca
 
 
-# [START mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_async]
+# [START mollusca_generated_mollusca_v1_Snippets_OneOfMethod_sync]
 from animalia import mollusca_v1
 
 
-async def sample_method_bidi_streaming():
-    """Snippet for method_bidi_streaming"""
+def sample_one_of_method():
+    """Snippet for one_of_method"""
 
     # Create a client
-    client = mollusca_v1.SnippetsAsyncClient()
+    client = mollusca_v1.SnippetsClient()
 
     # Initialize request argument(s)
-    request = mollusca_v1.SignatureRequestOneRequiredField(
+    request = mollusca_v1.OneOfRequest(
         a_string="a_string_value",
+        non_one_of_string="non_one_of_string_value",
     )
 
     # Make the request
-    stream = await client.method_bidi_streaming([a_string="a_string_value"])
-    async for response in stream:
-        print("{}".format(response))
+    response = client.one_of_method(request=request)
 
-# [END mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_async]
+    # Handle response
+    print("{}".format(response))
+
+# [END mollusca_generated_mollusca_v1_Snippets_OneOfMethod_sync]
