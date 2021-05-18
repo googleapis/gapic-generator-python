@@ -2,6 +2,7 @@
 
 {% block content %}
 
+import requests
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
@@ -214,8 +215,11 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             {% endif %}
         )
 
-        # Raise requests.exceptions.HTTPError if the status code is >= 400
-        response.raise_for_status()
+        # Raise descriptive ResponseError if the status code is >= 400
+        try:
+          response.raise_for_status()
+        except requests.exceptions.HTTPError as http_error:
+          raise ResponseError(http_error) from None
         {% if not method.void %}
 
         # Return the response
@@ -227,6 +231,18 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
     {% endif %}
     {% endfor %}
 
+class ResponseError(Exception):
+    """Exception raised for failing REST responses, reporting the response body.
+
+       Attributes:
+           http_error: The underlying requests.exceptions.HTTPError being wrapped
+    """
+
+    def __init__(self, http_error):
+        self.http_error = http_error
+    
+    def __str__(self):
+        return f'{self.http_error}\n{self.http_error.response.text}'
 
 __all__ = (
     '{{ service.name }}RestTransport',
