@@ -10,8 +10,9 @@ from typing import Callable, Dict, Optional, Sequence, Tuple
 from google.api_core import operations_v1
 {% endif %}
 from google.api_core import gapic_v1       # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
+from google.auth import credentials as ga_credentials      # type: ignore
+from google.auth.transport.grpc import SslCredentials      # type: ignore
 
 import grpc  # type: ignore
 
@@ -215,11 +216,10 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             {% endif %}
         )
 
-        # Raise descriptive ResponseError if the status code is >= 400
-        try:
-          response.raise_for_status()
-        except requests.exceptions.HTTPError as http_error:
-          raise ResponseError(http_error) from None
+        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+        # subclass.
+        if response.status_code >= 400:
+            raise core_exceptions.from_http_response(response)
         {% if not method.void %}
 
         # Return the response
@@ -231,18 +231,6 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
     {% endif %}
     {% endfor %}
 
-class ResponseError(Exception):
-    """Exception raised for failing REST responses, reporting the response body.
-
-       Attributes:
-           http_error: The underlying requests.exceptions.HTTPError being wrapped
-    """
-
-    def __init__(self, http_error):
-        self.http_error = http_error
-    
-    def __str__(self):
-        return f'{self.http_error}\n{self.http_error.response.text}'
 
 __all__ = (
     '{{ service.name }}RestTransport',
