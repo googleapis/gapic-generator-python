@@ -178,7 +178,8 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {# TODO(yon-mg): Write helper method for handling grpc transcoding url #}
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
         #               current impl assumes basic case of grpc transcoding
-        url = 'https://{host}{{ method.http_opt['url'] }}'.format(
+        url = '{protocol}://{host}{{ method.http_opt['url'] }}'.format(
+            protocol=protocol_for(self._host),
             host=self._host,
             {% for field in method.path_params %}
             {{ field }}=request.{{ method.input.get_field(field).name }},
@@ -230,6 +231,33 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
     {% endif %}
     {% endfor %}
 
+{# TODO: Allow client creation to explictly specify connection
+         parameters, such as secure/insecure connections, and have tests use
+         that. Then remove this function.
+         Tracking issue:
+         https://github.com/googleapis/gapic-generator-python/issues/901
+#}
+def protocol_for(host: str) -> str:
+    """Determine the URL protocol to use for connecting to the given host.
+
+    This function returns 'http' for hosts that match
+    `^localhost(:.*)?$` and `https` for all others. This is intended
+    to allow integration testing over an insecure connection to a
+    locally running server.
+
+    Args:
+        host (str): The hostname for REST connection.
+
+    Returns:
+        str: The protocol (`http` or `https`) to use for connecting to `host`.
+    """
+    
+    LOCALHOST='localhost'
+    LOCALHOST_LEN=len(LOCALHOST)
+    
+    if host.startswith(LOCALHOST) and (len(host)==LOCALHOST_LEN or host[LOCALHOST_LEN]==":"):
+        return 'http'
+    return 'https'
 
 __all__ = (
     '{{ service.name }}RestTransport',
