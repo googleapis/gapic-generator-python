@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.47.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.47.0...v0.47.1) (2021-05-19)
+
+
+### Bug Fixes
+
+* remove support for google-api-core<1.26.0 ([#893](https://www.github.com/googleapis/gapic-generator-python/issues/893)) ([ce558ac](https://www.github.com/googleapis/gapic-generator-python/commit/ce558acef9ec9c9bcc54243cddb708ef168c05f0))
+
 ## [0.47.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.3...v0.47.0) (2021-05-13)
 
 
