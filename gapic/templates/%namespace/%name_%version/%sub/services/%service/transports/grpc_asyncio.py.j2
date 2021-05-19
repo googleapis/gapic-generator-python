@@ -84,7 +84,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             quota_project_id=quota_project_id,
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
-            default_host=host,
+            default_host=cls.DEFAULT_HOST,
             **kwargs
         )
 
