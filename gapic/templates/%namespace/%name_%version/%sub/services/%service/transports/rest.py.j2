@@ -9,8 +9,9 @@ from typing import Callable, Dict, Optional, Sequence, Tuple
 from google.api_core import operations_v1
 {% endif %}
 from google.api_core import gapic_v1       # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
+from google.auth import credentials as ga_credentials      # type: ignore
+from google.auth.transport.grpc import SslCredentials      # type: ignore
 
 import grpc  # type: ignore
 
@@ -109,13 +110,13 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         if self._operations_client is None:
             from google.api_core import grpc_helpers
 
-            self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(self._host, self._scopes)
-
             self._operations_client = operations_v1.OperationsClient(
                 grpc_helpers.create_channel(
                     self._host,
                     credentials=self._credentials,
-                    **self_signed_jwt_kwargs,
+                    default_scopes=cls.AUTH_SCOPES,
+                    scopes=self._scopes,
+                    default_host=cls.DEFAULT_HOST,
                     options=[
                         ("grpc.max_send_message_length", -1),
                         ("grpc.max_receive_message_length", -1),
@@ -217,8 +218,10 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             {% endif %}
         )
 
-        # Raise requests.exceptions.HTTPError if the status code is >= 400
-        response.raise_for_status()
+        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+        # subclass.
+        if response.status_code >= 400:
+            raise core_exceptions.from_http_response(response)
         {% if not method.void %}
 
         # Return the response
