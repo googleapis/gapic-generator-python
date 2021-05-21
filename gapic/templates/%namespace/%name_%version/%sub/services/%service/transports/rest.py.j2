@@ -2,6 +2,7 @@
 
 {% block content %}
 
+import re
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
@@ -179,7 +180,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
         #               current impl assumes basic case of grpc transcoding
         url = '{protocol}://{host}{{ method.http_opt['url'] }}'.format(
-            protocol=protocol_for(self._host),
+            protocol=_protocol_for(self._host),
             host=self._host,
             {% for field in method.path_params %}
             {{ field }}=request.{{ method.input.get_field(field).name }},
@@ -237,7 +238,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
          Tracking issue:
          https://github.com/googleapis/gapic-generator-python/issues/901
 #}
-def protocol_for(host: str) -> str:
+def _protocol_for(host: str) -> str:
     """Determine the URL protocol to use for connecting to the given host.
 
     This function returns 'http' for hosts that match
@@ -251,13 +252,9 @@ def protocol_for(host: str) -> str:
     Returns:
         str: The protocol (`http` or `https`) to use for connecting to `host`.
     """
-    
-    LOCALHOST='localhost'
-    LOCALHOST_LEN=len(LOCALHOST)
-    
-    if host.startswith(LOCALHOST) and (len(host)==LOCALHOST_LEN or host[LOCALHOST_LEN]==":"):
-        return 'http'
-    return 'https'
+    if not hasattr(_protocol_for, 'regex'):
+        _protocol_for.regex = re.compile("^localhost(:.*)?$")
+    return 'http' if _protocol_for.regex.match(host) else 'https'
 
 __all__ = (
     '{{ service.name }}RestTransport',
