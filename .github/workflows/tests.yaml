@@ -314,9 +314,6 @@ jobs:
         run: codecov
         if: always()
   integration:
-    strategy:
-      matrix:
-        python: [3.7, 3.9]
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -324,10 +321,14 @@ jobs:
         with:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python }}
+      - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python }}
+          python-version: 3.8
+      - name: Install system dependencies.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl pandoc unzip gcc
       - name: Install Bazel
         run: |
           wget -q "https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/$BAZEL_BINARY"
