@@ -318,7 +318,6 @@ jobs:
       matrix:
         python: [3.7, 3.9]
     runs-on: ubuntu-latest
-    container: gcr.io/gapic-images/googleapis-bazel:20210105
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.7.0
@@ -329,6 +328,15 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+      - name: Install Bazel
+        run: |
+          wget -q "https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/$BAZEL_BINARY"
+          wget -q "https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/$BAZEL_BINARY.sha256"
+          sha256sum -c "$BAZEL_BINARY.sha256"
+          sudo dpkg -i "$BAZEL_BINARY"
+        env:
+          BAZEL_VERSION: 3.5.0
+          BAZEL_BINARY: bazel_3.5.0-linux-x86_64.deb
       - name: Integration Tests
         run: bazel test tests/integration:asset tests/integration:credentials tests/integration:logging tests/integration:redis
 
