@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.47.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.3...v0.47.0) (2021-05-13)
+
+
+### Features
+
+* support protobuf method deprecation option [gapic-generator-python] ([#875](https://www.github.com/googleapis/gapic-generator-python/issues/875)) ([5a5a839](https://www.github.com/googleapis/gapic-generator-python/commit/5a5a839b99d78ec5a5c52452e57c289b55ad1db5))
+
+### [0.46.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.2...v0.46.3) (2021-05-12)
+
+
+### Bug Fixes
+
+* consistently use _pb2 identifier ([#883](https://www.github.com/googleapis/gapic-generator-python/issues/883)) ([d789c84](https://www.github.com/googleapis/gapic-generator-python/commit/d789c84d0d686bdb2d88179041b4c04cc32a3e66))
+
+### [0.46.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.1...v0.46.2) (2021-05-12)
+
+
+### Bug Fixes
+
+* fix incorrectly referenced exceptions, add missing port to tests ([#873](https://www.github.com/googleapis/gapic-generator-python/issues/873)) ([40078c4](https://www.github.com/googleapis/gapic-generator-python/commit/40078c46b21a0dfa489d4cd80ed7d95bb542f3c3)), closes [#872](https://www.github.com/googleapis/gapic-generator-python/issues/872)
+
 ### [0.46.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.0...v0.46.1) (2021-05-07)
 
 
