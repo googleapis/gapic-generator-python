@@ -290,7 +290,6 @@ jobs:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9]
     runs-on: ubuntu-latest
-    container: gcr.io/gapic-images/googleapis-bazel:20210105
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.7.0
@@ -314,6 +313,22 @@ jobs:
       - name: Submit coverage data to codecov.
         run: codecov
         if: always()
+  integration:
+    strategy:
+      matrix:
+        python: [3.7, 3.9]
+    runs-on: ubuntu-latest
+    container: gcr.io/gapic-images/googleapis-bazel:20210105
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
       - name: Integration Tests
         run: bazel test tests/integration:asset tests/integration:credentials tests/integration:logging tests/integration:redis
 
