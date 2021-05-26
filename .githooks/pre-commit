@@ -96,7 +96,7 @@ fi
 if [ $NUM_PYTHON_FILES_CHANGED -gt 0 ] || [ $NUM_UNIT_GOLDEN_FILES_CHANGED -gt 0 ]
 then
   echo_status "Checking unit tests..."
-  nox -s unit-3.8
+  nox -s unit-3.9
   TEST_STATUS=$?
   if [ $TEST_STATUS != 0 ]
   then
