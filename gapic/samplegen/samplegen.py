@@ -1000,7 +1000,9 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
     sample["request"] = v.validate_and_transform_request(
         calling_form, sample["request"]
     )
-    v.validate_response(sample["response"])
+
+    if "response" in sample:
+        v.validate_response(sample["response"])
 
     return sample_template.render(
         sample=sample,
