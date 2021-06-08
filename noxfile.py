@@ -273,7 +273,8 @@ def showcase_mypy(
     """Perform typecheck analysis on the generated Showcase library."""
 
     # Install pytest and gapic-generator-python
-    session.install("mypy")
+    # Pin to 0.89.0 until fix is released for https://github.com/python/mypy/issues/10596
+    session.install("mypy==0.812")
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
@@ -340,6 +341,7 @@ def docs(session):
 def mypy(session):
     """Perform typecheck analysis."""
 
-    session.install("mypy")
+    # Pin to 0.89.0 until fix is released for https://github.com/python/mypy/issues/10596
+    session.install("mypy==0.812")
     session.install(".")
     session.run("mypy", "gapic")
