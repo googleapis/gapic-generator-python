@@ -3,15 +3,10 @@ load(
     "py_gapic_library",
 )
 load(
-    "@gapic_generator_python//rules_python_gapic:py_gapic_pkg.bzl",
-    "py_gapic_assembly_pkg",
-)
-load(
     "@gapic_generator_python//rules_python_gapic/test:integration_test.bzl",
     "golden_update",
     "integration_test",
 )
-load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -51,6 +46,9 @@ py_gapic_library(
     name = "asset_py_gapic",
     srcs = ["@com_google_googleapis//google/cloud/asset/v1:asset_proto"],
     grpc_service_config = "cloudasset_grpc_service_config.json",
+    opt_args = [
+        "autogen-snippets",
+    ],
 )
 
 # Credentials.
@@ -58,6 +56,9 @@ py_gapic_library(
     name = "credentials_py_gapic",
     srcs = ["@com_google_googleapis//google/iam/credentials/v1:credentials_proto"],
     grpc_service_config = "iamcredentials_grpc_service_config.json",
+    opt_args = [
+        "autogen-snippets",
+    ],
 )
 
 # Logging.
@@ -68,6 +69,7 @@ py_gapic_library(
     opt_args = [
         "python-gapic-namespace=google.cloud",
         "python-gapic-name=logging",
+        "autogen-snippets",
     ],
 )
 
@@ -75,4 +77,7 @@ py_gapic_library(
     name = "redis_py_gapic",
     srcs = ["@com_google_googleapis//google/cloud/redis/v1:redis_proto"],
     grpc_service_config = "redis_grpc_service_config.json",
+    opt_args = [
+        "autogen-snippets",
+    ],
 )
