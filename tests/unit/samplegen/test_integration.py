@@ -256,6 +256,7 @@ def test_generate_sample_void_method():
 
     assert sample_str == golden_snippet("sample_basic_void_method.py")
 
+
 def test_generate_sample_service_not_found():
     schema = DummyApiSchema({}, DummyNaming("pkg_name"))
     sample = {"service": "Mollusc"}
