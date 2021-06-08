@@ -301,8 +301,6 @@ class Validator:
         # Add reasonable defaults depending on the type of the sample
         if not rpc.void:
             sample.setdefault("response", [{"print": ["%s", "$resp"]}])
-        else:
-            sample["response"] = []
 
     @utils.cached_property
     def flattenable_fields(self) -> FrozenSet[str]:
