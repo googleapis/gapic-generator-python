@@ -301,6 +301,8 @@ class Validator:
         # Add reasonable defaults depending on the type of the sample
         if not rpc.void:
             sample.setdefault("response", [{"print": ["%s", "$resp"]}])
+        else:
+            sample.setdefault("response", [])
 
     @utils.cached_property
     def flattenable_fields(self) -> FrozenSet[str]:
@@ -1001,8 +1003,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
         calling_form, sample["request"]
     )
 
-    if "response" in sample:
-        v.validate_response(sample["response"])
+    v.validate_response(sample["response"])
 
     return sample_template.render(
         sample=sample,
