@@ -3,10 +3,15 @@ load(
     "py_gapic_library",
 )
 load(
+    "@gapic_generator_python//rules_python_gapic:py_gapic_pkg.bzl",
+    "py_gapic_assembly_pkg",
+)
+load(
     "@gapic_generator_python//rules_python_gapic/test:integration_test.bzl",
     "golden_update",
     "integration_test",
 )
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(default_visibility = ["//visibility:public"])
 
