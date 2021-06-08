@@ -40,6 +40,5 @@ def sample_undelete_bucket():
     # Make the request
     response = client.undelete_bucket(request=request)
 
-    # Handle response
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UndeleteBucket_grpc]

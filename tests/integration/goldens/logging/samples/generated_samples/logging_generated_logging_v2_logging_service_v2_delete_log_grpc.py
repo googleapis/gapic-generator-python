@@ -40,6 +40,5 @@ def sample_delete_log():
     # Make the request
     response = client.delete_log(request=request)
 
-    # Handle response
 
 # [END logging_generated_logging_v2_LoggingServiceV2_DeleteLog_grpc]

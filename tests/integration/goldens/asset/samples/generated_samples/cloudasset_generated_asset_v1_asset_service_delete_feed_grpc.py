@@ -40,6 +40,5 @@ def sample_delete_feed():
     # Make the request
     response = client.delete_feed(request=request)
 
-    # Handle response
 
 # [END cloudasset_generated_asset_v1_AssetService_DeleteFeed_grpc]

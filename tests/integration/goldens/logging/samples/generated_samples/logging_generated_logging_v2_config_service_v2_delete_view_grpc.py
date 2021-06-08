@@ -40,6 +40,5 @@ def sample_delete_view():
     # Make the request
     response = client.delete_view(request=request)
 
-    # Handle response
 
 # [END logging_generated_logging_v2_ConfigServiceV2_DeleteView_grpc]
