@@ -39,7 +39,13 @@ Execute unit tests by running one of the sessions prefixed with `unit-`.
     bazel test //tests/integration:asset
     ```
 
--   Update goldens files. This overwrites the golden files in
+-   Run integration tests for all APIs.
+
+    ```sh
+    bazel test //tests/integration:all
+    ```
+
+-   Update all goldens files. This overwrites the golden files in
     `tests/integration/goldens/`.
 
     ```sh
