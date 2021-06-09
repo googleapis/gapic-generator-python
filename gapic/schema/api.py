@@ -49,6 +49,7 @@ TRANSPORT_GRPC = "grpc"
 TRANSPORT_GRPC_ASYNC = "grpc-async"
 TRANSPORT_REST = "rest"
 
+
 @dataclasses.dataclass(frozen=True)
 class Proto:
     """A representation of a particular proto file within an API."""
@@ -419,7 +420,8 @@ class API:
             transports = []
             if "grpc" in options.transport:
                 transports.append((TRANSPORT_GRPC, service.client_name))
-                transports.append((TRANSPORT_GRPC_ASYNC, service.async_client_name))
+                transports.append(
+                    (TRANSPORT_GRPC_ASYNC, service.async_client_name))
 
             if "rest" in options.transport:
                 transports.append((TRANSPORT_REST, service.client_name))

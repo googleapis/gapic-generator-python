@@ -1910,7 +1910,8 @@ def test_generate_sample_spec_basic():
         ]
     )
     opts = Options.build("transport=grpc")
-    specs = sorted(samplegen.generate_sample_specs(api_schema, opts=opts), key=lambda x: x["transport"])
+    specs = sorted(samplegen.generate_sample_specs(
+        api_schema, opts=opts), key=lambda x: x["transport"])
     specs.sort(key=lambda x: x["transport"])
     assert len(specs) == 2
 
