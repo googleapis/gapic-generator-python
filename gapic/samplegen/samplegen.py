@@ -296,7 +296,7 @@ class Validator:
         # Assume the gRPC transport if the transport is not specified
         sample.setdefault("transport", "grpc")
 
-        if sample["transport"] == "grpc-async":
+        if sample["transport"] == api.TRANSPORT_GRPC_ASYNC:
             sample["client_name"] = api_schema.services[sample["service"]
                                                         ].async_client_name
         else:
