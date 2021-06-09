@@ -294,8 +294,7 @@ class Validator:
         sample["module_namespace"] = api_schema.naming.module_namespace
 
         # Assume the gRPC transport if the transport is not specified
-        if "transport" not in sample:
-            sample["transport"] = "grpc"
+        sample.setdefault("transport", "grpc")
 
         if sample["transport"] == "grpc-async":
             sample["client_name"] = api_schema.services[sample["service"]
@@ -955,11 +954,8 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
 
     for service_name, service in gapic_metadata.services.items():
         api_short_name = api_schema.services[f"{api_schema.naming.proto_package}.{service_name}"].shortname
-        for transport_name, client in service.clients.items():
-            if transport_name == "grpc-async":
-                transport_type = "async"
-            else:
-                transport_type = "sync"
+        for transport, client in service.clients.items():
+            transport_type = "async" if transport == api.TRANSPORT_GRPC_ASYNC else "sync"
             for rpc_name, method_list in client.rpcs.items():
                 # Region Tag Format:
                 # [{START|END} ${apishortname}_generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
@@ -967,7 +963,7 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 spec = {
                     "sample_type": "standalone",
                     "rpc": rpc_name,
-                    "transport": transport_name,
+                    "transport": transport,
                     "request": [],
                     # response is populated in `preprocess_sample`
                     "service": f"{api_schema.naming.proto_package}.{service_name}",

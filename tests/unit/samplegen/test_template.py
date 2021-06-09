@@ -759,7 +759,7 @@ def test_render_calling_form_paged():
                    transport="grpc")
 
 
-def test_render_calling_form_paged():
+def test_render_calling_form_paged_async():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
                     # Make the request
