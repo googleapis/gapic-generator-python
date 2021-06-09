@@ -23,7 +23,6 @@ import itertools
 import keyword
 import os
 import sys
-from enum import Enum
 from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
 from types import MappingProxyType
 
