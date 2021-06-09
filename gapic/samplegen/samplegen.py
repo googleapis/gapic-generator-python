@@ -294,7 +294,7 @@ class Validator:
         sample["module_namespace"] = api_schema.naming.module_namespace
 
         # Assume the gRPC transport if the transport is not specified
-        sample.setdefault("transport", "grpc")
+        sample.setdefault("transport", api.TRANSPORT_GRPC)
 
         if sample["transport"] == api.TRANSPORT_GRPC_ASYNC:
             sample["client_name"] = api_schema.services[sample["service"]
