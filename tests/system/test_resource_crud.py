@@ -68,9 +68,9 @@ def test_path_parsing(messaging):
     assert expected == actual
 
     expected = {
-        "user_id": "bdfl",
+        "user": "bdfl",
         "legacy_user_id": "apocalyptic",
-        "blurb_id": "city",
+        "blurb": "city",
     }
     actual = messaging.parse_blurb_path(
         messaging.blurb_path("bdfl", "apocalyptic", "city")
