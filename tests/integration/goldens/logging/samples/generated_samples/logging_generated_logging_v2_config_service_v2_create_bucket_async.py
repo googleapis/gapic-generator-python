@@ -35,6 +35,8 @@ async def sample_create_bucket():
 
     # Initialize request argument(s)
     request = logging_v2.CreateBucketRequest(
+        parent="parent_value",
+        bucket_id="bucket_id_value",
     )
 
     # Make the request

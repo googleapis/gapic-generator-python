@@ -34,7 +34,12 @@ async def sample_export_assets():
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
+    output_config = asset_v1.OutputConfig()
+    output_config.gcs_destination.uri = "uri_value"
+
     request = asset_v1.ExportAssetsRequest(
+        parent="parent_value",
+        output_config=output_config,
     )
 
     # Make the request

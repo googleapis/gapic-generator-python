@@ -57,6 +57,10 @@ service Snippets {
   rpc OneOfMethod(OneOfRequest) returns (Response);
 }
 
+enum Enum {
+  DEFAULT = 0; // First value must be 0 and is the default
+}
+
 message ListResourcesRequest {
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -112,6 +116,7 @@ message SignatureRequest {
   bool a_bool = 3 [(google.api.field_behavior) = REQUIRED];
   map<int32, string> map_int_string = 4;
   MessageWithNesting a_message = 5 [(google.api.field_behavior) = REQUIRED];
+  Enum single_enum = 6 [(google.api.field_behavior) = REQUIRED];
 }
 
 

@@ -168,6 +168,62 @@ def test_preprocess_sample_resource_message_field():
         }
     ]
 
+def test_preprocess_sample_with_enum_field():
+    # Verify that the default response is added.
+    sample = {"service": "Mollusc", "rpc": "Classify"}
+
+    classify_request_message = DummyMessage(
+            fields={
+                "type": DummyField(
+                    name="type",
+                    required=True,
+                    type=enum_factory("type", ["TYPE_1", "TYPE_2"]),
+                    enum=enum_factory("type", ["TYPE_1", "TYPE_2"])
+                )
+            },
+            type=DummyMessageTypePB(name="ClassifyRequest"),
+            ident=DummyIdent(name="ClassifyRequest")
+        )
+
+    api_schema = DummyApiSchema(
+        services={"Mollusc": DummyService(
+            methods={}, client_name="MolluscClient",
+            resource_messages_dict={} )},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        messages=classify_request_message
+    )
+
+    rpc = DummyMethod(input=classify_request_message)
+
+    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
+
+    response = sample.get("response")
+    assert response == [{"print": ["%s", "$resp"]}]
+
+    package_name = sample.get("package_name")
+    assert package_name == "mollusc-cephalopod-teuthida-"
+
+    module_name = sample.get("module_name")
+    assert module_name == "teuthida_v1"
+
+    module_namespace = sample.get("module_namespace")
+    assert module_namespace == "mollusc.cephalopod"
+
+    client_name = sample.get("client_name")
+    assert client_name == "MolluscClient"
+
+    request_type = sample.get("request_type")
+    assert request_type.ident.name == "ClassifyRequest"
+
+    # assert mock request is created
+    assert sample["request"] == [
+        {
+            "field":  "type",
+            "value": "TYPE_2"
+        }
+    ]
+
 def test_preprocess_sample_nested_message_field():
     # Verify that the default response is added.
     sample = {"service": "Mollusc", "rpc": "Classify"}
@@ -2011,6 +2067,7 @@ def test_generate_sample_spec_basic():
         "transport": "grpc",
         "service": "animalia.mollusca.v1.Squid",
         "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_sync",
+        "request": [],
         "description": "Snippet for ramshorn"
     }
 
@@ -2020,6 +2077,7 @@ def test_generate_sample_spec_basic():
         "transport": "grpc-async",
         "service": "animalia.mollusca.v1.Squid",
         "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_async",
+        "request": [],
         "description": "Snippet for ramshorn"
     }
 

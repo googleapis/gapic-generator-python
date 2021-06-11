@@ -35,6 +35,7 @@ def sample_list_buckets():
 
     # Initialize request argument(s)
     request = logging_v2.ListBucketsRequest(
+        parent="parent_value",
     )
 
     # Make the request

@@ -43,6 +43,7 @@ def sample_method_one_signature():
         an_int=633,
         a_bool=True,
         a_message=a_message,
+        single_enum="DEFAULT",
     )
 
     # Make the request

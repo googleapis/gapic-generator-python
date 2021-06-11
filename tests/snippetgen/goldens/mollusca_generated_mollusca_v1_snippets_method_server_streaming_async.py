@@ -43,6 +43,7 @@ async def sample_method_server_streaming():
         an_int=633,
         a_bool=True,
         a_message=a_message,
+        single_enum="DEFAULT",
     )
 
     # Make the request

@@ -962,24 +962,27 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
     """
     request: List[Dict[str, Any]] = []
 
+    request_fields: List[wrappers.Field] = []
+
     # Choose the first option for each oneof
     selected_oneofs: List[wrappers.Field] = [oneof_fields[0] for oneof_fields in message.oneof_fields().values()]
-
-    request_fields: List[wrappers.Field] = selected_oneofs + message.required_fields
+    request_fields = selected_oneofs + message.required_fields
 
     for field in request_fields:
         # TransformedRequest expects nested fields to be referenced like
         # `destination.input_config.name`
         field_name = ".".join([field_name_prefix, field.name]).lstrip('.')
 
-        # TODO(busunkim): Properly handle map fields, enums
+        # TODO(busunkim): Properly handle map fields
         if field.is_primitive:
             placeholder_value = field.mock_value_original_type
             # If this field identifies a resource use the resource path
             if service.resource_messages_dict.get(field.resource_reference):
                 placeholder_value = service.resource_messages_dict[field.resource_reference].resource_path
             request.append({"field": field_name, "value": placeholder_value})
-
+        elif field.enum:
+            # Choose the last enum value in the list since index 0 is often "unspecified"
+            request.append({"field": field_name, "value": field.enum.values[-1].name})
         else:
             # This is a message type, recurse
             # TODO(busunkim): when optional fields are supported
