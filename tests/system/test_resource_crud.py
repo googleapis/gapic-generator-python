@@ -69,7 +69,7 @@ def test_path_parsing(messaging):
 
     expected = {
         "user": "bdfl",
-        "legacy_user_id": "apocalyptic",
+        "legacy_user": "apocalyptic",
         "blurb": "city",
     }
     actual = messaging.parse_blurb_path(
