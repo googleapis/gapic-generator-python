@@ -120,11 +120,10 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info(client_c
     {% endif %}
 ])
 def test_{{ service.client_name|snake_case }}_service_account_always_use_jwt(client_class):
-    creds = service_account.Credentials(None, None, None)
-    if hasattr(service_account.Credentials, "with_always_use_jwt_access"):
-        assert not creds._always_use_jwt_access
+    with mock.patch.object(service_account.Credentials, 'with_always_use_jwt_access', create=True) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
         client = client_class(credentials=creds)
-        assert client.transport._credentials._always_use_jwt_access
+        use_jwt.assert_called_with(True)
 
 
 @pytest.mark.parametrize("client_class", [
