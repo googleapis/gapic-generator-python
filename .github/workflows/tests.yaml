@@ -98,7 +98,7 @@ jobs:
         run: |
           sudo mkdir -p /usr/src/showcase
           sudo chown -R ${USER} /usr/src/
-          curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.15.0/gapic-showcase-0.15.0-linux-amd64.tar.gz --output /usr/src/showcase/showcase-0.15.0-linux-amd64.tar.gz
+          curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.16.0/gapic-showcase-0.16.0-linux-amd64.tar.gz --output /usr/src/showcase/showcase-0.16.0-linux-amd64.tar.gz
           cd /usr/src/showcase/
           tar -xf showcase-*
           ./gapic-showcase run &
@@ -156,7 +156,7 @@ jobs:
             sudo mkdir gapic_showcase
             sudo chown ${USER} gapic_showcase
             cd gapic_showcase
-            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.15.0/gapic-showcase-0.15.0-linux-amd64.tar.gz | tar xz
+            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.16.0/gapic-showcase-0.16.0-linux-amd64.tar.gz | tar xz
             ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
             showcase_pid=$!
 

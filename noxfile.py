@@ -25,7 +25,7 @@ from os import path
 import shutil
 
 
-showcase_version = "0.15.0"
+showcase_version = "0.16.0"
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
