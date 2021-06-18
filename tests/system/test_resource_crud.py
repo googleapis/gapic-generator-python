@@ -62,7 +62,7 @@ def test_nonslash_resource(messaging):
 
 
 def test_path_parsing(messaging):
-    expected = {"room_id": "tiki"}
+    expected = {"room": "tiki"}
     actual = messaging.parse_room_path(messaging.room_path("tiki"))
 
     assert expected == actual
