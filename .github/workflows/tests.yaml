@@ -104,7 +104,7 @@ jobs:
           ./gapic-showcase run &
           cd -
         env:
-          SHOWCASE_VERSION: 0.11.0
+          SHOWCASE_VERSION: 0.16.0
       - name: Install nox.
         run: python -m pip install nox
       - name: Install protoc 3.12.1.
@@ -173,7 +173,7 @@ jobs:
             cd ..
             nox -s ${{ matrix.target }}
         env:
-          SHOWCASE_VERSION: 0.11.0
+          SHOWCASE_VERSION: 0.16.0
   # TODO(yon-mg): add compute unit tests
   showcase-unit:
     strategy:
@@ -211,7 +211,7 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
         env:
-          SHOWCASE_VERSION: 0.11.0
+          SHOWCASE_VERSION: 0.16.0
   showcase-unit-add-iam-methods:
     runs-on: ubuntu-latest
     steps:
@@ -241,7 +241,7 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit_add_iam_methods
         env:
-          SHOWCASE_VERSION: 0.11.0
+          SHOWCASE_VERSION: 0.16.0
   showcase-mypy:
     runs-on: ubuntu-latest
     strategy:
@@ -274,7 +274,7 @@ jobs:
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy${{ matrix.variant }}
         env:
-          SHOWCASE_VERSION: 0.11.0
+          SHOWCASE_VERSION: 0.16.0
   snippetgen:
     runs-on: ubuntu-latest
     steps:
