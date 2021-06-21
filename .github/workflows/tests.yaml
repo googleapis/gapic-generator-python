@@ -314,15 +314,11 @@ jobs:
         run: |
             sudo apt-get update
             sudo apt-get install -y pandoc gcc git
-      - name: Install nox and codecov.
+      - name: Install nox.
         run: |
             python -m pip install nox
-            python -m pip install codecov
       - name: Run unit tests.
         run: nox -s unit-${{ matrix.python }}
-      - name: Submit coverage data to codecov.
-        run: codecov
-        if: always()
   integration:
     runs-on: ubuntu-latest
     steps:
