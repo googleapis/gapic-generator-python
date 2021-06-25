@@ -50,7 +50,7 @@ except pkg_resources.DistributionNotFound:
 try:
     # google.auth.__version__ was added in 1.26.0
     _GOOGLE_AUTH_VERSION = google.auth.__version__
-except AttributeError:
+except AttributeError:  # pragma: NO COVER
     try:  # try pkg_resources if it is available
         _GOOGLE_AUTH_VERSION = pkg_resources.get_distribution("google-auth").version
     except pkg_resources.DistributionNotFound:  # pragma: NO COVER
@@ -152,7 +152,7 @@ class {{ service.name }}Transport(abc.ABC):
             >= packaging.version.parse("1.25.0")
         ):
             scopes_kwargs = {"scopes": scopes, "default_scopes": cls.AUTH_SCOPES}
-        else:
+        else:  # pragma: NO COVER
             scopes_kwargs = {"scopes": scopes or cls.AUTH_SCOPES}
 
         return scopes_kwargs
