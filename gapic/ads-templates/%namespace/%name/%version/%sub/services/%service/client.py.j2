@@ -10,7 +10,7 @@ from typing import Callable, Dict, Optional, {% if service.any_server_streaming 
 import pkg_resources
 {% if service.any_deprecated %}
 import warnings
-{% endif %}}
+{% endif %}
 
 from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions as core_exceptions         # type: ignore
