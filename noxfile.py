@@ -199,7 +199,6 @@ def run_showcase_unit_tests(session, fail_under=100):
         "-n=auto",
         "--quiet",
         "--cov=google",
-        "--cov-config=.coveragerc",
         "--cov-append",
        f"--cov-fail-under={str(fail_under)}",
         *(session.posargs or [path.join("tests", "unit")]),
