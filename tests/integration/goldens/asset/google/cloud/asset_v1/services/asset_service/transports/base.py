@@ -120,7 +120,7 @@ class AssetServiceTransport(abc.ABC):
 
         # If the credentials is service account credentials, then always try to use self signed JWT.
         if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
-            credentials = credentials.with_always_use_jwt_access(True)
+            credentials = credentials.with_always_use_jwt_access(False)
 
         # Save the credentials.
         self._credentials = credentials
