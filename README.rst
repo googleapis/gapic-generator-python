@@ -36,3 +36,5 @@ Documentation
   :target: https://circleci.com/gh/googleapis/gapic-generator-python
 .. |codecov| image:: https://codecov.io/gh/googleapis/gapic-generator-python/graph/badge.svg
   :target: https://codecov.io/gh/googleapis/gapic-generator-python
+
+
