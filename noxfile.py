@@ -119,7 +119,7 @@ def showcase_library(
         )
 
         # Install the library.
-        session.install(tmp_dir)
+        session.install("-e", tmp_dir)
 
         yield tmp_dir
 
