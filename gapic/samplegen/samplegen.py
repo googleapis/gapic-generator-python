@@ -1022,8 +1022,7 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                     "sample_type": "standalone",
                     "rpc": rpc_name,
                     "transport": transport,
-                    "request": [],
-                    # response is populated in `preprocess_sample`
+                    # `request` and `response` is populated in `preprocess_sample`
                     "service": f"{api_schema.naming.proto_package}.{service_name}",
                     "region_tag": region_tag,
                     "description": f"Snippet for {utils.to_snake_case(rpc_name)}"
