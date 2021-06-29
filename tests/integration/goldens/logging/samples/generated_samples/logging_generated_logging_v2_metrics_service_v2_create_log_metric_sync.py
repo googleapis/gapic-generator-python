@@ -39,7 +39,7 @@ def sample_create_log_metric():
     metric.filter = "filter_value"
 
     request = logging_v2.CreateLogMetricRequest(
-        parent="parent_value",
+        parent="projects/{project}/metrics/{metric}",
         metric=metric,
     )
 

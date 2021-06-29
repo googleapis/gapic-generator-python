@@ -39,7 +39,7 @@ def sample_create_exclusion():
     exclusion.filter = "filter_value"
 
     request = logging_v2.CreateExclusionRequest(
-        parent="parent_value",
+        parent="projects/{project}/exclusions/{exclusion}",
         exclusion=exclusion,
     )
 

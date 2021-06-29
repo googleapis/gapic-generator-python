@@ -35,7 +35,7 @@ async def sample_list_logs():
 
     # Initialize request argument(s)
     request = logging_v2.ListLogsRequest(
-        parent="parent_value",
+        parent="projects/{project}/logs/{log}",
     )
 
     # Make the request

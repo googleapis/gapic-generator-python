@@ -238,7 +238,8 @@ class Field:
         Example: "translate.googleapis.com/Glossary"
         """
         return (self.options.Extensions[resource_pb2.resource_reference].type
-                or None)
+            or self.options.Extensions[resource_pb2.resource_reference].child_type
+            or None)
 
     @utils.cached_property
     def type(self) -> Union['MessageType', 'EnumType', 'PrimitiveType']:

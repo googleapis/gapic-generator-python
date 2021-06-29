@@ -35,7 +35,7 @@ def sample_create_bucket():
 
     # Initialize request argument(s)
     request = logging_v2.CreateBucketRequest(
-        parent="parent_value",
+        parent="projects/{project}/locations/{location}/buckets/{bucket}",
         bucket_id="bucket_id_value",
     )
 

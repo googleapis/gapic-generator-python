@@ -39,7 +39,7 @@ def sample_create_sink():
     sink.destination = "destination_value"
 
     request = logging_v2.CreateSinkRequest(
-        parent="parent_value",
+        parent="projects/{project}/sinks/{sink}",
         sink=sink,
     )
 
