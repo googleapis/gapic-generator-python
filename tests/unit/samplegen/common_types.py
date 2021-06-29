@@ -46,8 +46,6 @@ DummyMessageTypePB = namedtuple("DummyMessageTypePB", ["name"])
 # DummyMessageBase.__new__.__defaults__ = (False,) * len(DummyMessageBase._fields)
 
 
-
-
 DummyFieldBase = namedtuple("DummyField",
                         ["message",
                          "enum",
@@ -62,10 +60,12 @@ DummyFieldBase = namedtuple("DummyField",
                          "type"])
 DummyFieldBase.__new__.__defaults__ = (False,) * len(DummyFieldBase._fields)
 
+
 class DummyField(DummyFieldBase):
     @property
     def mock_value_original_type(self):
         return "mock_value"
+
 
 class DummyMessage:
     def __init__(self, *, fields={}, type="", options=False, ident=False, resource_path=False):
@@ -85,7 +85,9 @@ class DummyMessage:
     def required_fields(self):
         return [field for field in self.fields.values() if field.required]
 
-DummyService = namedtuple("DummyService", ["methods", "client_name", "async_client_name", "resource_messages_dict"])
+
+DummyService = namedtuple("DummyService", [
+                          "methods", "client_name", "async_client_name", "resource_messages_dict"])
 DummyService.__new__.__defaults__ = (False,) * len(DummyService._fields)
 
 DummyApiSchema = namedtuple("DummyApiSchema",
@@ -108,7 +110,8 @@ def message_factory(exp: str,
     # used to describe the field and type hierarchy,
     # e.g. "mollusc.cephalopod.coleoid"
     toks = exp.split(".")
-    messages = [DummyMessage(fields={}, type=tok.upper() + "_TYPE") for tok in toks]
+    messages = [DummyMessage(fields={}, type=tok.upper() + "_TYPE")
+                for tok in toks]
     if enum:
         messages[-1] = enum
 

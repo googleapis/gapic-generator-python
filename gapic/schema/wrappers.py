@@ -106,7 +106,6 @@ class Field:
 
         return answer
 
-
     def inner_mock(self, stack, visited_fields) -> str:
         """Return a repr of a valid, usually truthy mock value."""
         # For primitives, send a truthy value computed from the
@@ -164,7 +163,6 @@ class Field:
 
         # Done; return the mock value.
         return answer
-
 
     def inner_mock_as_original_type(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
         """Like inner_mock, but return the original type rather than
@@ -344,7 +342,8 @@ class MessageType:
 
     @utils.cached_property
     def required_fields(self) -> Sequence['Field']:
-        required_fields = [field for field in self.fields.values() if field.required]
+        required_fields = [
+            field for field in self.fields.values() if field.required]
 
         return required_fields
 

@@ -43,7 +43,8 @@ def make_resource_opts(*args):
     opts.Extensions[resource_pb2.resource].pattern.append(
         "/".join(f"{arg}/{{{arg}}}" for arg in args)
     )
-    opts.Extensions[resource_pb2.resource].type = "/".join(f"{arg}/{{{arg}}}" for arg in args)
+    opts.Extensions[resource_pb2.resource].type = "/".join(
+        f"{arg}/{{{arg}}}" for arg in args)
     return opts
 
 

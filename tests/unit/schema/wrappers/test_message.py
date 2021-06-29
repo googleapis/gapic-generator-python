@@ -278,6 +278,7 @@ def test_oneof_fields():
     }
     assert actual_oneofs == expected_oneofs
 
+
 def test_required_fields():
     REQUIRED = field_behavior_pb2.FieldBehavior.Value('REQUIRED')
 
@@ -306,5 +307,3 @@ def test_required_fields():
     )
 
     assert set(request.required_fields) == {mass_kg, length_m, color}
-
-

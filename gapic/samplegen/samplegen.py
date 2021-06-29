@@ -202,7 +202,7 @@ class TransformedRequest:
                     f"Resource {resource_typestr} has no pattern with params: {attr_name_str}"
                 )
 
-            return cls(base=base, body=attrs, single=None, pattern=pattern,  )
+            return cls(base=base, body=attrs, single=None, pattern=pattern,)
 
 
 @dataclasses.dataclass
@@ -293,7 +293,7 @@ class Validator:
         sample["module_name"] = api_schema.naming.versioned_module_name
         sample["module_namespace"] = api_schema.naming.module_namespace
 
-        service =  api_schema.services[sample["service"]]
+        service = api_schema.services[sample["service"]]
 
         # Assume the gRPC transport if the transport is not specified
         sample.setdefault("transport", api.TRANSPORT_GRPC)
@@ -310,7 +310,8 @@ class Validator:
         # If no request was specified in the config
         # Add reasonable default values as placeholders
         if "request" not in sample:
-            sample["request"] = generate_request_object(api_schema, service, rpc.input)
+            sample["request"] = generate_request_object(
+                api_schema, service, rpc.input)
 
         # If no response was specified in the config
         # Add reasonable defaults depending on the type of the sample
@@ -947,8 +948,7 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                         yield spec
 
 
-
-def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str=""):
+def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str = ""):
     """Generate dummy input for a given message.
 
     Args:
@@ -965,7 +965,8 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
     request_fields: List[wrappers.Field] = []
 
     # Choose the first option for each oneof
-    selected_oneofs: List[wrappers.Field] = [oneof_fields[0] for oneof_fields in message.oneof_fields().values()]
+    selected_oneofs: List[wrappers.Field] = [oneof_fields[0]
+        for oneof_fields in message.oneof_fields().values()]
     request_fields = selected_oneofs + message.required_fields
 
     for field in request_fields:
@@ -978,11 +979,13 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
             placeholder_value = field.mock_value_original_type
             # If this field identifies a resource use the resource path
             if service.resource_messages_dict.get(field.resource_reference):
-                placeholder_value = service.resource_messages_dict[field.resource_reference].resource_path
+                placeholder_value = service.resource_messages_dict[
+                    field.resource_reference].resource_path
             request.append({"field": field_name, "value": placeholder_value})
         elif field.enum:
             # Choose the last enum value in the list since index 0 is often "unspecified"
-            request.append({"field": field_name, "value": field.enum.values[-1].name})
+            request.append(
+                {"field": field_name, "value": field.enum.values[-1].name})
         else:
             # This is a message type, recurse
             # TODO(busunkim): when optional fields are supported

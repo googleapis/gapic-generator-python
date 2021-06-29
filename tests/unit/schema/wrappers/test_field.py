@@ -161,9 +161,11 @@ def test_mock_value_int():
     field = make_field(name='foo_bar', type='TYPE_INT32')
     assert field.mock_value == '728'
 
+
 def test_mock_value_original_type_int():
     field = make_field(name='foo_bar', type='TYPE_INT32')
     assert field.mock_value_original_type == 728
+
 
 def test_oneof():
     REP = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
@@ -176,21 +178,26 @@ def test_mock_value_float():
     field = make_field(name='foo_bar', type='TYPE_DOUBLE')
     assert field.mock_value == '0.728'
 
+
 def test_mock_value_original_type_float():
     field = make_field(name='foo_bar', type='TYPE_DOUBLE')
     assert field.mock_value_original_type == 0.728
+
 
 def test_mock_value_bool():
     field = make_field(name='foo_bar', type='TYPE_BOOL')
     assert field.mock_value == 'True'
 
+
 def test_mock_value_original_type_bool():
     field = make_field(name='foo_bar', type='TYPE_BOOL')
     assert field.mock_value_original_type == True
 
+
 def test_mock_value_str():
     field = make_field(name='foo_bar', type='TYPE_STRING')
     assert field.mock_value == "'foo_bar_value'"
+
 
 def test_mock_value_original_type_str():
     field = make_field(name='foo_bar', type='TYPE_STRING')
@@ -206,9 +213,11 @@ def test_mock_value_original_type_bytes():
     field = make_field(name='foo_bar', type='TYPE_BYTES')
     assert field.mock_value_original_type == b"foo_bar_blob"
 
+
 def test_mock_value_repeated():
     field = make_field(name='foo_bar', type='TYPE_STRING', label=3)
     assert field.mock_value == "['foo_bar_value']"
+
 
 def test_mock_value_original_type_repeated():
     field = make_field(name='foo_bar', type='TYPE_STRING', label=3)
@@ -306,6 +315,7 @@ def test_mock_value_original_type_message_errors():
     with pytest.raises(TypeError):
         mock = field.mock_value_original_type
 
+
 def test_mock_value_recursive():
     # The elaborate setup is an unfortunate requirement.
     file_pb = descriptor_pb2.FileDescriptorProto(
@@ -345,6 +355,7 @@ def test_field_name_kword_disambiguation():
         name="frum",
     )
     assert frum_field.name == "frum"
+
 
 def test_field_resource_reference():
     field = make_field(name='parent', type='TYPE_STRING')

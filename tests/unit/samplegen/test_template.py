@@ -943,6 +943,7 @@ def test_render_method_call_basic_async():
         transport="grpc-async"
     )
 
+
 def test_render_method_call_basic_async():
     check_template(
         '''
