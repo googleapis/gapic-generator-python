@@ -109,6 +109,17 @@ def test_config_service_v2_client_service_account_always_use_jwt(client_class):
         use_jwt.assert_not_called()
 
 
+@pytest.mark.parametrize("transport_class,transport_name", [
+    (transports.ConfigServiceV2GrpcTransport, "grpc"),
+    (transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
+])
+def test_config_service_v2_client_service_account_always_use_jwt_true(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, 'with_always_use_jwt_access', create=True) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+
 @pytest.mark.parametrize("client_class", [
     ConfigServiceV2Client,
     ConfigServiceV2AsyncClient,
