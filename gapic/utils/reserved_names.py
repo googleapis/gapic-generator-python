@@ -24,6 +24,6 @@ RESERVED_NAMES = frozenset(
         # We CANNOT make exceptions for keywords.
         keyword.kwlist,
         # We make SOME exceptions for certain names that collide with builtins.
-        set(dir(builtins)) - {"filter", "map", "id", "input", "property"},
+        set(dir(builtins)) - {"filter", "map", "id", "input", "property", "type"},
     )
 )
