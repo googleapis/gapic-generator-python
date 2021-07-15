@@ -3,7 +3,10 @@
 {% block content %}
 
 import os
-import mock
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 import packaging.version
 
 import grpc
