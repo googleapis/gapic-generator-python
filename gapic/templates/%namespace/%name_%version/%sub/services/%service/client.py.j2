@@ -6,8 +6,11 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
+from typing import Dict, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
 import pkg_resources
+{% if service.any_deprecated %}
+import warnings
+{% endif %}
 
 from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions as core_exceptions         # type: ignore
@@ -301,6 +304,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                {% if "grpc" in opts.transport %}
+                always_use_jwt_access=(
+                    Transport == type(self).get_transport_class("grpc")
+                    or Transport == type(self).get_transport_class("grpc_asyncio")
+                ),
+                {% endif %}
             )
 
 
@@ -360,7 +369,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         {% endif %}
         """
         {% if method.is_deprecated %}
-        warnings.warn("{{ method.name|snake_case }} is deprecated", warnings.DeprecationWarning)
+        warnings.warn("{{ service.client_name }}.{{ method.name|snake_case }} is deprecated",
+            DeprecationWarning)
+
         {% endif %}
         {% if not method.client_streaming %}
         # Create or coerce a protobuf request object.

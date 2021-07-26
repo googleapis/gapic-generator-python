@@ -113,6 +113,26 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info(client_c
         {% endif %}
 
 
+@pytest.mark.parametrize("transport_class,transport_name", [
+    {% if 'grpc' in opts.transport %}
+    (transports.{{ service.grpc_transport_name }}, "grpc"),
+    (transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
+    {% elif 'rest' in opts.transport %}
+    (transports.{{ service.rest_transport_name }}, "rest"),
+    {% endif %}
+])
+def test_{{ service.client_name|snake_case }}_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, 'with_always_use_jwt_access', create=True) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(service_account.Credentials, 'with_always_use_jwt_access', create=True) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
 @pytest.mark.parametrize("client_class", [
     {{ service.client_name }},
     {% if 'grpc' in opts.transport %}
@@ -188,6 +208,9 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            {% if 'grpc' in opts.transport %}
+            always_use_jwt_access=True,
+            {% endif %}
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -204,6 +227,9 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                {% if 'grpc' in opts.transport %}
+                always_use_jwt_access=True,
+                {% endif %}
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -220,6 +246,9 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                {% if 'grpc' in opts.transport %}
+                always_use_jwt_access=True,
+                {% endif %}
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -246,6 +275,9 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            {% if 'grpc' in opts.transport %}
+            always_use_jwt_access=True,
+            {% endif %}
         )
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name,use_client_cert_env", [
@@ -291,6 +323,9 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                 client_cert_source_for_mtls=expected_client_cert_source,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                {% if 'grpc' in opts.transport %}
+                always_use_jwt_access=True,
+                {% endif %}
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -316,6 +351,9 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                         client_cert_source_for_mtls=expected_client_cert_source,
                         quota_project_id=None,
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        {% if 'grpc' in opts.transport %}
+                        always_use_jwt_access=True,
+                        {% endif %}
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -332,6 +370,9 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    {% if 'grpc' in opts.transport %}
+                    always_use_jwt_access=True,
+                    {% endif %}
                 )
 
 
@@ -359,6 +400,9 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            {% if 'grpc' in opts.transport %}
+            always_use_jwt_access=True,
+            {% endif %}
         )
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
@@ -385,6 +429,9 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            {% if 'grpc' in opts.transport %}
+            always_use_jwt_access=True,
+            {% endif %}
         )
 {% if 'grpc' in opts.transport %}
 
@@ -403,6 +450,7 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 {% endif %}
 
@@ -760,9 +808,9 @@ def test_{{ method.name|snake_case }}_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         {% for key, field in method.flattened_fields.items() %}{% if not field.oneof or field.proto3_optional %}
-        {% if field.ident|string() == 'timestamp.Timestamp' %}
+        {% if field.ident|string() == 'timestamp_pb2.Timestamp' %}
         assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
-        {% elif field.ident|string() == 'duration.Duration' %}
+        {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
         assert args[0].{{ key }} == {{ field.mock_value }}
@@ -845,9 +893,9 @@ async def test_{{ method.name|snake_case }}_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         {% for key, field in method.flattened_fields.items() %}{% if not field.oneof or field.proto3_optional %}
-        {% if field.ident|string() == 'timestamp.Timestamp' %}
+        {% if field.ident|string() == 'timestamp_pb2.Timestamp' %}
         assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
-        {% elif field.ident|string() == 'duration.Duration' %}
+        {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
         assert args[0].{{ key }} == {{ field.mock_value }}
@@ -1192,17 +1240,18 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get('data')
+        params = http_params.get('params')
         {% for key, field in method.flattened_fields.items() %}
         {% if not field.oneof or field.proto3_optional %}
-        {% if field.ident|string() == 'timestamp.Timestamp' %}
+        {% if field.ident|string() == 'timestamp_pb2.Timestamp' %}
         assert TimestampRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
-        {% elif field.ident|string() == 'duration.Duration' %}
+        {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
         assert {% if field.field_pb is msg_field_pb %}{{ field.ident }}.to_json({{ field.name }}, including_default_value_fields=False, use_integers_for_enums=False)
                {%- elif field.field_pb is str_field_pb %}{{ field.mock_value }}
                {%- else %}str({{ field.mock_value }})
-               {%- endif %} in http_call[1] + str(body)
+               {%- endif %} in http_call[1] + str(body) + str(params)
         {% endif %}
         {% endif %}{% endfor %}
 
@@ -1654,11 +1703,7 @@ def test_{{ service.name|snake_case }}_grpc_transport_client_cert_source_for_mtl
             "squid.clam.whelk:443",
             credentials=cred,
             credentials_file=None,
-            scopes=(
-                {% for scope in service.oauth_scopes %}
-                '{{ scope }}',
-                {% endfor %}
-            ),
+            scopes=None,
             ssl_credentials=mock_ssl_channel_creds,
             quota_project_id=None,
             options=[
@@ -1771,11 +1816,7 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_s
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
                 credentials_file=None,
-                scopes=(
-                    {% for scope in service.oauth_scopes %}
-                    '{{ scope }}',
-                    {% endfor %}
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[
@@ -1816,11 +1857,7 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_adc(
                 "mtls.squid.clam.whelk:443",
                 credentials=mock_cred,
                 credentials_file=None,
-                scopes=(
-                    {% for scope in service.oauth_scopes %}
-                    '{{ scope }}',
-                    {% endfor %}
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[

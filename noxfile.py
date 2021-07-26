@@ -25,7 +25,7 @@ from os import path
 import shutil
 
 
-showcase_version = "0.11.0"
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.16.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
@@ -34,7 +34,7 @@ def unit(session):
     """Run the unit test suite."""
 
     session.install(
-        "coverage", "pytest", "pytest-cov", "pytest-xdist", "pyfakefs",
+        "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs",
     )
     session.install("-e", ".")
 
@@ -48,7 +48,7 @@ def unit(session):
                 "--cov=gapic",
                 "--cov-config=.coveragerc",
                 "--cov-report=term",
-                "--cov-report=html",
+                "--cov-fail-under=100",
                 path.join("tests", "unit"),
             ]
         ),
@@ -119,7 +119,7 @@ def showcase_library(
         )
 
         # Install the library.
-        session.install(tmp_dir)
+        session.install("-e", tmp_dir)
 
         yield tmp_dir
 
@@ -230,7 +230,6 @@ def showcase_unit(
 
         # 2. Run the tests again with latest version of dependencies
         session.install(".", "--upgrade", "--force-reinstall")
-        # This time aggregate coverage should reach 100%
         run_showcase_unit_tests(session, fail_under=100)
 
 
@@ -262,7 +261,6 @@ def showcase_unit_add_iam_methods(session):
 
         # 2. Run the tests again with latest version of dependencies
         session.install(".", "--upgrade", "--force-reinstall")
-        # This time aggregate coverage should reach 100%
         run_showcase_unit_tests(session, fail_under=100)
 
 
@@ -273,7 +271,7 @@ def showcase_mypy(
     """Perform typecheck analysis on the generated Showcase library."""
 
     # Install pytest and gapic-generator-python
-    session.install("mypy")
+    session.install("mypy", "types-pkg-resources")
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
@@ -340,6 +338,11 @@ def docs(session):
 def mypy(session):
     """Perform typecheck analysis."""
 
-    session.install("mypy")
+    session.install(
+        "mypy",
+        "types-protobuf",
+        "types-PyYAML",
+        "types-dataclasses"
+    )
     session.install(".")
     session.run("mypy", "gapic")

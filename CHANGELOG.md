@@ -1,5 +1,90 @@
 # Changelog
 
+### [0.50.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.4...v0.50.5) (2021-07-22)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#958](https://www.github.com/googleapis/gapic-generator-python/issues/958)) ([af02a9c](https://www.github.com/googleapis/gapic-generator-python/commit/af02a9cae522ff2cdc8e97cfffe2ba2bb84d6b6a))
+* fix rest transport unit test and required query prams handling ([#951](https://www.github.com/googleapis/gapic-generator-python/issues/951)) ([b793017](https://www.github.com/googleapis/gapic-generator-python/commit/b7930177da9a8be556bf6485febcc0a9bdef897b))
+
+### [0.50.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.3...v0.50.4) (2021-06-30)
+
+
+### Bug Fixes
+
+* fix syntax for Deprecationwarning ([#942](https://www.github.com/googleapis/gapic-generator-python/issues/942)) ([82dbddb](https://www.github.com/googleapis/gapic-generator-python/commit/82dbddb6a9caf1227c4b335345f365dd01025794))
+
+### [0.50.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.2...v0.50.3) (2021-06-29)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#939](https://www.github.com/googleapis/gapic-generator-python/issues/939)) ([1302352](https://www.github.com/googleapis/gapic-generator-python/commit/130235220849987df572c1840735b3c199b85dfc))
+
+### [0.50.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.1...v0.50.2) (2021-06-28)
+
+
+### Bug Fixes
+
+* fix wrong scopes for self signed jwt ([#935](https://www.github.com/googleapis/gapic-generator-python/issues/935)) ([e033acd](https://www.github.com/googleapis/gapic-generator-python/commit/e033acd44763f7cf65eabb6b35f66093022b1bcb))
+* import warnings when needed ([#930](https://www.github.com/googleapis/gapic-generator-python/issues/930)) ([d4270ae](https://www.github.com/googleapis/gapic-generator-python/commit/d4270ae5805f44ab8ee30bb11fe42a0da6d79755))
+
+### [0.50.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.0...v0.50.1) (2021-06-24)
+
+
+### Bug Fixes
+
+* **bazel:** Re-enable Python µgen integration tests post monolith rule removal ([#926](https://www.github.com/googleapis/gapic-generator-python/issues/926)) ([13a6b3a](https://www.github.com/googleapis/gapic-generator-python/commit/13a6b3aed35b5af85aea047922aa219258460a58))
+
+## [0.50.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.49.0...v0.50.0) (2021-06-21)
+
+
+### Features
+
+* enable self signed jwt for grpc ([#920](https://www.github.com/googleapis/gapic-generator-python/issues/920)) ([da119c7](https://www.github.com/googleapis/gapic-generator-python/commit/da119c72c82d04e168c4b41e5bf910a0c1609ce3))
+
+
+### Bug Fixes
+
+* **bazel:** Remove monolith imports from Python µgen Bazel rules ([#923](https://www.github.com/googleapis/gapic-generator-python/issues/923)) ([4a2afa7](https://www.github.com/googleapis/gapic-generator-python/commit/4a2afa78455817e7e6c058d21857326867fe3f21))
+* temporarily disable code coverage in showcase_unit tests ([#925](https://www.github.com/googleapis/gapic-generator-python/issues/925)) ([0dfac03](https://www.github.com/googleapis/gapic-generator-python/commit/0dfac03bd3ef8c12b33e6c03e62eab3e7bf2cd69))
+
+## [0.49.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.48.1...v0.49.0) (2021-06-11)
+
+
+### Features
+
+* add async samples ([#861](https://www.github.com/googleapis/gapic-generator-python/issues/861)) ([e385ffd](https://www.github.com/googleapis/gapic-generator-python/commit/e385ffd7f012c6a38c9fcd7c5f36ce090311032b))
+
+### [0.48.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.48.0...v0.48.1) (2021-06-09)
+
+
+### Bug Fixes
+
+* samplegen always produces sample dicts with "response" ([#914](https://www.github.com/googleapis/gapic-generator-python/issues/914)) ([0b168f2](https://www.github.com/googleapis/gapic-generator-python/commit/0b168f20f4cbf419131fcc512141fccca8186681))
+
+## [0.48.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.47.0...v0.48.0) (2021-05-27)
+
+
+### Features
+
+* Add `x-goog-api-client` header to rest clients ([#888](https://www.github.com/googleapis/gapic-generator-python/issues/888)) ([2d1d3ae](https://www.github.com/googleapis/gapic-generator-python/commit/2d1d3ae135a75bbfff13df7703de5d0dad44695c))
+* **dev:** Add Git pre-commit hooks [gapic-generator-python] ([#908](https://www.github.com/googleapis/gapic-generator-python/issues/908)) ([298db39](https://www.github.com/googleapis/gapic-generator-python/commit/298db39064e29de764537f25dc38f9e5ac301390))
+* Raise GoogleAPICallError on REST response errors ([#891](https://www.github.com/googleapis/gapic-generator-python/issues/891)) ([edb8c63](https://www.github.com/googleapis/gapic-generator-python/commit/edb8c63e8a331f5e08ea19202d8de42de7051299))
+* **tests:** Add integration test framework, goldens for 4 APIs [gapic-generator-python] ([#905](https://www.github.com/googleapis/gapic-generator-python/issues/905)) ([48db1e6](https://www.github.com/googleapis/gapic-generator-python/commit/48db1e644badc2180253e11d9a3d3657e8f9aeed))
+
+
+### Bug Fixes
+
+* fix datetime comparison unit tests ([#898](https://www.github.com/googleapis/gapic-generator-python/issues/898)) ([81932a2](https://www.github.com/googleapis/gapic-generator-python/commit/81932a2b71e6ca5f424ddc5c52933ad1d452583a))
+* remove support for google-api-core<1.26.0 ([#893](https://www.github.com/googleapis/gapic-generator-python/issues/893)) ([ce558ac](https://www.github.com/googleapis/gapic-generator-python/commit/ce558acef9ec9c9bcc54243cddb708ef168c05f0))
+
+
+### Documentation
+
+* Add DEVELOPMENT.md ([#876](https://www.github.com/googleapis/gapic-generator-python/issues/876)) ([592ec06](https://www.github.com/googleapis/gapic-generator-python/commit/592ec061d4eec35e35633c5a9e62cf1e598a8461))
+
 ## [0.47.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.3...v0.47.0) (2021-05-13)
 
 
