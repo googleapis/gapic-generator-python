@@ -35,11 +35,11 @@ async def sample_method_bidi_streaming():
 
     # Initialize request argument(s)
     request = mollusca_v1.SignatureRequestOneRequiredField(
-        a_string="a_string_value",
+        my_string="my_string_value",
     )
 
     # Make the request
-    stream = await client.method_bidi_streaming([a_string="a_string_value"])
+    stream = await client.method_bidi_streaming([my_string="my_string_value"])
     async for response in stream:
         print("{}".format(response))
 

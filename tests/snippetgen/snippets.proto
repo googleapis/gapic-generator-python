@@ -29,11 +29,11 @@ service Snippets {
   option (google.api.default_host) = "mollusca.example.com";
 
   rpc MethodOneSignature(SignatureRequest) returns(Response) {
-    option (google.api.method_signature) = "a_string,an_int,a_bool";
+    option (google.api.method_signature) = "my_string,my_int,my_bool";
   }
 
   rpc MethodLroSignatures(SignatureRequest) returns(google.longrunning.Operation) {
-    option (google.api.method_signature) = "a_string,an_int,a_bool";
+    option (google.api.method_signature) = "my_string,my_int,my_bool";
     option (google.longrunning.operation_info) = {
       response_type: "LroResponse"
       metadata_type: "LroMetadata"
@@ -48,7 +48,7 @@ service Snippets {
   }
 
   rpc MethodServerStreaming(SignatureRequest) returns(stream Response) {
-    option (google.api.method_signature) = "a_string,an_int,a_bool";
+    option (google.api.method_signature) = "my_string,my_int,my_bool";
     option (google.api.method_signature) = "";
   }
 
@@ -102,20 +102,20 @@ message MessageWithNesting {
   }
 
   NestedMessage message = 1 [(google.api.field_behavior) = REQUIRED];
-  int32 an_int = 2 [(google.api.field_behavior) = REQUIRED];
+  int32 my_int = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 
 message SignatureRequestOneRequiredField {
-  string a_string = 1 [(google.api.field_behavior) = REQUIRED];
+  string my_string = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message SignatureRequest {
-  string a_string = 1 [(google.api.field_behavior) = REQUIRED];
-  int32 an_int = 2 [(google.api.field_behavior) = REQUIRED];
-  bool a_bool = 3 [(google.api.field_behavior) = REQUIRED];
+  string my_string = 1 [(google.api.field_behavior) = REQUIRED];
+  int32 my_int = 2 [(google.api.field_behavior) = REQUIRED];
+  bool my_bool = 3 [(google.api.field_behavior) = REQUIRED];
   map<int32, string> map_int_string = 4;
-  MessageWithNesting a_message = 5 [(google.api.field_behavior) = REQUIRED];
+  MessageWithNesting my_message = 5 [(google.api.field_behavior) = REQUIRED];
   Enum single_enum = 6 [(google.api.field_behavior) = REQUIRED];
 }
 
@@ -131,8 +131,8 @@ message LroMetadata {
 
 message OneOfRequest {
   string non_one_of_string = 1 [(google.api.field_behavior) = REQUIRED];
-  oneof a_one_of {
-    string a_string = 2;
-    int32 a_number = 3;
+  oneof my_one_of {
+    string my_string = 2;
+    int32 my_number = 3;
   }
 }
