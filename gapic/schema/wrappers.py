@@ -1280,12 +1280,12 @@ class Service:
             (r.resource_type_full_path, r)
             for r in list(self.resource_messages)
         )
-        common_resource_messages = dict(
+
+        # Add common resources
+        service_resource_messages.update(
             (resource_path, resource.message_type)
             for resource_path, resource in self.common_resources.items()
         )
-
-        service_resource_messages.update(common_resource_messages)
 
         return service_resource_messages
 

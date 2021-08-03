@@ -296,13 +296,10 @@ class Validator:
         service = api_schema.services[sample["service"]]
 
         # Assume the gRPC transport if the transport is not specified
-        sample.setdefault("transport", api.TRANSPORT_GRPC)
+        transport = sample.setdefault("transport", api.TRANSPORT_GRPC)
 
-        if sample["transport"] == api.TRANSPORT_GRPC_ASYNC:
-            sample["client_name"] = api_schema.services[sample["service"]
-                                                        ].async_client_name
-        else:
-            sample["client_name"] = service.client_name
+        is_async = transport == api.TRANSPORT_GRPC_ASYNC
+        sample["client_name"] = service.async_client_name if is_async else service.client_name
 
         # the MessageType of the request object passed to the rpc e.g, `ListRequest`
         sample["request_type"] = rpc.input
@@ -988,8 +985,10 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
                 {"field": field_name, "value": field.enum.values[-1].name})
         else:
             # This is a message type, recurse
-            # TODO(busunkim): when optional fields are supported
-            # add a check to make sure nested messages terminate
+            # TODO(busunkim):  Some real world APIs have
+            # request objects are recursive.
+            # Reference `Field.mock_value` to ensure
+            # this always terminates.
             request += generate_request_object(
                 api_schema, service, field.type,
                 field_name_prefix=field_name,
