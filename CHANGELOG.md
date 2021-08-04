@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.50.6](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.5...v0.50.6) (2021-08-04)
+
+
+### Bug Fixes
+
+* add 'dict' type annotation to 'request' ([#966](https://www.github.com/googleapis/gapic-generator-python/issues/966)) ([49205d9](https://www.github.com/googleapis/gapic-generator-python/commit/49205d99dd440690b838c8eb3f6a695f35b061c2))
+
 ### [0.50.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.4...v0.50.5) (2021-07-22)
 
 
