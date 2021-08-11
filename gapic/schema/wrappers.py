@@ -91,7 +91,12 @@ class Field:
 
     @utils.cached_property
     def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
-        answer = self.inner_mock_as_original_type() or None
+        answer = self.inner_mock() or None
+
+        # If this is a repeated field, then the mock answer should
+        # be a list.
+        if self.repeated:
+            answer = [answer]
 
         return answer
 
@@ -112,19 +117,7 @@ class Field:
         # field name.
         answer = 'None'
         if isinstance(self.type, PrimitiveType):
-            if self.type.python_type == bool:
-                answer = 'True'
-            elif self.type.python_type == str:
-                answer = f"'{self.name}_value'"
-            elif self.type.python_type == bytes:
-                answer = f"b'{self.name}_blob'"
-            elif self.type.python_type == int:
-                answer = f'{sum([ord(i) for i in self.name])}'
-            elif self.type.python_type == float:
-                answer = f'0.{sum([ord(i) for i in self.name])}'
-            else:  # Impossible; skip coverage checks.
-                raise TypeError('Unrecognized PrimitiveType. This should '
-                                'never happen; please file an issue.')
+            answer = self.primitive_mock(as_str=True)
 
         # If this is an enum, select the first truthy value (or the zero
         # value if nothing else exists).
@@ -164,12 +157,11 @@ class Field:
         # Done; return the mock value.
         return answer
 
-    def inner_mock_as_original_type(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
-        """Like inner_mock, but return the original type rather than
-        a string.
+    def primitive_mock(self, *, as_str=False) -> Union[bool, str, bytes, int, float, List[Any], None]:
+        """Generate a valid mock for a primitive type.
 
-        Because it needs to return the original (Python) type,
-        this only works for primitives.
+        By default it returns the original (Python) type. If `as_str` is True,
+        the primitive is converted to string or bytes.
         """
         answer: Union[bool, str, bytes, int, float, List[Any], None] = None
 
@@ -188,17 +180,18 @@ class Field:
                 answer = sum([ord(i) for i in self.name])
             elif self.type.python_type == float:
                 name_sum = sum([ord(i) for i in self.name])
-                # This is a bit convoluted to produce the same result as
-                # inner_mock()
                 answer = name_sum * pow(10, -1 * len(str(name_sum)))
             else:  # Impossible; skip coverage checks.
                 raise TypeError('Unrecognized PrimitiveType. This should '
                                 'never happen; please file an issue.')
 
-        if self.repeated:
-            # If this is a repeated field, then the mock answer should
-            # be a list.
-            answer = [answer]
+        if as_str:
+            if isinstance(answer, str):
+                answer = f"'{answer}'"
+            elif isinstance(answer, bytes):
+                pass  # original form is fine
+            else:
+                answer = str(answer)
 
         return answer
 
