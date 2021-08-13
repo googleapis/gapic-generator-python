@@ -91,7 +91,7 @@ class Field:
 
     @utils.cached_property
     def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
-        answer = self.inner_mock() or None
+        answer = self.primitive_mock() or None
 
         # If this is a repeated field, then the mock answer should
         # be a list.
@@ -115,9 +115,8 @@ class Field:
         """Return a repr of a valid, usually truthy mock value."""
         # For primitives, send a truthy value computed from the
         # field name.
-        answer = 'None'
         if isinstance(self.type, PrimitiveType):
-            answer = self.primitive_mock(as_str=True)
+            answer = self.primitive_mock_as_str()
 
         # If this is an enum, select the first truthy value (or the zero
         # value if nothing else exists).
@@ -157,11 +156,9 @@ class Field:
         # Done; return the mock value.
         return answer
 
-    def primitive_mock(self, *, as_str=False) -> Union[bool, str, bytes, int, float, List[Any], None]:
-        """Generate a valid mock for a primitive type.
-
-        By default it returns the original (Python) type. If `as_str` is True,
-        the primitive is converted to string or bytes.
+    def primitive_mock(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
+        """Generate a valid mock for a primitive type. This function
+        returns the original (Python) type.
         """
         answer: Union[bool, str, bytes, int, float, List[Any], None] = None
 
@@ -185,13 +182,16 @@ class Field:
                 raise TypeError('Unrecognized PrimitiveType. This should '
                                 'never happen; please file an issue.')
 
-        if as_str:
-            if isinstance(answer, str):
-                answer = f"'{answer}'"
-            elif isinstance(answer, bytes):
-                pass  # original form is fine
-            else:
-                answer = str(answer)
+        return answer
+
+    def primitive_mock_as_str(self) -> str:
+        """Like primitive mock, but return the mock as a string."""
+        answer = self.primitive_mock()
+
+        if isinstance(answer, str):
+            answer = f"'{answer}'"
+        else:
+            answer = str(answer)
 
         return answer
 
