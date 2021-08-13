@@ -1269,10 +1269,7 @@ class Service:
                 string to the corresponding MessageType.
                 `{"locations.googleapis.com/Location": MessageType(...)}`
         """
-        service_resource_messages = dict(
-            (r.resource_type_full_path, r)
-            for r in list(self.resource_messages)
-        )
+        service_resource_messages = {r.resource_type_full_path : r for r in self.resource_messages}
 
         # Add common resources
         service_resource_messages.update(
