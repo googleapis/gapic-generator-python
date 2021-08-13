@@ -115,6 +115,9 @@ class Field:
         """Return a repr of a valid, usually truthy mock value."""
         # For primitives, send a truthy value computed from the
         # field name.
+
+        answer = 'None'
+
         if isinstance(self.type, PrimitiveType):
             answer = self.primitive_mock_as_str()
 
