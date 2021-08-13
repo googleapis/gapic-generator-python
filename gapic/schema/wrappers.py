@@ -115,9 +115,7 @@ class Field:
         """Return a repr of a valid, usually truthy mock value."""
         # For primitives, send a truthy value computed from the
         # field name.
-
         answer = 'None'
-
         if isinstance(self.type, PrimitiveType):
             answer = self.primitive_mock_as_str()
 
@@ -1272,7 +1270,8 @@ class Service:
                 string to the corresponding MessageType.
                 `{"locations.googleapis.com/Location": MessageType(...)}`
         """
-        service_resource_messages = {r.resource_type_full_path : r for r in self.resource_messages}
+        service_resource_messages = {
+            r.resource_type_full_path : r for r in self.resource_messages}
 
         # Add common resources
         service_resource_messages.update(
