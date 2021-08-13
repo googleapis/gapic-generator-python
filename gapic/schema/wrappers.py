@@ -1271,7 +1271,7 @@ class Service:
                 `{"locations.googleapis.com/Location": MessageType(...)}`
         """
         service_resource_messages = {
-            r.resource_type_full_path : r for r in self.resource_messages}
+            r.resource_type_full_path: r for r in self.resource_messages}
 
         # Add common resources
         service_resource_messages.update(
