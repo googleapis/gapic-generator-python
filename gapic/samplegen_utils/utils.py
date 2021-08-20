@@ -18,7 +18,7 @@ that will eventually move somewhere else (probably)."""
 import os
 import yaml
 
-from typing import (Generator, Tuple)
+from typing import (Generator, Tuple, List, Union)
 
 from gapic.samplegen_utils import types
 
@@ -26,6 +26,31 @@ from gapic.samplegen_utils import types
 MIN_SCHEMA_VERSION = (1, 2, 0)
 
 VALID_CONFIG_TYPE = "com.google.api.codegen.samplegen.v1p2.SampleConfigProto"
+
+
+def render_format_string(s: str, expressions: Union[str, List[str]] = []) -> str:
+    """Given string s and a list of expressions, substitute each %s
+    in the string with {exp}.
+
+    Arguments:
+        s (str): The string literal.
+        expressions (Union [str, List[str]]): A list of expressions to substitute
+            into s.
+    """
+
+    s = s.replace('\"', '\\\"')
+
+    # Ensure expressions is a list
+    if isinstance(expressions, str):
+        expressions = [expressions]
+
+    for exp in expressions:
+        # some expressions will contain references to "$resp"
+        exp = coerce_response_name(exp)
+
+        s = s.replace("%s", f"{{{exp}}}", 1)
+
+    return s
 
 
 def coerce_response_name(s: str) -> str:
