@@ -34,7 +34,7 @@ def render_format_string(s: str, expressions: List[str] = []) -> str:
 
     Arguments:
         s (str): The string literal.
-        expressions (Union [str, List[str]]): A list of expressions.
+        expressions (Optional[List[str]]): A list of expressions.
     """
 
     s = s.replace('\"', '\\\"')
