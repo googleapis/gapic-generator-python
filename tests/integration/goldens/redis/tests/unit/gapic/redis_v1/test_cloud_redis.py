@@ -122,6 +122,17 @@ def test_cloud_redis_client_service_account_always_use_jwt(transport_class, tran
     CloudRedisClient,
     CloudRedisAsyncClient,
 ])
+def test_cloud_redis_client_service_account_not_use_jwt_if_credentials_provided(client_class):
+    with mock.patch.object(service_account.Credentials, 'with_always_use_jwt_access', create=True) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = client_class(credentials=creds)
+        use_jwt.assert_not_called()
+
+
+@pytest.mark.parametrize("client_class", [
+    CloudRedisClient,
+    CloudRedisAsyncClient,
+])
 def test_cloud_redis_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
