@@ -21,7 +21,6 @@ import pytest
 
 import google.api_core.client_options as ClientOptions
 from google.auth import credentials
-
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
