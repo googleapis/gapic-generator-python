@@ -224,6 +224,15 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         """Return the channel designed to connect to this service.
         """
         return self._grpc_channel
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Closes underlying gRPC channel.
+        """
+        self.grpc_channel.close()
+
     {% if service.has_lro %}
 
     @property
