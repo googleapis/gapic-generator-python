@@ -30,13 +30,13 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import dataclasses
 import re
-import copy
 from itertools import chain
 from typing import (cast, Dict, FrozenSet, Iterable, List, Mapping,
                     ClassVar, Optional, Sequence, Set, Tuple, Union)
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
+from google.api import http_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions      # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
@@ -722,6 +722,7 @@ class Method:
         # Return the usual output.
         return self.output
 
+
     # TODO(yon-mg): remove or rewrite: don't think it performs as intended
     #               e.g. doesn't work with basic case of gRPC transcoding
     @property
@@ -742,6 +743,31 @@ class Method:
 
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
+    def http_rule_to_tuple(self, http_rule: http_pb2.HttpRule) -> Optional[Tuple[str, str, Optional[str]]]:
+      """Represent salient info in an http rule as a tuple.
+
+      Args:
+        http_rule: the http option message to examine.
+
+      Returns:
+        A tuple of (method, uri pattern, body or None),
+          or None if no method is specified.
+      """
+
+      http_dict: Mapping[str, str]
+
+      method = http_rule.WhichOneof('pattern')
+      if method is None:
+        return None
+
+      if method == 'custom':
+        method = http_rule.kind
+        uri = http_rule.path
+      else:
+        uri = getattr(http_rule, method)
+      body = http_rule.body if http_rule.body else None
+      return (method, uri, body)
+
     @property
     def http_options(self) -> List[Dict[str, str]]:
         """Return a list of the http options for this method.
@@ -752,58 +778,44 @@ class Method:
 
         """
         http = self.options.Extensions[annotations_pb2.http]
-        http_options = copy.deepcopy(http.additional_bindings)
-        http_options.append(http)
+        # shallow copy is fine here (elements are not modified)
+        http_options = list(http.additional_bindings)
+        # Main pattern comes first
+        http_options.insert(0, http)
         answers : List[Dict[str, str]] = []
 
         for http_rule in http_options:
-            try:
-                method, uri = next((method, uri) for method,uri in [
-                    ('get',http_rule.get),
-                    ('put',http_rule.put),
-                    ('post',http_rule.post),
-                    ('delete',http_rule.delete),
-                    ('patch',http_rule.patch),
-                    ('custom.path',http_rule.custom.path),
-                    ] if uri
-                )
-            except StopIteration:
-                continue
-            answer : Dict[str, str] = {}
-            answer['method'] = method
-            answer['uri'] = uri
-            if http_rule.body:
-                answer['body'] = http_rule.body
-            answers.append(answer)
+          method, uri, body = self.http_rule_to_tuple(http_rule)
+          if method is None:
+            continue
+          answer : Dict[str, str] = {}
+          answer['method'] = method
+          answer['uri'] = uri
+          if body is not None:
+              answer['body'] = body
+          answers.append(answer)
         return answers
 
     @property
     def http_opt(self) -> Optional[Dict[str, str]]:
-        """Return the http option for this method.
+      """Return the (main) http option for this method.
 
         e.g. {'verb': 'post'
               'url': '/some/path'
               'body': '*'}
 
-        """
-        http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]
-        http = self.options.Extensions[annotations_pb2.http].ListFields()
+      """
+      http_rule = self.options.Extensions[annotations_pb2.http]
+      verb, url, body = self.http_rule_to_tuple(http_rule)
+      if verb is None:
+        return None
+      answer: Dict[str, str] = {
+          'verb': verb,
+          'url': url}
+      if body is not None:
+        answer['body'] = body
 
-        if len(http) < 1:
-            return None
-
-        http_method = http[0]
-        answer: Dict[str, str] = {
-            'verb': http_method[0].name,
-            'url': http_method[1],
-        }
-        if len(http) > 1:
-            body_spec = http[1]
-            answer[body_spec[0].name] = body_spec[1]
-
-        # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
-        # TODO(yon-mg): enums for http verbs?
-        return answer
+      return answer
 
     @property
     def path_params(self) -> Sequence[str]:
