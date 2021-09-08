@@ -1508,6 +1508,11 @@ def test_{{ service.name|snake_case }}_base_transport():
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
+    with pytest.raises(NotImplementedError):
+        transport.__enter__()
+    with pytest.raises(NotImplementedError):
+        transport.__exit__(None, None, None)
+
     {% if service.has_lro %}
     # Additionally, the LRO client (a property) should
     # also raise NotImplementedError
@@ -2457,6 +2462,35 @@ async def test_test_iam_permissions_from_dict_async():
         )
         call.assert_called()
 
+{% endif %}
+
+def test_client_enter_exit():
+    client = {{ service.client_name }}()
+    # Test client calls underlying transport.
+    with mock.patch.object(type(client.transport), "__enter__") as enter:
+        with mock.patch.object(type(client.transport), "__exit__") as exit:
+            enter.assert_not_called()
+            exit.assert_not_called()
+            with client as _:
+                enter.assert_called_once()
+            exit.assert_called()
+
+{% if 'grpc' in opts.transport %}
+def test_grpc_transport_enter_exit():
+    client = {{ service.client_name }}()
+    with mock.patch.object(type(client.transport._grpc_channel), 'close') as chan_close:
+        with client as _:
+            chan_close.assert_not_called()
+        chan_close.assert_called_once()
+{% endif %}
+
+{% if 'rest' in opts.transport %}
+def test_rest_transport_enter_exit():
+    client = {{ service.client_name }}()
+    with mock.patch.object(type(client.transport._session), 'close') as sess_close:
+        with client as _:
+            sess_close.assert_not_called()
+        sess_close.assert_called_once()
 {% endif %}
 
 {% endblock %}
