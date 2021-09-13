@@ -195,6 +195,12 @@ class CloudRedisTransport(abc.ABC):
             ),
          }
 
+    def __enter__(self):
+        raise NotImplementedError()
+
+    def __exit__(self, type, value, traceback):
+        raise NotImplementedError()
+
     @property
     def operations_client(self) -> operations_v1.OperationsClient:
         """Return the client designed to process long-running operations."""

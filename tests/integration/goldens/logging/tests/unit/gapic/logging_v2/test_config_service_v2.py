@@ -5906,6 +5906,11 @@ def test_config_service_v2_base_transport():
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
+    with pytest.raises(NotImplementedError):
+        transport.__enter__()
+    with pytest.raises(NotImplementedError):
+        transport.__exit__(None, None, None)
+
 
 @requires_google_auth_gte_1_25_0
 def test_config_service_v2_base_transport_with_credentials_file():
@@ -6445,3 +6450,28 @@ def test_client_withDEFAULT_CLIENT_INFO():
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
+
+
+def test_grpc_transport_enter_exit():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+    with mock.patch.object(type(client.transport._grpc_channel), 'close') as chan_close:
+        with client as _:
+            chan_close.assert_not_called()
+        chan_close.assert_called_once()
+
+def test_grpc_client_enter_exit():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+    # Test client calls underlying transport.
+    with mock.patch.object(type(client.transport), "__enter__") as enter:
+        with mock.patch.object(type(client.transport), "__exit__") as exit:
+            enter.assert_not_called()
+            exit.assert_not_called()
+            with client as _:
+                enter.assert_called_once()
+            exit.assert_called()

@@ -224,6 +224,14 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         """
         return self._grpc_channel
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Closes underlying gRPC channel.
+        """
+        self.grpc_channel.close()
+
     @property
     def operations_client(self) -> operations_v1.OperationsClient:
         """Create the client designed to process long-running operations.

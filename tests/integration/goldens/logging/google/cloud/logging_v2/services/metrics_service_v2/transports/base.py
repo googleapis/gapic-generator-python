@@ -210,6 +210,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             ),
          }
 
+    def __enter__(self):
+        raise NotImplementedError()
+
+    def __exit__(self, type, value, traceback):
+        raise NotImplementedError()
+
     @property
     def list_log_metrics(self) -> Callable[
             [logging_metrics.ListLogMetricsRequest],
