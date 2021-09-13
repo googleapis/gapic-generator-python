@@ -103,6 +103,11 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
             {% endfor %} {# precomputed wrappers loop #}
         }
 
+    def __enter__(self):
+        raise NotImplementedError()
+
+    def __exit__(self, type, value, traceback):
+        raise NotImplementedError()
 
     {% if service.has_lro %}
 

@@ -188,6 +188,14 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
             **kwargs
         )
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Closes underlying gRPC channel.
+        """
+        self.grpc_channel.close()
+
     @property
     def grpc_channel(self) -> grpc.Channel:
         """Return the channel designed to connect to this service.
