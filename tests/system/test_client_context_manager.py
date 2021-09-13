@@ -15,11 +15,9 @@
 
 import pytest
 
-from conftest import construct_client, EchoClient
 
-
-def test_client():
-    with construct_client(EchoClient, False) as c:
+def test_client(echo):
+    with echo as c:
         resp = c.echo({
             'content': 'hello'
         })
