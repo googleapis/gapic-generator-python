@@ -337,11 +337,11 @@ def test_method_http_options():
         'patch'
     ]
     for v in verbs:
-        http_rule = http_pb2.HttpRule(**{v:'/v1/{parent=projects/*}/topics'})
+        http_rule = http_pb2.HttpRule(**{v: '/v1/{parent=projects/*}/topics'})
         method = make_method('DoSomething', http_rule=http_rule)
         assert method.http_options == [{
             'method': v,
-            'uri':'/v1/{parent=projects/*}/topics'
+            'uri': '/v1/{parent=projects/*}/topics'
         }]
 
 
@@ -372,6 +372,7 @@ def test_method_http_options_body():
         'body': '*'
     }]
 
+
 def test_method_http_options_additional_bindings():
     http_rule = http_pb2.HttpRule(
         post='/v1/{parent=projects/*}/topics',
@@ -390,19 +391,19 @@ def test_method_http_options_additional_bindings():
     method = make_method('DoSomething', http_rule=http_rule)
     assert len(method.http_options) == 3
     assert {
-        'method':'post',
-        'uri':'/v1/{parent=projects/*}/topics',
-        'body':'*'
+        'method': 'post',
+        'uri': '/v1/{parent=projects/*}/topics',
+        'body': '*'
     } in method.http_options
     assert {
-        'method':'post',
-        'uri':'/v1/{parent=projects/*/regions/*}/topics',
-        'body':'*'
+        'method': 'post',
+        'uri': '/v1/{parent=projects/*/regions/*}/topics',
+        'body': '*'
     } in method.http_options
     assert {
-        'method':'post',
-        'uri':'/v1/projects/p1/topics',
-        'body':'body_field'
+        'method': 'post',
+        'uri': '/v1/projects/p1/topics',
+        'body': 'body_field'
     } in method.http_options
 
 

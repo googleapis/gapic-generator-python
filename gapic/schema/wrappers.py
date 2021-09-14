@@ -823,27 +823,27 @@ class Method:
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
     def http_rule_to_tuple(self, http_rule: http_pb2.HttpRule) -> Tuple[Optional[str], Optional[str], Optional[str]]:
-      """Represent salient info in an http rule as a tuple.
+        """Represent salient info in an http rule as a tuple.
 
-      Args:
-        http_rule: the http option message to examine.
+        Args:
+          http_rule: the http option message to examine.
 
-      Returns:
-        A tuple of (method, uri pattern, body or None),
-          or None if no method is specified.
-      """
+        Returns:
+          A tuple of (method, uri pattern, body or None),
+            or None if no method is specified.
+        """
 
-      http_dict: Mapping[str, str]
+        http_dict: Mapping[str, str]
 
-      method = http_rule.WhichOneof('pattern')
-      if method is None or method == 'custom':
-        return (None, None, None)
+        method = http_rule.WhichOneof('pattern')
+        if method is None or method == 'custom':
+            return (None, None, None)
 
-      uri = getattr(http_rule, method)
-      if not uri:
-        return (None, None, None)
-      body = http_rule.body if http_rule.body else None
-      return (method, uri, body)
+        uri = getattr(http_rule, method)
+        if not uri:
+            return (None, None, None)
+        body = http_rule.body if http_rule.body else None
+        return (method, uri, body)
 
     @property
     def http_options(self) -> List[Dict[str, str]]:
@@ -859,47 +859,47 @@ class Method:
         http_options = list(http.additional_bindings)
         # Main pattern comes first
         http_options.insert(0, http)
-        answers : List[Dict[str, str]] = []
+        answers: List[Dict[str, str]] = []
 
         for http_rule in http_options:
-          method, uri, body = self.http_rule_to_tuple(http_rule)
-          if method is None:
-            continue
-          answer : Dict[str, str] = {}
-          answer['method'] = method
-          answer['uri'] = uri
-          if body is not None:
-              answer['body'] = body
-          answers.append(answer)
+            method, uri, body = self.http_rule_to_tuple(http_rule)
+            if method is None or uri is None:
+                continue
+            answer: Dict[str, str] = {}
+            answer['method'] = method
+            answer['uri'] = uri
+            if body is not None:
+                answer['body'] = body
+            answers.append(answer)
         return answers
 
     @property
     def http_opt(self) -> Optional[Dict[str, str]]:
-      """Return the (main) http option for this method.
+        """Return the (main) http option for this method.
 
-        e.g. {'verb': 'post'
-              'url': '/some/path'
-              'body': '*'}
+          e.g. {'verb': 'post'
+                'url': '/some/path'
+                'body': '*'}
 
-      """
-      http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]
-      http = self.options.Extensions[annotations_pb2.http].ListFields()
+        """
+        http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]
+        http = self.options.Extensions[annotations_pb2.http].ListFields()
 
-      if len(http) < 1:
-          return None
+        if len(http) < 1:
+            return None
 
-      http_method = http[0]
-      answer: Dict[str, str] = {
-          'verb': http_method[0].name,
-          'url': http_method[1],
-      }
-      if len(http) > 1:
-          body_spec = http[1]
-          answer[body_spec[0].name] = body_spec[1]
+        http_method = http[0]
+        answer: Dict[str, str] = {
+            'verb': http_method[0].name,
+            'url': http_method[1],
+        }
+        if len(http) > 1:
+            body_spec = http[1]
+            answer[body_spec[0].name] = body_spec[1]
 
-      # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
-      # TODO(yon-mg): enums for http verbs?
-      return answer
+        # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
+        # TODO(yon-mg): enums for http verbs?
+        return answer
 
     @property
     def path_params(self) -> Sequence[str]:
