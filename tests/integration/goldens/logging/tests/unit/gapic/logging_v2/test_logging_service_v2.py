@@ -2030,6 +2030,7 @@ def test_logging_service_v2_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.__enter__()
+
     with pytest.raises(NotImplementedError):
         transport.__exit__(None, None, None)
 
@@ -2499,26 +2500,34 @@ def test_client_withDEFAULT_CLIENT_INFO():
         prep.assert_called_once_with(client_info)
 
 
-def test_grpc_transport_enter_exit():
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-    with mock.patch.object(type(client.transport._grpc_channel), 'close') as chan_close:
-        with client as _:
-            chan_close.assert_not_called()
-        chan_close.assert_called_once()
+def test_transport_ctx():
+    transports = [
+        'grpc',
+    ]
+    for transport in transports:
+        client = LoggingServiceV2Client(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport
+        )
+        with mock.patch.object(type(client.transport._grpc_channel), 'close') as close:
+            with client:
+                close.assert_not_called()
+            close.assert_called_once()
 
-def test_grpc_client_enter_exit():
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-    # Test client calls underlying transport.
-    with mock.patch.object(type(client.transport), "__enter__") as enter:
-        with mock.patch.object(type(client.transport), "__exit__") as exit:
-            enter.assert_not_called()
-            exit.assert_not_called()
-            with client as _:
-                enter.assert_called_once()
-            exit.assert_called()
+def test_client_ctx():
+    transports = [
+        'grpc',
+    ]
+    for transport in transports:
+        client = LoggingServiceV2Client(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport
+        )
+        # Test client calls underlying transport.
+        with mock.patch.object(type(client.transport), "__enter__") as enter:
+            with mock.patch.object(type(client.transport), "__exit__") as exit:
+                enter.assert_not_called()
+                exit.assert_not_called()
+                with client:
+                    enter.assert_called_once()
+                exit.assert_called()
