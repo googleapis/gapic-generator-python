@@ -36,6 +36,7 @@ from typing import (Any, cast, Dict, FrozenSet, Iterable, List, Mapping,
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
+from google.api import http_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions      # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
@@ -821,33 +822,84 @@ class Method:
 
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
+    def http_rule_to_tuple(self, http_rule: http_pb2.HttpRule) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+      """Represent salient info in an http rule as a tuple.
+
+      Args:
+        http_rule: the http option message to examine.
+
+      Returns:
+        A tuple of (method, uri pattern, body or None),
+          or None if no method is specified.
+      """
+
+      http_dict: Mapping[str, str]
+
+      method = http_rule.WhichOneof('pattern')
+      if method is None or method == 'custom':
+        return (None, None, None)
+
+      uri = getattr(http_rule, method)
+      if not uri:
+        return (None, None, None)
+      body = http_rule.body if http_rule.body else None
+      return (method, uri, body)
+
+    @property
+    def http_options(self) -> List[Dict[str, str]]:
+        """Return a list of the http options for this method.
+
+        e.g. [{'method': 'post'
+              'uri': '/some/path'
+              'body': '*'},]
+
+        """
+        http = self.options.Extensions[annotations_pb2.http]
+        # shallow copy is fine here (elements are not modified)
+        http_options = list(http.additional_bindings)
+        # Main pattern comes first
+        http_options.insert(0, http)
+        answers : List[Dict[str, str]] = []
+
+        for http_rule in http_options:
+          method, uri, body = self.http_rule_to_tuple(http_rule)
+          if method is None:
+            continue
+          answer : Dict[str, str] = {}
+          answer['method'] = method
+          answer['uri'] = uri
+          if body is not None:
+              answer['body'] = body
+          answers.append(answer)
+        return answers
+
     @property
     def http_opt(self) -> Optional[Dict[str, str]]:
-        """Return the http option for this method.
+      """Return the (main) http option for this method.
 
         e.g. {'verb': 'post'
               'url': '/some/path'
               'body': '*'}
 
-        """
-        http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]
-        http = self.options.Extensions[annotations_pb2.http].ListFields()
+      """
+      http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]
+      http = self.options.Extensions[annotations_pb2.http].ListFields()
 
-        if len(http) < 1:
-            return None
+      if len(http) < 1:
+          return None
 
-        http_method = http[0]
-        answer: Dict[str, str] = {
-            'verb': http_method[0].name,
-            'url': http_method[1],
-        }
-        if len(http) > 1:
-            body_spec = http[1]
-            answer[body_spec[0].name] = body_spec[1]
+      http_method = http[0]
+      answer: Dict[str, str] = {
+          'verb': http_method[0].name,
+          'url': http_method[1],
+      }
+      if len(http) > 1:
+          body_spec = http[1]
+          answer[body_spec[0].name] = body_spec[1]
 
-        # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
-        # TODO(yon-mg): enums for http verbs?
-        return answer
+      # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
+      # TODO(yon-mg): enums for http verbs?
+      return answer
 
     @property
     def path_params(self) -> Sequence[str]:
