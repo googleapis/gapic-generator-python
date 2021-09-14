@@ -843,7 +843,7 @@ class Method:
 
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
-    def http_rule_to_tuple(self, http_rule: http_pb2.HttpRule) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    def http_rule_to_tuple(self, http_rule: http_pb2.HttpRule) -> Tuple[str, str, str]:
         """Represent salient info in an http rule as a tuple.
 
         Args:
@@ -858,11 +858,11 @@ class Method:
 
         method = http_rule.WhichOneof('pattern')
         if method is None or method == 'custom':
-            return (None, None, None)
+            return ('', '', '')
 
         uri = getattr(http_rule, method)
         if not uri:
-            return (None, None, None)
+            return ('', '', '')
         body = http_rule.body if http_rule.body else None
         return (method, uri, body)
 
@@ -884,12 +884,12 @@ class Method:
 
         for http_rule in http_options:
             method, uri, body = self.http_rule_to_tuple(http_rule)
-            if method is None or uri is None:
+            if not method:
                 continue
             answer: Dict[str, str] = {}
             answer['method'] = method
             answer['uri'] = uri
-            if body is not None:
+            if body:
                 answer['body'] = body
             answers.append(answer)
         return answers
