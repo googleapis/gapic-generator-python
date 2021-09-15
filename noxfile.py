@@ -26,7 +26,7 @@ from os import path
 import shutil
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.16.0")
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.18.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
@@ -79,25 +79,35 @@ FRAGMENT_FILES = tuple(
 # A callable class is necessary so that the session can be closed over
 # instead of passed in, which simplifies the invocation via map.
 class FragTester:
-    def __init__(self, session):
+    def __init__(self, session, use_ads_templates):
         self.session = session
+        self.use_ads_templates = use_ads_templates
 
     def __call__(self, frag):
         with tempfile.TemporaryDirectory() as tmp_dir:
             # Generate the fragment GAPIC.
             outputs = []
+            templates = (
+                path.join(path.dirname(__file__), "gapic", "ads-templates")
+                if self.use_ads_templates
+                else "DEFAULT"
+            )
+            maybe_old_naming = ",old-naming" if self.use_ads_templates else ""
+
+            session_args = [
+                "python",
+                "-m",
+                "grpc_tools.protoc",
+                f"--proto_path={str(FRAG_DIR)}",
+                f"--python_gapic_out={tmp_dir}",
+                "--python_gapic_opt=transport=grpc+rest,python-gapic-templates={templates}{maybe_old_naming}",
+            ]
+
+            if self.use_ads_templates:
+                session_args.extend([])
+
             outputs.append(
-                self.session.run(
-                    "python",
-                    "-m",
-                    "grpc_tools.protoc",
-                    f"--proto_path={str(FRAG_DIR)}",
-                    f"--python_gapic_out={tmp_dir}",
-                    "--python_gapic_opt=transport=grpc+rest",
-                    str(frag),
-                    external=True,
-                    silent=True,
-                )
+                self.session.run(*session_args, str(frag), external=True, silent=True,)
             )
 
             # Install the generated fragment library.
@@ -138,7 +148,27 @@ def fragment(session):
     session.install("-e", ".")
 
     with ThreadPoolExecutor() as p:
-        all_outs = p.map(FragTester(session), FRAGMENT_FILES)
+        all_outs = p.map(FragTester(session, False), FRAGMENT_FILES)
+
+    output = "".join(all_outs)
+    session.log(output)
+
+
+@nox.session(python=ALL_PYTHON[1:])
+def fragment_alternative_templates(session):
+    session.install(
+        "coverage",
+        "pytest",
+        "pytest-cov",
+        "pytest-xdist",
+        "asyncmock",
+        "pytest-asyncio",
+        "grpcio-tools",
+    )
+    session.install("-e", ".")
+
+    with ThreadPoolExecutor() as p:
+        all_outs = p.map(FragTester(session, True), FRAGMENT_FILES)
 
     output = "".join(all_outs)
     session.log(output)
@@ -189,7 +219,7 @@ def showcase_library(
         # TODO(yon-mg): add "transports=grpc+rest" when all rest features required for
         #               Showcase are implemented i.e. (grpc transcoding, LROs, etc)
         opts = "--python_gapic_opt="
-        opts += ",".join(other_opts + (f"{template_opt}",))
+        opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest"))
         cmd_tup = (
             "python",
             "-m",
@@ -303,7 +333,6 @@ def showcase_unit(
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
-
         # Unit tests are run twice with different dependencies to exercise
         # all code paths.
         # TODO(busunkim): remove when default templates require google-auth>=1.25.0
