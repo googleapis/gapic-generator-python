@@ -2466,25 +2466,21 @@ async def test_test_iam_permissions_from_dict_async():
 {% endif %}
 
 def test_transport_ctx():
-    transports = [
+    transports = {
         {% if 'rest' in opts.transport %}
-        'rest',
+        "rest": "_session",
         {% endif %}
         {% if 'grpc' in opts.transport %}
-        'grpc',
+        "grpc": "_grpc_channel",
         {% endif %}
-    ]
-    for transport in transports:
+    }
+
+    for transport, close_name in transports.items():
         client = {{ service.client_name }}(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport
         )
-        {% if 'rest' in opts.transport %}
-        with mock.patch.object(type(client.transport._session), 'close') as close:
-        {% endif %}
-        {% if 'grpc' in opts.transport %}
-        with mock.patch.object(type(client.transport._grpc_channel), 'close') as close:
-        {% endif %}
+        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
             with client:
                 close.assert_not_called()
             close.assert_called_once()

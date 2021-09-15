@@ -2501,15 +2501,16 @@ def test_client_withDEFAULT_CLIENT_INFO():
 
 
 def test_transport_ctx():
-    transports = [
-        'grpc',
-    ]
-    for transport in transports:
+    transports = {
+        "grpc": "_grpc_channel",
+    }
+
+    for transport, close_name in transports.items():
         client = LoggingServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport
         )
-        with mock.patch.object(type(client.transport._grpc_channel), 'close') as close:
+        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
             with client:
                 close.assert_not_called()
             close.assert_called_once()
