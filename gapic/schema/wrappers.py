@@ -843,56 +843,14 @@ class Method:
 
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
-    def http_rule_to_tuple(self, http_rule: http_pb2.HttpRule) -> Tuple[str, str, str]:
-        """Represent salient info in an http rule as a tuple.
-
-        Args:
-          http_rule: the http option message to examine.
-
-        Returns:
-          A tuple of (method, uri pattern, body or None),
-            or None if no method is specified.
-        """
-
-        http_dict: Mapping[str, str]
-
-        method = http_rule.WhichOneof('pattern')
-        if method is None or method == 'custom':
-            return ('', '', '')
-
-        uri = getattr(http_rule, method)
-        if not uri:
-            return ('', '', '')
-        body = http_rule.body if http_rule.body else None
-        return (method, uri, body)
-
     @property
-    def http_options(self) -> List[Dict[str, str]]:
-        """Return a list of the http options for this method.
-
-        e.g. [{'method': 'post'
-              'uri': '/some/path'
-              'body': '*'},]
-
-        """
+    def http_options(self) -> List[HttpRule]:
+        """Return a list of the http bindings for this method."""
         http = self.options.Extensions[annotations_pb2.http]
-        # shallow copy is fine here (elements are not modified)
-        http_options = list(http.additional_bindings)
-        # Main pattern comes first
-        http_options.insert(0, http)
-        answers: List[Dict[str, str]] = []
-
-        for http_rule in http_options:
-            method, uri, body = self.http_rule_to_tuple(http_rule)
-            if not method:
-                continue
-            answer: Dict[str, str] = {}
-            answer['method'] = method
-            answer['uri'] = uri
-            if body:
-                answer['body'] = body
-            answers.append(answer)
-        return answers
+        http_options = [http] + list(http.additional_bindings)
+        opt_gen = (HttpRule.try_parse_http_rule(http_rule)
+                   for http_rule in http_options)
+        return [rule for rule in opt_gen if rule]
 
     @property
     def http_options(self) -> List[HttpRule]:
