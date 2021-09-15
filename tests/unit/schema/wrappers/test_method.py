@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import collections
+import dataclasses
 from typing import Sequence
 
 from google.api import field_behavior_pb2
@@ -339,9 +340,10 @@ def test_method_http_options():
     for v in verbs:
         http_rule = http_pb2.HttpRule(**{v: '/v1/{parent=projects/*}/topics'})
         method = make_method('DoSomething', http_rule=http_rule)
-        assert method.http_options == [{
+        assert [dataclasses.asdict(http) for http in method.http_options] == [{
             'method': v,
-            'uri': '/v1/{parent=projects/*}/topics'
+            'uri': '/v1/{parent=projects/*}/topics',
+            'body': None
         }]
 
 
@@ -366,7 +368,7 @@ def test_method_http_options_body():
         body='*'
     )
     method = make_method('DoSomething', http_rule=http_rule)
-    assert method.http_options == [{
+    assert [dataclasses.asdict(http) for http in method.http_options] == [{
         'method': 'post',
         'uri': '/v1/{parent=projects/*}/topics',
         'body': '*'
@@ -389,22 +391,22 @@ def test_method_http_options_additional_bindings():
         ]
     )
     method = make_method('DoSomething', http_rule=http_rule)
-    assert len(method.http_options) == 3
-    assert {
-        'method': 'post',
-        'uri': '/v1/{parent=projects/*}/topics',
-        'body': '*'
-    } in method.http_options
-    assert {
-        'method': 'post',
-        'uri': '/v1/{parent=projects/*/regions/*}/topics',
-        'body': '*'
-    } in method.http_options
-    assert {
-        'method': 'post',
-        'uri': '/v1/projects/p1/topics',
-        'body': 'body_field'
-    } in method.http_options
+    assert [dataclasses.asdict(http) for http in method.http_options] == [
+        {
+            'method': 'post',
+            'uri': '/v1/{parent=projects/*}/topics',
+            'body': '*'
+            },
+        {
+            'method': 'post',
+            'uri': '/v1/{parent=projects/*/regions/*}/topics',
+            'body': '*'
+            },
+        {
+            'method': 'post',
+            'uri': '/v1/projects/p1/topics',
+            'body': 'body_field'
+            }]
 
 
 def test_method_query_params():
