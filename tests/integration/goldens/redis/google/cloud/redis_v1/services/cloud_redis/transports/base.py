@@ -145,6 +145,14 @@ class CloudRedisTransport(abc.ABC):
 
         return scopes_kwargs
 
+    def _refresh_transport(self, exc: Exception) -> None:
+        """If the exception indicates the connection has been lost,
+        this function attempts to re-establish it.
+
+        Passed to ``on_error`` on ``google.api_core.retry.Retry``.
+        """
+        pass  # pragma: NO COVER
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {

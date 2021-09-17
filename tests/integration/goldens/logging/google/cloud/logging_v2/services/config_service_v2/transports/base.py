@@ -147,6 +147,14 @@ class ConfigServiceV2Transport(abc.ABC):
 
         return scopes_kwargs
 
+    def _refresh_transport(self, exc: Exception) -> None:
+        """If the exception indicates the connection has been lost,
+        this function attempts to re-establish it.
+
+        Passed to ``on_error`` on ``google.api_core.retry.Retry``.
+        """
+        pass  # pragma: NO COVER
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
@@ -214,6 +222,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
+                    on_error=self._refresh_transport,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -227,6 +236,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
+                    on_error=self._refresh_transport,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -245,6 +255,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
+                    on_error=self._refresh_transport,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -258,6 +269,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
+                    on_error=self._refresh_transport,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -271,6 +283,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
+                    on_error=self._refresh_transport,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -284,6 +297,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
+                    on_error=self._refresh_transport,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -307,6 +321,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
+                    on_error=self._refresh_transport,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,

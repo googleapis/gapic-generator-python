@@ -387,6 +387,53 @@ def test_iam_credentials_client_client_options_from_dict():
             always_use_jwt_access=True,
         )
 
+@pytest.mark.parametrize("transport_class", [
+    transports.IAMCredentialsGrpcTransport,
+    transports.IAMCredentialsGrpcAsyncIOTransport,
+])
+def test__refresh_transport(transport_class):
+    transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
+    original_channel = transport.grpc_channel
+
+    exc = core_exceptions.ServiceUnavailable("Socket Operation on non-socket")
+    transport._refresh_transport(exc)
+    new_channel = transport.grpc_channel
+
+    assert original_channel is not new_channel
+    assert len(transport._stubs) > 0
+    # Check stubs are associated with new channel
+    assert list(transport._stubs.values())[0]._channel == new_channel._channel
+
+
+@pytest.mark.parametrize("transport_class", [
+    transports.IAMCredentialsGrpcTransport,
+    transports.IAMCredentialsGrpcAsyncIOTransport,
+])
+def test__refresh_transport_different_exception(transport_class):
+    transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
+    original_channel = transport.grpc_channel
+
+    exc = core_exceptions.ServiceUnavailable("Unrelated error message")
+    transport._refresh_transport(exc)
+    assert original_channel is transport.grpc_channel
+
+
+@pytest.mark.parametrize("transport_class", [
+    transports.IAMCredentialsGrpcTransport,
+    transports.IAMCredentialsGrpcAsyncIOTransport,
+])
+def test_reinitialize_grpc_channel_custom_channel(transport_class):
+    transport = transport_class(
+        channel=grpc_helpers.create_channel(
+            "foo.googleapis.com",
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+    )
+    original_channel = transport.grpc_channel
+
+    transport.reinitialize_grpc_channel()
+    assert original_channel is transport.grpc_channel
+
 
 def test_generate_access_token(transport: str = 'grpc', request_type=common.GenerateAccessTokenRequest):
     client = IAMCredentialsClient(

@@ -253,7 +253,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         """Checks for a broken gRPC channel and creates a new one if
         that is the case.
 
-        Intended to be passed to ``on_error`` on ``google.api_core.retry.Retry``.
+        Passed to ``on_error`` on ``google.api_core.retry.Retry``.
         """
         if isinstance(
             exc, core_exceptions.ServiceUnavailable

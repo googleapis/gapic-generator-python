@@ -13,9 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import functools
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1                   # type: ignore
 from google.api_core import grpc_helpers_async         # type: ignore
 from google.auth import credentials as ga_credentials   # type: ignore
@@ -152,6 +154,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
               and ``credentials_file`` are passed.
         """
         self._grpc_channel = None
+        self._default_grpc_channel = False
+        self._client_info = client_info
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
 
@@ -199,7 +203,11 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            self._default_grpc_channel = True
+            # Save the original arguments so a channel can be
+            # re-created with the same settings
+            self._create_default_channel = functools.partial(
+                type(self).create_channel,
                 self._host,
                 credentials=self._credentials,
                 credentials_file=credentials_file,
@@ -211,9 +219,10 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                     ("grpc.max_receive_message_length", -1),
                 ],
             )
+            self._grpc_channel = self._create_default_channel()
 
         # Wrap messages. This must be done after self._grpc_channel exists
-        self._prep_wrapped_messages(client_info)
+        self._prep_wrapped_messages(self._client_info)
 
     @property
     def grpc_channel(self) -> aio.Channel:
@@ -224,6 +233,32 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         """
         # Return the channel from cache.
         return self._grpc_channel
+
+    def reinitialize_grpc_channel(self):
+        """Create a new gRPC channel with the same settings as when the
+        transport was first initialized.
+
+        This method will have no effect if a custom channel was used
+        to initialize the transport.
+        """
+        if self._default_grpc_channel:
+            self._grpc_channel = self._create_default_channel()
+
+            # Clear self._stubs and re-populate with methods
+            # that use the newly created channel.
+            self._stubs = {}
+            self._prep_wrapped_messages(self._client_info)
+
+    def _refresh_transport(self, exc):
+        """Checks for a broken gRPC channel and creates a new one if
+        that is the case.
+
+        Passed to ``on_error`` on ``google.api_core.retry.Retry``.
+        """
+        if isinstance(
+            exc, core_exceptions.ServiceUnavailable
+        ) and "Socket Operation on non-socket" in str(exc):
+            self.reinitialize_grpc_channel()
 
     @property
     def list_buckets(self) -> Callable[
