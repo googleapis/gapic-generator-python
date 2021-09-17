@@ -458,7 +458,7 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
     transports.{{ service.grpc_asyncio_transport_name }}, 
 ])
 def test__refresh_transport(transport_class):
-    transport = transport_class()
+    transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
     original_channel = transport.grpc_channel
 
     exc = core_exceptions.ServiceUnavailable("Socket Operation on non-socket")
@@ -476,7 +476,7 @@ def test__refresh_transport(transport_class):
     transports.{{ service.grpc_asyncio_transport_name }}, 
 ])
 def test__refresh_transport_different_exception(transport_class):
-    transport = transport_class()
+    transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
     original_channel = transport.grpc_channel
 
     exc = core_exceptions.ServiceUnavailable("Unrelated error message")
@@ -490,7 +490,10 @@ def test__refresh_transport_different_exception(transport_class):
 ])
 def test_reinitialize_grpc_channel_custom_channel(transport_class):
     transport = transport_class(
-        channel=grpc_helpers.create_channel("foo.googleapis.com")
+        channel=grpc_helpers.create_channel(
+            "foo.googleapis.com", 
+            credentials=ga_credentials.AnonymousCredentials()
+        )
     )
     original_channel = transport.grpc_channel
 
