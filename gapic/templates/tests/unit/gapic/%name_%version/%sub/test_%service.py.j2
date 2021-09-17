@@ -452,6 +452,51 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
         )
+
+@pytest.mark.parametrize("transport_class", [
+    transports.{{ service.grpc_transport_name }},
+    transports.{{ service.grpc_asyncio_transport_name }}, 
+])
+def test__refresh_transport(transport_class):
+    transport = transport_class()
+    original_channel = transport.grpc_channel
+
+    exc = core_exceptions.ServiceUnavailable("Socket Operation on non-socket")
+    transport._refresh_transport(exc)
+    new_channel = transport.grpc_channel
+
+    assert original_channel is not new_channel
+    assert len(transport._stubs) > 0
+    # Check stubs are associated with new channel
+    assert list(transport._stubs.values())[0]._channel == new_channel._channel
+
+
+@pytest.mark.parametrize("transport_class", [
+    transports.{{ service.grpc_transport_name }},
+    transports.{{ service.grpc_asyncio_transport_name }}, 
+])
+def test__refresh_transport_different_exception(transport_class):
+    transport = transport_class()
+    original_channel = transport.grpc_channel
+
+    exc = core_exceptions.ServiceUnavailable("Unrelated error message")
+    transport._refresh_transport(exc)
+    assert original_channel is transport.grpc_channel
+
+
+@pytest.mark.parametrize("transport_class", [
+    transports.{{ service.grpc_transport_name }},
+    transports.{{ service.grpc_asyncio_transport_name }}, 
+])
+def test_reinitialize_grpc_channel_custom_channel(transport_class):
+    transport = transport_class(
+        channel=grpc_helpers.create_channel("foo.googleapis.com")
+    )
+    original_channel = transport.grpc_channel
+
+    transport.reinitialize_grpc_channel()
+    assert original_channel is transport.grpc_channel    
+
 {% endif %}
 
 
