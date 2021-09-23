@@ -221,14 +221,6 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
         """
         return self._grpc_channel
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
-        """Closes underlying gRPC channel.
-        """
-        self.grpc_channel.close()
-
     @property
     def list_buckets(self) -> Callable[
             [logging_config.ListBucketsRequest],
@@ -880,6 +872,8 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
             )
         return self._stubs['update_cmek_settings']
 
+    def close(self):
+        self.grpc_channel.close()
 
 __all__ = (
     'ConfigServiceV2GrpcTransport',

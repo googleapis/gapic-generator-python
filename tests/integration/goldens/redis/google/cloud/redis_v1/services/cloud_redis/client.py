@@ -1270,7 +1270,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def __enter__(self):
-        self.transport.__enter__()
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1280,7 +1279,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         with other clients! Exiting the with block will CLOSE the transport
         and may cause errors in other clients!
         """
-        return self.transport.__exit__(type, value, traceback)
+        self.transport.close()
 
 
 

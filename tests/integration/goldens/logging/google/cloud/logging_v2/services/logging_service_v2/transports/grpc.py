@@ -221,14 +221,6 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
         """
         return self._grpc_channel
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
-        """Closes underlying gRPC channel.
-        """
-        self.grpc_channel.close()
-
     @property
     def delete_log(self) -> Callable[
             [logging.DeleteLogRequest],
@@ -404,6 +396,8 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
             )
         return self._stubs['tail_log_entries']
 
+    def close(self):
+        self.grpc_channel.close()
 
 __all__ = (
     'LoggingServiceV2GrpcTransport',

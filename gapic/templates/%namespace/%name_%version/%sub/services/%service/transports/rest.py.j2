@@ -133,14 +133,6 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
     {% for method in service.methods.values() %}
     {% if method.http_opt %}
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
-        """Closes underlying HTTP session.
-        """
-        self._session.close()
-
     def {{ method.name|snake_case }}(self,
             request: {{ method.input.ident }}, *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -243,6 +235,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {% endif %}
     {% endif %}
     {% endfor %}
+
+    def close(self):
+        self._session.close()
 
 
 __all__ = (

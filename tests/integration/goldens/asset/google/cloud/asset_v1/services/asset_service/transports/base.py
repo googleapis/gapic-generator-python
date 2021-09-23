@@ -259,10 +259,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             ),
          }
 
-    def __enter__(self):
-        raise NotImplementedError()
+    def close(self):
+        """Closes resources associated with the transport.
 
-    def __exit__(self, type, value, traceback):
+        WARNING: Only call this method if the transport is NOT shared
+        with other clients - this may cause errors in other clients!
+        """
         raise NotImplementedError()
 
     @property

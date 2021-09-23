@@ -229,14 +229,6 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
         """
         return self._grpc_channel
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
-        """Closes underlying gRPC channel.
-        """
-        self.grpc_channel.close()
-
     @property
     def generate_access_token(self) -> Callable[
             [common.GenerateAccessTokenRequest],
@@ -345,6 +337,8 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
             )
         return self._stubs['sign_jwt']
 
+    def close(self):
+        self.grpc_channel.close()
 
 __all__ = (
     'IAMCredentialsGrpcTransport',

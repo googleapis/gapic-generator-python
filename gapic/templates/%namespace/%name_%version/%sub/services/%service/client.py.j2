@@ -481,7 +481,6 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% endfor %}
 
     def __enter__(self):
-        self.transport.__enter__()
         return self
 
     def __exit__(self, type, value, traceback):
@@ -491,7 +490,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         with other clients! Exiting the with block will CLOSE the transport
         and may cause errors in other clients!
         """
-        return self.transport.__exit__(type, value, traceback)
+        self.transport.close()
 
     {% if opts.add_iam_methods %}
     def set_iam_policy(

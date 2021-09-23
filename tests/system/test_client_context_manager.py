@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+import os
 import pytest
+import grpc
+import distutils
 
 
 def test_client(echo):
@@ -30,3 +32,22 @@ def test_client_destroyed(echo):
         echo.echo({
             'content': 'hello'
         })
+
+
+if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+
+    @pytest.mark.asyncio
+    async def test_client_async(async_echo):
+        async with async_echo:
+            response = await async_echo.echo({
+                'content': 'hello'
+            })
+            assert response.content == 'hello'
+
+    @pytest.mark.asyncio
+    async def test_client_destroyed_async(async_echo):
+        await async_echo.__aexit__(None, None, None)
+        with pytest.raises(grpc._cython.cygrpc.UsageError):
+            await async_echo.echo({
+                'content': 'hello'
+            })

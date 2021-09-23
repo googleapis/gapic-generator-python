@@ -1485,10 +1485,7 @@ def test_iam_credentials_base_transport():
             getattr(transport, method)(request=object())
 
     with pytest.raises(NotImplementedError):
-        transport.__enter__()
-
-    with pytest.raises(NotImplementedError):
-        transport.__exit__(None, None, None)
+        transport.close()
 
 
 @requires_google_auth_gte_1_25_0
@@ -1936,7 +1933,18 @@ def test_client_withDEFAULT_CLIENT_INFO():
         prep.assert_called_once_with(client_info)
 
 
-def test_transport_ctx():
+@pytest.mark.asyncio
+async def test_transport_close_async():
+    client = IAMCredentialsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+def test_transport_close():
     transports = {
         "grpc": "_grpc_channel",
     }
@@ -1961,10 +1969,8 @@ def test_client_ctx():
             transport=transport
         )
         # Test client calls underlying transport.
-        with mock.patch.object(type(client.transport), "__enter__") as enter:
-            with mock.patch.object(type(client.transport), "__exit__") as exit:
-                enter.assert_not_called()
-                exit.assert_not_called()
-                with client:
-                    enter.assert_called_once()
-                exit.assert_called()
+        with mock.patch.object(type(client.transport), "close") as close:
+            close.assert_not_called()
+            with client:
+                pass
+            close.assert_called()
