@@ -867,15 +867,6 @@ class Method:
         return [rule for rule in opt_gen if rule]
 
     @property
-    def http_options(self) -> List[HttpRule]:
-        """Return a list of the http bindings for this method."""
-        http = self.options.Extensions[annotations_pb2.http]
-        http_options = [http] + list(http.additional_bindings)
-        opt_gen = (HttpRule.try_parse_http_rule(http_rule)
-                   for http_rule in http_options)
-        return [rule for rule in opt_gen if rule]
-
-    @property
     def http_opt(self) -> Optional[Dict[str, str]]:
         """Return the (main) http option for this method.
 

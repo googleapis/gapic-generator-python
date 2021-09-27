@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Iterable, Dict, List, Tuple
+from typing import Any, Generator, Dict, List, Tuple
 import re
 
 
-def _sample_names() -> Iterable[str]:
+def _sample_names() -> Generator[str, None, None]:
     sample_num: int = 0
     while True:
         sample_num += 1
@@ -66,7 +66,7 @@ def sample_from_path_fields(paths: List[Tuple[str, str]]) -> Dict[Any, Any]:
           A new nested dict with the templates instantiated.
     """
 
-    request = {}
+    request: Dict[str, Any] = {}
     sample_names = _sample_names()
 
     for path, template in paths:
