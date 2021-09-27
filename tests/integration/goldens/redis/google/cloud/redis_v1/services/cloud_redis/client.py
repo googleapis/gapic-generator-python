@@ -1275,9 +1275,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
     def __exit__(self, type, value, traceback):
         """Releases underlying transport's resources.
 
-        WARNING: ONLY use as a context manager if the transport is NOT shared
-        with other clients! Exiting the with block will CLOSE the transport
-        and may cause errors in other clients!
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
         """
         self.transport.close()
 
