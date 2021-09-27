@@ -978,7 +978,6 @@ def test_{{ method.name|snake_case }}_pager():
             )),
         )
         {% endif %}
-
         pager = client.{{ method.name|snake_case }}(request={})
 
         assert pager._metadata == metadata
@@ -1783,6 +1782,7 @@ def test_{{ service.name|snake_case }}_rest_lro_client():
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
 {%- endif %}
+{% endif %} {# rest #}
 
 def test_{{ service.name|snake_case }}_host_no_port():
     {% with host = (service.host|default('localhost', true)).split(':')[0] %}
@@ -1802,7 +1802,6 @@ def test_{{ service.name|snake_case }}_host_with_port():
     )
     assert client.transport._host == '{{ host }}:8000'
     {% endwith %}
-{% endif %} {# rest #}
 
 {% if 'grpc' in opts.transport %}
 def test_{{ service.name|snake_case }}_grpc_transport_channel():
