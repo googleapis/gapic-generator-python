@@ -35,6 +35,7 @@ def sample_failover_instance():
 
     # Initialize request argument(s)
     request = redis_v1.FailoverInstanceRequest(
+        name="projects/{project}/locations/{location}/instances/{instance}",
     )
 
     # Make the request
@@ -43,6 +44,6 @@ def sample_failover_instance():
     print("Waiting for operation to complete...")
 
     response = operation.result()
-    print("{}".format(response))
+    print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_FailoverInstance_sync]

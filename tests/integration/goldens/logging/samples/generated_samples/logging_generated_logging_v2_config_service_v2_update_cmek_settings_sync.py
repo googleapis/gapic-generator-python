@@ -35,12 +35,13 @@ def sample_update_cmek_settings():
 
     # Initialize request argument(s)
     request = logging_v2.UpdateCmekSettingsRequest(
+        name="name_value",
     )
 
     # Make the request
     response = client.update_cmek_settings(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UpdateCmekSettings_sync]

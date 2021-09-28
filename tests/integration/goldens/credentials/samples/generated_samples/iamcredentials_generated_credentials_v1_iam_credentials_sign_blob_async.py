@@ -35,12 +35,14 @@ async def sample_sign_blob():
 
     # Initialize request argument(s)
     request = credentials_v1.SignBlobRequest(
+        name="projects/{project}/serviceAccounts/{service_account}",
+        payload=b'payload_blob',
     )
 
     # Make the request
     response = await client.sign_blob(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_SignBlob_async]

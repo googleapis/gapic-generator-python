@@ -34,12 +34,13 @@ def sample_method_bidi_streaming():
     client = mollusca_v1.SnippetsClient()
 
     # Initialize request argument(s)
-    request = mollusca_v1.SignatureRequest(
+    request = mollusca_v1.SignatureRequestOneRequiredField(
+        my_string="my_string_value",
     )
 
     # Make the request
-    stream = client.method_bidi_streaming([])
+    stream = client.method_bidi_streaming([my_string="my_string_value"])
     for response in stream:
-        print("{}".format(response))
+        print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_sync]

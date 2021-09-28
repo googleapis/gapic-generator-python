@@ -34,13 +34,17 @@ def sample_analyze_iam_policy():
     client = asset_v1.AssetServiceClient()
 
     # Initialize request argument(s)
+    analysis_query = asset_v1.IamPolicyAnalysisQuery()
+    analysis_query.scope = "scope_value"
+
     request = asset_v1.AnalyzeIamPolicyRequest(
+        analysis_query=analysis_query,
     )
 
     # Make the request
     response = client.analyze_iam_policy(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_AnalyzeIamPolicy_sync]

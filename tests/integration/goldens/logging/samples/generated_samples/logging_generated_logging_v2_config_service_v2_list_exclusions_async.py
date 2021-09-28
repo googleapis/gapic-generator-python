@@ -35,11 +35,12 @@ async def sample_list_exclusions():
 
     # Initialize request argument(s)
     request = logging_v2.ListExclusionsRequest(
+        parent="projects/{project}/exclusions/{exclusion}",
     )
 
     # Make the request
     page_result = client.list_exclusions(request=request)
     async for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_ListExclusions_async]

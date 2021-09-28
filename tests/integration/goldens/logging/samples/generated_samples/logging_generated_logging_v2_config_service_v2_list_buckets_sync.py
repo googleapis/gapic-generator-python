@@ -35,11 +35,12 @@ def sample_list_buckets():
 
     # Initialize request argument(s)
     request = logging_v2.ListBucketsRequest(
+        parent="projects/{project}/locations/{location}/buckets/{bucket}",
     )
 
     # Make the request
     page_result = client.list_buckets(request=request)
     for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_ListBuckets_sync]

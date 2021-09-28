@@ -34,13 +34,19 @@ async def sample_create_exclusion():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    exclusion = logging_v2.LogExclusion()
+    exclusion.name = "name_value"
+    exclusion.filter = "filter_value"
+
     request = logging_v2.CreateExclusionRequest(
+        parent="projects/{project}/exclusions/{exclusion}",
+        exclusion=exclusion,
     )
 
     # Make the request
     response = await client.create_exclusion(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateExclusion_async]

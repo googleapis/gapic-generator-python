@@ -35,11 +35,12 @@ async def sample_search_all_iam_policies():
 
     # Initialize request argument(s)
     request = asset_v1.SearchAllIamPoliciesRequest(
+        scope="scope_value",
     )
 
     # Make the request
     page_result = client.search_all_iam_policies(request=request)
     async for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_SearchAllIamPolicies_async]

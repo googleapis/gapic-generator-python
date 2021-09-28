@@ -34,7 +34,12 @@ def sample_export_instance():
     client = redis_v1.CloudRedisClient()
 
     # Initialize request argument(s)
+    output_config = redis_v1.OutputConfig()
+    output_config.gcs_destination.uri = "uri_value"
+
     request = redis_v1.ExportInstanceRequest(
+        name="name_value",
+        output_config=output_config,
     )
 
     # Make the request
@@ -43,6 +48,6 @@ def sample_export_instance():
     print("Waiting for operation to complete...")
 
     response = operation.result()
-    print("{}".format(response))
+    print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ExportInstance_sync]

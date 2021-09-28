@@ -35,11 +35,12 @@ def sample_list_instances():
 
     # Initialize request argument(s)
     request = redis_v1.ListInstancesRequest(
+        parent="projects/{project}/locations/{location}",
     )
 
     # Make the request
     page_result = client.list_instances(request=request)
     for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ListInstances_sync]

@@ -34,13 +34,19 @@ def sample_create_feed():
     client = asset_v1.AssetServiceClient()
 
     # Initialize request argument(s)
+    feed = asset_v1.Feed()
+    feed.name = "name_value"
+
     request = asset_v1.CreateFeedRequest(
+        parent="parent_value",
+        feed_id="feed_id_value",
+        feed=feed,
     )
 
     # Make the request
     response = client.create_feed(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_CreateFeed_sync]

@@ -35,12 +35,14 @@ async def sample_generate_id_token():
 
     # Initialize request argument(s)
     request = credentials_v1.GenerateIdTokenRequest(
+        name="projects/{project}/serviceAccounts/{service_account}",
+        audience="audience_value",
     )
 
     # Make the request
     response = await client.generate_id_token(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_GenerateIdToken_async]

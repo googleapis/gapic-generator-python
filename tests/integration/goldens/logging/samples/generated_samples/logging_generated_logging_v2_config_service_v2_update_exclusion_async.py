@@ -34,13 +34,19 @@ async def sample_update_exclusion():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    exclusion = logging_v2.LogExclusion()
+    exclusion.name = "name_value"
+    exclusion.filter = "filter_value"
+
     request = logging_v2.UpdateExclusionRequest(
+        name="projects/{project}/exclusions/{exclusion}",
+        exclusion=exclusion,
     )
 
     # Make the request
     response = await client.update_exclusion(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UpdateExclusion_async]

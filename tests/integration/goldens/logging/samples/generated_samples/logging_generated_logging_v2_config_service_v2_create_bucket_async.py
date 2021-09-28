@@ -35,12 +35,14 @@ async def sample_create_bucket():
 
     # Initialize request argument(s)
     request = logging_v2.CreateBucketRequest(
+        parent="projects/{project}/locations/{location}/buckets/{bucket}",
+        bucket_id="bucket_id_value",
     )
 
     # Make the request
     response = await client.create_bucket(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateBucket_async]

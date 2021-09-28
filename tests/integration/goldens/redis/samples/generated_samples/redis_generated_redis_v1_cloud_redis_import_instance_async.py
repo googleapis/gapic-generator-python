@@ -34,7 +34,12 @@ async def sample_import_instance():
     client = redis_v1.CloudRedisAsyncClient()
 
     # Initialize request argument(s)
+    input_config = redis_v1.InputConfig()
+    input_config.gcs_source.uri = "uri_value"
+
     request = redis_v1.ImportInstanceRequest(
+        name="name_value",
+        input_config=input_config,
     )
 
     # Make the request
@@ -43,6 +48,6 @@ async def sample_import_instance():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
-    print("{}".format(response))
+    print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ImportInstance_async]

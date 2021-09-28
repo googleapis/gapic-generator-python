@@ -34,13 +34,17 @@ def sample_update_feed():
     client = asset_v1.AssetServiceClient()
 
     # Initialize request argument(s)
+    feed = asset_v1.Feed()
+    feed.name = "name_value"
+
     request = asset_v1.UpdateFeedRequest(
+        feed=feed,
     )
 
     # Make the request
     response = client.update_feed(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_UpdateFeed_sync]

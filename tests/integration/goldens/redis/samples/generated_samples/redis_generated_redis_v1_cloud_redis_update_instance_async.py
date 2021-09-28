@@ -34,7 +34,13 @@ async def sample_update_instance():
     client = redis_v1.CloudRedisAsyncClient()
 
     # Initialize request argument(s)
+    instance = redis_v1.Instance()
+    instance.name = "name_value"
+    instance.tier = "STANDARD_HA"
+    instance.memory_size_gb = 1499
+
     request = redis_v1.UpdateInstanceRequest(
+        instance=instance,
     )
 
     # Make the request
@@ -43,6 +49,6 @@ async def sample_update_instance():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
-    print("{}".format(response))
+    print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_UpdateInstance_async]

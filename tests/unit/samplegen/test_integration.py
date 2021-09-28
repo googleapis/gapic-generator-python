@@ -24,7 +24,8 @@ from gapic.samplegen_utils import (types, utils as gapic_utils)
 from gapic.schema import (naming, wrappers)
 
 from tests.unit.samplegen.common_types import (DummyField, DummyMessage,
-                          DummyMethod, DummyService, DummyIdent,
+
+                          DummyMessageTypePB, DummyMethod, DummyService, DummyIdent,
                           DummyApiSchema, DummyNaming, enum_factory, message_factory)
 
 from collections import namedtuple
@@ -43,6 +44,7 @@ env = jinja2.Environment(
 )
 env.filters['snake_case'] = utils.to_snake_case
 env.filters['coerce_response_name'] = gapic_utils.coerce_response_name
+env.filters['render_format_string'] = gapic_utils.render_format_string
 
 
 def golden_snippet(filename: str) -> str:
@@ -62,13 +64,16 @@ def test_generate_sample_basic():
         type="REQUEST TYPE",
         fields={
             "classify_target": DummyField(
+                type=DummyMessageTypePB(name="ClassifyTarget"),
                 message=DummyMessage(
                     type="CLASSIFY TYPE",
                     fields={
                         "video": DummyField(
+                            type=DummyMessageTypePB(name="Video"),
                             message=DummyMessage(type="VIDEO TYPE"),
                         ),
                         "location_annotation": DummyField(
+                            type=DummyMessageTypePB(name="Location"),
                             message=DummyMessage(type="LOCATION TYPE"),
                         )
                     },
@@ -134,13 +139,16 @@ def test_generate_sample_basic_async():
         type="REQUEST TYPE",
         fields={
             "classify_target": DummyField(
+                type=DummyMessageTypePB(name="ClassifyTarget"),
                 message=DummyMessage(
-                    type="CLASSIFY TYPE",
+                    type=DummyMessageTypePB(name="CLASSIFY TYPE"),
                     fields={
                         "video": DummyField(
+                            type=DummyMessageTypePB(name="Video"),
                             message=DummyMessage(type="VIDEO TYPE"),
                         ),
                         "location_annotation": DummyField(
+                            type=DummyMessageTypePB(name="Location"),
                             message=DummyMessage(type="LOCATION TYPE"),
                         )
                     },
@@ -206,13 +214,15 @@ def test_generate_sample_basic_unflattenable():
         type="REQUEST TYPE",
         fields={
             "classify_target": DummyField(
+                type=DummyMessageTypePB(name="ClassifyTarget"),
                 message=DummyMessage(
-                    type="CLASSIFY TYPE",
                     fields={
                         "video": DummyField(
+                            type=DummyMessageTypePB(name="Video"),
                             message=DummyMessage(type="VIDEO TYPE"),
                         ),
                         "location_annotation": DummyField(
+                            type=DummyMessageTypePB(name="Location"),
                             message=DummyMessage(type="LOCATION TYPE"),
                         )
                     },
@@ -269,13 +279,15 @@ def test_generate_sample_void_method():
         type="REQUEST TYPE",
         fields={
             "classify_target": DummyField(
+                type=DummyMessageTypePB(name="ClassifyTarget"),
                 message=DummyMessage(
-                    type="CLASSIFY TYPE",
                     fields={
                         "video": DummyField(
+                            type=DummyMessageTypePB(name="Video"),
                             message=DummyMessage(type="VIDEO TYPE"),
                         ),
                         "location_annotation": DummyField(
+                            type=DummyMessageTypePB(name="Location"),
                             message=DummyMessage(type="LOCATION TYPE"),
                         )
                     },

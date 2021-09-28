@@ -35,12 +35,13 @@ async def sample_get_view():
 
     # Initialize request argument(s)
     request = logging_v2.GetViewRequest(
+        name="projects/{project}/locations/{location}/buckets/{bucket}/views/{view}",
     )
 
     # Make the request
     response = await client.get_view(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_GetView_async]

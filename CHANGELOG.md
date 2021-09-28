@@ -1,5 +1,32 @@
 # Changelog
 
+### [0.51.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.51.1...v0.51.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* add a separate DEFAULT_CLIENT_INFO for rest clients ([#988](https://www.github.com/googleapis/gapic-generator-python/issues/988)) ([22ac400](https://www.github.com/googleapis/gapic-generator-python/commit/22ac40097ab50bb2d3a7f1a2d35d659c391e0927))
+* **snippetgen:** use f-strings in print statements ([#975](https://www.github.com/googleapis/gapic-generator-python/issues/975)) ([122e85c](https://www.github.com/googleapis/gapic-generator-python/commit/122e85c37ff6aa0a99f64361397eb3df5495a3b4))
+
+### [0.51.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.51.0...v0.51.1) (2021-08-20)
+
+
+### Bug Fixes
+
+* timeouts are handled by rest clients, retries silently ignored ([#976](https://www.github.com/googleapis/gapic-generator-python/issues/976)) ([a62463c](https://www.github.com/googleapis/gapic-generator-python/commit/a62463cadee0cdaf861e93998faa27e6a82adab4))
+
+## [0.51.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.5...v0.51.0) (2021-08-18)
+
+
+### Features
+
+* **snippetgen:** generate mock input for required fields ([#941](https://www.github.com/googleapis/gapic-generator-python/issues/941)) ([b2149da](https://www.github.com/googleapis/gapic-generator-python/commit/b2149da5e6873e1f71871bfecd899bb9aa0b6439))
+
+
+### Bug Fixes
+
+* add 'dict' type annotation to 'request' ([#966](https://www.github.com/googleapis/gapic-generator-python/issues/966)) ([49205d9](https://www.github.com/googleapis/gapic-generator-python/commit/49205d99dd440690b838c8eb3f6a695f35b061c2))
+
 ### [0.50.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.4...v0.50.5) (2021-07-22)
 
 

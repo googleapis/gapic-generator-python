@@ -35,11 +35,12 @@ def sample_search_all_resources():
 
     # Initialize request argument(s)
     request = asset_v1.SearchAllResourcesRequest(
+        scope="scope_value",
     )
 
     # Make the request
     page_result = client.search_all_resources(request=request)
     for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_SearchAllResources_sync]

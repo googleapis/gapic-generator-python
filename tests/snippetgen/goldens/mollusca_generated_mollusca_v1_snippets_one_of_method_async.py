@@ -15,33 +15,34 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for BatchGetAssetsHistory
+# Snippet for OneOfMethod
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-asset
+#   python3 -m pip install animalia-mollusca
 
 
-# [START cloudasset_generated_asset_v1_AssetService_BatchGetAssetsHistory_sync]
-from google.cloud import asset_v1
+# [START mollusca_generated_mollusca_v1_Snippets_OneOfMethod_async]
+from animalia import mollusca_v1
 
 
-def sample_batch_get_assets_history():
-    """Snippet for batch_get_assets_history"""
+async def sample_one_of_method():
+    """Snippet for one_of_method"""
 
     # Create a client
-    client = asset_v1.AssetServiceClient()
+    client = mollusca_v1.SnippetsAsyncClient()
 
     # Initialize request argument(s)
-    request = asset_v1.BatchGetAssetsHistoryRequest(
-        parent="*",
+    request = mollusca_v1.OneOfRequest(
+        my_string="my_string_value",
+        non_one_of_string="non_one_of_string_value",
     )
 
     # Make the request
-    response = client.batch_get_assets_history(request=request)
+    response = await client.one_of_method(request=request)
 
     # Handle response
     print(response)
 
-# [END cloudasset_generated_asset_v1_AssetService_BatchGetAssetsHistory_sync]
+# [END mollusca_generated_mollusca_v1_Snippets_OneOfMethod_async]

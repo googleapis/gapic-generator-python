@@ -34,13 +34,19 @@ def sample_create_sink():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
+    sink = logging_v2.LogSink()
+    sink.name = "name_value"
+    sink.destination = "destination_value"
+
     request = logging_v2.CreateSinkRequest(
+        parent="projects/{project}/sinks/{sink}",
+        sink=sink,
     )
 
     # Make the request
     response = client.create_sink(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateSink_sync]

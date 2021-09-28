@@ -34,12 +34,21 @@ async def sample_method_server_streaming():
     client = mollusca_v1.SnippetsAsyncClient()
 
     # Initialize request argument(s)
+    my_message = mollusca_v1.MessageWithNesting()
+    my_message.message.required_string = "required_string_value"
+    my_message.my_int = 656
+
     request = mollusca_v1.SignatureRequest(
+        my_string="my_string_value",
+        my_int=656,
+        my_bool=True,
+        my_message=my_message,
+        single_enum="DEFAULT",
     )
 
     # Make the request
     stream = await client.method_server_streaming(request=request)
     async for response in stream:
-        print("{}".format(response))
+        print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_MethodServerStreaming_async]

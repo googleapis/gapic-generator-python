@@ -35,12 +35,14 @@ def sample_sign_jwt():
 
     # Initialize request argument(s)
     request = credentials_v1.SignJwtRequest(
+        name="projects/{project}/serviceAccounts/{service_account}",
+        payload="payload_value",
     )
 
     # Make the request
     response = client.sign_jwt(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_SignJwt_sync]

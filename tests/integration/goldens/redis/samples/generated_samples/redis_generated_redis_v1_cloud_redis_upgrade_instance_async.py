@@ -35,6 +35,8 @@ async def sample_upgrade_instance():
 
     # Initialize request argument(s)
     request = redis_v1.UpgradeInstanceRequest(
+        name="projects/{project}/locations/{location}/instances/{instance}",
+        redis_version="redis_version_value",
     )
 
     # Make the request
@@ -43,6 +45,6 @@ async def sample_upgrade_instance():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
-    print("{}".format(response))
+    print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_UpgradeInstance_async]

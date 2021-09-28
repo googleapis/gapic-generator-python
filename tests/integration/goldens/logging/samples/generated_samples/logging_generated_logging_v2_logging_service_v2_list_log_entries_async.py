@@ -35,11 +35,12 @@ async def sample_list_log_entries():
 
     # Initialize request argument(s)
     request = logging_v2.ListLogEntriesRequest(
+        resource_names="projects/{project}/logs/{log}",
     )
 
     # Make the request
     page_result = client.list_log_entries(request=request)
     async for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END logging_generated_logging_v2_LoggingServiceV2_ListLogEntries_async]

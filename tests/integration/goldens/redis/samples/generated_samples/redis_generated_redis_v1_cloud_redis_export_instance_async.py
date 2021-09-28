@@ -34,7 +34,12 @@ async def sample_export_instance():
     client = redis_v1.CloudRedisAsyncClient()
 
     # Initialize request argument(s)
+    output_config = redis_v1.OutputConfig()
+    output_config.gcs_destination.uri = "uri_value"
+
     request = redis_v1.ExportInstanceRequest(
+        name="name_value",
+        output_config=output_config,
     )
 
     # Make the request
@@ -43,6 +48,6 @@ async def sample_export_instance():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
-    print("{}".format(response))
+    print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ExportInstance_async]

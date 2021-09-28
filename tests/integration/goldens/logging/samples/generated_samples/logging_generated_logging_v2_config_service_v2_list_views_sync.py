@@ -35,11 +35,12 @@ def sample_list_views():
 
     # Initialize request argument(s)
     request = logging_v2.ListViewsRequest(
+        parent="parent_value",
     )
 
     # Make the request
     page_result = client.list_views(request=request)
     for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_ListViews_sync]

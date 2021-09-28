@@ -35,12 +35,14 @@ def sample_generate_access_token():
 
     # Initialize request argument(s)
     request = credentials_v1.GenerateAccessTokenRequest(
+        name="projects/{project}/serviceAccounts/{service_account}",
+        scope=['scope_value'],
     )
 
     # Make the request
     response = client.generate_access_token(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_GenerateAccessToken_sync]

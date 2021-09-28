@@ -35,12 +35,13 @@ async def sample_get_sink():
 
     # Initialize request argument(s)
     request = logging_v2.GetSinkRequest(
+        sink_name="projects/{project}/sinks/{sink}",
     )
 
     # Make the request
     response = await client.get_sink(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_GetSink_async]

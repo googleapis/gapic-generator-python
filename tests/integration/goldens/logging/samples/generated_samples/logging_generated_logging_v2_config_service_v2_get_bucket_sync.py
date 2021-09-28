@@ -35,12 +35,13 @@ def sample_get_bucket():
 
     # Initialize request argument(s)
     request = logging_v2.GetBucketRequest(
+        name="projects/{project}/locations/{location}/buckets/{bucket}",
     )
 
     # Make the request
     response = client.get_bucket(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_GetBucket_sync]

@@ -35,12 +35,13 @@ def sample_get_exclusion():
 
     # Initialize request argument(s)
     request = logging_v2.GetExclusionRequest(
+        name="projects/{project}/exclusions/{exclusion}",
     )
 
     # Make the request
     response = client.get_exclusion(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_GetExclusion_sync]
