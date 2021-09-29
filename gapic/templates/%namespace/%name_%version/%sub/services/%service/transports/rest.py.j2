@@ -119,7 +119,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
     {% if service.has_lro %}
 
-    @ property
+    @property
     def operations_client(self) -> operations_v1.OperationsClient:
         """Create the client designed to process long-running operations.
 
@@ -184,7 +184,6 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             'method': '{{ rule.method }}',
             'uri': '{{ rule.uri }}',
             {%- if rule.body %}
-
             'body': '{{ rule.body }}',
             {%- endif %}
         },
@@ -212,19 +211,19 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         )
         {%- endif %}{# body_spec #}
 
-        uri=transcoded_request['uri']
-        method=transcoded_request['method']
+        uri = transcoded_request['uri']
+        method = transcoded_request['method']
 
         # Jsonify the query params
-        query_params=json.loads({{method.input.ident}}.to_json(
+        query_params = json.loads({{method.input.ident}}.to_json(
             {{method.input.ident}}(transcoded_request['query_params']),
             including_default_value_fields=False,
             use_integers_for_enums=False
         ))
 
         # Send the request
-        headers=dict(metadata)
-        headers['Content-Type']='application/json'
+        headers = dict(metadata)
+        headers['Content-Type'] = 'application/json'
         response=getattr(self._session, method)(
             uri,
             timeout=timeout,
