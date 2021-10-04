@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.52.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.51.2...v0.52.0) (2021-09-29)
+
+
+### Features
+
+* Support alternative http bindings in the gapic schema. ([#993](https://www.github.com/googleapis/gapic-generator-python/issues/993)) ([041a726](https://www.github.com/googleapis/gapic-generator-python/commit/041a726b818cd67812d689c23757f31ec9964d66))
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([#970](https://www.github.com/googleapis/gapic-generator-python/issues/970)) ([bba3eea](https://www.github.com/googleapis/gapic-generator-python/commit/bba3eea5d45fe57c0395ceef30402ad7880013d7))
+
+### [0.51.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.51.1...v0.51.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* add a separate DEFAULT_CLIENT_INFO for rest clients ([#988](https://www.github.com/googleapis/gapic-generator-python/issues/988)) ([22ac400](https://www.github.com/googleapis/gapic-generator-python/commit/22ac40097ab50bb2d3a7f1a2d35d659c391e0927))
+* **snippetgen:** use f-strings in print statements ([#975](https://www.github.com/googleapis/gapic-generator-python/issues/975)) ([122e85c](https://www.github.com/googleapis/gapic-generator-python/commit/122e85c37ff6aa0a99f64361397eb3df5495a3b4))
+
 ### [0.51.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.51.0...v0.51.1) (2021-08-20)
 
 
