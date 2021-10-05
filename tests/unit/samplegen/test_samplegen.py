@@ -1831,7 +1831,7 @@ def test_validate_request_enum_not_last_attr(dummy_api_schema):
         )
 
 
-def test_validate_request_resource_name(dummy_api_schema):
+def test_validate_request_resource_name():
     request = [
         {"field": "taxon%kingdom", "value": "animalia"},
         {"field": "taxon%phylum", "value": "mollusca", "input_parameter": "phylum"}
@@ -1926,7 +1926,7 @@ def test_validate_request_primitive_field(dummy_api_schema):
     assert actual == expected
 
 
-def test_validate_request_resource_name_mixed(dummy_api_schema, request=None):
+def test_validate_request_resource_name_mixed(request=None):
     # Note the mixing of resource name and non-resource name request field
     request = request or [
         {"field": "taxon%kingdom", "value": "animalia"},
@@ -1952,7 +1952,7 @@ def test_validate_request_resource_name_mixed(dummy_api_schema, request=None):
                 ]
             ),
         ),
-        api_schema=dummy_api_schema
+        api_schema=None
     )
 
     with pytest.raises(types.ResourceRequestMismatch):
