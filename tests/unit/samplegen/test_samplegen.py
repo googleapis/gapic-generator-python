@@ -38,8 +38,8 @@ from gapic.samplegen_utils import utils
 
 @pytest.fixture(scope="module")
 def dummy_api_schema():
-    # Dummy API Schema for the unit tests where the internals of the API schema
-    # do not matter for the test.
+    # For most of the unit tests in this file the internals of API Schema do not matter.
+    # do not matter.
     classify_request_message = DummyMessage(
         fields={
             "parent": DummyField(is_primitive=True, type=str, required=True, name="parent"),
@@ -48,14 +48,13 @@ def dummy_api_schema():
         ident=DummyIdent(name="ClassifyRequest")
         )
 
-
     return DummyApiSchema(
         services={"Mollusc": DummyService(
             methods={}, client_name="MolluscClient",
             resource_messages_dict={}
             )},
         naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
-                            versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
         messages=classify_request_message,
 
     )
@@ -63,20 +62,23 @@ def dummy_api_schema():
 
 def test_define(dummy_api_schema):
     define = {"define": "squid=$resp"}
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc")), api_schema=dummy_api_schema)
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc")), api_schema=dummy_api_schema)
     v.validate_response([define])
 
 
 def test_define_undefined_var(dummy_api_schema):
     define = {"define": "squid=humboldt"}
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc")), api_schema=dummy_api_schema)
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc")), api_schema=dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response([define])
 
 
 def test_define_reserved_varname(dummy_api_schema):
     define = {"define": "class=$resp"}
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc")), api_schema=dummy_api_schema)
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc")), api_schema=dummy_api_schema)
     with pytest.raises(types.ReservedVariableName):
         v.validate_response([define])
 
@@ -91,7 +93,8 @@ def test_define_add_var(dummy_api_schema):
 
 def test_define_bad_form(dummy_api_schema):
     define = {"define": "mollusc=$resp.squid=$resp.clam"}
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc")), api_schema=dummy_api_schema)
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc")), api_schema=dummy_api_schema)
     with pytest.raises(types.BadAssignment):
         v.validate_response([define])
 
@@ -103,7 +106,7 @@ def test_define_redefinition(dummy_api_schema):
     ]
     v = samplegen.Validator(DummyMethod(output=message_factory("$resp.molluscs",
                                                                repeated_iter=[True])),
-                                                               api_schema=dummy_api_schema)
+                            api_schema=dummy_api_schema)
     with pytest.raises(types.RedefinedVariable):
         v.validate_response(statements)
 
@@ -349,44 +352,51 @@ def test_define_input_param_redefinition(dummy_api_schema):
 
 def test_print_basic(dummy_api_schema):
     print_statement = {"print": ["This is a squid"]}
-    samplegen.Validator(DummyMethod(), dummy_api_schema).validate_response([print_statement])
+    samplegen.Validator(DummyMethod(), dummy_api_schema).validate_response(
+        [print_statement])
 
 
 def test_print_fmt_str(dummy_api_schema):
     print_statement = {"print": ["This is a squid named %s", "$resp.name"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.name")), dummy_api_schema)
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.name")), dummy_api_schema)
     v.validate_response([print_statement])
 
 
 def test_print_fmt_mismatch(dummy_api_schema):
     print_statement = {"print": ["This is a squid named %s"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.name")), dummy_api_schema)
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.name")), dummy_api_schema)
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response([print_statement])
 
 
 def test_print_fmt_mismatch2(dummy_api_schema):
     print_statement = {"print": ["This is a squid", "$resp.name"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.name")), dummy_api_schema)
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.name")), dummy_api_schema)
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response([print_statement])
 
 
 def test_print_undefined_var(dummy_api_schema):
     print_statement = {"print": ["This mollusc is a %s", "mollusc.type"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.type")), dummy_api_schema)
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.type")), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response([print_statement])
 
 
 def test_comment(dummy_api_schema):
     comment = {"comment": ["This is a mollusc"]}
-    samplegen.Validator(DummyMethod(), dummy_api_schema).validate_response([comment])
+    samplegen.Validator(
+        DummyMethod(), dummy_api_schema).validate_response([comment])
 
 
 def test_comment_fmt_str(dummy_api_schema):
     comment = {"comment": ["This is a mollusc of class %s", "$resp.klass"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.klass")), dummy_api_schema)
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.klass")), dummy_api_schema)
     v.validate_response([comment])
 
 
