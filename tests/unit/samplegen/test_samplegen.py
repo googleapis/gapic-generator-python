@@ -38,8 +38,7 @@ from gapic.samplegen_utils import utils
 
 @pytest.fixture(scope="module")
 def dummy_api_schema():
-    # For most of the unit tests in this file the internals of API Schema do not matter.
-    # do not matter.
+    # For most of the unit tests in this file the internals of API Schema do not matter
     classify_request_message = DummyMessage(
         fields={
             "parent": DummyField(is_primitive=True, type=str, required=True, name="parent"),
