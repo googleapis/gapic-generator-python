@@ -166,7 +166,7 @@ class Field:
         """Generate a valid mock for a primitive type. This function
         returns the original (Python) type.
 
-        If a "suffix" is provided, generate a slightly different mock
+        If a suffix is provided, generate a slightly different mock
         using the provided integer.
         """
         answer: Union[bool, str, bytes, int, float, List[Any], None] = None
