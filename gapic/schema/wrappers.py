@@ -162,7 +162,7 @@ class Field:
         # Done; return the mock value.
         return answer
 
-    def primitive_mock(self, suffix: Optional[int] = 0) -> Union[bool, str, bytes, int, float, List[Any], None]:
+    def primitive_mock(self, suffix: int = 0) -> Union[bool, str, bytes, int, float, List[Any], None]:
         """Generate a valid mock for a primitive type. This function
         returns the original (Python) type.
 
