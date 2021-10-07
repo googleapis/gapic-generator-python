@@ -1001,15 +1001,17 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
 
         # TODO(busunkim): Properly handle map fields
         if field.is_primitive:
-            placeholder_value = field.mock_value_original_type
-            if service.resource_messages_dict.get(field.resource_reference):
+            resource_reference_message = service.resource_messages_dict.get(field.resource_reference)
+            # Some resource patterns have no resource_path_args
+            # https://github.com/googleapis/gapic-generator-python/issues/701
+            if resource_reference_message and resource_reference_message.resource_path_args:
                 request += _generate_resource_path_request_object(
                     field_name,
-                    service.resource_messages_dict[field.resource_reference]
+                    resource_reference_message
                 )
             else:
                 request.append(
-                    {"field": field_name, "value": placeholder_value})
+                    {"field": field_name, "value": field.mock_value_original_type})
         elif field.enum:
             # Choose the last enum value in the list since index 0 is often "unspecified"
             request.append(

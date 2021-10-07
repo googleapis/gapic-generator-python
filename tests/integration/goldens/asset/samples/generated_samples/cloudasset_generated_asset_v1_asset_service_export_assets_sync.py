@@ -38,6 +38,7 @@ def sample_export_assets():
     output_config.gcs_destination.uri = "uri_value"
 
     request = asset_v1.ExportAssetsRequest(
+        parent="parent_value",
         output_config=output_config,
     )
 

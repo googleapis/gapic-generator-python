@@ -35,6 +35,7 @@ def sample_batch_get_assets_history():
 
     # Initialize request argument(s)
     request = asset_v1.BatchGetAssetsHistoryRequest(
+        parent="parent_value",
     )
 
     # Make the request
