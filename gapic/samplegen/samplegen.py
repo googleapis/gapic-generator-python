@@ -175,7 +175,7 @@ class TransformedRequest:
 
             if resource_message is None:
                 raise types.NoSuchResource(
-                    f"No message exists for resource: '{resource_typestr}'", base, attrs
+                    f"No message exists for resource: {resource_typestr}",
                 )
             resource_message_descriptor = resource_message.options.Extensions[
                 resource_pb2.resource]
