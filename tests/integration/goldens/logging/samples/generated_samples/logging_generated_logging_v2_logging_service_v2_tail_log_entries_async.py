@@ -39,7 +39,7 @@ async def sample_tail_log_entries():
     )
 
     # Make the request
-    stream = await client.tail_log_entries([request])
+    stream = await client.tail_log_entries([resource_names=['resource_names_value_1', 'resource_names_value_2']])
     async for response in stream:
         print(response)
 
