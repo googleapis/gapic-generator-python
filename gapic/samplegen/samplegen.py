@@ -954,15 +954,14 @@ def _generate_resource_path_request_object(field_name: str, message: wrappers.Me
     """
     request = []
 
-    # Special resource path args that we replace
-    # with more realistic values
-    special_value_dict = {
+    # Look for specific field names to substitute more realistic values
+    special_values_dict = {
         "project": '"my-project-id"',
         "location": '"us-central1"'
     }
 
     for resource_path_arg in message.resource_path_args:
-        value = special_value_dict.get(
+        value = special_values_dict.get(
             resource_path_arg, f'"{resource_path_arg}_value"')
         request.append({
             # See TransformedRequest.build() for how 'field' is parsed
@@ -1001,7 +1000,8 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
 
         # TODO(busunkim): Properly handle map fields
         if field.is_primitive:
-            resource_reference_message = service.resource_messages_dict.get(field.resource_reference)
+            resource_reference_message = service.resource_messages_dict.get(
+                field.resource_reference)
             # Some resource patterns have no resource_path_args
             # https://github.com/googleapis/gapic-generator-python/issues/701
             if resource_reference_message and resource_reference_message.resource_path_args:
