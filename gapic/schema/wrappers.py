@@ -182,7 +182,7 @@ class Field:
                 answer = f"{self.name}_value_{suffix}" if suffix else f"{self.name}_value"
             elif self.type.python_type == bytes:
                 answer_str = f"{self.name}_blob_{suffix}" if suffix else f"{self.name}_blob"
-                answer = blob(answer_str, encoding="utf-8")
+                answer = bytes(answer_str, encoding="utf-8")
             elif self.type.python_type == int:
                 answer = sum([ord(i) for i in self.name]) + suffix
             elif self.type.python_type == float:
