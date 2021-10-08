@@ -99,9 +99,9 @@ class Field:
         # If this is a repeated field, then the mock answer should
         # be a list.
         if self.repeated:
-            first_answer = self.primitive_mock(suffix=1) or None
-            second_answer = self.primitive_mock(suffix=2) or None
-            answer = [first_answer, second_answer]
+            first_item = self.primitive_mock(suffix=1) or None
+            second_item = self.primitive_mock(suffix=2) or None
+            answer = [first_item, second_item]
 
         return answer
 
