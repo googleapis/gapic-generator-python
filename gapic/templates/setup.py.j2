@@ -27,9 +27,9 @@ setuptools.setup(
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
-        'google-api-core[grpc] >= 1.27.0, < 3.0.0dev',
+        'google-api-core[grpc] >= 2.1.0, < 3.0.0dev',
         'libcst >= 0.2.5',
-        'proto-plus >= 1.15.0',
+        'proto-plus >= 1.19.4',
         'packaging >= 14.3',
     {%- if api.requires_package(('google', 'iam', 'v1')) or opts.add_iam_methods %}
         'grpc-google-iam-v1 >= 0.12.3, < 0.13dev',
