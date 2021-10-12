@@ -55,11 +55,6 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endfilter %}
 
 
-# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
-# through google-api-core:
-# - Delete the auth "less than" test cases
-# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
-
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
