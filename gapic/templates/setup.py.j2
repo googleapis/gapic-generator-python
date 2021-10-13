@@ -27,7 +27,12 @@ setuptools.setup(
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
+        {# TODO(dovs): remove when 1.x deprecation is complete -#}
+        {% if 'rest' in opts.transport -%}
         'google-api-core[grpc] >= 2.1.0, < 3.0.0dev',
+        {% else -%}
+        'google-api-core[grpc] >= 1.28.0, < 3.0.0dev',
+        {% endif -%}
         'libcst >= 0.2.5',
         'proto-plus >= 1.19.4',
         'packaging >= 14.3',
@@ -44,7 +49,6 @@ setuptools.setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
         'Topic :: Internet',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
