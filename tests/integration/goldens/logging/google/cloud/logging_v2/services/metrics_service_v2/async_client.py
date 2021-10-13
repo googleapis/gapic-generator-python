@@ -26,6 +26,8 @@ from google.api_core import retry as retries           # type: ignore
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api import distribution_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
 from google.cloud.logging_v2.services.metrics_service_v2 import pagers
