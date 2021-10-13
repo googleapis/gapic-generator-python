@@ -19,7 +19,7 @@ import mock
 import os
 import pytest
 
-from google.api_core.client_options import ClientOptions # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.auth import credentials
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
