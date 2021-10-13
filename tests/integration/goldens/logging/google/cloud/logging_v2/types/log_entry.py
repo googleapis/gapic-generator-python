@@ -36,6 +36,18 @@ __protobuf__ = proto.module(
 class LogEntry(proto.Message):
     r"""An individual entry in a log.
 
+    This message has the following `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    ``payload``
+      - :attr:`proto_payload`
+      - :attr:`text_payload`
+      - :attr:`json_payload`
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         log_name (str):
             Required. The resource name of the log to which this log
@@ -84,12 +96,15 @@ class LogEntry(proto.Message):
 
             "type.googleapis.com/google.cloud.audit.AuditLog"
             "type.googleapis.com/google.appengine.logging.v1.RequestLog".
+            This field is a member of `oneof`_ ``payload``.
         text_payload (str):
             The log entry payload, represented as a
             Unicode string (UTF-8).
+            This field is a member of `oneof`_ ``payload``.
         json_payload (google.protobuf.struct_pb2.Struct):
             The log entry payload, represented as a
             structure that is expressed as a JSON object.
+            This field is a member of `oneof`_ ``payload``.
         timestamp (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The time the event described by the log entry
             occurred. This time is used to compute the log entry's age
