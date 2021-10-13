@@ -151,7 +151,7 @@ class MetricsServiceV2AsyncClient:
             request: logging_metrics.ListLogMetricsRequest = None,
             *,
             parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogMetricsAsyncPager:
@@ -248,7 +248,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             request: logging_metrics.GetLogMetricRequest = None,
             *,
             metric_name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
@@ -343,7 +343,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             *,
             parent: str = None,
             metric: logging_metrics.LogMetric = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
@@ -443,7 +443,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             *,
             metric_name: str = None,
             metric: logging_metrics.LogMetric = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
@@ -549,7 +549,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             request: logging_metrics.DeleteLogMetricRequest = None,
             *,
             metric_name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
