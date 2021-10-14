@@ -36,15 +36,10 @@ __protobuf__ = proto.module(
 class LogEntry(proto.Message):
     r"""An individual entry in a log.
 
-    This message has the following `oneof`_ fields (mutually exclusive fields).
+    This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
     Setting any member of the oneof automatically clears all other
     members.
-
-    ``payload``
-      - :attr:`proto_payload`
-      - :attr:`text_payload`
-      - :attr:`json_payload`
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 

@@ -131,15 +131,10 @@ class Asset(proto.Message):
     types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
     for more information.
 
-    This message has the following `oneof`_ fields (mutually exclusive fields).
+    This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
     Setting any member of the oneof automatically clears all other
     members.
-
-    ``access_context_policy``
-      - :attr:`access_policy`
-      - :attr:`access_level`
-      - :attr:`service_perimeter`
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -897,14 +892,10 @@ class IamPolicyAnalysisResult(proto.Message):
     class Access(proto.Message):
         r"""An IAM role or permission under analysis.
 
-        This message has the following `oneof`_ fields (mutually exclusive fields).
+        This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
         Setting any member of the oneof automatically clears all other
         members.
-
-        ``oneof_access``
-          - :attr:`role`
-          - :attr:`permission`
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 

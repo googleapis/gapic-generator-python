@@ -512,14 +512,10 @@ class DeleteFeedRequest(proto.Message):
 class OutputConfig(proto.Message):
     r"""Output configuration for export assets destination.
 
-    This message has the following `oneof`_ fields (mutually exclusive fields).
+    This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
     Setting any member of the oneof automatically clears all other
     members.
-
-    ``destination``
-      - :attr:`gcs_destination`
-      - :attr:`bigquery_destination`
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -585,14 +581,10 @@ class GcsOutputResult(proto.Message):
 class GcsDestination(proto.Message):
     r"""A Cloud Storage location.
 
-    This message has the following `oneof`_ fields (mutually exclusive fields).
+    This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
     Setting any member of the oneof automatically clears all other
     members.
-
-    ``object_uri``
-      - :attr:`uri`
-      - :attr:`uri_prefix`
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1615,14 +1607,10 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
     r"""Output configuration for export IAM policy analysis
     destination.
 
-    This message has the following `oneof`_ fields (mutually exclusive fields).
+    This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
     Setting any member of the oneof automatically clears all other
     members.
-
-    ``destination``
-      - :attr:`gcs_destination`
-      - :attr:`bigquery_destination`
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
