@@ -29,6 +29,8 @@ from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api import distribution_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
 from google.cloud.logging_v2.services.metrics_service_v2 import pagers
@@ -340,7 +342,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             request: Union[logging_metrics.ListLogMetricsRequest, dict] = None,
             *,
             parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogMetricsPager:
@@ -429,7 +431,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             request: Union[logging_metrics.GetLogMetricRequest, dict] = None,
             *,
             metric_name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
@@ -516,7 +518,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             *,
             parent: str = None,
             metric: logging_metrics.LogMetric = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
@@ -616,7 +618,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             *,
             metric_name: str = None,
             metric: logging_metrics.LogMetric = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
@@ -714,7 +716,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             request: Union[logging_metrics.DeleteLogMetricRequest, dict] = None,
             *,
             metric_name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:

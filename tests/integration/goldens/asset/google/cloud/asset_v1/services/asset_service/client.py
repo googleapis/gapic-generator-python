@@ -29,6 +29,8 @@ from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.asset_v1.services.asset_service import pagers
@@ -351,7 +353,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     def export_assets(self,
             request: Union[asset_service.ExportAssetsRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
@@ -432,7 +434,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request: Union[asset_service.ListAssetsRequest, dict] = None,
             *,
             parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListAssetsPager:
@@ -520,7 +522,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     def batch_get_assets_history(self,
             request: Union[asset_service.BatchGetAssetsHistoryRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> asset_service.BatchGetAssetsHistoryResponse:
@@ -580,7 +582,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request: Union[asset_service.CreateFeedRequest, dict] = None,
             *,
             parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> asset_service.Feed:
@@ -668,7 +670,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request: Union[asset_service.GetFeedRequest, dict] = None,
             *,
             name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> asset_service.Feed:
@@ -749,7 +751,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request: Union[asset_service.ListFeedsRequest, dict] = None,
             *,
             parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> asset_service.ListFeedsResponse:
@@ -826,7 +828,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request: Union[asset_service.UpdateFeedRequest, dict] = None,
             *,
             feed: asset_service.Feed = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> asset_service.Feed:
@@ -908,7 +910,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request: Union[asset_service.DeleteFeedRequest, dict] = None,
             *,
             name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
@@ -977,7 +979,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             scope: str = None,
             query: str = None,
             asset_types: Sequence[str] = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.SearchAllResourcesPager:
@@ -1156,7 +1158,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             *,
             scope: str = None,
             query: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.SearchAllIamPoliciesPager:
@@ -1313,7 +1315,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     def analyze_iam_policy(self,
             request: Union[asset_service.AnalyzeIamPolicyRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> asset_service.AnalyzeIamPolicyResponse:
@@ -1370,7 +1372,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     def analyze_iam_policy_longrunning(self,
             request: Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
