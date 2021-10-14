@@ -34,10 +34,11 @@ setuptools.setup(
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
-        'google-api-core[grpc] >= 1.27.0, < 3.0.0dev',
+        'google-api-core[grpc] >= 1.28.0, < 3.0.0dev',
         'libcst >= 0.2.5',
-        'proto-plus >= 1.15.0',
-        'packaging >= 14.3',        'grpc-google-iam-v1 >= 0.12.3, < 0.13dev',    ),
+        'proto-plus >= 1.19.4',
+        'grpc-google-iam-v1 >= 0.12.3, < 0.13dev',
+    ),
     python_requires='>=3.6',
     classifiers=[
         'Development Status :: 3 - Alpha',
