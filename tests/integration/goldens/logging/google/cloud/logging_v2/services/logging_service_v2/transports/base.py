@@ -15,7 +15,6 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import packaging.version
 import pkg_resources
 
 import google.auth  # type: ignore
