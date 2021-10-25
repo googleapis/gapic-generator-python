@@ -2424,16 +2424,19 @@ async def test_test_iam_permissions_from_dict_async():
         )
         call.assert_called()
 
-  @pytest.mark.asyncio
-  async def test_transport_close_async():
-      client = {{ service.async_client_name }}(
-          credentials=ga_credentials.AnonymousCredentials(),
-          transport="grpc_asyncio",
-      )
-      with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
-          async with client:
-              close.assert_not_called()
-          close.assert_called_once()
+{% endif %}
+
+{% if 'grpc' in opts.transport %}
+@pytest.mark.asyncio
+async def test_transport_close_async():
+    client = {{ service.async_client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 {% endif %}
 
 def test_transport_close():
