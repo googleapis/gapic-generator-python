@@ -475,7 +475,7 @@ def test_method_http_options_generate_sample():
         'id': 'projects/sample1/regions/sample2/id/sample3'}}
 
 
-def test_method_http_options_generate_sample_immplicit_template():
+def test_method_http_options_generate_sample_implicit_template():
     http_rule = http_pb2.HttpRule(
         get='/v1/{resource.id}/stuff',
     )
