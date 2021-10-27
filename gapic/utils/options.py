@@ -37,7 +37,7 @@ class Options:
     warehouse_package_name: str = ''
     retry: Optional[Dict[str, Any]] = None
     sample_configs: Tuple[str, ...] = dataclasses.field(default=())
-    autogen_snippets: bool = False
+    autogen_snippets: bool = True
     templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
     lazy_import: bool = False
     old_naming: bool = False
@@ -143,7 +143,7 @@ class Options:
                 for s in sample_paths
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
-            autogen_snippets=bool(opts.pop("autogen-snippets", False)),
+            autogen_snippets=bool(opts.pop("autogen-snippets", True)),
             templates=tuple(path.expanduser(i) for i in templates),
             lazy_import=bool(opts.pop('lazy-import', False)),
             old_naming=bool(opts.pop('old-naming', False)),
