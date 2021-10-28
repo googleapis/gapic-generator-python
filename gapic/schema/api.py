@@ -818,8 +818,8 @@ class _ProtoBuilder:
         # a specialized object in its place.
         if meth_pb.output_type.endswith('google.longrunning.Operation'):
             if not meth_pb.options.HasExtension(operations_pb2.operation_info):
-                # not a long running operation, although it returns an
-                # Operation message.
+                # This is not a long running operation even though it returns
+                # an Operation.
                 return None
             op = meth_pb.options.Extensions[operations_pb2.operation_info]
             if not op.response_type or not op.metadata_type:

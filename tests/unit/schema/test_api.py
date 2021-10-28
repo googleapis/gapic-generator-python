@@ -954,7 +954,7 @@ def test_lro_operation_no_annotation():
         messages=(make_message_pb2(name='Operation'),),
     ), file_to_generate=False, naming=make_naming())
 
-    # Set up a method with return Operation, but with no annotation.
+    # Set up a method that returns an Operation, but has no annotation.
     method_pb2 = descriptor_pb2.MethodDescriptorProto(
         name='GetOperation',
         input_type='google.example.v3.GetOperationRequest',
