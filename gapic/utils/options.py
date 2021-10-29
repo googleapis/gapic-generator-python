@@ -134,10 +134,7 @@ class Options:
 
         # autogen-snippets is True by default, so make sure users can disable
         # by passing `autogen-snippets=false`
-        if opts.get("autogen-snippets") and opts.pop("autogen-snippets")[0] in ("False", "false"):
-            autogen_snippets = False
-        else:
-            autogen_snippets = True
+        autogen_snippets = opts.pop("autogen-snippets", ["True"])[0] in ("True", "true", "T", "t", "TRUE")
 
         # NOTE: Snippets are not currently correct for the alternative (Ads) templates
         # so always disable snippetgen in that case
