@@ -16,6 +16,7 @@ from collections import defaultdict
 from os import path
 from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple
 
+import distutils.util
 import dataclasses
 import json
 import os
@@ -132,6 +133,13 @@ class Options:
         # Build the options instance.
         sample_paths = opts.pop('samples', [])
 
+        # autogen-snippets is True by default, so make sure users can disable
+        # by passing `autogen-snippets=false`
+        if opts.get("autogen-snippets"):
+            autogen_snippets = bool(distutils.util.strtobool(opts.pop("autogen-snippets")[0]))
+        else:
+            autogen_snippets = True
+
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
@@ -143,7 +151,7 @@ class Options:
                 for s in sample_paths
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
-            autogen_snippets=bool(opts.pop("autogen-snippets", True)),
+            autogen_snippets=autogen_snippets,
             templates=tuple(path.expanduser(i) for i in templates),
             lazy_import=bool(opts.pop('lazy-import', False)),
             old_naming=bool(opts.pop('old-naming', False)),
