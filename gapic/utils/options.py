@@ -16,7 +16,6 @@ from collections import defaultdict
 from os import path
 from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple
 
-import distutils.util
 import dataclasses
 import json
 import os
@@ -135,8 +134,8 @@ class Options:
 
         # autogen-snippets is True by default, so make sure users can disable
         # by passing `autogen-snippets=false`
-        if opts.get("autogen-snippets"):
-            autogen_snippets = bool(distutils.util.strtobool(opts.pop("autogen-snippets")[0]))
+        if opts.get("autogen-snippets") and opts.pop("autogen-snippets")[0] in ("False", "false"):
+            autogen_snippets = False
         else:
             autogen_snippets = True
 
