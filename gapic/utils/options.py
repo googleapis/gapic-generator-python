@@ -138,6 +138,11 @@ class Options:
             autogen_snippets = False
         else:
             autogen_snippets = True
+        
+        # NOTE: Snippets are not currently correct for the alternative (Ads) templates
+        # so always disable snippetgen in that case
+        if opts.get("old-naming"):
+            autogen_snippets = False
 
         answer = Options(
             name=opts.pop('name', ['']).pop(),

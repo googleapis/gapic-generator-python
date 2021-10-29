@@ -243,7 +243,7 @@ def test_get_response_enumerates_proto():
 
 def test_get_response_divides_subpackages():
     # NOTE: autogen-snippets is intentionally disabled for this test
-    # The API schema below is incomplete and will result in errors when the 
+    # The API schema below is incomplete and will result in errors when the
     # snippetgen logic tries to parse it.
     g = make_generator("autogen-snippets=false")
     api_schema = api.API.build(
@@ -687,9 +687,10 @@ def test_dont_generate_in_code_samples(mock_gmtime, mock_generate_sample, fs):
     )
 
     # NOTE: autogen-snippets is intentionally disabled for this test
-    # The API schema below is incomplete and will result in errors when the 
+    # The API schema below is incomplete and will result in errors when the
     # snippetgen logic attempts to parse it.
-    generator = make_generator(f"samples={config_fpath},autogen-snippets=False")
+    generator = make_generator(
+        f"samples={config_fpath},autogen-snippets=False")
     print(generator)
     generator._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
     api_schema = make_api(
