@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import os
 import sys
@@ -34,7 +35,6 @@ ALL_PYTHON = (
     "3.7",
     "3.8",
     "3.9",
-    "3.10",
 )
 
 NEWEST_PYTHON = "3.9"
@@ -74,6 +74,54 @@ FRAGMENT_FILES = tuple(
     if os.path.splitext(f)[1] == ".proto" and f.startswith("test_")
 )
 
+# Note: this class lives outside 'fragment'
+# so that, if necessary, it can be pickled for a ProcessPoolExecutor
+# A callable class is necessary so that the session can be closed over
+# instead of passed in, which simplifies the invocation via map.
+class FragTester:
+    def __init__(self, session):
+        self.session = session
+
+    def __call__(self, frag):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            # Generate the fragment GAPIC.
+            outputs = []
+            outputs.append(
+                self.session.run(
+                    "python",
+                    "-m",
+                    "grpc_tools.protoc",
+                    f"--proto_path={str(FRAG_DIR)}",
+                    f"--python_gapic_out={tmp_dir}",
+                    "--python_gapic_opt=transport=grpc+rest",
+                    str(frag),
+                    external=True,
+                    silent=True,
+                )
+            )
+
+            # Install the generated fragment library.
+            # Note: install into the tempdir to prevent issues
+            # with running pip concurrently.
+            self.session.install(tmp_dir, "-e", ".", "-t", tmp_dir, "-qqq")
+
+            # Run the fragment's generated unit tests.
+            # Don't bother parallelizing them: we already parallelize
+            # the fragments, and there usually aren't too many tests per fragment.
+            outputs.append(
+                self.session.run(
+                    "py.test",
+                    "--quiet",
+                    f"--cov-config={str(Path(tmp_dir) / '.coveragerc')}",
+                    "--cov-report=term",
+                    "--cov-fail-under=100",
+                    str(Path(tmp_dir) / "tests" / "unit"),
+                    silent=True,
+                )
+            )
+
+            return "".join(outputs)
+
 
 # TODO(dovs): ads templates
 @nox.session(python=ALL_PYTHON)
@@ -87,36 +135,13 @@ def fragment(session):
         "pytest-asyncio",
         "grpcio-tools",
     )
-
     session.install("-e", ".")
 
-    for frag in FRAGMENT_FILES:
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            # Generate the fragment GAPIC.
-            session.run(
-                "python",
-                "-m",
-                "grpc_tools.protoc",
-                f"--proto_path={str(FRAG_DIR)}",
-                f"--python_gapic_out={tmp_dir}",
-                "--python_gapic_opt=transport=grpc+rest",
-                str(frag),
-                external=True,
-            )
+    with ThreadPoolExecutor() as p:
+        all_outs = p.map(FragTester(session), FRAGMENT_FILES)
 
-            # Install the generated fragment library.
-            session.install(tmp_dir, "-e", ".")
-
-            # Run the fragment's generated unit tests.
-            session.run(
-                "py.test",
-                "--quiet",
-                "-n=auto",
-                f"--cov-config={str(Path(tmp_dir) / '.coveragerc')}",
-                "--cov-report=term",
-                "--cov-fail-under=100",
-                str(Path(tmp_dir) / "tests" / "unit"),
-            )
+    output = "".join(all_outs)
+    session.log(output)
 
 
 # TODO(yon-mg): -add compute context manager that includes rest transport

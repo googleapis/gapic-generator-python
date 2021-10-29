@@ -308,7 +308,7 @@ jobs:
       - name: Install nox.
         run: |
             python -m pip install nox
-      - name: Run unit tests.
+      - name: Run fragment tests.
         run: nox -s fragment-${{ matrix.python }}
   integration:
     runs-on: ubuntu-latest
