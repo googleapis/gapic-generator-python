@@ -551,16 +551,6 @@ class Validator:
                     AttributeRequestSetup(**r_dup)  # type: ignore
                 )
 
-        client_streaming_forms = {
-            types.CallingForm.RequestStreamingClient,
-            types.CallingForm.RequestStreamingBidi,
-        }
-
-        if len(base_param_to_attrs) > 1 and calling_form in client_streaming_forms:
-            raise types.InvalidRequestSetup(
-                "Too many base parameters for client side streaming form"
-            )
-
         # We can only flatten a collection of request parameters if they're a
         # subset of the flattened fields of the method.
         flattenable = self.flattenable_fields >= set(base_param_to_attrs)
