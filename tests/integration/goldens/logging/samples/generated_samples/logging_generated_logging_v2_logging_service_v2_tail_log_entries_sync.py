@@ -40,7 +40,7 @@ def sample_tail_log_entries():
 
     # This method expects an iterator which contains
     # 'logging_v2.TailLogEntriesRequest' objects
-    # Here we have create a generator that yields a single `request` for
+    # Here we create a generator that yields a single `request` for
     # demonstrative purposes.
     requests = [request]
     def request_generator():
