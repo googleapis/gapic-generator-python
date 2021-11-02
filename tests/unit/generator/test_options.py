@@ -174,3 +174,7 @@ def test_options_autogen_snippets_false_for_old_naming():
     # https://github.com/googleapis/gapic-generator-python/issues/1052
     options = Options.build("old-naming")
     assert not options.autogen_snippets
+
+    # Even if autogen-snippets is set to True, do not enable snippetgen
+    options = Options.build("old-naming,autogen-snippets=True")
+    assert not options.autogen_snippets
