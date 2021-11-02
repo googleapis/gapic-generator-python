@@ -743,6 +743,7 @@ class HttpRule:
         uri = getattr(http_rule, method)
         if not uri:
             return None
+        uri = utils.convert_uri_fieldnames(uri)
 
         body = http_rule.body or None
         return cls(method, uri, body)
@@ -925,9 +926,21 @@ class Method:
 
         return set(self.input.fields) - params
 
+    @property
+    def body_fields(self) -> Mapping[str, Field]:
+        bindings = self.http_options
+        if bindings and bindings[0].body and bindings[0].body != "*":
+            return self._fields_mapping([bindings[0].body])
+        return {}
+
     # TODO(yon-mg): refactor as there may be more than one method signature
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
+        signatures = self.options.Extensions[client_pb2.method_signature]
+        return self._fields_mapping(signatures)
+
+    # TODO(yon-mg): refactor as there may be more than one method signature
+    def _fields_mapping(self, signatures) -> Mapping[str, Field]:
         """Return the signature defined for this method."""
         cross_pkg_request = self.input.ident.package != self.ident.package
 
@@ -946,7 +959,6 @@ class Method:
 
                 yield name, field
 
-        signatures = self.options.Extensions[client_pb2.method_signature]
         answer: Dict[str, Field] = collections.OrderedDict(
             name_and_field
             for sig in signatures

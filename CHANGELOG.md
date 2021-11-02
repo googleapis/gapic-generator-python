@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.55.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.54.0...v0.55.0) (2021-11-01)
+
+
+### Features
+
+* add fragment tests ([#1056](https://www.github.com/googleapis/gapic-generator-python/issues/1056)) ([9d9b33d](https://www.github.com/googleapis/gapic-generator-python/commit/9d9b33dadf587a6d0b09031edeea597d6d2eae62))
+
+## [0.54.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.4...v0.54.0) (2021-10-29)
+
+
+### Features
+
+* generate code snippets by default ([#1044](https://www.github.com/googleapis/gapic-generator-python/issues/1044)) ([e46f443](https://www.github.com/googleapis/gapic-generator-python/commit/e46f443dbeffe16b63f97668801b06189769e972))
+
+### [0.53.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.3...v0.53.4) (2021-10-29)
+
+
+### Bug Fixes
+
+* add 'dict' type annotation to 'request' for async_client ([#1051](https://www.github.com/googleapis/gapic-generator-python/issues/1051)) ([08cc2c4](https://www.github.com/googleapis/gapic-generator-python/commit/08cc2c4c85297759892782e307bcaa63dff41212))
+* fix tests generation logic ([#1049](https://www.github.com/googleapis/gapic-generator-python/issues/1049)) ([8f213ad](https://www.github.com/googleapis/gapic-generator-python/commit/8f213add4cb02366bb370ef46a686c6f0c37a575))
+* methods returning Operation w/o operation_info are now allowed. ([#1047](https://www.github.com/googleapis/gapic-generator-python/issues/1047)) ([6b640af](https://www.github.com/googleapis/gapic-generator-python/commit/6b640afbd93ea8c861b902211dc34e188234d072))
+
+### [0.53.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.2...v0.53.3) (2021-10-27)
+
+
+### Bug Fixes
+
+* more fixes for rest transport ([#1042](https://www.github.com/googleapis/gapic-generator-python/issues/1042)) ([13d5f77](https://www.github.com/googleapis/gapic-generator-python/commit/13d5f77f8b6d4ce1181b29f2335d7584783be753))
+
+### [0.53.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.1...v0.53.2) (2021-10-27)
+
+
+### Bug Fixes
+
+* Adjust Field Names in URI Templates ([#1041](https://www.github.com/googleapis/gapic-generator-python/issues/1041)) ([06cd7b6](https://www.github.com/googleapis/gapic-generator-python/commit/06cd7b66f0f303b066f7f1f510332ae19aa9de8e))
+* Fix rest transport logic ([#1039](https://www.github.com/googleapis/gapic-generator-python/issues/1039)) ([50d61af](https://www.github.com/googleapis/gapic-generator-python/commit/50d61afd30b021835fe898e41b783f4d04acff09))
+* list oneofs in docstring ([#1030](https://www.github.com/googleapis/gapic-generator-python/issues/1030)) ([a0e25c8](https://www.github.com/googleapis/gapic-generator-python/commit/a0e25c8c00391b99a351e667eddc8b4fecad30d8))
+
 ### [0.53.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.0...v0.53.1) (2021-10-13)
 
 
