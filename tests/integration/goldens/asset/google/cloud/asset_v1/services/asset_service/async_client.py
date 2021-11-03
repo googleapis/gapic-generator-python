@@ -29,7 +29,7 @@ from google.oauth2 import service_account              # type: ignore
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:
-    OptionalRetry = Union[retries.Retry, object]
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore

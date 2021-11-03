@@ -33,7 +33,7 @@ from google.oauth2 import service_account                         # type: ignore
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:
-    OptionalRetry = Union[retries.Retry, object]
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.types import logging_config
