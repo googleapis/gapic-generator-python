@@ -11,12 +11,17 @@ import pkg_resources
 import warnings
 {% endif %}
 
-import google.api_core.client_options as ClientOptions # type: ignore
+from google.api_core.client_options import ClientOptions # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1                   # type: ignore
 from google.api_core import retry as retries           # type: ignore
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 {% filter sort_lines %}
 {% for method in service.methods.values() %}
@@ -147,7 +152,7 @@ class {{ service.async_client_name }}:
     {% for method in service.methods.values() %}
     {%+ if not method.server_streaming %}async {% endif %}def {{ method.name|snake_case }}(self,
             {% if not method.client_streaming %}
-            request: {{ method.input.ident }} = None,
+            request: Union[{{ method.input.ident }}, dict] = None,
             *,
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}: {{ field.ident }} = None,
@@ -156,7 +161,7 @@ class {{ service.async_client_name }}:
             requests: AsyncIterator[{{ method.input.ident }}] = None,
             *,
             {% endif %}
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             {% if not method.server_streaming %}
@@ -168,7 +173,7 @@ class {{ service.async_client_name }}:
 
         Args:
             {% if not method.client_streaming %}
-            request (:class:`{{ method.input.ident.sphinx }}`):
+            request (Union[{{ method.input.ident.sphinx }}, dict]):
                 The request object.{{ " " }}
                 {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% for key, field in method.flattened_fields.items() %}
@@ -331,7 +336,7 @@ class {{ service.async_client_name }}:
         self,
         request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -439,7 +444,7 @@ class {{ service.async_client_name }}:
         self,
         request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -548,7 +553,7 @@ class {{ service.async_client_name }}:
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:

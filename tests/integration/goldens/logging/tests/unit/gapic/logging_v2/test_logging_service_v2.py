@@ -15,7 +15,6 @@
 #
 import os
 import mock
-import packaging.version
 
 import grpc
 from grpc.experimental import aio
@@ -37,7 +36,6 @@ from google.cloud.logging_v2.services.logging_service_v2 import LoggingServiceV2
 from google.cloud.logging_v2.services.logging_service_v2 import LoggingServiceV2Client
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.services.logging_service_v2 import transports
-from google.cloud.logging_v2.services.logging_service_v2.transports.base import _GOOGLE_AUTH_VERSION
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
 from google.logging.type import http_request_pb2  # type: ignore
@@ -49,19 +47,6 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
 
-
-# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
-# through google-api-core:
-# - Delete the auth "less than" test cases
-# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
-requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
-    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
-    reason="This test requires google-auth < 1.25.0",
-)
-requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
-    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
-    reason="This test requires google-auth >= 1.25.0",
-)
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
@@ -175,7 +160,7 @@ def test_logging_service_v2_client_client_options(client_class, transport_class,
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -192,7 +177,7 @@ def test_logging_service_v2_client_client_options(client_class, transport_class,
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -209,7 +194,7 @@ def test_logging_service_v2_client_client_options(client_class, transport_class,
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -236,7 +221,7 @@ def test_logging_service_v2_client_client_options(client_class, transport_class,
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -267,7 +252,7 @@ def test_logging_service_v2_client_mtls_env_auto(client_class, transport_class, 
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class(client_options=options)
+            client = client_class(transport=transport_name, client_options=options)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -301,7 +286,7 @@ def test_logging_service_v2_client_mtls_env_auto(client_class, transport_class, 
                         expected_client_cert_source = client_cert_source_callback
 
                     patched.return_value = None
-                    client = client_class()
+                    client = client_class(transport=transport_name)
                     patched.assert_called_once_with(
                         credentials=None,
                         credentials_file=None,
@@ -318,7 +303,7 @@ def test_logging_service_v2_client_mtls_env_auto(client_class, transport_class, 
         with mock.patch.object(transport_class, '__init__') as patched:
             with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
-                client = client_class()
+                client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
@@ -342,7 +327,7 @@ def test_logging_service_v2_client_client_options_scopes(client_class, transport
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -365,7 +350,7 @@ def test_logging_service_v2_client_client_options_credentials_file(client_class,
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -562,7 +547,9 @@ def test_delete_log_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].log_name == 'log_name_value'
+        arg = args[0].log_name
+        mock_val = 'log_name_value'
+        assert arg == mock_val
 
 
 def test_delete_log_flattened_error():
@@ -603,7 +590,9 @@ async def test_delete_log_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].log_name == 'log_name_value'
+        arg = args[0].log_name
+        mock_val = 'log_name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -729,10 +718,18 @@ def test_write_log_entries_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].log_name == 'log_name_value'
-        assert args[0].resource == monitored_resource_pb2.MonitoredResource(type_='type__value')
-        assert args[0].labels == {'key_value': 'value_value'}
-        assert args[0].entries == [log_entry.LogEntry(log_name='log_name_value')]
+        arg = args[0].log_name
+        mock_val = 'log_name_value'
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = monitored_resource_pb2.MonitoredResource(type_='type__value')
+        assert arg == mock_val
+        arg = args[0].labels
+        mock_val = {'key_value': 'value_value'}
+        assert arg == mock_val
+        arg = args[0].entries
+        mock_val = [log_entry.LogEntry(log_name='log_name_value')]
+        assert arg == mock_val
 
 
 def test_write_log_entries_flattened_error():
@@ -779,10 +776,18 @@ async def test_write_log_entries_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].log_name == 'log_name_value'
-        assert args[0].resource == monitored_resource_pb2.MonitoredResource(type_='type__value')
-        assert args[0].labels == {'key_value': 'value_value'}
-        assert args[0].entries == [log_entry.LogEntry(log_name='log_name_value')]
+        arg = args[0].log_name
+        mock_val = 'log_name_value'
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = monitored_resource_pb2.MonitoredResource(type_='type__value')
+        assert arg == mock_val
+        arg = args[0].labels
+        mock_val = {'key_value': 'value_value'}
+        assert arg == mock_val
+        arg = args[0].entries
+        mock_val = [log_entry.LogEntry(log_name='log_name_value')]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -914,9 +919,15 @@ def test_list_log_entries_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource_names == ['resource_names_value']
-        assert args[0].filter == 'filter_value'
-        assert args[0].order_by == 'order_by_value'
+        arg = args[0].resource_names
+        mock_val = ['resource_names_value']
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = 'filter_value'
+        assert arg == mock_val
+        arg = args[0].order_by
+        mock_val = 'order_by_value'
+        assert arg == mock_val
 
 
 def test_list_log_entries_flattened_error():
@@ -961,9 +972,15 @@ async def test_list_log_entries_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource_names == ['resource_names_value']
-        assert args[0].filter == 'filter_value'
-        assert args[0].order_by == 'order_by_value'
+        arg = args[0].resource_names
+        mock_val = ['resource_names_value']
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = 'filter_value'
+        assert arg == mock_val
+        arg = args[0].order_by
+        mock_val = 'order_by_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1609,7 +1626,9 @@ def test_list_logs_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_logs_flattened_error():
@@ -1650,7 +1669,9 @@ async def test_list_logs_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2033,7 +2054,6 @@ def test_logging_service_v2_base_transport():
         transport.close()
 
 
-@requires_google_auth_gte_1_25_0
 def test_logging_service_v2_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(google.auth, 'load_credentials_from_file', autospec=True) as load_creds, mock.patch('google.cloud.logging_v2.services.logging_service_v2.transports.LoggingServiceV2Transport._prep_wrapped_messages') as Transport:
@@ -2056,27 +2076,6 @@ def test_logging_service_v2_base_transport_with_credentials_file():
         )
 
 
-@requires_google_auth_lt_1_25_0
-def test_logging_service_v2_base_transport_with_credentials_file_old_google_auth():
-    # Instantiate the base transport with a credentials file
-    with mock.patch.object(google.auth, 'load_credentials_from_file', autospec=True) as load_creds, mock.patch('google.cloud.logging_v2.services.logging_service_v2.transports.LoggingServiceV2Transport._prep_wrapped_messages') as Transport:
-        Transport.return_value = None
-        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.LoggingServiceV2Transport(
-            credentials_file="credentials.json",
-            quota_project_id="octopus",
-        )
-        load_creds.assert_called_once_with("credentials.json", scopes=(
-            'https://www.googleapis.com/auth/cloud-platform',
-            'https://www.googleapis.com/auth/cloud-platform.read-only',
-            'https://www.googleapis.com/auth/logging.admin',
-            'https://www.googleapis.com/auth/logging.read',
-            'https://www.googleapis.com/auth/logging.write',
-            ),
-            quota_project_id="octopus",
-        )
-
-
 def test_logging_service_v2_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('google.cloud.logging_v2.services.logging_service_v2.transports.LoggingServiceV2Transport._prep_wrapped_messages') as Transport:
@@ -2086,7 +2085,6 @@ def test_logging_service_v2_base_transport_with_adc():
         adc.assert_called_once()
 
 
-@requires_google_auth_gte_1_25_0
 def test_logging_service_v2_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc:
@@ -2105,18 +2103,6 @@ def test_logging_service_v2_auth_adc():
         )
 
 
-@requires_google_auth_lt_1_25_0
-def test_logging_service_v2_auth_adc_old_google_auth():
-    # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(google.auth, 'default', autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        LoggingServiceV2Client()
-        adc.assert_called_once_with(
-            scopes=(                'https://www.googleapis.com/auth/cloud-platform',                'https://www.googleapis.com/auth/cloud-platform.read-only',                'https://www.googleapis.com/auth/logging.admin',                'https://www.googleapis.com/auth/logging.read',                'https://www.googleapis.com/auth/logging.write',),
-            quota_project_id=None,
-        )
-
-
 @pytest.mark.parametrize(
     "transport_class",
     [
@@ -2124,7 +2110,6 @@ def test_logging_service_v2_auth_adc_old_google_auth():
         transports.LoggingServiceV2GrpcAsyncIOTransport,
     ],
 )
-@requires_google_auth_gte_1_25_0
 def test_logging_service_v2_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
@@ -2134,31 +2119,6 @@ def test_logging_service_v2_transport_auth_adc(transport_class):
         adc.assert_called_once_with(
             scopes=["1", "2"],
             default_scopes=(                'https://www.googleapis.com/auth/cloud-platform',                'https://www.googleapis.com/auth/cloud-platform.read-only',                'https://www.googleapis.com/auth/logging.admin',                'https://www.googleapis.com/auth/logging.read',                'https://www.googleapis.com/auth/logging.write',),
-            quota_project_id="octopus",
-        )
-
-
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.LoggingServiceV2GrpcTransport,
-        transports.LoggingServiceV2GrpcAsyncIOTransport,
-    ],
-)
-@requires_google_auth_lt_1_25_0
-def test_logging_service_v2_transport_auth_adc_old_google_auth(transport_class):
-    # If credentials and host are not provided, the transport class should use
-    # ADC credentials.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class(quota_project_id="octopus")
-        adc.assert_called_once_with(scopes=(
-            'https://www.googleapis.com/auth/cloud-platform',
-            'https://www.googleapis.com/auth/cloud-platform.read-only',
-            'https://www.googleapis.com/auth/logging.admin',
-            'https://www.googleapis.com/auth/logging.read',
-            'https://www.googleapis.com/auth/logging.write',
-),
             quota_project_id="octopus",
         )
 

@@ -99,7 +99,9 @@ class Field:
         # If this is a repeated field, then the mock answer should
         # be a list.
         if self.repeated:
-            answer = [answer]
+            first_item = self.primitive_mock(suffix=1) or None
+            second_item = self.primitive_mock(suffix=2) or None
+            answer = [first_item, second_item]
 
         return answer
 
@@ -160,9 +162,12 @@ class Field:
         # Done; return the mock value.
         return answer
 
-    def primitive_mock(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
+    def primitive_mock(self, suffix: int = 0) -> Union[bool, str, bytes, int, float, List[Any], None]:
         """Generate a valid mock for a primitive type. This function
         returns the original (Python) type.
+
+        If a suffix is provided, generate a slightly different mock
+        using the provided integer.
         """
         answer: Union[bool, str, bytes, int, float, List[Any], None] = None
 
@@ -174,13 +179,14 @@ class Field:
             if self.type.python_type == bool:
                 answer = True
             elif self.type.python_type == str:
-                answer = f"{self.name}_value"
+                answer = f"{self.name}_value_{suffix}" if suffix else f"{self.name}_value"
             elif self.type.python_type == bytes:
-                answer = bytes(f"{self.name}_blob", encoding="utf-8")
+                answer_str = f"{self.name}_blob_{suffix}" if suffix else f"{self.name}_blob"
+                answer = bytes(answer_str, encoding="utf-8")
             elif self.type.python_type == int:
-                answer = sum([ord(i) for i in self.name])
+                answer = sum([ord(i) for i in self.name]) + suffix
             elif self.type.python_type == float:
-                name_sum = sum([ord(i) for i in self.name])
+                name_sum = sum([ord(i) for i in self.name]) + suffix
                 answer = name_sum * pow(10, -1 * len(str(name_sum)))
             else:  # Impossible; skip coverage checks.
                 raise TypeError('Unrecognized PrimitiveType. This should '
@@ -737,6 +743,7 @@ class HttpRule:
         uri = getattr(http_rule, method)
         if not uri:
             return None
+        uri = utils.convert_uri_fieldnames(uri)
 
         body = http_rule.body or None
         return cls(method, uri, body)
@@ -919,9 +926,21 @@ class Method:
 
         return set(self.input.fields) - params
 
+    @property
+    def body_fields(self) -> Mapping[str, Field]:
+        bindings = self.http_options
+        if bindings and bindings[0].body and bindings[0].body != "*":
+            return self._fields_mapping([bindings[0].body])
+        return {}
+
     # TODO(yon-mg): refactor as there may be more than one method signature
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
+        signatures = self.options.Extensions[client_pb2.method_signature]
+        return self._fields_mapping(signatures)
+
+    # TODO(yon-mg): refactor as there may be more than one method signature
+    def _fields_mapping(self, signatures) -> Mapping[str, Field]:
         """Return the signature defined for this method."""
         cross_pkg_request = self.input.ident.package != self.ident.package
 
@@ -940,7 +959,6 @@ class Method:
 
                 yield name, field
 
-        signatures = self.options.Extensions[client_pb2.method_signature]
         answer: Dict[str, Field] = collections.OrderedDict(
             name_and_field
             for sig in signatures

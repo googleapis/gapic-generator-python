@@ -4,7 +4,6 @@
 
 import os
 import mock
-import packaging.version
 
 import grpc
 from grpc.experimental import aio
@@ -14,6 +13,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 {% if 'rest' in opts.transport %}
 from requests import Response
+from requests import Request
 from requests.sessions import Session
 {% endif %}
 
@@ -28,7 +28,7 @@ from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + ser
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.async_client_name }}
 {% endif %}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
-from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.base import _GOOGLE_AUTH_VERSION
+
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
@@ -54,19 +54,6 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 
-
-# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
-# through google-api-core:
-# - Delete the auth "less than" test cases
-# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
-requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
-    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
-    reason="This test requires google-auth < 1.25.0",
-)
-requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
-    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
-    reason="This test requires google-auth >= 1.25.0",
-)
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
@@ -118,7 +105,8 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info(client_c
     {% if 'grpc' in opts.transport %}
     (transports.{{ service.grpc_transport_name }}, "grpc"),
     (transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    {% elif 'rest' in opts.transport %}
+    {% endif %}
+    {% if 'rest' in opts.transport %}
     (transports.{{ service.rest_transport_name }}, "rest"),
     {% endif %}
 ])
@@ -174,7 +162,8 @@ def test_{{ service.client_name|snake_case }}_get_transport_class():
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    {% elif 'rest' in opts.transport %}
+    {% endif %}
+    {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
     {% endif %}
 ])
@@ -200,7 +189,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -217,7 +206,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -234,7 +223,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -261,7 +250,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -279,7 +268,8 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", "true"),
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc", "false"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", "false"),
-    {% elif 'rest' in opts.transport %}
+    {% endif %}
+    {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest", "true"),
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest", "false"),
     {% endif %}
@@ -299,7 +289,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class(client_options=options)
+            client = client_class(transport=transport_name, client_options=options)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -333,7 +323,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                         expected_client_cert_source = client_cert_source_callback
 
                     patched.return_value = None
-                    client = client_class()
+                    client = client_class(transport=transport_name)
                     patched.assert_called_once_with(
                         credentials=None,
                         credentials_file=None,
@@ -350,7 +340,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
         with mock.patch.object(transport_class, '__init__') as patched:
             with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
-                client = client_class()
+                client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
@@ -367,7 +357,8 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    {% elif 'rest' in opts.transport %}
+    {% endif %}
+    {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
     {% endif %}
 ])
@@ -378,7 +369,7 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -394,7 +385,8 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    {% elif 'rest' in opts.transport %}
+    {% endif %}
+    {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
     {% endif %}
 ])
@@ -405,7 +397,7 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -796,7 +788,15 @@ def test_{{ method.name|snake_case }}_flattened():
         {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
-        assert args[0].{{ key }} == {{ field.mock_value }}
+        arg = args[0].{{ key }}
+        mock_val = {{ field.mock_value }}
+        {% if field.ident|string() == "struct_pb2.Value" %}
+        from proto.marshal import Marshal
+        from proto.marshal.rules.struct import ValueRule
+        rule = ValueRule(marshal=Marshal(name="Test"))
+        mock_val = rule.to_python(mock_val)
+        {% endif %}{# struct_pb2.Value #}
+        assert arg == mock_val
         {% endif %}
         {% endif %}{% endfor %}
         {% for oneofs in method.flattened_oneof_fields().values() %}
@@ -881,7 +881,15 @@ async def test_{{ method.name|snake_case }}_flattened_async():
         {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
-        assert args[0].{{ key }} == {{ field.mock_value }}
+        arg = args[0].{{ key }}
+        mock_val = {{ field.mock_value }}
+        {% if field.ident|string() == "struct_pb2.Value" %}
+        from proto.marshal import Marshal
+        from proto.marshal.rules.struct import ValueRule
+        rule = ValueRule(marshal=Marshal(name="Test"))
+        mock_val = rule.to_python(mock_val)
+        {% endif %}{# struct_pb2.Value #}
+        assert arg == mock_val
         {% endif %}
         {% endif %}{% endfor %}
         {% for oneofs in method.flattened_oneof_fields().values() %}
@@ -1120,7 +1128,14 @@ def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type
     )
 
     # send a request that will satisfy transcoding
-    request = request_type({{ method.http_options[0].sample_request}})
+    request_init = {{ method.http_options[0].sample_request}}
+    {% for field in method.body_fields.values() %}
+    {% if not field.oneof or field.proto3_optional %}
+    {# ignore oneof fields that might conflict with sample_request #}
+    request_init["{{ field.name }}"] = {{ field.mock_value }}
+    {% endif %}
+    {% endfor %}
+    request = request_type(request_init)
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -1189,14 +1204,48 @@ def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type
     {% endif %}
 
 
+def test_{{ method.name|snake_case }}_rest_bad_request(transport: str = 'rest', request_type={{ method.input.ident }}):
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {{ method.http_options[0].sample_request}}
+    {% for field in method.body_fields.values() %}
+    {% if not field.oneof or field.proto3_optional %}
+    {# ignore oneof fields that might conflict with sample_request #}
+    request_init["{{ field.name }}"] = {{ field.mock_value }}
+    {% endif %}
+    {% endfor %}
+    request = request_type(request_init)
+    {% if method.client_streaming %}
+    requests = [request]
+    {% endif %}
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        {% if method.client_streaming %}
+        client.{{ method.name|snake_case }}(iter(requests))
+        {% else %}
+        client.{{ method.name|snake_case }}(request)
+        {% endif %}
+
+
 def test_{{ method.name|snake_case }}_rest_from_dict():
     test_{{ method.name|snake_case }}_rest(request_type=dict)
 
 
 {% if method.flattened_fields %}
-def test_{{ method.name|snake_case }}_rest_flattened():
+def test_{{ method.name|snake_case }}_rest_flattened(transport: str = 'rest'):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1244,14 +1293,15 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         {% with uri = method.http_options[0].uri %}
-        assert path_template.validate("{{ uri }}", args[1])
+        assert path_template.validate("https://{{ service.host }}{{ uri }}", args[1])
         {% endwith %}
         {# TODO(kbandes) - reverse-transcode request args to check all request fields #}
 
 
-def test_{{ method.name|snake_case }}_rest_flattened_error():
+def test_{{ method.name|snake_case }}_rest_flattened_error(transport: str = 'rest'):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1344,6 +1394,13 @@ def test_{{ method.name|snake_case }}_rest_pager():
             req.side_effect = return_values
 
             sample_request = {{ method.http_options[0].sample_request }}
+            {% for field in method.body_fields.values() %}
+            {% if not field.oneof or field.proto3_optional %}
+            {# ignore oneof fields that might conflict with sample_request #}
+            sample_request["{{ field.name }}"] = {{ field.mock_value }}
+            {% endif %}
+            {% endfor %}
+
             pager = client.{{ method.name|snake_case }}(request=sample_request)
 
             {% if method.paged_result_field.map %}
@@ -1460,7 +1517,8 @@ def test_transport_get_channel():
     {% if 'grpc' in opts.transport %}
     transports.{{ service.grpc_transport_name }},
     transports.{{ service.grpc_asyncio_transport_name }},
-    {% elif 'rest' in opts.transport %}
+    {% endif %}
+    {% if 'rest' in opts.transport %}
     transports.{{ service.rest_transport_name }},
     {% endif %}
 ])
@@ -1527,7 +1585,6 @@ def test_{{ service.name|snake_case }}_base_transport():
     {% endif %}
 
 
-@requires_google_auth_gte_1_25_0
 def test_{{ service.name|snake_case }}_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(google.auth, 'load_credentials_from_file', autospec=True) as load_creds, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
@@ -1547,25 +1604,6 @@ def test_{{ service.name|snake_case }}_base_transport_with_credentials_file():
         )
 
 
-@requires_google_auth_lt_1_25_0
-def test_{{ service.name|snake_case }}_base_transport_with_credentials_file_old_google_auth():
-    # Instantiate the base transport with a credentials file
-    with mock.patch.object(google.auth, 'load_credentials_from_file', autospec=True) as load_creds, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
-        Transport.return_value = None
-        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.{{ service.name }}Transport(
-            credentials_file="credentials.json",
-            quota_project_id="octopus",
-        )
-        load_creds.assert_called_once_with("credentials.json", scopes=(
-            {% for scope in service.oauth_scopes %}
-            '{{ scope }}',
-            {% endfor %}
-            ),
-            quota_project_id="octopus",
-        )
-
-
 def test_{{ service.name|snake_case }}_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
@@ -1575,7 +1613,6 @@ def test_{{ service.name|snake_case }}_base_transport_with_adc():
         adc.assert_called_once()
 
 
-@requires_google_auth_gte_1_25_0
 def test_{{ service.name|snake_case }}_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc:
@@ -1591,21 +1628,6 @@ def test_{{ service.name|snake_case }}_auth_adc():
         )
 
 
-@requires_google_auth_lt_1_25_0
-def test_{{ service.name|snake_case }}_auth_adc_old_google_auth():
-    # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(google.auth, 'default', autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        {{ service.client_name }}()
-        adc.assert_called_once_with(
-            scopes=(
-                {%- for scope in service.oauth_scopes %}
-                '{{ scope }}',
-                {%- endfor %}),
-            quota_project_id=None,
-        )
-
-
 {% if 'grpc' in opts.transport %}
 @pytest.mark.parametrize(
     "transport_class",
@@ -1614,7 +1636,6 @@ def test_{{ service.name|snake_case }}_auth_adc_old_google_auth():
         transports.{{ service.name }}GrpcAsyncIOTransport,
     ],
 )
-@requires_google_auth_gte_1_25_0
 def test_{{ service.name|snake_case }}_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
@@ -1631,26 +1652,6 @@ def test_{{ service.name|snake_case }}_transport_auth_adc(transport_class):
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.{{ service.name }}GrpcTransport,
-        transports.{{ service.name }}GrpcAsyncIOTransport,
-    ],
-)
-@requires_google_auth_lt_1_25_0
-def test_{{ service.name|snake_case }}_transport_auth_adc_old_google_auth(transport_class):
-    # If credentials and host are not provided, the transport class should use
-    # ADC credentials.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class(quota_project_id="octopus")
-        adc.assert_called_once_with(scopes=(
-            {% for scope in service.oauth_scopes %}
-            '{{ scope }}',
-            {% endfor %}),
-            quota_project_id="octopus",
-        )
 
 
 @pytest.mark.parametrize(
@@ -2490,6 +2491,7 @@ async def test_test_iam_permissions_from_dict_async():
 
 {% endif %}
 
+{% if 'grpc' in opts.transport %}
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = {{ service.async_client_name }}(
@@ -2500,6 +2502,7 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+{% endif %}
 
 def test_transport_close():
     transports = {

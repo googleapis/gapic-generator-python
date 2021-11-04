@@ -40,7 +40,7 @@ async def sample_generate_access_token():
 
     request = credentials_v1.GenerateAccessTokenRequest(
         name=name,
-        scope=['scope_value'],
+        scope=['scope_value_1', 'scope_value_2'],
     )
 
     # Make the request
