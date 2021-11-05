@@ -469,9 +469,7 @@ class Validator:
 
         Raises:
             InvalidRequestSetup: If a dict in the request lacks a "field" key,
-                                 a "value" key, if there is an unexpected keyword,
-                                 or if more than one base parameter is given for
-                                 a client-side streaming calling form.
+                                 a "value" key or if there is an unexpected keyword.
             BadAttributeLookup: If a request field refers to a non-existent field
                                 in the request message type.
             ResourceRequestMismatch: If a request attempts to describe both
