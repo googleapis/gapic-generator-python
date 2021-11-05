@@ -788,7 +788,15 @@ def test_{{ method.name|snake_case }}_flattened():
         {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
-        assert args[0].{{ key }} == {{ field.mock_value }}
+        arg = args[0].{{ key }}
+        mock_val = {{ field.mock_value }}
+        {% if field.ident|string() == "struct_pb2.Value" %}
+        from proto.marshal import Marshal
+        from proto.marshal.rules.struct import ValueRule
+        rule = ValueRule(marshal=Marshal(name="Test"))
+        mock_val = rule.to_python(mock_val)
+        {% endif %}{# struct_pb2.Value #}
+        assert arg == mock_val
         {% endif %}
         {% endif %}{% endfor %}
         {% for oneofs in method.flattened_oneof_fields().values() %}
@@ -873,7 +881,15 @@ async def test_{{ method.name|snake_case }}_flattened_async():
         {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
-        assert args[0].{{ key }} == {{ field.mock_value }}
+        arg = args[0].{{ key }}
+        mock_val = {{ field.mock_value }}
+        {% if field.ident|string() == "struct_pb2.Value" %}
+        from proto.marshal import Marshal
+        from proto.marshal.rules.struct import ValueRule
+        rule = ValueRule(marshal=Marshal(name="Test"))
+        mock_val = rule.to_python(mock_val)
+        {% endif %}{# struct_pb2.Value #}
+        assert arg == mock_val
         {% endif %}
         {% endif %}{% endfor %}
         {% for oneofs in method.flattened_oneof_fields().values() %}
@@ -1277,7 +1293,7 @@ def test_{{ method.name|snake_case }}_rest_flattened(transport: str = 'rest'):
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         {% with uri = method.http_options[0].uri %}
-        assert path_template.validate("{{ uri }}", args[1])
+        assert path_template.validate("https://{{ service.host }}{{ uri }}", args[1])
         {% endwith %}
         {# TODO(kbandes) - reverse-transcode request args to check all request fields #}
 
