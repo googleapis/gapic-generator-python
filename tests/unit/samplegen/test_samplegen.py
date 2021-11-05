@@ -193,8 +193,8 @@ def test_preprocess_sample_resource_message_field():
     # assert mock request is created
     assert sample["request"] == [
         {
-            "field": "parent",
-            "value": "projects/{project}"
+            "field": "parent%project",
+            "value": '"my-project-id"'
         }
     ]
 
@@ -1810,7 +1810,16 @@ def test_validate_request_resource_name():
                 request_descriptor,
                 phylum_descriptor,
             ])
-        }
+        },
+        services={
+            "Mollusc": DummyService(
+                methods={},
+                client_name="MolluscClient",
+                resource_messages_dict={
+                    resource_type: phylum_descriptor
+                }
+            )
+        },
     )
 
     v = samplegen.Validator(method=method, api_schema=api_schema)
@@ -1930,7 +1939,7 @@ def test_validate_request_no_such_attr(dummy_api_schema):
         v.validate_and_transform_request(types.CallingForm.Request, request)
 
 
-def test_validate_request_no_such_resource(dummy_api_schema):
+def test_validate_request_no_such_resource():
     request = [
         {"field": "taxon%kingdom", "value": "animalia"}
     ]
@@ -1942,7 +1951,14 @@ def test_validate_request_no_such_resource(dummy_api_schema):
 
     method = DummyMethod(input=request_descriptor)
     api_schema = DummyApiSchema(
-        messages={k: v for k, v in enumerate([request_descriptor])}
+        messages={k: v for k, v in enumerate([request_descriptor])},
+        services={
+            "Mollusc": DummyService(
+                methods={},
+                client_name="MolluscClient",
+                resource_messages_dict={}
+            )
+        },
     )
 
     v = samplegen.Validator(method=method, api_schema=api_schema)
@@ -1977,7 +1993,16 @@ def test_validate_request_no_such_pattern():
                 request_descriptor,
                 phylum_descriptor,
             ])
-        }
+        },
+        services={
+            "Mollusc": DummyService(
+                methods={},
+                client_name="MolluscClient",
+                resource_messages_dict={
+                    resource_type: phylum_descriptor
+                }
+            )
+        },
     )
 
     v = samplegen.Validator(method=method, api_schema=api_schema)
