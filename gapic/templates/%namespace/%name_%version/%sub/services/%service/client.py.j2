@@ -12,17 +12,20 @@ import pkg_resources
 import warnings
 {% endif %}
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions         # type: ignore
-from google.api_core import gapic_v1                              # type: ignore
-from google.api_core import retry as retries                      # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
 from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
 
-OptionalRetry = Union[retries.Retry, object]
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 {% filter sort_lines %}
 {% for method in service.methods.values() %}
@@ -306,9 +309,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
-                {% if "grpc" in opts.transport %}
                 always_use_jwt_access=True,
-                {% endif %}
             )
 
 
@@ -407,7 +408,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             {% endif %}
             {% for key, field in method.flattened_fields.items() if not field.repeated or method.input.ident.package == method.ident.package %}
             if {{ field.name }} is not None:
+                {# Repeated values is a special case, because values can be lists. #}
+                {# In order to not confuse the marshalling logic, extend these fields instead of assigning #}
+                {% if field.ident.ident|string() == "struct_pb2.Value" and field.repeated %}
+                request.{{ key }}.extend({{ field.name }})
+                {% else %}
                 request.{{ key }} = {{ field.name }}
+                {% endif %}{# struct_pb2.Value #}
             {% endfor %}
             {# Map-y fields can be _updated_, however #}
             {% for key, field in method.flattened_fields.items() if field.repeated and method.input.ident.package != method.ident.package %}

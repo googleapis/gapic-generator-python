@@ -154,7 +154,7 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -171,7 +171,7 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -188,7 +188,7 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -215,7 +215,7 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -246,7 +246,7 @@ def test_config_service_v2_client_mtls_env_auto(client_class, transport_class, t
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class(client_options=options)
+            client = client_class(transport=transport_name, client_options=options)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -280,7 +280,7 @@ def test_config_service_v2_client_mtls_env_auto(client_class, transport_class, t
                         expected_client_cert_source = client_cert_source_callback
 
                     patched.return_value = None
-                    client = client_class()
+                    client = client_class(transport=transport_name)
                     patched.assert_called_once_with(
                         credentials=None,
                         credentials_file=None,
@@ -297,7 +297,7 @@ def test_config_service_v2_client_mtls_env_auto(client_class, transport_class, t
         with mock.patch.object(transport_class, '__init__') as patched:
             with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
-                client = client_class()
+                client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
@@ -321,7 +321,7 @@ def test_config_service_v2_client_client_options_scopes(client_class, transport_
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -344,7 +344,7 @@ def test_config_service_v2_client_client_options_credentials_file(client_class, 
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -547,7 +547,9 @@ def test_list_buckets_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_buckets_flattened_error():
@@ -588,7 +590,9 @@ async def test_list_buckets_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1755,7 +1759,9 @@ def test_list_views_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_views_flattened_error():
@@ -1796,7 +1802,9 @@ async def test_list_views_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2794,7 +2802,9 @@ def test_list_sinks_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_sinks_flattened_error():
@@ -2835,7 +2845,9 @@ async def test_list_sinks_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3240,7 +3252,9 @@ def test_get_sink_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
 
 
 def test_get_sink_flattened_error():
@@ -3281,7 +3295,9 @@ async def test_get_sink_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3501,8 +3517,12 @@ def test_create_sink_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].sink == logging_config.LogSink(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].sink
+        mock_val = logging_config.LogSink(name='name_value')
+        assert arg == mock_val
 
 
 def test_create_sink_flattened_error():
@@ -3545,8 +3565,12 @@ async def test_create_sink_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].sink == logging_config.LogSink(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].sink
+        mock_val = logging_config.LogSink(name='name_value')
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3768,9 +3792,15 @@ def test_update_sink_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
-        assert args[0].sink == logging_config.LogSink(name='name_value')
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=['paths_value'])
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
+        arg = args[0].sink
+        mock_val = logging_config.LogSink(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
 
 
 def test_update_sink_flattened_error():
@@ -3815,9 +3845,15 @@ async def test_update_sink_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
-        assert args[0].sink == logging_config.LogSink(name='name_value')
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=['paths_value'])
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
+        arg = args[0].sink
+        mock_val = logging_config.LogSink(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4003,7 +4039,9 @@ def test_delete_sink_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
 
 
 def test_delete_sink_flattened_error():
@@ -4044,7 +4082,9 @@ async def test_delete_sink_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4234,7 +4274,9 @@ def test_list_exclusions_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_exclusions_flattened_error():
@@ -4275,7 +4317,9 @@ async def test_list_exclusions_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4663,7 +4707,9 @@ def test_get_exclusion_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
 
 
 def test_get_exclusion_flattened_error():
@@ -4704,7 +4750,9 @@ async def test_get_exclusion_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4907,8 +4955,12 @@ def test_create_exclusion_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].exclusion == logging_config.LogExclusion(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].exclusion
+        mock_val = logging_config.LogExclusion(name='name_value')
+        assert arg == mock_val
 
 
 def test_create_exclusion_flattened_error():
@@ -4951,8 +5003,12 @@ async def test_create_exclusion_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].exclusion == logging_config.LogExclusion(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].exclusion
+        mock_val = logging_config.LogExclusion(name='name_value')
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5157,9 +5213,15 @@ def test_update_exclusion_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].exclusion == logging_config.LogExclusion(name='name_value')
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=['paths_value'])
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].exclusion
+        mock_val = logging_config.LogExclusion(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
 
 
 def test_update_exclusion_flattened_error():
@@ -5204,9 +5266,15 @@ async def test_update_exclusion_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].exclusion == logging_config.LogExclusion(name='name_value')
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=['paths_value'])
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].exclusion
+        mock_val = logging_config.LogExclusion(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5392,7 +5460,9 @@ def test_delete_exclusion_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
 
 
 def test_delete_exclusion_flattened_error():
@@ -5433,7 +5503,9 @@ async def test_delete_exclusion_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
