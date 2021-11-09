@@ -20,23 +20,6 @@ from grpc_status import rpc_status
 from google.api_core import exceptions
 
 
-def create_bad_request_details():
-    bad_request_details = error_details_pb2.BadRequest()
-    field_violation = bad_request_details.field_violations.add()
-    field_violation.field = "test field"
-    field_violation.description = "test description"
-    return bad_request_details
-
-
-def create_precondition_failure_details():
-    pf_details = error_details_pb2.PreconditionFailure()
-    violation = pf_details.violations.add()
-    violation.type = "test type"
-    violation.subject = "test subject"
-    violation.description = "test description"
-    return pf_details
-
-
 def create_status(error_details=None):
     status = rpc_status.status_pb2.Status()
     status.code = 3
@@ -51,6 +34,12 @@ def create_status(error_details=None):
 
 
 def test_bad_request_details(echo):
+    def create_bad_request_details():
+        bad_request_details = error_details_pb2.BadRequest()
+        field_violation = bad_request_details.field_violations.add()
+        field_violation.field = "test field"
+        field_violation.description = "test description"
+        return bad_request_details
     bad_request_details = create_bad_request_details()
     status = create_status(bad_request_details)
 
@@ -62,6 +51,14 @@ def test_bad_request_details(echo):
 
 
 def test_precondition_failure_details(echo):
+    def create_precondition_failure_details():
+        pf_details = error_details_pb2.PreconditionFailure()
+        violation = pf_details.violations.add()
+        violation.type = "test type"
+        violation.subject = "test subject"
+        violation.description = "test description"
+        return pf_details
+
     pf_details = create_precondition_failure_details()
     status = create_status(pf_details)
 
