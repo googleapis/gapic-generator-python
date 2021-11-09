@@ -23,7 +23,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
+        client_library_version=pkg_resources.get_distribution(
             '{{ api.naming.warehouse_package_name }}',
         ).version,
     )
