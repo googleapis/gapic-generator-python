@@ -1,5 +1,19 @@
 # Changelog
 
+### [0.56.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.56.1...v0.56.2) (2021-11-08)
+
+
+### Bug Fixes
+
+* don't enable snippetgen by default ([#1078](https://www.github.com/googleapis/gapic-generator-python/issues/1078)) ([8bdb709](https://www.github.com/googleapis/gapic-generator-python/commit/8bdb70931a9ecb1c89fda9608697b0762770bc12))
+
+### [0.56.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.56.0...v0.56.1) (2021-11-08)
+
+
+### Bug Fixes
+
+* **snippetgen:** fix client streaming samples ([#1061](https://www.github.com/googleapis/gapic-generator-python/issues/1061)) ([64b9ad6](https://www.github.com/googleapis/gapic-generator-python/commit/64b9ad6e417a15cfbddf0e7a1b57036b8abfc829))
+
 ## [0.56.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.55.1...v0.56.0) (2021-11-05)
 
 
