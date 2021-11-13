@@ -360,7 +360,8 @@ class AssetServiceAsyncClient:
             self._client._transport.batch_get_assets_history,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -535,7 +536,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.get_feed,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -618,7 +620,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.list_feeds,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -776,7 +779,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.delete_feed,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -950,7 +954,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.search_all_resources,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=15.0,
             ),
@@ -1115,7 +1120,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.search_all_iam_policies,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=15.0,
             ),
@@ -1186,7 +1192,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.analyze_iam_policy,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),

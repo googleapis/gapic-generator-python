@@ -265,7 +265,8 @@ class IAMCredentialsAsyncClient:
             self._client._transport.generate_access_token,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -391,7 +392,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.generate_id_token,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -503,7 +505,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.sign_blob,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -618,7 +621,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.sign_jwt,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),

@@ -211,7 +211,9 @@ class MetricsServiceV2AsyncClient:
             self._client._transport.list_log_metrics,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -312,7 +314,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.get_log_metric,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -517,7 +521,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.update_log_metric,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -594,7 +600,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.delete_log_metric,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
