@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 import dataclasses
 import itertools
 import jinja2
@@ -30,7 +29,7 @@ from gapic.schema import api
 from gapic.schema import wrappers
 
 from collections import defaultdict, namedtuple, ChainMap as chainmap
-from typing import Any, ChainMap, Dict, FrozenSet, Generator, List, Mapping, Optional, Tuple, Sequence
+from typing import Any, ChainMap, Dict, FrozenSet, Set, Generator, List, Mapping, Optional, Tuple, Sequence
 
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
@@ -406,10 +405,10 @@ class Validator:
         Private method, lifted out to make validate_and_transform_request cleaner.
 
         Args:
-            base_param_to_attrs ({str:RequestEntry}):
+            base_param_to_attrs (Dict[str, RequestEntry]):
             val (str): The value to which the terminal field will be set
                        (only used if the terminus is an enum)
-            request (str:str): The request dictionary read in from the config.
+            request (Dict[str, str]): The request dictionary read in from the config.
             field (str): The value of the "field" parameter in the request entry.
 
         Returns:
@@ -462,7 +461,7 @@ class Validator:
                 raise types.InvalidRequestSetup(
                     "Duplicated top level field in request block: '{}'".format(
                         attr_chain[0]
-                    )
+                    ), request
                 )
             del request["field"]
 
@@ -625,14 +624,17 @@ class Validator:
             # The percentage sign is used for setting up resource based requests
             percent_idx = field.find("%")
             if percent_idx == -1:
-                base_param, attr = self._normal_request_setup(
-                    base_param_to_attrs, val, r_dup, field
-                )
+                try:
+                    base_param, attr = self._normal_request_setup(
+                        base_param_to_attrs, val, r_dup, field
+                    )
+                except Exception as e:
+                    raise Exception(e, request)
                 request_entry = base_param_to_attrs.get(base_param)
                 if request_entry is None:
                     request_entry = base_param_to_attrs[base_param]
                 self._check_request_setup_mismatch(attr, request_entry, base_param)
-                base_param_to_attrs[base_param].attrs.append(attr)
+                request_entry.attrs.append(attr)
             else:
                 # It's a resource based request.
                 field_attr, resource_attr = (
@@ -1107,7 +1109,9 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
     # Choose the first option for each oneof
     selected_oneofs: List[wrappers.Field] = [oneof_fields[0]
         for oneof_fields in message.oneof_fields().values()]
-    request_fields = selected_oneofs + message.required_fields
+    # Exclude oneofs from the required_fields list to avoid counting a field twice
+    required_fields = [field for field in message.required_fields if not field.oneof]
+    request_fields = selected_oneofs + required_fields
 
     for field in request_fields:
         # TransformedRequest expects nested fields to be referenced like
