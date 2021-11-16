@@ -73,6 +73,7 @@ class AttributeRequestSetup:
     A non-empty 'input_parameter' indicates a formal parameter to the sample function
     that contains the value for the attribute.
 
+    'resource_field' is set to the field in the resource path this request is setting.
     """
 
     value: str
@@ -80,6 +81,30 @@ class AttributeRequestSetup:
     value_is_file: bool = False
     input_parameter: Optional[str] = None
     comment: Optional[str] = None
+    resource_field: Optional[str] = None
+
+    @property
+    def parent_field(self):
+        """The immediate parent of this field.
+
+        If the immediate parent is the base param, returns None. This method
+        is used to detect collisions (setting a resource field and non-resource
+        field on the same attribute.)
+        """
+        # For resource fields, the parent is the entire 'field', if it exists
+        if self.resource_field:
+            if self.field:
+                return self.field
+        
+        else:
+            if self.field:
+                field_path = self.field.split('.')
+                # For regular fields, the parent is everything before the last '.'
+                # in the field
+                if len(field_path) > 1:
+                    return '.'.join(field_path[:-1])
+        
+        return None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -101,16 +126,54 @@ class TransformedRequest:
     or it has assigned-to subfields, in which case 'body' lists assignment setups.
 
     The Optional[single]/Optional[body] is workaround for not having tagged unions.
+
+    Patterns stores any resource patterns referenced in the attributes. The key
+    is the field path, and the value is the pattern.
     """
 
     base: str
     single: Optional[AttributeRequestSetup]
     body: Optional[List[AttributeRequestSetup]]
-    pattern: Optional[str] = None
+    patterns: Optional[Dict[str, str]] = None
 
     # Resource patterns look something like
     # kingdom/{kingdom}/phylum/{phylum}/class/{class}
     RESOURCE_RE = re.compile(r"\{([^}/]+)\}")
+
+    @classmethod
+    def _get_resource_message_descriptor(cls, field: wrappers.Field, api_schema: api.API):
+        """
+        Private helper to fetch the resource message descriptor for a field.
+
+        Returns:
+            resource_typestr, reosurce_message_descriptor
+
+        Raises:
+            types.NoSuchResource: If no message exists for this resource.
+        """
+        resource_reference = field.options.Extensions[resource_pb2.resource_reference]
+        resource_typestr = resource_reference.type or resource_reference.child_type
+
+        if resource_typestr is None:
+            raise types.NoSuchResource(
+                f"Field {field.name} does not have a resource reference."
+            )
+
+        resource_message = None
+        for service in api_schema.services.values():
+            resource_message = service.resource_messages_dict.get(
+                resource_typestr)
+            if resource_message is not None:
+                break
+
+        if resource_message is None:
+            raise types.NoSuchResource(
+                f"No message exists for resource: {resource_typestr}",
+            )
+        resource_message_descriptor = resource_message.options.Extensions[
+            resource_pb2.resource]
+
+        return resource_typestr, resource_message_descriptor
 
     @classmethod
     def build(
@@ -150,7 +213,7 @@ class TransformedRequest:
         # the base_param_to_attrs map in validate_and_transform_request.
         # Each non-error lookup results in an append to the corresponding attrs
         # list, and then the key/val pairs are passed into this factory.
-        if not attrs[0].field:
+        if not attrs[0].field and not is_resource_request:
             return cls(base=base, body=None, single=attrs[0])
         elif not is_resource_request:
             return cls(base=base, body=attrs, single=None)
@@ -163,43 +226,60 @@ class TransformedRequest:
             #
             # It's a precondition that the base field is
             # a valid field of the request message type.
-            resource_reference = request_type.fields[base].options.Extensions[resource_pb2.resource_reference]
-            resource_typestr = resource_reference.type or resource_reference.child_type
 
-            resource_message = None
-            for service in api_schema.services.values():
-                resource_message = service.resource_messages_dict.get(
-                    resource_typestr)
-                if resource_message is not None:
-                    break
+            # Only some of the attributes in the list will be for resource references
+            # Others can be passed through as-is.
+            resource_based_attrs = [
+                attr for attr in attrs if attr.resource_field]
+            
+            # This dictionary is a map from field name (relative to the base_param) to
+            # resource pattern. Resource patterns for the base param are stored under 
+            # a special key "BASE". 
+            patterns: Dict[str, str] = {}
+            BASE = "BASE"
 
-            if resource_message is None:
-                raise types.NoSuchResource(
-                    f"No message exists for resource: {resource_typestr}",
+            field_to_attr = defaultdict(list)
+            for attr in resource_based_attrs:
+                if attr.field:
+                    field_to_attr[attr.field].append(attr)
+                else:  # at top-level
+                    field_to_attr[BASE].append(attr)
+
+
+            for field, attrs in field_to_attr.items():
+                if field == BASE:
+                    field_message = request_type.get_field(base)
+
+                else:
+                    field_path_list = [base] + field.split(".")
+                    field_message = request_type.get_field(
+                        *field_path_list)
+
+                resource_typestr, resource_message_descriptor = cls._get_resource_message_descriptor(
+                    field_message, api_schema)
+
+                attr_names = [a.resource_field for a in attrs if a.resource_field]
+
+                # A single resource may be found under multiple paths and have many patterns.
+                # We want to find an _exact_ match, if one exists.
+                pattern = next(
+                    (
+                        p
+                        for p in resource_message_descriptor.pattern
+                        if cls.RESOURCE_RE.findall(p) == attr_names
+                    ),
+                    None,
                 )
-            resource_message_descriptor = resource_message.options.Extensions[
-                resource_pb2.resource]
+                if not pattern:
+                    attr_name_str = ", ".join(attr_names)
+                    raise types.NoSuchResourcePattern(
+                        f"Resource {resource_typestr} has no pattern with params: {attr_name_str}",
 
-            # The field is only ever empty for singleton attributes.
-            attr_names: List[str] = [a.field for a in attrs]  # type: ignore
+                    )
+                
+                patterns[field] = pattern
 
-            # A single resource may be found under multiple paths and have many patterns.
-            # We want to find an _exact_ match, if one exists.
-            pattern = next(
-                (
-                    p
-                    for p in resource_message_descriptor.pattern
-                    if cls.RESOURCE_RE.findall(p) == attr_names
-                ),
-                None,
-            )
-            if not pattern:
-                attr_name_str = ", ".join(attr_names)
-                raise types.NoSuchResourcePattern(
-                    f"Resource {resource_typestr} has no pattern with params: {attr_name_str}"
-                )
-
-            return cls(base=base, body=attrs, single=None, pattern=pattern,)
+            return cls(base=base, body=attrs, single=None, patterns=patterns)
 
 
 @dataclasses.dataclass
@@ -401,6 +481,42 @@ class Validator:
         # so disable it for the AttributeRequestSetup ctor call.
         return attr_chain[0], AttributeRequestSetup(**request)  # type: ignore
 
+    def _check_request_setup_mismatch(self, attr: AttributeRequestSetup, request_entry: RequestEntry, base_param: str):
+        """Check that a new attribute does not conflict with existing attribute setups 
+        in the request_entry.
+
+        Args:
+            attr (AttributeRequestSetup): The new attribute.
+            request_entry (RequestEntry): The request entry.
+            base_param (str): The base param for this request entry.
+        """
+
+        # No requests yet, so no chance of conflict
+        if request_entry is None:
+            return 
+        
+        # Case 1: New attribute is not resource-based, so existing attributes
+        # should also all not be resource-based
+        if not attr.resource_field:
+            for existing_attr in request_entry.attrs:
+                if existing_attr.resource_field and existing_attr.parent_field == attr.parent_field:
+                    raise types.ResourceRequestMismatch(
+                                 "Request setup mismatch for base: " + base_param \
+                                     + " on field " + existing_attr.parent_field 
+                            )
+
+        # Case 2: This new attribute is resource-based, so existing attributes
+        # should also be resource-based.
+        else:
+            for existing_attr in request_entry.attrs:
+                if not existing_attr.resource_field and existing_attr.parent_field == attr.parent_field:
+                    raise types.ResourceRequestMismatch(
+                                "Request setup mismatch for base: " + base_param \
+                                    + " on field " + existing_attr.parent_field 
+                            )
+
+
+
     def validate_and_transform_request(
         self, calling_form: types.CallingForm, request: List[Mapping[str, str]]
     ) -> FullRequest:
@@ -512,26 +628,41 @@ class Validator:
                 base_param, attr = self._normal_request_setup(
                     base_param_to_attrs, val, r_dup, field
                 )
-
                 request_entry = base_param_to_attrs.get(base_param)
-                if request_entry and request_entry.is_resource_request:
-                    raise types.ResourceRequestMismatch(
-                        f"Request setup mismatch for base: {base_param}"
-                    )
-
+                if request_entry is None:
+                    request_entry = base_param_to_attrs[base_param]
+                self._check_request_setup_mismatch(attr, request_entry, base_param)
                 base_param_to_attrs[base_param].attrs.append(attr)
             else:
                 # It's a resource based request.
-                base_param, resource_attr = (
+                field_attr, resource_attr = (
                     field[:percent_idx],
                     field[percent_idx + 1:],
                 )
-                request_entry = base_param_to_attrs.get(base_param)
-                if request_entry and not request_entry.is_resource_request:
-                    raise types.ResourceRequestMismatch(
-                        f"Request setup mismatch for base: {base_param}"
-                    )
 
+                r_dup["resource_field"] = resource_attr
+
+                # If the field_attr has a '.', the resource exists
+                # in a subfield
+                dot_idx = field_attr.find(".")
+                if dot_idx == -1:
+                    base_param = field_attr                    
+                    r_dup.pop("field")   # delete field, TODO:  explain why
+                else:
+                    base_param = field_attr[:dot_idx]
+                    r_dup["field"] = field_attr[dot_idx + 1:]
+
+                request_entry = base_param_to_attrs.get(base_param)
+                if request_entry is None:
+                    request_entry = base_param_to_attrs[base_param]
+
+                # Depending on the order the requests are processed in,
+                # we might discover a request has a resource based subfield
+                # after the base_param has been added. 
+                request_entry.is_resource_request = True
+
+                attr = AttributeRequestSetup(**r_dup) # type: ignore
+    
                 if not self.request_type_.fields.get(base_param):
                     raise types.BadAttributeLookup(
                         "Method request type {} has no attribute: '{}'".format(
@@ -539,12 +670,9 @@ class Validator:
                         )
                     )
 
-                r_dup["field"] = resource_attr
-                request_entry = base_param_to_attrs[base_param]
-                request_entry.is_resource_request = True
-                request_entry.attrs.append(
-                    AttributeRequestSetup(**r_dup)  # type: ignore
-                )
+                self._check_request_setup_mismatch(attr, request_entry, base_param)
+                
+                request_entry.attrs.append(attr)
 
         # We can only flatten a collection of request parameters if they're a
         # subset of the flattened fields of the method.

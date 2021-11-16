@@ -59,6 +59,23 @@ def dummy_api_schema():
     )
 
 
+def test_attribute_request_setup_parent_field():
+    attr = samplegen.AttributeRequestSetup(value="squid", field="mollusca.cephalopod")
+    assert attr.parent_field == "mollusca"
+
+    attr = samplegen.AttributeRequestSetup(value="squid", field="mollusca")
+    assert attr.parent_field is None
+
+    attr = samplegen.AttributeRequestSetup(value="squid", field="mollusca", resource_field="cephalopod")
+    assert attr.parent_field == "mollusca"
+
+    attr = samplegen.AttributeRequestSetup(value="squid", field="mollusca.cephalopod", resource_field="baz")
+    assert attr.parent_field == "mollusca.cephalopod"
+
+    attr = samplegen.AttributeRequestSetup(value="squid", resource_field="cephalopod")
+    assert attr.parent_field is None
+
+
 def test_define(dummy_api_schema):
     define = {"define": "squid=$resp"}
     v = samplegen.Validator(DummyMethod(
@@ -1833,15 +1850,15 @@ def test_validate_request_resource_name():
         request_list=[
             samplegen.TransformedRequest(
                 base="taxon",
-                pattern="kingdom/{kingdom}/phylum/{phylum}",
+                patterns={'BASE': 'kingdom/{kingdom}/phylum/{phylum}'},
                 single=None,
                 body=[
                     samplegen.AttributeRequestSetup(
-                        field="kingdom",
+                        resource_field="kingdom",
                         value="animalia",
                     ),
                     samplegen.AttributeRequestSetup(
-                        field="phylum",
+                        resource_field="phylum",
                         value="mollusca",
                         input_parameter="phylum",
                     ),
@@ -1884,6 +1901,44 @@ def test_validate_request_primitive_field(dummy_api_schema):
 
 
 def test_validate_request_resource_name_mixed(request=None):
+    resource_type = "taxonomy.google.com/Linnaean"
+    taxon_field = make_field(name="taxon")
+    rr = taxon_field.options.Extensions[resource_pb2.resource_reference]
+    rr.type = resource_type
+    request_descriptor = make_message(name="Request", fields=[taxon_field])
+
+    # Strictly speaking, 'phylum' is the resource, but it's not what we're
+    # manipulating to let samplegen know it's the resource.
+    phylum_options = descriptor_pb2.MessageOptions()
+    resource = phylum_options.Extensions[resource_pb2.resource]
+    resource.type = resource_type
+    resource.pattern.append("kingdom/{kingdom}/phylum/{phylum}")
+    phylum_descriptor = make_message(name="Phylum", options=phylum_options)
+
+    method = DummyMethod(input=request_descriptor)
+    # We don't actually care about the key,
+    # but the 'messages' property is a mapping type,
+    # and the implementation code expects this.
+    api_schema = DummyApiSchema(
+        messages={
+            k: v
+            for k, v in enumerate([
+                request_descriptor,
+                phylum_descriptor,
+            ])
+        },
+        services={
+            "Mollusc": DummyService(
+                methods={},
+                client_name="MolluscClient",
+                resource_messages_dict={
+                    resource_type: phylum_descriptor
+                }
+            )
+        },
+    )
+
+
     # Note the mixing of resource name and non-resource name request field
     request = request or [
         {"field": "taxon%kingdom", "value": "animalia"},
@@ -1909,9 +1964,9 @@ def test_validate_request_resource_name_mixed(request=None):
                 ]
             ),
         ),
-        api_schema=None
+        api_schema=api_schema,
     )
-
+    
     with pytest.raises(types.ResourceRequestMismatch):
         v.validate_and_transform_request(
             types.CallingForm.Request,

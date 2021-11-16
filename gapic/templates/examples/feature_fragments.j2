@@ -128,23 +128,34 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 {% endif %}
 {% endmacro %}
 
+
+{% macro field_name(base_name, attr) %}
+{% if attr.resource_field %}
+{{ attr.resource_field }}
+{% else %}
+{{ base_name }}.{{ attr.field }}
+{% endif %}
+{% endmacro %}
+
 {% macro render_request_attr(base_name, attr) %}
 {# Note: python code will have manipulated the value #}
 {# to be the correct enum from the right module, if necessary. #}
 {# Python is also responsible for verifying that each input parameter is unique, #}
 {# no parameter is a reserved keyword #}
+{% with field = field_name(base_name, attr) %}
 {% if attr.input_parameter %}
 
 # {{ attr.input_parameter }} = {{ attr.value }}
 {% if attr.value_is_file %}
 with open({{ attr.input_parameter }}, "rb") as f:
-    {{ base_name }}.{{ attr.field }} = f.read()
+    {{ field|trim}} = f.read()
 {% else %}
-{{ base_name }}.{{ attr.field }} = {{ attr.input_parameter }}
+{{ field|trim }} = {{ attr.input_parameter }}
 {% endif %}
 {% else %}
-{{ base_name }}.{{ attr.field }} = {{ attr.value }}
+{{ field|trim }} = {{ attr.value }}
 {% endif %}
+{% endwith %}
 {% endmacro %}
 
 
@@ -156,23 +167,28 @@ client = {{ module_name }}.{{ client_name }}()
 {% macro render_request_setup(full_request, module_name, request_type, calling_form, calling_form_enum) %}
 # Initialize request argument(s)
 {% for parameter_block in full_request.request_list if parameter_block.body %}
-{% if parameter_block.pattern %}
-{# This is a resource-name patterned lookup parameter #}
-{% with formals = [] %}
-{% for attr in parameter_block.body %}
-{{ attr.field }} = {{ attr.input_parameter or attr.value }}
-{% endfor %}
-{{ parameter_block.base }} = f"{{parameter_block.pattern }}"
+{% if not request_type.get_field(parameter_block.base).is_primitive %}
+{% if not loop.first %}{# empty line between parameter blocks #}
 
-{% endwith %}
-{% else %}{# End resource name construction #}
+{% endif %}
+{# Initialize a message if this parameter_block is setting up a type that is not primitive #}
 {{ parameter_block.base }} = {{ module_name }}.{{ request_type.get_field(parameter_block.base).type.name }}()
+{% endif %}
 {% for attr in parameter_block.body %}
 {{ render_request_attr(parameter_block.base, attr) -}}
 {% endfor %}
-
+{% if parameter_block.patterns %}
+{# Finish initialiizng fields that referenced patterns (resource messages) #}
+{% for field, pattern in parameter_block.patterns.items() %}
+{% if field == "BASE" %}{# special case for resource fields on base parameter #}
+{{ parameter_block.base }} = f"{{ pattern }}"
+{% else %}
+{{ parameter_block.base }}.{{ field }} = f"{{pattern}}"
 {% endif %}
 {% endfor %}
+{% endif %}
+{% endfor %}
+
 {% if not full_request.flattenable %}
 request = {{ module_name }}.{{ request_type.ident.name }}(
 {% for parameter in full_request.request_list %}

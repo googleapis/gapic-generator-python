@@ -23,6 +23,8 @@ from gapic.samplegen_utils.types import CallingForm
 from textwrap import dedent
 from tests.unit.samplegen import common_types
 
+from tests.unit.samplegen.common_types import DummyMessageTypePB
+
 
 def check_template(template_fragment, expected_output, **kwargs):
     # Making a new environment for every unit test seems wasteful,
@@ -299,14 +301,19 @@ def test_render_request_resource_name():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_request_setup(request) }}
+        {{ frags.render_request_setup(request, module_name, request_type, calling_form, calling_form_enum) }}
         ''',
         '''
         # Initialize request argument(s)
         kingdom = "animalia"
+
+        # mollusca = mollusca
         phylum = mollusca
         taxon = f"kingdom/{kingdom}/phylum/{phylum}"
 
+        request = mollusca.CreateMolluscRequest(
+            taxon=taxon,
+        )
         ''',
         request=samplegen.FullRequest(
             request_list=[
@@ -315,20 +322,30 @@ def test_render_request_resource_name():
                     single=None,
                     body=[
                         samplegen.AttributeRequestSetup(
-                            field="kingdom",
+                            resource_field="kingdom",
                             value='"animalia"',
                         ),
                         samplegen.AttributeRequestSetup(
-                            field="phylum",
+                            resource_field="phylum",
                             value="mollusca",
                             input_parameter="mollusca",
                         )
                     ],
-                    pattern="kingdom/{kingdom}/phylum/{phylum}"
+                    patterns={"BASE": "kingdom/{kingdom}/phylum/{phylum}"}
                 ),
-            ],
-            flattenable=True
-        ),
+            ]),
+            module_name="mollusca",
+            request_type=common_types.DummyMessage(
+                fields={
+                    "taxon": common_types.DummyField(
+                        name="taxon",
+                        is_primitive=True,
+                    ),
+                },
+                ident=common_types.DummyIdent(name="CreateMolluscRequest")
+            ),
+            calling_form_enum=CallingForm,
+            calling_form=CallingForm.Request,
     )
 
 

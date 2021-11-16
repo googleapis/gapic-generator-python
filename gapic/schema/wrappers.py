@@ -459,18 +459,14 @@ class MessageType:
         This method recursively traverses the message tree to return the
         requested inner-field.
 
-        Traversing through repeated fields is not supported; a repeated field
-        may be specified if and only if it is the last field in the path.
+        Repeated fields are treated the same as other kind of fields. This
+        function only extracts the type of the arbitrarily nested field.
 
         Args:
             field_path (Sequence[str]): The field path.
 
         Returns:
             ~.Field: A field object.
-
-        Raises:
-            KeyError: If a repeated field is used in the non-terminal position
-                in the path.
         """
         # If collisions are not explicitly specified, retrieve them
         # from this message's address.
@@ -493,18 +489,7 @@ class MessageType:
                 visited_messages=frozenset({self}),
             )
 
-        # Sanity check: If cursor is a repeated field, then raise an exception.
-        # Repeated fields are only permitted in the terminal position.
-        if cursor.repeated:
-            raise KeyError(
-                f'The {cursor.name} field is repeated; unable to use '
-                '`get_field` to retrieve its children.\n'
-                'This exception usually indicates that a '
-                'google.api.method_signature annotation uses a repeated field '
-                'in the fields list in a position other than the end.',
-            )
-
-        # Sanity check: If this cursor has no message, there is a problem.
+        # Check: If this cursor has no message, there is a problem.
         if not cursor.message:
             raise KeyError(
                 f'Field {".".join(field_path)} could not be resolved from '

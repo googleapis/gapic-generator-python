@@ -55,6 +55,30 @@ service Snippets {
   rpc MethodBidiStreaming(stream SignatureRequestOneRequiredField) returns (stream Response);
 
   rpc OneOfMethod(OneOfRequest) returns (Response);
+
+
+  rpc NestedResources(NestedResourcesRequest) returns (Response) {
+  }
+}
+
+message NestedResourcesRequest {
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  Foo foo = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message Foo {
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string parent = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "snippets.example.com/Resource"
+    }];
 }
 
 enum Enum {
