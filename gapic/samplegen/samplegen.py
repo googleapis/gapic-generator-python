@@ -983,7 +983,8 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
         for oneof_fields in message.oneof_fields().values()]
 
     # Don't add required fields if they're also marked as oneof
-    required_fields = [field for field in message.required_fields if not field.oneof]
+    required_fields = [
+        field for field in message.required_fields if not field.oneof]
     request_fields = selected_oneofs + required_fields
 
     for field in request_fields:
