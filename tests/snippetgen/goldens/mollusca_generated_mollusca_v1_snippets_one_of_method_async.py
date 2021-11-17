@@ -34,6 +34,7 @@ async def sample_one_of_method():
     client = mollusca_v1.SnippetsAsyncClient()
 
     # Initialize request argument(s)
+
     request = mollusca_v1.OneOfRequest(
         my_string="my_string_value",
         non_one_of_string="non_one_of_string_value",

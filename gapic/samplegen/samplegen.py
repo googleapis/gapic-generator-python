@@ -137,7 +137,7 @@ class TransformedRequest:
 
     # Resource patterns look something like
     # kingdom/{kingdom}/phylum/{phylum}/class/{class}
-    RESOURCE_RE = re.compile(r"\{([^}/]+)\}")
+    RESOURCE_RE = re.compile(r"\{([^}/=*]+)[\*=]*?\}")
 
     @classmethod
     def _get_resource_message_descriptor(cls, field: wrappers.Field, api_schema: api.API):
@@ -273,9 +273,14 @@ class TransformedRequest:
                     attr_name_str = ", ".join(attr_names)
                     raise types.NoSuchResourcePattern(
                         f"Resource {resource_typestr} has no pattern with params: {attr_name_str}",
-
+                        field, attrs, resource_message_descriptor.pattern
                     )
                 
+                # This is designed to re-write
+                # patterns like: 'projects/{project}/metricDescriptors/{metric_descriptor=**}'
+                # to 'projects/{project}/metricDescriptors/{metric_descriptor}
+                # so it can be dropped in to python code as a valid f-string
+                pattern = cls.RESOURCE_RE.sub("{\g<1>}", pattern)
                 patterns[field] = pattern
 
             return cls(base=base, body=attrs, single=None, patterns=patterns)
@@ -1086,6 +1091,10 @@ def _generate_resource_path_request_object(field_name: str, message: wrappers.Me
             "field": f"{field_name}%{resource_path_arg}",
             "value": value,
         })
+    
+    # resource_path_args is imperfect, and sometimes produces field names that are
+    # "wrong". Stopping the library from generating on this is not ideal, so just skip
+    # this particular path.
 
     return request
 
@@ -1110,6 +1119,10 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
     selected_oneofs: List[wrappers.Field] = [oneof_fields[0]
         for oneof_fields in message.oneof_fields().values()]
     # Exclude oneofs from the required_fields list to avoid counting a field twice
+    # Rules around how to mark oneofs as required are fuzzy, so some oneofs that 
+    # are required in practice (by the API backend) are regular oneofs, and other
+    # APIs go the route of marking every field in their oneof as required instead.
+    # For now, we assume all oneofs are 'required'. 
     required_fields = [field for field in message.required_fields if not field.oneof]
     request_fields = selected_oneofs + required_fields
 
