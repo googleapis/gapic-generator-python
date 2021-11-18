@@ -318,7 +318,7 @@ class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
     # Class attributes
     # https://google.aip.dev/122
-    PATH_ARG_RE = re.compile(r'\{([a-zA-Z0-9_\-*]+)(?:=\*\*)?\}')
+    PATH_ARG_RE = re.compile(r'\{([a-zA-Z0-9_\-]+)(?:=\*\*)?\}')
 
     # Instance attributes
     message_pb: descriptor_pb2.DescriptorProto
