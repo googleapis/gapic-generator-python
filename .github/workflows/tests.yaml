@@ -157,17 +157,17 @@ jobs:
         with:
           access_token: ${{ github.token }}
       - name: Check for pip cache
-        id: cache-pip-${{ matrix.python }}
+        id: cache-pip
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ matrix.python }}
       - name: Cache not found
-        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit != 'true'
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         run: |
           echo "No pip cache for ${{ matrix.python }} found"
       - name: Cache found
-        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit == 'true'
+        if: steps.cache-pip.outputs.cache-hit == 'true'
         run: |
           echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
@@ -201,17 +201,17 @@ jobs:
         with:
           access_token: ${{ github.token }}
       - name: Check for pip cache
-        id: cache-pip-${{ matrix.python }}
+        id: cache-pip
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ matrix.python }}
       - name: Cache not found
-        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit != 'true'
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         run: |
           echo "No pip cache for ${{ matrix.python }} found"
       - name: Cache found
-        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit == 'true'
+        if: steps.cache-pip.outputs.cache-hit == 'true'
         run: |
           echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
@@ -301,17 +301,17 @@ jobs:
         with:
           access_token: ${{ github.token }}
       - name: Check for pip cache
-        id: cache-pip-${{ matrix.python }}
+        id: cache-pip
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ matrix.python }}
       - name: Cache not found
-        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit != 'true'
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         run: |
           echo "No pip cache for ${{ matrix.python }} found"
       - name: Cache found
-        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit == 'true'
+        if: steps.cache-pip.outputs.cache-hit == 'true'
         run: |
           echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
@@ -339,17 +339,17 @@ jobs:
         with:
           access_token: ${{ github.token }}
       - name: Check for pip cache
-        id: cache-pip-${{ matrix.python }}
+        id: cache-pip
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ matrix.python }}
       - name: Cache not found
-        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit != 'true'
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         run: |
           echo "No pip cache for ${{ matrix.python }} found"
       - name: Cache found
-        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit == 'true'
+        if: steps.cache-pip.outputs.cache-hit == 'true'
         run: |
           echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
