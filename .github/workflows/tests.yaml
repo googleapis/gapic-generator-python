@@ -156,6 +156,20 @@ jobs:
         uses: styfle/cancel-workflow-action@0.7.0
         with:
           access_token: ${{ github.token }}
+      - name: Check for pip cache
+        id: cache-pip-${{ matrix.python }}
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python }}
+      - name: Cache not found
+        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit != 'true'
+        run: |
+          echo "No pip cache for ${{ matrix.python }} found"
+      - name: Cache found
+        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit == 'true'
+        run: |
+          echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
@@ -186,6 +200,20 @@ jobs:
         uses: styfle/cancel-workflow-action@0.7.0
         with:
           access_token: ${{ github.token }}
+      - name: Check for pip cache
+        id: cache-pip-${{ matrix.python }}
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python }}
+      - name: Cache not found
+        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit != 'true'
+        run: |
+          echo "No pip cache for ${{ matrix.python }} found"
+      - name: Cache found
+        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit == 'true'
+        run: |
+          echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -272,6 +300,20 @@ jobs:
         uses: styfle/cancel-workflow-action@0.7.0
         with:
           access_token: ${{ github.token }}
+      - name: Check for pip cache
+        id: cache-pip-${{ matrix.python }}
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python }}
+      - name: Cache not found
+        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit != 'true'
+        run: |
+          echo "No pip cache for ${{ matrix.python }} found"
+      - name: Cache found
+        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit == 'true'
+        run: |
+          echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
@@ -296,6 +338,20 @@ jobs:
         uses: styfle/cancel-workflow-action@0.7.0
         with:
           access_token: ${{ github.token }}
+      - name: Check for pip cache
+        id: cache-pip-${{ matrix.python }}
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python }}
+      - name: Cache not found
+        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit != 'true'
+        run: |
+          echo "No pip cache for ${{ matrix.python }} found"
+      - name: Cache found
+        if: steps.cache-pip-${{ matrix.python }}.outputs.cache-hit == 'true'
+        run: |
+          echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
