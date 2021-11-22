@@ -165,7 +165,7 @@ class Options:
             metadata=bool(opts.pop('metadata', False)),
             # transport should include desired transports delimited by '+', e.g. transport='grpc+rest'
             transport=opts.pop('transport', ['grpc'])[0].split('+'),
-            service_yaml_config=service_yaml_config
+            service_yaml_config=service_yaml_config,
         )
 
         # Note: if we ever need to recursively check directories for sample

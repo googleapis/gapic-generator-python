@@ -395,9 +395,10 @@ class API:
                        for http_rule in http_options)
             return [rule for rule in opt_gen if rule]
 
-        result = {}
-        for rule in self.service_yaml_config.http.rules:
-            result[rule.selector] = make_http_options(rule)
+        result = {
+            rule.selector: make_http_options(rule)
+            for rule in self.service_yaml_config.http.rules
+        }
 
         return result
 
