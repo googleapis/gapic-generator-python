@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.57.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.57.0...v0.57.1) (2021-11-23)
+
+
+### Bug Fixes
+
+* fix resource path args for paths with =** ([#1089](https://www.github.com/googleapis/gapic-generator-python/issues/1089)) ([309cc66](https://www.github.com/googleapis/gapic-generator-python/commit/309cc66e880e07940866864b03c744310ef56762))
+* **snippetgen:** don't create duplicate requests for required oneofs ([#1088](https://www.github.com/googleapis/gapic-generator-python/issues/1088)) ([5531795](https://www.github.com/googleapis/gapic-generator-python/commit/55317956397370a91b1a06ecd476e55f58789807))
+
 ## [0.57.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.56.2...v0.57.0) (2021-11-17)
 
 
