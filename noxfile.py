@@ -323,7 +323,6 @@ def run_showcase_unit_tests(session, fail_under=100):
         ),
     )
 
-
 @nox.session(python=ALL_PYTHON)
 def showcase_unit(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
@@ -380,6 +379,22 @@ def showcase_mypy(
 @nox.session(python=NEWEST_PYTHON)
 def showcase_mypy_alternative_templates(session):
     showcase_mypy(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
+
+
+@nox.session(python=NEWEST_PYTHON)
+def goldens_mypy(session):
+    """Perform typecheck analysis on the golden generated libraries
+    
+    This may catch additional issues that are not found in the showcase protos."""
+
+    session.install("mypy", "types-pkg-resources")
+    goldens_dir = Path("tests/integration/goldens").absolute()
+
+    for library_dir in goldens_dir.glob("*/"):
+        session.chdir(library_dir.absolute())
+        session.install(".")
+
+        session.run("mypy", "--explicit-package-bases", "google")
 
 
 @nox.session(python=NEWEST_PYTHON)

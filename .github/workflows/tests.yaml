@@ -248,7 +248,24 @@ jobs:
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy${{ matrix.variant }}
         env:
-          SHOWCASE_VERSION: 0.18.0
+          SHOWCASE_VERSION: 0.16.0
+  goldens-mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Typecheck the generated output.
+        run: nox -s goldens_mypy
+        env:
   snippetgen:
     runs-on: ubuntu-latest
     steps:
