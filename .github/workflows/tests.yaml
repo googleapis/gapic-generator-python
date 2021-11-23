@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
       - name: Build the documentation.
@@ -38,6 +39,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
       - name: Check type annotations.
@@ -57,6 +59,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
           sudo apt-get update
@@ -103,6 +106,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
       - name: Install system dependencies.
@@ -156,25 +160,12 @@ jobs:
         uses: styfle/cancel-workflow-action@0.7.0
         with:
           access_token: ${{ github.token }}
-      - name: Check for pip cache
-        id: cache-pip
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python }}
-      - name: Cache not found
-        if: steps.cache-pip.outputs.cache-hit != 'true'
-        run: |
-          echo "No pip cache for ${{ matrix.python }} found"
-      - name: Cache found
-        if: steps.cache-pip.outputs.cache-hit == 'true'
-        run: |
-          echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
@@ -200,25 +191,12 @@ jobs:
         uses: styfle/cancel-workflow-action@0.7.0
         with:
           access_token: ${{ github.token }}
-      - name: Check for pip cache
-        id: cache-pip
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python }}
-      - name: Cache not found
-        if: steps.cache-pip.outputs.cache-hit != 'true'
-        run: |
-          echo "No pip cache for ${{ matrix.python }} found"
-      - name: Cache found
-        if: steps.cache-pip.outputs.cache-hit == 'true'
-        run: |
-          echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
@@ -252,6 +230,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
@@ -282,6 +261,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
@@ -300,25 +280,12 @@ jobs:
         uses: styfle/cancel-workflow-action@0.7.0
         with:
           access_token: ${{ github.token }}
-      - name: Check for pip cache
-        id: cache-pip
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python }}
-      - name: Cache not found
-        if: steps.cache-pip.outputs.cache-hit != 'true'
-        run: |
-          echo "No pip cache for ${{ matrix.python }} found"
-      - name: Cache found
-        if: steps.cache-pip.outputs.cache-hit == 'true'
-        run: |
-          echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+          cache: 'pip'
       - name: Install pandoc
         run: |
             sudo apt-get update
@@ -338,25 +305,12 @@ jobs:
         uses: styfle/cancel-workflow-action@0.7.0
         with:
           access_token: ${{ github.token }}
-      - name: Check for pip cache
-        id: cache-pip
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python }}
-      - name: Cache not found
-        if: steps.cache-pip.outputs.cache-hit != 'true'
-        run: |
-          echo "No pip cache for ${{ matrix.python }} found"
-      - name: Cache found
-        if: steps.cache-pip.outputs.cache-hit == 'true'
-        run: |
-          echo "pip cache for ${{ matrix.python }} found"
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+          cache: 'pip'
       - name: Install pandoc
         run: |
             sudo apt-get update
@@ -410,6 +364,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install autopep8
         run: |
             python -m pip install autopep8
