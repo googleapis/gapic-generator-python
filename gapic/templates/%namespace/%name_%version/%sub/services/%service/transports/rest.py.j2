@@ -157,7 +157,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                     scopes=self._scopes,
                     http_options=http_options)
 
-            self._operations_client = operations_v1.OperationsRestClient(transport=rest_transport)
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client

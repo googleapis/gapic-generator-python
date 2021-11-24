@@ -385,7 +385,7 @@ class API:
                                     )
 
     @cached_property
-    def http_options(self) -> Mapping[str, wrappers.HttpRule]:
+    def http_options(self) -> Mapping[str, Sequence[wrappers.HttpRule]]:
         """Return a map of API-wide http rules."""
 
         def make_http_options(rule: http_pb2.HttpRule
@@ -395,7 +395,7 @@ class API:
                        for http_rule in http_options)
             return [rule for rule in opt_gen if rule]
 
-        result = {
+        result: Mapping[str, Sequence[http_pb2.HttpRule]]  = {
             rule.selector: make_http_options(rule)
             for rule in self.service_yaml_config.http.rules
         }
