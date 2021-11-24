@@ -395,7 +395,7 @@ class API:
                        for http_rule in http_options)
             return [rule for rule in opt_gen if rule]
 
-        result: Mapping[str, Sequence[http_pb2.HttpRule]]  = {
+        result: Mapping[str, Sequence[http_pb2.HttpRule]] = {
             rule.selector: make_http_options(rule)
             for rule in self.service_yaml_config.http.rules
         }
