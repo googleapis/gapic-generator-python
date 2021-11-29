@@ -1325,9 +1325,10 @@ def test_{{ method_name }}_rest_flattened_error(transport: str = 'rest'):
 
 
 {% if method.paged_result_field %}
-def test_{{ method_name }}_rest_pager():
+def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1759,7 +1760,7 @@ def test_{{ service.name|snake_case }}_http_transport_client_cert_source_for_mtl
 
 
 {# TODO(kbandes): re-enable this code when LRO is implmented for rest #}
-{% if False and service.has_lro -%}
+{% if service.has_lro -%}
 def test_{{ service.name|snake_case }}_rest_lro_client():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1770,7 +1771,7 @@ def test_{{ service.name|snake_case }}_rest_lro_client():
     # Ensure that we have a api-core operations client.
     assert isinstance(
         transport.operations_client,
-        operations_v1.OperationsClient,
+        operations_v1.AbstractOperationsClient,
     )
 
     # Ensure that subsequent calls to the property send the exact same object.
