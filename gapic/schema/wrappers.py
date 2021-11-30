@@ -33,12 +33,13 @@ import json
 import re
 from itertools import chain
 from typing import (Any, cast, Dict, FrozenSet, Iterable, List, Mapping,
-                    ClassVar, Optional, Sequence, Set, Tuple, Union)
+                    ClassVar, Optional, Sequence, Set, Tuple, Union, Pattern)
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
 from google.api import http_pb2
 from google.api import resource_pb2
+from google.api import routing_pb2
 from google.api_core import exceptions
 from google.api_core import path_template
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
@@ -47,6 +48,7 @@ from google.protobuf.json_format import MessageToDict  # type: ignore
 
 from gapic import utils
 from gapic.schema import metadata
+from gapic.utils import uri_sample
 
 
 @dataclasses.dataclass(frozen=True)
@@ -751,6 +753,116 @@ class RetryInfo:
 
 
 @dataclasses.dataclass(frozen=True)
+class RoutingParameter:
+    field: str
+    path_template: str
+
+    def _split_into_segments(self, path_template):
+        segments = path_template.split("/")
+        named_segment_ids = [i for i, x in enumerate(
+            segments) if "{" in x or "}" in x]
+        # bar/{foo}/baz, bar/{foo=one/two/three}/baz.
+        assert len(named_segment_ids) <= 2
+        if len(named_segment_ids) == 2:
+            # Need to merge a named segment.
+            i, j = named_segment_ids
+            segments = (
+                segments[:i] +
+                [self._merge_segments(segments[i: j + 1])] + segments[j + 1:]
+            )
+        return segments
+
+    def _convert_segment_to_regex(self, segment):
+        # Named segment
+        if "{" in segment:
+            assert "}" in segment
+            # Strip "{" and "}"
+            segment = segment[1:-1]
+            if "=" not in segment:
+                # e.g. {foo} should be {foo=*}
+                return self._convert_segment_to_regex("{" + f"{segment}=*" + "}")
+            key, sub_path_template = segment.split("=")
+            group_name = f"?P<{key}>"
+            sub_regex = self._convert_to_regex(sub_path_template)
+            return f"({group_name}{sub_regex})"
+        # Wildcards
+        if "**" in segment:
+            # ?: nameless capture
+            return ".*"
+        if "*" in segment:
+            return "[^/]+"
+        # Otherwise it's collection ID segment: transformed identically.
+        return segment
+
+    def _merge_segments(self, segments):
+        acc = segments[0]
+        for x in segments[1:]:
+            # Don't add "/" if it's followed by a "**"
+            # because "**" will eat it.
+            if x == ".*":
+                acc += "(?:/.*)?"
+            else:
+                acc += "/"
+                acc += x
+        return acc
+
+    def _how_many_named_segments(self, path_template):
+        return path_template.count("{")
+
+    def _convert_to_regex(self, path_template):
+        if self._how_many_named_segments(path_template) > 1:
+            # This also takes care of complex patterns (i.e. {foo}~{bar})
+            raise ValueError("There should be exactly one named segment.")
+        segments = self._split_into_segments(path_template)
+        segment_regexes = [self._convert_segment_to_regex(x) for x in segments]
+        final_regex = self._merge_segments(segment_regexes)
+        return final_regex
+
+    def _to_regex(self, path_template: str) -> Pattern:
+        """Converts path_template into a Python regular expression string.
+        Args:
+            path_template (str): A path template corresponding to a resource name.
+                It can only have 0 or 1 named segments. It can not contain complex resource ID path segments.
+                See https://google.aip.dev/122 and https://google.aip.dev/client-libraries/4231 for more details.
+        Returns:
+            Pattern: A Pattern object that matches strings conforming to the path_template.
+        """
+        return re.compile(f"^{self._convert_to_regex(path_template)}$")
+
+    def to_regex(self) -> Pattern:
+        # TODO: Move _to_regex logic to api_core.
+        return self._to_regex(self.path_template)
+
+    @property
+    def key(self) -> Union[str, None]:
+        if self.path_template == "":
+            return self.field
+        regex = self.to_regex()
+        # Only 1 named segment is allowed and so only 1 key.
+        return list(regex.groupindex)[0] if list(regex.groupindex) else self.field
+
+    @property
+    def sample_request(self) -> str:
+        """return json dict for sample request matching the uri template."""
+        sample = uri_sample.sample_from_path_template(
+            self.field, self.path_template)
+        return json.dumps(sample)
+
+
+@dataclasses.dataclass(frozen=True)
+class RoutingRule:
+    routing_parameters: List[RoutingParameter]
+
+    @classmethod
+    def try_parse_routing_rule(cls, routing_rule) -> Optional['RoutingRule']:
+        params = getattr(routing_rule, 'routing_parameters')
+        if not params:
+            return None
+        params = [RoutingParameter(x.field, x.path_template) for x in params]
+        return cls(params)
+
+
+@dataclasses.dataclass(frozen=True)
 class HttpRule:
     """Representation of the method's http bindings."""
     method: str
@@ -906,6 +1018,18 @@ class Method:
         ]
 
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
+
+    @property
+    def explicit_routing(self):
+        return routing_pb2.routing in self.options.Extensions
+
+    @property
+    def routing_rule(self):
+        if self.explicit_routing:
+            routing_ext = self.options.Extensions[routing_pb2.routing]
+            routing_rule = RoutingRule.try_parse_routing_rule(routing_ext)
+            return routing_rule
+        return None
 
     @property
     def http_options(self) -> List[HttpRule]:

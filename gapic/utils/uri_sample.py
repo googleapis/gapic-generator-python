@@ -76,3 +76,14 @@ def sample_from_path_fields(paths: List[Tuple[str, str]]) -> Dict[Any, Any]:
         )
         add_field(request, path, sample_value)
     return request
+
+
+def sample_from_path_template(field, path_template):
+    if '{' in path_template:
+        i = path_template.index('{')
+        j = path_template.index('}')
+        seg = path_template[i:j + 1]
+        # Skip "}"
+        seg = seg[seg.index('=') + 1:-1]
+        path_template = path_template[:i] + seg + path_template[j + 1:]
+    return sample_from_path_fields([(field, path_template)])

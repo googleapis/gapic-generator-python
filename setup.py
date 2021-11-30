@@ -45,7 +45,8 @@ setup(
     install_requires=(
         "click >= 6.7",
         "google-api-core >= 2.2.0",
-        "googleapis-common-protos >= 1.53.0",
+        # TODO: Remove after https://github.com/googleapis/python-api-common-protos/pull/76 is merged.
+        "googleapis-common-protos @ https://api.github.com/repos/googleapis/python-api-common-protos/tarball/main",
         "grpcio >= 1.24.3",
         "jinja2 >= 2.10",
         "protobuf >= 3.18.0",

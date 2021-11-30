@@ -43,12 +43,11 @@ NEWEST_PYTHON = "3.9"
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-
     session.install(
-        "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs", "grpcio-status",
+        "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs", "grpcio-status", "proto-plus",
     )
     session.install("-e", ".")
-
+    session.install("git+https://github.com/googleapis/python-api-common-protos@main")
     session.run(
         "py.test",
         *(
