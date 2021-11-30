@@ -166,6 +166,31 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     {% endif %}{# service.has_lro #}
     {% for method in service.methods.values() %}
     {%- if method.http_options and not (method.server_streaming or method.client_streaming) %}
+
+    {% if method.input.required_fields %}
+    @staticmethod
+    def _{{ method.name | snake_case }}_populate_required_fields(message_dict):
+        required_fields = [
+            {% for req_field in method.input.required_fields %}
+            {% if req_field.is_primitive %}
+            (
+                "{{ req_field.name | camel_case }}",
+                {% if req_field.field_pb.default_value is string %}
+                "{{ req_field.field_pb.default_value }}"
+                {% else %}
+                {{ req_field.field_pb.default_value }}
+                {% endif %}{# default is str #}
+            ),
+            {% endif %}{# is primitive #}
+            {% endfor %}{# required fields #}
+        ]
+
+        for field_name, default_value in required_fields:
+            if field_name not in message_dict:
+              message_dict[field_name] = default_value
+
+    {% endif %}{# required fields #}
+
     def _{{method.name | snake_case}}(self,
             request: {{method.input.ident}}, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
@@ -254,16 +279,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         ))
 
         {% if method.input.required_fields %}
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
-
-        {% endif %}
+        self._{{ method.name | snake_case }}_populate_required_fields(query_params)
+        {% endif %}{# required fields #}
 
         # Send the request
         headers = dict(metadata)

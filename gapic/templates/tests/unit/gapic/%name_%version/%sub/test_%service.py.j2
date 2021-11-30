@@ -7,6 +7,7 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
@@ -1187,6 +1188,7 @@ def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.
     {% if "next_page_token" in method.output.fields.values()|map(attribute='name') and not method.paged_result_field %}
     {# Cheeser assertion to force code coverage for bad paginated methods #}
     assert response.raw_page is response
+
     {% endif %}
 
     # Establish that the response is the type that we expect.
@@ -1208,6 +1210,61 @@ def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+
+
+    {% if method.input.required_fields %}
+def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ident }}):
+    transport_class = transports.{{ service.rest_transport_name }}
+
+    request_init = {}
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% if req_field.field_pb.default_value is string %}
+    request_init["{{ req_field.name }}"] = "{{ req_field.field_pb.default_value }}"
+    {% else %}
+    request_init["{{ req_field.name }}"] = {{ req_field.field_pb.default_value }}
+    {% endif %}{# default is str #}
+    {% endfor %}
+    request = request_type(request_init)
+    jsonified_request = json.loads(request_type.to_json(
+        request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+        ))
+
+    # verify fields with default values are dropped
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% set field_name = req_field.name | camel_case %}
+    assert "{{ field_name }}" not in jsonified_request
+    {% endfor %}
+
+    transport_class._{{ method.name | snake_case }}_populate_required_fields(jsonified_request)
+
+    # verify required fields with default values are now present
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% set field_name = req_field.name | camel_case %}
+    assert "{{ field_name }}" in jsonified_request
+    assert jsonified_request["{{ field_name }}"] == request_init["{{ req_field.name }}"]
+    {% endfor %}
+
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% set field_name = req_field.name | camel_case %}
+    {% set mock_value = req_field.primitive_mock_as_str() %}
+    jsonified_request["{{ field_name }}"] = {{ mock_value }}
+    {% endfor %}
+
+    transport_class._{{ method.name | snake_case }}_populate_required_fields(jsonified_request)
+
+    # verify required fields with non-default values are left alone
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% set field_name = req_field.name | camel_case %}
+    {% set mock_value = req_field.primitive_mock_as_str() %}
+    assert "{{ field_name }}" in jsonified_request
+    assert jsonified_request["{{ field_name }}"] == {{ mock_value }}
+    {% endfor %}
+
+
+
+    {% endif %}{# required_fields #}
 
 
 def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_type={{ method.input.ident }}):
@@ -1447,25 +1504,35 @@ def test_{{ method_name }}_rest_error():
         credentials=ga_credentials.AnonymousCredentials(),
         transport='rest'
     )
-    {%- if not method.http_options %}
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(RuntimeError) as runtime_error:
-        client.{{ method_name }}({})
-    assert ('Cannot define a method without a valid `google.api.http` annotation.'
-        in str(runtime_error.value))
-    {%- else %}
 
     # TODO(yon-mg): Remove when this method has a working implementation
     #               or testing straegy
     with pytest.raises(NotImplementedError):
         client.{{ method_name }}({})
 
-    {%- endif %}
 
-{% endif %}{% endwith %}{# method_name #}
+{% endif %}{# not streaming #}{% endwith %}{# method_name #}
 
 {% endfor -%} {#- method in methods for rest #}
+
+{% for method in service.methods.values() if 'rest' in opts.transport and
+    not method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
+def test_{{ method_name }}_rest_error():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(RuntimeError) as runtime_error:
+        client.{{ method_name }}({})
+    assert ("Cannot define a method without a valid 'google.api.http' annotation."
+        in str(runtime_error.value))
+
+
+{% endwith %}{# method_name #}
+{% endfor %}{# for methods without http_options #}
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport(
@@ -1759,7 +1826,6 @@ def test_{{ service.name|snake_case }}_http_transport_client_cert_source_for_mtl
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-{# TODO(kbandes): re-enable this code when LRO is implmented for rest #}
 {% if service.has_lro -%}
 def test_{{ service.name|snake_case }}_rest_lro_client():
     client = {{ service.client_name }}(
