@@ -168,26 +168,17 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     {%- if method.http_options and not (method.server_streaming or method.client_streaming) %}
 
     {% if method.input.required_fields %}
-    @staticmethod
-    def _{{ method.name | snake_case }}_populate_required_fields(message_dict):
-        required_fields = [
-            {% for req_field in method.input.required_fields %}
-            {% if req_field.is_primitive %}
-            (
-                "{{ req_field.name | camel_case }}",
-                {% if req_field.field_pb.default_value is string %}
-                "{{ req_field.field_pb.default_value }}"
-                {% else %}
-                {{ req_field.field_pb.default_value }}
-                {% endif %}{# default is str #}
-            ),
-            {% endif %}{# is primitive #}
-            {% endfor %}{# required fields #}
-        ]
+    __{{ method.name | snake_case }}_required_fields_default_values =  {
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+        "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.default_value is string %}"{{req_field.field_pb.default_value }}"{% else %}{{ req_field.field_pb.default_value }}{% endif %}{# default is str #}
+    {% endfor %}
+    }
 
-        for field_name, default_value in required_fields:
-            if field_name not in message_dict:
-              message_dict[field_name] = default_value
+
+    @staticmethod
+    def _{{ method.name | snake_case }}_get_unset_required_fields(message_dict):
+        return {k: v for k, v in {{service.name}}RestTransport.__{{ method.name | snake_case }}_required_fields_default_values.items() if k not in message_dict}
+
 
     {% endif %}{# required fields #}
 
@@ -231,21 +222,6 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% endfor %}
         ]
 
-        {% if method.input.required_fields %}
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            {% for req_field in method.input.required_fields %}
-            {% if req_field.is_primitive %}
-            (
-                "{{ req_field.name | snake_case }}",
-                "{{ req_field.name | camel_case }}"
-            ),
-            {% endif %}{# is primitive #}
-            {% endfor %}{# required fields #}
-        ]
-
-        {% endif %}
-
         request_kwargs = {{method.input.ident}}.to_dict(request)
         transcoded_request = path_template.transcode(
             http_options, **request_kwargs)
@@ -279,7 +255,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         ))
 
         {% if method.input.required_fields %}
-        self._{{ method.name | snake_case }}_populate_required_fields(query_params)
+        query_params.update(self._{{ method.name | snake_case }}_get_unset_required_fields(query_params))
         {% endif %}{# required fields #}
 
         # Send the request
