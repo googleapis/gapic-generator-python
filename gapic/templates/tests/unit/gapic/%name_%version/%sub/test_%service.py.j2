@@ -1265,6 +1265,73 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% endfor %}
 
 
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    {% if method.void %}
+    return_value = None
+    {% elif method.lro %}
+    return_value = operations_pb2.Operation(name='operations/spam')
+    {% elif method.server_streaming %}
+    return_value = iter([{{ method.output.ident }}()])
+    {% else %}
+    return_value = {{ method.output.ident }}()
+    {% endif %}
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "{{ method.http_options[0].method }}",
+                'query_params': request_init,
+            }
+            {% if method.http_options[0].body %}
+            transcode_result['body'] = {}
+            {% endif %}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            {% if method.void %}
+            json_return_value = ''
+            {% elif method.lro %}
+            json_return_value = json_format.MessageToJson(return_value)
+            {% else %}
+            json_return_value = {{ method.output.ident }}.to_json(return_value)
+            {% endif %}
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            {% if method.client_streaming %}
+            response = client.{{ method.name|snake_case }}(iter(requests))
+            {% else %}
+            response = client.{{ method_name }}(request)
+            {% endif %}
+
+            expected_params = [
+                {% for req_field in method.input.required_fields if req_field.is_primitive %}
+                (
+                    ("{{ req_field.name }}",
+                    {% if req_field.field_pb.default_value is string %}
+                    "{{ req_field.field_pb.default_value }}")
+                    {% else %}
+                    {{ req_field.field_pb.default_value }}
+                    {% endif %}{# default is str #}
+                )
+                {% endfor %}
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
 
     {% endif %}{# required_fields #}
 
