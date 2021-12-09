@@ -7,7 +7,9 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+{% if "rest" in opts.transport %}
 import json
+{% endif %}
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
