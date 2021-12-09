@@ -42,8 +42,10 @@ from google.api_core import future
 from google.api_core import operation
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
+{% if "rest" in opts.transport %}
 from google.protobuf import json_format
-{% endif %}
+{% endif %}{# rest transport #}
+{% endif %}{# lro #}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
 {% for ref_type in method.ref_types

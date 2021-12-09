@@ -43,7 +43,6 @@ from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
 
