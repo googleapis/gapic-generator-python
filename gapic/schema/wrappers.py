@@ -760,7 +760,7 @@ class HttpRule:
     def path_fields(self, method: "~.Method") -> List[Tuple[Field, str, str]]:
         """return list of (name, template) tuples extracted from uri."""
         input = method.input
-        return [(input.get_field(match.group("name")), match.group("name"), match.group("template"))
+        return [(input.get_field(*match.group("name").split(".")), match.group("name"), match.group("template"))
                 for match in path_template._VARIABLE_RE.finditer(self.uri)]
 
     def sample_request(self, method: "~.Method") -> str:
@@ -777,6 +777,7 @@ class HttpRule:
             """
 
             request: Dict[str, Any] = {}
+
             def _sample_names() -> Generator[str, None, None]:
                 sample_num: int = 0
                 while True:
@@ -808,7 +809,6 @@ class HttpRule:
                   not a dict.: e.g. path='a.b', obj = {'a':'abc'}
                 """
 
-
                 segments = path.split('.')
                 leaf = segments.pop()
                 subfield = obj
@@ -827,7 +827,6 @@ class HttpRule:
                 add_field(request, path, sample_value)
 
             return request
-
 
         sample = sample_from_path_fields(self.path_fields(method))
         return sample
