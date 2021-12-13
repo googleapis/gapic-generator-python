@@ -32,7 +32,7 @@ import dataclasses
 import json
 import re
 from itertools import chain
-from typing import (Any, cast, Dict, FrozenSet, Generator, Iterable, List, Mapping,
+from typing import (Any, cast, Dict, FrozenSet, Iterator, Iterable, List, Mapping,
                     ClassVar, Optional, Sequence, Set, Tuple, Union)
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
@@ -778,7 +778,7 @@ class HttpRule:
 
             request: Dict[str, Any] = {}
 
-            def _sample_names() -> Generator[str, None, None]:
+            def _sample_names() -> Iterator[str]:
                 sample_num: int = 0
                 while True:
                     sample_num += 1
@@ -830,7 +830,7 @@ class HttpRule:
 
         sample = sample_from_path_fields(self.path_fields(method))
         return sample
-        # return json.dumps(sample)
+
 
     @classmethod
     def try_parse_http_rule(cls, http_rule) -> Optional['HttpRule']:
