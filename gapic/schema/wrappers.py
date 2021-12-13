@@ -831,7 +831,6 @@ class HttpRule:
         sample = sample_from_path_fields(self.path_fields(method))
         return sample
 
-
     @classmethod
     def try_parse_http_rule(cls, http_rule) -> Optional['HttpRule']:
         method = http_rule.WhichOneof("pattern")
