@@ -357,6 +357,9 @@ def test_field_name_kword_disambiguation():
     )
     assert frum_field.name == "frum"
 
+    mapping_field = make_field(name="mapping")
+    assert mapping_field.name == "mapping_"
+
 
 def test_field_resource_reference():
     field = make_field(name='parent', type='TYPE_STRING')
