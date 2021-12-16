@@ -360,6 +360,9 @@ def test_field_name_kword_disambiguation():
     mapping_field = make_field(name="mapping")
     assert mapping_field.name == "mapping_"
 
+    ignore_field = make_field(name="ignore_unknown_fields")
+    assert ignore_field.name == "ignore_unknown_fields_"
+
 
 def test_field_resource_reference():
     field = make_field(name='parent', type='TYPE_STRING')
