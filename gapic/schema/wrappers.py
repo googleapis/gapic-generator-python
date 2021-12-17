@@ -27,6 +27,7 @@ Reading of underlying descriptor properties in templates *is* okay, a
 Documentation is consistently at ``{thing}.meta.doc``.
 """
 
+import sys
 import collections
 import copy
 import dataclasses
@@ -355,8 +356,8 @@ class Field:
     def with_context(
             self,
             *,
-            collisions: FrozenSet[str],
-            visited_messages: FrozenSet["MessageType"],
+            collisions: Set[str],
+            visited_messages: Set["MessageType"],
     ) -> 'Field':
         """Return a derivative of this field with the provided context.
 
@@ -631,7 +632,7 @@ class MessageType:
         return parsing_regex_str
 
     def get_field(self, *field_path: str,
-                  collisions: FrozenSet[str] = frozenset()) -> Field:
+                  collisions: Set[str] = set()) -> Field:
         """Return a field arbitrarily deep in this message's structure.
 
         This method recursively traverses the message tree to return the
@@ -672,7 +673,7 @@ class MessageType:
         if len(field_path) == 1:
             return cursor.with_context(
                 collisions=collisions,
-                visited_messages=frozenset({self}),
+                visited_messages=set({self}),
             )
 
         # Quick check: If cursor is a repeated field, then raise an exception.
@@ -698,9 +699,9 @@ class MessageType:
         return cursor.message.get_field(*field_path[1:], collisions=collisions)
 
     def with_context(self, *,
-                     collisions: FrozenSet[str],
+                     collisions: Set[str],
                      skip_fields: bool = False,
-                     visited_messages: FrozenSet["MessageType"] = frozenset(),
+                     visited_messages: Set["MessageType"] = set(),
                      ) -> 'MessageType':
         """Return a derivative of this message with the provided context.
 
@@ -712,7 +713,8 @@ class MessageType:
         underlying fields. This provides for an "exit" in the case of circular
         references.
         """
-        visited_messages = visited_messages | {self}
+        visited_messages = visited_messages or set()
+        visited_messages.add(self)
         return dataclasses.replace(
             self,
             fields={
@@ -777,7 +779,7 @@ class EnumType:
         """Return the identifier data to be used in templates."""
         return self.meta.address
 
-    def with_context(self, *, collisions: FrozenSet[str]) -> 'EnumType':
+    def with_context(self, *, collisions: Set[str]) -> 'EnumType':
         """Return a derivative of this enum with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -895,7 +897,7 @@ class OperationInfo:
     response_type: MessageType
     metadata_type: MessageType
 
-    def with_context(self, *, collisions: FrozenSet[str]) -> 'OperationInfo':
+    def with_context(self, *, collisions: Set[str]) -> 'OperationInfo':
         """Return a derivative of this OperationInfo with the provided context.
 
           This method is used to address naming collisions. The returned
@@ -1533,7 +1535,7 @@ class Method:
         """Return True if this method has no return value, False otherwise."""
         return self.output.ident.proto == 'google.protobuf.Empty'
 
-    def with_context(self, *, collisions: FrozenSet[str]) -> 'Method':
+    def with_context(self, *, collisions: Set[str], visited_messages=None) -> 'Method':
         """Return a derivative of this method with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -1556,8 +1558,8 @@ class Method:
             self,
             lro=maybe_lro,
             extended_lro=maybe_extended_lro,
-            input=self.input.with_context(collisions=collisions),
-            output=self.output.with_context(collisions=collisions),
+            input=self.input.with_context(collisions=collisions, visited_messages=visited_messages),
+            output=self.output.with_context(collisions=collisions, visited_messages=visited_messages),
             meta=self.meta.with_context(collisions=collisions),
         )
 
@@ -1855,7 +1857,9 @@ class Service:
                 k: v.with_context(
                     # A method's flattened fields create additional names
                     # that may conflict with module imports.
-                    collisions=collisions | frozenset(v.flattened_fields.keys()))
+                    collisions=collisions | set(v.flattened_fields.keys()),
+                    visited_messages=visited_messages,
+                )
                 for k, v in self.methods.items()
             },
             meta=self.meta.with_context(collisions=collisions),
