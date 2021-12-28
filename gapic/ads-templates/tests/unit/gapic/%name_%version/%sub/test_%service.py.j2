@@ -16,7 +16,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 {% if 'rest' in opts.transport %}
 from requests import Response
-from requests import Request
+from requests import Request, PreparedRequest
 from requests.sessions import Session
 {% endif %}
 
