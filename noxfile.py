@@ -216,8 +216,6 @@ def showcase_library(
 
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
-        # TODO(yon-mg): add "transports=grpc+rest" when all rest features required for
-        #               Showcase are implemented i.e. (grpc transcoding, LROs, etc)
         opts = "--python_gapic_opt="
         opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest"))
         cmd_tup = (
