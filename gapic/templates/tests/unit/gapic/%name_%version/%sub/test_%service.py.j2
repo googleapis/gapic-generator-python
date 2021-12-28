@@ -1280,9 +1280,9 @@ def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
             # We only care that the correct exception is raised when putting
             # the request over the wire, so an empty request is fine.
             {% if method.client_streaming %}
-            client.{{ method.name|snake_case }}(iter([requests]))
+            client.{{ method_name }}(iter([requests]))
             {% else %}
-            client.{{ method.name|snake_case }}(request)
+            client.{{ method_name }}(request)
             {% endif %}
 
 
@@ -1291,7 +1291,7 @@ def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
     {{ method.input.ident }},
     dict,
 ])
-def test_{{ method.name|snake_case }}_rest(request_type):
+def test_{{ method_name }}_rest(request_type):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -1347,7 +1347,7 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         {% if method.client_streaming %}
-        response = client.{{ method.name|snake_case }}(iter(requests))
+        response = client.{{ method_name }}(iter(requests))
         {% else %}
         response = client.{{ method_name }}(request)
         {% endif %}
@@ -1479,7 +1479,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             req.return_value = response_value
 
             {% if method.client_streaming %}
-            response = client.{{ method.name|snake_case }}(iter(requests))
+            response = client.{{ method_name }}(iter(requests))
             {% else %}
             response = client.{{ method_name }}(request)
             {% endif %}
@@ -1530,14 +1530,14 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
         response_value.request = Request()
         req.return_value = response_value
         {% if method.client_streaming %}
-        client.{{ method.name|snake_case }}(iter(requests))
+        client.{{ method_name }}(iter(requests))
         {% else %}
         client.{{ method_name }}(request)
         {% endif %}
 
 
 {% if method.flattened_fields and "rest" in opts.transport %}
-def test_{{ method.name|snake_case }}_rest_flattened():
+def test_{{ method_name }}_rest_flattened():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
