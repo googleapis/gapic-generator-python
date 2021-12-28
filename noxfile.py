@@ -100,7 +100,7 @@ class FragTester:
                 "grpc_tools.protoc",
                 f"--proto_path={str(FRAG_DIR)}",
                 f"--python_gapic_out={tmp_dir}",
-                "--python_gapic_opt=transport=grpc+rest,python-gapic-templates={templates}{maybe_old_naming}",
+                f"--python_gapic_opt=transport=grpc+rest,python-gapic-templates={templates}{maybe_old_naming}",
             ]
 
             if self.use_ads_templates:
