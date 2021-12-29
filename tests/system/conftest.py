@@ -71,6 +71,7 @@ ssl_credentials = grpc.ssl_channel_credentials(
     root_certificates=cert, certificate_chain=cert, private_key=key
 )
 
+
 def callback():
     return cert, key
 

@@ -18,6 +18,7 @@ from datetime import datetime, timedelta, timezone
 
 from google import showcase
 
+
 def test_lro(echo):
     if isinstance(echo.transport, type(echo).get_transport_class("rest")):
         # (TODO: dovs) Temporarily disabling rest
