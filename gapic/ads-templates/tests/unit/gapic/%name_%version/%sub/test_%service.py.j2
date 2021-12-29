@@ -999,7 +999,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class().{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1015,7 +1015,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class().{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
