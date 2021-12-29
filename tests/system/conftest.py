@@ -107,10 +107,14 @@ def construct_client(
     else:
         transport_cls = client_class.get_transport_class(transport_name)
         if transport_name in ["grpc", "grpc_asyncio"]:
-            transport = transport_cls(channel=channel_creator("localhost:7469"))
+            transport = transport_cls(
+                channel=channel_creator("localhost:7469"),
+            )
         elif transport_name == "rest":
             # The custom host explicitly bypasses https.
-            transport = transport_cls(host="http://localhost:7469")
+            transport = transport_cls(
+                host="http://localhost:7469",
+            )
         else:
             raise RuntimeError(f"Unexpected transport type: {transport_name}")
 
