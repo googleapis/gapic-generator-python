@@ -331,23 +331,7 @@ def showcase_unit(
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
-        # Unit tests are run twice with different dependencies to exercise
-        # all code paths.
-        # TODO(busunkim): remove when default templates require google-auth>=1.25.0
-
-        # 1. Run tests at lower bound of dependencies
-        session.install("nox")
-        session.run("nox", "-s", "update_lower_bounds")
-        session.install(".", "--force-reinstall", "-c", "constraints.txt")
-        # Some code paths require an older version of google-auth.
-        # google-auth is a transitive dependency so it isn't in the
-        # lower bound constraints file produced above.
-        session.install("google-auth==1.28.0")
-        run_showcase_unit_tests(session, fail_under=0)
-
-        # 2. Run the tests again with latest version of dependencies
-        session.install(".", "--upgrade", "--force-reinstall")
-        run_showcase_unit_tests(session, fail_under=100)
+        run_showcase_unit_tests(session)
 
 
 @nox.session(python=ALL_PYTHON[1:])  # Do not test 3.6
