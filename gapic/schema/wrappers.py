@@ -94,7 +94,7 @@ class Field:
         return bool(self.repeated and self.message and self.message.map)
 
     @utils.cached_property
-    def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, Dict[str,Any], List[Any], None]:
+    def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, Dict[str, Any], List[Any], None]:
         # Return messages as dicts and let the message ctor handle the conversion.
         if self.message:
             if self.map:
