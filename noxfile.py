@@ -189,6 +189,7 @@ def showcase_library(
         # TODO(yon-mg): add "transports=grpc+rest" when all rest features required for
         #               Showcase are implemented i.e. (grpc transcoding, LROs, etc)
         opts = "--python_gapic_opt="
+        #other_opts = ("transport=rest")
         opts += ",".join(other_opts + (f"{template_opt}",))
         cmd_tup = (
             "python",
@@ -296,11 +297,11 @@ def run_showcase_unit_tests(session, fail_under=100):
 
 
 @nox.session(python=ALL_PYTHON)
+@nox.parametrize("other_opts", [("transport=rest",), ("transport=grpc",)])
 def showcase_unit(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
 ):
     """Run the generated unit tests against the Showcase library."""
-
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
 
