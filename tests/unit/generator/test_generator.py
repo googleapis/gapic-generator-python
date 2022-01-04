@@ -24,12 +24,19 @@ from google.protobuf import descriptor_pb2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic.generator import generator
-from gapic.samplegen_utils import types, yaml
+from gapic.samplegen_utils import snippet_metadata_pb2, types, yaml
+from ..common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage, DummyMessageTypePB,
+                          DummyService, DummyMethod, message_factory, enum_factory)
+
 from gapic.schema import api
 from gapic.schema import naming
 from gapic.schema import wrappers
 from gapic.utils import Options
 
+
+dummy_snippet_metadata = snippet_metadata_pb2.Snippet()
+dummy_snippet_metadata.client_method.method.service.short_name = "Mollusc"
+dummy_snippet_metadata.client_method.method.full_name = "GetSquidStreaming"
 
 def test_custom_template_directory():
     # Create a generator.
@@ -51,8 +58,8 @@ def test_get_response():
             lt.assert_called_once()
             gt.assert_has_calls(
                 [
-                    mock.call("foo/bar/baz.py.j2"),
                     mock.call("molluscs/squid/sample.py.j2"),
+                    mock.call("foo/bar/baz.py.j2"),
                 ]
             )
             assert len(cgr.file) == 1
@@ -71,8 +78,8 @@ def test_get_response_ignores_empty_files():
             lt.assert_called_once()
             gt.assert_has_calls(
                 [
-                    mock.call("foo/bar/baz.py.j2"),
                     mock.call("molluscs/squid/sample.py.j2"),
+                    mock.call("foo/bar/baz.py.j2"),
                 ]
             )
             assert len(cgr.file) == 0
@@ -93,8 +100,8 @@ def test_get_response_ignores_private_files():
             lt.assert_called_once()
             gt.assert_has_calls(
                 [
-                    mock.call("foo/bar/baz.py.j2"),
                     mock.call("molluscs/squid/sample.py.j2"),
+                    mock.call("foo/bar/baz.py.j2"),
                 ]
             )
             assert len(cgr.file) == 1
@@ -107,7 +114,6 @@ def test_get_response_fails_invalid_file_paths():
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = [
             "foo/bar/%service/%proto/baz.py.j2",
-            "molluscs/squid/sample.py.j2",
         ]
         with pytest.raises(ValueError) as ex:
             g.get_response(api_schema=make_api(),
@@ -402,9 +408,8 @@ def test_parse_sample_paths(fs):
     with pytest.raises(types.InvalidConfig):
         Options.build("samples=sampledir/,")
 
-
 @mock.patch(
-    "gapic.samplegen.samplegen.generate_sample", return_value="",
+    "gapic.samplegen.samplegen.generate_sample", return_value=("", dummy_snippet_metadata),
 )
 @mock.patch("time.gmtime",)
 def test_samplegen_config_to_output_files(
@@ -431,8 +436,10 @@ def test_samplegen_config_to_output_files(
             samples:
             - id: squid_sample
               region_tag: humboldt_tag
+              service: Mollusc.v1.Mollusc
               rpc: get_squid_streaming
             - region_tag: clam_sample
+              service: Mollusc.v1.Mollusc
               rpc: get_clam
             """
         ),
@@ -442,8 +449,20 @@ def test_samplegen_config_to_output_files(
     # Need to have the sample template visible to the generator.
     g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
 
-    api_schema = make_api(naming=naming.NewNaming(
-        name="Mollusc", version="v6"))
+    api_schema = DummyApiSchema(
+        services={"Mollusc": DummyService(
+            name="Mollusc",
+            methods={
+                # For this test the  generator only cares about the dictionary keys
+                # so we let the values be None
+                "GetSquidStreaming": None,
+                "GetClam": None,
+            },
+            )},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+    )
+
     actual_response = g.get_response(
         api_schema, opts=Options.build(""))
     expected_response = CodeGeneratorResponse(
@@ -452,33 +471,9 @@ def test_samplegen_config_to_output_files(
                 name="samples/generated_samples/squid_sample.py", content="\n",),
             CodeGeneratorResponse.File(
                 name="samples/generated_samples/clam_sample.py", content="\n",),
-            # TODO(busunkim): Re-enable manifest generation once metadata
-            # format has been formalized.
-            # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
-            # CodeGeneratorResponse.File(
-            #     name="samples/generated_samples/mollusc.v6.python.21120601.131313.manifest.yaml",
-            #     content=dedent(
-            #         """\
-            #     ---
-            #     type: manifest/samples
-            #     schema_version: 3
-            #     python: &python
-            #       environment: python
-            #       bin: python3
-            #       base_path: samples
-            #       invocation: '{bin} {path} @args'
-            #     samples:
-            #     - <<: *python
-            #       sample: squid_sample
-            #       path: '{base_path}/squid_sample.py'
-            #       region_tag: humboldt_tag
-            #     - <<: *python
-            #       sample: clam_sample
-            #       path: '{base_path}/clam_sample.py'
-            #       region_tag: clam_sample
-            #     """
-            #     ),
-            # ),
+            CodeGeneratorResponse.File(
+                name="samples/generated_samples/snippet_metadata_v1_false_false.json",
+                content="{\"snippets\": [{\"file\": \"samples/generated_samples/squid_sample.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}, {\"file\": \"samples/generated_samples/clam_sample.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}, {\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}]}\n"),
         ]
     )
     expected_response.supported_features |= (
@@ -514,7 +509,7 @@ def test_generate_autogen_samples(mock_generate_sample, mock_generate_specs):
 
 
 @mock.patch(
-    "gapic.samplegen.samplegen.generate_sample", return_value="",
+    "gapic.samplegen.samplegen.generate_sample", return_value=("", dummy_snippet_metadata),
 )
 @mock.patch("time.gmtime",)
 def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
@@ -556,8 +551,19 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
     # Need to have the sample template visible to the generator.
     g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
 
-    api_schema = make_api(naming=naming.NewNaming(
-        name="Mollusc", version="v6"))
+    api_schema = DummyApiSchema(
+        services={"Mollusc": DummyService(
+            name="Mollusc",
+            methods={
+                # For this test the generator only cares about the dictionary keys
+                # so we let the values be None
+                "GetSquidStreaming": None,
+                "GetClam": None,
+            },
+            )},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+    )
     actual_response = g.get_response(api_schema,
                                      opts=Options.build(""))
     expected_response = CodeGeneratorResponse(
@@ -570,36 +576,11 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
             ),
             CodeGeneratorResponse.File(name="samples/generated_samples/157884ee.py",
                                        content="\n",),
-            # TODO(busunkim): Re-enable manifest generation once metadata
-            # format has been formalized.
-            # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
-            # CodeGeneratorResponse.File(
-            #     name="samples/generated_samples/mollusc.v6.python.21120601.131313.manifest.yaml",
-            #     content=dedent(
-            #         """\
-            #     ---
-            #     type: manifest/samples
-            #     schema_version: 3
-            #     python: &python
-            #       environment: python
-            #       bin: python3
-            #       base_path: samples
-            #       invocation: '{bin} {path} @args'
-            #     samples:
-            #     - <<: *python
-            #       sample: squid_sample_91a465c6
-            #       path: '{base_path}/squid_sample_91a465c6.py'
-            #       region_tag: humboldt_tag
-            #     - <<: *python
-            #       sample: squid_sample_55051b38
-            #       path: '{base_path}/squid_sample_55051b38.py'
-            #       region_tag: squid_sample
-            #     - <<: *python
-            #       sample: 157884ee
-            #       path: '{base_path}/157884ee.py'
-            #     """
-            #     ),
-            # ),
+        
+            CodeGeneratorResponse.File(
+                name="samples/generated_samples/snippet_metadata_v1_false_false.json",
+                content="{\"snippets\": [{\"file\": \"samples/generated_samples/squid_sample_91a465c6.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}, {\"file\": \"samples/generated_samples/squid_sample_55051b38.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}, {\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}, {\"file\": \"samples/generated_samples/157884ee.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}, {\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}, {\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}]}\n",
+            ),
         ]
     )
     expected_response.supported_features |= (
@@ -637,116 +618,6 @@ def test_generator_duplicate_samples(fs):
     with pytest.raises(types.DuplicateSample):
         generator.get_response(api_schema=api_schema,
                                opts=Options.build(""))
-
-
-@mock.patch("gapic.samplegen.samplegen.generate_sample", return_value="")
-@mock.patch("time.gmtime",)
-def test_dont_generate_in_code_samples(mock_gmtime, mock_generate_sample, fs):
-    # These time values are nothing special,
-    # they just need to be deterministic.
-    returner = mock.MagicMock()
-    returner.tm_year = 2112
-    returner.tm_mon = 6
-    returner.tm_mday = 1
-    returner.tm_hour = 13
-    returner.tm_min = 13
-    returner.tm_sec = 13
-    mock_gmtime.return_value = returner
-
-    config_fpath = "samples.yaml"
-    fs.create_file(
-        config_fpath,
-        contents=dedent(
-            """
-            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
-            schema_version: 1.2.0
-            samples:
-            - id: squid_sample
-              rpc: IdentifyMollusc
-              service: Mollusc.v1.Mollusc
-              sample_type:
-              - standalone
-              - incode/SQUID
-            - id: clam_sample
-              rpc: IdentifyMollusc
-              service: Mollusc.v1.Mollusc
-              sample_type:
-              - incode/CLAM
-            - id: whelk_sample
-              rpc: IdentifyMollusc
-              service: Mollusc.v1.Mollusc
-              sample_type:
-              - standalone
-            - id: octopus_sample
-              rpc: IdentifyMollusc
-              service: Mollusc.v1.Mollusc
-            """
-        ),
-    )
-
-    generator = make_generator(f"samples={config_fpath}")
-    generator._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
-    api_schema = make_api(
-        make_proto(
-            descriptor_pb2.FileDescriptorProto(
-                name="mollusc.proto",
-                package="Mollusc.v1",
-                service=[descriptor_pb2.ServiceDescriptorProto(
-                    name="Mollusc")],
-            ),
-        ),
-        naming=naming.NewNaming(name="Mollusc", version="v6"),
-    )
-
-    # Note that we do NOT expect a clam sample.
-    # There are four tests going on:
-    # 1) Just an explicit standalone sample type.
-    # 2) Multiple sample types, one of which is standalone.
-    # 3) Explicit sample types but NO standalone sample type.
-    # 4) Implicit standalone sample type.
-    expected = CodeGeneratorResponse(
-        file=[
-            CodeGeneratorResponse.File(
-                name="samples/generated_samples/squid_sample.py", content="\n",),
-            CodeGeneratorResponse.File(
-                name="samples/generated_samples/whelk_sample.py", content="\n",),
-            CodeGeneratorResponse.File(
-                name="samples/generated_samples/octopus_sample.py", content="\n",),
-            # TODO(busunkim): Re-enable manifest generation once metadata
-            # format has been formalized.
-            # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
-            # CodeGeneratorResponse.File(
-            #     name="samples/generated_samples/mollusc.v6.python.21120601.131313.manifest.yaml",
-            #     content=dedent(
-            #         """                ---
-            #     type: manifest/samples
-            #     schema_version: 3
-            #     python: &python
-            #       environment: python
-            #       bin: python3
-            #       base_path: samples
-            #       invocation: \'{bin} {path} @args\'
-            #     samples:
-            #     - <<: *python
-            #       sample: squid_sample
-            #       path: \'{base_path}/squid_sample.py\'
-            #     - <<: *python
-            #       sample: whelk_sample
-            #       path: \'{base_path}/whelk_sample.py\'
-            #     - <<: *python
-            #       sample: octopus_sample
-            #       path: \'{base_path}/octopus_sample.py\'
-            #     """
-            #     ),
-            # ),
-        ]
-    )
-    expected.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
-
-    actual = generator.get_response(
-        api_schema=api_schema, opts=Options.build("")
-    )
-    assert actual == expected
 
 
 def make_generator(opts_str: str = "") -> generator.Generator:
