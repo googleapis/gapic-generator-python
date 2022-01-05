@@ -19,7 +19,7 @@ import pytest
 
 from gapic.samplegen_utils import snippet_metadata_pb2
 from gapic.samplegen_utils import snippet_index, types
-from ..common_types import DummyApiSchema, DummyService, DummyMethod
+from common_types import DummyApiSchema, DummyService, DummyMethod
 
 
 @pytest.fixture
