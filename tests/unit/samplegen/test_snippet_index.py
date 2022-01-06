@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -78,6 +78,8 @@ def test_snippet_init(sample_str):
         ]
     }
 
+    # This is the same as the sample_str above, minus the # [START ...]
+    # and # [END ...] lines
     expected_full_snipppet = """from molluscs.v1 import molluscclient
 
 

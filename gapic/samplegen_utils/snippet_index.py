@@ -36,7 +36,7 @@ class Snippet:
         self._parse_snippet_segments()
 
     def _parse_snippet_segments(self):
-        """Parse sections of the snippet and update metadata"""
+        """Parse sections of the sample string and update metadata"""
         self.sample_lines = self.sample_str.splitlines(keepends=True)
 
         self._full_snippet = snippet_metadata_pb2.Snippet.Segment(
@@ -74,39 +74,36 @@ class Snippet:
                 self._request_exec.end = i - 1
                 self._response_handling.start = i
 
-        for segment in [self._full_snippet,
-        self._short_snippet, self._client_init, self._request_init, self._request_exec, self._response_handling]:
-            self.metadata.segments.append(segment)
+        self.metadata.segments.extend([self._full_snippet, self._short_snippet, self._client_init,
+                                      self._request_init, self._request_exec, self._response_handling])
 
     @property
     def full_snippet(self) -> str:
-        """The portion between the START and END region tags"""
+        """The portion between the START and END region tags."""
         start_idx = self._full_snippet.start - 1
         end_idx = self._full_snippet.end
-        short_sample = "".join(self.sample_lines[start_idx:end_idx])
-
-        return short_sample
+        return "".join(self.sample_lines[start_idx:end_idx])
 
 
 class SnippetIndex:
 
     def __init__(self, api_schema: api.API):
         self.metadata_index = snippet_metadata_pb2.Index()  # type: ignore
+
         # Construct a dictionary to insert samples into based on the API schema
+        # NOTE: In the future we expect the generator to support configured samples,
+        # which will result in more than one sample variant per RPC. At that
+        # time a different data structure (and re-writes of add_snippet and get_snippet)
+        # will be needed.
         self._index: Dict[str, Dict[str, Dict[str, Optional[Snippet]]]] = {}
 
-        for service in api_schema.services.values():
-            self._index[service.name] = {}
-            # This will be need to be re-structured when one method can have
-            # more than one sample variant
-            for method in service.methods.keys():
-                self._index[service.name][method] = {
-                    "sync": None,
-                    "async": None
-                }
+        self._index = {
+            s.name: {m: {"sync": None, "async": None} for m in s.methods}
+            for s in api_schema.services.values()
+        }
 
     def add_snippet(self, snippet: Snippet) -> None:
-        """Add a single snippet to the index.
+        """Add a single snippet to the snippet index.
 
         Args:
             snippet (Snippet): The code snippet to be added.
@@ -144,7 +141,7 @@ class SnippetIndex:
             sync (bool): True for the sync version of the snippet, False for the async version.
 
         Returns:
-            Optional[Ssnippet]: The snippet if it exists, or None.
+            Optional[Snippet]: The snippet if it exists, or None.
         """
         # Fetch a snippet from the snippet metadata index
         service = self._index.get(service_name)
@@ -158,6 +155,6 @@ class SnippetIndex:
 
         return method["sync" if sync else "async"]
 
-    def get_metadata_json(self):
+    def get_metadata_json(self) -> str:
         """JSON representation of Snippet Index."""
         return json_format.MessageToJson(self.metadata_index, sort_keys=True)
