@@ -13,6 +13,116 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
+# TODO: Remove once my PR gets merged and released.
+# Begin of ResponseIterator depedencies.
+from collections import deque
+import string
+from typing import Deque
+import requests
+
+class ResponseIterator:
+    """Iterator over REST API responses.
+
+    Args:
+        response (requests.Response): An API response object.
+        response_message_cls (Callable[proto.Message]): A proto
+        class expected to be returned from an API.
+    """
+
+    def __init__(self, response: requests.Response, response_message_cls):
+        self._response = response
+        self._response_message_cls = response_message_cls
+        # Inner iterator over HTTP response's content.
+        self._response_itr = self._response.iter_content(decode_unicode=True)
+        # Contains a list of JSON responses ready to be sent to user.
+        self._ready_objs: Deque[str] = deque()
+        # Current JSON response being built.
+        self._obj = ""
+        # Keeps track of the nesting level within a JSON object.
+        self._level = 0
+        # Keeps track whether HTTP response is currently sending values
+        # inside of a string value.
+        self._in_string = False
+        # Whether an escape symbol "\" was encountered.
+        self._next_should_be_escaped = False
+
+    def cancel(self):
+        """Cancel existing streaming operation.
+        """
+        self._response.close()
+
+    def _process_chunk(self, chunk: str):
+        if self._level == 0:
+            if chunk[0] != "[":
+                raise ValueError(
+                    "Can only parse array of JSON objects, instead got %s" % chunk
+                )
+        for char in chunk:
+            if char == "{":
+                if self._level == 1:
+                    # Level 1 corresponds to the outermost JSON object
+                    # (i.e. the one we care about).
+                    self._obj = ""
+                if not self._in_string:
+                    self._level += 1
+                self._obj += char
+            elif char == "}":
+                self._obj += char
+                if not self._in_string:
+                    self._level -= 1
+                if not self._in_string and self._level == 1:
+                    self._ready_objs.append(self._obj)
+            elif char == '"':
+                # Helps to deal with an escaped quotes inside of a string.
+                if not self._next_should_be_escaped:
+                    self._in_string = not self._in_string
+                self._obj += char
+            elif char in string.whitespace:
+                if self._in_string:
+                    self._obj += char
+            elif char == "[":
+                if self._level == 0:
+                    self._level += 1
+                else:
+                    self._obj += char
+            elif char == "]":
+                if self._level == 1:
+                    self._level -= 1
+                else:
+                    self._obj += char
+            else:
+                self._obj += char
+
+            if char == "\\":
+                # Escaping the "\".
+                if self._next_should_be_escaped:
+                    self._next_should_be_escaped = False
+                else:
+                    self._next_should_be_escaped = True
+            else:
+                self._next_should_be_escaped = False
+
+    def __next__(self):
+        while not self._ready_objs:
+            try:
+                chunk = next(self._response_itr)
+                self._process_chunk(chunk)
+            except StopIteration as e:
+                if self._level > 0:
+                    raise ValueError("Unfinished stream: %s" % self._obj)
+                raise e
+        return self._grab()
+
+    def _grab(self):
+        # Add extra quotes to make json.loads happy.
+        return self._response_message_cls.from_json(self._ready_objs.popleft())
+
+    def __iter__(self):
+        return self
+
+# End of ResponseIterator dependencies.
+
 {% if service.has_lro %}
 from google.api_core import operations_v1
 from google.protobuf import json_format
@@ -179,7 +289,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         def __hash__(self):
             return hash("{{method.name}}")
 
-        {% if not (method.server_streaming or method.client_streaming) %}
+        {% if not method.client_streaming %}
         {% if method.input.required_fields %}
         __REQUIRED_FIELDS_DEFAULT_VALUES =  {
         {% for req_field in method.input.required_fields if req_field.is_primitive %}
@@ -200,7 +310,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                 timeout: float=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> {{method.output.ident}}:
-    {% if method.http_options and not (method.server_streaming or method.client_streaming) %}
+    {% if method.http_options and not method.client_streaming %}
             r"""Call the {{- ' ' -}}
             {{ (method.name|snake_case).replace('_',' ')|wrap(
                     width=70, offset=45, indent=8) }}
@@ -291,6 +401,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             return_op = operations_pb2.Operation()
             json_format.Parse(response.content, return_op, ignore_unknown_fields=True)
             return return_op
+            {% elif method.server_streaming %}
+            return ResponseIterator(response, {{method.output.ident}})
             {% else %}
             return {{method.output.ident}}.from_json(
                 response.content,
@@ -299,14 +411,14 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
             {% endif %}{# method.lro #}
             {% endif %}{# method.void #}
-     {% else %}{# method.http_options and not (method.server_streaming or method.client_streaming) #}
+     {% else %}{# method.http_options and not method.client_streaming #}
             {% if not method.http_options %}
             raise RuntimeError(
                 "Cannot define a method without a valid 'google.api.http' annotation.")
 
-            {% elif method.server_streaming or method.client_streaming %}
+            {% elif method.client_streaming %}
             raise NotImplementedError(
-                "Streaming over REST is not yet defined for python client")
+                "Client streaming over REST is not yet defined for python client")
 
             {% else %}
             raise NotImplementedError()
