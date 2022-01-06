@@ -30,7 +30,7 @@ RESPONSE_HANDLING_RE = re.compile(r"^\s+# Handle response")
 
 class Snippet:
     """A single snippet and its metadata.
-    
+
     Attributes:
         sample_str (str): The full text of the code snippet.
         metadata (snippet_metadata_pb2.Snippet): The snippet's metadata.
