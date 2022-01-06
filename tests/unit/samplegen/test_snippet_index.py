@@ -24,7 +24,7 @@ from common_types import DummyApiSchema, DummyService, DummyMethod
 
 @pytest.fixture
 def sample_str():
-    return"""# [START mollusc_classify_sync]
+    return """# [START mollusc_classify_sync]
 from molluscs.v1 import molluscclient
 
 
