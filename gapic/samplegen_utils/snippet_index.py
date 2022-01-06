@@ -14,6 +14,7 @@
 
 from typing import Optional, Dict
 import re
+
 from google.protobuf import json_format
 
 from gapic.schema import api, metadata
@@ -28,7 +29,12 @@ RESPONSE_HANDLING_RE = re.compile(r"^\s+# Handle response")
 
 
 class Snippet:
-    """A single snippet and its metadata"""
+    """A single snippet and its metadata.
+    
+    Attributes:
+        sample_str (str): The full text of the code snippet.
+        metadata (snippet_metadata_pb2.Snippet): The snippet's metadata.
+    """
 
     def __init__(self, sample_str: str, sample_metadata):
         self.sample_str = sample_str
@@ -86,6 +92,11 @@ class Snippet:
 
 
 class SnippetIndex:
+    """An index of all the snippets for an API.
+
+    Attributes:
+        metadata_index (snippet_metadata_pb2.Index): The snippet metadata index.
+    """
 
     def __init__(self, api_schema: api.API):
         self.metadata_index = snippet_metadata_pb2.Index()  # type: ignore
@@ -142,6 +153,10 @@ class SnippetIndex:
 
         Returns:
             Optional[Snippet]: The snippet if it exists, or None.
+
+        Raises:
+            UnknownService: If the service is not found.
+            RpcMethodNotFound: If the method is not found.
         """
         # Fetch a snippet from the snippet metadata index
         service = self._index.get(service_name)
