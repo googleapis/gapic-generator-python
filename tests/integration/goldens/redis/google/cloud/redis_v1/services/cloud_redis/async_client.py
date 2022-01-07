@@ -150,7 +150,7 @@ class CloudRedisAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return CloudRedisClient.get_mtls_endpoint_and_cert_source.__func__(CloudRedisAsyncClient, client_options)  # type: ignore
+        return CloudRedisClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> CloudRedisTransport:

@@ -316,7 +316,6 @@ def test_config_service_v2_client_mtls_env_auto(client_class, transport_class, t
 @mock.patch.object(ConfigServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2Client))
 @mock.patch.object(ConfigServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2AsyncClient))
 def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class):
-    mock_client = client_class()
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -339,20 +338,20 @@ def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
-        assert api_endpoint == mock_client.DEFAULT_ENDPOINT
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
         assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
-        assert api_endpoint == mock_client.DEFAULT_MTLS_ENDPOINT
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
         assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
-            assert api_endpoint == mock_client.DEFAULT_ENDPOINT
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
@@ -360,7 +359,7 @@ def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
             with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
                 api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
-                assert api_endpoint == mock_client.DEFAULT_MTLS_ENDPOINT
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
 

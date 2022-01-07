@@ -134,7 +134,7 @@ class ConfigServiceV2AsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return ConfigServiceV2Client.get_mtls_endpoint_and_cert_source.__func__(ConfigServiceV2AsyncClient, client_options)  # type: ignore
+        return ConfigServiceV2Client.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> ConfigServiceV2Transport:

@@ -135,7 +135,7 @@ class IAMCredentialsAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return IAMCredentialsClient.get_mtls_endpoint_and_cert_source.__func__(IAMCredentialsAsyncClient, client_options)  # type: ignore
+        return IAMCredentialsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> IAMCredentialsTransport:

@@ -130,7 +130,7 @@ class AssetServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return AssetServiceClient.get_mtls_endpoint_and_cert_source.__func__(AssetServiceAsyncClient, client_options)  # type: ignore
+        return AssetServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> AssetServiceTransport:
