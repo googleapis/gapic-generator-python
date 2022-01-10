@@ -29,7 +29,6 @@ from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.api_core import path_template
@@ -43,7 +42,6 @@ from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
 
@@ -210,18 +208,18 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -252,7 +250,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -316,6 +314,59 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
                 )
 
 
+@pytest.mark.parametrize("client_class", [
+    CloudRedisClient, CloudRedisAsyncClient
+])
+@mock.patch.object(CloudRedisClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisClient))
+@mock.patch.object(CloudRedisAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisAsyncClient))
+def test_cloud_redis_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+            with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
+
+
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (CloudRedisClient, transports.CloudRedisGrpcTransport, "grpc"),
     (CloudRedisAsyncClient, transports.CloudRedisGrpcAsyncIOTransport, "grpc_asyncio"),
@@ -327,7 +378,7 @@ def test_cloud_redis_client_client_options_scopes(client_class, transport_class,
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -350,7 +401,7 @@ def test_cloud_redis_client_client_options_credentials_file(client_class, transp
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -361,7 +412,6 @@ def test_cloud_redis_client_client_options_credentials_file(client_class, transp
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
         )
-
 
 def test_cloud_redis_client_client_options_from_dict():
     with mock.patch('google.cloud.redis_v1.services.cloud_redis.transports.CloudRedisGrpcTransport.__init__') as grpc_transport:
@@ -381,7 +431,11 @@ def test_cloud_redis_client_client_options_from_dict():
         )
 
 
-def test_list_instances(transport: str = 'grpc', request_type=cloud_redis.ListInstancesRequest):
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.ListInstancesRequest,
+  dict,
+])
+def test_list_instances(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -411,10 +465,6 @@ def test_list_instances(transport: str = 'grpc', request_type=cloud_redis.ListIn
     assert isinstance(response, pagers.ListInstancesPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-def test_list_instances_from_dict():
-    test_list_instances(request_type=dict)
 
 
 def test_list_instances_empty_call():
@@ -620,9 +670,10 @@ async def test_list_instances_flattened_error_async():
         )
 
 
-def test_list_instances_pager():
+def test_list_instances_pager(transport_name: str = "grpc"):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -672,10 +723,10 @@ def test_list_instances_pager():
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis.Instance)
                    for i in results)
-
-def test_list_instances_pages():
+def test_list_instances_pages(transport_name: str = "grpc"):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -760,7 +811,8 @@ async def test_list_instances_async_pager():
 
         assert len(responses) == 6
         assert all(isinstance(i, cloud_redis.Instance)
-                   for i in responses)
+                for i in responses)
+
 
 @pytest.mark.asyncio
 async def test_list_instances_async_pages():
@@ -806,7 +858,11 @@ async def test_list_instances_async_pages():
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-def test_get_instance(transport: str = 'grpc', request_type=cloud_redis.GetInstanceRequest):
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceRequest,
+  dict,
+])
+def test_get_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -864,10 +920,6 @@ def test_get_instance(transport: str = 'grpc', request_type=cloud_redis.GetInsta
     assert response.authorized_network == 'authorized_network_value'
     assert response.persistence_iam_identity == 'persistence_iam_identity_value'
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
-
-
-def test_get_instance_from_dict():
-    test_get_instance(request_type=dict)
 
 
 def test_get_instance_empty_call():
@@ -1101,7 +1153,11 @@ async def test_get_instance_flattened_error_async():
         )
 
 
-def test_create_instance(transport: str = 'grpc', request_type=cloud_redis.CreateInstanceRequest):
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.CreateInstanceRequest,
+  dict,
+])
+def test_create_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1126,10 +1182,6 @@ def test_create_instance(transport: str = 'grpc', request_type=cloud_redis.Creat
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_instance_from_dict():
-    test_create_instance(request_type=dict)
 
 
 def test_create_instance_empty_call():
@@ -1354,7 +1406,11 @@ async def test_create_instance_flattened_error_async():
         )
 
 
-def test_update_instance(transport: str = 'grpc', request_type=cloud_redis.UpdateInstanceRequest):
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.UpdateInstanceRequest,
+  dict,
+])
+def test_update_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1379,10 +1435,6 @@ def test_update_instance(transport: str = 'grpc', request_type=cloud_redis.Updat
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_instance_from_dict():
-    test_update_instance(request_type=dict)
 
 
 def test_update_instance_empty_call():
@@ -1597,7 +1649,11 @@ async def test_update_instance_flattened_error_async():
         )
 
 
-def test_upgrade_instance(transport: str = 'grpc', request_type=cloud_redis.UpgradeInstanceRequest):
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.UpgradeInstanceRequest,
+  dict,
+])
+def test_upgrade_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1622,10 +1678,6 @@ def test_upgrade_instance(transport: str = 'grpc', request_type=cloud_redis.Upgr
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_upgrade_instance_from_dict():
-    test_upgrade_instance(request_type=dict)
 
 
 def test_upgrade_instance_empty_call():
@@ -1840,7 +1892,11 @@ async def test_upgrade_instance_flattened_error_async():
         )
 
 
-def test_import_instance(transport: str = 'grpc', request_type=cloud_redis.ImportInstanceRequest):
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.ImportInstanceRequest,
+  dict,
+])
+def test_import_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1865,10 +1921,6 @@ def test_import_instance(transport: str = 'grpc', request_type=cloud_redis.Impor
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_import_instance_from_dict():
-    test_import_instance(request_type=dict)
 
 
 def test_import_instance_empty_call():
@@ -2083,7 +2135,11 @@ async def test_import_instance_flattened_error_async():
         )
 
 
-def test_export_instance(transport: str = 'grpc', request_type=cloud_redis.ExportInstanceRequest):
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.ExportInstanceRequest,
+  dict,
+])
+def test_export_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2108,10 +2164,6 @@ def test_export_instance(transport: str = 'grpc', request_type=cloud_redis.Expor
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_instance_from_dict():
-    test_export_instance(request_type=dict)
 
 
 def test_export_instance_empty_call():
@@ -2326,7 +2378,11 @@ async def test_export_instance_flattened_error_async():
         )
 
 
-def test_failover_instance(transport: str = 'grpc', request_type=cloud_redis.FailoverInstanceRequest):
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.FailoverInstanceRequest,
+  dict,
+])
+def test_failover_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2351,10 +2407,6 @@ def test_failover_instance(transport: str = 'grpc', request_type=cloud_redis.Fai
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_failover_instance_from_dict():
-    test_failover_instance(request_type=dict)
 
 
 def test_failover_instance_empty_call():
@@ -2569,7 +2621,11 @@ async def test_failover_instance_flattened_error_async():
         )
 
 
-def test_delete_instance(transport: str = 'grpc', request_type=cloud_redis.DeleteInstanceRequest):
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.DeleteInstanceRequest,
+  dict,
+])
+def test_delete_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2594,10 +2650,6 @@ def test_delete_instance(transport: str = 'grpc', request_type=cloud_redis.Delet
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_instance_from_dict():
-    test_delete_instance(request_type=dict)
 
 
 def test_delete_instance_empty_call():
@@ -3329,7 +3381,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(transports.CloudRedisTransport, '_prep_wrapped_messages') as prep:
