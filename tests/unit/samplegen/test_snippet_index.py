@@ -141,35 +141,6 @@ def test_add_snippet_no_matching_rpc(sample_str):
         index.add_snippet(snippet)
 
 
-def test_add_snippet_sync(sample_str):
-    snippet_metadata = snippet_metadata_pb2.Snippet()
-    snippet_metadata.client_method.method.service.short_name = "Squid"
-    snippet_metadata.client_method.method.full_name = "classify"
-    snippet = snippet_index.Snippet(sample_str, snippet_metadata)
-
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})}
-    ))
-
-    index.add_snippet(snippet)
-
-
-def test_add_snippet_async(sample_str):
-    snippet_metadata = snippet_metadata_pb2.Snippet()
-    snippet_metadata.client_method.method.service.short_name = "Squid"
-    snippet_metadata.client_method.method.full_name = "classify"
-    setattr(snippet_metadata.client_method, "async", True)
-    snippet = snippet_index.Snippet(sample_str, snippet_metadata)
-
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})}
-    ))
-
-    index.add_snippet(snippet)
-
-
 def test_get_snippet_no_matching_service():
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
         services={"Squid": DummyService(
@@ -192,7 +163,7 @@ def test_get_snippet_no_matching_rpc():
         index.get_snippet(service_name="Squid", rpc_name="list")
 
 
-def test_get_snippet_sync(sample_str):
+def test_add_and_get_snippet_sync(sample_str):
     snippet_metadata = snippet_metadata_pb2.Snippet()
     snippet_metadata.client_method.method.service.short_name = "Squid"
     snippet_metadata.client_method.method.full_name = "classify"
@@ -208,7 +179,7 @@ def test_get_snippet_sync(sample_str):
     index.get_snippet(service_name="Squid", rpc_name="classify")
 
 
-def test_get_snippet_async(sample_str):
+def test_add_and_get_snippet_async(sample_str):
     snippet_metadata = snippet_metadata_pb2.Snippet()
     snippet_metadata.client_method.method.service.short_name = "Squid"
     snippet_metadata.client_method.method.full_name = "classify"
