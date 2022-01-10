@@ -23,17 +23,6 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_python/archive/{}.tar.gz".format(_rules_python_version),
 )
 
-_grpc_version = "1.43.0"
-
-_grpc_sha256 = "9647220c699cea4dafa92ec0917c25c7812be51a18143af047e20f3fb05adddc"
-
-http_archive(
-    name = "com_github_grpc_grpc",
-    sha256 = _grpc_sha256,
-    strip_prefix = "grpc-{}".format(_grpc_version),
-    url = "https://github.com/grpc/grpc/archive/v{}.tar.gz".format(_grpc_version),
-)
-
 #
 # Import gapic-generator-python specific dependencies
 #
