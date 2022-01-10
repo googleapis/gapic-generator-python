@@ -353,7 +353,7 @@ class Generator:
         return {fn: cgr_file}
 
     def _get_filename(
-        self, template_name: str, *, api_schema: api.API, context,
+        self, template_name: str, *, api_schema: api.API, context:dict = None,
     ) -> str:
         """Return the appropriate output filename for this template.
 
