@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+
 from google.protobuf import json_format
 import pytest
 
@@ -22,7 +24,7 @@ from ..common_types import DummyApiSchema, DummyService, DummyMethod
 
 @pytest.fixture
 def sample_str():
-    return"""# [START mollusc_classify_sync]
+    return """# [START mollusc_classify_sync]
 from molluscs.v1 import molluscclient
 
 
@@ -76,6 +78,8 @@ def test_snippet_init(sample_str):
         ]
     }
 
+    # This is the same as the sample_str above, minus the # [START ...]
+    # and # [END ...] lines
     expected_full_snipppet = """from molluscs.v1 import molluscclient
 
 
@@ -136,44 +140,21 @@ def test_add_snippet_no_matching_rpc(sample_str):
         index.add_snippet(snippet)
 
 
-def test_add_snippet_sync(sample_str):
-    snippet_metadata = snippet_metadata_pb2.Snippet()
-    snippet_metadata.client_method.method.service.short_name = "Squid"
-    snippet_metadata.client_method.method.full_name = "classify"
-    snippet = snippet_index.Snippet(sample_str, snippet_metadata)
-
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})}
-    ))
-
-    index.add_snippet(snippet)
-
-def test_add_snippet_async(sample_str):
-    snippet_metadata = snippet_metadata_pb2.Snippet()
-    snippet_metadata.client_method.method.service.short_name = "Squid"
-    snippet_metadata.client_method.method.full_name = "classify"
-    setattr(snippet_metadata.client_method, "async", True)
-    snippet = snippet_index.Snippet(sample_str, snippet_metadata)
-
-    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})}
-    ))
-
-    index.add_snippet(snippet)
-
-
 def test_get_snippet_no_matching_service():
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})}
+        services={"Squid": DummyService(
+            name="Squid", methods={"classify": DummyMethod()})}
     ))
 
     # No 'Clam' service in API Schema
     with pytest.raises(types.UnknownService):
         index.get_snippet(service_name="Clam", rpc_name="classify")
 
+
 def test_get_snippet_no_matching_rpc():
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})}
+        services={"Squid": DummyService(
+            name="Squid", methods={"classify": DummyMethod()})}
     ))
 
     # No 'list' RPC in 'Squid' service
@@ -181,14 +162,15 @@ def test_get_snippet_no_matching_rpc():
         index.get_snippet(service_name="Squid", rpc_name="list")
 
 
-def test_get_snippet_sync(sample_str):
+def test_add_and_get_snippet_sync(sample_str):
     snippet_metadata = snippet_metadata_pb2.Snippet()
     snippet_metadata.client_method.method.service.short_name = "Squid"
     snippet_metadata.client_method.method.full_name = "classify"
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})}
+        services={"Squid": DummyService(
+            name="Squid", methods={"classify": DummyMethod()})}
     ))
 
     index.add_snippet(snippet)
@@ -196,7 +178,7 @@ def test_get_snippet_sync(sample_str):
     index.get_snippet(service_name="Squid", rpc_name="classify")
 
 
-def test_get_snippet_async(sample_str):
+def test_add_and_get_snippet_async(sample_str):
     snippet_metadata = snippet_metadata_pb2.Snippet()
     snippet_metadata.client_method.method.service.short_name = "Squid"
     snippet_metadata.client_method.method.full_name = "classify"
@@ -204,10 +186,43 @@ def test_get_snippet_async(sample_str):
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={"classify": DummyMethod()})}
+        services={"Squid": DummyService(
+            name="Squid", methods={"classify": DummyMethod()})}
     ))
 
     index.add_snippet(snippet)
 
     index.get_snippet(service_name="Squid", rpc_name="classify", sync=False)
 
+
+def test_get_metadata_json(sample_str):
+    snippet_metadata = snippet_metadata_pb2.Snippet()
+    snippet_metadata.client_method.method.service.short_name = "Squid"
+    snippet_metadata.client_method.method.full_name = "classify"
+    snippet = snippet_index.Snippet(sample_str, snippet_metadata)
+
+    index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
+        services={"Squid": DummyService(
+            name="Squid", methods={"classify": DummyMethod()})}
+    ))
+
+    index.add_snippet(snippet)
+
+    assert json.loads(index.get_metadata_json()) == {
+        'snippets': [{'clientMethod': {'method': {'fullName': 'classify',
+                                'service': {'shortName': 'Squid'}}},
+        'segments': [{'end': 28, 'start': 2, 'type': 'FULL'},
+                     {'end': 28, 'start': 2, 'type': 'SHORT'},
+                     {'end': 8,
+                      'start': 6,
+                      'type': 'CLIENT_INITIALIZATION'},
+                     {'end': 22,
+                      'start': 9,
+                      'type': 'REQUEST_INITIALIZATION'},
+                     {'end': 25,
+                      'start': 23,
+                      'type': 'REQUEST_EXECUTION'},
+                     {'end': 29,
+                      'start': 26,
+                      'type': 'RESPONSE_HANDLING'}]}]
+        }

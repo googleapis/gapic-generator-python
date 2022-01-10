@@ -1,5 +1,4 @@
-
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from collections import namedtuple, OrderedDict
+
 from typing import Optional, Dict
 import re
-import json
+
 from google.protobuf import json_format
 
 from gapic.schema import api, metadata
@@ -29,9 +28,13 @@ REQUEST_EXEC_RE = re.compile(r"^\s+# Make the request")
 RESPONSE_HANDLING_RE = re.compile(r"^\s+# Handle response")
 
 
-
 class Snippet:
-    """A single snippet and its metadata"""
+    """A single snippet and its metadata.
+
+    Attributes:
+        sample_str (str): The full text of the code snippet.
+        metadata (snippet_metadata_pb2.Snippet): The snippet's metadata.
+    """
 
     def __init__(self, sample_str: str, sample_metadata):
         self.sample_str = sample_str
@@ -39,7 +42,7 @@ class Snippet:
         self._parse_snippet_segments()
 
     def _parse_snippet_segments(self):
-        """Parse sections of the snippet and update metadata"""
+        """Parse sections of the sample string and update metadata"""
         self.sample_lines = self.sample_str.splitlines(keepends=True)
 
         self._full_snippet = snippet_metadata_pb2.Snippet.Segment(
@@ -77,44 +80,48 @@ class Snippet:
                 self._request_exec.end = i - 1
                 self._response_handling.start = i
 
-        for segment in [self._full_snippet, self._short_snippet, self._client_init, self._request_init, self._request_exec, self._response_handling]:
-            self.metadata.segments.append(segment)
+        self.metadata.segments.extend([self._full_snippet, self._short_snippet, self._client_init,
+                                      self._request_init, self._request_exec, self._response_handling])
 
     @property
     def full_snippet(self) -> str:
-        """The portion between the START and END region tags"""
+        """The portion between the START and END region tags."""
         start_idx = self._full_snippet.start - 1
         end_idx = self._full_snippet.end
-        short_sample = "".join(self.sample_lines[start_idx:end_idx])
-
-        return short_sample
+        return "".join(self.sample_lines[start_idx:end_idx])
 
 
 class SnippetIndex:
+    """An index of all the snippets for an API.
+
+    Attributes:
+        metadata_index (snippet_metadata_pb2.Index): The snippet metadata index.
+    """
 
     def __init__(self, api_schema: api.API):
         self.metadata_index = snippet_metadata_pb2.Index()  # type: ignore
+
         # Construct a dictionary to insert samples into based on the API schema
+        # NOTE: In the future we expect the generator to support configured samples,
+        # which will result in more than one sample variant per RPC. At that
+        # time a different data structure (and re-writes of add_snippet and get_snippet)
+        # will be needed.
         self._index: Dict[str, Dict[str, Dict[str, Optional[Snippet]]]] = {}
 
-        for service in api_schema.services.values():
-            self._index[service.name] = {}
-            # This will be need to be re-structured when one method can have
-            # more than one sample variant
-            for method in service.methods.keys():
-                self._index[service.name][method] = {
-                    "sync": None,
-                    "async": None
-                }
+        self._index = {
+            s.name: {m: {"sync": None, "async": None} for m in s.methods}
+            for s in api_schema.services.values()
+        }
 
     def add_snippet(self, snippet: Snippet) -> None:
-        """Add a single sample to the index.
+        """Add a single snippet to the snippet index.
 
         Args:
-            sample (Sample): The sample to be added.
+            snippet (Snippet): The code snippet to be added.
 
         Raises:
-            KeyError: If the sample metadata references a service or method that does not exist.
+            UnknownService: If the service indicated by the snippet metadata is not found.
+            RpcMethodNotFound: If the method indicated by the snippet metadata is not found.
         """
         service_name = snippet.metadata.client_method.method.service.short_name
         rpc_name = snippet.metadata.client_method.method.full_name
@@ -136,16 +143,20 @@ class SnippetIndex:
 
         self.metadata_index.snippets.append(snippet.metadata)
 
-    def get_snippet(self, service_name: str, rpc_name: str, sync=True) -> Optional[Snippet]:
+    def get_snippet(self, service_name: str, rpc_name: str, sync: bool = True) -> Optional[Snippet]:
         """Fetch a single snippet from the index.
 
         Args:
             service_name (str): The name of the service.
             rpc_name (str): The name of the RPC.
-            sync (bool): True for the sync sample, False for the async sample.
+            sync (bool): True for the sync version of the snippet, False for the async version.
 
         Returns:
-            Optional[Sample]: The snippet if it exists, or None.
+            Optional[Snippet]: The snippet if it exists, or None.
+
+        Raises:
+            UnknownService: If the service is not found.
+            RpcMethodNotFound: If the method is not found.
         """
         # Fetch a snippet from the snippet metadata index
         service = self._index.get(service_name)
@@ -159,15 +170,6 @@ class SnippetIndex:
 
         return method["sync" if sync else "async"]
 
-    def get_metadata_json(self):
+    def get_metadata_json(self) -> str:
         """JSON representation of Snippet Index."""
-
-        # MessageToJson does not provide a stable order of all the keys
-        # so we go through OrderedDict
-        # TODO: Figure out why MessageToJson ordering is unstable.
-        metadata_dict = OrderedDict(json_format.MessageToDict(
-            self.metadata_index,
-        ))
-
-        return json.dumps(metadata_dict)
-        
+        return json_format.MessageToJson(self.metadata_index, sort_keys=True)

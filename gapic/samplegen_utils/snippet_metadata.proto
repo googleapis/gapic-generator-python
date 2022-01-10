@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// NOTE(busunkim): This is a temporary home for this file and the corresponding
+// snippet_metadata_pb2.py.
+
 syntax = "proto3";
 
 package google.cloud.tools.snippetgen.snippetindex.v1;
