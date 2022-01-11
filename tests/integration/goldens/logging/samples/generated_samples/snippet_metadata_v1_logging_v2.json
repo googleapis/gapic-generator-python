@@ -2,109 +2,24 @@
   "snippets": [
     {
       "clientMethod": {
+        "async": true,
         "method": {
-          "fullName": "WriteLogEntries",
+          "fullName": "UpdateLogMetric",
           "service": {
-            "shortName": "LoggingServiceV2"
+            "shortName": "MetricsServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_write_log_entries_sync.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_WriteLogEntries_sync",
+      "file": "samples/generated_samples/logging_generated_logging_v2_metrics_service_v2_update_log_metric_async.py",
+      "regionTag": "logging_generated_logging_v2_MetricsServiceV2_UpdateLogMetric_async",
       "segments": [
         {
-          "end": 47,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 42,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "start": 45,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "ListMonitoredResourceDescriptors",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_monitored_resource_descriptors_sync.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListMonitoredResourceDescriptors_sync",
-      "segments": [
-        {
-          "end": 42,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 42,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 38,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 43,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "TailLogEntries",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_tail_log_entries_sync.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_TailLogEntries_sync",
-      "segments": [
-        {
-          "end": 52,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -119,397 +34,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 50,
           "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "DeleteLog",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_delete_log_sync.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_DeleteLog_sync",
-      "segments": [
-        {
-          "end": 46,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 46,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 47,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "ListLogs",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_logs_sync.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogs_sync",
-      "segments": [
-        {
-          "end": 47,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "ListLogEntries",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_log_entries_sync.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogEntries_sync",
-      "segments": [
-        {
-          "end": 47,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "DeleteLog",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_delete_log_async.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_DeleteLog_async",
-      "segments": [
-        {
-          "end": 46,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 46,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 47,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "WriteLogEntries",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_write_log_entries_async.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_WriteLogEntries_async",
-      "segments": [
-        {
-          "end": 47,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 42,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "start": 45,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "ListMonitoredResourceDescriptors",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_monitored_resource_descriptors_async.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListMonitoredResourceDescriptors_async",
-      "segments": [
-        {
-          "end": 42,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 42,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 38,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 43,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "ListLogEntries",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_log_entries_async.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogEntries_async",
-      "segments": [
-        {
-          "end": 47,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "ListLogs",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_logs_async.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogs_async",
-      "segments": [
-        {
-          "end": 47,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "TailLogEntries",
-          "service": {
-            "shortName": "LoggingServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_tail_log_entries_async.py",
-      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_TailLogEntries_async",
-      "segments": [
-        {
-          "end": 52,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 52,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 48,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 53,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -606,51 +137,6 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "CreateLogMetric",
-          "service": {
-            "shortName": "MetricsServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_metrics_service_v2_create_log_metric_async.py",
-      "regionTag": "logging_generated_logging_v2_MetricsServiceV2_CreateLogMetric_async",
-      "segments": [
-        {
-          "end": 53,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 53,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 50,
-          "start": 48,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 54,
-          "start": 51,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
           "fullName": "DeleteLogMetric",
           "service": {
             "shortName": "MetricsServiceV2"
@@ -694,14 +180,58 @@
       "clientMethod": {
         "async": true,
         "method": {
+          "fullName": "CreateLogMetric",
+          "service": {
+            "shortName": "MetricsServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_metrics_service_v2_create_log_metric_async.py",
+      "regionTag": "logging_generated_logging_v2_MetricsServiceV2_CreateLogMetric_async",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
           "fullName": "UpdateLogMetric",
           "service": {
             "shortName": "MetricsServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_metrics_service_v2_update_log_metric_async.py",
-      "regionTag": "logging_generated_logging_v2_MetricsServiceV2_UpdateLogMetric_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_metrics_service_v2_update_log_metric_sync.py",
+      "regionTag": "logging_generated_logging_v2_MetricsServiceV2_UpdateLogMetric_sync",
       "segments": [
         {
           "end": 53,
@@ -782,14 +312,14 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "UpdateLogMetric",
+          "fullName": "CreateLogMetric",
           "service": {
             "shortName": "MetricsServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_metrics_service_v2_update_log_metric_sync.py",
-      "regionTag": "logging_generated_logging_v2_MetricsServiceV2_UpdateLogMetric_sync",
+      "file": "samples/generated_samples/logging_generated_logging_v2_metrics_service_v2_create_log_metric_sync.py",
+      "regionTag": "logging_generated_logging_v2_MetricsServiceV2_CreateLogMetric_sync",
       "segments": [
         {
           "end": 53,
@@ -910,14 +440,100 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "CreateLogMetric",
+          "fullName": "ListBuckets",
           "service": {
-            "shortName": "MetricsServiceV2"
+            "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_metrics_service_v2_create_log_metric_sync.py",
-      "regionTag": "logging_generated_logging_v2_MetricsServiceV2_CreateLogMetric_sync",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_buckets_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListBuckets_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "UpdateView",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_view_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateView_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "CreateSink",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_sink_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateSink_sync",
       "segments": [
         {
           "end": 53,
@@ -998,14 +614,358 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "ListSinks",
+          "fullName": "UndeleteBucket",
           "service": {
             "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_sinks_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListSinks_sync",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_undelete_bucket_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UndeleteBucket_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "CreateView",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_view_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateView_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "DeleteView",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_view_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteView_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "GetExclusion",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_exclusion_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetExclusion_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "ListViews",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_views_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListViews_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "DeleteBucket",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_bucket_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteBucket_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "GetBucket",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_bucket_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetBucket_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "UpdateBucket",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_bucket_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateBucket_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "ListExclusions",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_exclusions_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListExclusions_sync",
       "segments": [
         {
           "end": 47,
@@ -1040,14 +1000,58 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "CreateSink",
+          "fullName": "GetSink",
           "service": {
             "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_sink_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateSink_sync",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_sink_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetSink_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "CreateExclusion",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_exclusion_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateExclusion_sync",
       "segments": [
         {
           "end": 53,
@@ -1084,22 +1088,22 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "ListBuckets",
+          "fullName": "CreateBucket",
           "service": {
             "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_buckets_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListBuckets_sync",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_bucket_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateBucket_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1109,16 +1113,60 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 44,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "DeleteExclusion",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_exclusion_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteExclusion_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1170,14 +1218,58 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "UndeleteBucket",
+          "fullName": "GetView",
           "service": {
             "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_undelete_bucket_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UndeleteBucket_sync",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_view_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetView_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "GetCmekSettings",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_cmek_settings_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetCmekSettings_sync",
       "segments": [
         {
           "end": 47,
@@ -1195,16 +1287,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 41,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "end": 44,
+          "start": 42,
           "type": "REQUEST_EXECUTION"
         },
         {
           "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1212,14 +1306,56 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "ListExclusions",
+          "fullName": "DeleteSink",
           "service": {
             "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_exclusions_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListExclusions_sync",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_sink_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteSink_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "ListSinks",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_sinks_sync.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListSinks_sync",
       "segments": [
         {
           "end": 47,
@@ -1297,15 +1433,16 @@
     },
     {
       "clientMethod": {
+        "async": true,
         "method": {
-          "fullName": "CreateExclusion",
+          "fullName": "CreateSink",
           "service": {
             "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_exclusion_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateExclusion_sync",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_sink_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateSink_async",
       "segments": [
         {
           "end": 53,
@@ -1335,743 +1472,6 @@
         {
           "end": 54,
           "start": 51,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "DeleteView",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_view_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteView_sync",
-      "segments": [
-        {
-          "end": 48,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 48,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "DeleteSink",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_sink_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteSink_sync",
-      "segments": [
-        {
-          "end": 46,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 46,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 47,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "CreateView",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_view_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateView_sync",
-      "segments": [
-        {
-          "end": 45,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 45,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 39,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 40,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 46,
-          "start": 43,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "GetExclusion",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_exclusion_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetExclusion_sync",
-      "segments": [
-        {
-          "end": 48,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 48,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 49,
-          "start": 46,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "GetBucket",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_bucket_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetBucket_sync",
-      "segments": [
-        {
-          "end": 49,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 49,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 43,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 46,
-          "start": 44,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 50,
-          "start": 47,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "DeleteBucket",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_bucket_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteBucket_sync",
-      "segments": [
-        {
-          "end": 47,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 43,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 44,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "UpdateBucket",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_bucket_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateBucket_sync",
-      "segments": [
-        {
-          "end": 49,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 49,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 43,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 46,
-          "start": 44,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 50,
-          "start": 47,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "GetView",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_view_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetView_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "UpdateView",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_view_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateView_sync",
-      "segments": [
-        {
-          "end": 44,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 44,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 45,
-          "start": 42,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "GetCmekSettings",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_cmek_settings_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetCmekSettings_sync",
-      "segments": [
-        {
-          "end": 47,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 42,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "start": 45,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "GetSink",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_sink_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetSink_sync",
-      "segments": [
-        {
-          "end": 48,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 48,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 45,
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 49,
-          "start": 46,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "CreateBucket",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_bucket_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateBucket_sync",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "ListViews",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_views_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListViews_sync",
-      "segments": [
-        {
-          "end": 43,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 43,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 44,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "method": {
-          "fullName": "DeleteExclusion",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_exclusion_sync.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteExclusion_sync",
-      "segments": [
-        {
-          "end": 46,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 46,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 47,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "DeleteView",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_view_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteView_async",
-      "segments": [
-        {
-          "end": 48,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 48,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 49,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "UndeleteBucket",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_undelete_bucket_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UndeleteBucket_async",
-      "segments": [
-        {
-          "end": 47,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 43,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 44,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "GetView",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_view_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetView_async",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 44,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 47,
-          "start": 45,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2125,14 +1525,147 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ListBuckets",
+          "fullName": "DeleteExclusion",
           "service": {
             "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_buckets_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListBuckets_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_exclusion_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteExclusion_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "GetBucket",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_bucket_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetBucket_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "UpdateSink",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_sink_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateSink_async",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "GetExclusion",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_exclusion_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetExclusion_async",
       "segments": [
         {
           "end": 48,
@@ -2150,16 +1683,149 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 42,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "end": 45,
+          "start": 43,
           "type": "REQUEST_EXECUTION"
         },
         {
           "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "DeleteSink",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_sink_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteSink_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "GetView",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_view_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetView_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "ListExclusions",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_exclusions_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListExclusions_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2203,6 +1869,403 @@
         },
         {
           "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "ListBuckets",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_buckets_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListBuckets_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "CreateView",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_view_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateView_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "GetCmekSettings",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_cmek_settings_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetCmekSettings_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "DeleteView",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_view_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteView_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "UpdateCmekSettings",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_cmek_settings_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateCmekSettings_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "UpdateView",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_view_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateView_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "UndeleteBucket",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_undelete_bucket_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UndeleteBucket_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "CreateBucket",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_bucket_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateBucket_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "ListViews",
+          "service": {
+            "shortName": "ConfigServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_views_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListViews_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2256,22 +2319,22 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ListSinks",
+          "fullName": "UpdateBucket",
           "service": {
             "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_sinks_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListSinks_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_bucket_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateBucket_async",
       "segments": [
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -2281,16 +2344,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2299,14 +2364,14 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ListExclusions",
+          "fullName": "ListSinks",
           "service": {
             "shortName": "ConfigServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_exclusions_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListExclusions_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_sinks_async.py",
+      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListSinks_async",
       "segments": [
         {
           "end": 47,
@@ -2387,110 +2452,22 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ListViews",
+          "fullName": "ListLogs",
           "service": {
-            "shortName": "ConfigServiceV2"
+            "shortName": "LoggingServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_list_views_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListViews_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_logs_async.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogs_async",
       "segments": [
         {
-          "end": 43,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 44,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "UpdateCmekSettings",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_cmek_settings_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateCmekSettings_async",
-      "segments": [
-        {
-          "end": 44,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 44,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 45,
-          "start": 42,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "DeleteExclusion",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_exclusion_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteExclusion_async",
-      "segments": [
-        {
-          "end": 46,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 46,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -2509,7 +2486,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 48,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2518,157 +2495,22 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "UpdateView",
+          "fullName": "TailLogEntries",
           "service": {
-            "shortName": "ConfigServiceV2"
+            "shortName": "LoggingServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_view_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateView_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_tail_log_entries_async.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_TailLogEntries_async",
       "segments": [
         {
-          "end": 44,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 45,
-          "start": 42,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "UpdateBucket",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_bucket_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateBucket_async",
-      "segments": [
-        {
-          "end": 49,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 49,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 43,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 46,
-          "start": 44,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 50,
-          "start": 47,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "CreateView",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_view_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateView_async",
-      "segments": [
-        {
-          "end": 45,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 45,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 39,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 40,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 46,
-          "start": 43,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "CreateSink",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_sink_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateSink_async",
-      "segments": [
-        {
-          "end": 53,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 53,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -2683,13 +2525,11 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
           "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 53,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2698,57 +2538,14 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "DeleteSink",
+          "fullName": "WriteLogEntries",
           "service": {
-            "shortName": "ConfigServiceV2"
+            "shortName": "LoggingServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_delete_sink_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteSink_async",
-      "segments": [
-        {
-          "end": 46,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 46,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 47,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "GetCmekSettings",
-          "service": {
-            "shortName": "ConfigServiceV2"
-          }
-        }
-      },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_cmek_settings_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetCmekSettings_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_write_log_entries_async.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_WriteLogEntries_async",
       "segments": [
         {
           "end": 47,
@@ -2786,22 +2583,22 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "CreateBucket",
+          "fullName": "ListMonitoredResourceDescriptors",
           "service": {
-            "shortName": "ConfigServiceV2"
+            "shortName": "LoggingServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_create_bucket_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateBucket_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_monitored_resource_descriptors_async.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListMonitoredResourceDescriptors_async",
       "segments": [
         {
-          "end": 50,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -2811,18 +2608,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 37,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2831,22 +2626,22 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "GetExclusion",
+          "fullName": "DeleteLog",
           "service": {
-            "shortName": "ConfigServiceV2"
+            "shortName": "LoggingServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_exclusion_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetExclusion_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_delete_log_async.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_DeleteLog_async",
       "segments": [
         {
-          "end": 48,
+          "end": 46,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 46,
           "start": 27,
           "type": "SHORT"
         },
@@ -2861,13 +2656,11 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
           "start": 43,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2876,22 +2669,234 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "UpdateSink",
+          "fullName": "ListLogEntries",
           "service": {
-            "shortName": "ConfigServiceV2"
+            "shortName": "LoggingServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_update_sink_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateSink_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_log_entries_async.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogEntries_async",
       "segments": [
         {
-          "end": 53,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "ListMonitoredResourceDescriptors",
+          "service": {
+            "shortName": "LoggingServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_monitored_resource_descriptors_sync.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListMonitoredResourceDescriptors_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "WriteLogEntries",
+          "service": {
+            "shortName": "LoggingServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_write_log_entries_sync.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_WriteLogEntries_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "ListLogs",
+          "service": {
+            "shortName": "LoggingServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_logs_sync.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogs_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "DeleteLog",
+          "service": {
+            "shortName": "LoggingServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_delete_log_sync.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_DeleteLog_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "TailLogEntries",
+          "service": {
+            "shortName": "LoggingServiceV2"
+          }
+        }
+      },
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_tail_log_entries_sync.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_TailLogEntries_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -2906,37 +2911,34 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
           "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 53,
           "type": "RESPONSE_HANDLING"
         }
       ]
     },
     {
       "clientMethod": {
-        "async": true,
         "method": {
-          "fullName": "GetBucket",
+          "fullName": "ListLogEntries",
           "service": {
-            "shortName": "ConfigServiceV2"
+            "shortName": "LoggingServiceV2"
           }
         }
       },
-      "file": "samples/generated_samples/logging_generated_logging_v2_config_service_v2_get_bucket_async.py",
-      "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetBucket_async",
+      "file": "samples/generated_samples/logging_generated_logging_v2_logging_service_v2_list_log_entries_sync.py",
+      "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogEntries_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -2946,18 +2948,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 42,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "start": 43,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 48,
           "type": "RESPONSE_HANDLING"
         }
       ]

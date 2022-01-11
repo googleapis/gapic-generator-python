@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, Dict
 import re
+import json
+from collections import OrderedDict
+from typing import Optional, Dict
 
 from google.protobuf import json_format
 
@@ -172,4 +174,6 @@ class SnippetIndex:
 
     def get_metadata_json(self) -> str:
         """JSON representation of Snippet Index."""
-        return json_format.MessageToJson(self.metadata_index, sort_keys=True)
+        # protobuf's MessageToJson doesn't provide a stable order for list items
+        # so we use the json module instead
+        return json.dumps(json_format.MessageToDict(self.metadata_index), sort_keys=True, indent=2)
