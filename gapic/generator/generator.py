@@ -130,7 +130,7 @@ class Generator:
         return res
 
     def _generate_samples_and_manifest(
-            self, api_schema: api.API, index: snippet_index.SnippetIndex, sample_template: jinja2.Template, *, opts: Options) -> Tuple[Dict, Any]:
+            self, api_schema: api.API, index: snippet_index.SnippetIndex, sample_template: jinja2.Template, *, opts: Options) -> Tuple[Dict, snippet_index.SnippetIndex]:
         """Generate samples and samplegen manifest for the API.
 
         Arguments:
@@ -139,7 +139,7 @@ class Generator:
             opts (Options): Additional generator options.
 
         Returns:
-            Dict[str, CodeGeneratorResponse.File]: A dict mapping filepath to rendered file.
+            Tuple[Dict[str, CodeGeneratorResponse.File], snippet_index.SnippetIndex] : A dict mapping filepath to rendered file.
         """
         # The two-layer data structure lets us do two things:
         # * detect duplicate samples, which is an error
