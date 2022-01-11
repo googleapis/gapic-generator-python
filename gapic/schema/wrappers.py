@@ -890,7 +890,6 @@ class HttpRule:
 
     def sample_request(self, method: "~.Method") -> str:
         """return json dict for sample request matching the uri template."""
-
         def sample_from_path_fields(paths: List[Tuple["wrappers.Field", str, str]]) -> Dict[Any, Any]:
             """Construct a dict for a sample request object from a list of fields
                and template patterns.
@@ -900,59 +899,18 @@ class HttpRule:
             Returns:
                   A new nested dict with the templates instantiated.
             """
-
             request: Dict[str, Any] = {}
 
-            def _sample_names() -> Iterator[str]:
-                sample_num: int = 0
-                while True:
-                    sample_num += 1
-                    yield "sample{}".format(sample_num)
-
-            def add_field(obj, path, value):
-                """Insert a field into a nested dict and return the (outer) dict.
-                 Keys and sub-dicts are inserted if necessary to create the path.
-                 e.g. if obj, as passed in, is {}, path is "a.b.c", and value is
-                 "hello", obj will be updated to:
-                  {'a':
-                     {'b':
-                      {
-                      'c': 'hello'
-                      }
-                     }
-                  }
-
-                Args:
-                  obj: a (possibly) nested dict (parsed json)
-                  path: a segmented field name, e.g. "a.b.c"
-                    where each part is a dict key.
-                  value: the value of the new key.
-                Returns:
-                      obj, possibly modified
-                Raises:
-                      AttributeError if the path references a key that is
-                  not a dict.: e.g. path='a.b', obj = {'a':'abc'}
-                """
-
-                segments = path.split('.')
-                leaf = segments.pop()
-                subfield = obj
-                for segment in segments:
-                    subfield = subfield.setdefault(segment, {})
-                subfield[leaf] = value
-                return obj
-
-            sample_names = _sample_names()
+            sample_names = uri_sample._sample_names()
             for field, path, template in paths:
                 sample_value = re.sub(
                     r"(\*\*|\*)",
                     lambda n: next(sample_names),
                     template or '*'
                 ) if field.type == PrimitiveType.build(str) else field.mock_value_original_type
-                add_field(request, path, sample_value)
+                uri_sample.add_field(request, path, sample_value)
 
             return request
-
         sample = sample_from_path_fields(self.path_fields(method))
         return sample
 

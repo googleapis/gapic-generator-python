@@ -59,7 +59,8 @@ def resolve(rule, request):
 
 
 @pytest.mark.parametrize("req, expected", [
-    (RoutingTestRequest(app_profile_id="foo.123"), {"app_profile_id": "foo.123"}),
+    (RoutingTestRequest(app_profile_id="foo.123"),
+     {"app_profile_id": "foo.123"}),
     (RoutingTestRequest(app_profile_id="projects/100"),
      {"app_profile_id": "projects/100"}),
     (RoutingTestRequest(app_profile_id=""), {"app_profile_id": ""}),
