@@ -132,10 +132,10 @@ def test_generate_sample_basic():
     assert sample_str == golden_snippet("sample_basic.py")
     assert json_format.MessageToDict(metadata) == {
         'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
-        'clientMethod': 
+        'clientMethod':
             {'method': {
-                    'fullName': 'Classify',
-                    'service': {'shortName': 'Mollusc'}
+                'fullName': 'Classify',
+                'service': {'shortName': 'Mollusc'}
             }}
         }
 
@@ -216,14 +216,14 @@ def test_generate_sample_basic_async():
 
     assert sample_str == golden_snippet("sample_basic_async.py")
     assert json_format.MessageToDict(metadata) == {
-    'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_async',
-    'clientMethod': 
+        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_async',
+        'clientMethod':
         {
             'async': True,
             'method': {
                 'fullName': 'Classify',
                 'service': {'shortName': 'Mollusc'}
-        }}
+                }}
     }
 
 
@@ -297,13 +297,13 @@ def test_generate_sample_basic_unflattenable():
 
     assert sample_str == golden_snippet("sample_basic_unflattenable.py")
     assert json_format.MessageToDict(metadata) == {
-    'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
-    'clientMethod': 
+        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
+        'clientMethod':
         {
             'method': {
                 'fullName': 'Classify',
                 'service': {'shortName': 'Mollusc'}
-        }}
+                }}
     }
 
 
@@ -375,14 +375,15 @@ def test_generate_sample_void_method():
 
     assert sample_str == golden_snippet("sample_basic_void_method.py")
     assert json_format.MessageToDict(metadata) == {
-    'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
-    'clientMethod': 
+        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
+        'clientMethod':
         {
             'method': {
                 'fullName': 'Classify',
                 'service': {'shortName': 'Mollusc'}
-        }}
+                }}
     }
+
 
 def test_generate_sample_service_not_found():
     schema = DummyApiSchema({}, DummyNaming("pkg_name"))

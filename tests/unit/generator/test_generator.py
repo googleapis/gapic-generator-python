@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 from textwrap import dedent
 from typing import Mapping
 from unittest import mock
@@ -34,9 +35,14 @@ from gapic.schema import wrappers
 from gapic.utils import Options
 
 
-dummy_snippet_metadata = snippet_metadata_pb2.Snippet()
-dummy_snippet_metadata.client_method.method.service.short_name = "Mollusc"
-dummy_snippet_metadata.client_method.method.full_name = "GetSquidStreaming"
+def mock_generate_sample(*args, **kwargs):
+    dummy_snippet_metadata = snippet_metadata_pb2.Snippet()
+    dummy_snippet_metadata.client_method.method.service.short_name = args[0]["service"].split(
+        ".")[-1]
+    dummy_snippet_metadata.client_method.method.full_name = args[0]['rpc']
+
+    return "", dummy_snippet_metadata
+
 
 def test_custom_template_directory():
     # Create a generator.
@@ -408,13 +414,9 @@ def test_parse_sample_paths(fs):
     with pytest.raises(types.InvalidConfig):
         Options.build("samples=sampledir/,")
 
-@mock.patch(
-    "gapic.samplegen.samplegen.generate_sample", return_value=("", dummy_snippet_metadata),
-)
+
 @mock.patch("time.gmtime",)
-def test_samplegen_config_to_output_files(
-    mock_gmtime, mock_generate_sample, fs,
-):
+def test_samplegen_config_to_output_files(mock_gmtime, fs):
     # These time values are nothing special,
     # they just need to be deterministic.
     returner = mock.MagicMock()
@@ -437,10 +439,10 @@ def test_samplegen_config_to_output_files(
             - id: squid_sample
               region_tag: humboldt_tag
               service: Mollusc.v1.Mollusc
-              rpc: get_squid_streaming
+              rpc: GetSquidStreaming
             - region_tag: clam_sample
               service: Mollusc.v1.Mollusc
-              rpc: get_clam
+              rpc: GetClam
             """
         ),
     )
@@ -453,41 +455,80 @@ def test_samplegen_config_to_output_files(
         services={"Mollusc": DummyService(
             name="Mollusc",
             methods={
-                # For this test the  generator only cares about the dictionary keys
-                # so we let the values be None
-                "GetSquidStreaming": None,
-                "GetClam": None,
+                # For this test the generator only cares about the dictionary keys
+                "GetSquidStreaming": DummyMethod(),
+                "GetClam": DummyMethod(),
             },
             )},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+        naming=DummyNaming(name="mollusc", version="v1", warehouse_package_name="mollusc-cephalopod-teuthida-",
                            versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
     )
 
-    actual_response = g.get_response(
-        api_schema, opts=Options.build(""))
-    expected_response = CodeGeneratorResponse(
-        file=[
-            CodeGeneratorResponse.File(
-                name="samples/generated_samples/squid_sample.py", content="\n",),
-            CodeGeneratorResponse.File(
-                name="samples/generated_samples/clam_sample.py", content="\n",),
-            CodeGeneratorResponse.File(
-                name="samples/generated_samples/snippet_metadata_v1_false_false.json",
-                content="{\"snippets\": [{\"file\": \"samples/generated_samples/squid_sample.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}, {\"file\": \"samples/generated_samples/clam_sample.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}, {\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}]}\n"),
-        ]
-    )
-    expected_response.supported_features |= (
-        CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
-    )
+    with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
+        actual_response = g.get_response(
+            api_schema, opts=Options.build(""))
 
-    assert actual_response == expected_response
+    expected_snippet_index_json = {
+        "snippets": [
+            {
+                "clientMethod": {
+                    "method": {
+                        "fullName": "GetSquidStreaming",
+                        "service": {
+                            "shortName": "Mollusc"
+                            }
+                    }
+                },
+                "file": "samples/generated_samples/squid_sample.py",
+                "segments": [
+                    {"type": "FULL"},
+                    {"type": "SHORT"},
+                    {"type": "CLIENT_INITIALIZATION"},
+                    {"type": "REQUEST_INITIALIZATION"},
+                    {"type": "REQUEST_EXECUTION"},
+                    {"type": "RESPONSE_HANDLING"}
+                ]
+                },
+            {
+                "clientMethod": {
+                    "method": {
+                        "fullName": "GetClam",
+                        "service": {
+                            "shortName": "Mollusc"
+                            }
+                    }
+                },
+                "file": "samples/generated_samples/clam_sample.py",
+                "segments": [
+                    {"type": "FULL"},
+                    {"type": "SHORT"},
+                    {"type": "CLIENT_INITIALIZATION"},
+                    {"type": "REQUEST_INITIALIZATION"},
+                    {"type": "REQUEST_EXECUTION"},
+                    {"type": "RESPONSE_HANDLING"}
+                ]
+                }
+            ]
+    }
+
+    assert actual_response.supported_features == CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
+
+    assert len(actual_response.file) == 3
+    assert actual_response.file[0] == CodeGeneratorResponse.File(
+        name="samples/generated_samples/squid_sample.py", content="\n",)
+    assert actual_response.file[1] == CodeGeneratorResponse.File(
+        name="samples/generated_samples/clam_sample.py", content="\n",)
+
+    assert actual_response.file[2].name == "samples/generated_samples/snippet_metadata_v1_mollusc_v1.json"
+    assert json.loads(
+        actual_response.file[2].content) == expected_snippet_index_json
 
 
 @mock.patch(
     "gapic.samplegen.samplegen.generate_sample_specs", return_value=[]
 )
 @mock.patch(
-    "gapic.samplegen.samplegen.generate_sample", return_value="",
+    "gapic.samplegen.samplegen.generate_sample", return_value=("", snippet_metadata_pb2.Snippet()),
 )
 def test_generate_autogen_samples(mock_generate_sample, mock_generate_specs):
     opts = Options.build("autogen-snippets")
@@ -508,11 +549,8 @@ def test_generate_autogen_samples(mock_generate_sample, mock_generate_specs):
     )
 
 
-@mock.patch(
-    "gapic.samplegen.samplegen.generate_sample", return_value=("", dummy_snippet_metadata),
-)
 @mock.patch("time.gmtime",)
-def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
+def test_samplegen_id_disambiguation(mock_gmtime, fs):
     # These time values are nothing special,
     # they just need to be deterministic.
     returner = mock.MagicMock()
@@ -538,12 +576,15 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
             samples:
             - id: squid_sample
               region_tag: humboldt_tag
-              rpc: get_squid_streaming
+              rpc: GetSquidStreaming
+              service: Mollusc.v1.Mollusc
             # Note that this region tag collides with the id of the previous sample.
             - region_tag: squid_sample
-              rpc: get_squid_streaming
+              rpc: GetSquidStreaming
+              service: Mollusc.v1.Mollusc
             # No id or region tag.
-            - rpc: get_squid_streaming
+            - rpc: GetSquidStreaming
+              service: Mollusc.v1.Mollusc
             """
         ),
     )
@@ -555,39 +596,94 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
         services={"Mollusc": DummyService(
             name="Mollusc",
             methods={
-                # For this test the generator only cares about the dictionary keys
-                # so we let the values be None
-                "GetSquidStreaming": None,
-                "GetClam": None,
+                # The generator only cares about the dictionary keys
+                "GetSquidStreaming": DummyMethod(),
+                "GetClam": DummyMethod(),
             },
             )},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+        naming=DummyNaming(name="mollusc", version="v1", warehouse_package_name="mollusc-cephalopod-teuthida-",
                            versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
     )
-    actual_response = g.get_response(api_schema,
+    with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
+        actual_response = g.get_response(api_schema,
                                      opts=Options.build(""))
-    expected_response = CodeGeneratorResponse(
-        file=[
-            CodeGeneratorResponse.File(
-                name="samples/generated_samples/squid_sample_91a465c6.py", content="\n",
-            ),
-            CodeGeneratorResponse.File(
-                name="samples/generated_samples/squid_sample_55051b38.py", content="\n",
-            ),
-            CodeGeneratorResponse.File(name="samples/generated_samples/157884ee.py",
-                                       content="\n",),
-        
-            CodeGeneratorResponse.File(
-                name="samples/generated_samples/snippet_metadata_v1_false_false.json",
-                content="{\"snippets\": [{\"file\": \"samples/generated_samples/squid_sample_91a465c6.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}, {\"file\": \"samples/generated_samples/squid_sample_55051b38.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}, {\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}, {\"file\": \"samples/generated_samples/157884ee.py\", \"clientMethod\": {\"method\": {\"fullName\": \"GetSquidStreaming\", \"service\": {\"shortName\": \"Mollusc\"}}}, \"segments\": [{\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}, {\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}, {\"type\": \"FULL\"}, {\"type\": \"SHORT\"}, {\"type\": \"CLIENT_INITIALIZATION\"}, {\"type\": \"REQUEST_INITIALIZATION\"}, {\"type\": \"REQUEST_EXECUTION\"}, {\"type\": \"RESPONSE_HANDLING\"}]}]}\n",
-            ),
-        ]
-    )
-    expected_response.supported_features |= (
-        CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
-    )
 
-    assert actual_response == expected_response
+    expected_snippet_metadata_json = {
+        "snippets": [
+            {
+                "clientMethod": {
+                    "method": {
+                        "fullName": "GetSquidStreaming",
+                        "service": {
+                            "shortName": "Mollusc"
+                            }
+                        }
+                    },
+                "file": "samples/generated_samples/squid_sample_1cfd0b3d.py",
+                "segments": [
+                    {"type": "FULL"},
+                    {"type": "SHORT"},
+                    {"type": "CLIENT_INITIALIZATION"},
+                    {"type": "REQUEST_INITIALIZATION"},
+                    {"type": "REQUEST_EXECUTION"},
+                    {"type": "RESPONSE_HANDLING"}
+                    ]
+                },
+            {
+                "clientMethod": {
+                    "method": {
+                        "fullName": "GetSquidStreaming",
+                        "service": {
+                            "shortName": "Mollusc"
+                            }
+                        }
+                    },
+                "file": "samples/generated_samples/squid_sample_cf4d4fa4.py",
+                "segments": [
+                    {"type": "FULL"},
+                    {"type": "SHORT"},
+                    {"type": "CLIENT_INITIALIZATION"},
+                    {"type": "REQUEST_INITIALIZATION"},
+                    {"type": "REQUEST_EXECUTION"},
+                    {"type": "RESPONSE_HANDLING"}
+                    ]
+                },
+            {
+                "clientMethod": {
+                    "method": {
+                        "fullName": "GetSquidStreaming",
+                        "service": {
+                            "shortName": "Mollusc"
+                            }
+                        }
+                    },
+                "file": "samples/generated_samples/7384949e.py",
+                "segments": [
+                    {"type": "FULL"},
+                    {"type": "SHORT"},
+                    {"type": "CLIENT_INITIALIZATION"},
+                    {"type": "REQUEST_INITIALIZATION"},
+                    {"type": "REQUEST_EXECUTION"},
+                    {"type": "RESPONSE_HANDLING"}
+                    ]
+                }
+            ]
+        }
+
+    assert actual_response.supported_features == CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
+    assert len(actual_response.file) == 4
+    assert actual_response.file[0] == CodeGeneratorResponse.File(
+        name="samples/generated_samples/squid_sample_1cfd0b3d.py", content="\n",
+    )
+    assert actual_response.file[1] == CodeGeneratorResponse.File(
+        name="samples/generated_samples/squid_sample_cf4d4fa4.py", content="\n",
+    )
+    assert actual_response.file[2] == CodeGeneratorResponse.File(
+        name="samples/generated_samples/7384949e.py", content="\n",
+    )
+    assert actual_response.file[3].name == "samples/generated_samples/snippet_metadata_v1_mollusc_v1.json"
+    assert json.loads(
+        actual_response.file[3].content) == expected_snippet_metadata_json
 
 
 def test_generator_duplicate_samples(fs):

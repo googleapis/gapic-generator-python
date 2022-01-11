@@ -95,10 +95,13 @@ class Generator:
             self._env.loader.list_templates(),  # type: ignore
         )
 
+        # We generate code snippets *before* the library code so snippets
+        # can be inserted into method docstrings.
         snippet_idx = snippet_index.SnippetIndex(api_schema)
         if sample_templates:
             sample_output, snippet_idx = self._generate_samples_and_manifest(
-                api_schema, self._env.get_template(sample_templates[0]),
+                api_schema, snippet_idx, self._env.get_template(
+                    sample_templates[0]),
                 opts=opts,
             )
             output_files.update(sample_output)
@@ -127,7 +130,7 @@ class Generator:
         return res
 
     def _generate_samples_and_manifest(
-            self, api_schema: api.API, sample_template: jinja2.Template, *, opts: Options) -> Tuple[Dict, Any]:
+            self, api_schema: api.API, index: snippet_index.SnippetIndex, sample_template: jinja2.Template, *, opts: Options) -> Tuple[Dict, Any]:
         """Generate samples and samplegen manifest for the API.
 
         Arguments:
@@ -138,8 +141,6 @@ class Generator:
         Returns:
             Dict[str, CodeGeneratorResponse.File]: A dict mapping filepath to rendered file.
         """
-        index = snippet_index.SnippetIndex(api_schema=api_schema)
-
         # The two-layer data structure lets us do two things:
         # * detect duplicate samples, which is an error
         # * detect distinct samples with the same ID, which are disambiguated
@@ -311,7 +312,7 @@ class Generator:
         # This file is not iterating over anything else; return back
         # the one applicable file.
         answer.update(self._get_file(
-            template_name, api_schema=api_schema, opts=opts,snippet_index=snippet_index))
+            template_name, api_schema=api_schema, opts=opts, snippet_index=snippet_index))
         return answer
 
     def _is_desired_transport(self, template_name: str, opts: Options) -> bool:
@@ -353,7 +354,7 @@ class Generator:
         return {fn: cgr_file}
 
     def _get_filename(
-        self, template_name: str, *, api_schema: api.API, context:dict = None,
+        self, template_name: str, *, api_schema: api.API, context: dict = None,
     ) -> str:
         """Return the appropriate output filename for this template.
 

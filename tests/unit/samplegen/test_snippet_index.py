@@ -125,6 +125,7 @@ def test_add_snippet_no_matching_service(sample_str):
     with pytest.raises(types.UnknownService):
         index.add_snippet(snippet)
 
+
 def test_add_snippet_no_matching_rpc(sample_str):
     snippet_metadata = snippet_metadata_pb2.Snippet(
     )
