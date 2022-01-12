@@ -2,138 +2,6 @@
   "snippets": [
     {
       "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "ExportInstance",
-          "service": {
-            "shortName": "CloudRedis"
-          }
-        }
-      },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_export_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ExportInstance_async",
-      "segments": [
-        {
-          "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "ListInstances",
-          "service": {
-            "shortName": "CloudRedis"
-          }
-        }
-      },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_list_instances_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ListInstances_async",
-      "segments": [
-        {
-          "end": 47,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 47,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 48,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "GetInstance",
-          "service": {
-            "shortName": "CloudRedis"
-          }
-        }
-      },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_get_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_GetInstance_async",
-      "segments": [
-        {
-          "end": 49,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 49,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 43,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 46,
-          "start": 44,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 50,
-          "start": 47,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
         "method": {
           "fullName": "UpgradeInstance",
           "service": {
@@ -141,8 +9,8 @@
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_upgrade_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_UpgradeInstance_async",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_upgrade_instance_sync.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_UpgradeInstance_sync",
       "segments": [
         {
           "end": 52,
@@ -176,16 +44,15 @@
     },
     {
       "clientMethod": {
-        "async": true,
         "method": {
-          "fullName": "DeleteInstance",
+          "fullName": "UpdateInstance",
           "service": {
             "shortName": "CloudRedis"
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_delete_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_DeleteInstance_async",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_update_instance_sync.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_UpdateInstance_sync",
       "segments": [
         {
           "end": 51,
@@ -219,7 +86,6 @@
     },
     {
       "clientMethod": {
-        "async": true,
         "method": {
           "fullName": "CreateInstance",
           "service": {
@@ -227,8 +93,8 @@
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_create_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_CreateInstance_async",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_create_instance_sync.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_CreateInstance_sync",
       "segments": [
         {
           "end": 57,
@@ -262,24 +128,23 @@
     },
     {
       "clientMethod": {
-        "async": true,
         "method": {
-          "fullName": "FailoverInstance",
+          "fullName": "GetInstance",
           "service": {
             "shortName": "CloudRedis"
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_failover_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_FailoverInstance_async",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_get_instance_sync.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_GetInstance_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -294,97 +159,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 46,
           "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "UpdateInstance",
-          "service": {
-            "shortName": "CloudRedis"
-          }
-        }
-      },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_update_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_UpdateInstance_async",
-      "segments": [
-        {
-          "end": 51,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 51,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 43,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 44,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 52,
-          "type": "RESPONSE_HANDLING"
-        }
-      ]
-    },
-    {
-      "clientMethod": {
-        "async": true,
-        "method": {
-          "fullName": "ImportInstance",
-          "service": {
-            "shortName": "CloudRedis"
-          }
-        }
-      },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_import_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ImportInstance_async",
-      "segments": [
-        {
           "end": 50,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 50,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 42,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 43,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 51,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -427,6 +208,48 @@
         },
         {
           "end": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "fullName": "ListInstances",
+          "service": {
+            "shortName": "CloudRedis"
+          }
+        }
+      },
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_list_instances_sync.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_ListInstances_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -518,22 +341,22 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "UpdateInstance",
+          "fullName": "ImportInstance",
           "service": {
             "shortName": "CloudRedis"
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_update_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_UpdateInstance_sync",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_import_instance_sync.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_ImportInstance_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -543,22 +366,152 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 42,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "start": 43,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 51,
           "type": "RESPONSE_HANDLING"
         }
       ]
     },
     {
       "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "ImportInstance",
+          "service": {
+            "shortName": "CloudRedis"
+          }
+        }
+      },
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_import_instance_async.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_ImportInstance_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "CreateInstance",
+          "service": {
+            "shortName": "CloudRedis"
+          }
+        }
+      },
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_create_instance_async.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_CreateInstance_async",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "UpgradeInstance",
+          "service": {
+            "shortName": "CloudRedis"
+          }
+        }
+      },
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_upgrade_instance_async.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_UpgradeInstance_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
         "method": {
           "fullName": "GetInstance",
           "service": {
@@ -566,8 +519,8 @@
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_get_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_GetInstance_sync",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_get_instance_async.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_GetInstance_async",
       "segments": [
         {
           "end": 49,
@@ -603,23 +556,24 @@
     },
     {
       "clientMethod": {
+        "async": true,
         "method": {
-          "fullName": "UpgradeInstance",
+          "fullName": "UpdateInstance",
           "service": {
             "shortName": "CloudRedis"
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_upgrade_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_UpgradeInstance_sync",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_update_instance_async.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_UpdateInstance_async",
       "segments": [
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -629,22 +583,66 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 45,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 52,
           "type": "RESPONSE_HANDLING"
         }
       ]
     },
     {
       "clientMethod": {
+        "async": true,
+        "method": {
+          "fullName": "DeleteInstance",
+          "service": {
+            "shortName": "CloudRedis"
+          }
+        }
+      },
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_delete_instance_async.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_DeleteInstance_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
         "method": {
           "fullName": "ListInstances",
           "service": {
@@ -652,8 +650,8 @@
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_list_instances_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ListInstances_sync",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_list_instances_async.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_ListInstances_async",
       "segments": [
         {
           "end": 47,
@@ -687,23 +685,24 @@
     },
     {
       "clientMethod": {
+        "async": true,
         "method": {
-          "fullName": "CreateInstance",
+          "fullName": "FailoverInstance",
           "service": {
             "shortName": "CloudRedis"
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_create_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_CreateInstance_sync",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_failover_instance_async.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_FailoverInstance_async",
       "segments": [
         {
-          "end": 57,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 57,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -713,31 +712,32 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 49,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 50,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 58,
+          "end": 52,
           "type": "RESPONSE_HANDLING"
         }
       ]
     },
     {
       "clientMethod": {
+        "async": true,
         "method": {
-          "fullName": "ImportInstance",
+          "fullName": "ExportInstance",
           "service": {
             "shortName": "CloudRedis"
           }
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_import_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ImportInstance_sync",
+      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_export_instance_async.py",
+      "regionTag": "redis_generated_redis_v1_CloudRedis_ExportInstance_async",
       "segments": [
         {
           "end": 50,
