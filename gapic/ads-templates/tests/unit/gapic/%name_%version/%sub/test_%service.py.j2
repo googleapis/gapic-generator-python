@@ -917,8 +917,6 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         return_value = None
         {% elif method.lro %}
         return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming %}
-        return_value = iter([{{ method.output.ident }}()])
         {% else %}
         return_value = {{ method.output.ident }}(
             {% for field in method.output.fields.values() | rejectattr('message')%}
@@ -941,6 +939,8 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
+    {% elif method.server_streaming %}
+        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
     {% else %}
         json_return_value = {{ method.output.ident }}.to_json(return_value)
     {% endif %}
@@ -948,6 +948,10 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         req.return_value = response_value
         {% if method.client_streaming %}
         response = client.{{ method.name|snake_case }}(iter(requests))
+        {% elif method.server_streaming %}
+        with mock.patch.object(response_value, 'iter_content') as iter_content:
+            iter_content.return_value = iter(json_return_value)
+            response = client.{{ method_name }}(request)
         {% else %}
         response = client.{{ method_name }}(request)
         {% endif %}
@@ -956,6 +960,11 @@ def test_{{ method.name|snake_case }}_rest(request_type):
     {# Cheeser assertion to force code coverage for bad paginated methods #}
     assert response.raw_page is response
 
+    {% endif %}
+
+    {% if method.server_streaming %}
+    assert isinstance(response, Iterable)
+    response = next(response)
     {% endif %}
 
     # Establish that the response is the type that we expect.
