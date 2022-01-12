@@ -174,6 +174,6 @@ class SnippetIndex:
 
     def get_metadata_json(self) -> str:
         """JSON representation of Snippet Index."""
-        # protobuf's MessageToJson doesn't provide a stable order for list items
-        # so we use the json module instead
-        return json.dumps(json_format.MessageToDict(self.metadata_index), sort_keys=True, indent=2)
+        # Downstream tools assume the generator will produce the exact
+        # same output when run over the same API multiple times
+        return json.dumps(OrderedDict(json_format.MessageToDict(self.metadata_index)), indent=2)
