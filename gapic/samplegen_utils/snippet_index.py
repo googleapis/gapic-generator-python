@@ -178,4 +178,4 @@ class SnippetIndex:
         # Downstream tools assume the generator will produce the exact
         # same output when run over the same API multiple times
         self.metadata_index.snippets.sort(key=lambda s: s.region_tag)
-        return json.dumps(json_format.MessageToDict(self.metadata_index), indent=2, sort_keys=True)
+        return json_format.MessageToJson(self.metadata_index, sort_keys=True)
