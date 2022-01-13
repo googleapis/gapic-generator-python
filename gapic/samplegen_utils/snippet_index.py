@@ -174,7 +174,7 @@ class SnippetIndex:
 
     def get_metadata_json(self) -> str:
         """JSON representation of Snippet Index."""
-        
+
         # Downstream tools assume the generator will produce the exact
         # same output when run over the same API multiple times
         self.metadata_index.snippets.sort(key=lambda s: s.region_tag)
