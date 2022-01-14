@@ -13,8 +13,6 @@
 # limitations under the License.
 
 import re
-import json
-from collections import OrderedDict
 from typing import Optional, Dict
 
 from google.protobuf import json_format
