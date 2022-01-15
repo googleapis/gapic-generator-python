@@ -27,7 +27,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
 from google.cloud.redis_v1.types import cloud_redis
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

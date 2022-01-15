@@ -31,12 +31,12 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+from google.api_core import operation
+from google.api_core import operation_async
 from google.cloud.asset_v1.services.asset_service import pagers
 from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
-from google.type import expr_pb2  # type: ignore
+from google.type import expr_pb2
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
 from .client import AssetServiceClient

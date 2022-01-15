@@ -13,17 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.orgpolicy.v1 import orgpolicy_pb2  # type: ignore
-from google.cloud.osconfig.v1 import inventory_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import access_level_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import access_policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import service_perimeter_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import code_pb2  # type: ignore
+import proto
+from google.cloud.orgpolicy.v1 import orgpolicy_pb2
+from google.cloud.osconfig.v1 import inventory_pb2
+from google.iam.v1 import policy_pb2
+from google.identity.accesscontextmanager.v1 import access_level_pb2
+from google.identity.accesscontextmanager.v1 import access_policy_pb2
+from google.identity.accesscontextmanager.v1 import service_perimeter_pb2
+from google.protobuf import struct_pb2
+from google.protobuf import timestamp_pb2
+from google.rpc import code_pb2
 
 
 __protobuf__ = proto.module(

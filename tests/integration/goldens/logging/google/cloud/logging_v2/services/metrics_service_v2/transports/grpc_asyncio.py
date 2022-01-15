@@ -21,11 +21,11 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc                        # type: ignore
-from grpc.experimental import aio  # type: ignore
+import grpc
+from grpc.experimental import aio
 
 from google.cloud.logging_v2.types import logging_metrics
-from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import empty_pb2
 from .base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .grpc import MetricsServiceV2GrpcTransport
 

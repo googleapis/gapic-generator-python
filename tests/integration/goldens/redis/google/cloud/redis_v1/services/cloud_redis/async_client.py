@@ -31,13 +31,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+from google.api_core import operation
+from google.api_core import operation_async
 from google.cloud.redis_v1.services.cloud_redis import pagers
 from google.cloud.redis_v1.types import cloud_redis
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
+from google.protobuf import timestamp_pb2
 from .transports.base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .client import CloudRedisClient

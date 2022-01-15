@@ -34,7 +34,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.api import monitored_resource_pb2  # type: ignore
+from google.api import monitored_resource_pb2
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging

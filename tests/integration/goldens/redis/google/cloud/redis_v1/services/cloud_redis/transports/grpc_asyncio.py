@@ -22,11 +22,11 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc                        # type: ignore
-from grpc.experimental import aio  # type: ignore
+import grpc
+from grpc.experimental import aio
 
 from google.cloud.redis_v1.types import cloud_redis
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .grpc import CloudRedisGrpcTransport
 

@@ -14,7 +14,7 @@ import google.auth                         # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc  # type: ignore
+import grpc
 
 {% filter sort_lines %}
 {% for method in service.methods.values() %}

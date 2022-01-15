@@ -23,7 +23,7 @@ import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 
-from google.api import monitored_resource_pb2  # type: ignore
+from google.api import monitored_resource_pb2
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -38,13 +38,13 @@ from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.services.logging_service_v2 import transports
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
-from google.logging.type import http_request_pb2  # type: ignore
-from google.logging.type import log_severity_pb2  # type: ignore
+from google.logging.type import http_request_pb2
+from google.logging.type import log_severity_pb2
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import any_pb2
+from google.protobuf import duration_pb2
+from google.protobuf import struct_pb2
+from google.protobuf import timestamp_pb2
 import google.auth
 
 

@@ -31,11 +31,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.api import distribution_pb2  # type: ignore
-from google.api import metric_pb2  # type: ignore
+from google.api import distribution_pb2
+from google.api import metric_pb2
 from google.cloud.logging_v2.services.metrics_service_v2 import pagers
 from google.cloud.logging_v2.types import logging_metrics
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import timestamp_pb2
 from .transports.base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import MetricsServiceV2GrpcAsyncIOTransport
 from .client import MetricsServiceV2Client

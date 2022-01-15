@@ -32,8 +32,8 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.iam.credentials_v1.types import common
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import duration_pb2
+from google.protobuf import timestamp_pb2
 from .transports.base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
 from .client import IAMCredentialsClient

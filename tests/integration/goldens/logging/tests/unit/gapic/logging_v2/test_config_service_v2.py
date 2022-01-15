@@ -37,8 +37,8 @@ from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.services.config_service_v2 import transports
 from google.cloud.logging_v2.types import logging_config
 from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import field_mask_pb2
+from google.protobuf import timestamp_pb2
 import google.auth
 
 

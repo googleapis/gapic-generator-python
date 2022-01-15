@@ -22,10 +22,10 @@ import google.auth                         # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc  # type: ignore
+import grpc
 
 from google.cloud.logging_v2.types import logging_config
-from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import empty_pb2
 from .base import ConfigServiceV2Transport, DEFAULT_CLIENT_INFO
 
 

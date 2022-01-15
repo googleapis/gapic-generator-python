@@ -21,8 +21,8 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc                        # type: ignore
-from grpc.experimental import aio  # type: ignore
+import grpc
+from grpc.experimental import aio
 
 from google.iam.credentials_v1.types import common
 from .base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO
