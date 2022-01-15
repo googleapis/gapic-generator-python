@@ -923,7 +923,7 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                 valid = is_valid_sample_cfg(cfg)
                 if not valid:
                     raise types.InvalidConfig(
-                        "Sample config is invalid", valid)
+                        "Sample config in '{}' is invalid\n\n{}".format(config_fpath, cfg), valid)
                 for spec in cfg.get("samples", []):
                     yield spec
 

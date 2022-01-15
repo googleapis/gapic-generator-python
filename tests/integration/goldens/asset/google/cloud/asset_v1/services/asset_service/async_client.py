@@ -212,7 +212,7 @@ class AssetServiceAsyncClient:
 
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_export_assets():
                 # Create a client
@@ -306,7 +306,7 @@ class AssetServiceAsyncClient:
 
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_list_assets():
                 # Create a client
@@ -417,7 +417,7 @@ class AssetServiceAsyncClient:
 
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_batch_get_assets_history():
                 # Create a client
@@ -498,7 +498,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_create_feed():
                 # Create a client
@@ -607,7 +607,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Gets details about an asset feed.
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_get_feed():
                 # Create a client
@@ -719,7 +719,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_list_feeds():
                 # Create a client
@@ -820,7 +820,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Updates an asset feed configuration.
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_update_feed():
                 # Create a client
@@ -923,7 +923,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Deletes an asset feed.
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_delete_feed():
                 # Create a client
@@ -1022,7 +1022,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_search_all_resources():
                 # Create a client
@@ -1226,7 +1226,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_search_all_iam_policies():
                 # Create a client
@@ -1406,7 +1406,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_analyze_iam_policy():
                 # Create a client
@@ -1500,7 +1500,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_analyze_iam_policy_longrunning():
                 # Create a client

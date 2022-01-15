@@ -204,7 +204,7 @@ class ConfigServiceV2AsyncClient:
         r"""Lists buckets.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_list_buckets():
                 # Create a client
@@ -321,7 +321,7 @@ class ConfigServiceV2AsyncClient:
         r"""Gets a bucket.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_get_bucket():
                 # Create a client
@@ -399,7 +399,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_create_bucket():
                 # Create a client
@@ -486,7 +486,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_update_bucket():
                 # Create a client
@@ -564,7 +564,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_delete_bucket():
                 # Create a client
@@ -631,7 +631,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_undelete_bucket():
                 # Create a client
@@ -697,7 +697,7 @@ class ConfigServiceV2AsyncClient:
         r"""Lists views on a bucket.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_list_views():
                 # Create a client
@@ -801,7 +801,7 @@ class ConfigServiceV2AsyncClient:
         r"""Gets a view.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_get_view():
                 # Create a client
@@ -881,7 +881,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_create_view():
                 # Create a client
@@ -956,7 +956,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_update_view():
                 # Create a client
@@ -1028,7 +1028,7 @@ class ConfigServiceV2AsyncClient:
         r"""Deletes a view from a bucket.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_delete_view():
                 # Create a client
@@ -1095,7 +1095,7 @@ class ConfigServiceV2AsyncClient:
         r"""Lists sinks.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_list_sinks():
                 # Create a client
@@ -1216,7 +1216,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Gets a sink.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_get_sink():
                 # Create a client
@@ -1341,7 +1341,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_create_sink():
                 # Create a client
@@ -1475,7 +1475,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_update_sink():
                 # Create a client
@@ -1633,7 +1633,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_delete_sink():
                 # Create a client
@@ -1734,7 +1734,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Lists all the exclusions in a parent resource.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_list_exclusions():
                 # Create a client
@@ -1855,7 +1855,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Gets the description of an exclusion.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_get_exclusion():
                 # Create a client
@@ -1982,7 +1982,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_create_exclusion():
                 # Create a client
@@ -2116,7 +2116,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_update_exclusion():
                 # Create a client
@@ -2261,7 +2261,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Deletes an exclusion.
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_delete_exclusion():
                 # Create a client
@@ -2371,7 +2371,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_get_cmek_settings():
                 # Create a client
@@ -2475,7 +2475,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
-        from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_update_cmek_settings():
                 # Create a client

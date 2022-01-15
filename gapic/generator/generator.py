@@ -208,11 +208,11 @@ class Generator:
             for fname, (_, sample) in fpath_to_spec_and_rendered.items()
         }
 
-        if len(index.metadata_index.snippets) > 0:
+        if index.metadata_index.snippets:
             # NOTE(busunkim): Not all fields are yet populated in the snippet metadata.
             # Expected filename: snippet_metadata_{metadata_schema_version}_{apishortname}_{apiversion}.json
             snippet_metadata_path = str(pathlib.Path(
-                out_dir) / f"snippet_metadata_v1_{api_schema.naming.name}_{api_schema.naming.version}.json").lower()
+                out_dir) / f"snippet_metadata_{api_schema.naming.name}_{api_schema.naming.version}.json").lower()
             output_files[snippet_metadata_path] = CodeGeneratorResponse.File(
                 content=formatter.fix_whitespace(index.get_metadata_json()), name=snippet_metadata_path)
 

@@ -397,9 +397,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         the export operation result. For regular-size resource parent,
         the export operation usually finishes within 5 minutes.
 
-
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_export_assets():
                 # Create a client
@@ -492,9 +490,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Lists assets with time and resource types and returns
         paged results in response.
 
-
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_list_assets():
                 # Create a client
@@ -603,9 +599,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
-
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_batch_get_assets_history():
                 # Create a client
@@ -678,9 +672,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         project/folder/organization to listen to its asset
         updates.
 
-
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_create_feed():
                 # Create a client
@@ -788,8 +780,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_get_feed():
                 # Create a client
@@ -892,9 +883,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Lists all asset feeds in a parent
         project/folder/organization.
 
-
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_list_feeds():
                 # Create a client
@@ -987,8 +976,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_update_feed():
                 # Create a client
@@ -1090,8 +1078,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ) -> None:
         r"""Deletes an asset feed.
 
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_delete_feed():
                 # Create a client
@@ -1181,9 +1168,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         the ``cloudasset.assets.searchAllResources`` permission on the
         desired scope, otherwise the request will be rejected.
 
-
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_search_all_resources():
                 # Create a client
@@ -1378,9 +1363,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         ``cloudasset.assets.searchAllIamPolicies`` permission on the
         desired scope, otherwise the request will be rejected.
 
-
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_search_all_iam_policies():
                 # Create a client
@@ -1551,9 +1534,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
 
-
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_analyze_iam_policy():
                 # Create a client
@@ -1640,9 +1621,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         to poll the operation result. The metadata contains the request
         to help callers to map responses to requests.
 
-
-        .. code-block::
-        from google.cloud import asset_v1
+            from google.cloud import asset_v1
 
             def sample_analyze_iam_policy_longrunning():
                 # Create a client
