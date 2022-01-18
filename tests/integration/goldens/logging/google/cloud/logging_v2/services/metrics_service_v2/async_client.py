@@ -197,6 +197,7 @@ class MetricsServiceV2AsyncClient:
         r"""Lists logs-based metrics.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_list_log_metrics():
@@ -314,6 +315,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Gets a logs-based metric.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_get_log_metric():
@@ -431,6 +433,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Creates a logs-based metric.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_create_log_metric():
@@ -558,6 +561,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Creates or updates a logs-based metric.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_update_log_metric():
@@ -691,6 +695,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Deletes a logs-based metric.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_log_metric():

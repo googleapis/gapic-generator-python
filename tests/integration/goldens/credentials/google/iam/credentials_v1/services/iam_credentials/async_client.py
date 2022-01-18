@@ -210,6 +210,7 @@ class IAMCredentialsAsyncClient:
 
 
         .. code-block::
+
             from google.iam import credentials_v1
 
             def sample_generate_access_token():
@@ -367,6 +368,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.iam import credentials_v1
 
             def sample_generate_id_token():
@@ -517,6 +519,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.iam import credentials_v1
 
             def sample_sign_blob():
@@ -654,6 +657,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.iam import credentials_v1
 
             def sample_sign_jwt():

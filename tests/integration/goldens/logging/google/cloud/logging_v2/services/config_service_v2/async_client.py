@@ -204,6 +204,7 @@ class ConfigServiceV2AsyncClient:
         r"""Lists buckets.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_list_buckets():
@@ -321,6 +322,7 @@ class ConfigServiceV2AsyncClient:
         r"""Gets a bucket.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_get_bucket():
@@ -399,6 +401,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_create_bucket():
@@ -486,6 +489,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_update_bucket():
@@ -564,6 +568,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_bucket():
@@ -631,6 +636,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_undelete_bucket():
@@ -697,6 +703,7 @@ class ConfigServiceV2AsyncClient:
         r"""Lists views on a bucket.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_list_views():
@@ -801,6 +808,7 @@ class ConfigServiceV2AsyncClient:
         r"""Gets a view.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_get_view():
@@ -881,6 +889,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_create_view():
@@ -956,6 +965,7 @@ class ConfigServiceV2AsyncClient:
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_update_view():
@@ -1028,6 +1038,7 @@ class ConfigServiceV2AsyncClient:
         r"""Deletes a view from a bucket.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_view():
@@ -1095,6 +1106,7 @@ class ConfigServiceV2AsyncClient:
         r"""Lists sinks.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_list_sinks():
@@ -1216,6 +1228,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Gets a sink.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_get_sink():
@@ -1341,6 +1354,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_create_sink():
@@ -1475,6 +1489,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_update_sink():
@@ -1633,6 +1648,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_sink():
@@ -1734,6 +1750,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Lists all the exclusions in a parent resource.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_list_exclusions():
@@ -1855,6 +1872,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Gets the description of an exclusion.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_get_exclusion():
@@ -1982,6 +2000,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_create_exclusion():
@@ -2116,6 +2135,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_update_exclusion():
@@ -2261,6 +2281,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Deletes an exclusion.
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_exclusion():
@@ -2371,6 +2392,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_get_cmek_settings():
@@ -2475,6 +2497,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_update_cmek_settings():

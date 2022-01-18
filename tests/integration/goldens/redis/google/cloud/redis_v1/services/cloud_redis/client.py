@@ -406,6 +406,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         regions available to the project are queried, and the results
         are aggregated.
 
+
+
+        .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_list_instances():
@@ -514,6 +518,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
+
+
+        .. code-block::
 
             from google.cloud import redis_v1
 
@@ -625,6 +632,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         The returned operation is automatically deleted after a few
         hours, so there is no need to call DeleteOperation.
+
+
+
+        .. code-block::
 
             from google.cloud import redis_v1
 
@@ -773,6 +784,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         operation is automatically deleted after a few hours, so
         there is no need to call DeleteOperation.
 
+
+
+        .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_update_instance():
@@ -900,6 +915,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             ) -> operation.Operation:
         r"""Upgrades Redis instance to the newer Redis version
         specified in the request.
+
+
+
+        .. code-block::
 
             from google.cloud import redis_v1
 
@@ -1031,6 +1050,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
+
+
+        .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_import_instance():
@@ -1155,6 +1178,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
+
+
+        .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_export_instance():
@@ -1277,6 +1304,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 
+
+
+        .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_failover_instance():
@@ -1398,6 +1429,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             ) -> operation.Operation:
         r"""Deletes a specific Redis instance.  Instance stops
         serving and data is deleted.
+
+
+
+        .. code-block::
 
             from google.cloud import redis_v1
 

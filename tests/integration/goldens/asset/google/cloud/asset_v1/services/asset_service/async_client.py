@@ -212,6 +212,7 @@ class AssetServiceAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_export_assets():
@@ -306,6 +307,7 @@ class AssetServiceAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_list_assets():
@@ -417,6 +419,7 @@ class AssetServiceAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_batch_get_assets_history():
@@ -498,6 +501,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_create_feed():
@@ -607,6 +611,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Gets details about an asset feed.
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_get_feed():
@@ -719,6 +724,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_list_feeds():
@@ -820,6 +826,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Updates an asset feed configuration.
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_update_feed():
@@ -923,6 +930,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Deletes an asset feed.
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_delete_feed():
@@ -1022,6 +1030,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_search_all_resources():
@@ -1226,6 +1235,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_search_all_iam_policies():
@@ -1406,6 +1416,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_analyze_iam_policy():
@@ -1500,6 +1511,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_analyze_iam_policy_longrunning():

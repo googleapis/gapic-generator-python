@@ -397,6 +397,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         the export operation result. For regular-size resource parent,
         the export operation usually finishes within 5 minutes.
 
+
+
+        .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_export_assets():
@@ -489,6 +493,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ) -> pagers.ListAssetsPager:
         r"""Lists assets with time and resource types and returns
         paged results in response.
+
+
+
+        .. code-block::
 
             from google.cloud import asset_v1
 
@@ -599,6 +607,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
+
+
+        .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_batch_get_assets_history():
@@ -671,6 +683,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
         updates.
+
+
+
+        .. code-block::
 
             from google.cloud import asset_v1
 
@@ -780,6 +796,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
+
+        .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_get_feed():
@@ -883,6 +902,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Lists all asset feeds in a parent
         project/folder/organization.
 
+
+
+        .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_list_feeds():
@@ -975,6 +998,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
+
+
+        .. code-block::
 
             from google.cloud import asset_v1
 
@@ -1078,6 +1104,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ) -> None:
         r"""Deletes an asset feed.
 
+
+        .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_delete_feed():
@@ -1167,6 +1196,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         a project, folder, or organization. The caller must be granted
         the ``cloudasset.assets.searchAllResources`` permission on the
         desired scope, otherwise the request will be rejected.
+
+
+
+        .. code-block::
 
             from google.cloud import asset_v1
 
@@ -1363,6 +1396,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         ``cloudasset.assets.searchAllIamPolicies`` permission on the
         desired scope, otherwise the request will be rejected.
 
+
+
+        .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_search_all_iam_policies():
@@ -1534,6 +1571,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
 
+
+
+        .. code-block::
+
             from google.cloud import asset_v1
 
             def sample_analyze_iam_policy():
@@ -1620,6 +1661,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         intervals of at least 2 seconds with exponential backoff retry
         to poll the operation result. The metadata contains the request
         to help callers to map responses to requests.
+
+
+
+        .. code-block::
 
             from google.cloud import asset_v1
 

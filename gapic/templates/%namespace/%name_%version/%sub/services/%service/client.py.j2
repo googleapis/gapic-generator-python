@@ -366,6 +366,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         
         {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
         {% if snippet is not none %}
+        .. code-block::
+
 {{ snippet.full_snippet|indent(width=12, first=True) }}
         {% endif %}
         {% endwith %}

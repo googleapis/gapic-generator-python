@@ -417,6 +417,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> pagers.ListBucketsPager:
         r"""Lists buckets.
 
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_list_buckets():
@@ -533,6 +536,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogBucket:
         r"""Gets a bucket.
 
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_get_bucket():
@@ -609,6 +615,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Creates a bucket that can be used to store log
         entries. Once a bucket has been created, the region
         cannot be changed.
+
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -696,6 +706,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         A buckets region may not be modified after it is created.
 
+
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_update_bucket():
@@ -773,6 +787,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         state. After 7 days, the bucket will be purged and all logs in
         the bucket will be permanently deleted.
 
+
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_bucket():
@@ -839,6 +857,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Undeletes a bucket. A bucket that has been deleted
         may be undeleted within the grace period of 7 days.
 
+
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_undelete_bucket():
@@ -904,6 +926,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListViewsPager:
         r"""Lists views on a bucket.
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -1008,6 +1033,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogView:
         r"""Gets a view.
 
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_get_view():
@@ -1087,6 +1115,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Creates a view over logs in a bucket. A bucket may
         contain a maximum of 50 views.
 
+
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_create_view():
@@ -1161,6 +1193,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Updates a view. This method replaces the following fields in the
         existing view with values from the new view: ``filter``.
 
+
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_update_view():
@@ -1233,6 +1269,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Deletes a view from a bucket.
 
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_view():
@@ -1299,6 +1338,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListSinksPager:
         r"""Lists sinks.
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -1411,6 +1453,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogSink:
         r"""Gets a sink.
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -1526,6 +1571,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         immediately, unless the sink's ``writer_identity`` is not
         permitted to write to the destination. A sink can export log
         entries only from the resource owning the sink.
+
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -1658,6 +1707,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         The updated sink might also have a new ``writer_identity``; see
         the ``unique_writer_identity`` field.
+
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -1807,6 +1860,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Deletes a sink. If the sink has a unique ``writer_identity``,
         then that service account is also deleted.
 
+
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_sink():
@@ -1898,6 +1955,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListExclusionsPager:
         r"""Lists all the exclusions in a parent resource.
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -2010,6 +2070,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogExclusion:
         r"""Gets the description of an exclusion.
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -2127,6 +2190,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         resource. Only log entries belonging to that resource
         can be excluded. You can have up to 10 exclusions in a
         resource.
+
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -2259,6 +2326,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing
         exclusion.
+
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -2404,6 +2475,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Deletes an exclusion.
 
+
+        .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_exclusion():
@@ -2503,6 +2577,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         See `Enabling CMEK for Logs
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
+
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 
@@ -2606,6 +2684,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         See `Enabling CMEK for Logs
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
+
+
+
+        .. code-block::
 
             from google.cloud import logging_v2
 

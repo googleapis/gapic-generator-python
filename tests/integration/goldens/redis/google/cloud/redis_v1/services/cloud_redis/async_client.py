@@ -230,6 +230,7 @@ class CloudRedisAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_list_instances():
@@ -340,6 +341,7 @@ class CloudRedisAsyncClient:
         r"""Gets the details of a specific Redis instance.
 
         .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_get_instance():
@@ -453,6 +455,7 @@ class CloudRedisAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_create_instance():
@@ -602,6 +605,7 @@ class CloudRedisAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_update_instance():
@@ -732,6 +736,7 @@ class CloudRedisAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_upgrade_instance():
@@ -864,6 +869,7 @@ class CloudRedisAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_import_instance():
@@ -990,6 +996,7 @@ class CloudRedisAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_export_instance():
@@ -1114,6 +1121,7 @@ class CloudRedisAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_failover_instance():
@@ -1238,6 +1246,7 @@ class CloudRedisAsyncClient:
 
 
         .. code-block::
+
             from google.cloud import redis_v1
 
             def sample_delete_instance():

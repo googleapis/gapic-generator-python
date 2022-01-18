@@ -201,6 +201,7 @@ class LoggingServiceV2AsyncClient:
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_delete_log():
@@ -315,6 +316,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_write_log_entries():
@@ -502,6 +504,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_list_log_entries():
@@ -656,6 +659,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_list_monitored_resource_descriptors():
@@ -743,6 +747,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_list_logs():
@@ -865,6 +870,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
 
         .. code-block::
+
             from google.cloud import logging_v2
 
             def sample_tail_log_entries():
