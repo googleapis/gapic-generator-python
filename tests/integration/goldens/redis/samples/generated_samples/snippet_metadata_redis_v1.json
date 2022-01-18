@@ -4,13 +4,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "CreateInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "CreateInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_create_instance_async.py",
+      "file": "redis_generated_redis_v1_cloud_redis_create_instance_async.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_CreateInstance_async",
       "segments": [
         {
@@ -46,13 +46,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "CreateInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "CreateInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_create_instance_sync.py",
+      "file": "redis_generated_redis_v1_cloud_redis_create_instance_sync.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_CreateInstance_sync",
       "segments": [
         {
@@ -89,13 +89,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "DeleteInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "DeleteInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_delete_instance_async.py",
+      "file": "redis_generated_redis_v1_cloud_redis_delete_instance_async.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_DeleteInstance_async",
       "segments": [
         {
@@ -131,13 +131,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "DeleteInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "DeleteInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_delete_instance_sync.py",
+      "file": "redis_generated_redis_v1_cloud_redis_delete_instance_sync.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_DeleteInstance_sync",
       "segments": [
         {
@@ -174,13 +174,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ExportInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "ExportInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_export_instance_async.py",
+      "file": "redis_generated_redis_v1_cloud_redis_export_instance_async.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_ExportInstance_async",
       "segments": [
         {
@@ -216,13 +216,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "ExportInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "ExportInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_export_instance_sync.py",
+      "file": "redis_generated_redis_v1_cloud_redis_export_instance_sync.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_ExportInstance_sync",
       "segments": [
         {
@@ -259,13 +259,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "FailoverInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "FailoverInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_failover_instance_async.py",
+      "file": "redis_generated_redis_v1_cloud_redis_failover_instance_async.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_FailoverInstance_async",
       "segments": [
         {
@@ -301,13 +301,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "FailoverInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "FailoverInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_failover_instance_sync.py",
+      "file": "redis_generated_redis_v1_cloud_redis_failover_instance_sync.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_FailoverInstance_sync",
       "segments": [
         {
@@ -344,13 +344,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "GetInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "GetInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_get_instance_async.py",
+      "file": "redis_generated_redis_v1_cloud_redis_get_instance_async.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_GetInstance_async",
       "segments": [
         {
@@ -388,13 +388,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "GetInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "GetInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_get_instance_sync.py",
+      "file": "redis_generated_redis_v1_cloud_redis_get_instance_sync.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_GetInstance_sync",
       "segments": [
         {
@@ -433,13 +433,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ImportInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "ImportInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_import_instance_async.py",
+      "file": "redis_generated_redis_v1_cloud_redis_import_instance_async.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_ImportInstance_async",
       "segments": [
         {
@@ -475,13 +475,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "ImportInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "ImportInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_import_instance_sync.py",
+      "file": "redis_generated_redis_v1_cloud_redis_import_instance_sync.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_ImportInstance_sync",
       "segments": [
         {
@@ -518,13 +518,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ListInstances",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "ListInstances"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_list_instances_async.py",
+      "file": "redis_generated_redis_v1_cloud_redis_list_instances_async.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_ListInstances_async",
       "segments": [
         {
@@ -560,13 +560,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "ListInstances",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "ListInstances"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_list_instances_sync.py",
+      "file": "redis_generated_redis_v1_cloud_redis_list_instances_sync.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_ListInstances_sync",
       "segments": [
         {
@@ -603,13 +603,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "UpdateInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "UpdateInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_update_instance_async.py",
+      "file": "redis_generated_redis_v1_cloud_redis_update_instance_async.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_UpdateInstance_async",
       "segments": [
         {
@@ -645,13 +645,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "UpdateInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "UpdateInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_update_instance_sync.py",
+      "file": "redis_generated_redis_v1_cloud_redis_update_instance_sync.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_UpdateInstance_sync",
       "segments": [
         {
@@ -688,13 +688,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "UpgradeInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "UpgradeInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_upgrade_instance_async.py",
+      "file": "redis_generated_redis_v1_cloud_redis_upgrade_instance_async.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_UpgradeInstance_async",
       "segments": [
         {
@@ -730,13 +730,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "UpgradeInstance",
           "service": {
             "shortName": "CloudRedis"
-          }
+          },
+          "shortName": "UpgradeInstance"
         }
       },
-      "file": "samples/generated_samples/redis_generated_redis_v1_cloud_redis_upgrade_instance_sync.py",
+      "file": "redis_generated_redis_v1_cloud_redis_upgrade_instance_sync.py",
       "regionTag": "redis_generated_redis_v1_CloudRedis_UpgradeInstance_sync",
       "segments": [
         {

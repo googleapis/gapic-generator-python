@@ -4,13 +4,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "AnalyzeIamPolicyLongrunning",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "AnalyzeIamPolicyLongrunning"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_analyze_iam_policy_longrunning_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_analyze_iam_policy_longrunning_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_AnalyzeIamPolicyLongrunning_async",
       "segments": [
         {
@@ -46,13 +46,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "AnalyzeIamPolicyLongrunning",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "AnalyzeIamPolicyLongrunning"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_analyze_iam_policy_longrunning_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_analyze_iam_policy_longrunning_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_AnalyzeIamPolicyLongrunning_sync",
       "segments": [
         {
@@ -89,13 +89,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "AnalyzeIamPolicy",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "AnalyzeIamPolicy"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_analyze_iam_policy_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_analyze_iam_policy_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_AnalyzeIamPolicy_async",
       "segments": [
         {
@@ -133,13 +133,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "AnalyzeIamPolicy",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "AnalyzeIamPolicy"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_analyze_iam_policy_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_analyze_iam_policy_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_AnalyzeIamPolicy_sync",
       "segments": [
         {
@@ -178,13 +178,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "BatchGetAssetsHistory",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "BatchGetAssetsHistory"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_batch_get_assets_history_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_batch_get_assets_history_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_BatchGetAssetsHistory_async",
       "segments": [
         {
@@ -222,13 +222,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "BatchGetAssetsHistory",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "BatchGetAssetsHistory"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_batch_get_assets_history_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_batch_get_assets_history_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_BatchGetAssetsHistory_sync",
       "segments": [
         {
@@ -267,13 +267,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "CreateFeed",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "CreateFeed"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_create_feed_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_create_feed_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_CreateFeed_async",
       "segments": [
         {
@@ -311,13 +311,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "CreateFeed",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "CreateFeed"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_create_feed_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_create_feed_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_CreateFeed_sync",
       "segments": [
         {
@@ -356,13 +356,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "DeleteFeed",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "DeleteFeed"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_delete_feed_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_delete_feed_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_DeleteFeed_async",
       "segments": [
         {
@@ -398,13 +398,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "DeleteFeed",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "DeleteFeed"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_delete_feed_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_delete_feed_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_DeleteFeed_sync",
       "segments": [
         {
@@ -441,13 +441,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ExportAssets",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "ExportAssets"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_export_assets_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_export_assets_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ExportAssets_async",
       "segments": [
         {
@@ -483,13 +483,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "ExportAssets",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "ExportAssets"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_export_assets_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_export_assets_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ExportAssets_sync",
       "segments": [
         {
@@ -526,13 +526,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "GetFeed",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "GetFeed"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_get_feed_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_get_feed_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_GetFeed_async",
       "segments": [
         {
@@ -570,13 +570,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "GetFeed",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "GetFeed"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_get_feed_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_get_feed_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_GetFeed_sync",
       "segments": [
         {
@@ -615,13 +615,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ListAssets",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "ListAssets"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_list_assets_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_list_assets_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ListAssets_async",
       "segments": [
         {
@@ -657,13 +657,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "ListAssets",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "ListAssets"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_list_assets_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_list_assets_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ListAssets_sync",
       "segments": [
         {
@@ -700,13 +700,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "ListFeeds",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "ListFeeds"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_list_feeds_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_list_feeds_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ListFeeds_async",
       "segments": [
         {
@@ -744,13 +744,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "ListFeeds",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "ListFeeds"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_list_feeds_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_list_feeds_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ListFeeds_sync",
       "segments": [
         {
@@ -789,13 +789,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "SearchAllIamPolicies",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "SearchAllIamPolicies"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_search_all_iam_policies_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_search_all_iam_policies_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_SearchAllIamPolicies_async",
       "segments": [
         {
@@ -831,13 +831,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "SearchAllIamPolicies",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "SearchAllIamPolicies"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_search_all_iam_policies_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_search_all_iam_policies_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_SearchAllIamPolicies_sync",
       "segments": [
         {
@@ -874,13 +874,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "SearchAllResources",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "SearchAllResources"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_search_all_resources_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_search_all_resources_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_SearchAllResources_async",
       "segments": [
         {
@@ -916,13 +916,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "SearchAllResources",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "SearchAllResources"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_search_all_resources_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_search_all_resources_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_SearchAllResources_sync",
       "segments": [
         {
@@ -959,13 +959,13 @@
       "clientMethod": {
         "async": true,
         "method": {
-          "fullName": "UpdateFeed",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "UpdateFeed"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_update_feed_async.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_update_feed_async.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_UpdateFeed_async",
       "segments": [
         {
@@ -1003,13 +1003,13 @@
     {
       "clientMethod": {
         "method": {
-          "fullName": "UpdateFeed",
           "service": {
             "shortName": "AssetService"
-          }
+          },
+          "shortName": "UpdateFeed"
         }
       },
-      "file": "samples/generated_samples/cloudasset_generated_asset_v1_asset_service_update_feed_sync.py",
+      "file": "cloudasset_generated_asset_v1_asset_service_update_feed_sync.py",
       "regionTag": "cloudasset_generated_asset_v1_AssetService_UpdateFeed_sync",
       "segments": [
         {
