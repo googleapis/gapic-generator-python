@@ -134,7 +134,7 @@ def test_generate_sample_basic():
         'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
         'clientMethod':
             {'method': {
-                'fullName': 'Classify',
+                'shortName': 'Classify',
                 'service': {'shortName': 'Mollusc'}
             }}
         }
@@ -221,7 +221,7 @@ def test_generate_sample_basic_async():
         {
             'async': True,
             'method': {
-                'fullName': 'Classify',
+                'shortName': 'Classify',
                 'service': {'shortName': 'Mollusc'}
                 }}
     }
@@ -301,7 +301,7 @@ def test_generate_sample_basic_unflattenable():
         'clientMethod':
         {
             'method': {
-                'fullName': 'Classify',
+                'shortName': 'Classify',
                 'service': {'shortName': 'Mollusc'}
                 }}
     }
@@ -379,7 +379,7 @@ def test_generate_sample_void_method():
         'clientMethod':
         {
             'method': {
-                'fullName': 'Classify',
+                'shortName': 'Classify',
                 'service': {'shortName': 'Mollusc'}
                 }}
     }

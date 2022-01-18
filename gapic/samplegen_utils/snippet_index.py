@@ -125,7 +125,7 @@ class SnippetIndex:
             RpcMethodNotFound: If the method indicated by the snippet metadata is not found.
         """
         service_name = snippet.metadata.client_method.method.service.short_name
-        rpc_name = snippet.metadata.client_method.method.full_name
+        rpc_name = snippet.metadata.client_method.method.short_name
 
         service = self._index.get(service_name)
         if service is None:

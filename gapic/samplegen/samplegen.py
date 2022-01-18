@@ -1100,7 +1100,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tup
     snippet_metadata.region_tag = sample["region_tag"]
     setattr(snippet_metadata.client_method, "async",
             sample["transport"] == api.TRANSPORT_GRPC_ASYNC)
-    snippet_metadata.client_method.method.full_name = sample["rpc"]
+    snippet_metadata.client_method.method.short_name = sample["rpc"]
     snippet_metadata.client_method.method.service.short_name = sample["service"].split(
         ".")[-1]
 

@@ -39,7 +39,7 @@ def mock_generate_sample(*args, **kwargs):
     dummy_snippet_metadata = snippet_metadata_pb2.Snippet()
     dummy_snippet_metadata.client_method.method.service.short_name = args[0]["service"].split(
         ".")[-1]
-    dummy_snippet_metadata.client_method.method.full_name = args[0]['rpc']
+    dummy_snippet_metadata.client_method.method.short_name = args[0]['rpc']
 
     return "", dummy_snippet_metadata
 
@@ -473,7 +473,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
             {
                 "clientMethod": {
                     "method": {
-                        "fullName": "GetSquidStreaming",
+                        "shortName": "GetSquidStreaming",
                         "service": {
                             "shortName": "Mollusc"
                             }
@@ -492,7 +492,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
             {
                 "clientMethod": {
                     "method": {
-                        "fullName": "GetClam",
+                        "shortName": "GetClam",
                         "service": {
                             "shortName": "Mollusc"
                             }
@@ -613,7 +613,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
             {
                 "clientMethod": {
                     "method": {
-                        "fullName": "GetSquidStreaming",
+                        "shortName": "GetSquidStreaming",
                         "service": {
                             "shortName": "Mollusc"
                             }
@@ -632,7 +632,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
             {
                 "clientMethod": {
                     "method": {
-                        "fullName": "GetSquidStreaming",
+                        "shortName": "GetSquidStreaming",
                         "service": {
                             "shortName": "Mollusc"
                             }
@@ -651,7 +651,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
             {
                 "clientMethod": {
                     "method": {
-                        "fullName": "GetSquidStreaming",
+                        "shortName": "GetSquidStreaming",
                         "service": {
                             "shortName": "Mollusc"
                             }
