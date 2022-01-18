@@ -32,6 +32,7 @@ def sample_tail_log_entries():
     client = logging_v2.LoggingServiceV2Client()
 
     # Initialize request argument(s)
+
     request = logging_v2.TailLogEntriesRequest(
         resource_names=['resource_names_value_1', 'resource_names_value_2'],
     )

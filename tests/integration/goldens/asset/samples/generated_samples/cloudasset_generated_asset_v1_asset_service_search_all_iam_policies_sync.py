@@ -32,6 +32,7 @@ def sample_search_all_iam_policies():
     client = asset_v1.AssetServiceClient()
 
     # Initialize request argument(s)
+
     request = asset_v1.SearchAllIamPoliciesRequest(
         scope="scope_value",
     )

@@ -56,10 +56,12 @@ service Snippets {
 
   rpc OneOfMethod(OneOfRequest) returns (Response);
 
-<<<<<<< HEAD
 
   rpc NestedResources(NestedResourcesRequest) returns (Response) {
   }
+  
+  rpc OneOfMethodRequiredField(OneOfRequestWithRequiredField) returns (Response);
+
 }
 
 message NestedResourcesRequest {
@@ -80,9 +82,6 @@ message Foo {
     (google.api.resource_reference) = {
       type: "snippets.example.com/Resource"
     }];
-=======
-  rpc OneOfMethodRequiredField(OneOfRequestWithRequiredField) returns (Response);
->>>>>>> master
 }
 
 enum Enum {

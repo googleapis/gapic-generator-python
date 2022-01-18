@@ -937,6 +937,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.ListViewsRequest(
                     parent="parent_value",
                 )
@@ -1126,6 +1127,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.CreateViewRequest(
                     parent="parent_value",
                     view_id="view_id_value",
@@ -1204,6 +1206,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.UpdateViewRequest(
                     name="name_value",
                 )
@@ -2696,6 +2699,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.UpdateCmekSettingsRequest(
                     name="name_value",
                 )

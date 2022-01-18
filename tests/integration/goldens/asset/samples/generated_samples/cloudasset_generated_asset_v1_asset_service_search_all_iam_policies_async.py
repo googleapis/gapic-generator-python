@@ -32,6 +32,7 @@ async def sample_search_all_iam_policies():
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
+
     request = asset_v1.SearchAllIamPoliciesRequest(
         scope="scope_value",
     )

@@ -315,6 +315,7 @@ class AssetServiceAsyncClient:
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.ListAssetsRequest(
                     parent="parent_value",
                 )
@@ -427,6 +428,7 @@ class AssetServiceAsyncClient:
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.BatchGetAssetsHistoryRequest(
                     parent="parent_value",
                 )
@@ -732,6 +734,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.ListFeedsRequest(
                     parent="parent_value",
                 )
@@ -1038,6 +1041,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.SearchAllResourcesRequest(
                     scope="scope_value",
                 )
@@ -1243,6 +1247,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.SearchAllIamPoliciesRequest(
                     scope="scope_value",
                 )

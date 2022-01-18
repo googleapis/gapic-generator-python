@@ -667,6 +667,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.ListMonitoredResourceDescriptorsRequest(
                 )
 
@@ -878,6 +879,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.TailLogEntriesRequest(
                     resource_names=['resource_names_value_1', 'resource_names_value_2'],
                 )

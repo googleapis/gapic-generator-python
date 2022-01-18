@@ -32,6 +32,7 @@ def sample_update_cmek_settings():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
+
     request = logging_v2.UpdateCmekSettingsRequest(
         name="name_value",
     )

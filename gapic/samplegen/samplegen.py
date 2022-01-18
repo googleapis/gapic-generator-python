@@ -284,31 +284,7 @@ class TransformedRequest:
                 pattern = cls.RESOURCE_RE.sub("{\g<1>}", pattern)
                 patterns[field] = pattern
 
-            # The field is only ever empty for singleton attributes.
-            attr_names: List[str] = [a.field for a in attrs]  # type: ignore
-
-            # A single resource may be found under multiple paths and have many patterns.
-            # We want to find an _exact_ match, if one exists.
-            pattern = next(
-                (
-                    p
-                    for p in resource_message_descriptor.pattern
-                    if cls.RESOURCE_RE.findall(p) == attr_names
-                ),
-                None,
-            )
-            if not pattern:
-                attr_name_str = ", ".join(attr_names)
-                raise types.NoSuchResourcePattern(
-                    f"Resource {resource_typestr} has no pattern with params: {attr_name_str}"
-                )
-            # This re-writes
-            # patterns like: 'projects/{project}/metricDescriptors/{metric_descriptor=**}'
-            # to 'projects/{project}/metricDescriptors/{metric_descriptor}
-            # so it can be used in sample code as an f-string.
-            pattern = cls.RESOURCE_RE.sub(r"{\g<1>}", pattern)
-
-            return cls(base=base, body=attrs, single=None, pattern=pattern,)
+            return cls(base=base, body=attrs, single=None, patterns=patterns,)
 
 
 @dataclasses.dataclass

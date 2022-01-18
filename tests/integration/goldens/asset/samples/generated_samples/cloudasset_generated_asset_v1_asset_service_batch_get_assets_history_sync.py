@@ -32,6 +32,7 @@ def sample_batch_get_assets_history():
     client = asset_v1.AssetServiceClient()
 
     # Initialize request argument(s)
+
     request = asset_v1.BatchGetAssetsHistoryRequest(
         parent="parent_value",
     )

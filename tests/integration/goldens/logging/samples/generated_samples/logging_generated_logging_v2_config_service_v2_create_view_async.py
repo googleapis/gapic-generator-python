@@ -32,6 +32,7 @@ async def sample_create_view():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+
     request = logging_v2.CreateViewRequest(
         parent="parent_value",
         view_id="view_id_value",

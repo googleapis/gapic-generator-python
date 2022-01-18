@@ -505,6 +505,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.ListAssetsRequest(
                     parent="parent_value",
                 )
@@ -618,6 +619,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.BatchGetAssetsHistoryRequest(
                     parent="parent_value",
                 )
@@ -913,6 +915,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.ListFeedsRequest(
                     parent="parent_value",
                 )
@@ -1208,6 +1211,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.SearchAllResourcesRequest(
                     scope="scope_value",
                 )
@@ -1407,6 +1411,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
+
                 request = asset_v1.SearchAllIamPoliciesRequest(
                     scope="scope_value",
                 )

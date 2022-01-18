@@ -32,6 +32,7 @@ async def sample_list_feeds():
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
+
     request = asset_v1.ListFeedsRequest(
         parent="parent_value",
     )

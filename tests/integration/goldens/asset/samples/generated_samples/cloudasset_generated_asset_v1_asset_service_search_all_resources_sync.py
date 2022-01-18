@@ -32,6 +32,7 @@ def sample_search_all_resources():
     client = asset_v1.AssetServiceClient()
 
     # Initialize request argument(s)
+
     request = asset_v1.SearchAllResourcesRequest(
         scope="scope_value",
     )

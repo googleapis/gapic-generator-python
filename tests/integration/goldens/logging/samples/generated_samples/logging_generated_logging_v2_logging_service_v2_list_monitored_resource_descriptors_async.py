@@ -32,6 +32,7 @@ async def sample_list_monitored_resource_descriptors():
     client = logging_v2.LoggingServiceV2AsyncClient()
 
     # Initialize request argument(s)
+
     request = logging_v2.ListMonitoredResourceDescriptorsRequest(
     )
 

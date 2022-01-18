@@ -711,6 +711,7 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.ListViewsRequest(
                     parent="parent_value",
                 )
@@ -897,6 +898,7 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.CreateViewRequest(
                     parent="parent_value",
                     view_id="view_id_value",
@@ -973,6 +975,7 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.UpdateViewRequest(
                     name="name_value",
                 )
@@ -2505,6 +2508,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
+
                 request = logging_v2.UpdateCmekSettingsRequest(
                     name="name_value",
                 )

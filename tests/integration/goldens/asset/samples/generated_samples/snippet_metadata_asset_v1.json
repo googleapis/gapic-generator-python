@@ -188,12 +188,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_BatchGetAssetsHistory_async",
       "segments": [
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -203,18 +203,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -232,12 +232,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_BatchGetAssetsHistory_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -247,18 +247,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -625,12 +625,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ListAssets_async",
       "segments": [
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -640,16 +640,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -667,12 +667,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ListAssets_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -682,16 +682,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -710,12 +710,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ListFeeds_async",
       "segments": [
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -725,18 +725,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -754,12 +754,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_ListFeeds_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -769,18 +769,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -799,12 +799,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_SearchAllIamPolicies_async",
       "segments": [
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -814,16 +814,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -841,12 +841,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_SearchAllIamPolicies_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -856,16 +856,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -884,12 +884,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_SearchAllResources_async",
       "segments": [
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -899,16 +899,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -926,12 +926,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_SearchAllResources_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -941,16 +941,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]

@@ -32,6 +32,7 @@ async def sample_list_views():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+
     request = logging_v2.ListViewsRequest(
         parent="parent_value",
     )
