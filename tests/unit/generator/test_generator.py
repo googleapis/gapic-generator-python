@@ -479,7 +479,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
                             }
                     }
                 },
-                "file": "samples/generated_samples/squid_sample.py",
+                "file": "squid_sample.py",
                 "segments": [
                     {"type": "FULL"},
                     {"type": "SHORT"},
@@ -498,7 +498,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
                             }
                     }
                 },
-                "file": "samples/generated_samples/clam_sample.py",
+                "file": "clam_sample.py",
                 "segments": [
                     {"type": "FULL"},
                     {"type": "SHORT"},
@@ -519,7 +519,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
     assert actual_response.file[1] == CodeGeneratorResponse.File(
         name="samples/generated_samples/clam_sample.py", content="\n",)
 
-    assert actual_response.file[2].name == "samples/generated_samples/snippet_metadata_v1_mollusc_v1.json"
+    assert actual_response.file[2].name == "samples/generated_samples/snippet_metadata_mollusc_v1.json"
     assert json.loads(
         actual_response.file[2].content) == expected_snippet_index_json
 
@@ -619,7 +619,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
                             }
                         }
                     },
-                "file": "samples/generated_samples/squid_sample_1cfd0b3d.py",
+                "file": "squid_sample_1cfd0b3d.py",
                 "segments": [
                     {"type": "FULL"},
                     {"type": "SHORT"},
@@ -638,7 +638,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
                             }
                         }
                     },
-                "file": "samples/generated_samples/squid_sample_cf4d4fa4.py",
+                "file": "squid_sample_cf4d4fa4.py",
                 "segments": [
                     {"type": "FULL"},
                     {"type": "SHORT"},
@@ -657,7 +657,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
                             }
                         }
                     },
-                "file": "samples/generated_samples/7384949e.py",
+                "file": "7384949e.py",
                 "segments": [
                     {"type": "FULL"},
                     {"type": "SHORT"},
@@ -681,7 +681,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
     assert actual_response.file[2] == CodeGeneratorResponse.File(
         name="samples/generated_samples/7384949e.py", content="\n",
     )
-    assert actual_response.file[3].name == "samples/generated_samples/snippet_metadata_v1_mollusc_v1.json"
+    assert actual_response.file[3].name == "samples/generated_samples/snippet_metadata_mollusc_v1.json"
     assert json.loads(
         actual_response.file[3].content) == expected_snippet_metadata_json
 

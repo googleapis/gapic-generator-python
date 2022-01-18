@@ -196,7 +196,7 @@ class Generator:
                     sample,
                 )
 
-                snippet_metadata.file = str(pathlib.Path(out_dir) / fpath)
+                snippet_metadata.file = fpath
 
                 index.add_snippet(
                     snippet_index.Snippet(sample, snippet_metadata))
@@ -210,7 +210,7 @@ class Generator:
 
         if index.metadata_index.snippets:
             # NOTE(busunkim): Not all fields are yet populated in the snippet metadata.
-            # Expected filename: snippet_metadata_{metadata_schema_version}_{apishortname}_{apiversion}.json
+            # Expected filename: snippet_metadata_{apishortname}_{apiversion}.json
             snippet_metadata_path = str(pathlib.Path(
                 out_dir) / f"snippet_metadata_{api_schema.naming.name}_{api_schema.naming.version}.json").lower()
             output_files[snippet_metadata_path] = CodeGeneratorResponse.File(
