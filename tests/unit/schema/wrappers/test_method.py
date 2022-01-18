@@ -19,6 +19,7 @@ from typing import Sequence
 
 from google.api import field_behavior_pb2
 from google.api import http_pb2
+from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
@@ -324,6 +325,10 @@ def test_method_path_params():
     method = make_method('DoSomething', http_rule=http_rule)
     assert method.path_params == ['project']
 
+    http_rule2 = http_pb2.HttpRule(post='/v1beta1/{name=rooms/*/blurbs/*}')
+    method2 = make_method("DoSomething", http_rule=http_rule2)
+    assert method2.path_params == ["name"]
+
 
 def test_method_path_params_no_http_rule():
     method = make_method('DoSomething')
@@ -469,9 +474,29 @@ def test_method_http_options_generate_sample():
     http_rule = http_pb2.HttpRule(
         get='/v1/{resource.id=projects/*/regions/*/id/**}/stuff',
     )
-    method = make_method('DoSomething', http_rule=http_rule)
-    sample = method.http_options[0].sample_request
-    assert json.loads(sample) == {'resource': {
+
+    method = make_method(
+        'DoSomething',
+        make_message(
+            name="Input",
+            fields=[
+                make_field(
+                    name="resource",
+                    number=1,
+                    type=11,
+                    message=make_message(
+                        "Resource",
+                        fields=[
+                            make_field(name="id", type=9),
+                        ],
+                    ),
+                ),
+            ],
+        ),
+        http_rule=http_rule,
+    )
+    sample = method.http_options[0].sample_request(method)
+    assert sample == {'resource': {
         'id': 'projects/sample1/regions/sample2/id/sample3'}}
 
 
@@ -479,9 +504,28 @@ def test_method_http_options_generate_sample_implicit_template():
     http_rule = http_pb2.HttpRule(
         get='/v1/{resource.id}/stuff',
     )
-    method = make_method('DoSomething', http_rule=http_rule)
-    sample = method.http_options[0].sample_request
-    assert json.loads(sample) == {'resource': {
+    method = make_method(
+        'DoSomething',
+        make_message(
+            name="Input",
+            fields=[
+                make_field(
+                    name="resource",
+                    number=1,
+                    message=make_message(
+                        "Resource",
+                        fields=[
+                            make_field(name="id", type=9),
+                        ],
+                    ),
+                ),
+            ],
+        ),
+        http_rule=http_rule,
+    )
+
+    sample = method.http_options[0].sample_request(method)
+    assert sample == {'resource': {
         'id': 'sample1'}}
 
 
@@ -718,3 +762,60 @@ def test_flattened_oneof_fields():
     }
     actual = method.flattened_field_to_key
     assert expected == actual
+
+
+def test_is_operation_polling_method():
+    T = descriptor_pb2.FieldDescriptorProto.Type
+
+    operation = make_message(
+        name="Operation",
+        fields=(
+            make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        ),
+    )
+    for f in operation.field:
+        options = descriptor_pb2.FieldOptions()
+        # Note: The field numbers were carefully chosen to be the corresponding enum values.
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    request = make_message(
+        name="GetOperation",
+        fields=[
+            make_field(name="name", type=T.Value("TYPE_STRING"), number=1)
+        ],
+    )
+
+    # Correct positive
+    options = descriptor_pb2.MethodOptions()
+    options.Extensions[ex_ops_pb2.operation_polling_method] = True
+    polling_method = make_method(
+        name="Get",
+        input_message=request,
+        output_message=operation,
+        options=options,
+    )
+
+    assert polling_method.is_operation_polling_method
+
+    # Normal method that returns operation
+    normal_method = make_method(
+        name="Get",
+        input_message=request,
+        output_message=operation,
+    )
+
+    assert not normal_method.is_operation_polling_method
+
+    # Method with invalid options combination
+    response = make_message(name="Response", fields=[make_field(name="name")])
+
+    invalid_method = make_method(
+        name="Get",
+        input_message=request,
+        output_message=response,
+        options=options,        # Reuse options from the actual polling method
+    )
+
+    assert not invalid_method.is_operation_polling_method

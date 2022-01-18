@@ -56,6 +56,7 @@ service Snippets {
 
   rpc OneOfMethod(OneOfRequest) returns (Response);
 
+<<<<<<< HEAD
 
   rpc NestedResources(NestedResourcesRequest) returns (Response) {
   }
@@ -79,6 +80,9 @@ message Foo {
     (google.api.resource_reference) = {
       type: "snippets.example.com/Resource"
     }];
+=======
+  rpc OneOfMethodRequiredField(OneOfRequestWithRequiredField) returns (Response);
+>>>>>>> master
 }
 
 enum Enum {
@@ -91,9 +95,15 @@ message ListResourcesRequest {
     (google.api.resource_reference) = {
       type: "snippets.example.com/Resource"
     }];
+  
+  string resource_with_wildcard = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "snippets.example.com/ResourceWithWildcardSegment"
+    }];
 
-  int32 page_size = 2;
-  string page_token = 3;
+  int32 page_size = 3;
+  string page_token = 4;
 }
 
 message ListResourcesResponse {
@@ -115,9 +125,16 @@ message Resource {
     pattern: "items/{item_id}/parts/{part_id}"
   };
   string name = 1;
-
-
 }
+
+message ResourceWithWildcardSegment {
+  option (google.api.resource) = {
+    type: "snippets.example.com/ResourceWithWildcardSegment"
+    pattern: "items/{item_id}/parts/{part_id=**}"
+  };
+  string name = 1;
+}
+
 
 message MessageWithNesting {
   message NestedMessage {
@@ -158,5 +175,16 @@ message OneOfRequest {
   oneof my_one_of {
     string my_string = 2;
     int32 my_number = 3;
+  }
+}
+
+
+message OneOfRequestWithRequiredField {
+  string non_one_of_string = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Some APIs mark every field in a "required" oneof as required
+  oneof my_one_of {
+    string my_string = 2 [(google.api.field_behavior) = REQUIRED];
+    int32 my_number = 3 [(google.api.field_behavior) = REQUIRED];
   }
 }

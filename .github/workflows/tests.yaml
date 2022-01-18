@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
       - name: Build the documentation.
@@ -38,6 +39,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
       - name: Check type annotations.
@@ -57,6 +59,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
           sudo apt-get update
@@ -71,7 +74,7 @@ jobs:
           ./gapic-showcase run &
           cd -
         env:
-          SHOWCASE_VERSION: 0.16.0
+          SHOWCASE_VERSION: 0.18.0
       - name: Install nox.
         run: python -m pip install nox
       - name: Install protoc 3.12.1.
@@ -103,6 +106,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
       - name: Install system dependencies.
@@ -140,7 +144,7 @@ jobs:
             cd ..
             nox -s ${{ matrix.target }}
         env:
-          SHOWCASE_VERSION: 0.16.0
+          SHOWCASE_VERSION: 0.18.0
   # TODO(yon-mg): add compute unit tests
   showcase-unit:
     strategy:
@@ -161,6 +165,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
@@ -178,7 +183,7 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
         env:
-          SHOWCASE_VERSION: 0.16.0
+          SHOWCASE_VERSION: 0.18.0
   showcase-unit-add-iam-methods:
     runs-on: ubuntu-latest
     steps:
@@ -191,6 +196,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
@@ -208,7 +214,7 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit_add_iam_methods
         env:
-          SHOWCASE_VERSION: 0.16.0
+          SHOWCASE_VERSION: 0.18.0
   showcase-mypy:
     runs-on: ubuntu-latest
     strategy:
@@ -224,6 +230,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
@@ -241,7 +248,7 @@ jobs:
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy${{ matrix.variant }}
         env:
-          SHOWCASE_VERSION: 0.16.0
+          SHOWCASE_VERSION: 0.18.0
   snippetgen:
     runs-on: ubuntu-latest
     steps:
@@ -254,6 +261,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
@@ -277,6 +285,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+          cache: 'pip'
       - name: Install pandoc
         run: |
             sudo apt-get update
@@ -290,6 +299,10 @@ jobs:
     strategy:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9]
+        variant: ['', _alternative_templates]
+        exclude:
+          - python: 3.6
+            variant: _alternative_templates
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -301,6 +314,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+          cache: 'pip'
       - name: Install pandoc
         run: |
             sudo apt-get update
@@ -309,10 +323,10 @@ jobs:
         run: |
             python -m pip install nox
       - name: Run fragment tests.
-        run: nox -s fragment-${{ matrix.python }}
+        run: nox -s fragment${{ matrix.variant }}-${{ matrix.python }}
   integration:
     runs-on: ubuntu-latest
-    container: gcr.io/gapic-images/googleapis-bazel:20210105
+    container: gcr.io/gapic-images/googleapis
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.7.0
@@ -354,6 +368,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
       - name: Install autopep8
         run: |
             python -m pip install autopep8

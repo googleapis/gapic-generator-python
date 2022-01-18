@@ -251,6 +251,65 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+
+        # Figure out the client cert source to use.
+        client_cert_source = None
+        if use_client_cert == "true":
+            if client_options.client_cert_source:
+                client_cert_source = client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = cls.DEFAULT_ENDPOINT
+
+        return api_endpoint, client_cert_source
+
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, CloudRedisTransport, None] = None,
@@ -299,43 +358,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
 
-        # Create SSL credentials for mutual TLS if needed.
-        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
-
-        client_cert_source_func = None
-        is_mtls = False
-        if use_client_cert:
-            if client_options.client_cert_source:
-                is_mtls = True
-                client_cert_source_func = client_options.client_cert_source
-            else:
-                is_mtls = mtls.has_default_client_cert_source()
-                if is_mtls:
-                    client_cert_source_func = mtls.default_client_cert_source()
-                else:
-                    client_cert_source_func = None
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        else:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-            if use_mtls_env == "never":
-                api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                if is_mtls:
-                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-                else:
-                    api_endpoint = self.DEFAULT_ENDPOINT
-            else:
-                raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
-                    "values: never, auto, always"
-                )
+        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -382,6 +405,30 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         If ``location_id`` is specified as ``-`` (wildcard), then all
         regions available to the project are queried, and the results
         are aggregated.
+
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_list_instances():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                parent = f"projects/{project}/locations/{location}"
+
+                request = redis_v1.ListInstancesRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.redis_v1.types.ListInstancesRequest, dict]):
@@ -472,6 +519,31 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_get_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.GetInstanceRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_instance(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.GetInstanceRequest, dict]):
                 The request object. Request for
@@ -560,6 +632,40 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         The returned operation is automatically deleted after a few
         hours, so there is no need to call DeleteOperation.
+
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_create_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                parent = f"projects/{project}/locations/{location}"
+
+                instance = redis_v1.Instance()
+                instance.name = "name_value"
+                instance.tier = "STANDARD_HA"
+                instance.memory_size_gb = 1499
+
+                request = redis_v1.CreateInstanceRequest(
+                    parent=parent,
+                    instance_id="instance_id_value",
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.create_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.redis_v1.types.CreateInstanceRequest, dict]):
@@ -678,6 +784,34 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         operation is automatically deleted after a few hours, so
         there is no need to call DeleteOperation.
 
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_update_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                instance = redis_v1.Instance()
+                instance.name = "name_value"
+                instance.tier = "STANDARD_HA"
+                instance.memory_size_gb = 1499
+
+                request = redis_v1.UpdateInstanceRequest(
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.update_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.UpdateInstanceRequest, dict]):
                 The request object. Request for
@@ -781,6 +915,35 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             ) -> operation.Operation:
         r"""Upgrades Redis instance to the newer Redis version
         specified in the request.
+
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_upgrade_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.UpgradeInstanceRequest(
+                    name=name,
+                    redis_version="redis_version_value",
+                )
+
+                # Make the request
+                operation = client.upgrade_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.redis_v1.types.UpgradeInstanceRequest, dict]):
@@ -887,6 +1050,33 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_import_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                input_config = redis_v1.InputConfig()
+                input_config.gcs_source.uri = "uri_value"
+
+                request = redis_v1.ImportInstanceRequest(
+                    name="name_value",
+                    input_config=input_config,
+                )
+
+                # Make the request
+                operation = client.import_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.ImportInstanceRequest, dict]):
                 The request object. Request for
@@ -988,6 +1178,33 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_export_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                output_config = redis_v1.OutputConfig()
+                output_config.gcs_destination.uri = "uri_value"
+
+                request = redis_v1.ExportInstanceRequest(
+                    name="name_value",
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.export_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.ExportInstanceRequest, dict]):
                 The request object. Request for
@@ -1087,6 +1304,34 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_failover_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.FailoverInstanceRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.failover_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.FailoverInstanceRequest, dict]):
                 The request object. Request for
@@ -1184,6 +1429,34 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             ) -> operation.Operation:
         r"""Deletes a specific Redis instance.  Instance stops
         serving and data is deleted.
+
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_delete_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.DeleteInstanceRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.delete_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.redis_v1.types.DeleteInstanceRequest, dict]):

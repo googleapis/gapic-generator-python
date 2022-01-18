@@ -227,6 +227,65 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+
+        # Figure out the client cert source to use.
+        client_cert_source = None
+        if use_client_cert == "true":
+            if client_options.client_cert_source:
+                client_cert_source = client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = cls.DEFAULT_ENDPOINT
+
+        return api_endpoint, client_cert_source
+
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, LoggingServiceV2Transport, None] = None,
@@ -275,43 +334,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
 
-        # Create SSL credentials for mutual TLS if needed.
-        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
-
-        client_cert_source_func = None
-        is_mtls = False
-        if use_client_cert:
-            if client_options.client_cert_source:
-                is_mtls = True
-                client_cert_source_func = client_options.client_cert_source
-            else:
-                is_mtls = mtls.has_default_client_cert_source()
-                if is_mtls:
-                    client_cert_source_func = mtls.default_client_cert_source()
-                else:
-                    client_cert_source_func = None
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        else:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-            if use_mtls_env == "never":
-                api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                if is_mtls:
-                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-                else:
-                    api_endpoint = self.DEFAULT_ENDPOINT
-            else:
-                raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
-                    "values: never, auto, always"
-                )
+        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -353,6 +376,28 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         written shortly before the delete operation might not be
         deleted. Entries received after the delete operation
         with a timestamp before the operation will be deleted.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_log():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                log = "log_value"
+                log_name = f"projects/{project}/logs/{log}"
+
+                request = logging_v2.DeleteLogRequest(
+                    log_name=log_name,
+                )
+
+                # Make the request
+                response = client.delete_log(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogRequest, dict]):
@@ -439,6 +484,30 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Logging. A single request may contain log entries for a
         maximum of 1000 different resources (projects,
         organizations, billing accounts or folders)
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_write_log_entries():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                entries = logging_v2.LogEntry()
+                entries.log_name = "log_name_value"
+
+                request = logging_v2.WriteLogEntriesRequest(
+                    entries=entries,
+                )
+
+                # Make the request
+                response = client.write_log_entries(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.WriteLogEntriesRequest, dict]):
@@ -596,6 +665,30 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         For ways to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_log_entries():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                log = "log_value"
+                resource_names = f"projects/{project}/logs/{log}"
+
+                request = logging_v2.ListLogEntriesRequest(
+                    resource_names=resource_names,
+                )
+
+                # Make the request
+                page_result = client.list_log_entries(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict]):
                 The request object. The parameters to `ListLogEntries`.
@@ -720,6 +813,25 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Lists the descriptors for monitored resource types
         used by Logging.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_monitored_resource_descriptors():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.ListMonitoredResourceDescriptorsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_monitored_resource_descriptors(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListMonitoredResourceDescriptorsRequest, dict]):
                 The request object. The parameters to
@@ -782,6 +894,30 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Lists the logs in projects, organizations, folders,
         or billing accounts. Only logs that have entries are
         listed.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_logs():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                log = "log_value"
+                parent = f"projects/{project}/logs/{log}"
+
+                request = logging_v2.ListLogsRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_logs(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListLogsRequest, dict]):
@@ -874,6 +1010,35 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Streaming read of log entries as they are ingested.
         Until the stream is terminated, it will continue reading
         logs.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_tail_log_entries():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.TailLogEntriesRequest(
+                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
+                )
+
+                # This method expects an iterator which contains
+                # 'logging_v2.TailLogEntriesRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.tail_log_entries(requests=request_generator())
+                for response in stream:
+                    print(response)
 
         Args:
             requests (Iterator[google.cloud.logging_v2.types.TailLogEntriesRequest]):

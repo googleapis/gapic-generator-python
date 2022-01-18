@@ -23,13 +23,13 @@ import yaml
 
 from gapic import utils
 
-from gapic.samplegen_utils import types
+from gapic.samplegen_utils import types, snippet_metadata_pb2  # type: ignore
 from gapic.samplegen_utils.utils import is_valid_sample_cfg
 from gapic.schema import api
 from gapic.schema import wrappers
 
 from collections import defaultdict, namedtuple, ChainMap as chainmap
-from typing import Any, ChainMap, Dict, FrozenSet, Set, Generator, List, Mapping, Optional, Tuple, Sequence
+from typing import Any, ChainMap, Dict, FrozenSet, Generator, List, Mapping, Optional, Sequence, Tuple
 
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
@@ -137,7 +137,7 @@ class TransformedRequest:
 
     # Resource patterns look something like
     # kingdom/{kingdom}/phylum/{phylum}/class/{class}
-    RESOURCE_RE = re.compile(r"\{([^}/=*]+)[\*=]*?\}")
+    RESOURCE_RE = wrappers.MessageType.PATH_ARG_RE
 
     @classmethod
     def _get_resource_message_descriptor(cls, field: wrappers.Field, api_schema: api.API):
@@ -173,6 +173,7 @@ class TransformedRequest:
             resource_pb2.resource]
 
         return resource_typestr, resource_message_descriptor
+
 
     @classmethod
     def build(
@@ -283,7 +284,31 @@ class TransformedRequest:
                 pattern = cls.RESOURCE_RE.sub("{\g<1>}", pattern)
                 patterns[field] = pattern
 
-            return cls(base=base, body=attrs, single=None, patterns=patterns)
+            # The field is only ever empty for singleton attributes.
+            attr_names: List[str] = [a.field for a in attrs]  # type: ignore
+
+            # A single resource may be found under multiple paths and have many patterns.
+            # We want to find an _exact_ match, if one exists.
+            pattern = next(
+                (
+                    p
+                    for p in resource_message_descriptor.pattern
+                    if cls.RESOURCE_RE.findall(p) == attr_names
+                ),
+                None,
+            )
+            if not pattern:
+                attr_name_str = ", ".join(attr_names)
+                raise types.NoSuchResourcePattern(
+                    f"Resource {resource_typestr} has no pattern with params: {attr_name_str}"
+                )
+            # This re-writes
+            # patterns like: 'projects/{project}/metricDescriptors/{metric_descriptor=**}'
+            # to 'projects/{project}/metricDescriptors/{metric_descriptor}
+            # so it can be used in sample code as an f-string.
+            pattern = cls.RESOURCE_RE.sub(r"{\g<1>}", pattern)
+
+            return cls(base=base, body=attrs, single=None, pattern=pattern,)
 
 
 @dataclasses.dataclass
@@ -1045,8 +1070,6 @@ class Validator:
 def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str, Any], None, None]:
     """Parse a handwritten sample spec"""
 
-    STANDALONE_TYPE = "standalone"
-
     for config_fpath in sample_configs:
         with open(config_fpath) as f:
             configs = yaml.safe_load_all(f.read())
@@ -1055,13 +1078,9 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                 valid = is_valid_sample_cfg(cfg)
                 if not valid:
                     raise types.InvalidConfig(
-                        "Sample config is invalid", valid)
+                        "Sample config in '{}' is invalid\n\n{}".format(config_fpath, cfg), valid)
                 for spec in cfg.get("samples", []):
-                    # If unspecified, assume a sample config describes a standalone.
-                    # If sample_types are specified, standalone samples must be
-                    # explicitly enabled.
-                    if STANDALONE_TYPE in spec.get("sample_type", [STANDALONE_TYPE]):
-                        yield spec
+                    yield spec
 
 
 def _generate_resource_path_request_object(field_name: str, message: wrappers.MessageType) -> List[Dict[str, str]]:
@@ -1115,7 +1134,9 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
 
     request_fields: List[wrappers.Field] = []
 
-    # Choose the first option for each oneof
+    # There is no standard syntax to mark a oneof as "required" in protos.
+    # Assume every oneof is required and pick the first option
+    # in each oneof.
     selected_oneofs: List[wrappers.Field] = [oneof_fields[0]
         for oneof_fields in message.oneof_fields().values()]
     # Exclude oneofs from the required_fields list to avoid counting a field twice
@@ -1184,7 +1205,6 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 # [{START|END} ${apishortname}_generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
                 region_tag = f"{api_short_name}_generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_{transport_type}"
                 spec = {
-                    "sample_type": "standalone",
                     "rpc": rpc_name,
                     "transport": transport,
                     # `request` and `response` is populated in `preprocess_sample`
@@ -1196,7 +1216,7 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 yield spec
 
 
-def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str:
+def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tuple[str, Any]:
     """Generate a standalone, runnable sample.
 
     Writing the rendered output is left for the caller.
@@ -1207,7 +1227,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
         sample_template (jinja2.Template): The template representing a generic sample.
 
     Returns:
-        str: The rendered sample.
+        Tuple(str, snippet_metadata_pb2.Snippet): The rendered sample.
     """
     service_name = sample["service"]
     service = api_schema.services.get(service_name)
@@ -1234,6 +1254,17 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
 
     v.validate_response(sample["response"])
 
+    # Snippet Metadata can't be fully filled out in any one function
+    # In this function we add information from
+    # the API schema and sample dictionary.
+    snippet_metadata = snippet_metadata_pb2.Snippet()  # type: ignore
+    snippet_metadata.region_tag = sample["region_tag"]
+    setattr(snippet_metadata.client_method, "async",
+            sample["transport"] == api.TRANSPORT_GRPC_ASYNC)
+    snippet_metadata.client_method.method.short_name = sample["rpc"]
+    snippet_metadata.client_method.method.service.short_name = sample["service"].split(
+        ".")[-1]
+
     return sample_template.render(
         sample=sample,
         imports=[],
@@ -1241,4 +1272,4 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
         calling_form_enum=types.CallingForm,
         trim_blocks=True,
         lstrip_blocks=True,
-    )
+    ), snippet_metadata
