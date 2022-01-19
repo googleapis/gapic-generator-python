@@ -843,7 +843,6 @@ class RoutingParameter:
         return re.compile(f"^{self._convert_to_regex(path_template)}$")
 
     def to_regex(self) -> Pattern:
-        # TODO: Move _to_regex logic to api_core.
         return self._to_regex(self.path_template)
 
     @property
@@ -901,11 +900,11 @@ class HttpRule:
             """
             request: Dict[str, Any] = {}
 
-            sample_names = uri_sample._sample_names()
+            sample_names_ = uri_sample.sample_names()
             for field, path, template in paths:
                 sample_value = re.sub(
                     r"(\*\*|\*)",
-                    lambda n: next(sample_names),
+                    lambda n: next(sample_names_),
                     template or '*'
                 ) if field.type == PrimitiveType.build(str) else field.mock_value_original_type
                 uri_sample.add_field(request, path, sample_value)

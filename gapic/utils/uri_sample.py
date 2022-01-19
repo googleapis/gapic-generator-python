@@ -16,7 +16,7 @@ from typing import Any, Generator, Dict, List, Tuple
 import re
 
 
-def _sample_names() -> Generator[str, None, None]:
+def sample_names() -> Generator[str, None, None]:
     sample_num: int = 0
     while True:
         sample_num += 1
@@ -67,12 +67,12 @@ def sample_from_path_fields(paths: List[Tuple[str, str]]) -> Dict[Any, Any]:
     """
 
     request: Dict[str, Any] = {}
-    sample_names = _sample_names()
+    sample_names_ = sample_names()
 
     for path, template in paths:
         sample_value = re.sub(
             r"(\*\*|\*)",
-            lambda n: next(sample_names), template if template else '*'
+            lambda n: next(sample_names_), template if template else '*'
         )
         add_field(request, path, sample_value)
     return request
