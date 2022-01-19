@@ -384,11 +384,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                parent = f"projects/{project}"
-
                 request = logging_v2.ListLogMetricsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -495,12 +492,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.GetLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request
@@ -606,16 +599,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                parent = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.CreateLogMetricRequest(
-                    parent=parent,
+                    parent="parent_value",
                     metric=metric,
                 )
 
@@ -735,16 +724,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.UpdateLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                     metric=metric,
                 )
 
@@ -862,12 +847,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.DeleteLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request
