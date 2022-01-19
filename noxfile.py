@@ -47,7 +47,6 @@ def unit(session):
         "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs", "grpcio-status", "proto-plus",
     )
     session.install("-e", ".")
-    session.install("git+https://github.com/googleapis/python-api-common-protos@main")
     session.run(
         "py.test",
         *(

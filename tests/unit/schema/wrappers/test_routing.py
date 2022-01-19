@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
-import dataclasses
-import json
-from typing import NamedTuple, Sequence
-from google import protobuf
-
-from google.api import field_behavior_pb2
-from google.api import http_pb2
-from google.protobuf import descriptor_pb2
-
-#from gapic.schema import metadata
 from gapic.schema import wrappers
 
 import proto
