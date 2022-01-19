@@ -928,7 +928,6 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                     yield spec
 
 
-
 def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str = ""):
     """Generate dummy input for a given message.
 
@@ -964,7 +963,7 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
         # TODO(busunkim): Properly handle map fields
         if field.is_primitive:
             request.append(
-                    {"field": field_name, "value": field.mock_value_original_type})
+                {"field": field_name, "value": field.mock_value_original_type})
         elif field.enum:
             # Choose the last enum value in the list since index 0 is often "unspecified"
             request.append(
