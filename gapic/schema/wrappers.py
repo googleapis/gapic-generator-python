@@ -42,7 +42,7 @@ from google.api import resource_pb2
 from google.api import routing_pb2
 from google.api_core import exceptions
 from google.api_core import path_template
-from google.cloud import extended_operations_pb2 as ex_ops_pb2
+from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
 from google.protobuf.json_format import MessageToDict  # type: ignore
 
@@ -1107,7 +1107,7 @@ class Method:
         if self.http_opt is None:
             return []
 
-        pattern = r'\{(\w+)\}'
+        pattern = r'\{(\w+)(?:=.+?)?\}'
         return re.findall(pattern, self.http_opt['url'])
 
     @property
