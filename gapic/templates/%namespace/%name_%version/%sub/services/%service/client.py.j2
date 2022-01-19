@@ -468,12 +468,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         routing_param_regex = {{ routing_param.to_regex() }}
         regex_match = routing_param_regex.match(request.{{ routing_param.field }})
-        if regex_match:
+        if regex_match and regex_match.group("{{ routing_param.key }}"):
             header_params["{{ routing_param.key }}"] = regex_match.group("{{ routing_param.key }}")
 
-        {% else %} {# No need to match #}
+        {% else %}
 
-        header_params["{{ routing_param.key }}"] = request.{{ routing_param.field }}
+        if request.{{ routing_param.field }}:
+            header_params["{{ routing_param.key }}"] = request.{{ routing_param.field }}
 
         {% endif %}
         {% endfor %} {# method.routing_rule.routing_parameters #}
