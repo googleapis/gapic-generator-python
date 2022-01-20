@@ -81,6 +81,7 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
         initial = textwrap.wrap(first,
                                 break_long_words=False,
                                 width=width - offset,
+                                break_on_hyphens=False,
                                 )
         # Strip the first \n from the text so it is not misidentified as an
         # intentionally short line below.
@@ -113,5 +114,6 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
             subsequent_indent=' ' * indent,
             text=token,
             width=width,
+            break_on_hyphens=False,
         ) for token in tokens]),
     ).rstrip('\n')
