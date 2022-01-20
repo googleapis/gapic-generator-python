@@ -65,7 +65,7 @@ class {{ service.name }}RestInterceptor:
 
     .. code-block:
         class MyCustom{{ service.name }}Interceptor({{ service.name }}RestInterceptor):
-{% for _, method in service.methods|dictsort %}
+{% for _, method in service.methods|dictsort if not (method.server_streaming or method.client_streaming) %}
             def pre_{{ method.name|snake_case }}(request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -81,7 +81,7 @@ class {{ service.name }}RestInterceptor:
 
 
     """
-    {% for method in service.methods.values()|sort(attribute="name") %}
+    {% for method in service.methods.values()|sort(attribute="name") if not(method.server_streaming or method.client_streaming) %}
     def pre_{{ method.name|snake_case }}(self, request: {{method.input.ident}}, metadata: Sequence[Tuple[str, str]]) -> Tuple[{{method.input.ident}}, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for {{ method.name|snake_case }}
 
