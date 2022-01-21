@@ -1726,7 +1726,8 @@ def test_diregapic_lro_operation_service_not_an_lro():
     api_schema = api.API.build(file_protos)
     initial_method = api_schema.services["google.diregapic.v1.stuff.RegularService"].methods["CreateTask"]
     # Hack to pretend that the initial_method is not an LRO
-    super(type(initial_method), initial_method).__setattr__("output", initial_method.input)
+    super(type(initial_method), initial_method).__setattr__(
+        "output", initial_method.input)
 
     with pytest.raises(ValueError):
         api_schema.get_custom_operation_service(initial_method)

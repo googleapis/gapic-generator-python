@@ -483,7 +483,8 @@ class API:
             method.options.Extensions[ex_ops_pb2.operation_service]
         op_serv = self.services[op_serv_name]
         if not op_serv.custom_polling_method:
-            raise ValueError(f"Service is not a DIREGAPIC operation service: {op_serv.name}")
+            raise ValueError(
+                f"Service is not a DIREGAPIC operation service: {op_serv.name}")
 
         return op_serv
 
