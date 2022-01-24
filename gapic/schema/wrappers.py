@@ -836,7 +836,8 @@ class RoutingParameter:
         Args:
             path_template (str): A path template corresponding to a resource name.
                 It can only have 0 or 1 named segments. It can not contain complex resource ID path segments.
-                See https://google.aip.dev/122 and https://google.aip.dev/client-libraries/4231 for more details.
+                See https://google.aip.dev/122, https://google.aip.dev/4222
+                 and https://google.aip.dev/client-libraries/4231 for more details.
         Returns:
             Pattern: A Pattern object that matches strings conforming to the path_template.
         """
@@ -866,7 +867,7 @@ class RoutingRule:
     routing_parameters: List[RoutingParameter]
 
     @classmethod
-    def try_parse_routing_rule(cls, routing_rule) -> Optional['RoutingRule']:
+    def try_parse_routing_rule(cls, routing_rule: routing_pb2.RoutingRule) -> Optional['RoutingRule']:
         params = getattr(routing_rule, 'routing_parameters')
         if not params:
             return None
