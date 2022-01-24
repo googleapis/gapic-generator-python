@@ -19,6 +19,7 @@ from google.protobuf import json_format
 {% endif %}
 from requests import __version__ as requests_version
 import dataclasses
+import re
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -65,7 +66,7 @@ class {{ service.name }}RestInterceptor:
 
     .. code-block:
         class MyCustom{{ service.name }}Interceptor({{ service.name }}RestInterceptor):
-{% for _, method in service.methods|dictsort if not (method.server_streaming or method.client_streaming) %}
+    {% for _, method in service.methods|dictsort if not (method.server_streaming or method.client_streaming) %}
             def pre_{{ method.name|snake_case }}(request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -81,7 +82,7 @@ class {{ service.name }}RestInterceptor:
 
 
     """
-    {% for method in service.methods.values()|sort(attribute="name") if not(method.server_streaming or method.client_streaming) %}
+    {% for method in service.methods.values()|sort(attribute="name") if not (method.server_streaming or method.client_streaming) %}
     def pre_{{ method.name|snake_case }}(self, request: {{method.input.ident}}, metadata: Sequence[Tuple[str, str]]) -> Tuple[{{method.input.ident}}, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for {{ method.name|snake_case }}
 
@@ -175,6 +176,10 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        url_match_items = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host).groupdict()
+        if not url_match_items["scheme"]:
+            host = f"{url_scheme}://{host}"
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -330,8 +335,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
