@@ -19,6 +19,7 @@ from google.protobuf import json_format
 {% endif %}
 from requests import __version__ as requests_version
 import dataclasses
+import re
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -175,6 +176,10 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        url_match_items = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host).groupdict()
+        if not url_match_items["scheme"]:
+            host = f"{url_scheme}://{host}"
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -330,8 +335,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),

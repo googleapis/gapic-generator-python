@@ -1040,7 +1040,11 @@ class Method:
         params = set(self.path_params)
         body = self.http_opt.get('body')
         if body:
-            params.add(body)
+            if body == "*":
+                # The entire request is the REST body.
+                return set()
+            else:
+                params.add(body)
 
         return set(self.input.fields) - params
 
