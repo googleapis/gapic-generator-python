@@ -108,11 +108,13 @@ def construct_client(
         transport_cls = client_class.get_transport_class(transport_name)
         if transport_name in ["grpc", "grpc_asyncio"]:
             transport = transport_cls(
+                credentials=credentials.AnonymousCredentials(),
                 channel=channel_creator("localhost:7469"),
             )
         elif transport_name == "rest":
             # The custom host explicitly bypasses https.
             transport = transport_cls(
+                credentials=credentials.AnonymousCredentials(),
                 host="localhost:7469",
                 url_scheme="http",
             )
