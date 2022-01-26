@@ -770,16 +770,16 @@ class HttpRule:
     uri: str
     body: Optional[str]
 
-    def path_fields(self, method: "~.Method") -> List[Tuple[Field, str, str]]:
+    def path_fields(self, method: "Method") -> List[Tuple[Field, str, str]]:
         """return list of (name, template) tuples extracted from uri."""
         input = method.input
         return [(input.get_field(*match.group("name").split(".")), match.group("name"), match.group("template"))
                 for match in path_template._VARIABLE_RE.finditer(self.uri)]
 
-    def sample_request(self, method: "~.Method") -> str:
+    def sample_request(self, method: "Method") -> Dict[str, Any]:
         """return json dict for sample request matching the uri template."""
 
-        def sample_from_path_fields(paths: List[Tuple["wrappers.Field", str, str]]) -> Dict[Any, Any]:
+        def sample_from_path_fields(paths: List[Tuple[Field, str, str]]) -> Dict[str, Any]:
             """Construct a dict for a sample request object from a list of fields
                and template patterns.
 
