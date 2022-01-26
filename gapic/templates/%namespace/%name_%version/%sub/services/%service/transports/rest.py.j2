@@ -178,7 +178,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         # credentials object
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -244,6 +244,10 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     {% endif %}{# service.has_lro #}
     {% for method in service.methods.values()|sort(attribute="name") %}
     class _{{method.name}}({{service.name}}RestStub):
+        def __hash__(self):
+            return hash("{{method.name}}")
+
+
         {% if not (method.server_streaming or method.client_streaming) %}
         {% if method.input.required_fields %}
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
@@ -251,10 +255,6 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
         {% endfor %}
         }
-
-
-        def __hash__(self):
-            return hash("{{method.name}}")
 
 
         @classmethod
