@@ -634,7 +634,7 @@ class _ProtoBuilder:
             # This is actually fine from a typing perspective:
             # we're agglutinating all the prior protos' enums, which are
             # stored in maps. This is just a convenient way to expand it out.
-            *[p.all_enums for p in self.prior_protos.values()], # type: ignore
+            *[p.all_enums for p in self.prior_protos.values()],  # type: ignore
         )
 
     @cached_property
@@ -645,7 +645,7 @@ class _ProtoBuilder:
             # This is actually fine from a typing perspective:
             # we're agglutinating all the prior protos' enums, which are
             # stored in maps. This is just a convenient way to expand it out.
-            *[p.all_messages for p in self.prior_protos.values()], # type: ignore
+            *[p.all_messages for p in self.prior_protos.values()],  # type: ignore
         )
 
     def _load_children(self,
