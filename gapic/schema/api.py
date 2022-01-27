@@ -476,15 +476,15 @@ class API:
         )
 
     def get_custom_operation_service(self, method: "wrappers.Method") -> "wrappers.Service":
-        if not method.output.is_diregapic_operation:
-            raise ValueError(f"Method is not a DIREGAPIC LRO: {method.name}")
+        if not method.output.is_extended_operation:
+            raise ValueError(f"Method is not an extended operation LRO: {method.name}")
 
         op_serv_name = self.naming.proto_package + "." + \
             method.options.Extensions[ex_ops_pb2.operation_service]
         op_serv = self.services[op_serv_name]
         if not op_serv.custom_polling_method:
             raise ValueError(
-                f"Service is not a DIREGAPIC operation service: {op_serv.name}")
+                f"Service is not an extended operation operation service: {op_serv.name}")
 
         return op_serv
 

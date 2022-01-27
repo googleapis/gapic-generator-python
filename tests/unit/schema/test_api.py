@@ -1598,7 +1598,7 @@ def test_http_options(fs):
     }
 
 
-def generate_basic_diregapic_setup():
+def generate_basic_extended operations_setup():
     T = descriptor_pb2.FieldDescriptorProto.Type
 
     operation = make_message_pb2(
@@ -1620,8 +1620,8 @@ def generate_basic_diregapic_setup():
 
     polling_method = descriptor_pb2.MethodDescriptorProto(
         name="Get",
-        input_type="google.diregapic.v1.stuff.GetOperation",
-        output_type="google.diregapic.v1.stuff.Operation",
+        input_type="google.extended operations.v1.stuff.GetOperation",
+        output_type="google.extended operations.v1.stuff.Operation",
         options=options,
     )
 
@@ -1633,8 +1633,8 @@ def generate_basic_diregapic_setup():
             polling_method,
             descriptor_pb2.MethodDescriptorProto(
                 name="Delete",
-                input_type="google.diregapic.v1.stuff.Input",
-                output_type="google.diregapic.v1.stuff.Output",
+                input_type="google.extended operations.v1.stuff.Input",
+                output_type="google.extended operations.v1.stuff.Output",
             ),
         ],
     )
@@ -1651,8 +1651,8 @@ def generate_basic_diregapic_setup():
     initial_input_message = make_message_pb2(name="Initial")
     initial_method = descriptor_pb2.MethodDescriptorProto(
         name="CreateTask",
-        input_type="google.diregapic.v1.stuff.GetOperation",
-        output_type="google.diregapic.v1.stuff.Operation",
+        input_type="google.extended operations.v1.stuff.GetOperation",
+        output_type="google.extended operations.v1.stuff.Operation",
         options=initial_opts,
     )
 
@@ -1665,8 +1665,8 @@ def generate_basic_diregapic_setup():
 
     file_protos = [
         make_file_pb2(
-            name="diregapic.proto",
-            package="google.diregapic.v1.stuff",
+            name="extended operations.proto",
+            package="google.extended operations.v1.stuff",
             messages=[
                 operation,
                 request,
@@ -1684,12 +1684,12 @@ def generate_basic_diregapic_setup():
     return file_protos
 
 
-def test_diregapic_lro_operation_service():
-    file_protos = generate_basic_diregapic_setup()
+def test_extended operations_lro_operation_service():
+    file_protos = generate_basic_extended operations_setup()
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.diregapic.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method = api_schema.services["google.extended operations.v1.stuff.RegularService"].methods["CreateTask"]
 
-    expected = api_schema.services['google.diregapic.v1.stuff.CustomOperations']
+    expected = api_schema.services['google.extended operations.v1.stuff.CustomOperations']
     actual = api_schema.get_custom_operation_service(initial_method)
 
     assert expected is actual
@@ -1697,11 +1697,11 @@ def test_diregapic_lro_operation_service():
     assert actual.custom_polling_method is actual.methods["Get"]
 
 
-def test_diregapic_lro_operation_service_no_annotation():
-    file_protos = generate_basic_diregapic_setup()
+def test_extended operations_lro_operation_service_no_annotation():
+    file_protos = generate_basic_extended operations_setup()
 
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.diregapic.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method = api_schema.services["google.extended operations.v1.stuff.RegularService"].methods["CreateTask"]
     # It's easier to manipulate data structures after building the API.
     del initial_method.options.Extensions[ex_ops_pb2.operation_service]
 
@@ -1709,22 +1709,22 @@ def test_diregapic_lro_operation_service_no_annotation():
         api_schema.get_custom_operation_service(initial_method)
 
 
-def test_diregapic_lro_operation_service_no_such_service():
-    file_protos = generate_basic_diregapic_setup()
+def test_extended operations_lro_operation_service_no_such_service():
+    file_protos = generate_basic_extended operations_setup()
 
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.diregapic.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method = api_schema.services["google.extended operations.v1.stuff.RegularService"].methods["CreateTask"]
     initial_method.options.Extensions[ex_ops_pb2.operation_service] = "UnrealService"
 
     with pytest.raises(KeyError):
         api_schema.get_custom_operation_service(initial_method)
 
 
-def test_diregapic_lro_operation_service_not_an_lro():
-    file_protos = generate_basic_diregapic_setup()
+def test_extended operations_lro_operation_service_not_an_lro():
+    file_protos = generate_basic_extended operations_setup()
 
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.diregapic.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method = api_schema.services["google.extended operations.v1.stuff.RegularService"].methods["CreateTask"]
     # Hack to pretend that the initial_method is not an LRO
     super(type(initial_method), initial_method).__setattr__(
         "output", initial_method.input)
@@ -1733,13 +1733,13 @@ def test_diregapic_lro_operation_service_not_an_lro():
         api_schema.get_custom_operation_service(initial_method)
 
 
-def test_diregapic_lro_operation_service_no_polling_method():
-    file_protos = generate_basic_diregapic_setup()
+def test_extended operations_lro_operation_service_no_polling_method():
+    file_protos = generate_basic_extended operations_setup()
 
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.diregapic.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method = api_schema.services["google.extended operations.v1.stuff.RegularService"].methods["CreateTask"]
 
-    operation_service = api_schema.services["google.diregapic.v1.stuff.CustomOperations"]
+    operation_service = api_schema.services["google.extended operations.v1.stuff.CustomOperations"]
     del operation_service.methods["Get"].options.Extensions[ex_ops_pb2.operation_polling_method]
 
     with pytest.raises(ValueError):
