@@ -477,7 +477,8 @@ class API:
 
     def get_custom_operation_service(self, method: "wrappers.Method") -> "wrappers.Service":
         if not method.output.is_extended_operation:
-            raise ValueError(f"Method is not an extended operation LRO: {method.name}")
+            raise ValueError(
+                f"Method is not an extended operation LRO: {method.name}")
 
         op_serv_name = self.naming.proto_package + "." + \
             method.options.Extensions[ex_ops_pb2.operation_service]
