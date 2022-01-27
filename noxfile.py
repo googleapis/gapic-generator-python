@@ -413,7 +413,7 @@ def snippetgen(session):
 def docs(session):
     """Build the docs."""
 
-    session.install("sphinx < 1.8", "sphinx_rtd_theme")
+    session.install("sphinx==4.0.1", "sphinx_rtd_theme")
     session.install(".")
 
     # Build the docs!
