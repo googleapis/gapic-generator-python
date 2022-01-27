@@ -415,35 +415,36 @@ def test_cloud_redis_client_client_options_credentials_file(client_class, transp
             always_use_jwt_access=True,
         )
 
-    # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
-        file_creds = ga_credentials.AnonymousCredentials()
-        load_creds.return_value = (file_creds, None)
-        adc.return_value = (creds, None)
-        client = client_class(client_options=options, transport=transport_name)
-        create_channel.assert_called_with(
-            "redis.googleapis.com:443",
-            credentials=file_creds,
-            credentials_file=None,
-            quota_project_id=None,
-            default_scopes=(
-                'https://www.googleapis.com/auth/cloud-platform',
+    if "grpc" in transport_name:
+        # test that the credentials from file are saved and used as the credentials.
+        with mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds, mock.patch.object(
+            google.auth, "default", autospec=True
+        ) as adc, mock.patch.object(
+            grpc_helpers, "create_channel"
+        ) as create_channel:
+            creds = ga_credentials.AnonymousCredentials()
+            file_creds = ga_credentials.AnonymousCredentials()
+            load_creds.return_value = (file_creds, None)
+            adc.return_value = (creds, None)
+            client = client_class(client_options=options, transport=transport_name)
+            create_channel.assert_called_with(
+                "redis.googleapis.com:443",
+                credentials=file_creds,
+                credentials_file=None,
+                quota_project_id=None,
+                default_scopes=(
+                    'https://www.googleapis.com/auth/cloud-platform',
 ),
-            scopes=None,
-            default_host="redis.googleapis.com",
-            ssl_credentials=None,
-            options=[
-                ("grpc.max_send_message_length", -1),
-                ("grpc.max_receive_message_length", -1),
-            ],
-        )
+                scopes=None,
+                default_host="redis.googleapis.com",
+                ssl_credentials=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
 
 def test_cloud_redis_client_client_options_from_dict():
     with mock.patch('google.cloud.redis_v1.services.cloud_redis.transports.CloudRedisGrpcTransport.__init__') as grpc_transport:
