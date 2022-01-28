@@ -263,7 +263,8 @@ class API:
         ), opts=opts)
 
         # "metadata", "retry", "timeout", and "request" are reserved words in client methods.
-        invalid_module_names = set(keyword.kwlist) | {"metadata", "retry", "timeout", "request"}
+        invalid_module_names = set(keyword.kwlist) | {
+            "metadata", "retry", "timeout", "request"}
 
         def disambiguate_keyword_fname(
                 full_path: str,
