@@ -18,10 +18,10 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import pkg_resources
 
 import google.auth  # type: ignore
-import google.api_core  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1    # type: ignore
-from google.api_core import retry as retries  # type: ignore
+import google.api_core
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
@@ -106,7 +106,6 @@ class LoggingServiceV2Transport(abc.ABC):
                                 **scopes_kwargs,
                                 quota_project_id=quota_project_id
                             )
-
         elif credentials is None:
             credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
 

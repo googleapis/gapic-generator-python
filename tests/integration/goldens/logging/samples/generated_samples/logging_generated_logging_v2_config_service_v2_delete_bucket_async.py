@@ -28,14 +28,17 @@ from google.cloud import logging_v2
 
 
 async def sample_delete_bucket():
-    """Snippet for delete_bucket"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    location = "us-central1"
+    bucket = "bucket_value"
+    name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
     request = logging_v2.DeleteBucketRequest(
-        name="projects/{project}/locations/{location}/buckets/{bucket}",
+        name=name,
     )
 
     # Make the request

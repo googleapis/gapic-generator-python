@@ -95,8 +95,8 @@ class Instance(proto.Message):
             addresses that are reserved for this instance.
             If not provided, the service will choose an
             unused /29 block, for example, 10.0.0.0/29 or
-            192.168.0.0/29. Ranges must be unique and non-
-            overlapping with existing subnets in an
+            192.168.0.0/29. Ranges must be unique and
+            non-overlapping with existing subnets in an
             authorized network.
         host (str):
             Output only. Hostname or IP address of the
@@ -507,6 +507,7 @@ class InputConfig(proto.Message):
         gcs_source (google.cloud.redis_v1.types.GcsSource):
             Google Cloud Storage location where input
             content is located.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -567,6 +568,7 @@ class OutputConfig(proto.Message):
         gcs_destination (google.cloud.redis_v1.types.GcsDestination):
             Google Cloud Storage destination for output
             content.
+
             This field is a member of `oneof`_ ``destination``.
     """
 

@@ -24,13 +24,13 @@ import yaml
 
 from gapic import utils
 
-from gapic.samplegen_utils import types
+from gapic.samplegen_utils import types, snippet_metadata_pb2  # type: ignore
 from gapic.samplegen_utils.utils import is_valid_sample_cfg
 from gapic.schema import api
 from gapic.schema import wrappers
 
 from collections import defaultdict, namedtuple, ChainMap as chainmap
-from typing import Any, ChainMap, Dict, FrozenSet, Generator, List, Mapping, Optional, Tuple, Sequence
+from typing import Any, ChainMap, Dict, FrozenSet, Generator, List, Mapping, Optional, Sequence, Tuple
 
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
@@ -110,13 +110,13 @@ class TransformedRequest:
 
     # Resource patterns look something like
     # kingdom/{kingdom}/phylum/{phylum}/class/{class}
-    RESOURCE_RE = re.compile(r"\{([^}/]+)\}")
+    RESOURCE_RE = wrappers.MessageType.PATH_ARG_RE
 
     @classmethod
     def build(
         cls,
         request_type: wrappers.MessageType,
-        api_schema,
+        api_schema: api.API,
         base: str,
         attrs: List[AttributeRequestSetup],
         is_resource_request: bool,
@@ -163,25 +163,22 @@ class TransformedRequest:
             #
             # It's a precondition that the base field is
             # a valid field of the request message type.
-            resource_typestr = (
-                request_type.fields[base]
-                .options.Extensions[resource_pb2.resource_reference]
-                .type
-            )
+            resource_reference = request_type.fields[base].options.Extensions[resource_pb2.resource_reference]
+            resource_typestr = resource_reference.type or resource_reference.child_type
 
-            resource_message_descriptor = next(
-                (
-                    msg.options.Extensions[resource_pb2.resource]
-                    for msg in api_schema.messages.values()
-                    if msg.options.Extensions[resource_pb2.resource].type
-                    == resource_typestr
-                ),
-                None,
-            )
-            if not resource_message_descriptor:
+            resource_message = None
+            for service in api_schema.services.values():
+                resource_message = service.resource_messages_dict.get(
+                    resource_typestr)
+                if resource_message is not None:
+                    break
+
+            if resource_message is None:
                 raise types.NoSuchResource(
-                    f"No message exists for resource: {resource_typestr}"
+                    f"No message exists for resource: {resource_typestr}",
                 )
+            resource_message_descriptor = resource_message.options.Extensions[
+                resource_pb2.resource]
 
             # The field is only ever empty for singleton attributes.
             attr_names: List[str] = [a.field for a in attrs]  # type: ignore
@@ -201,6 +198,11 @@ class TransformedRequest:
                 raise types.NoSuchResourcePattern(
                     f"Resource {resource_typestr} has no pattern with params: {attr_name_str}"
                 )
+            # This re-writes
+            # patterns like: 'projects/{project}/metricDescriptors/{metric_descriptor=**}'
+            # to 'projects/{project}/metricDescriptors/{metric_descriptor}
+            # so it can be used in sample code as an f-string.
+            pattern = cls.RESOURCE_RE.sub(r"{\g<1>}", pattern)
 
             return cls(base=base, body=attrs, single=None, pattern=pattern,)
 
@@ -469,9 +471,7 @@ class Validator:
 
         Raises:
             InvalidRequestSetup: If a dict in the request lacks a "field" key,
-                                 a "value" key, if there is an unexpected keyword,
-                                 or if more than one base parameter is given for
-                                 a client-side streaming calling form.
+                                 a "value" key or if there is an unexpected keyword.
             BadAttributeLookup: If a request field refers to a non-existent field
                                 in the request message type.
             ResourceRequestMismatch: If a request attempts to describe both
@@ -550,16 +550,6 @@ class Validator:
                 request_entry.attrs.append(
                     AttributeRequestSetup(**r_dup)  # type: ignore
                 )
-
-        client_streaming_forms = {
-            types.CallingForm.RequestStreamingClient,
-            types.CallingForm.RequestStreamingBidi,
-        }
-
-        if len(base_param_to_attrs) > 1 and calling_form in client_streaming_forms:
-            raise types.InvalidRequestSetup(
-                "Too many base parameters for client side streaming form"
-            )
 
         # We can only flatten a collection of request parameters if they're a
         # subset of the flattened fields of the method.
@@ -925,8 +915,6 @@ class Validator:
 def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str, Any], None, None]:
     """Parse a handwritten sample spec"""
 
-    STANDALONE_TYPE = "standalone"
-
     for config_fpath in sample_configs:
         with open(config_fpath) as f:
             configs = yaml.safe_load_all(f.read())
@@ -935,13 +923,40 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                 valid = is_valid_sample_cfg(cfg)
                 if not valid:
                     raise types.InvalidConfig(
-                        "Sample config is invalid", valid)
+                        "Sample config in '{}' is invalid\n\n{}".format(config_fpath, cfg), valid)
                 for spec in cfg.get("samples", []):
-                    # If unspecified, assume a sample config describes a standalone.
-                    # If sample_types are specified, standalone samples must be
-                    # explicitly enabled.
-                    if STANDALONE_TYPE in spec.get("sample_type", [STANDALONE_TYPE]):
-                        yield spec
+                    yield spec
+
+
+def _generate_resource_path_request_object(field_name: str, message: wrappers.MessageType) -> List[Dict[str, str]]:
+    """Given a message that represents a resource, generate request objects that 
+    populate the resource path args.
+
+    Args:
+        field_name (str): The name of the field.
+        message (wrappers.MessageType): The message the field belongs to.
+
+    Returns:
+        List[Dict[str, str]]: A list of dicts that can be turned into TransformedRequests.
+    """
+    request = []
+
+    # Look for specific field names to substitute more realistic values
+    special_values_dict = {
+        "project": '"my-project-id"',
+        "location": '"us-central1"'
+    }
+
+    for resource_path_arg in message.resource_path_args:
+        value = special_values_dict.get(
+            resource_path_arg, f'"{resource_path_arg}_value"')
+        request.append({
+            # See TransformedRequest.build() for how 'field' is parsed
+            "field": f"{field_name}%{resource_path_arg}",
+            "value": value,
+        })
+
+    return request
 
 
 def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str = ""):
@@ -960,10 +975,16 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
 
     request_fields: List[wrappers.Field] = []
 
-    # Choose the first option for each oneof
+    # There is no standard syntax to mark a oneof as "required" in protos.
+    # Assume every oneof is required and pick the first option
+    # in each oneof.
     selected_oneofs: List[wrappers.Field] = [oneof_fields[0]
         for oneof_fields in message.oneof_fields().values()]
-    request_fields = selected_oneofs + message.required_fields
+
+    # Don't add required fields if they're also marked as oneof
+    required_fields = [
+        field for field in message.required_fields if not field.oneof]
+    request_fields = selected_oneofs + required_fields
 
     for field in request_fields:
         # TransformedRequest expects nested fields to be referenced like
@@ -972,12 +993,18 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
 
         # TODO(busunkim): Properly handle map fields
         if field.is_primitive:
-            placeholder_value = field.mock_value_original_type
-            # If this field identifies a resource use the resource path
-            if service.resource_messages_dict.get(field.resource_reference):
-                placeholder_value = service.resource_messages_dict[
-                    field.resource_reference].resource_path
-            request.append({"field": field_name, "value": placeholder_value})
+            resource_reference_message = service.resource_messages_dict.get(
+                field.resource_reference)
+            # Some resource patterns have no resource_path_args
+            # https://github.com/googleapis/gapic-generator-python/issues/701
+            if resource_reference_message and resource_reference_message.resource_path_args:
+                request += _generate_resource_path_request_object(
+                    field_name,
+                    resource_reference_message
+                )
+            else:
+                request.append(
+                    {"field": field_name, "value": field.mock_value_original_type})
         elif field.enum:
             # Choose the last enum value in the list since index 0 is often "unspecified"
             request.append(
@@ -1017,7 +1044,6 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 # [{START|END} ${apishortname}_generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
                 region_tag = f"{api_short_name}_generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_{transport_type}"
                 spec = {
-                    "sample_type": "standalone",
                     "rpc": rpc_name,
                     "transport": transport,
                     # `request` and `response` is populated in `preprocess_sample`
@@ -1029,7 +1055,7 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 yield spec
 
 
-def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str:
+def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tuple[str, Any]:
     """Generate a standalone, runnable sample.
 
     Writing the rendered output is left for the caller.
@@ -1040,7 +1066,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
         sample_template (jinja2.Template): The template representing a generic sample.
 
     Returns:
-        str: The rendered sample.
+        Tuple(str, snippet_metadata_pb2.Snippet): The rendered sample.
     """
     service_name = sample["service"]
     service = api_schema.services.get(service_name)
@@ -1067,6 +1093,17 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
 
     v.validate_response(sample["response"])
 
+    # Snippet Metadata can't be fully filled out in any one function
+    # In this function we add information from
+    # the API schema and sample dictionary.
+    snippet_metadata = snippet_metadata_pb2.Snippet()  # type: ignore
+    snippet_metadata.region_tag = sample["region_tag"]
+    setattr(snippet_metadata.client_method, "async",
+            sample["transport"] == api.TRANSPORT_GRPC_ASYNC)
+    snippet_metadata.client_method.method.short_name = sample["rpc"]
+    snippet_metadata.client_method.method.service.short_name = sample["service"].split(
+        ".")[-1]
+
     return sample_template.render(
         sample=sample,
         imports=[],
@@ -1074,4 +1111,4 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
         calling_form_enum=types.CallingForm,
         trim_blocks=True,
         lstrip_blocks=True,
-    )
+    ), snippet_metadata

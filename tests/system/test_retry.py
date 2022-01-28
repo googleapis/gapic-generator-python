@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import distutils
 import os
 import pytest
 
@@ -21,7 +20,8 @@ from google.rpc import code_pb2
 
 
 def test_retry_bubble(echo):
-    with pytest.raises(exceptions.DeadlineExceeded):
+    # Note: InvalidArgument is from gRPC, InternalServerError from http
+    with pytest.raises((exceptions.DeadlineExceeded, exceptions.InternalServerError)):
         echo.echo({
             'error': {
                 'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
@@ -30,7 +30,7 @@ def test_retry_bubble(echo):
         })
 
 
-if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_retry_bubble_async(async_echo):

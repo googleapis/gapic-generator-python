@@ -28,14 +28,12 @@ from google.cloud import asset_v1
 
 
 async def sample_list_assets():
-    """Snippet for list_assets"""
-
     # Create a client
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
     request = asset_v1.ListAssetsRequest(
-        parent="*",
+        parent="parent_value",
     )
 
     # Make the request

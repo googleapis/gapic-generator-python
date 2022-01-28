@@ -28,14 +28,16 @@ from google.cloud import logging_v2
 
 
 async def sample_delete_log_metric():
-    """Snippet for delete_log_metric"""
-
     # Create a client
     client = logging_v2.MetricsServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    metric = "metric_value"
+    metric_name = f"projects/{project}/metrics/{metric}"
+
     request = logging_v2.DeleteLogMetricRequest(
-        metric_name="projects/{project}/metrics/{metric}",
+        metric_name=metric_name,
     )
 
     # Make the request

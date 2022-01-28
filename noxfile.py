@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import os
 import sys
@@ -25,11 +26,24 @@ from os import path
 import shutil
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.16.0")
+nox.options.error_on_missing_interpreters = True
+
+
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.18.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
-@nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
+ALL_PYTHON = (
+    "3.6",
+    "3.7",
+    "3.8",
+    "3.9",
+)
+
+NEWEST_PYTHON = ALL_PYTHON[-1]
+
+
+@nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
 
@@ -50,9 +64,123 @@ def unit(session):
                 "--cov-report=term",
                 "--cov-fail-under=100",
                 path.join("tests", "unit"),
-                            ]
+            ]
         ),
     )
+
+
+FRAG_DIR = Path("tests") / "fragments"
+FRAGMENT_FILES = tuple(
+    Path(dirname).relative_to(FRAG_DIR) / f
+    for dirname, _, files in os.walk(FRAG_DIR)
+    for f in files
+    if os.path.splitext(f)[1] == ".proto" and f.startswith("test_")
+)
+
+# Note: this class lives outside 'fragment'
+# so that, if necessary, it can be pickled for a ProcessPoolExecutor
+# A callable class is necessary so that the session can be closed over
+# instead of passed in, which simplifies the invocation via map.
+class FragTester:
+    def __init__(self, session, use_ads_templates):
+        self.session = session
+        self.use_ads_templates = use_ads_templates
+
+    def __call__(self, frag):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            # Generate the fragment GAPIC.
+            outputs = []
+            templates = (
+                path.join(path.dirname(__file__), "gapic", "ads-templates")
+                if self.use_ads_templates
+                else "DEFAULT"
+            )
+            maybe_old_naming = ",old-naming" if self.use_ads_templates else ""
+
+            session_args = [
+                "python",
+                "-m",
+                "grpc_tools.protoc",
+                f"--proto_path={str(FRAG_DIR)}",
+                f"--python_gapic_out={tmp_dir}",
+                f"--python_gapic_opt=transport=grpc+rest,python-gapic-templates={templates}{maybe_old_naming}",
+            ]
+
+            outputs.append(
+                self.session.run(*session_args, str(frag), external=True, silent=True,)
+            )
+
+            # Install the generated fragment library.
+            # Note: install into the tempdir to prevent issues
+            # with running pip concurrently.
+            self.session.install(tmp_dir, "-e", ".", "-t", tmp_dir, "-qqq")
+            # Run the fragment's generated unit tests.
+            # Don't bother parallelizing them: we already parallelize
+            # the fragments, and there usually aren't too many tests per fragment.
+            outputs.append(
+                self.session.run(
+                    "py.test",
+                    "--quiet",
+                    f"--cov-config={str(Path(tmp_dir) / '.coveragerc')}",
+                    "--cov-report=term",
+                    "--cov-fail-under=100",
+                    str(Path(tmp_dir) / "tests" / "unit"),
+                    silent=True,
+                )
+            )
+
+            return "".join(outputs)
+
+
+# TODO(dovs): ads templates
+@nox.session(python=ALL_PYTHON)
+def fragment(session):
+    session.install(
+        "coverage",
+        "pytest",
+        "pytest-cov",
+        "pytest-xdist",
+        "asyncmock",
+        "pytest-asyncio",
+        "grpcio-tools",
+    )
+    session.install("-e", ".")
+
+    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
+        with ThreadPoolExecutor() as p:
+            all_outs = p.map(FragTester(session, False), FRAGMENT_FILES)
+
+        output = "".join(all_outs)
+        session.log(output)
+    else:
+        tester = FragTester(session, False)
+        for frag in FRAGMENT_FILES:
+            session.log(tester(frag))
+
+
+@nox.session(python=ALL_PYTHON[1:])
+def fragment_alternative_templates(session):
+    session.install(
+        "coverage",
+        "pytest",
+        "pytest-cov",
+        "pytest-xdist",
+        "asyncmock",
+        "pytest-asyncio",
+        "grpcio-tools",
+    )
+    session.install("-e", ".")
+
+    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
+        with ThreadPoolExecutor() as p:
+            all_outs = p.map(FragTester(session, True), FRAGMENT_FILES)
+
+        output = "".join(all_outs)
+        session.log(output)
+    else:
+        tester = FragTester(session, True)
+        for frag in FRAGMENT_FILES:
+            session.log(tester(frag))
 
 
 # TODO(yon-mg): -add compute context manager that includes rest transport
@@ -97,10 +225,8 @@ def showcase_library(
 
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
-        # TODO(yon-mg): add "transports=grpc+rest" when all rest features required for
-        #               Showcase are implemented i.e. (grpc transcoding, LROs, etc)
         opts = "--python_gapic_opt="
-        opts += ",".join(other_opts + (f"{template_opt}",))
+        opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest"))
         cmd_tup = (
             "python",
             "-m",
@@ -114,8 +240,7 @@ def showcase_library(
             f"google/showcase/v1beta1/messaging.proto",
         )
         session.run(
-            *cmd_tup,
-            external=True,
+            *cmd_tup, external=True,
         )
 
         # Install the library.
@@ -124,7 +249,7 @@ def showcase_library(
         yield tmp_dir
 
 
-@nox.session(python="3.9")
+@nox.session(python=NEWEST_PYTHON)
 def showcase(
     session,
     templates="DEFAULT",
@@ -136,12 +261,14 @@ def showcase(
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("mock", "pytest", "pytest-asyncio")
         session.run(
-            "py.test", "--quiet", *(session.posargs or [path.join("tests", "system")]),
+            "py.test",
+            "--quiet",
+            *(session.posargs or [path.join("tests", "system")]),
             env=env,
         )
 
 
-@nox.session(python="3.9")
+@nox.session(python=NEWEST_PYTHON)
 def showcase_mtls(
     session,
     templates="DEFAULT",
@@ -161,7 +288,7 @@ def showcase_mtls(
         )
 
 
-@nox.session(python="3.9")
+@nox.session(python=NEWEST_PYTHON)
 def showcase_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
     showcase(
@@ -172,7 +299,7 @@ def showcase_alternative_templates(session):
     )
 
 
-@nox.session(python="3.9")
+@nox.session(python=NEWEST_PYTHON)
 def showcase_mtls_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
     showcase_mtls(
@@ -196,16 +323,21 @@ def run_showcase_unit_tests(session, fail_under=100):
     # Run the tests.
     session.run(
         "py.test",
-        "-n=auto",
-        "--quiet",
-        "--cov=google",
-        "--cov-append",
-       f"--cov-fail-under={str(fail_under)}",
-        *(session.posargs or [path.join("tests", "unit")]),
+        *(
+            session.posargs
+            or [
+                "-n=auto",
+                "--quiet",
+                "--cov=google",
+                "--cov-append",
+                f"--cov-fail-under={str(fail_under)}",
+                path.join("tests", "unit"),
+            ]
+        ),
     )
 
 
-@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
+@nox.session(python=ALL_PYTHON)
 def showcase_unit(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
 ):
@@ -213,34 +345,19 @@ def showcase_unit(
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
-
-        # Unit tests are run twice with different dependencies to exercise
-        # all code paths.
-        # TODO(busunkim): remove when default templates require google-auth>=1.25.0
-
-        # 1. Run tests at lower bound of dependencies
-        session.install("nox")
-        session.run("nox", "-s", "update_lower_bounds")
-        session.install(".", "--force-reinstall", "-c", "constraints.txt")
-        # Some code paths require an older version of google-auth.
-        # google-auth is a transitive dependency so it isn't in the
-        # lower bound constraints file produced above.
-        session.install("google-auth==1.28.0")
-        run_showcase_unit_tests(session, fail_under=0)
-
-        # 2. Run the tests again with latest version of dependencies
-        session.install(".", "--upgrade", "--force-reinstall")
-        run_showcase_unit_tests(session, fail_under=100)
+        run_showcase_unit_tests(session)
 
 
-@nox.session(python=["3.7", "3.8", "3.9"])
+@nox.session(python=ALL_PYTHON[1:])  # Do not test 3.6
 def showcase_unit_alternative_templates(session):
-    with showcase_library(session, templates=ADS_TEMPLATES, other_opts=("old-naming",)) as lib:
+    with showcase_library(
+        session, templates=ADS_TEMPLATES, other_opts=("old-naming",)
+    ) as lib:
         session.chdir(lib)
         run_showcase_unit_tests(session)
 
 
-@nox.session(python=["3.9"])
+@nox.session(python=NEWEST_PYTHON)
 def showcase_unit_add_iam_methods(session):
     with showcase_library(session, other_opts=("add-iam-methods",)) as lib:
         session.chdir(lib)
@@ -257,14 +374,14 @@ def showcase_unit_add_iam_methods(session):
         run_showcase_unit_tests(session, fail_under=100)
 
 
-@nox.session(python="3.9")
+@nox.session(python=NEWEST_PYTHON)
 def showcase_mypy(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
 ):
     """Perform typecheck analysis on the generated Showcase library."""
 
     # Install pytest and gapic-generator-python
-    session.install("mypy", "types-pkg-resources")
+    session.install("mypy", "types-pkg-resources", "types-protobuf", "types-requests", "types-dataclasses")
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
@@ -273,12 +390,12 @@ def showcase_mypy(
         session.run("mypy", "--explicit-package-bases", "google")
 
 
-@nox.session(python="3.9")
+@nox.session(python=NEWEST_PYTHON)
 def showcase_mypy_alternative_templates(session):
     showcase_mypy(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
 
 
-@nox.session(python="3.9")
+@nox.session(python=NEWEST_PYTHON)
 def snippetgen(session):
     # Clone googleapis/api-common-protos which are referenced by the snippet
     # protos
@@ -299,18 +416,14 @@ def snippetgen(session):
 
     session.install("grpcio-tools", "mock", "pytest", "pytest-asyncio")
 
-    session.run(
-        "py.test",
-        "-vv",
-        "tests/snippetgen"
-    )
+    session.run("py.test", "-vv", "tests/snippetgen")
 
 
-@nox.session(python="3.9")
+@nox.session(python=NEWEST_PYTHON)
 def docs(session):
     """Build the docs."""
 
-    session.install("sphinx < 1.8", "sphinx_rtd_theme")
+    session.install("sphinx==4.0.1", "sphinx_rtd_theme")
     session.install(".")
 
     # Build the docs!
@@ -327,15 +440,10 @@ def docs(session):
     )
 
 
-@nox.session(python=["3.7", "3.8", "3.9"])
+@nox.session(python=NEWEST_PYTHON)
 def mypy(session):
     """Perform typecheck analysis."""
 
-    session.install(
-        "mypy",
-        "types-protobuf",
-        "types-PyYAML",
-        "types-dataclasses"
-    )
+    session.install("mypy", "types-protobuf", "types-PyYAML", "types-dataclasses")
     session.install(".")
     session.run("mypy", "gapic")

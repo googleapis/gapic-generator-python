@@ -29,7 +29,7 @@ from gapic.schema import (api, metadata, naming)
 import gapic.schema.wrappers as wrappers
 from gapic.utils import Options
 
-from common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage, DummyMessageTypePB,
+from ..common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage, DummyMessageTypePB,
                           DummyService, DummyMethod, message_factory, enum_factory)
 from gapic.samplegen_utils import utils
 
@@ -193,8 +193,8 @@ def test_preprocess_sample_resource_message_field():
     # assert mock request is created
     assert sample["request"] == [
         {
-            "field": "parent",
-            "value": "projects/{project}"
+            "field": "parent%project",
+            "value": '"my-project-id"'
         }
     ]
 
@@ -1350,57 +1350,6 @@ def test_validate_request_reserved_input_param(dummy_api_schema):
         )
 
 
-def test_single_request_client_streaming(dummy_api_schema,
-        calling_form=types.CallingForm.RequestStreamingClient):
-    # Each API client method really only takes one parameter:
-    # either a single protobuf message or an iterable of protobuf messages.
-    # With unary request methods, python lets us describe attributes as positional
-    # and keyword parameters, which simplifies request construction.
-    # The 'base' in the transformed request refers to an attribute, and the
-    # 'field's refer to sub-attributes.
-    # Client streaming and bidirectional streaming methods can't use this notation,
-    # and generate an exception if there is more than one 'base'.
-    input_type = DummyMessage(
-        fields={
-            "cephalopod": DummyField(
-                message=DummyMessage(
-                    fields={
-                        "order": DummyField(
-                            message=DummyMessage(type="ORDER_TYPE")
-                        )
-                    },
-                    type="CEPHALOPOD_TYPE"
-                )
-            ),
-            "gastropod": DummyField(
-                message=DummyMessage(
-                    fields={
-                        "order": DummyField(
-                            message=DummyMessage(type="ORDER_TYPE")
-                        )
-                    },
-                    type="GASTROPOD_TYPE"
-                )
-            )
-        },
-        type="MOLLUSC_TYPE"
-    )
-    v = samplegen.Validator(DummyMethod(input=input_type), dummy_api_schema)
-    with pytest.raises(types.InvalidRequestSetup):
-        v.validate_and_transform_request(
-            types.CallingForm.RequestStreamingClient,
-            [
-                {"field": "cephalopod.order", "value": "cephalopoda"},
-                {"field": "gastropod.order", "value": "pulmonata"},
-            ],
-        )
-
-
-def test_single_request_bidi_streaming():
-    test_single_request_client_streaming(
-        types.CallingForm.RequestStreamingBidi)
-
-
 def test_validate_request_calling_form():
     assert (
         types.CallingForm.method_default(DummyMethod(lro=True))
@@ -1861,7 +1810,16 @@ def test_validate_request_resource_name():
                 request_descriptor,
                 phylum_descriptor,
             ])
-        }
+        },
+        services={
+            "Mollusc": DummyService(
+                methods={},
+                client_name="MolluscClient",
+                resource_messages_dict={
+                    resource_type: phylum_descriptor
+                }
+            )
+        },
     )
 
     v = samplegen.Validator(method=method, api_schema=api_schema)
@@ -1981,7 +1939,7 @@ def test_validate_request_no_such_attr(dummy_api_schema):
         v.validate_and_transform_request(types.CallingForm.Request, request)
 
 
-def test_validate_request_no_such_resource(dummy_api_schema):
+def test_validate_request_no_such_resource():
     request = [
         {"field": "taxon%kingdom", "value": "animalia"}
     ]
@@ -1993,7 +1951,14 @@ def test_validate_request_no_such_resource(dummy_api_schema):
 
     method = DummyMethod(input=request_descriptor)
     api_schema = DummyApiSchema(
-        messages={k: v for k, v in enumerate([request_descriptor])}
+        messages={k: v for k, v in enumerate([request_descriptor])},
+        services={
+            "Mollusc": DummyService(
+                methods={},
+                client_name="MolluscClient",
+                resource_messages_dict={}
+            )
+        },
     )
 
     v = samplegen.Validator(method=method, api_schema=api_schema)
@@ -2028,7 +1993,16 @@ def test_validate_request_no_such_pattern():
                 request_descriptor,
                 phylum_descriptor,
             ])
-        }
+        },
+        services={
+            "Mollusc": DummyService(
+                methods={},
+                client_name="MolluscClient",
+                resource_messages_dict={
+                    resource_type: phylum_descriptor
+                }
+            )
+        },
     )
 
     v = samplegen.Validator(method=method, api_schema=api_schema)
@@ -2113,7 +2087,6 @@ def test_generate_sample_spec_basic():
     assert len(specs) == 2
 
     assert specs[0] == {
-        "sample_type": "standalone",
         "rpc": "Ramshorn",
         "transport": "grpc",
         "service": "animalia.mollusca.v1.Squid",
@@ -2122,7 +2095,6 @@ def test_generate_sample_spec_basic():
     }
 
     assert specs[1] == {
-        "sample_type": "standalone",
         "rpc": "Ramshorn",
         "transport": "grpc-async",
         "service": "animalia.mollusca.v1.Squid",

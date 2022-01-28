@@ -28,14 +28,16 @@ from google.cloud import logging_v2
 
 
 async def sample_delete_sink():
-    """Snippet for delete_sink"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    sink = "sink_value"
+    sink_name = f"projects/{project}/sinks/{sink}"
+
     request = logging_v2.DeleteSinkRequest(
-        sink_name="projects/{project}/sinks/{sink}",
+        sink_name=sink_name,
     )
 
     # Make the request

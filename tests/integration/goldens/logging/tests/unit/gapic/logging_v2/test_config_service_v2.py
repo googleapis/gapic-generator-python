@@ -154,7 +154,7 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -171,7 +171,7 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -188,7 +188,7 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -204,18 +204,18 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -246,7 +246,7 @@ def test_config_service_v2_client_mtls_env_auto(client_class, transport_class, t
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class(client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -280,7 +280,7 @@ def test_config_service_v2_client_mtls_env_auto(client_class, transport_class, t
                         expected_client_cert_source = client_cert_source_callback
 
                     patched.return_value = None
-                    client = client_class()
+                    client = client_class(transport=transport_name)
                     patched.assert_called_once_with(
                         credentials=None,
                         credentials_file=None,
@@ -297,7 +297,7 @@ def test_config_service_v2_client_mtls_env_auto(client_class, transport_class, t
         with mock.patch.object(transport_class, '__init__') as patched:
             with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
-                client = client_class()
+                client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
@@ -308,6 +308,59 @@ def test_config_service_v2_client_mtls_env_auto(client_class, transport_class, t
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
                 )
+
+
+@pytest.mark.parametrize("client_class", [
+    ConfigServiceV2Client, ConfigServiceV2AsyncClient
+])
+@mock.patch.object(ConfigServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2Client))
+@mock.patch.object(ConfigServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2AsyncClient))
+def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+            with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
@@ -321,7 +374,7 @@ def test_config_service_v2_client_client_options_scopes(client_class, transport_
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -333,18 +386,19 @@ def test_config_service_v2_client_client_options_scopes(client_class, transport_
             always_use_jwt_access=True,
         )
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    (ConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport, "grpc"),
-    (ConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
+@pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
+    (ConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport, "grpc", grpc_helpers),
+    (ConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
 ])
-def test_config_service_v2_client_client_options_credentials_file(client_class, transport_class, transport_name):
+def test_config_service_v2_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(
         credentials_file="credentials.json"
     )
+
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -356,6 +410,39 @@ def test_config_service_v2_client_client_options_credentials_file(client_class, 
             always_use_jwt_access=True,
         )
 
+    if "grpc" in transport_name:
+        # test that the credentials from file are saved and used as the credentials.
+        with mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds, mock.patch.object(
+            google.auth, "default", autospec=True
+        ) as adc, mock.patch.object(
+            grpc_helpers, "create_channel"
+        ) as create_channel:
+            creds = ga_credentials.AnonymousCredentials()
+            file_creds = ga_credentials.AnonymousCredentials()
+            load_creds.return_value = (file_creds, None)
+            adc.return_value = (creds, None)
+            client = client_class(client_options=options, transport=transport_name)
+            create_channel.assert_called_with(
+                "logging.googleapis.com:443",
+                credentials=file_creds,
+                credentials_file=None,
+                quota_project_id=None,
+                default_scopes=(
+                    'https://www.googleapis.com/auth/cloud-platform',
+                    'https://www.googleapis.com/auth/cloud-platform.read-only',
+                    'https://www.googleapis.com/auth/logging.admin',
+                    'https://www.googleapis.com/auth/logging.read',
+),
+                scopes=None,
+                default_host="logging.googleapis.com",
+                ssl_credentials=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
 
 def test_config_service_v2_client_client_options_from_dict():
     with mock.patch('google.cloud.logging_v2.services.config_service_v2.transports.ConfigServiceV2GrpcTransport.__init__') as grpc_transport:
@@ -375,7 +462,11 @@ def test_config_service_v2_client_client_options_from_dict():
         )
 
 
-def test_list_buckets(transport: str = 'grpc', request_type=logging_config.ListBucketsRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.ListBucketsRequest,
+  dict,
+])
+def test_list_buckets(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -403,10 +494,6 @@ def test_list_buckets(transport: str = 'grpc', request_type=logging_config.ListB
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBucketsPager)
     assert response.next_page_token == 'next_page_token_value'
-
-
-def test_list_buckets_from_dict():
-    test_list_buckets(request_type=dict)
 
 
 def test_list_buckets_empty_call():
@@ -547,7 +634,9 @@ def test_list_buckets_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_buckets_flattened_error():
@@ -588,7 +677,9 @@ async def test_list_buckets_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -606,9 +697,10 @@ async def test_list_buckets_flattened_error_async():
         )
 
 
-def test_list_buckets_pager():
+def test_list_buckets_pager(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -658,10 +750,10 @@ def test_list_buckets_pager():
         assert len(results) == 6
         assert all(isinstance(i, logging_config.LogBucket)
                    for i in results)
-
-def test_list_buckets_pages():
+def test_list_buckets_pages(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -746,7 +838,8 @@ async def test_list_buckets_async_pager():
 
         assert len(responses) == 6
         assert all(isinstance(i, logging_config.LogBucket)
-                   for i in responses)
+                for i in responses)
+
 
 @pytest.mark.asyncio
 async def test_list_buckets_async_pages():
@@ -792,7 +885,11 @@ async def test_list_buckets_async_pages():
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-def test_get_bucket(transport: str = 'grpc', request_type=logging_config.GetBucketRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.GetBucketRequest,
+  dict,
+])
+def test_get_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -828,10 +925,6 @@ def test_get_bucket(transport: str = 'grpc', request_type=logging_config.GetBuck
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
-
-
-def test_get_bucket_from_dict():
-    test_get_bucket(request_type=dict)
 
 
 def test_get_bucket_empty_call():
@@ -959,7 +1052,11 @@ async def test_get_bucket_field_headers_async():
     ) in kw['metadata']
 
 
-def test_create_bucket(transport: str = 'grpc', request_type=logging_config.CreateBucketRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.CreateBucketRequest,
+  dict,
+])
+def test_create_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -995,10 +1092,6 @@ def test_create_bucket(transport: str = 'grpc', request_type=logging_config.Crea
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
-
-
-def test_create_bucket_from_dict():
-    test_create_bucket(request_type=dict)
 
 
 def test_create_bucket_empty_call():
@@ -1126,7 +1219,11 @@ async def test_create_bucket_field_headers_async():
     ) in kw['metadata']
 
 
-def test_update_bucket(transport: str = 'grpc', request_type=logging_config.UpdateBucketRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.UpdateBucketRequest,
+  dict,
+])
+def test_update_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1162,10 +1259,6 @@ def test_update_bucket(transport: str = 'grpc', request_type=logging_config.Upda
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
-
-
-def test_update_bucket_from_dict():
-    test_update_bucket(request_type=dict)
 
 
 def test_update_bucket_empty_call():
@@ -1293,7 +1386,11 @@ async def test_update_bucket_field_headers_async():
     ) in kw['metadata']
 
 
-def test_delete_bucket(transport: str = 'grpc', request_type=logging_config.DeleteBucketRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.DeleteBucketRequest,
+  dict,
+])
+def test_delete_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1318,10 +1415,6 @@ def test_delete_bucket(transport: str = 'grpc', request_type=logging_config.Dele
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_bucket_from_dict():
-    test_delete_bucket(request_type=dict)
 
 
 def test_delete_bucket_empty_call():
@@ -1438,7 +1531,11 @@ async def test_delete_bucket_field_headers_async():
     ) in kw['metadata']
 
 
-def test_undelete_bucket(transport: str = 'grpc', request_type=logging_config.UndeleteBucketRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.UndeleteBucketRequest,
+  dict,
+])
+def test_undelete_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1463,10 +1560,6 @@ def test_undelete_bucket(transport: str = 'grpc', request_type=logging_config.Un
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_undelete_bucket_from_dict():
-    test_undelete_bucket(request_type=dict)
 
 
 def test_undelete_bucket_empty_call():
@@ -1583,7 +1676,11 @@ async def test_undelete_bucket_field_headers_async():
     ) in kw['metadata']
 
 
-def test_list_views(transport: str = 'grpc', request_type=logging_config.ListViewsRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.ListViewsRequest,
+  dict,
+])
+def test_list_views(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1611,10 +1708,6 @@ def test_list_views(transport: str = 'grpc', request_type=logging_config.ListVie
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListViewsPager)
     assert response.next_page_token == 'next_page_token_value'
-
-
-def test_list_views_from_dict():
-    test_list_views(request_type=dict)
 
 
 def test_list_views_empty_call():
@@ -1755,7 +1848,9 @@ def test_list_views_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_views_flattened_error():
@@ -1796,7 +1891,9 @@ async def test_list_views_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1814,9 +1911,10 @@ async def test_list_views_flattened_error_async():
         )
 
 
-def test_list_views_pager():
+def test_list_views_pager(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1866,10 +1964,10 @@ def test_list_views_pager():
         assert len(results) == 6
         assert all(isinstance(i, logging_config.LogView)
                    for i in results)
-
-def test_list_views_pages():
+def test_list_views_pages(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1954,7 +2052,8 @@ async def test_list_views_async_pager():
 
         assert len(responses) == 6
         assert all(isinstance(i, logging_config.LogView)
-                   for i in responses)
+                for i in responses)
+
 
 @pytest.mark.asyncio
 async def test_list_views_async_pages():
@@ -2000,7 +2099,11 @@ async def test_list_views_async_pages():
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-def test_get_view(transport: str = 'grpc', request_type=logging_config.GetViewRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.GetViewRequest,
+  dict,
+])
+def test_get_view(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2032,10 +2135,6 @@ def test_get_view(transport: str = 'grpc', request_type=logging_config.GetViewRe
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
-
-
-def test_get_view_from_dict():
-    test_get_view(request_type=dict)
 
 
 def test_get_view_empty_call():
@@ -2159,7 +2258,11 @@ async def test_get_view_field_headers_async():
     ) in kw['metadata']
 
 
-def test_create_view(transport: str = 'grpc', request_type=logging_config.CreateViewRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.CreateViewRequest,
+  dict,
+])
+def test_create_view(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2191,10 +2294,6 @@ def test_create_view(transport: str = 'grpc', request_type=logging_config.Create
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
-
-
-def test_create_view_from_dict():
-    test_create_view(request_type=dict)
 
 
 def test_create_view_empty_call():
@@ -2318,7 +2417,11 @@ async def test_create_view_field_headers_async():
     ) in kw['metadata']
 
 
-def test_update_view(transport: str = 'grpc', request_type=logging_config.UpdateViewRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.UpdateViewRequest,
+  dict,
+])
+def test_update_view(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2350,10 +2453,6 @@ def test_update_view(transport: str = 'grpc', request_type=logging_config.Update
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
-
-
-def test_update_view_from_dict():
-    test_update_view(request_type=dict)
 
 
 def test_update_view_empty_call():
@@ -2477,7 +2576,11 @@ async def test_update_view_field_headers_async():
     ) in kw['metadata']
 
 
-def test_delete_view(transport: str = 'grpc', request_type=logging_config.DeleteViewRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.DeleteViewRequest,
+  dict,
+])
+def test_delete_view(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2502,10 +2605,6 @@ def test_delete_view(transport: str = 'grpc', request_type=logging_config.Delete
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_view_from_dict():
-    test_delete_view(request_type=dict)
 
 
 def test_delete_view_empty_call():
@@ -2622,7 +2721,11 @@ async def test_delete_view_field_headers_async():
     ) in kw['metadata']
 
 
-def test_list_sinks(transport: str = 'grpc', request_type=logging_config.ListSinksRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.ListSinksRequest,
+  dict,
+])
+def test_list_sinks(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2650,10 +2753,6 @@ def test_list_sinks(transport: str = 'grpc', request_type=logging_config.ListSin
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSinksPager)
     assert response.next_page_token == 'next_page_token_value'
-
-
-def test_list_sinks_from_dict():
-    test_list_sinks(request_type=dict)
 
 
 def test_list_sinks_empty_call():
@@ -2794,7 +2893,9 @@ def test_list_sinks_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_sinks_flattened_error():
@@ -2835,7 +2936,9 @@ async def test_list_sinks_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2853,9 +2956,10 @@ async def test_list_sinks_flattened_error_async():
         )
 
 
-def test_list_sinks_pager():
+def test_list_sinks_pager(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2905,10 +3009,10 @@ def test_list_sinks_pager():
         assert len(results) == 6
         assert all(isinstance(i, logging_config.LogSink)
                    for i in results)
-
-def test_list_sinks_pages():
+def test_list_sinks_pages(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2993,7 +3097,8 @@ async def test_list_sinks_async_pager():
 
         assert len(responses) == 6
         assert all(isinstance(i, logging_config.LogSink)
-                   for i in responses)
+                for i in responses)
+
 
 @pytest.mark.asyncio
 async def test_list_sinks_async_pages():
@@ -3039,7 +3144,11 @@ async def test_list_sinks_async_pages():
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-def test_get_sink(transport: str = 'grpc', request_type=logging_config.GetSinkRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.GetSinkRequest,
+  dict,
+])
+def test_get_sink(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3082,10 +3191,6 @@ def test_get_sink(transport: str = 'grpc', request_type=logging_config.GetSinkRe
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
     assert response.writer_identity == 'writer_identity_value'
     assert response.include_children is True
-
-
-def test_get_sink_from_dict():
-    test_get_sink(request_type=dict)
 
 
 def test_get_sink_empty_call():
@@ -3240,7 +3345,9 @@ def test_get_sink_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
 
 
 def test_get_sink_flattened_error():
@@ -3281,7 +3388,9 @@ async def test_get_sink_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3299,7 +3408,11 @@ async def test_get_sink_flattened_error_async():
         )
 
 
-def test_create_sink(transport: str = 'grpc', request_type=logging_config.CreateSinkRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.CreateSinkRequest,
+  dict,
+])
+def test_create_sink(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3342,10 +3455,6 @@ def test_create_sink(transport: str = 'grpc', request_type=logging_config.Create
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
     assert response.writer_identity == 'writer_identity_value'
     assert response.include_children is True
-
-
-def test_create_sink_from_dict():
-    test_create_sink(request_type=dict)
 
 
 def test_create_sink_empty_call():
@@ -3501,8 +3610,12 @@ def test_create_sink_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].sink == logging_config.LogSink(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].sink
+        mock_val = logging_config.LogSink(name='name_value')
+        assert arg == mock_val
 
 
 def test_create_sink_flattened_error():
@@ -3545,8 +3658,12 @@ async def test_create_sink_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].sink == logging_config.LogSink(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].sink
+        mock_val = logging_config.LogSink(name='name_value')
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3565,7 +3682,11 @@ async def test_create_sink_flattened_error_async():
         )
 
 
-def test_update_sink(transport: str = 'grpc', request_type=logging_config.UpdateSinkRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.UpdateSinkRequest,
+  dict,
+])
+def test_update_sink(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3608,10 +3729,6 @@ def test_update_sink(transport: str = 'grpc', request_type=logging_config.Update
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
     assert response.writer_identity == 'writer_identity_value'
     assert response.include_children is True
-
-
-def test_update_sink_from_dict():
-    test_update_sink(request_type=dict)
 
 
 def test_update_sink_empty_call():
@@ -3768,9 +3885,15 @@ def test_update_sink_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
-        assert args[0].sink == logging_config.LogSink(name='name_value')
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=['paths_value'])
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
+        arg = args[0].sink
+        mock_val = logging_config.LogSink(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
 
 
 def test_update_sink_flattened_error():
@@ -3815,9 +3938,15 @@ async def test_update_sink_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
-        assert args[0].sink == logging_config.LogSink(name='name_value')
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=['paths_value'])
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
+        arg = args[0].sink
+        mock_val = logging_config.LogSink(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3837,7 +3966,11 @@ async def test_update_sink_flattened_error_async():
         )
 
 
-def test_delete_sink(transport: str = 'grpc', request_type=logging_config.DeleteSinkRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.DeleteSinkRequest,
+  dict,
+])
+def test_delete_sink(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3862,10 +3995,6 @@ def test_delete_sink(transport: str = 'grpc', request_type=logging_config.Delete
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_sink_from_dict():
-    test_delete_sink(request_type=dict)
 
 
 def test_delete_sink_empty_call():
@@ -4003,7 +4132,9 @@ def test_delete_sink_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
 
 
 def test_delete_sink_flattened_error():
@@ -4044,7 +4175,9 @@ async def test_delete_sink_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].sink_name == 'sink_name_value'
+        arg = args[0].sink_name
+        mock_val = 'sink_name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4062,7 +4195,11 @@ async def test_delete_sink_flattened_error_async():
         )
 
 
-def test_list_exclusions(transport: str = 'grpc', request_type=logging_config.ListExclusionsRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.ListExclusionsRequest,
+  dict,
+])
+def test_list_exclusions(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -4090,10 +4227,6 @@ def test_list_exclusions(transport: str = 'grpc', request_type=logging_config.Li
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExclusionsPager)
     assert response.next_page_token == 'next_page_token_value'
-
-
-def test_list_exclusions_from_dict():
-    test_list_exclusions(request_type=dict)
 
 
 def test_list_exclusions_empty_call():
@@ -4234,7 +4367,9 @@ def test_list_exclusions_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_exclusions_flattened_error():
@@ -4275,7 +4410,9 @@ async def test_list_exclusions_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4293,9 +4430,10 @@ async def test_list_exclusions_flattened_error_async():
         )
 
 
-def test_list_exclusions_pager():
+def test_list_exclusions_pager(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4345,10 +4483,10 @@ def test_list_exclusions_pager():
         assert len(results) == 6
         assert all(isinstance(i, logging_config.LogExclusion)
                    for i in results)
-
-def test_list_exclusions_pages():
+def test_list_exclusions_pages(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4433,7 +4571,8 @@ async def test_list_exclusions_async_pager():
 
         assert len(responses) == 6
         assert all(isinstance(i, logging_config.LogExclusion)
-                   for i in responses)
+                for i in responses)
+
 
 @pytest.mark.asyncio
 async def test_list_exclusions_async_pages():
@@ -4479,7 +4618,11 @@ async def test_list_exclusions_async_pages():
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-def test_get_exclusion(transport: str = 'grpc', request_type=logging_config.GetExclusionRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.GetExclusionRequest,
+  dict,
+])
+def test_get_exclusion(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -4513,10 +4656,6 @@ def test_get_exclusion(transport: str = 'grpc', request_type=logging_config.GetE
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
     assert response.disabled is True
-
-
-def test_get_exclusion_from_dict():
-    test_get_exclusion(request_type=dict)
 
 
 def test_get_exclusion_empty_call():
@@ -4663,7 +4802,9 @@ def test_get_exclusion_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
 
 
 def test_get_exclusion_flattened_error():
@@ -4704,7 +4845,9 @@ async def test_get_exclusion_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4722,7 +4865,11 @@ async def test_get_exclusion_flattened_error_async():
         )
 
 
-def test_create_exclusion(transport: str = 'grpc', request_type=logging_config.CreateExclusionRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.CreateExclusionRequest,
+  dict,
+])
+def test_create_exclusion(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -4756,10 +4903,6 @@ def test_create_exclusion(transport: str = 'grpc', request_type=logging_config.C
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
     assert response.disabled is True
-
-
-def test_create_exclusion_from_dict():
-    test_create_exclusion(request_type=dict)
 
 
 def test_create_exclusion_empty_call():
@@ -4907,8 +5050,12 @@ def test_create_exclusion_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].exclusion == logging_config.LogExclusion(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].exclusion
+        mock_val = logging_config.LogExclusion(name='name_value')
+        assert arg == mock_val
 
 
 def test_create_exclusion_flattened_error():
@@ -4951,8 +5098,12 @@ async def test_create_exclusion_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].exclusion == logging_config.LogExclusion(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].exclusion
+        mock_val = logging_config.LogExclusion(name='name_value')
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4971,7 +5122,11 @@ async def test_create_exclusion_flattened_error_async():
         )
 
 
-def test_update_exclusion(transport: str = 'grpc', request_type=logging_config.UpdateExclusionRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.UpdateExclusionRequest,
+  dict,
+])
+def test_update_exclusion(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -5005,10 +5160,6 @@ def test_update_exclusion(transport: str = 'grpc', request_type=logging_config.U
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
     assert response.disabled is True
-
-
-def test_update_exclusion_from_dict():
-    test_update_exclusion(request_type=dict)
 
 
 def test_update_exclusion_empty_call():
@@ -5157,9 +5308,15 @@ def test_update_exclusion_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].exclusion == logging_config.LogExclusion(name='name_value')
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=['paths_value'])
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].exclusion
+        mock_val = logging_config.LogExclusion(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
 
 
 def test_update_exclusion_flattened_error():
@@ -5204,9 +5361,15 @@ async def test_update_exclusion_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].exclusion == logging_config.LogExclusion(name='name_value')
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=['paths_value'])
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].exclusion
+        mock_val = logging_config.LogExclusion(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5226,7 +5389,11 @@ async def test_update_exclusion_flattened_error_async():
         )
 
 
-def test_delete_exclusion(transport: str = 'grpc', request_type=logging_config.DeleteExclusionRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.DeleteExclusionRequest,
+  dict,
+])
+def test_delete_exclusion(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -5251,10 +5418,6 @@ def test_delete_exclusion(transport: str = 'grpc', request_type=logging_config.D
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_exclusion_from_dict():
-    test_delete_exclusion(request_type=dict)
 
 
 def test_delete_exclusion_empty_call():
@@ -5392,7 +5555,9 @@ def test_delete_exclusion_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
 
 
 def test_delete_exclusion_flattened_error():
@@ -5433,7 +5598,9 @@ async def test_delete_exclusion_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5451,7 +5618,11 @@ async def test_delete_exclusion_flattened_error_async():
         )
 
 
-def test_get_cmek_settings(transport: str = 'grpc', request_type=logging_config.GetCmekSettingsRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.GetCmekSettingsRequest,
+  dict,
+])
+def test_get_cmek_settings(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -5483,10 +5654,6 @@ def test_get_cmek_settings(transport: str = 'grpc', request_type=logging_config.
     assert response.name == 'name_value'
     assert response.kms_key_name == 'kms_key_name_value'
     assert response.service_account_id == 'service_account_id_value'
-
-
-def test_get_cmek_settings_from_dict():
-    test_get_cmek_settings(request_type=dict)
 
 
 def test_get_cmek_settings_empty_call():
@@ -5610,7 +5777,11 @@ async def test_get_cmek_settings_field_headers_async():
     ) in kw['metadata']
 
 
-def test_update_cmek_settings(transport: str = 'grpc', request_type=logging_config.UpdateCmekSettingsRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_config.UpdateCmekSettingsRequest,
+  dict,
+])
+def test_update_cmek_settings(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -5642,10 +5813,6 @@ def test_update_cmek_settings(transport: str = 'grpc', request_type=logging_conf
     assert response.name == 'name_value'
     assert response.kms_key_name == 'kms_key_name_value'
     assert response.service_account_id == 'service_account_id_value'
-
-
-def test_update_cmek_settings_from_dict():
-    test_update_cmek_settings(request_type=dict)
 
 
 def test_update_cmek_settings_empty_call():
@@ -5788,6 +5955,27 @@ def test_credentials_transport_error():
         client = ConfigServiceV2Client(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.ConfigServiceV2GrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = ConfigServiceV2Client(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = ConfigServiceV2Client(
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
@@ -6358,7 +6546,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(transports.ConfigServiceV2Transport, '_prep_wrapped_messages') as prep:
@@ -6418,3 +6606,29 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+@pytest.mark.parametrize("client_class,transport_class", [
+    (ConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport),
+    (ConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport),
+])
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )

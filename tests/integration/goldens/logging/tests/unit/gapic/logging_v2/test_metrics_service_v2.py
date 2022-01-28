@@ -158,7 +158,7 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -175,7 +175,7 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -192,7 +192,7 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -208,18 +208,18 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -250,7 +250,7 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class(client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -284,7 +284,7 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
                         expected_client_cert_source = client_cert_source_callback
 
                     patched.return_value = None
-                    client = client_class()
+                    client = client_class(transport=transport_name)
                     patched.assert_called_once_with(
                         credentials=None,
                         credentials_file=None,
@@ -301,7 +301,7 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
         with mock.patch.object(transport_class, '__init__') as patched:
             with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
-                client = client_class()
+                client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
@@ -312,6 +312,59 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
                 )
+
+
+@pytest.mark.parametrize("client_class", [
+    MetricsServiceV2Client, MetricsServiceV2AsyncClient
+])
+@mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
+@mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
+def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+            with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
@@ -325,7 +378,7 @@ def test_metrics_service_v2_client_client_options_scopes(client_class, transport
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -337,18 +390,19 @@ def test_metrics_service_v2_client_client_options_scopes(client_class, transport
             always_use_jwt_access=True,
         )
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),
-    (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
+@pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
+    (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc", grpc_helpers),
+    (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
 ])
-def test_metrics_service_v2_client_client_options_credentials_file(client_class, transport_class, transport_name):
+def test_metrics_service_v2_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(
         credentials_file="credentials.json"
     )
+
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -360,6 +414,40 @@ def test_metrics_service_v2_client_client_options_credentials_file(client_class,
             always_use_jwt_access=True,
         )
 
+    if "grpc" in transport_name:
+        # test that the credentials from file are saved and used as the credentials.
+        with mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds, mock.patch.object(
+            google.auth, "default", autospec=True
+        ) as adc, mock.patch.object(
+            grpc_helpers, "create_channel"
+        ) as create_channel:
+            creds = ga_credentials.AnonymousCredentials()
+            file_creds = ga_credentials.AnonymousCredentials()
+            load_creds.return_value = (file_creds, None)
+            adc.return_value = (creds, None)
+            client = client_class(client_options=options, transport=transport_name)
+            create_channel.assert_called_with(
+                "logging.googleapis.com:443",
+                credentials=file_creds,
+                credentials_file=None,
+                quota_project_id=None,
+                default_scopes=(
+                    'https://www.googleapis.com/auth/cloud-platform',
+                    'https://www.googleapis.com/auth/cloud-platform.read-only',
+                    'https://www.googleapis.com/auth/logging.admin',
+                    'https://www.googleapis.com/auth/logging.read',
+                    'https://www.googleapis.com/auth/logging.write',
+),
+                scopes=None,
+                default_host="logging.googleapis.com",
+                ssl_credentials=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
 
 def test_metrics_service_v2_client_client_options_from_dict():
     with mock.patch('google.cloud.logging_v2.services.metrics_service_v2.transports.MetricsServiceV2GrpcTransport.__init__') as grpc_transport:
@@ -379,7 +467,11 @@ def test_metrics_service_v2_client_client_options_from_dict():
         )
 
 
-def test_list_log_metrics(transport: str = 'grpc', request_type=logging_metrics.ListLogMetricsRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.ListLogMetricsRequest,
+  dict,
+])
+def test_list_log_metrics(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -407,10 +499,6 @@ def test_list_log_metrics(transport: str = 'grpc', request_type=logging_metrics.
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsPager)
     assert response.next_page_token == 'next_page_token_value'
-
-
-def test_list_log_metrics_from_dict():
-    test_list_log_metrics(request_type=dict)
 
 
 def test_list_log_metrics_empty_call():
@@ -551,7 +639,9 @@ def test_list_log_metrics_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 def test_list_log_metrics_flattened_error():
@@ -592,7 +682,9 @@ async def test_list_log_metrics_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -610,9 +702,10 @@ async def test_list_log_metrics_flattened_error_async():
         )
 
 
-def test_list_log_metrics_pager():
+def test_list_log_metrics_pager(transport_name: str = "grpc"):
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -662,10 +755,10 @@ def test_list_log_metrics_pager():
         assert len(results) == 6
         assert all(isinstance(i, logging_metrics.LogMetric)
                    for i in results)
-
-def test_list_log_metrics_pages():
+def test_list_log_metrics_pages(transport_name: str = "grpc"):
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -750,7 +843,8 @@ async def test_list_log_metrics_async_pager():
 
         assert len(responses) == 6
         assert all(isinstance(i, logging_metrics.LogMetric)
-                   for i in responses)
+                for i in responses)
+
 
 @pytest.mark.asyncio
 async def test_list_log_metrics_async_pages():
@@ -796,7 +890,11 @@ async def test_list_log_metrics_async_pages():
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-def test_get_log_metric(transport: str = 'grpc', request_type=logging_metrics.GetLogMetricRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.GetLogMetricRequest,
+  dict,
+])
+def test_get_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -832,10 +930,6 @@ def test_get_log_metric(transport: str = 'grpc', request_type=logging_metrics.Ge
     assert response.filter == 'filter_value'
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
-
-def test_get_log_metric_from_dict():
-    test_get_log_metric(request_type=dict)
 
 
 def test_get_log_metric_empty_call():
@@ -984,7 +1078,9 @@ def test_get_log_metric_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == 'metric_name_value'
+        arg = args[0].metric_name
+        mock_val = 'metric_name_value'
+        assert arg == mock_val
 
 
 def test_get_log_metric_flattened_error():
@@ -1025,7 +1121,9 @@ async def test_get_log_metric_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == 'metric_name_value'
+        arg = args[0].metric_name
+        mock_val = 'metric_name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1043,7 +1141,11 @@ async def test_get_log_metric_flattened_error_async():
         )
 
 
-def test_create_log_metric(transport: str = 'grpc', request_type=logging_metrics.CreateLogMetricRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.CreateLogMetricRequest,
+  dict,
+])
+def test_create_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1079,10 +1181,6 @@ def test_create_log_metric(transport: str = 'grpc', request_type=logging_metrics
     assert response.filter == 'filter_value'
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
-
-def test_create_log_metric_from_dict():
-    test_create_log_metric(request_type=dict)
 
 
 def test_create_log_metric_empty_call():
@@ -1232,8 +1330,12 @@ def test_create_log_metric_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].metric == logging_metrics.LogMetric(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].metric
+        mock_val = logging_metrics.LogMetric(name='name_value')
+        assert arg == mock_val
 
 
 def test_create_log_metric_flattened_error():
@@ -1276,8 +1378,12 @@ async def test_create_log_metric_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == 'parent_value'
-        assert args[0].metric == logging_metrics.LogMetric(name='name_value')
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].metric
+        mock_val = logging_metrics.LogMetric(name='name_value')
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1296,7 +1402,11 @@ async def test_create_log_metric_flattened_error_async():
         )
 
 
-def test_update_log_metric(transport: str = 'grpc', request_type=logging_metrics.UpdateLogMetricRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.UpdateLogMetricRequest,
+  dict,
+])
+def test_update_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1332,10 +1442,6 @@ def test_update_log_metric(transport: str = 'grpc', request_type=logging_metrics
     assert response.filter == 'filter_value'
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
-
-def test_update_log_metric_from_dict():
-    test_update_log_metric(request_type=dict)
 
 
 def test_update_log_metric_empty_call():
@@ -1485,8 +1591,12 @@ def test_update_log_metric_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == 'metric_name_value'
-        assert args[0].metric == logging_metrics.LogMetric(name='name_value')
+        arg = args[0].metric_name
+        mock_val = 'metric_name_value'
+        assert arg == mock_val
+        arg = args[0].metric
+        mock_val = logging_metrics.LogMetric(name='name_value')
+        assert arg == mock_val
 
 
 def test_update_log_metric_flattened_error():
@@ -1529,8 +1639,12 @@ async def test_update_log_metric_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == 'metric_name_value'
-        assert args[0].metric == logging_metrics.LogMetric(name='name_value')
+        arg = args[0].metric_name
+        mock_val = 'metric_name_value'
+        assert arg == mock_val
+        arg = args[0].metric
+        mock_val = logging_metrics.LogMetric(name='name_value')
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1549,7 +1663,11 @@ async def test_update_log_metric_flattened_error_async():
         )
 
 
-def test_delete_log_metric(transport: str = 'grpc', request_type=logging_metrics.DeleteLogMetricRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.DeleteLogMetricRequest,
+  dict,
+])
+def test_delete_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1574,10 +1692,6 @@ def test_delete_log_metric(transport: str = 'grpc', request_type=logging_metrics
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_log_metric_from_dict():
-    test_delete_log_metric(request_type=dict)
 
 
 def test_delete_log_metric_empty_call():
@@ -1715,7 +1829,9 @@ def test_delete_log_metric_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == 'metric_name_value'
+        arg = args[0].metric_name
+        mock_val = 'metric_name_value'
+        assert arg == mock_val
 
 
 def test_delete_log_metric_flattened_error():
@@ -1756,7 +1872,9 @@ async def test_delete_log_metric_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == 'metric_name_value'
+        arg = args[0].metric_name
+        mock_val = 'metric_name_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1793,6 +1911,27 @@ def test_credentials_transport_error():
         client = MetricsServiceV2Client(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.MetricsServiceV2GrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = MetricsServiceV2Client(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = MetricsServiceV2Client(
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
@@ -2268,7 +2407,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(transports.MetricsServiceV2Transport, '_prep_wrapped_messages') as prep:
@@ -2328,3 +2467,29 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+@pytest.mark.parametrize("client_class,transport_class", [
+    (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport),
+    (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport),
+])
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )

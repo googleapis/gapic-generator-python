@@ -16,17 +16,20 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core.client_options import ClientOptions # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1                   # type: ignore
-from google.api_core import retry as retries           # type: ignore
+from google.api_core.client_options import ClientOptions
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
-OptionalRetry = Union[retries.Retry, object]
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api import distribution_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
@@ -92,6 +95,40 @@ class MetricsServiceV2AsyncClient:
 
     from_service_account_json = from_service_account_file
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        return MetricsServiceV2Client.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+
     @property
     def transport(self) -> MetricsServiceV2Transport:
         """Returns the transport used by the client instance.
@@ -150,7 +187,7 @@ class MetricsServiceV2AsyncClient:
         )
 
     async def list_log_metrics(self,
-            request: logging_metrics.ListLogMetricsRequest = None,
+            request: Union[logging_metrics.ListLogMetricsRequest, dict] = None,
             *,
             parent: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -159,8 +196,29 @@ class MetricsServiceV2AsyncClient:
             ) -> pagers.ListLogMetricsAsyncPager:
         r"""Lists logs-based metrics.
 
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_log_metrics():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                parent = f"projects/{project}"
+
+                request = logging_v2.ListLogMetricsRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_log_metrics(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
-            request (:class:`google.cloud.logging_v2.types.ListLogMetricsRequest`):
+            request (Union[google.cloud.logging_v2.types.ListLogMetricsRequest, dict]):
                 The request object. The parameters to ListLogMetrics.
             parent (:class:`str`):
                 Required. The name of the project containing the
@@ -188,7 +246,7 @@ class MetricsServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -247,7 +305,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def get_log_metric(self,
-            request: logging_metrics.GetLogMetricRequest = None,
+            request: Union[logging_metrics.GetLogMetricRequest, dict] = None,
             *,
             metric_name: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -256,8 +314,31 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
 
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                metric = "metric_value"
+                metric_name = f"projects/{project}/metrics/{metric}"
+
+                request = logging_v2.GetLogMetricRequest(
+                    metric_name=metric_name,
+                )
+
+                # Make the request
+                response = client.get_log_metric(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.logging_v2.types.GetLogMetricRequest`):
+            request (Union[google.cloud.logging_v2.types.GetLogMetricRequest, dict]):
                 The request object. The parameters to GetLogMetric.
             metric_name (:class:`str`):
                 Required. The resource name of the desired metric:
@@ -291,7 +372,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([metric_name])
         if request is not None and has_flattened_params:
@@ -341,7 +422,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def create_log_metric(self,
-            request: logging_metrics.CreateLogMetricRequest = None,
+            request: Union[logging_metrics.CreateLogMetricRequest, dict] = None,
             *,
             parent: str = None,
             metric: logging_metrics.LogMetric = None,
@@ -351,8 +432,36 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
 
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                metric = "metric_value"
+                parent = f"projects/{project}/metrics/{metric}"
+
+                metric = logging_v2.LogMetric()
+                metric.name = "name_value"
+                metric.filter = "filter_value"
+
+                request = logging_v2.CreateLogMetricRequest(
+                    parent=parent,
+                    metric=metric,
+                )
+
+                # Make the request
+                response = client.create_log_metric(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.logging_v2.types.CreateLogMetricRequest`):
+            request (Union[google.cloud.logging_v2.types.CreateLogMetricRequest, dict]):
                 The request object. The parameters to CreateLogMetric.
             parent (:class:`str`):
                 Required. The resource name of the project in which to
@@ -397,7 +506,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, metric])
         if request is not None and has_flattened_params:
@@ -441,7 +550,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def update_log_metric(self,
-            request: logging_metrics.UpdateLogMetricRequest = None,
+            request: Union[logging_metrics.UpdateLogMetricRequest, dict] = None,
             *,
             metric_name: str = None,
             metric: logging_metrics.LogMetric = None,
@@ -451,8 +560,36 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
 
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                metric = "metric_value"
+                metric_name = f"projects/{project}/metrics/{metric}"
+
+                metric = logging_v2.LogMetric()
+                metric.name = "name_value"
+                metric.filter = "filter_value"
+
+                request = logging_v2.UpdateLogMetricRequest(
+                    metric_name=metric_name,
+                    metric=metric,
+                )
+
+                # Make the request
+                response = client.update_log_metric(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.logging_v2.types.UpdateLogMetricRequest`):
+            request (Union[google.cloud.logging_v2.types.UpdateLogMetricRequest, dict]):
                 The request object. The parameters to UpdateLogMetric.
             metric_name (:class:`str`):
                 Required. The resource name of the metric to update:
@@ -496,7 +633,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([metric_name, metric])
         if request is not None and has_flattened_params:
@@ -548,7 +685,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def delete_log_metric(self,
-            request: logging_metrics.DeleteLogMetricRequest = None,
+            request: Union[logging_metrics.DeleteLogMetricRequest, dict] = None,
             *,
             metric_name: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -557,8 +694,28 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> None:
         r"""Deletes a logs-based metric.
 
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                metric = "metric_value"
+                metric_name = f"projects/{project}/metrics/{metric}"
+
+                request = logging_v2.DeleteLogMetricRequest(
+                    metric_name=metric_name,
+                )
+
+                # Make the request
+                response = client.delete_log_metric(request=request)
+
         Args:
-            request (:class:`google.cloud.logging_v2.types.DeleteLogMetricRequest`):
+            request (Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict]):
                 The request object. The parameters to DeleteLogMetric.
             metric_name (:class:`str`):
                 Required. The resource name of the metric to delete:
@@ -577,7 +734,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([metric_name])
         if request is not None and has_flattened_params:

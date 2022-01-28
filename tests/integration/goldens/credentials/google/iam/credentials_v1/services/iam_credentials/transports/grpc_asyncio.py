@@ -16,8 +16,8 @@
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1                   # type: ignore
-from google.api_core import grpc_helpers_async         # type: ignore
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -40,8 +40,8 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
 
     Service account credentials are used to temporarily assume the
     identity of the service account. Supported credential types
-    include OAuth 2.0 access tokens, OpenID Connect ID tokens, self-
-    signed JSON Web Tokens (JWTs), and more.
+    include OAuth 2.0 access tokens, OpenID Connect ID tokens,
+    self-signed JSON Web Tokens (JWTs), and more.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -208,8 +208,11 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         if not self._grpc_channel:
             self._grpc_channel = type(self).create_channel(
                 self._host,
+                # use the credentials which are saved
                 credentials=self._credentials,
-                credentials_file=credentials_file,
+                # Set ``credentials_file`` to ``None`` here as
+                # the credentials that we saved earlier should be used.
+                credentials_file=None,
                 scopes=self._scopes,
                 ssl_credentials=self._ssl_channel_credentials,
                 quota_project_id=quota_project_id,

@@ -22,6 +22,7 @@ import pytest
 from google.api import client_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions
+from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.gapic.metadata import gapic_metadata_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
@@ -944,18 +945,68 @@ def test_lro():
     assert len(lro_proto.messages) == 1
 
 
-def test_lro_missing_annotation():
+def test_lro_operation_no_annotation():
+    # A method that returns google.longrunning.Operation,
+    # but has no operation_info option, is treated as not lro.
+
     # Set up a prior proto that mimics google/protobuf/empty.proto
     lro_proto = api.Proto.build(make_file_pb2(
         name='operations.proto', package='google.longrunning',
         messages=(make_message_pb2(name='Operation'),),
     ), file_to_generate=False, naming=make_naming())
 
-    # Set up a method with an LRO but no annotation.
+    # Set up a method that returns an Operation, but has no annotation.
+    method_pb2 = descriptor_pb2.MethodDescriptorProto(
+        name='GetOperation',
+        input_type='google.example.v3.GetOperationRequest',
+        output_type='google.longrunning.Operation',
+    )
+
+    # Set up the service with an RPC.
+    service_pb = descriptor_pb2.ServiceDescriptorProto(
+        name='OperationService',
+        method=(method_pb2,),
+    )
+
+    # Set up the messages, including the annotated ones.
+    messages = (
+        make_message_pb2(name='GetOperationRequest', fields=()),
+    )
+
+    # Finally, set up the file that encompasses these.
+    fdp = make_file_pb2(
+        package='google.example.v3',
+        messages=messages,
+        services=(service_pb,),
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
+        'google/longrunning/operations.proto': lro_proto,
+    }, naming=make_naming())
+
+    service = proto.services['google.example.v3.OperationService']
+    method = service.methods['GetOperation']
+    assert method.lro is None
+
+
+def test_lro_bad_annotation():
+    # Set up a prior proto that mimics google/protobuf/empty.proto
+    lro_proto = api.Proto.build(make_file_pb2(
+        name='operations.proto', package='google.longrunning',
+        messages=(make_message_pb2(name='Operation'),),
+    ), file_to_generate=False, naming=make_naming())
+
+    # Set up a method with an LRO and incomplete annotation.
     method_pb2 = descriptor_pb2.MethodDescriptorProto(
         name='AsyncDoThing',
         input_type='google.example.v3.AsyncDoThingRequest',
         output_type='google.longrunning.Operation',
+    )
+    method_pb2.options.Extensions[operations_pb2.operation_info].MergeFrom(
+        operations_pb2.OperationInfo(
+            response_type='google.example.v3.AsyncDoThingResponse',
+        ),
     )
 
     # Set up the service with an RPC.
@@ -1510,3 +1561,186 @@ def test_gapic_metadata():
     expected = MessageToJson(expected, sort_keys=True)
     actual = api_schema.gapic_metadata_json(opts)
     assert expected == actual
+
+
+def test_http_options(fs):
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+        ),)
+
+    opts = Options(service_yaml_config={
+        'http': {
+            'rules': [
+                {
+                    'selector': 'Cancel',
+                    'post': '/v3/{name=projects/*/locations/*/operations/*}:cancel',
+                    'body': '*'
+                },
+                {
+                    'selector': 'Get',
+                    'get': '/v3/{name=projects/*/locations/*/operations/*}',
+                    'additional_bindings': [{'get': '/v3/{name=/locations/*/operations/*}'}],
+                }, ]
+        }
+    })
+
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    http_options = api_schema.http_options
+    assert http_options == {
+        'Cancel': [wrappers.HttpRule(method='post', uri='/v3/{name=projects/*/locations/*/operations/*}:cancel', body='*')],
+        'Get': [
+            wrappers.HttpRule(
+                method='get', uri='/v3/{name=projects/*/locations/*/operations/*}', body=None),
+            wrappers.HttpRule(method='get', uri='/v3/{name=/locations/*/operations/*}', body=None)]
+    }
+
+
+def generate_basic_extended_operations_setup():
+    T = descriptor_pb2.FieldDescriptorProto.Type
+
+    operation = make_message_pb2(
+        name="Operation",
+        fields=(
+            make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
+            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        ),
+    )
+
+    for f in operation.field:
+        options = descriptor_pb2.FieldOptions()
+        # Note: The field numbers were carefully chosen to be the corresponding enum values.
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    options = descriptor_pb2.MethodOptions()
+    options.Extensions[ex_ops_pb2.operation_polling_method] = True
+
+    polling_method = descriptor_pb2.MethodDescriptorProto(
+        name="Get",
+        input_type="google.extended_operations.v1.stuff.GetOperation",
+        output_type="google.extended_operations.v1.stuff.Operation",
+        options=options,
+    )
+
+    delete_input_message = make_message_pb2(name="Input")
+    delete_output_message = make_message_pb2(name="Output")
+    ops_service = descriptor_pb2.ServiceDescriptorProto(
+        name="CustomOperations",
+        method=[
+            polling_method,
+            descriptor_pb2.MethodDescriptorProto(
+                name="Delete",
+                input_type="google.extended_operations.v1.stuff.Input",
+                output_type="google.extended_operations.v1.stuff.Output",
+            ),
+        ],
+    )
+
+    request = make_message_pb2(
+        name="GetOperation",
+        fields=[
+            make_field_pb2(name="name", type=T.Value("TYPE_STRING"), number=1)
+        ],
+    )
+
+    initial_opts = descriptor_pb2.MethodOptions()
+    initial_opts.Extensions[ex_ops_pb2.operation_service] = ops_service.name
+    initial_input_message = make_message_pb2(name="Initial")
+    initial_method = descriptor_pb2.MethodDescriptorProto(
+        name="CreateTask",
+        input_type="google.extended_operations.v1.stuff.GetOperation",
+        output_type="google.extended_operations.v1.stuff.Operation",
+        options=initial_opts,
+    )
+
+    regular_service = descriptor_pb2.ServiceDescriptorProto(
+        name="RegularService",
+        method=[
+            initial_method,
+        ],
+    )
+
+    file_protos = [
+        make_file_pb2(
+            name="extended_operations.proto",
+            package="google.extended_operations.v1.stuff",
+            messages=[
+                operation,
+                request,
+                delete_output_message,
+                delete_input_message,
+                initial_input_message,
+            ],
+            services=[
+                regular_service,
+                ops_service,
+            ],
+        ),
+    ]
+
+    return file_protos
+
+
+def test_extended_operations_lro_operation_service():
+    file_protos = generate_basic_extended_operations_setup()
+    api_schema = api.API.build(file_protos)
+    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+
+    expected = api_schema.services['google.extended_operations.v1.stuff.CustomOperations']
+    actual = api_schema.get_custom_operation_service(initial_method)
+
+    assert expected is actual
+
+    assert actual.custom_polling_method is actual.methods["Get"]
+
+
+def test_extended_operations_lro_operation_service_no_annotation():
+    file_protos = generate_basic_extended_operations_setup()
+
+    api_schema = api.API.build(file_protos)
+    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+    # It's easier to manipulate data structures after building the API.
+    del initial_method.options.Extensions[ex_ops_pb2.operation_service]
+
+    with pytest.raises(KeyError):
+        api_schema.get_custom_operation_service(initial_method)
+
+
+def test_extended_operations_lro_operation_service_no_such_service():
+    file_protos = generate_basic_extended_operations_setup()
+
+    api_schema = api.API.build(file_protos)
+    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method.options.Extensions[ex_ops_pb2.operation_service] = "UnrealService"
+
+    with pytest.raises(KeyError):
+        api_schema.get_custom_operation_service(initial_method)
+
+
+def test_extended_operations_lro_operation_service_not_an_lro():
+    file_protos = generate_basic_extended_operations_setup()
+
+    api_schema = api.API.build(file_protos)
+    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+    # Hack to pretend that the initial_method is not an LRO
+    super(type(initial_method), initial_method).__setattr__(
+        "output", initial_method.input)
+
+    with pytest.raises(ValueError):
+        api_schema.get_custom_operation_service(initial_method)
+
+
+def test_extended_operations_lro_operation_service_no_polling_method():
+    file_protos = generate_basic_extended_operations_setup()
+
+    api_schema = api.API.build(file_protos)
+    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+
+    operation_service = api_schema.services["google.extended_operations.v1.stuff.CustomOperations"]
+    del operation_service.methods["Get"].options.Extensions[ex_ops_pb2.operation_polling_method]
+
+    with pytest.raises(ValueError):
+        api_schema.get_custom_operation_service(initial_method)

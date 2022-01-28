@@ -28,14 +28,16 @@ from google.cloud import logging_v2
 
 
 async def sample_list_exclusions():
-    """Snippet for list_exclusions"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    exclusion = "exclusion_value"
+    parent = f"projects/{project}/exclusions/{exclusion}"
+
     request = logging_v2.ListExclusionsRequest(
-        parent="projects/{project}/exclusions/{exclusion}",
+        parent=parent,
     )
 
     # Make the request

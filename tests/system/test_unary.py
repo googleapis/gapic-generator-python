@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import distutils
 import os
 import pytest
 
@@ -38,7 +37,8 @@ def test_unary_with_dict(echo):
 
 def test_unary_error(echo):
     message = 'Bad things! Bad things!'
-    with pytest.raises(exceptions.InvalidArgument) as exc:
+    # Note: InvalidArgument is from gRPC, InternalServerError from http
+    with pytest.raises((exceptions.InvalidArgument, exceptions.InternalServerError)) as exc:
         echo.echo({
             'error': {
                 'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
@@ -49,7 +49,7 @@ def test_unary_error(echo):
         assert exc.value.message == message
 
 
-if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
 
     @pytest.mark.asyncio

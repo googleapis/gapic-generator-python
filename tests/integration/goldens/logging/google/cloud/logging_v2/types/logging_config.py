@@ -144,8 +144,7 @@ class LogView(proto.Message):
         name (str):
             The resource name of the view.
             For example
-            "projects/my-project-id/locations/my-
-            location/buckets/my-bucket-id/views/my-view
+            "projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view
         description (str):
             Describes this view.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -282,6 +281,7 @@ class LogSink(proto.Message):
         bigquery_options (google.cloud.logging_v2.types.BigQueryOptions):
             Optional. Options that affect sinks exporting
             data to BigQuery.
+
             This field is a member of `oneof`_ ``options``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of the

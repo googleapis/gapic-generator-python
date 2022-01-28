@@ -28,14 +28,16 @@ from google.cloud import logging_v2
 
 
 async def sample_delete_exclusion():
-    """Snippet for delete_exclusion"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    exclusion = "exclusion_value"
+    name = f"projects/{project}/exclusions/{exclusion}"
+
     request = logging_v2.DeleteExclusionRequest(
-        name="projects/{project}/exclusions/{exclusion}",
+        name=name,
     )
 
     # Make the request

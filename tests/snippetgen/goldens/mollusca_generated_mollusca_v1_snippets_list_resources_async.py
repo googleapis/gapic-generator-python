@@ -28,14 +28,21 @@ from animalia import mollusca_v1
 
 
 async def sample_list_resources():
-    """Snippet for list_resources"""
-
     # Create a client
     client = mollusca_v1.SnippetsAsyncClient()
 
     # Initialize request argument(s)
+    item_id = "item_id_value"
+    part_id = "part_id_value"
+    parent = f"items/{item_id}/parts/{part_id}"
+
+    item_id = "item_id_value"
+    part_id = "part_id_value"
+    resource_with_wildcard = f"items/{item_id}/parts/{part_id}"
+
     request = mollusca_v1.ListResourcesRequest(
-        parent="items/{item_id}/parts/{part_id}",
+        parent=parent,
+        resource_with_wildcard=resource_with_wildcard,
     )
 
     # Make the request

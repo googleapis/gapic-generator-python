@@ -28,14 +28,16 @@ from google.iam import credentials_v1
 
 
 async def sample_sign_jwt():
-    """Snippet for sign_jwt"""
-
     # Create a client
     client = credentials_v1.IAMCredentialsAsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    service_account = "service_account_value"
+    name = f"projects/{project}/serviceAccounts/{service_account}"
+
     request = credentials_v1.SignJwtRequest(
-        name="projects/{project}/serviceAccounts/{service_account}",
+        name=name,
         payload="payload_value",
     )
 

@@ -28,18 +28,20 @@ from google.cloud import logging_v2
 
 
 def sample_update_exclusion():
-    """Snippet for update_exclusion"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    exclusion = "exclusion_value"
+    name = f"projects/{project}/exclusions/{exclusion}"
+
     exclusion = logging_v2.LogExclusion()
     exclusion.name = "name_value"
     exclusion.filter = "filter_value"
 
     request = logging_v2.UpdateExclusionRequest(
-        name="projects/{project}/exclusions/{exclusion}",
+        name=name,
         exclusion=exclusion,
     )
 

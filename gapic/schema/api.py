@@ -26,12 +26,16 @@ import sys
 from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
 from types import MappingProxyType
 
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions
+from google.api import http_pb2  # type: ignore
 from google.api import resource_pb2  # type: ignore
+from google.api import service_pb2  # type: ignore
+from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
 from google.protobuf.json_format import MessageToJson
+from google.protobuf.json_format import ParseDict
 
 import grpc  # type: ignore
 
@@ -192,7 +196,7 @@ class Proto:
         answer = {
             t.ident.python_import
             for m in self.all_messages.values()
-            # Sanity check: We do make sure that we are not trying to have
+            # Quick check: We do make sure that we are not trying to have
             # a module import itself.
             for t in m.field_types if t.ident.python_import != self_reference
         }
@@ -226,6 +230,7 @@ class API:
     """
     naming: api_naming.Naming
     all_protos: Mapping[str, Proto]
+    service_yaml_config: service_pb2.Service
     subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
 
     @classmethod
@@ -318,8 +323,14 @@ class API:
             for name, proto in pre_protos.items()
         }
 
+        # Parse the google.api.Service proto from the service_yaml data.
+        service_yaml_config = service_pb2.Service()
+        ParseDict(opts.service_yaml_config, service_yaml_config)
+
         # Done; return the API.
-        return cls(naming=naming, all_protos=protos)
+        return cls(naming=naming,
+                   all_protos=protos,
+                   service_yaml_config=service_yaml_config)
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
@@ -373,6 +384,24 @@ class API:
         return collections.ChainMap({},
                                     *[p.services for p in self.protos.values()],
                                     )
+
+    @cached_property
+    def http_options(self) -> Mapping[str, Sequence[wrappers.HttpRule]]:
+        """Return a map of API-wide http rules."""
+
+        def make_http_options(rule: http_pb2.HttpRule
+                              ) -> Sequence[wrappers.HttpRule]:
+            http_options = [rule] + list(rule.additional_bindings)
+            opt_gen = (wrappers.HttpRule.try_parse_http_rule(http_rule)
+                       for http_rule in http_options)
+            return [rule for rule in opt_gen if rule]
+
+        result: Mapping[str, Sequence[http_pb2.HttpRule]] = {
+            rule.selector: make_http_options(rule)
+            for rule in self.service_yaml_config.http.rules
+        }
+
+        return result
 
     @cached_property
     def subpackages(self) -> Mapping[str, 'API']:
@@ -445,6 +474,20 @@ class API:
             for proto in self.all_protos.values()
             for message in proto.all_messages.values()
         )
+
+    def get_custom_operation_service(self, method: "wrappers.Method") -> "wrappers.Service":
+        if not method.output.is_extended_operation:
+            raise ValueError(
+                f"Method is not an extended operation LRO: {method.name}")
+
+        op_serv_name = self.naming.proto_package + "." + \
+            method.options.Extensions[ex_ops_pb2.operation_service]
+        op_serv = self.services[op_serv_name]
+        if not op_serv.custom_polling_method:
+            raise ValueError(
+                f"Service is not an extended operation operation service: {op_serv.name}")
+
+        return op_serv
 
 
 class _ProtoBuilder:
@@ -600,15 +643,25 @@ class _ProtoBuilder:
 
     @cached_property
     def api_enums(self) -> Mapping[str, wrappers.EnumType]:
-        return collections.ChainMap({}, self.proto_enums,
-                                    *[p.all_enums for p in self.prior_protos.values()],
-                                    )
+        return collections.ChainMap(
+            {},
+            self.proto_enums,
+            # This is actually fine from a typing perspective:
+            # we're agglutinating all the prior protos' enums, which are
+            # stored in maps. This is just a convenient way to expand it out.
+            *[p.all_enums for p in self.prior_protos.values()],  # type: ignore
+        )
 
     @cached_property
     def api_messages(self) -> Mapping[str, wrappers.MessageType]:
-        return collections.ChainMap({}, self.proto_messages,
-                                    *[p.all_messages for p in self.prior_protos.values()],
-                                    )
+        return collections.ChainMap(
+            {},
+            self.proto_messages,
+            # This is actually fine from a typing perspective:
+            # we're agglutinating all the prior protos' enums, which are
+            # stored in maps. This is just a convenient way to expand it out.
+            *[p.all_messages for p in self.prior_protos.values()],  # type: ignore
+        )
 
     def _load_children(self,
                        children: Sequence, loader: Callable, *,
@@ -817,6 +870,10 @@ class _ProtoBuilder:
         # If the output type is google.longrunning.Operation, we use
         # a specialized object in its place.
         if meth_pb.output_type.endswith('google.longrunning.Operation'):
+            if not meth_pb.options.HasExtension(operations_pb2.operation_info):
+                # This is not a long running operation even though it returns
+                # an Operation.
+                return None
             op = meth_pb.options.Extensions[operations_pb2.operation_info]
             if not op.response_type or not op.metadata_type:
                 raise TypeError(

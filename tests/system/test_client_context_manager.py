@@ -15,7 +15,6 @@
 import os
 import pytest
 import grpc
-import distutils
 
 
 def test_client(echo):
@@ -27,6 +26,10 @@ def test_client(echo):
 
 
 def test_client_destroyed(echo):
+    # The REST session is fine with being closed multiple times.
+    if "rest" in str(echo.transport).lower():
+        return
+
     echo.__exit__(None, None, None)
     with pytest.raises(ValueError):
         echo.echo({
@@ -34,7 +37,7 @@ def test_client_destroyed(echo):
         })
 
 
-if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_client_async(async_echo):

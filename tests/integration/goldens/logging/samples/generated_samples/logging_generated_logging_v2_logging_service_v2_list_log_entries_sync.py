@@ -28,14 +28,16 @@ from google.cloud import logging_v2
 
 
 def sample_list_log_entries():
-    """Snippet for list_log_entries"""
-
     # Create a client
     client = logging_v2.LoggingServiceV2Client()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    log = "log_value"
+    resource_names = f"projects/{project}/logs/{log}"
+
     request = logging_v2.ListLogEntriesRequest(
-        resource_names="projects/{project}/logs/{log}",
+        resource_names=resource_names,
     )
 
     # Make the request

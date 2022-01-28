@@ -28,14 +28,16 @@ from google.cloud import logging_v2
 
 
 async def sample_list_sinks():
-    """Snippet for list_sinks"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    sink = "sink_value"
+    parent = f"projects/{project}/sinks/{sink}"
+
     request = logging_v2.ListSinksRequest(
-        parent="projects/{project}/sinks/{sink}",
+        parent=parent,
     )
 
     # Make the request

@@ -28,14 +28,16 @@ from google.cloud import logging_v2
 
 
 def sample_delete_log():
-    """Snippet for delete_log"""
-
     # Create a client
     client = logging_v2.LoggingServiceV2Client()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    log = "log_value"
+    log_name = f"projects/{project}/logs/{log}"
+
     request = logging_v2.DeleteLogRequest(
-        log_name="projects/{project}/logs/{log}",
+        log_name=log_name,
     )
 
     # Make the request

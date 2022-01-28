@@ -28,14 +28,18 @@ from google.cloud import logging_v2
 
 
 def sample_delete_view():
-    """Snippet for delete_view"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    location = "us-central1"
+    bucket = "bucket_value"
+    view = "view_value"
+    name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
+
     request = logging_v2.DeleteViewRequest(
-        name="projects/{project}/locations/{location}/buckets/{bucket}/views/{view}",
+        name=name,
     )
 
     # Make the request

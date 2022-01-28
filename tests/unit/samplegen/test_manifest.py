@@ -19,7 +19,7 @@ from textwrap import dedent
 import gapic.samplegen_utils.yaml as gapic_yaml
 import gapic.samplegen_utils.types as types
 import gapic.samplegen.manifest as manifest
-from common_types import DummyApiSchema, DummyNaming
+from ..common_types import DummyApiSchema, DummyNaming
 
 
 def test_generate_manifest():
@@ -137,7 +137,7 @@ def test_generate_manifest():
     assert parsed_manifest == expected_parsed_manifest
 
 
-def test_generate_manifest_relative_path_sanity():
+def test_generate_manifest_relative_path_quick_check():
     with pytest.raises(types.InvalidSampleFpath):
         manifest.generate(
             {"molluscs/squid.py": {"id": "squid_sample"}}.items(),

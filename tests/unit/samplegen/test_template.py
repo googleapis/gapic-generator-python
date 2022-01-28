@@ -21,7 +21,7 @@ import gapic.utils as utils
 
 from gapic.samplegen_utils.types import CallingForm
 from textwrap import dedent
-from tests.unit.samplegen import common_types
+from .. import common_types
 
 
 def check_template(template_fragment, expected_output, **kwargs):
@@ -200,7 +200,7 @@ def test_render_request_unflattened():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_request_setup(request, module_name, request_type) }}
+        {{ frags.render_request_setup(request, module_name, request_type, calling_form, calling_form_enum) }}
         ''',
         '''
         # Initialize request argument(s)
@@ -289,7 +289,9 @@ def test_render_request_unflattened():
                 )
             },
             ident=common_types.DummyIdent(name="CreateMolluscRequest")
-        )
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.Request,
     )
 
 
@@ -301,7 +303,10 @@ def test_render_request_resource_name():
         ''',
         '''
         # Initialize request argument(s)
-        taxon = "kingdom/{kingdom}/phylum/{phylum}".format(kingdom="animalia", phylum=mollusca)
+        kingdom = "animalia"
+        phylum = mollusca
+        taxon = f"kingdom/{kingdom}/phylum/{phylum}"
+
         ''',
         request=samplegen.FullRequest(
             request_list=[
@@ -1012,7 +1017,7 @@ def test_render_method_call_bidi():
                                   calling_form, calling_form_enum, transport) }}
         ''',
         '''
-        client.categorize_mollusc([video])
+        client.categorize_mollusc(requests=request_generator())
         ''',
         request=samplegen.FullRequest(
             request_list=[
@@ -1037,7 +1042,7 @@ def test_render_method_call_bidi_async():
                                   calling_form, calling_form_enum, transport) }}
         ''',
         '''
-        await client.categorize_mollusc([video])
+        await client.categorize_mollusc(requests=request_generator())
         ''',
         request=samplegen.FullRequest(
             request_list=[
@@ -1062,7 +1067,7 @@ def test_render_method_call_client():
         calling_form, calling_form_enum, transport) }}
         ''',
         '''
-        client.categorize_mollusc([video])
+        client.categorize_mollusc(requests=request_generator())
         ''',
         request=samplegen.FullRequest(
             request_list=[
@@ -1087,7 +1092,7 @@ def test_render_method_call_client_async():
         calling_form, calling_form_enum, transport) }}
         ''',
         '''
-        await client.categorize_mollusc([video])
+        await client.categorize_mollusc(requests=request_generator())
         ''',
         request=samplegen.FullRequest(
             request_list=[

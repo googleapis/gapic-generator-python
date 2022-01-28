@@ -16,17 +16,20 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core.client_options import ClientOptions # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1                   # type: ignore
-from google.api_core import retry as retries           # type: ignore
+from google.api_core.client_options import ClientOptions
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
-OptionalRetry = Union[retries.Retry, object]
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -115,6 +118,40 @@ class CloudRedisAsyncClient:
 
     from_service_account_json = from_service_account_file
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        return CloudRedisClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+
     @property
     def transport(self) -> CloudRedisTransport:
         """Returns the transport used by the client instance.
@@ -173,7 +210,7 @@ class CloudRedisAsyncClient:
         )
 
     async def list_instances(self,
-            request: cloud_redis.ListInstancesRequest = None,
+            request: Union[cloud_redis.ListInstancesRequest, dict] = None,
             *,
             parent: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -191,8 +228,31 @@ class CloudRedisAsyncClient:
         regions available to the project are queried, and the results
         are aggregated.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_list_instances():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                parent = f"projects/{project}/locations/{location}"
+
+                request = redis_v1.ListInstancesRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
-            request (:class:`google.cloud.redis_v1.types.ListInstancesRequest`):
+            request (Union[google.cloud.redis_v1.types.ListInstancesRequest, dict]):
                 The request object. Request for
                 [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
             parent (:class:`str`):
@@ -220,7 +280,7 @@ class CloudRedisAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -271,7 +331,7 @@ class CloudRedisAsyncClient:
         return response
 
     async def get_instance(self,
-            request: cloud_redis.GetInstanceRequest = None,
+            request: Union[cloud_redis.GetInstanceRequest, dict] = None,
             *,
             name: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -280,8 +340,32 @@ class CloudRedisAsyncClient:
             ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
 
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_get_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.GetInstanceRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_instance(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.redis_v1.types.GetInstanceRequest`):
+            request (Union[google.cloud.redis_v1.types.GetInstanceRequest, dict]):
                 The request object. Request for
                 [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
             name (:class:`str`):
@@ -303,7 +387,7 @@ class CloudRedisAsyncClient:
                 A Google Cloud Redis instance.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -345,7 +429,7 @@ class CloudRedisAsyncClient:
         return response
 
     async def create_instance(self,
-            request: cloud_redis.CreateInstanceRequest = None,
+            request: Union[cloud_redis.CreateInstanceRequest, dict] = None,
             *,
             parent: str = None,
             instance_id: str = None,
@@ -369,8 +453,41 @@ class CloudRedisAsyncClient:
         The returned operation is automatically deleted after a few
         hours, so there is no need to call DeleteOperation.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_create_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                parent = f"projects/{project}/locations/{location}"
+
+                instance = redis_v1.Instance()
+                instance.name = "name_value"
+                instance.tier = "STANDARD_HA"
+                instance.memory_size_gb = 1499
+
+                request = redis_v1.CreateInstanceRequest(
+                    parent=parent,
+                    instance_id="instance_id_value",
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.create_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
-            request (:class:`google.cloud.redis_v1.types.CreateInstanceRequest`):
+            request (Union[google.cloud.redis_v1.types.CreateInstanceRequest, dict]):
                 The request object. Request for
                 [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
             parent (:class:`str`):
@@ -417,7 +534,7 @@ class CloudRedisAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instance_id, instance])
         if request is not None and has_flattened_params:
@@ -471,7 +588,7 @@ class CloudRedisAsyncClient:
         return response
 
     async def update_instance(self,
-            request: cloud_redis.UpdateInstanceRequest = None,
+            request: Union[cloud_redis.UpdateInstanceRequest, dict] = None,
             *,
             update_mask: field_mask_pb2.FieldMask = None,
             instance: cloud_redis.Instance = None,
@@ -486,8 +603,35 @@ class CloudRedisAsyncClient:
         operation is automatically deleted after a few hours, so
         there is no need to call DeleteOperation.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_update_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                instance = redis_v1.Instance()
+                instance.name = "name_value"
+                instance.tier = "STANDARD_HA"
+                instance.memory_size_gb = 1499
+
+                request = redis_v1.UpdateInstanceRequest(
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.update_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
-            request (:class:`google.cloud.redis_v1.types.UpdateInstanceRequest`):
+            request (Union[google.cloud.redis_v1.types.UpdateInstanceRequest, dict]):
                 The request object. Request for
                 [UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
@@ -527,7 +671,7 @@ class CloudRedisAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([update_mask, instance])
         if request is not None and has_flattened_params:
@@ -579,7 +723,7 @@ class CloudRedisAsyncClient:
         return response
 
     async def upgrade_instance(self,
-            request: cloud_redis.UpgradeInstanceRequest = None,
+            request: Union[cloud_redis.UpgradeInstanceRequest, dict] = None,
             *,
             name: str = None,
             redis_version: str = None,
@@ -590,8 +734,36 @@ class CloudRedisAsyncClient:
         r"""Upgrades Redis instance to the newer Redis version
         specified in the request.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_upgrade_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.UpgradeInstanceRequest(
+                    name=name,
+                    redis_version="redis_version_value",
+                )
+
+                # Make the request
+                operation = client.upgrade_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
-            request (:class:`google.cloud.redis_v1.types.UpgradeInstanceRequest`):
+            request (Union[google.cloud.redis_v1.types.UpgradeInstanceRequest, dict]):
                 The request object. Request for
                 [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
             name (:class:`str`):
@@ -625,7 +797,7 @@ class CloudRedisAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, redis_version])
         if request is not None and has_flattened_params:
@@ -677,7 +849,7 @@ class CloudRedisAsyncClient:
         return response
 
     async def import_instance(self,
-            request: cloud_redis.ImportInstanceRequest = None,
+            request: Union[cloud_redis.ImportInstanceRequest, dict] = None,
             *,
             name: str = None,
             input_config: cloud_redis.InputConfig = None,
@@ -695,8 +867,34 @@ class CloudRedisAsyncClient:
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_import_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                input_config = redis_v1.InputConfig()
+                input_config.gcs_source.uri = "uri_value"
+
+                request = redis_v1.ImportInstanceRequest(
+                    name="name_value",
+                    input_config=input_config,
+                )
+
+                # Make the request
+                operation = client.import_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
-            request (:class:`google.cloud.redis_v1.types.ImportInstanceRequest`):
+            request (Union[google.cloud.redis_v1.types.ImportInstanceRequest, dict]):
                 The request object. Request for
                 [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
             name (:class:`str`):
@@ -730,7 +928,7 @@ class CloudRedisAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, input_config])
         if request is not None and has_flattened_params:
@@ -782,7 +980,7 @@ class CloudRedisAsyncClient:
         return response
 
     async def export_instance(self,
-            request: cloud_redis.ExportInstanceRequest = None,
+            request: Union[cloud_redis.ExportInstanceRequest, dict] = None,
             *,
             name: str = None,
             output_config: cloud_redis.OutputConfig = None,
@@ -796,8 +994,34 @@ class CloudRedisAsyncClient:
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_export_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                output_config = redis_v1.OutputConfig()
+                output_config.gcs_destination.uri = "uri_value"
+
+                request = redis_v1.ExportInstanceRequest(
+                    name="name_value",
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.export_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
-            request (:class:`google.cloud.redis_v1.types.ExportInstanceRequest`):
+            request (Union[google.cloud.redis_v1.types.ExportInstanceRequest, dict]):
                 The request object. Request for
                 [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
             name (:class:`str`):
@@ -831,7 +1055,7 @@ class CloudRedisAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, output_config])
         if request is not None and has_flattened_params:
@@ -883,7 +1107,7 @@ class CloudRedisAsyncClient:
         return response
 
     async def failover_instance(self,
-            request: cloud_redis.FailoverInstanceRequest = None,
+            request: Union[cloud_redis.FailoverInstanceRequest, dict] = None,
             *,
             name: str = None,
             data_protection_mode: cloud_redis.FailoverInstanceRequest.DataProtectionMode = None,
@@ -895,8 +1119,35 @@ class CloudRedisAsyncClient:
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_failover_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.FailoverInstanceRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.failover_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
-            request (:class:`google.cloud.redis_v1.types.FailoverInstanceRequest`):
+            request (Union[google.cloud.redis_v1.types.FailoverInstanceRequest, dict]):
                 The request object. Request for
                 [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
             name (:class:`str`):
@@ -931,7 +1182,7 @@ class CloudRedisAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, data_protection_mode])
         if request is not None and has_flattened_params:
@@ -983,7 +1234,7 @@ class CloudRedisAsyncClient:
         return response
 
     async def delete_instance(self,
-            request: cloud_redis.DeleteInstanceRequest = None,
+            request: Union[cloud_redis.DeleteInstanceRequest, dict] = None,
             *,
             name: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -993,8 +1244,35 @@ class CloudRedisAsyncClient:
         r"""Deletes a specific Redis instance.  Instance stops
         serving and data is deleted.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_delete_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.DeleteInstanceRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.delete_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
-            request (:class:`google.cloud.redis_v1.types.DeleteInstanceRequest`):
+            request (Union[google.cloud.redis_v1.types.DeleteInstanceRequest, dict]):
                 The request object. Request for
                 [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
             name (:class:`str`):
@@ -1031,7 +1309,7 @@ class CloudRedisAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:

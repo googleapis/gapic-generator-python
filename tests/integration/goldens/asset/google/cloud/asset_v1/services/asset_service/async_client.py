@@ -16,17 +16,20 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core.client_options import ClientOptions # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1                   # type: ignore
-from google.api_core import retry as retries           # type: ignore
+from google.api_core.client_options import ClientOptions
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
-OptionalRetry = Union[retries.Retry, object]
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -95,6 +98,40 @@ class AssetServiceAsyncClient:
 
     from_service_account_json = from_service_account_file
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        return AssetServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+
     @property
     def transport(self) -> AssetServiceTransport:
         """Returns the transport used by the client instance.
@@ -153,7 +190,7 @@ class AssetServiceAsyncClient:
         )
 
     async def export_assets(self,
-            request: asset_service.ExportAssetsRequest = None,
+            request: Union[asset_service.ExportAssetsRequest, dict] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -173,8 +210,34 @@ class AssetServiceAsyncClient:
         the export operation result. For regular-size resource parent,
         the export operation usually finishes within 5 minutes.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_export_assets():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                output_config = asset_v1.OutputConfig()
+                output_config.gcs_destination.uri = "uri_value"
+
+                request = asset_v1.ExportAssetsRequest(
+                    parent="parent_value",
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.export_assets(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.ExportAssetsRequest`):
+            request (Union[google.cloud.asset_v1.types.ExportAssetsRequest, dict]):
                 The request object. Export asset request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -232,7 +295,7 @@ class AssetServiceAsyncClient:
         return response
 
     async def list_assets(self,
-            request: asset_service.ListAssetsRequest = None,
+            request: Union[asset_service.ListAssetsRequest, dict] = None,
             *,
             parent: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -242,8 +305,27 @@ class AssetServiceAsyncClient:
         r"""Lists assets with time and resource types and returns
         paged results in response.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_list_assets():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.ListAssetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_assets(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.ListAssetsRequest`):
+            request (Union[google.cloud.asset_v1.types.ListAssetsRequest, dict]):
                 The request object. ListAssets request.
             parent (:class:`str`):
                 Required. Name of the organization or project the assets
@@ -270,7 +352,7 @@ class AssetServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -321,7 +403,7 @@ class AssetServiceAsyncClient:
         return response
 
     async def batch_get_assets_history(self,
-            request: asset_service.BatchGetAssetsHistoryRequest = None,
+            request: Union[asset_service.BatchGetAssetsHistoryRequest, dict] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -335,8 +417,28 @@ class AssetServiceAsyncClient:
         specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_batch_get_assets_history():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.BatchGetAssetsHistoryRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.batch_get_assets_history(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.BatchGetAssetsHistoryRequest`):
+            request (Union[google.cloud.asset_v1.types.BatchGetAssetsHistoryRequest, dict]):
                 The request object. Batch get assets history request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -386,7 +488,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def create_feed(self,
-            request: asset_service.CreateFeedRequest = None,
+            request: Union[asset_service.CreateFeedRequest, dict] = None,
             *,
             parent: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -397,8 +499,33 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         project/folder/organization to listen to its asset
         updates.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_create_feed():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                feed = asset_v1.Feed()
+                feed.name = "name_value"
+
+                request = asset_v1.CreateFeedRequest(
+                    parent="parent_value",
+                    feed_id="feed_id_value",
+                    feed=feed,
+                )
+
+                # Make the request
+                response = client.create_feed(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.CreateFeedRequest`):
+            request (Union[google.cloud.asset_v1.types.CreateFeedRequest, dict]):
                 The request object. Create asset feed request.
             parent (:class:`str`):
                 Required. The name of the
@@ -432,7 +559,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -474,7 +601,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def get_feed(self,
-            request: asset_service.GetFeedRequest = None,
+            request: Union[asset_service.GetFeedRequest, dict] = None,
             *,
             name: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -483,8 +610,31 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_get_feed():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                feed = "feed_value"
+                name = f"projects/{project}/feeds/{feed}"
+
+                request = asset_v1.GetFeedRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_feed(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.GetFeedRequest`):
+            request (Union[google.cloud.asset_v1.types.GetFeedRequest, dict]):
                 The request object. Get asset feed request.
             name (:class:`str`):
                 Required. The name of the Feed and it must be in the
@@ -513,7 +663,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -562,7 +712,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def list_feeds(self,
-            request: asset_service.ListFeedsRequest = None,
+            request: Union[asset_service.ListFeedsRequest, dict] = None,
             *,
             parent: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -572,8 +722,28 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Lists all asset feeds in a parent
         project/folder/organization.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_list_feeds():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.ListFeedsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.list_feeds(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.ListFeedsRequest`):
+            request (Union[google.cloud.asset_v1.types.ListFeedsRequest, dict]):
                 The request object. List asset feeds request.
             parent (:class:`str`):
                 Required. The parent
@@ -597,7 +767,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -646,7 +816,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def update_feed(self,
-            request: asset_service.UpdateFeedRequest = None,
+            request: Union[asset_service.UpdateFeedRequest, dict] = None,
             *,
             feed: asset_service.Feed = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -655,8 +825,30 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_update_feed():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                feed = asset_v1.Feed()
+                feed.name = "name_value"
+
+                request = asset_v1.UpdateFeedRequest(
+                    feed=feed,
+                )
+
+                # Make the request
+                response = client.update_feed(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.UpdateFeedRequest`):
+            request (Union[google.cloud.asset_v1.types.UpdateFeedRequest, dict]):
                 The request object. Update asset feed request.
             feed (:class:`google.cloud.asset_v1.types.Feed`):
                 Required. The new values of feed details. It must match
@@ -686,7 +878,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([feed])
         if request is not None and has_flattened_params:
@@ -728,7 +920,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def delete_feed(self,
-            request: asset_service.DeleteFeedRequest = None,
+            request: Union[asset_service.DeleteFeedRequest, dict] = None,
             *,
             name: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -737,8 +929,28 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> None:
         r"""Deletes an asset feed.
 
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_delete_feed():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                feed = "feed_value"
+                name = f"projects/{project}/feeds/{feed}"
+
+                request = asset_v1.DeleteFeedRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.delete_feed(request=request)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.DeleteFeedRequest`):
+            request (Union[google.cloud.asset_v1.types.DeleteFeedRequest, dict]):
                 The request object.
             name (:class:`str`):
                 Required. The name of the feed and it must be in the
@@ -756,7 +968,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -802,7 +1014,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
     async def search_all_resources(self,
-            request: asset_service.SearchAllResourcesRequest = None,
+            request: Union[asset_service.SearchAllResourcesRequest, dict] = None,
             *,
             scope: str = None,
             query: str = None,
@@ -816,8 +1028,27 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         the ``cloudasset.assets.searchAllResources`` permission on the
         desired scope, otherwise the request will be rejected.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_search_all_resources():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.SearchAllResourcesRequest(
+                    scope="scope_value",
+                )
+
+                # Make the request
+                page_result = client.search_all_resources(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.SearchAllResourcesRequest`):
+            request (Union[google.cloud.asset_v1.types.SearchAllResourcesRequest, dict]):
                 The request object. Search all resources request.
             scope (:class:`str`):
                 Required. A scope can be a project, a folder, or an
@@ -927,7 +1158,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query, asset_types])
         if request is not None and has_flattened_params:
@@ -989,7 +1220,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def search_all_iam_policies(self,
-            request: asset_service.SearchAllIamPoliciesRequest = None,
+            request: Union[asset_service.SearchAllIamPoliciesRequest, dict] = None,
             *,
             scope: str = None,
             query: str = None,
@@ -1002,8 +1233,27 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         ``cloudasset.assets.searchAllIamPolicies`` permission on the
         desired scope, otherwise the request will be rejected.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_search_all_iam_policies():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.SearchAllIamPoliciesRequest(
+                    scope="scope_value",
+                )
+
+                # Make the request
+                page_result = client.search_all_iam_policies(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.SearchAllIamPoliciesRequest`):
+            request (Union[google.cloud.asset_v1.types.SearchAllIamPoliciesRequest, dict]):
                 The request object. Search all IAM policies request.
             scope (:class:`str`):
                 Required. A scope can be a project, a folder, or an
@@ -1095,7 +1345,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query])
         if request is not None and has_flattened_params:
@@ -1155,7 +1405,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def analyze_iam_policy(self,
-            request: asset_service.AnalyzeIamPolicyRequest = None,
+            request: Union[asset_service.AnalyzeIamPolicyRequest, dict] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -1164,8 +1414,31 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_analyze_iam_policy():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                analysis_query = asset_v1.IamPolicyAnalysisQuery()
+                analysis_query.scope = "scope_value"
+
+                request = asset_v1.AnalyzeIamPolicyRequest(
+                    analysis_query=analysis_query,
+                )
+
+                # Make the request
+                response = client.analyze_iam_policy(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.AnalyzeIamPolicyRequest`):
+            request (Union[google.cloud.asset_v1.types.AnalyzeIamPolicyRequest, dict]):
                 The request object. A request message for
                 [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1217,7 +1490,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def analyze_iam_policy_longrunning(self,
-            request: asset_service.AnalyzeIamPolicyLongrunningRequest = None,
+            request: Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -1236,8 +1509,37 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         to poll the operation result. The metadata contains the request
         to help callers to map responses to requests.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_analyze_iam_policy_longrunning():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                analysis_query = asset_v1.IamPolicyAnalysisQuery()
+                analysis_query.scope = "scope_value"
+
+                output_config = asset_v1.IamPolicyAnalysisOutputConfig()
+                output_config.gcs_destination.uri = "uri_value"
+
+                request = asset_v1.AnalyzeIamPolicyLongrunningRequest(
+                    analysis_query=analysis_query,
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.analyze_iam_policy_longrunning(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
-            request (:class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningRequest`):
+            request (Union[google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningRequest, dict]):
                 The request object. A request message for
                 [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

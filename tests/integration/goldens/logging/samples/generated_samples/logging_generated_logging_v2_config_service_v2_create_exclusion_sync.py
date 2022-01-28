@@ -28,18 +28,20 @@ from google.cloud import logging_v2
 
 
 def sample_create_exclusion():
-    """Snippet for create_exclusion"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    exclusion = "exclusion_value"
+    parent = f"projects/{project}/exclusions/{exclusion}"
+
     exclusion = logging_v2.LogExclusion()
     exclusion.name = "name_value"
     exclusion.filter = "filter_value"
 
     request = logging_v2.CreateExclusionRequest(
-        parent="projects/{project}/exclusions/{exclusion}",
+        parent=parent,
         exclusion=exclusion,
     )
 

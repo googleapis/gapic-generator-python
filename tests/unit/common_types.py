@@ -85,9 +85,13 @@ class DummyMessage:
     def required_fields(self):
         return [field for field in self.fields.values() if field.required]
 
+    @property
+    def resource_path_args(self):
+        return wrappers.MessageType.PATH_ARG_RE.findall(self.resource_path or '')
+
 
 DummyService = namedtuple("DummyService", [
-                          "methods", "client_name", "async_client_name", "resource_messages_dict"])
+                          "name", "methods", "client_name", "async_client_name", "resource_messages_dict"])
 DummyService.__new__.__defaults__ = (False,) * len(DummyService._fields)
 
 DummyApiSchema = namedtuple("DummyApiSchema",

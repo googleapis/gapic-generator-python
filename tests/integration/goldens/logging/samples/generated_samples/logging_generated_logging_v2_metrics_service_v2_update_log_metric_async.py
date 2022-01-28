@@ -28,18 +28,20 @@ from google.cloud import logging_v2
 
 
 async def sample_update_log_metric():
-    """Snippet for update_log_metric"""
-
     # Create a client
     client = logging_v2.MetricsServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    metric = "metric_value"
+    metric_name = f"projects/{project}/metrics/{metric}"
+
     metric = logging_v2.LogMetric()
     metric.name = "name_value"
     metric.filter = "filter_value"
 
     request = logging_v2.UpdateLogMetricRequest(
-        metric_name="projects/{project}/metrics/{metric}",
+        metric_name=metric_name,
         metric=metric,
     )
 

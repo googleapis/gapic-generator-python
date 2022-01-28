@@ -28,8 +28,6 @@ from animalia import mollusca_v1
 
 
 def sample_method_bidi_streaming():
-    """Snippet for method_bidi_streaming"""
-
     # Create a client
     client = mollusca_v1.SnippetsClient()
 
@@ -38,8 +36,17 @@ def sample_method_bidi_streaming():
         my_string="my_string_value",
     )
 
+    # This method expects an iterator which contains
+    # 'mollusca_v1.SignatureRequestOneRequiredField' objects
+    # Here we create a generator that yields a single `request` for
+    # demonstrative purposes.
+    requests = [request]
+    def request_generator():
+        for request in requests:
+            yield request
+
     # Make the request
-    stream = client.method_bidi_streaming([my_string="my_string_value"])
+    stream = client.method_bidi_streaming(requests=request_generator())
     for response in stream:
         print(response)
 

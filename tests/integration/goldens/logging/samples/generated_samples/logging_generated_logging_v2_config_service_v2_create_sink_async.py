@@ -28,18 +28,20 @@ from google.cloud import logging_v2
 
 
 async def sample_create_sink():
-    """Snippet for create_sink"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    sink = "sink_value"
+    parent = f"projects/{project}/sinks/{sink}"
+
     sink = logging_v2.LogSink()
     sink.name = "name_value"
     sink.destination = "destination_value"
 
     request = logging_v2.CreateSinkRequest(
-        parent="projects/{project}/sinks/{sink}",
+        parent=parent,
         sink=sink,
     )
 

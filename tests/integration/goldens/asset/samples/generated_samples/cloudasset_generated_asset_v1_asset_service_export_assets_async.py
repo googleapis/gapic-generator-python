@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 async def sample_export_assets():
-    """Snippet for export_assets"""
-
     # Create a client
     client = asset_v1.AssetServiceAsyncClient()
 
@@ -38,7 +36,7 @@ async def sample_export_assets():
     output_config.gcs_destination.uri = "uri_value"
 
     request = asset_v1.ExportAssetsRequest(
-        parent="*",
+        parent="parent_value",
         output_config=output_config,
     )
 

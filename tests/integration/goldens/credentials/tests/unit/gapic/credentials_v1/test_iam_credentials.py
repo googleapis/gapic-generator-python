@@ -153,7 +153,7 @@ def test_iam_credentials_client_client_options(client_class, transport_class, tr
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -170,7 +170,7 @@ def test_iam_credentials_client_client_options(client_class, transport_class, tr
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -187,7 +187,7 @@ def test_iam_credentials_client_client_options(client_class, transport_class, tr
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -203,18 +203,18 @@ def test_iam_credentials_client_client_options(client_class, transport_class, tr
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -245,7 +245,7 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class(client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -279,7 +279,7 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
                         expected_client_cert_source = client_cert_source_callback
 
                     patched.return_value = None
-                    client = client_class()
+                    client = client_class(transport=transport_name)
                     patched.assert_called_once_with(
                         credentials=None,
                         credentials_file=None,
@@ -296,7 +296,7 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
         with mock.patch.object(transport_class, '__init__') as patched:
             with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
-                client = client_class()
+                client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
@@ -307,6 +307,59 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
                 )
+
+
+@pytest.mark.parametrize("client_class", [
+    IAMCredentialsClient, IAMCredentialsAsyncClient
+])
+@mock.patch.object(IAMCredentialsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsClient))
+@mock.patch.object(IAMCredentialsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsAsyncClient))
+def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+            with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
@@ -320,7 +373,7 @@ def test_iam_credentials_client_client_options_scopes(client_class, transport_cl
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -332,18 +385,19 @@ def test_iam_credentials_client_client_options_scopes(client_class, transport_cl
             always_use_jwt_access=True,
         )
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport, "grpc"),
-    (IAMCredentialsAsyncClient, transports.IAMCredentialsGrpcAsyncIOTransport, "grpc_asyncio"),
+@pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
+    (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport, "grpc", grpc_helpers),
+    (IAMCredentialsAsyncClient, transports.IAMCredentialsGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
 ])
-def test_iam_credentials_client_client_options_credentials_file(client_class, transport_class, transport_name):
+def test_iam_credentials_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(
         credentials_file="credentials.json"
     )
+
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -355,6 +409,36 @@ def test_iam_credentials_client_client_options_credentials_file(client_class, tr
             always_use_jwt_access=True,
         )
 
+    if "grpc" in transport_name:
+        # test that the credentials from file are saved and used as the credentials.
+        with mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds, mock.patch.object(
+            google.auth, "default", autospec=True
+        ) as adc, mock.patch.object(
+            grpc_helpers, "create_channel"
+        ) as create_channel:
+            creds = ga_credentials.AnonymousCredentials()
+            file_creds = ga_credentials.AnonymousCredentials()
+            load_creds.return_value = (file_creds, None)
+            adc.return_value = (creds, None)
+            client = client_class(client_options=options, transport=transport_name)
+            create_channel.assert_called_with(
+                "iamcredentials.googleapis.com:443",
+                credentials=file_creds,
+                credentials_file=None,
+                quota_project_id=None,
+                default_scopes=(
+                    'https://www.googleapis.com/auth/cloud-platform',
+),
+                scopes=None,
+                default_host="iamcredentials.googleapis.com",
+                ssl_credentials=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
 
 def test_iam_credentials_client_client_options_from_dict():
     with mock.patch('google.iam.credentials_v1.services.iam_credentials.transports.IAMCredentialsGrpcTransport.__init__') as grpc_transport:
@@ -374,7 +458,11 @@ def test_iam_credentials_client_client_options_from_dict():
         )
 
 
-def test_generate_access_token(transport: str = 'grpc', request_type=common.GenerateAccessTokenRequest):
+@pytest.mark.parametrize("request_type", [
+  common.GenerateAccessTokenRequest,
+  dict,
+])
+def test_generate_access_token(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -402,10 +490,6 @@ def test_generate_access_token(transport: str = 'grpc', request_type=common.Gene
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
     assert response.access_token == 'access_token_value'
-
-
-def test_generate_access_token_from_dict():
-    test_generate_access_token(request_type=dict)
 
 
 def test_generate_access_token_empty_call():
@@ -549,9 +633,15 @@ def test_generate_access_token_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].scope == ['scope_value']
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].scope
+        mock_val = ['scope_value']
+        assert arg == mock_val
         assert DurationRule().to_proto(args[0].lifetime) == duration_pb2.Duration(seconds=751)
 
 
@@ -599,9 +689,15 @@ async def test_generate_access_token_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].scope == ['scope_value']
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].scope
+        mock_val = ['scope_value']
+        assert arg == mock_val
         assert DurationRule().to_proto(args[0].lifetime) == duration_pb2.Duration(seconds=751)
 
 
@@ -623,7 +719,11 @@ async def test_generate_access_token_flattened_error_async():
         )
 
 
-def test_generate_id_token(transport: str = 'grpc', request_type=common.GenerateIdTokenRequest):
+@pytest.mark.parametrize("request_type", [
+  common.GenerateIdTokenRequest,
+  dict,
+])
+def test_generate_id_token(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -651,10 +751,6 @@ def test_generate_id_token(transport: str = 'grpc', request_type=common.Generate
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
     assert response.token == 'token_value'
-
-
-def test_generate_id_token_from_dict():
-    test_generate_id_token(request_type=dict)
 
 
 def test_generate_id_token_empty_call():
@@ -798,10 +894,18 @@ def test_generate_id_token_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].audience == 'audience_value'
-        assert args[0].include_email == True
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].audience
+        mock_val = 'audience_value'
+        assert arg == mock_val
+        arg = args[0].include_email
+        mock_val = True
+        assert arg == mock_val
 
 
 def test_generate_id_token_flattened_error():
@@ -848,10 +952,18 @@ async def test_generate_id_token_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].audience == 'audience_value'
-        assert args[0].include_email == True
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].audience
+        mock_val = 'audience_value'
+        assert arg == mock_val
+        arg = args[0].include_email
+        mock_val = True
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -872,7 +984,11 @@ async def test_generate_id_token_flattened_error_async():
         )
 
 
-def test_sign_blob(transport: str = 'grpc', request_type=common.SignBlobRequest):
+@pytest.mark.parametrize("request_type", [
+  common.SignBlobRequest,
+  dict,
+])
+def test_sign_blob(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -902,10 +1018,6 @@ def test_sign_blob(transport: str = 'grpc', request_type=common.SignBlobRequest)
     assert isinstance(response, common.SignBlobResponse)
     assert response.key_id == 'key_id_value'
     assert response.signed_blob == b'signed_blob_blob'
-
-
-def test_sign_blob_from_dict():
-    test_sign_blob(request_type=dict)
 
 
 def test_sign_blob_empty_call():
@@ -1050,9 +1162,15 @@ def test_sign_blob_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].payload == b'payload_blob'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].payload
+        mock_val = b'payload_blob'
+        assert arg == mock_val
 
 
 def test_sign_blob_flattened_error():
@@ -1097,9 +1215,15 @@ async def test_sign_blob_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].payload == b'payload_blob'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].payload
+        mock_val = b'payload_blob'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1119,7 +1243,11 @@ async def test_sign_blob_flattened_error_async():
         )
 
 
-def test_sign_jwt(transport: str = 'grpc', request_type=common.SignJwtRequest):
+@pytest.mark.parametrize("request_type", [
+  common.SignJwtRequest,
+  dict,
+])
+def test_sign_jwt(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1149,10 +1277,6 @@ def test_sign_jwt(transport: str = 'grpc', request_type=common.SignJwtRequest):
     assert isinstance(response, common.SignJwtResponse)
     assert response.key_id == 'key_id_value'
     assert response.signed_jwt == 'signed_jwt_value'
-
-
-def test_sign_jwt_from_dict():
-    test_sign_jwt(request_type=dict)
 
 
 def test_sign_jwt_empty_call():
@@ -1297,9 +1421,15 @@ def test_sign_jwt_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].payload == 'payload_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].payload
+        mock_val = 'payload_value'
+        assert arg == mock_val
 
 
 def test_sign_jwt_flattened_error():
@@ -1344,9 +1474,15 @@ async def test_sign_jwt_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].payload == 'payload_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].payload
+        mock_val = 'payload_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1385,6 +1521,27 @@ def test_credentials_transport_error():
         client = IAMCredentialsClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.IAMCredentialsGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = IAMCredentialsClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = IAMCredentialsClient(
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
@@ -1847,7 +2004,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(transports.IAMCredentialsTransport, '_prep_wrapped_messages') as prep:
@@ -1907,3 +2064,29 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+@pytest.mark.parametrize("client_class,transport_class", [
+    (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport),
+    (IAMCredentialsAsyncClient, transports.IAMCredentialsGrpcAsyncIOTransport),
+])
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )

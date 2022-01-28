@@ -28,14 +28,16 @@ from google.cloud import asset_v1
 
 
 async def sample_delete_feed():
-    """Snippet for delete_feed"""
-
     # Create a client
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    feed = "feed_value"
+    name = f"projects/{project}/feeds/{feed}"
+
     request = asset_v1.DeleteFeedRequest(
-        name="projects/{project}/feeds/{feed}",
+        name=name,
     )
 
     # Make the request

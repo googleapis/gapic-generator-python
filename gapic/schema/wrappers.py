@@ -32,15 +32,16 @@ import dataclasses
 import json
 import re
 from itertools import chain
-from typing import (Any, cast, Dict, FrozenSet, Iterable, List, Mapping,
+from typing import (Any, cast, Dict, FrozenSet, Iterator, Iterable, List, Mapping,
                     ClassVar, Optional, Sequence, Set, Tuple, Union)
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
 from google.api import http_pb2
 from google.api import resource_pb2
-from google.api_core import exceptions      # type: ignore
-from google.api_core import path_template   # type: ignore
+from google.api_core import exceptions
+from google.api_core import path_template
+from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
 from google.protobuf.json_format import MessageToDict  # type: ignore
 
@@ -93,7 +94,20 @@ class Field:
         return bool(self.repeated and self.message and self.message.map)
 
     @utils.cached_property
-    def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
+    def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, Dict[str, Any], List[Any], None]:
+        # Return messages as dicts and let the message ctor handle the conversion.
+        if self.message:
+            if self.map:
+                # Not worth the hassle, just return an empty map.
+                return {}
+
+            msg_dict = {
+                f.name: f.mock_value_original_type
+                for f in self.message.fields.values()
+            }
+
+            return [msg_dict] if self.repeated else msg_dict
+
         answer = self.primitive_mock() or None
 
         # If this is a repeated field, then the mock answer should
@@ -172,7 +186,7 @@ class Field:
         answer: Union[bool, str, bytes, int, float, List[Any], None] = None
 
         if not isinstance(self.type, PrimitiveType):
-            raise TypeError(f"'inner_mock_as_original_type' can only be used for"
+            raise TypeError(f"'primitive_mock' can only be used for "
                 f"PrimitiveType, but type is {self.type}")
 
         else:
@@ -316,7 +330,8 @@ class Oneof:
 class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
     # Class attributes
-    PATH_ARG_RE = re.compile(r'\{([a-zA-Z0-9_-]+)\}')
+    # https://google.aip.dev/122
+    PATH_ARG_RE = re.compile(r'\{([a-zA-Z0-9_\-]+)(?:=\*\*)?\}')
 
     # Instance attributes
     message_pb: descriptor_pb2.DescriptorProto
@@ -343,6 +358,39 @@ class MessageType:
                 oneof_fields[field.oneof].append(field)
 
         return oneof_fields
+
+    @utils.cached_property
+    def is_extended_operation(self) -> bool:
+        if not self.name == "Operation":
+            return False
+
+        name, status, error_code, error_message = False, False, False, False
+        duplicate_msg = f"Message '{self.name}' has multiple fields with the same operation response mapping: {{}}"
+        for f in self.field:
+            maybe_op_mapping = f.options.Extensions[ex_ops_pb2.operation_field]
+            OperationResponseMapping = ex_ops_pb2.OperationResponseMapping
+
+            if maybe_op_mapping == OperationResponseMapping.NAME:
+                if name:
+                    raise TypeError(duplicate_msg.format("name"))
+                name = True
+
+            if maybe_op_mapping == OperationResponseMapping.STATUS:
+                if status:
+                    raise TypeError(duplicate_msg.format("status"))
+                status = True
+
+            if maybe_op_mapping == OperationResponseMapping.ERROR_CODE:
+                if error_code:
+                    raise TypeError(duplicate_msg.format("error_code"))
+                error_code = True
+
+            if maybe_op_mapping == OperationResponseMapping.ERROR_MESSAGE:
+                if error_message:
+                    raise TypeError(duplicate_msg.format("error_message"))
+                error_message = True
+
+        return name and status and error_code and error_message
 
     @utils.cached_property
     def required_fields(self) -> Sequence['Field']:
@@ -493,7 +541,7 @@ class MessageType:
                 visited_messages=frozenset({self}),
             )
 
-        # Sanity check: If cursor is a repeated field, then raise an exception.
+        # Quick check: If cursor is a repeated field, then raise an exception.
         # Repeated fields are only permitted in the terminal position.
         if cursor.repeated:
             raise KeyError(
@@ -504,7 +552,7 @@ class MessageType:
                 'in the fields list in a position other than the end.',
             )
 
-        # Sanity check: If this cursor has no message, there is a problem.
+        # Quick check: If this cursor has no message, there is a problem.
         if not cursor.message:
             raise KeyError(
                 f'Field {".".join(field_path)} could not be resolved from '
@@ -722,17 +770,79 @@ class HttpRule:
     uri: str
     body: Optional[str]
 
-    @property
-    def path_fields(self) -> List[Tuple[str, str]]:
+    def path_fields(self, method: "Method") -> List[Tuple[Field, str, str]]:
         """return list of (name, template) tuples extracted from uri."""
-        return [(match.group("name"), match.group("template"))
+        input = method.input
+        return [(input.get_field(*match.group("name").split(".")), match.group("name"), match.group("template"))
                 for match in path_template._VARIABLE_RE.finditer(self.uri)]
 
-    @property
-    def sample_request(self) -> str:
+    def sample_request(self, method: "Method") -> Dict[str, Any]:
         """return json dict for sample request matching the uri template."""
-        sample = utils.sample_from_path_fields(self.path_fields)
-        return json.dumps(sample)
+
+        def sample_from_path_fields(paths: List[Tuple[Field, str, str]]) -> Dict[str, Any]:
+            """Construct a dict for a sample request object from a list of fields
+               and template patterns.
+
+            Args:
+                  paths: a list of tuples, each with a (segmented) name and a pattern.
+            Returns:
+                  A new nested dict with the templates instantiated.
+            """
+
+            request: Dict[str, Any] = {}
+
+            def _sample_names() -> Iterator[str]:
+                sample_num: int = 0
+                while True:
+                    sample_num += 1
+                    yield "sample{}".format(sample_num)
+
+            def add_field(obj, path, value):
+                """Insert a field into a nested dict and return the (outer) dict.
+                 Keys and sub-dicts are inserted if necessary to create the path.
+                 e.g. if obj, as passed in, is {}, path is "a.b.c", and value is
+                 "hello", obj will be updated to:
+                  {'a':
+                     {'b':
+                      {
+                      'c': 'hello'
+                      }
+                     }
+                  }
+
+                Args:
+                  obj: a (possibly) nested dict (parsed json)
+                  path: a segmented field name, e.g. "a.b.c"
+                    where each part is a dict key.
+                  value: the value of the new key.
+                Returns:
+                      obj, possibly modified
+                Raises:
+                      AttributeError if the path references a key that is
+                  not a dict.: e.g. path='a.b', obj = {'a':'abc'}
+                """
+
+                segments = path.split('.')
+                leaf = segments.pop()
+                subfield = obj
+                for segment in segments:
+                    subfield = subfield.setdefault(segment, {})
+                subfield[leaf] = value
+                return obj
+
+            sample_names = _sample_names()
+            for field, path, template in paths:
+                sample_value = re.sub(
+                    r"(\*\*|\*)",
+                    lambda n: next(sample_names),
+                    template or '*'
+                ) if field.type == PrimitiveType.build(str) else field.mock_value_original_type
+                add_field(request, path, sample_value)
+
+            return request
+
+        sample = sample_from_path_fields(self.path_fields(method))
+        return sample
 
     @classmethod
     def try_parse_http_rule(cls, http_rule) -> Optional['HttpRule']:
@@ -764,6 +874,10 @@ class Method:
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
+
+    @property
+    def is_operation_polling_method(self):
+        return self.output.is_extended_operation and self.options.Extensions[ex_ops_pb2.operation_polling_method]
 
     @utils.cached_property
     def client_output(self):
@@ -839,6 +953,10 @@ class Method:
         return self.output
 
     @property
+    def operation_service(self) -> Optional[str]:
+        return self.options.Extensions[ex_ops_pb2.operation_service]
+
+    @property
     def is_deprecated(self) -> bool:
         """Returns true if the method is deprecated, false otherwise."""
         return descriptor_pb2.MethodOptions.HasField(self.options, 'deprecated')
@@ -908,7 +1026,7 @@ class Method:
         if self.http_opt is None:
             return []
 
-        pattern = r'\{(\w+)\}'
+        pattern = r'\{(\w+)(?:=.+?)?\}'
         return re.findall(pattern, self.http_opt['url'])
 
     @property
@@ -922,7 +1040,11 @@ class Method:
         params = set(self.path_params)
         body = self.http_opt.get('body')
         if body:
-            params.add(body)
+            if body == "*":
+                # The entire request is the REST body.
+                return set()
+            else:
+                params.add(body)
 
         return set(self.input.fields) - params
 
@@ -1171,6 +1293,10 @@ class Service:
 
     def __getattr__(self, name):
         return getattr(self.service_pb, name)
+
+    @property
+    def custom_polling_method(self) -> Optional[Method]:
+        return next((m for m in self.methods.values() if m.is_operation_polling_method), None)
 
     @property
     def client_name(self) -> str:
