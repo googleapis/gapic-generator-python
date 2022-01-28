@@ -112,8 +112,6 @@ def construct_client(
                 channel=channel_creator("localhost:7469"),
             )
         elif transport_name == "rest":
-            # TODO(atulep): The template code hardcodes https://, so
-            # the below line doesn't work.
             # The custom host explicitly bypasses https.
             transport = transport_cls(
                 credentials=credentials.AnonymousCredentials(),
