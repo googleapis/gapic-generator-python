@@ -464,7 +464,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -567,7 +567,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 A Google Cloud Redis instance.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -711,7 +711,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instance_id, instance])
         if request is not None and has_flattened_params:
@@ -849,7 +849,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([update_mask, instance])
         if request is not None and has_flattened_params:
@@ -971,7 +971,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, redis_version])
         if request is not None and has_flattened_params:
@@ -1103,7 +1103,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, input_config])
         if request is not None and has_flattened_params:
@@ -1231,7 +1231,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, output_config])
         if request is not None and has_flattened_params:
@@ -1354,7 +1354,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, data_protection_mode])
         if request is not None and has_flattened_params:
@@ -1477,7 +1477,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:

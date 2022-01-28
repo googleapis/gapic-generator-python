@@ -380,6 +380,7 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
     options = client_options.ClientOptions(
         credentials_file="credentials.json"
     )
+
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -393,6 +394,42 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
         )
+
+    {% if 'grpc' in opts.transport %}
+    if "grpc" in transport_name:
+        # test that the credentials from file are saved and used as the credentials.
+        with mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds, mock.patch.object(
+            google.auth, "default", autospec=True
+        ) as adc, mock.patch.object(
+            grpc_helpers, "create_channel"
+        ) as create_channel:
+            creds = ga_credentials.AnonymousCredentials()
+            file_creds = ga_credentials.AnonymousCredentials()
+            load_creds.return_value = (file_creds, None)
+            adc.return_value = (creds, None)
+            client = client_class(client_options=options, transport=transport_name)
+            {% with host = (service.host|default('localhost', true)) %}
+            create_channel.assert_called_with(
+                "{{ host }}{% if ":" not in service.host %}:443{% endif %}",
+                credentials=file_creds,
+                credentials_file=None,
+                quota_project_id=None,
+                default_scopes=(
+                    {% for scope in service.oauth_scopes %}
+                    '{{ scope }}',
+                    {% endfor %}),
+                scopes=None,
+                default_host="{{ host }}",
+                ssl_credentials=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            {% endwith %}
+    {% endif %}
 {% if 'grpc' in opts.transport %}
 {# TODO(dovs): genericize this function#}
 
@@ -1015,7 +1052,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% set mock_value = req_field.primitive_mock_as_str() %}
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params %}"{{param|camel_case }}", {% endfor %}))
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param|camel_case }}", {% endfor %}))
     {% endif %}
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
@@ -1023,7 +1060,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params %}"{{param}}",
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}",
 {% endfor %}))
     {% endif %}
     jsonified_request.update(unset_fields)
@@ -1109,7 +1146,7 @@ def test_{{ method_name }}_rest_unset_required_fields():
     transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.{{ method.name|snake_case }}._get_unset_required_fields({})
-    assert set(unset_fields) == (set(({% for param in method.query_params %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
+    assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
 
 
     {% endif %}{# required_fields #}
@@ -1251,7 +1288,7 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         {% with uri = method.http_options[0].uri %}
-        assert path_template.validate("https://%s{{ uri }}" % client.transport._host, args[1])
+        assert path_template.validate("%s{{ uri }}" % client.transport._host, args[1])
         {% endwith %}
         {# TODO(kbandes) - reverse-transcode request args to check all request fields #}
 
