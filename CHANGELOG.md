@@ -1,6 +1,33 @@
 # Changelog
 
 
+## [0.60.0](https://github.com/googleapis/gapic-generator-python/compare/v0.59.1...v0.60.0) (2022-01-19)
+
+
+### Features
+
+* add api key support ([#969](https://github.com/googleapis/gapic-generator-python/issues/969)) ([7c72739](https://github.com/googleapis/gapic-generator-python/commit/7c7273919193f321e0dc2d4156b35be1b4733458))
+* generate snippet metadata  ([#1129](https://github.com/googleapis/gapic-generator-python/issues/1129)) ([9e46031](https://github.com/googleapis/gapic-generator-python/commit/9e46031d01edc3a461140fe3b29d8d400f5ddf86))
+
+
+### Bug Fixes
+
+* only set unset fields if they are query params ([#1130](https://github.com/googleapis/gapic-generator-python/issues/1130)) ([9ad98ca](https://github.com/googleapis/gapic-generator-python/commit/9ad98ca6833f1b280bf3c04c858f92276d59ffbe))
+
+### [0.59.1](https://github.com/googleapis/gapic-generator-python/compare/v0.59.0...v0.59.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* refactor mtls logic to standalone method ([#1123](https://github.com/googleapis/gapic-generator-python/issues/1123)) ([d528223](https://github.com/googleapis/gapic-generator-python/commit/d528223e3221487f86a3d82c92cd2e2cf04bec4a))
+
+## [0.59.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.58.4...v0.59.0) (2022-01-10)
+
+
+### Features
+
+* add snippet index ([#1121](https://www.github.com/googleapis/gapic-generator-python/issues/1121)) ([55d2bc6](https://www.github.com/googleapis/gapic-generator-python/commit/55d2bc6580e5db0f837de1b245533a8f1f2e9beb))
+
 ### [0.58.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.58.3...v0.58.4) (2021-12-30)
 
 

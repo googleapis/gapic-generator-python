@@ -271,6 +271,65 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+
+        # Figure out the client cert source to use.
+        client_cert_source = None
+        if use_client_cert == "true":
+            if client_options.client_cert_source:
+                client_cert_source = client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = cls.DEFAULT_ENDPOINT
+
+        return api_endpoint, client_cert_source
+
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, ConfigServiceV2Transport, None] = None,
@@ -319,50 +378,18 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
 
-        # Create SSL credentials for mutual TLS if needed.
-        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
+        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
 
-        client_cert_source_func = None
-        is_mtls = False
-        if use_client_cert:
-            if client_options.client_cert_source:
-                is_mtls = True
-                client_cert_source_func = client_options.client_cert_source
-            else:
-                is_mtls = mtls.has_default_client_cert_source()
-                if is_mtls:
-                    client_cert_source_func = mtls.default_client_cert_source()
-                else:
-                    client_cert_source_func = None
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        else:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-            if use_mtls_env == "never":
-                api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                if is_mtls:
-                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-                else:
-                    api_endpoint = self.DEFAULT_ENDPOINT
-            else:
-                raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
-                    "values: never, auto, always"
-                )
+        api_key_value = getattr(client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, ConfigServiceV2Transport):
             # transport is a ConfigServiceV2Transport instance.
-            if credentials or client_options.credentials_file:
+            if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
                                  "provide its credentials directly.")
             if client_options.scopes:
@@ -372,6 +399,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
             self._transport = transport
         else:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
+
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
@@ -393,6 +425,30 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListBucketsPager:
         r"""Lists buckets.
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_buckets():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.ListBucketsRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_buckets(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListBucketsRequest, dict]):
@@ -430,7 +486,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -489,6 +545,31 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogBucket:
         r"""Gets a bucket.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.GetBucketRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_bucket(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.GetBucketRequest, dict]):
                 The request object. The parameters to `GetBucket`.
@@ -543,6 +624,33 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Creates a bucket that can be used to store log
         entries. Once a bucket has been created, the region
         cannot be changed.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.CreateBucketRequest(
+                    parent=parent,
+                    bucket_id="bucket_id_value",
+                )
+
+                # Make the request
+                response = client.create_bucket(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateBucketRequest, dict]):
@@ -607,6 +715,32 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         A buckets region may not be modified after it is created.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.UpdateBucketRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.update_bucket(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateBucketRequest, dict]):
                 The request object. The parameters to `UpdateBucket`.
@@ -662,6 +796,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         state. After 7 days, the bucket will be purged and all logs in
         the bucket will be permanently deleted.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.DeleteBucketRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.delete_bucket(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict]):
                 The request object. The parameters to `DeleteBucket`.
@@ -708,6 +865,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Undeletes a bucket. A bucket that has been deleted
         may be undeleted within the grace period of 7 days.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_undelete_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.UndeleteBucketRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.undelete_bucket(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict]):
@@ -756,6 +936,25 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> pagers.ListViewsPager:
         r"""Lists views on a bucket.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_views():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.ListViewsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_views(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListViewsRequest, dict]):
                 The request object. The parameters to `ListViews`.
@@ -784,7 +983,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -843,6 +1042,32 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogView:
         r"""Gets a view.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_view():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                view = "view_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
+
+                request = logging_v2.GetViewRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_view(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.GetViewRequest, dict]):
                 The request object. The parameters to `GetView`.
@@ -898,6 +1123,28 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogView:
         r"""Creates a view over logs in a bucket. A bucket may
         contain a maximum of 50 views.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_view():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.CreateViewRequest(
+                    parent="parent_value",
+                    view_id="view_id_value",
+                )
+
+                # Make the request
+                response = client.create_view(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateViewRequest, dict]):
@@ -955,6 +1202,27 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Updates a view. This method replaces the following fields in the
         existing view with values from the new view: ``filter``.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_view():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.UpdateViewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_view(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateViewRequest, dict]):
                 The request object. The parameters to `UpdateView`.
@@ -1010,6 +1278,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Deletes a view from a bucket.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_view():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                view = "view_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
+
+                request = logging_v2.DeleteViewRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.delete_view(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteViewRequest, dict]):
                 The request object. The parameters to `DeleteView`.
@@ -1057,6 +1348,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> pagers.ListSinksPager:
         r"""Lists sinks.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_sinks():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                parent = f"projects/{project}/sinks/{sink}"
+
+                request = logging_v2.ListSinksRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_sinks(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListSinksRequest, dict]):
                 The request object. The parameters to `ListSinks`.
@@ -1089,7 +1403,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1149,6 +1463,30 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogSink:
         r"""Gets a sink.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_sink():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                sink_name = f"projects/{project}/sinks/{sink}"
+
+                request = logging_v2.GetSinkRequest(
+                    sink_name=sink_name,
+                )
+
+                # Make the request
+                response = client.get_sink(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.GetSinkRequest, dict]):
                 The request object. The parameters to `GetSink`.
@@ -1187,7 +1525,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name])
         if request is not None and has_flattened_params:
@@ -1243,6 +1581,36 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         permitted to write to the destination. A sink can export log
         entries only from the resource owning the sink.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_sink():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                parent = f"projects/{project}/sinks/{sink}"
+
+                sink = logging_v2.LogSink()
+                sink.name = "name_value"
+                sink.destination = "destination_value"
+
+                request = logging_v2.CreateSinkRequest(
+                    parent=parent,
+                    sink=sink,
+                )
+
+                # Make the request
+                response = client.create_sink(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.CreateSinkRequest, dict]):
                 The request object. The parameters to `CreateSink`.
@@ -1289,7 +1657,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, sink])
         if request is not None and has_flattened_params:
@@ -1348,6 +1716,36 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         The updated sink might also have a new ``writer_identity``; see
         the ``unique_writer_identity`` field.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_sink():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                sink_name = f"projects/{project}/sinks/{sink}"
+
+                sink = logging_v2.LogSink()
+                sink.name = "name_value"
+                sink.destination = "destination_value"
+
+                request = logging_v2.UpdateSinkRequest(
+                    sink_name=sink_name,
+                    sink=sink,
+                )
+
+                # Make the request
+                response = client.update_sink(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateSinkRequest, dict]):
@@ -1415,7 +1813,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name, sink, update_mask])
         if request is not None and has_flattened_params:
@@ -1471,6 +1869,28 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Deletes a sink. If the sink has a unique ``writer_identity``,
         then that service account is also deleted.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_sink():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                sink_name = f"projects/{project}/sinks/{sink}"
+
+                request = logging_v2.DeleteSinkRequest(
+                    sink_name=sink_name,
+                )
+
+                # Make the request
+                response = client.delete_sink(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict]):
                 The request object. The parameters to `DeleteSink`.
@@ -1497,7 +1917,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name])
         if request is not None and has_flattened_params:
@@ -1545,6 +1965,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> pagers.ListExclusionsPager:
         r"""Lists all the exclusions in a parent resource.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_exclusions():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                parent = f"projects/{project}/exclusions/{exclusion}"
+
+                request = logging_v2.ListExclusionsRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_exclusions(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListExclusionsRequest, dict]):
                 The request object. The parameters to `ListExclusions`.
@@ -1577,7 +2020,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1637,6 +2080,30 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogExclusion:
         r"""Gets the description of an exclusion.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_exclusion():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                name = f"projects/{project}/exclusions/{exclusion}"
+
+                request = logging_v2.GetExclusionRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_exclusion(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.GetExclusionRequest, dict]):
                 The request object. The parameters to `GetExclusion`.
@@ -1678,7 +2145,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1733,6 +2200,36 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         can be excluded. You can have up to 10 exclusions in a
         resource.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_exclusion():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                parent = f"projects/{project}/exclusions/{exclusion}"
+
+                exclusion = logging_v2.LogExclusion()
+                exclusion.name = "name_value"
+                exclusion.filter = "filter_value"
+
+                request = logging_v2.CreateExclusionRequest(
+                    parent=parent,
+                    exclusion=exclusion,
+                )
+
+                # Make the request
+                response = client.create_exclusion(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.CreateExclusionRequest, dict]):
                 The request object. The parameters to `CreateExclusion`.
@@ -1783,7 +2280,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, exclusion])
         if request is not None and has_flattened_params:
@@ -1838,6 +2335,36 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing
         exclusion.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_exclusion():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                name = f"projects/{project}/exclusions/{exclusion}"
+
+                exclusion = logging_v2.LogExclusion()
+                exclusion.name = "name_value"
+                exclusion.filter = "filter_value"
+
+                request = logging_v2.UpdateExclusionRequest(
+                    name=name,
+                    exclusion=exclusion,
+                )
+
+                # Make the request
+                response = client.update_exclusion(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateExclusionRequest, dict]):
@@ -1902,7 +2429,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, exclusion, update_mask])
         if request is not None and has_flattened_params:
@@ -1957,6 +2484,27 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Deletes an exclusion.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_exclusion():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                name = f"projects/{project}/exclusions/{exclusion}"
+
+                request = logging_v2.DeleteExclusionRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.delete_exclusion(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict]):
                 The request object. The parameters to `DeleteExclusion`.
@@ -1984,7 +2532,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2039,13 +2587,37 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_cmek_settings():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                name = f"projects/{project}/cmekSettings"
+
+                request = logging_v2.GetCmekSettingsRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_cmek_settings(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.GetCmekSettingsRequest, dict]):
                 The request object. The parameters to
                 [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
                 See [Enabling CMEK for Logs
-                Router](https://cloud.google.com/logging/docs/routing/managed-
-                encryption) for more information.
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+                for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2122,13 +2694,34 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_cmek_settings():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.UpdateCmekSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_cmek_settings(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateCmekSettingsRequest, dict]):
                 The request object. The parameters to
                 [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
                 See [Enabling CMEK for Logs
-                Router](https://cloud.google.com/logging/docs/routing/managed-
-                encryption) for more information.
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+                for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

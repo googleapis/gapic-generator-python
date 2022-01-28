@@ -325,6 +325,10 @@ def test_method_path_params():
     method = make_method('DoSomething', http_rule=http_rule)
     assert method.path_params == ['project']
 
+    http_rule2 = http_pb2.HttpRule(post='/v1beta1/{name=rooms/*/blurbs/*}')
+    method2 = make_method("DoSomething", http_rule=http_rule2)
+    assert method2.path_params == ["name"]
+
 
 def test_method_path_params_no_http_rule():
     method = make_method('DoSomething')
@@ -557,6 +561,25 @@ def test_method_query_params_no_body():
     method = make_method('DoSomething', http_rule=http_rule,
                          input_message=input_message)
     assert method.query_params == {'region'}
+
+
+def test_method_query_params_star_body():
+    # tests only the basic case of grpc transcoding
+    http_rule = http_pb2.HttpRule(
+        post='/v1/{project}/topics',
+        body='*'
+    )
+    input_message = make_message(
+        'MethodInput',
+        fields=(
+            make_field('region'),
+            make_field('project'),
+            make_field('address')
+        )
+    )
+    method = make_method('DoSomething', http_rule=http_rule,
+                         input_message=input_message)
+    assert method.query_params == set()
 
 
 def test_method_query_params_no_http_rule():

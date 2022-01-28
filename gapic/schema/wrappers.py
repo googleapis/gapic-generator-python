@@ -41,7 +41,7 @@ from google.api import http_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions
 from google.api_core import path_template
-from google.cloud import extended_operations_pb2 as ex_ops_pb2
+from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
 from google.protobuf.json_format import MessageToDict  # type: ignore
 
@@ -541,7 +541,7 @@ class MessageType:
                 visited_messages=frozenset({self}),
             )
 
-        # Sanity check: If cursor is a repeated field, then raise an exception.
+        # Quick check: If cursor is a repeated field, then raise an exception.
         # Repeated fields are only permitted in the terminal position.
         if cursor.repeated:
             raise KeyError(
@@ -552,7 +552,7 @@ class MessageType:
                 'in the fields list in a position other than the end.',
             )
 
-        # Sanity check: If this cursor has no message, there is a problem.
+        # Quick check: If this cursor has no message, there is a problem.
         if not cursor.message:
             raise KeyError(
                 f'Field {".".join(field_path)} could not be resolved from '
@@ -770,16 +770,16 @@ class HttpRule:
     uri: str
     body: Optional[str]
 
-    def path_fields(self, method: "~.Method") -> List[Tuple[Field, str, str]]:
+    def path_fields(self, method: "Method") -> List[Tuple[Field, str, str]]:
         """return list of (name, template) tuples extracted from uri."""
         input = method.input
         return [(input.get_field(*match.group("name").split(".")), match.group("name"), match.group("template"))
                 for match in path_template._VARIABLE_RE.finditer(self.uri)]
 
-    def sample_request(self, method: "~.Method") -> str:
+    def sample_request(self, method: "Method") -> Dict[str, Any]:
         """return json dict for sample request matching the uri template."""
 
-        def sample_from_path_fields(paths: List[Tuple["wrappers.Field", str, str]]) -> Dict[Any, Any]:
+        def sample_from_path_fields(paths: List[Tuple[Field, str, str]]) -> Dict[str, Any]:
             """Construct a dict for a sample request object from a list of fields
                and template patterns.
 
@@ -1026,7 +1026,7 @@ class Method:
         if self.http_opt is None:
             return []
 
-        pattern = r'\{(\w+)\}'
+        pattern = r'\{(\w+)(?:=.+?)?\}'
         return re.findall(pattern, self.http_opt['url'])
 
     @property
@@ -1040,7 +1040,11 @@ class Method:
         params = set(self.path_params)
         body = self.http_opt.get('body')
         if body:
-            params.add(body)
+            if body == "*":
+                # The entire request is the REST body.
+                return set()
+            else:
+                params.add(body)
 
         return set(self.input.fields) - params
 

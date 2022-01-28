@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -48,8 +48,8 @@ class IAMCredentialsAsyncClient:
 
     Service account credentials are used to temporarily assume the
     identity of the service account. Supported credential types
-    include OAuth 2.0 access tokens, OpenID Connect ID tokens, self-
-    signed JSON Web Tokens (JWTs), and more.
+    include OAuth 2.0 access tokens, OpenID Connect ID tokens,
+    self-signed JSON Web Tokens (JWTs), and more.
     """
 
     _client: IAMCredentialsClient
@@ -102,6 +102,40 @@ class IAMCredentialsAsyncClient:
         return IAMCredentialsClient.from_service_account_file.__func__(IAMCredentialsAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        return IAMCredentialsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> IAMCredentialsTransport:
@@ -174,6 +208,31 @@ class IAMCredentialsAsyncClient:
         r"""Generates an OAuth 2.0 access token for a service
         account.
 
+
+        .. code-block::
+
+            from google.iam import credentials_v1
+
+            def sample_generate_access_token():
+                # Create a client
+                client = credentials_v1.IAMCredentialsClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                service_account = "service_account_value"
+                name = f"projects/{project}/serviceAccounts/{service_account}"
+
+                request = credentials_v1.GenerateAccessTokenRequest(
+                    name=name,
+                    scope=['scope_value_1', 'scope_value_2'],
+                )
+
+                # Make the request
+                response = client.generate_access_token(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.iam.credentials_v1.types.GenerateAccessTokenRequest, dict]):
                 The request object.
@@ -239,7 +298,7 @@ class IAMCredentialsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, scope, lifetime])
         if request is not None and has_flattened_params:
@@ -307,6 +366,31 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Generates an OpenID Connect ID token for a service
         account.
 
+
+        .. code-block::
+
+            from google.iam import credentials_v1
+
+            def sample_generate_id_token():
+                # Create a client
+                client = credentials_v1.IAMCredentialsClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                service_account = "service_account_value"
+                name = f"projects/{project}/serviceAccounts/{service_account}"
+
+                request = credentials_v1.GenerateIdTokenRequest(
+                    name=name,
+                    audience="audience_value",
+                )
+
+                # Make the request
+                response = client.generate_id_token(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.iam.credentials_v1.types.GenerateIdTokenRequest, dict]):
                 The request object.
@@ -366,7 +450,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, audience, include_email])
         if request is not None and has_flattened_params:
@@ -433,6 +517,31 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Signs a blob using a service account's system-managed
         private key.
 
+
+        .. code-block::
+
+            from google.iam import credentials_v1
+
+            def sample_sign_blob():
+                # Create a client
+                client = credentials_v1.IAMCredentialsClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                service_account = "service_account_value"
+                name = f"projects/{project}/serviceAccounts/{service_account}"
+
+                request = credentials_v1.SignBlobRequest(
+                    name=name,
+                    payload=b'payload_blob',
+                )
+
+                # Make the request
+                response = client.sign_blob(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.iam.credentials_v1.types.SignBlobRequest, dict]):
                 The request object.
@@ -481,7 +590,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, payload])
         if request is not None and has_flattened_params:
@@ -546,6 +655,31 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Signs a JWT using a service account's system-managed
         private key.
 
+
+        .. code-block::
+
+            from google.iam import credentials_v1
+
+            def sample_sign_jwt():
+                # Create a client
+                client = credentials_v1.IAMCredentialsClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                service_account = "service_account_value"
+                name = f"projects/{project}/serviceAccounts/{service_account}"
+
+                request = credentials_v1.SignJwtRequest(
+                    name=name,
+                    payload="payload_value",
+                )
+
+                # Make the request
+                response = client.sign_jwt(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.iam.credentials_v1.types.SignJwtRequest, dict]):
                 The request object.
@@ -597,7 +731,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, payload])
         if request is not None and has_flattened_params:

@@ -26,6 +26,9 @@ from os import path
 import shutil
 
 
+nox.options.error_on_missing_interpreters = True
+
+
 showcase_version = os.environ.get("SHOWCASE_VERSION", "0.18.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
@@ -37,7 +40,7 @@ ALL_PYTHON = (
     "3.9",
 )
 
-NEWEST_PYTHON = "3.9"
+NEWEST_PYTHON = ALL_PYTHON[-1]
 
 
 @nox.session(python=ALL_PYTHON)
@@ -103,9 +106,6 @@ class FragTester:
                 f"--python_gapic_opt=transport=grpc+rest,python-gapic-templates={templates}{maybe_old_naming}",
             ]
 
-            if self.use_ads_templates:
-                session_args.extend([])
-
             outputs.append(
                 self.session.run(*session_args, str(frag), external=True, silent=True,)
             )
@@ -114,7 +114,6 @@ class FragTester:
             # Note: install into the tempdir to prevent issues
             # with running pip concurrently.
             self.session.install(tmp_dir, "-e", ".", "-t", tmp_dir, "-qqq")
-
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
             # the fragments, and there usually aren't too many tests per fragment.
@@ -314,12 +313,17 @@ def run_showcase_unit_tests(session, fail_under=100):
     # Run the tests.
     session.run(
         "py.test",
-        "-n=auto",
-        "--quiet",
-        "--cov=google",
-        "--cov-append",
-        f"--cov-fail-under={str(fail_under)}",
-        *(session.posargs or [path.join("tests", "unit")]),
+        *(
+            session.posargs
+            or [
+                "-n=auto",
+                "--quiet",
+                "--cov=google",
+                "--cov-append",
+                f"--cov-fail-under={str(fail_under)}",
+                path.join("tests", "unit"),
+            ]
+        ),
     )
 
 
@@ -366,7 +370,7 @@ def showcase_mypy(
     """Perform typecheck analysis on the generated Showcase library."""
 
     # Install pytest and gapic-generator-python
-    session.install("mypy", "types-pkg-resources")
+    session.install("mypy", "types-pkg-resources", "types-protobuf", "types-requests", "types-dataclasses")
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
@@ -408,7 +412,7 @@ def snippetgen(session):
 def docs(session):
     """Build the docs."""
 
-    session.install("sphinx < 1.8", "sphinx_rtd_theme")
+    session.install("sphinx==4.0.1", "sphinx_rtd_theme")
     session.install(".")
 
     # Build the docs!
