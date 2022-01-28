@@ -1530,7 +1530,7 @@ def test_{{ method_name }}_rest_unset_required_fields():
     {% endif %}{# required_fields #}
 
 
-{% if not (method.server_streaming or method.client_streaming) %}
+{% if not method.client_streaming %}
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_{{ method_name }}_rest_interceptors(null_interceptor):
     transport = transports.{{ service.name }}RestTransport(
@@ -1559,6 +1559,11 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         req.return_value.request = PreparedRequest()
         {% if not method.void %}
         req.return_value._content = {% if method.output.ident.package == method.ident.package %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
+        
+        {% if method.server_streaming %}
+        req.return_value._content = "[{}]".format(req.return_value._content)
+        {% endif %}
+
         {% endif %}
 
         request = {{ method.input.ident }}()
