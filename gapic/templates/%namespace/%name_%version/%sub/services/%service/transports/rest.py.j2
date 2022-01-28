@@ -94,7 +94,11 @@ class {{ service.name }}RestInterceptor:
         return request, metadata
 
     {% if not method.void %}
-    def post_{{ method.name|snake_case }}(self, response: Union[{{method.output.ident}}, rest_streaming.ResponseIterator]) -> Union[{{method.output.ident}}, rest_streaming.ResponseIterator]:
+    {% if not method.server_streaming %}
+    def post_{{ method.name|snake_case }}(self, response: {{method.output.ident}}) -> {{method.output.ident}}:
+    {% else %}
+    def post_{{ method.name|snake_case }}(self, response: rest_streaming.ResponseIterator) -> rest_streaming.ResponseIterator:
+    {% endif %}
         """Post-rpc interceptor for {{ method.name|snake_case }}
 
         Override in a subclass to manipulate the response
@@ -269,7 +273,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: float=None,
                 metadata: Sequence[Tuple[str, str]]=(),
-                ){% if not method.void %} -> Union[{{method.output.ident}}, rest_streaming.ResponseIterator]{% endif %}:
+                ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
     {% if method.http_options and not method.client_streaming %}
             r"""Call the {{- ' ' -}}
             {{ (method.name|snake_case).replace('_',' ')|wrap(
