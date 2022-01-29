@@ -360,7 +360,7 @@ class MessageType:
         return oneof_fields
 
     @utils.cached_property
-    def is_diregapic_operation(self) -> bool:
+    def is_extended_operation(self) -> bool:
         if not self.name == "Operation":
             return False
 
@@ -541,7 +541,7 @@ class MessageType:
                 visited_messages=frozenset({self}),
             )
 
-        # Sanity check: If cursor is a repeated field, then raise an exception.
+        # Quick check: If cursor is a repeated field, then raise an exception.
         # Repeated fields are only permitted in the terminal position.
         if cursor.repeated:
             raise KeyError(
@@ -552,7 +552,7 @@ class MessageType:
                 'in the fields list in a position other than the end.',
             )
 
-        # Sanity check: If this cursor has no message, there is a problem.
+        # Quick check: If this cursor has no message, there is a problem.
         if not cursor.message:
             raise KeyError(
                 f'Field {".".join(field_path)} could not be resolved from '
@@ -770,16 +770,16 @@ class HttpRule:
     uri: str
     body: Optional[str]
 
-    def path_fields(self, method: "~.Method") -> List[Tuple[Field, str, str]]:
+    def path_fields(self, method: "Method") -> List[Tuple[Field, str, str]]:
         """return list of (name, template) tuples extracted from uri."""
         input = method.input
         return [(input.get_field(*match.group("name").split(".")), match.group("name"), match.group("template"))
                 for match in path_template._VARIABLE_RE.finditer(self.uri)]
 
-    def sample_request(self, method: "~.Method") -> str:
+    def sample_request(self, method: "Method") -> Dict[str, Any]:
         """return json dict for sample request matching the uri template."""
 
-        def sample_from_path_fields(paths: List[Tuple["wrappers.Field", str, str]]) -> Dict[Any, Any]:
+        def sample_from_path_fields(paths: List[Tuple[Field, str, str]]) -> Dict[str, Any]:
             """Construct a dict for a sample request object from a list of fields
                and template patterns.
 
@@ -877,7 +877,7 @@ class Method:
 
     @property
     def is_operation_polling_method(self):
-        return self.output.is_diregapic_operation and self.options.Extensions[ex_ops_pb2.operation_polling_method]
+        return self.output.is_extended_operation and self.options.Extensions[ex_ops_pb2.operation_polling_method]
 
     @utils.cached_property
     def client_output(self):
@@ -1040,7 +1040,11 @@ class Method:
         params = set(self.path_params)
         body = self.http_opt.get('body')
         if body:
-            params.add(body)
+            if body == "*":
+                # The entire request is the REST body.
+                return set()
+            else:
+                params.add(body)
 
         return set(self.input.fields) - params
 

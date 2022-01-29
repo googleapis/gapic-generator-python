@@ -146,11 +146,16 @@ def fragment(session):
     )
     session.install("-e", ".")
 
-    with ThreadPoolExecutor() as p:
-        all_outs = p.map(FragTester(session, False), FRAGMENT_FILES)
+    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
+        with ThreadPoolExecutor() as p:
+            all_outs = p.map(FragTester(session, False), FRAGMENT_FILES)
 
-    output = "".join(all_outs)
-    session.log(output)
+        output = "".join(all_outs)
+        session.log(output)
+    else:
+        tester = FragTester(session, False)
+        for frag in FRAGMENT_FILES:
+            session.log(tester(frag))
 
 
 @nox.session(python=ALL_PYTHON[1:])
@@ -166,11 +171,16 @@ def fragment_alternative_templates(session):
     )
     session.install("-e", ".")
 
-    with ThreadPoolExecutor() as p:
-        all_outs = p.map(FragTester(session, True), FRAGMENT_FILES)
+    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
+        with ThreadPoolExecutor() as p:
+            all_outs = p.map(FragTester(session, True), FRAGMENT_FILES)
 
-    output = "".join(all_outs)
-    session.log(output)
+        output = "".join(all_outs)
+        session.log(output)
+    else:
+        tester = FragTester(session, True)
+        for frag in FRAGMENT_FILES:
+            session.log(tester(frag))
 
 
 # TODO(yon-mg): -add compute context manager that includes rest transport
@@ -331,7 +341,6 @@ def showcase_unit(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
 ):
     """Run the generated unit tests against the Showcase library."""
-
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
         run_showcase_unit_tests(session)
@@ -370,7 +379,7 @@ def showcase_mypy(
     """Perform typecheck analysis on the generated Showcase library."""
 
     # Install pytest and gapic-generator-python
-    session.install("mypy", "types-pkg-resources")
+    session.install("mypy", "types-pkg-resources", "types-protobuf", "types-requests", "types-dataclasses")
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
@@ -428,7 +437,7 @@ def snippetgen(session):
 def docs(session):
     """Build the docs."""
 
-    session.install("sphinx < 1.8", "sphinx_rtd_theme")
+    session.install("sphinx==4.0.1", "sphinx_rtd_theme")
     session.install(".")
 
     # Build the docs!

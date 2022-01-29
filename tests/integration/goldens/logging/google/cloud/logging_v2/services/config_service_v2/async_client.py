@@ -212,13 +212,8 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.ListBucketsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -262,7 +257,7 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -330,13 +325,8 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.GetBucketRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -409,13 +399,8 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.CreateBucketRequest(
-                    parent=parent,
+                    parent="parent_value",
                     bucket_id="bucket_id_value",
                 )
 
@@ -497,13 +482,8 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.UpdateBucketRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -576,13 +556,8 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.DeleteBucketRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -644,13 +619,8 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.UndeleteBucketRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -748,7 +718,7 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -816,14 +786,8 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                view = "view_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
-
                 request = logging_v2.GetViewRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1046,14 +1010,8 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                view = "view_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
-
                 request = logging_v2.DeleteViewRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1114,12 +1072,8 @@ class ConfigServiceV2AsyncClient:
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                parent = f"projects/{project}/sinks/{sink}"
-
                 request = logging_v2.ListSinksRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -1159,7 +1113,7 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1236,12 +1190,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                sink_name = f"projects/{project}/sinks/{sink}"
-
                 request = logging_v2.GetSinkRequest(
-                    sink_name=sink_name,
+                    sink_name="sink_name_value",
                 )
 
                 # Make the request
@@ -1288,7 +1238,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name])
         if request is not None and has_flattened_params:
@@ -1362,16 +1312,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                parent = f"projects/{project}/sinks/{sink}"
-
                 sink = logging_v2.LogSink()
                 sink.name = "name_value"
                 sink.destination = "destination_value"
 
                 request = logging_v2.CreateSinkRequest(
-                    parent=parent,
+                    parent="parent_value",
                     sink=sink,
                 )
 
@@ -1427,7 +1373,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, sink])
         if request is not None and has_flattened_params:
@@ -1497,16 +1443,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                sink_name = f"projects/{project}/sinks/{sink}"
-
                 sink = logging_v2.LogSink()
                 sink.name = "name_value"
                 sink.destination = "destination_value"
 
                 request = logging_v2.UpdateSinkRequest(
-                    sink_name=sink_name,
+                    sink_name="sink_name_value",
                     sink=sink,
                 )
 
@@ -1582,7 +1524,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name, sink, update_mask])
         if request is not None and has_flattened_params:
@@ -1656,12 +1598,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                sink_name = f"projects/{project}/sinks/{sink}"
-
                 request = logging_v2.DeleteSinkRequest(
-                    sink_name=sink_name,
+                    sink_name="sink_name_value",
                 )
 
                 # Make the request
@@ -1693,7 +1631,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name])
         if request is not None and has_flattened_params:
@@ -1758,12 +1696,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                parent = f"projects/{project}/exclusions/{exclusion}"
-
                 request = logging_v2.ListExclusionsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -1803,7 +1737,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1880,12 +1814,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                name = f"projects/{project}/exclusions/{exclusion}"
-
                 request = logging_v2.GetExclusionRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1935,7 +1865,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2008,16 +1938,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                parent = f"projects/{project}/exclusions/{exclusion}"
-
                 exclusion = logging_v2.LogExclusion()
                 exclusion.name = "name_value"
                 exclusion.filter = "filter_value"
 
                 request = logging_v2.CreateExclusionRequest(
-                    parent=parent,
+                    parent="parent_value",
                     exclusion=exclusion,
                 )
 
@@ -2077,7 +2003,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, exclusion])
         if request is not None and has_flattened_params:
@@ -2143,16 +2069,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                name = f"projects/{project}/exclusions/{exclusion}"
-
                 exclusion = logging_v2.LogExclusion()
                 exclusion.name = "name_value"
                 exclusion.filter = "filter_value"
 
                 request = logging_v2.UpdateExclusionRequest(
-                    name=name,
+                    name="name_value",
                     exclusion=exclusion,
                 )
 
@@ -2225,7 +2147,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, exclusion, update_mask])
         if request is not None and has_flattened_params:
@@ -2289,12 +2211,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                name = f"projects/{project}/exclusions/{exclusion}"
-
                 request = logging_v2.DeleteExclusionRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -2327,7 +2245,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2400,11 +2318,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                name = f"projects/{project}/cmekSettings"
-
                 request = logging_v2.GetCmekSettingsRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request

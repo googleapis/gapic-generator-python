@@ -8,6 +8,7 @@ import mock
 import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
+from collections.abc import Iterable
 import json
 {% endif %}
 import math
@@ -447,20 +448,21 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
             always_use_jwt_access=True,
         )
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
+@pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
     {% if 'grpc' in opts.transport %}
-    ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
-    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
+    ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc", grpc_helpers),
+    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", grpc_helpers_async),
     {% endif %}
     {% if 'rest' in opts.transport %}
-    ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
+    ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest", None),
     {% endif %}
 ])
-def test_{{ service.client_name|snake_case }}_client_options_credentials_file(client_class, transport_class, transport_name):
+def test_{{ service.client_name|snake_case }}_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(
         credentials_file="credentials.json"
     )
+    
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -474,6 +476,42 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
         )
+
+    {% if 'grpc' in opts.transport %}
+    if "grpc" in transport_name:
+        # test that the credentials from file are saved and used as the credentials.
+        with mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds, mock.patch.object(
+            google.auth, "default", autospec=True
+        ) as adc, mock.patch.object(
+            grpc_helpers, "create_channel"
+        ) as create_channel:
+            creds = ga_credentials.AnonymousCredentials()
+            file_creds = ga_credentials.AnonymousCredentials()
+            load_creds.return_value = (file_creds, None)
+            adc.return_value = (creds, None)
+            client = client_class(client_options=options, transport=transport_name)
+            {% with host = (service.host|default('localhost', true)) %}
+            create_channel.assert_called_with(
+                "{{ host }}{% if ":" not in service.host %}:443{% endif %}",
+                credentials=file_creds,
+                credentials_file=None,
+                quota_project_id=None,
+                default_scopes=(
+                    {% for scope in service.oauth_scopes %}
+                    '{{ scope }}',
+                    {% endfor %}),
+                scopes=None,
+                default_host="{{ host }}",
+                ssl_credentials=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            {% endwith %}
+    {% endif %}
 {% if 'grpc' in opts.transport %}
 {# TODO(dovs): genericize this function#}
 
@@ -1288,8 +1326,8 @@ def test_{{ method_name }}_raw_page_lro():
 {% endfor %} {# method in methods for grpc #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}{% if method.http_options %}
-{# TODO(kbandes): remove this if condition when lro and streaming are supported. #}
-{% if not (method.server_streaming or method.client_streaming) %}
+{# TODO(kbandes): remove this if condition when lro and client streaming are supported. #}
+{% if not method.client_streaming %}
 @pytest.mark.parametrize("request_type", [
     {{ method.input.ident }},
     dict,
@@ -1320,8 +1358,6 @@ def test_{{ method_name }}_rest(request_type):
         return_value = None
         {% elif method.lro %}
         return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming %}
-        return_value = iter([{{ method.output.ident }}()])
         {% else %}
         return_value = {{ method.output.ident }}(
             {% for field in method.output.fields.values() | rejectattr('message')%}
@@ -1344,6 +1380,8 @@ def test_{{ method_name }}_rest(request_type):
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
+        {% elif method.server_streaming %}
+        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
         {% else %}
         json_return_value = {{ method.output.ident }}.to_json(return_value)
         {% endif %}
@@ -1351,6 +1389,10 @@ def test_{{ method_name }}_rest(request_type):
         req.return_value = response_value
         {% if method.client_streaming %}
         response = client.{{ method_name }}(iter(requests))
+        {% elif method.server_streaming %}
+        with mock.patch.object(response_value, 'iter_content') as iter_content:
+            iter_content.return_value = iter(json_return_value)
+            response = client.{{ method_name }}(request)
         {% else %}
         response = client.{{ method_name }}(request)
         {% endif %}
@@ -1359,6 +1401,11 @@ def test_{{ method_name }}_rest(request_type):
     {# Cheeser assertion to force code coverage for bad paginated methods #}
     assert response.raw_page is response
 
+    {% endif %}
+
+    {% if method.server_streaming %}
+    assert isinstance(response, Iterable)
+    response = next(response)
     {% endif %}
 
     # Establish that the response is the type that we expect.
@@ -1426,7 +1473,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params %}"{{param}}", {% endfor %}))
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
     {% endif %}
     jsonified_request.update(unset_fields)
 
@@ -1450,8 +1497,6 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     return_value = None
     {% elif method.lro %}
     return_value = operations_pb2.Operation(name='operations/spam')
-    {% elif method.server_streaming %}
-    return_value = iter([{{ method.output.ident }}()])
     {% else %}
     return_value = {{ method.output.ident }}()
     {% endif %}
@@ -1479,6 +1524,8 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             json_return_value = ''
             {% elif method.lro %}
             json_return_value = json_format.MessageToJson(return_value)
+            {% elif method.server_streaming %}
+            json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
             {% else %}
             json_return_value = {{ method.output.ident }}.to_json(return_value)
             {% endif %}
@@ -1487,6 +1534,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 
             {% if method.client_streaming %}
             response = client.{{ method_name }}(iter(requests))
+            {% elif method.server_streaming %}
+            with mock.patch.object(response_value, 'iter_content') as iter_content:
+                iter_content.return_value = iter(json_return_value)
+                response = client.{{ method_name }}(request)
             {% else %}
             response = client.{{ method_name }}(request)
             {% endif %}
@@ -1511,12 +1562,12 @@ def test_{{ method_name }}_rest_unset_required_fields():
     transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.{{ method.name|snake_case }}._get_unset_required_fields({})
-    assert set(unset_fields) == (set(({% for param in method.query_params %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{ param.name|camel_case }}", {% endfor %})))
+    assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{ param.name|camel_case }}", {% endfor %})))
 
     {% endif %}{# required_fields #}
 
 
-{% if not (method.server_streaming or method.client_streaming) %}
+{% if not method.client_streaming %}
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_{{ method_name }}_rest_interceptors(null_interceptor):
     transport = transports.{{ service.name }}RestTransport(
@@ -1545,6 +1596,11 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         req.return_value.request = PreparedRequest()
         {% if not method.void %}
         req.return_value._content = {% if method.output.ident.package == method.ident.package %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
+        
+        {% if method.server_streaming %}
+        req.return_value._content = "[{}]".format(req.return_value._content)
+        {% endif %}
+
         {% endif %}
 
         request = {{ method.input.ident }}()
@@ -1614,25 +1670,9 @@ def test_{{ method_name }}_rest_flattened():
         return_value = None
         {% elif method.lro %}
         return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming %}
-        return_value = iter([{{ method.output.ident }}()])
         {% else %}
         return_value = {{ method.output.ident }}()
         {% endif %}
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        {% if method.void %}
-        json_return_value = ''
-        {% elif method.lro %}
-        json_return_value = json_format.MessageToJson(return_value)
-        {% else %}
-        json_return_value = {{ method.output.ident }}.to_json(return_value)
-        {% endif %}
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
 
         # get arguments that satisfy an http rule for this method
         sample_request = {{ method.http_options[0].sample_request(method) }}
@@ -1647,14 +1687,37 @@ def test_{{ method_name }}_rest_flattened():
             {% endfor %}
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        {% if method.void %}
+        json_return_value = ''
+        {% elif method.lro %}
+        json_return_value = json_format.MessageToJson(return_value)
+        {% elif method.server_streaming %}
+        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
+        {% else %}
+        json_return_value = {{ method.output.ident }}.to_json(return_value)
+        {% endif %}
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        {% if method.server_streaming %}
+        with mock.patch.object(response_value, 'iter_content') as iter_content:
+            iter_content.return_value = iter(json_return_value)
+            client.{{ method_name }}(**mock_args)
+        {% else %}
         client.{{ method_name }}(**mock_args)
+        {% endif %}
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         {% with uri = method.http_options[0].uri %}
-        assert path_template.validate("https://%s{{ uri }}" % client.transport._host, args[1])
+        assert path_template.validate("%s{{ uri }}" % client.transport._host, args[1])
         {% endwith %}
         {# TODO(kbandes) - reverse-transcode request args to check all request fields #}
 
@@ -1751,6 +1814,9 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
         response = tuple({{ method.output.ident }}.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
+            {% if method.server_streaming %}
+            response_val = "[{}]".format({{ method.output.ident }}.to_json(response_val))
+            {% endif %}
             return_val._content = response_val.encode('UTF-8')
             return_val.status_code = 200
         req.side_effect = return_values

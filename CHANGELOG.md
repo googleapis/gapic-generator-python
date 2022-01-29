@@ -1,6 +1,34 @@
 # Changelog
 
 
+## [0.62.0](https://github.com/googleapis/gapic-generator-python/compare/v0.61.0...v0.62.0) (2022-01-28)
+
+
+### Features
+
+* adds REST server-streaming support. ([#1120](https://github.com/googleapis/gapic-generator-python/issues/1120)) ([812cf3e](https://github.com/googleapis/gapic-generator-python/commit/812cf3e0d11b67f7ecd60b9c643b032370bb9400))
+* expose extended operations annotations within generator ([#1145](https://github.com/googleapis/gapic-generator-python/issues/1145)) ([e7bee70](https://github.com/googleapis/gapic-generator-python/commit/e7bee702e92612f88efca782a68d8884b9c71feb))
+
+
+### Bug Fixes
+
+* add special method parameters to set of reserved module names ([#1168](https://github.com/googleapis/gapic-generator-python/issues/1168)) ([8078961](https://github.com/googleapis/gapic-generator-python/commit/8078961f68d2f34fff6403d318bf95c844889d78))
+* fix snippetgen golden file ([#1170](https://github.com/googleapis/gapic-generator-python/issues/1170)) ([13b2028](https://github.com/googleapis/gapic-generator-python/commit/13b2028df5193f11aee40ae42ea5186aeb25eef3))
+* **snippetgen:** remove special handling for resource paths ([#1134](https://github.com/googleapis/gapic-generator-python/issues/1134)) ([4ea2d11](https://github.com/googleapis/gapic-generator-python/commit/4ea2d114b670c2f2adb43cd87e5f0cf7750e5407))
+
+## [0.61.0](https://github.com/googleapis/gapic-generator-python/compare/v0.60.0...v0.61.0) (2022-01-28)
+
+
+### Features
+
+* add interceptor-like functionality to REST transport ([#1142](https://github.com/googleapis/gapic-generator-python/issues/1142)) ([fe57eb2](https://github.com/googleapis/gapic-generator-python/commit/fe57eb26badb596fd9bd8a0b8b65f00f060b009d))
+
+
+### Bug Fixes
+
+* preserve hyperlinks with hyphens ([#1140](https://github.com/googleapis/gapic-generator-python/issues/1140)) ([b091bfc](https://github.com/googleapis/gapic-generator-python/commit/b091bfc523ee40af4ef0b28abfc0c26dcdf09ebe)), closes [#1131](https://github.com/googleapis/gapic-generator-python/issues/1131)
+* resolve DuplicateCredentialArgs when using credentials_file ([#1159](https://github.com/googleapis/gapic-generator-python/issues/1159)) ([fccd2ba](https://github.com/googleapis/gapic-generator-python/commit/fccd2ba4f67c92bce5d9f7a2d59d5f1ea28829b5))
+
 ## [0.60.0](https://github.com/googleapis/gapic-generator-python/compare/v0.59.1...v0.60.0) (2022-01-19)
 
 

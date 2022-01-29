@@ -205,11 +205,8 @@ class MetricsServiceV2AsyncClient:
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                parent = f"projects/{project}"
-
                 request = logging_v2.ListLogMetricsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -246,7 +243,7 @@ class MetricsServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -323,12 +320,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.GetLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request
@@ -372,7 +365,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([metric_name])
         if request is not None and has_flattened_params:
@@ -441,16 +434,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                parent = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.CreateLogMetricRequest(
-                    parent=parent,
+                    parent="parent_value",
                     metric=metric,
                 )
 
@@ -506,7 +495,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, metric])
         if request is not None and has_flattened_params:
@@ -569,16 +558,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.UpdateLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                     metric=metric,
                 )
 
@@ -633,7 +618,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([metric_name, metric])
         if request is not None and has_flattened_params:
@@ -703,12 +688,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.DeleteLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request
@@ -734,7 +715,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([metric_name])
         if request is not None and has_flattened_params:

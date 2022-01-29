@@ -406,12 +406,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 client = credentials_v1.IAMCredentialsClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                service_account = "service_account_value"
-                name = f"projects/{project}/serviceAccounts/{service_account}"
-
                 request = credentials_v1.GenerateAccessTokenRequest(
-                    name=name,
+                    name="name_value",
                     scope=['scope_value_1', 'scope_value_2'],
                 )
 
@@ -486,7 +482,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, scope, lifetime])
         if request is not None and has_flattened_params:
@@ -558,12 +554,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 client = credentials_v1.IAMCredentialsClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                service_account = "service_account_value"
-                name = f"projects/{project}/serviceAccounts/{service_account}"
-
                 request = credentials_v1.GenerateIdTokenRequest(
-                    name=name,
+                    name="name_value",
                     audience="audience_value",
                 )
 
@@ -632,7 +624,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, audience, include_email])
         if request is not None and has_flattened_params:
@@ -703,12 +695,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 client = credentials_v1.IAMCredentialsClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                service_account = "service_account_value"
-                name = f"projects/{project}/serviceAccounts/{service_account}"
-
                 request = credentials_v1.SignBlobRequest(
-                    name=name,
+                    name="name_value",
                     payload=b'payload_blob',
                 )
 
@@ -766,7 +754,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, payload])
         if request is not None and has_flattened_params:
@@ -835,12 +823,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 client = credentials_v1.IAMCredentialsClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                service_account = "service_account_value"
-                name = f"projects/{project}/serviceAccounts/{service_account}"
-
                 request = credentials_v1.SignJwtRequest(
-                    name=name,
+                    name="name_value",
                     payload="payload_value",
                 )
 
@@ -901,7 +885,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, payload])
         if request is not None and has_flattened_params:

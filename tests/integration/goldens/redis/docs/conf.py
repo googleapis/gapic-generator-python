@@ -39,7 +39,7 @@ __version__ = "0.1.0"
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-needs_sphinx = "1.6.3"
+needs_sphinx = "4.0.1"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -74,8 +74,8 @@ source_suffix = [".rst", ".md"]
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
-# The master toctree document.
-master_doc = "index"
+# The root toctree document.
+root_doc = "index"
 
 # General information about the project.
 project = u"google-cloud-redis"
@@ -272,7 +272,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (
-        master_doc,
+        root_doc,
         "google-cloud-redis.tex",
         u"google-cloud-redis Documentation",
         author,
@@ -307,7 +307,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (
-        master_doc,
+        root_doc,
         "google-cloud-redis",
         u"Google Cloud Redis Documentation",
         [author],
@@ -326,7 +326,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc,
+        root_doc,
         "google-cloud-redis",
         u"google-cloud-redis Documentation",
         author,

@@ -30,6 +30,7 @@ from google.api_core import exceptions
 from google.api import http_pb2  # type: ignore
 from google.api import resource_pb2  # type: ignore
 from google.api import service_pb2  # type: ignore
+from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
@@ -195,7 +196,7 @@ class Proto:
         answer = {
             t.ident.python_import
             for m in self.all_messages.values()
-            # Sanity check: We do make sure that we are not trying to have
+            # Quick check: We do make sure that we are not trying to have
             # a module import itself.
             for t in m.field_types if t.ident.python_import != self_reference
         }
@@ -261,12 +262,16 @@ class API:
             file_descriptors,
         ), opts=opts)
 
+        # "metadata", "retry", "timeout", and "request" are reserved words in client methods.
+        invalid_module_names = set(keyword.kwlist) | {
+            "metadata", "retry", "timeout", "request"}
+
         def disambiguate_keyword_fname(
                 full_path: str,
                 visited_names: Container[str]) -> str:
             path, fname = os.path.split(full_path)
             name, ext = os.path.splitext(fname)
-            if name in keyword.kwlist or full_path in visited_names:
+            if name in invalid_module_names or full_path in visited_names:
                 name += "_"
                 full_path = os.path.join(path, name + ext)
                 if full_path in visited_names:
@@ -474,6 +479,20 @@ class API:
             for message in proto.all_messages.values()
         )
 
+    def get_custom_operation_service(self, method: "wrappers.Method") -> "wrappers.Service":
+        if not method.output.is_extended_operation:
+            raise ValueError(
+                f"Method is not an extended operation LRO: {method.name}")
+
+        op_serv_name = self.naming.proto_package + "." + \
+            method.options.Extensions[ex_ops_pb2.operation_service]
+        op_serv = self.services[op_serv_name]
+        if not op_serv.custom_polling_method:
+            raise ValueError(
+                f"Service is not an extended operation operation service: {op_serv.name}")
+
+        return op_serv
+
 
 class _ProtoBuilder:
     """A "builder class" for Proto objects.
@@ -628,15 +647,25 @@ class _ProtoBuilder:
 
     @cached_property
     def api_enums(self) -> Mapping[str, wrappers.EnumType]:
-        return collections.ChainMap({}, self.proto_enums,
-                                    *[p.all_enums for p in self.prior_protos.values()],
-                                    )
+        return collections.ChainMap(
+            {},
+            self.proto_enums,
+            # This is actually fine from a typing perspective:
+            # we're agglutinating all the prior protos' enums, which are
+            # stored in maps. This is just a convenient way to expand it out.
+            *[p.all_enums for p in self.prior_protos.values()],  # type: ignore
+        )
 
     @cached_property
     def api_messages(self) -> Mapping[str, wrappers.MessageType]:
-        return collections.ChainMap({}, self.proto_messages,
-                                    *[p.all_messages for p in self.prior_protos.values()],
-                                    )
+        return collections.ChainMap(
+            {},
+            self.proto_messages,
+            # This is actually fine from a typing perspective:
+            # we're agglutinating all the prior protos' enums, which are
+            # stored in maps. This is just a convenient way to expand it out.
+            *[p.all_messages for p in self.prior_protos.values()],  # type: ignore
+        )
 
     def _load_children(self,
                        children: Sequence, loader: Callable, *,
