@@ -224,7 +224,7 @@ jobs:
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy${{ matrix.variant }}
         env:
-          SHOWCASE_VERSION: 0.16.0
+          SHOWCASE_VERSION: 0.18.0
   snippetgen:
     runs-on: ubuntu-latest
     steps:
