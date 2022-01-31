@@ -825,7 +825,8 @@ class RoutingParameter:
     def _convert_to_regex(self, path_template):
         if self._how_many_named_segments(path_template) > 1:
             # This also takes care of complex patterns (i.e. {foo}~{bar})
-            raise ValueError("There should be exactly one named segment.")
+            raise ValueError("There must be exactly one named segment. {} has {}.".format(
+                path_template, self._how_many_named_segments(path_template)))
         segments = self._split_into_segments(path_template)
         segment_regexes = [self._convert_segment_to_regex(x) for x in segments]
         final_regex = self._merge_segments(segment_regexes)
@@ -851,8 +852,9 @@ class RoutingParameter:
         if self.path_template == "":
             return self.field
         regex = self.to_regex()
+        group_names = list(regex.groupindex)
         # Only 1 named segment is allowed and so only 1 key.
-        return list(regex.groupindex)[0] if list(regex.groupindex) else self.field
+        return group_names[0] if group_names else self.field
 
     @property
     def sample_request(self) -> str:

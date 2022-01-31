@@ -299,8 +299,6 @@ def test_method_routing_rule():
     assert method.explicit_routing
     assert method.routing_rule.routing_parameters == [wrappers.RoutingParameter(
         x.field, x.path_template) for x in routing_rule.routing_parameters]
-    assert isinstance(
-        method.routing_rule.routing_parameters[0], wrappers.RoutingParameter)
     assert method.routing_rule.routing_parameters[0].sample_request is not None
 
 
