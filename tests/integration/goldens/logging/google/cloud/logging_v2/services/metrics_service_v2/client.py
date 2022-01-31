@@ -337,12 +337,16 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
 
+        api_key_value = getattr(client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
+
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, MetricsServiceV2Transport):
             # transport is a MetricsServiceV2Transport instance.
-            if credentials or client_options.credentials_file:
+            if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
                                  "provide its credentials directly.")
             if client_options.scopes:
@@ -352,6 +356,11 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 )
             self._transport = transport
         else:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
+
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
@@ -384,11 +393,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                parent = f"projects/{project}"
-
                 request = logging_v2.ListLogMetricsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -425,7 +431,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -495,12 +501,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.GetLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request
@@ -544,7 +546,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([metric_name])
         if request is not None and has_flattened_params:
@@ -606,16 +608,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                parent = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.CreateLogMetricRequest(
-                    parent=parent,
+                    parent="parent_value",
                     metric=metric,
                 )
 
@@ -671,7 +669,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, metric])
         if request is not None and has_flattened_params:
@@ -735,16 +733,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.UpdateLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                     metric=metric,
                 )
 
@@ -799,7 +793,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([metric_name, metric])
         if request is not None and has_flattened_params:
@@ -862,12 +856,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.DeleteLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request
@@ -893,7 +883,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([metric_name])
         if request is not None and has_flattened_params:

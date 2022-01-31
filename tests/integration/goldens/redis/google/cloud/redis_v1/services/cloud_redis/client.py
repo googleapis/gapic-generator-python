@@ -360,12 +360,16 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
 
+        api_key_value = getattr(client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
+
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, CloudRedisTransport):
             # transport is a CloudRedisTransport instance.
-            if credentials or client_options.credentials_file:
+            if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
                                  "provide its credentials directly.")
             if client_options.scopes:
@@ -375,6 +379,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 )
             self._transport = transport
         else:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
+
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
@@ -417,12 +426,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                parent = f"projects/{project}/locations/{location}"
-
                 request = redis_v1.ListInstancesRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -459,7 +464,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -529,13 +534,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                instance = "instance_value"
-                name = f"projects/{project}/locations/{location}/instances/{instance}"
-
                 request = redis_v1.GetInstanceRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -567,7 +567,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 A Google Cloud Redis instance.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -644,17 +644,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                parent = f"projects/{project}/locations/{location}"
-
                 instance = redis_v1.Instance()
                 instance.name = "name_value"
                 instance.tier = "STANDARD_HA"
                 instance.memory_size_gb = 1499
 
                 request = redis_v1.CreateInstanceRequest(
-                    parent=parent,
+                    parent="parent_value",
                     instance_id="instance_id_value",
                     instance=instance,
                 )
@@ -715,7 +711,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instance_id, instance])
         if request is not None and has_flattened_params:
@@ -853,7 +849,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([update_mask, instance])
         if request is not None and has_flattened_params:
@@ -927,13 +923,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                instance = "instance_value"
-                name = f"projects/{project}/locations/{location}/instances/{instance}"
-
                 request = redis_v1.UpgradeInstanceRequest(
-                    name=name,
+                    name="name_value",
                     redis_version="redis_version_value",
                 )
 
@@ -980,7 +971,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, redis_version])
         if request is not None and has_flattened_params:
@@ -1112,7 +1103,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, input_config])
         if request is not None and has_flattened_params:
@@ -1240,7 +1231,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, output_config])
         if request is not None and has_flattened_params:
@@ -1315,13 +1306,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                instance = "instance_value"
-                name = f"projects/{project}/locations/{location}/instances/{instance}"
-
                 request = redis_v1.FailoverInstanceRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1368,7 +1354,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, data_protection_mode])
         if request is not None and has_flattened_params:
@@ -1441,13 +1427,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                instance = "instance_value"
-                name = f"projects/{project}/locations/{location}/instances/{instance}"
-
                 request = redis_v1.DeleteInstanceRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1496,7 +1477,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:

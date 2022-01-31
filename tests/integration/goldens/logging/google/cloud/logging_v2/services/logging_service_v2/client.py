@@ -336,12 +336,16 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
 
+        api_key_value = getattr(client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
+
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, LoggingServiceV2Transport):
             # transport is a LoggingServiceV2Transport instance.
-            if credentials or client_options.credentials_file:
+            if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
                                  "provide its credentials directly.")
             if client_options.scopes:
@@ -351,6 +355,11 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 )
             self._transport = transport
         else:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
+
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
@@ -388,12 +397,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                log = "log_value"
-                log_name = f"projects/{project}/logs/{log}"
-
                 request = logging_v2.DeleteLogRequest(
-                    log_name=log_name,
+                    log_name="log_name_value",
                 )
 
                 # Make the request
@@ -428,7 +433,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([log_name])
         if request is not None and has_flattened_params:
@@ -611,7 +616,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 Result returned from WriteLogEntries.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([log_name, resource, labels, entries])
         if request is not None and has_flattened_params:
@@ -676,12 +681,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                log = "log_value"
-                resource_names = f"projects/{project}/logs/{log}"
-
                 request = logging_v2.ListLogEntriesRequest(
-                    resource_names=resource_names,
+                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
                 )
 
                 # Make the request
@@ -757,7 +758,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource_names, filter, order_by])
         if request is not None and has_flattened_params:
@@ -906,12 +907,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                log = "log_value"
-                parent = f"projects/{project}/logs/{log}"
-
                 request = logging_v2.ListLogsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -950,7 +947,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:

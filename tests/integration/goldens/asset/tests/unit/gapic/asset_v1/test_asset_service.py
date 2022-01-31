@@ -29,6 +29,7 @@ from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
+from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.api_core import path_template
@@ -393,15 +394,16 @@ def test_asset_service_client_client_options_scopes(client_class, transport_clas
             always_use_jwt_access=True,
         )
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    (AssetServiceClient, transports.AssetServiceGrpcTransport, "grpc"),
-    (AssetServiceAsyncClient, transports.AssetServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+@pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
+    (AssetServiceClient, transports.AssetServiceGrpcTransport, "grpc", grpc_helpers),
+    (AssetServiceAsyncClient, transports.AssetServiceGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
 ])
-def test_asset_service_client_client_options_credentials_file(client_class, transport_class, transport_name):
+def test_asset_service_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(
         credentials_file="credentials.json"
     )
+
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -415,6 +417,37 @@ def test_asset_service_client_client_options_credentials_file(client_class, tran
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
         )
+
+    if "grpc" in transport_name:
+        # test that the credentials from file are saved and used as the credentials.
+        with mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds, mock.patch.object(
+            google.auth, "default", autospec=True
+        ) as adc, mock.patch.object(
+            grpc_helpers, "create_channel"
+        ) as create_channel:
+            creds = ga_credentials.AnonymousCredentials()
+            file_creds = ga_credentials.AnonymousCredentials()
+            load_creds.return_value = (file_creds, None)
+            adc.return_value = (creds, None)
+            client = client_class(client_options=options, transport=transport_name)
+            create_channel.assert_called_with(
+                "cloudasset.googleapis.com:443",
+                credentials=file_creds,
+                credentials_file=None,
+                quota_project_id=None,
+                default_scopes=(
+                    'https://www.googleapis.com/auth/cloud-platform',
+),
+                scopes=None,
+                default_host="cloudasset.googleapis.com",
+                ssl_credentials=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
 
 def test_asset_service_client_client_options_from_dict():
     with mock.patch('google.cloud.asset_v1.services.asset_service.transports.AssetServiceGrpcTransport.__init__') as grpc_transport:
@@ -3547,6 +3580,27 @@ def test_credentials_transport_error():
             transport=transport,
         )
 
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.AssetServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = AssetServiceClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = AssetServiceClient(
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+
     # It is an error to provide scopes and a transport instance.
     transport = transports.AssetServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4129,3 +4183,29 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+@pytest.mark.parametrize("client_class,transport_class", [
+    (AssetServiceClient, transports.AssetServiceGrpcTransport),
+    (AssetServiceAsyncClient, transports.AssetServiceGrpcAsyncIOTransport),
+])
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )

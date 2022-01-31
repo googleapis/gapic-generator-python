@@ -349,12 +349,16 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
 
+        api_key_value = getattr(client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
+
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, AssetServiceTransport):
             # transport is a AssetServiceTransport instance.
-            if credentials or client_options.credentials_file:
+            if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
                                  "provide its credentials directly.")
             if client_options.scopes:
@@ -364,6 +368,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 )
             self._transport = transport
         else:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
+
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
@@ -542,7 +551,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -745,7 +754,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -806,12 +815,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                feed = "feed_value"
-                name = f"projects/{project}/feeds/{feed}"
-
                 request = asset_v1.GetFeedRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -850,7 +855,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -948,7 +953,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1053,7 +1058,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([feed])
         if request is not None and has_flattened_params:
@@ -1114,12 +1119,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                feed = "feed_value"
-                name = f"projects/{project}/feeds/{feed}"
-
                 request = asset_v1.DeleteFeedRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1144,7 +1145,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1328,7 +1329,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query, asset_types])
         if request is not None and has_flattened_params:
@@ -1509,7 +1510,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query])
         if request is not None and has_flattened_params:

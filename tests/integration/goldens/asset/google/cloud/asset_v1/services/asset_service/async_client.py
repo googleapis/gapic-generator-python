@@ -352,7 +352,7 @@ class AssetServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -559,7 +559,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -619,12 +619,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                feed = "feed_value"
-                name = f"projects/{project}/feeds/{feed}"
-
                 request = asset_v1.GetFeedRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -663,7 +659,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -767,7 +763,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -878,7 +874,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([feed])
         if request is not None and has_flattened_params:
@@ -938,12 +934,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                feed = "feed_value"
-                name = f"projects/{project}/feeds/{feed}"
-
                 request = asset_v1.DeleteFeedRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -968,7 +960,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1158,7 +1150,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query, asset_types])
         if request is not None and has_flattened_params:
@@ -1345,7 +1337,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query])
         if request is not None and has_flattened_params:
