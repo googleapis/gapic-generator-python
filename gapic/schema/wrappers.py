@@ -965,8 +965,13 @@ class Method:
     #               e.g. doesn't work with basic case of gRPC transcoding
 
     @property
-    def field_headers(self) -> Sequence[str]:
+    def field_headers(self) -> Sequence[dict]:
         """Return the field headers defined for this method."""
+
+        def disambiguate_field_headers(input_str: str) -> str:
+            """Used to prevent collisions with python keywords"""
+            return input_str + "_" if input_str in utils.RESERVED_NAMES else input_str
+
         http = self.options.Extensions[annotations_pb2.http]
 
         pattern = re.compile(r'\{([a-z][\w\d_.]+)=')
@@ -979,8 +984,13 @@ class Method:
             http.patch,
             http.custom.path,
         ]
-
-        return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
+        field_headers = (
+            tuple({"raw": field_header, "disambiguated": disambiguate_field_headers(field_header)}
+                  for field_header in pattern.findall(verb))
+            for verb in potential_verbs
+            if verb
+        )
+        return next(field_headers, ())
 
     @property
     def http_options(self) -> List[HttpRule]:
