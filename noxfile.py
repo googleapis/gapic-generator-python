@@ -380,7 +380,7 @@ def showcase_mypy(
     """Perform typecheck analysis on the generated Showcase library."""
 
     # Install pytest and gapic-generator-python
-    session.install("mypy", "types-pkg-resources", "types-protobuf", "types-requests", "types-dataclasses")
+    session.install("mypy", "types-pkg-resources", "types-protobuf<=3.19.7", "types-requests", "types-dataclasses")
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
