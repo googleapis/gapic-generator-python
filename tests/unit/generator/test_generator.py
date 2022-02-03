@@ -469,7 +469,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
 
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
         actual_response = g.get_response(
-            api_schema, opts=Options.build(""))
+            api_schema, opts=Options.build("autogen-snippets=False"))
 
     expected_snippet_index_json = {
         "snippets": [
@@ -609,7 +609,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
     )
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
         actual_response = g.get_response(api_schema,
-                                     opts=Options.build(""))
+                                     opts=Options.build("autogen-snippets=False"))
 
     expected_snippet_metadata_json = {
         "snippets": [
