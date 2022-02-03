@@ -154,7 +154,8 @@ class Options:
         # NOTE: Snippets are not currently correct for the alternative (Ads) templates
         # so always disable snippetgen in that case
         # https://github.com/googleapis/gapic-generator-python/issues/1052
-        if opts.get("old-naming"):
+        old_naming=bool(opts.pop('old-naming', False))
+        if old_naming:
             autogen_snippets = False
 
         answer = Options(
@@ -171,7 +172,7 @@ class Options:
             autogen_snippets=autogen_snippets,
             templates=tuple(path.expanduser(i) for i in templates),
             lazy_import=bool(opts.pop('lazy-import', False)),
-            old_naming=bool(opts.pop('old-naming', False)),
+            old_naming=old_naming,
             add_iam_methods=bool(opts.pop('add-iam-methods', False)),
             metadata=bool(opts.pop('metadata', False)),
             # transport should include desired transports delimited by '+', e.g. transport='grpc+rest'
