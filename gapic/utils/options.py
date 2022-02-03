@@ -154,7 +154,7 @@ class Options:
         # NOTE: Snippets are not currently correct for the alternative (Ads) templates
         # so always disable snippetgen in that case
         # https://github.com/googleapis/gapic-generator-python/issues/1052
-        old_naming=bool(opts.pop('old-naming', False))
+        old_naming = bool(opts.pop('old-naming', False))
         if old_naming:
             autogen_snippets = False
 
