@@ -256,12 +256,16 @@ response = {{ method_invocation_text|trim }}
 {% endif %}
 {% elif calling_form == calling_form_enum.RequestPagedAll %}
 page_result = {{ method_invocation_text|trim }}
+
+# Handle response
 {% if transport == "grpc-async" %}async {% endif %}for response in page_result:
   {% for statement in response_statements %}
     {{ dispatch_statement(statement)|trim }}
   {% endfor %}
 {% elif calling_form == calling_form_enum.RequestPaged %}
 page_result = {{ method_invocation_text|trim }}
+
+# Handle response
 {% if transport == "grpc-async" %}async {% endif %}for page in page_result.pages():
     for response in page:
   {% for statement in response_statements %}
@@ -270,6 +274,8 @@ page_result = {{ method_invocation_text|trim }}
 {% elif calling_form in [calling_form_enum.RequestStreamingServer,
                         calling_form_enum.RequestStreamingBidi] %}
 stream = {{ method_invocation_text|trim }}
+
+# Handle response
 {% if transport == "grpc-async" %}async {% endif %}for response in stream:
   {% for statement in response_statements %}
     {{ dispatch_statement(statement)|trim }}
