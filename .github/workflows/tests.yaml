@@ -316,6 +316,19 @@ jobs:
           echo "The old one will disappear after 7 days."
       - name: Integration Tests
         run: bazel test tests/integration:asset tests/integration:credentials tests/integration:logging tests/integration:redis
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install nox
+        run: |
+            python -m pip install nox
+      - name: Run blacken session on the generated output.
+        run: nox -s blacken
+      - name: Run lint_setup_py session on the generated output.
+        run: nox -s lint_setup_py
+      - name: Run lint session on the generated output.
+        run: nox -s lint
   style-check:
     runs-on: ubuntu-latest
     steps:
