@@ -234,6 +234,8 @@ class AssetServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -1534,6 +1536,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:

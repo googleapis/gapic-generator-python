@@ -49,6 +49,8 @@ def sample_analyze_iam_policy_longrunning():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle response
     print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_AnalyzeIamPolicyLongrunning_sync]

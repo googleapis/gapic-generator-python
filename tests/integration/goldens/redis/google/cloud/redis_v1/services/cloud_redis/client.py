@@ -663,6 +663,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -808,6 +810,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -936,6 +940,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -1068,6 +1074,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -1196,6 +1204,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -1318,6 +1328,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -1439,6 +1451,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:

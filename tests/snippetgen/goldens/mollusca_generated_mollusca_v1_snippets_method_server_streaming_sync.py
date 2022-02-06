@@ -46,6 +46,8 @@ def sample_method_server_streaming():
 
     # Make the request
     stream = client.method_server_streaming(request=request)
+
+    # Handle response
     for response in stream:
         print(response)
 

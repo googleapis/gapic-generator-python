@@ -473,6 +473,8 @@ class CloudRedisAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -617,6 +619,8 @@ class CloudRedisAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -744,6 +748,8 @@ class CloudRedisAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -875,6 +881,8 @@ class CloudRedisAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -1002,6 +1010,8 @@ class CloudRedisAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -1123,6 +1133,8 @@ class CloudRedisAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:
@@ -1243,6 +1255,8 @@ class CloudRedisAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle response
                 print(response)
 
         Args:

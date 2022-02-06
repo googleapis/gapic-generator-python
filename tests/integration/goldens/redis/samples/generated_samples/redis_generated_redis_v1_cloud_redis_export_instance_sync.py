@@ -46,6 +46,8 @@ def sample_export_instance():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle response
     print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ExportInstance_sync]
