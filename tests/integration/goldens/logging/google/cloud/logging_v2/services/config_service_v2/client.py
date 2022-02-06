@@ -442,6 +442,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_buckets(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -922,6 +924,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_views(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -1322,6 +1326,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_sinks(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -1919,6 +1925,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_exclusions(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 

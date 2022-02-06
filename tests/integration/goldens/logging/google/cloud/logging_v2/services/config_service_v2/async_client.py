@@ -218,6 +218,8 @@ class ConfigServiceV2AsyncClient:
 
                 # Make the request
                 page_result = client.list_buckets(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -687,6 +689,8 @@ class ConfigServiceV2AsyncClient:
 
                 # Make the request
                 page_result = client.list_views(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -1078,6 +1082,8 @@ class ConfigServiceV2AsyncClient:
 
                 # Make the request
                 page_result = client.list_sinks(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -1702,6 +1708,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
                 # Make the request
                 page_result = client.list_exclusions(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 

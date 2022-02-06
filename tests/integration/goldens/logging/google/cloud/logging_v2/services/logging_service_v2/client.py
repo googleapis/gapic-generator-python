@@ -687,6 +687,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_log_entries(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -830,6 +832,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_monitored_resource_descriptors(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -913,6 +917,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_logs(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -1034,6 +1040,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Make the request
                 stream = client.tail_log_entries(requests=request_generator())
+
+                # Handle response
                 for response in stream:
                     print(response)
 

@@ -399,6 +399,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_log_metrics(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 

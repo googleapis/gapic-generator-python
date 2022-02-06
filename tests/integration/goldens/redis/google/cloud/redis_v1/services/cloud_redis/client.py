@@ -432,6 +432,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
                 # Make the request
                 page_result = client.list_instances(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 

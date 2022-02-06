@@ -520,6 +520,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_assets(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -1215,6 +1217,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 # Make the request
                 page_result = client.search_all_resources(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -1414,6 +1418,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 # Make the request
                 page_result = client.search_all_iam_policies(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 

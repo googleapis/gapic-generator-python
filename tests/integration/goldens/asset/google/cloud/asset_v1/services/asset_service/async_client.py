@@ -321,6 +321,8 @@ class AssetServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_assets(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -1036,6 +1038,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
                 # Make the request
                 page_result = client.search_all_resources(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
@@ -1241,6 +1245,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
                 # Make the request
                 page_result = client.search_all_iam_policies(request=request)
+
+                # Handle response
                 for response in page_result:
                     print(response)
 
