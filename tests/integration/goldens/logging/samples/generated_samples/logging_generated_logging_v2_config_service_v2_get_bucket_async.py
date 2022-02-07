@@ -32,19 +32,14 @@ async def sample_get_bucket():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    bucket = "bucket_value"
-    name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
     request = logging_v2.GetBucketRequest(
-        name=name,
+        name="name_value",
     )
 
     # Make the request
     response = await client.get_bucket(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_GetBucket_async]

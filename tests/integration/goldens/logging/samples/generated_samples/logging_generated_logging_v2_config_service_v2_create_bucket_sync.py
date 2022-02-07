@@ -32,20 +32,15 @@ def sample_create_bucket():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    bucket = "bucket_value"
-    parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
     request = logging_v2.CreateBucketRequest(
-        parent=parent,
+        parent="parent_value",
         bucket_id="bucket_id_value",
     )
 
     # Make the request
     response = client.create_bucket(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateBucket_sync]

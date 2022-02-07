@@ -32,18 +32,14 @@ async def sample_get_feed():
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    feed = "feed_value"
-    name = f"projects/{project}/feeds/{feed}"
-
     request = asset_v1.GetFeedRequest(
-        name=name,
+        name="name_value",
     )
 
     # Make the request
     response = await client.get_feed(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_GetFeed_async]

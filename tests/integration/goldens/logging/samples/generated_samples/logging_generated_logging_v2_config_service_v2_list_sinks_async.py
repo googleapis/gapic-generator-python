@@ -32,16 +32,14 @@ async def sample_list_sinks():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    sink = "sink_value"
-    parent = f"projects/{project}/sinks/{sink}"
-
     request = logging_v2.ListSinksRequest(
-        parent=parent,
+        parent="parent_value",
     )
 
     # Make the request
     page_result = client.list_sinks(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

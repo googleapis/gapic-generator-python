@@ -205,15 +205,14 @@ class MetricsServiceV2AsyncClient:
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                parent = f"projects/{project}"
-
                 request = logging_v2.ListLogMetricsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
                 page_result = client.list_log_metrics(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -323,18 +322,14 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.GetLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request
                 response = client.get_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -441,23 +436,19 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                parent = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.CreateLogMetricRequest(
-                    parent=parent,
+                    parent="parent_value",
                     metric=metric,
                 )
 
                 # Make the request
                 response = client.create_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -569,23 +560,19 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.UpdateLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                     metric=metric,
                 )
 
                 # Make the request
                 response = client.update_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -703,12 +690,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.DeleteLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request

@@ -32,13 +32,8 @@ def sample_upgrade_instance():
     client = redis_v1.CloudRedisClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    instance = "instance_value"
-    name = f"projects/{project}/locations/{location}/instances/{instance}"
-
     request = redis_v1.UpgradeInstanceRequest(
-        name=name,
+        name="name_value",
         redis_version="redis_version_value",
     )
 
@@ -48,6 +43,8 @@ def sample_upgrade_instance():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_UpgradeInstance_sync]

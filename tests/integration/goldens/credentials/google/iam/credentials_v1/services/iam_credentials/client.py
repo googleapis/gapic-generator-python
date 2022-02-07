@@ -406,19 +406,15 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 client = credentials_v1.IAMCredentialsClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                service_account = "service_account_value"
-                name = f"projects/{project}/serviceAccounts/{service_account}"
-
                 request = credentials_v1.GenerateAccessTokenRequest(
-                    name=name,
+                    name="name_value",
                     scope=['scope_value_1', 'scope_value_2'],
                 )
 
                 # Make the request
                 response = client.generate_access_token(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -514,7 +510,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.generate_access_token]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -558,19 +554,15 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 client = credentials_v1.IAMCredentialsClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                service_account = "service_account_value"
-                name = f"projects/{project}/serviceAccounts/{service_account}"
-
                 request = credentials_v1.GenerateIdTokenRequest(
-                    name=name,
+                    name="name_value",
                     audience="audience_value",
                 )
 
                 # Make the request
                 response = client.generate_id_token(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -660,7 +652,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.generate_id_token]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -703,19 +695,15 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 client = credentials_v1.IAMCredentialsClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                service_account = "service_account_value"
-                name = f"projects/{project}/serviceAccounts/{service_account}"
-
                 request = credentials_v1.SignBlobRequest(
-                    name=name,
+                    name="name_value",
                     payload=b'payload_blob',
                 )
 
                 # Make the request
                 response = client.sign_blob(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -792,7 +780,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.sign_blob]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -835,19 +823,15 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 client = credentials_v1.IAMCredentialsClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                service_account = "service_account_value"
-                name = f"projects/{project}/serviceAccounts/{service_account}"
-
                 request = credentials_v1.SignJwtRequest(
-                    name=name,
+                    name="name_value",
                     payload="payload_value",
                 )
 
                 # Make the request
                 response = client.sign_jwt(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -927,7 +911,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.sign_jwt]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((

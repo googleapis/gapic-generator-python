@@ -1,6 +1,44 @@
 # Changelog
 
 
+### [0.63.1](https://github.com/googleapis/gapic-generator-python/compare/v0.63.0...v0.63.1) (2022-02-03)
+
+
+### Bug Fixes
+
+* disambiguate method names that are reserved in transport classes ([#1187](https://github.com/googleapis/gapic-generator-python/issues/1187)) ([78626d8](https://github.com/googleapis/gapic-generator-python/commit/78626d89665128ef7d078ee12b49480475cce9e2))
+
+## [0.63.0](https://github.com/googleapis/gapic-generator-python/compare/v0.62.1...v0.63.0) (2022-02-03)
+
+
+### Features
+
+* adds dynamic routing files. ([8c191a5](https://github.com/googleapis/gapic-generator-python/commit/8c191a5475f208213806fff81c0efa1d26216cd9))
+* adds dynamic routing. ([#1135](https://github.com/googleapis/gapic-generator-python/issues/1135)) ([8c191a5](https://github.com/googleapis/gapic-generator-python/commit/8c191a5475f208213806fff81c0efa1d26216cd9))
+* enable snippetgen for default templates ([#1171](https://github.com/googleapis/gapic-generator-python/issues/1171)) ([c1af051](https://github.com/googleapis/gapic-generator-python/commit/c1af051743dde2fb40e028c51de85dfea47a793d))
+
+### [0.62.1](https://github.com/googleapis/gapic-generator-python/compare/v0.62.0...v0.62.1) (2022-02-02)
+
+
+### Bug Fixes
+
+* **deps:** require setuptools<=60.5.0 ([#1179](https://github.com/googleapis/gapic-generator-python/issues/1179)) ([fb56af7](https://github.com/googleapis/gapic-generator-python/commit/fb56af7cd33931f6747b5ce1fb8502bcbc74dcc7))
+
+## [0.62.0](https://github.com/googleapis/gapic-generator-python/compare/v0.61.0...v0.62.0) (2022-01-28)
+
+
+### Features
+
+* adds REST server-streaming support. ([#1120](https://github.com/googleapis/gapic-generator-python/issues/1120)) ([812cf3e](https://github.com/googleapis/gapic-generator-python/commit/812cf3e0d11b67f7ecd60b9c643b032370bb9400))
+* expose extended operations annotations within generator ([#1145](https://github.com/googleapis/gapic-generator-python/issues/1145)) ([e7bee70](https://github.com/googleapis/gapic-generator-python/commit/e7bee702e92612f88efca782a68d8884b9c71feb))
+
+
+### Bug Fixes
+
+* add special method parameters to set of reserved module names ([#1168](https://github.com/googleapis/gapic-generator-python/issues/1168)) ([8078961](https://github.com/googleapis/gapic-generator-python/commit/8078961f68d2f34fff6403d318bf95c844889d78))
+* fix snippetgen golden file ([#1170](https://github.com/googleapis/gapic-generator-python/issues/1170)) ([13b2028](https://github.com/googleapis/gapic-generator-python/commit/13b2028df5193f11aee40ae42ea5186aeb25eef3))
+* **snippetgen:** remove special handling for resource paths ([#1134](https://github.com/googleapis/gapic-generator-python/issues/1134)) ([4ea2d11](https://github.com/googleapis/gapic-generator-python/commit/4ea2d114b670c2f2adb43cd87e5f0cf7750e5407))
+
 ## [0.61.0](https://github.com/googleapis/gapic-generator-python/compare/v0.60.0...v0.61.0) (2022-01-28)
 
 

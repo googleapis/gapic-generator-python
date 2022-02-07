@@ -32,16 +32,14 @@ async def sample_list_instances():
     client = redis_v1.CloudRedisAsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    parent = f"projects/{project}/locations/{location}"
-
     request = redis_v1.ListInstancesRequest(
-        parent=parent,
+        parent="parent_value",
     )
 
     # Make the request
     page_result = client.list_instances(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

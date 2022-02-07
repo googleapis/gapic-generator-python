@@ -393,15 +393,14 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                parent = f"projects/{project}"
-
                 request = logging_v2.ListLogMetricsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
                 page_result = client.list_log_metrics(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -456,7 +455,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_log_metrics]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -504,18 +503,14 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.GetLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request
                 response = client.get_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -575,7 +570,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_log_metric]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -615,23 +610,19 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                parent = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.CreateLogMetricRequest(
-                    parent=parent,
+                    parent="parent_value",
                     metric=metric,
                 )
 
                 # Make the request
                 response = client.create_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -704,7 +695,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_log_metric]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -744,23 +735,19 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 metric = logging_v2.LogMetric()
                 metric.name = "name_value"
                 metric.filter = "filter_value"
 
                 request = logging_v2.UpdateLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                     metric=metric,
                 )
 
                 # Make the request
                 response = client.update_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -832,7 +819,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_log_metric]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -871,12 +858,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client = logging_v2.MetricsServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                metric = "metric_value"
-                metric_name = f"projects/{project}/metrics/{metric}"
-
                 request = logging_v2.DeleteLogMetricRequest(
-                    metric_name=metric_name,
+                    metric_name="metric_name_value",
                 )
 
                 # Make the request
@@ -924,7 +907,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_log_metric]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((

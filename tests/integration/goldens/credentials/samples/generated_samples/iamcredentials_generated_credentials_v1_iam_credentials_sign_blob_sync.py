@@ -32,19 +32,15 @@ def sample_sign_blob():
     client = credentials_v1.IAMCredentialsClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    service_account = "service_account_value"
-    name = f"projects/{project}/serviceAccounts/{service_account}"
-
     request = credentials_v1.SignBlobRequest(
-        name=name,
+        name="name_value",
         payload=b'payload_blob',
     )
 
     # Make the request
     response = client.sign_blob(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_SignBlob_sync]

@@ -32,23 +32,19 @@ async def sample_create_sink():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    sink = "sink_value"
-    parent = f"projects/{project}/sinks/{sink}"
-
     sink = logging_v2.LogSink()
     sink.name = "name_value"
     sink.destination = "destination_value"
 
     request = logging_v2.CreateSinkRequest(
-        parent=parent,
+        parent="parent_value",
         sink=sink,
     )
 
     # Make the request
     response = await client.create_sink(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateSink_async]

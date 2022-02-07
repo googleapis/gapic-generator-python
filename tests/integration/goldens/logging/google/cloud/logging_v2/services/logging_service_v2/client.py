@@ -397,12 +397,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                log = "log_value"
-                log_name = f"projects/{project}/logs/{log}"
-
                 request = logging_v2.DeleteLogRequest(
-                    log_name=log_name,
+                    log_name="log_name_value",
                 )
 
                 # Make the request
@@ -459,7 +455,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_log]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -515,7 +511,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 # Make the request
                 response = client.write_log_entries(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -685,16 +681,14 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                log = "log_value"
-                resource_names = f"projects/{project}/logs/{log}"
-
                 request = logging_v2.ListLogEntriesRequest(
-                    resource_names=resource_names,
+                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
                 )
 
                 # Make the request
                 page_result = client.list_log_entries(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -838,6 +832,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_monitored_resource_descriptors(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -915,16 +911,14 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                log = "log_value"
-                parent = f"projects/{project}/logs/{log}"
-
                 request = logging_v2.ListLogsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
                 page_result = client.list_logs(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -981,7 +975,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_logs]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1046,6 +1040,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Make the request
                 stream = client.tail_log_entries(requests=request_generator())
+
+                # Handle the response
                 for response in stream:
                     print(response)
 

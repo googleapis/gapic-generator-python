@@ -431,6 +431,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -465,7 +467,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.export_assets]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -520,6 +522,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_assets(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -573,7 +577,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_assets]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -634,7 +638,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.batch_get_assets_history(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -662,7 +666,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.batch_get_assets_history]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -716,7 +720,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.create_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -776,7 +780,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_feed]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -815,18 +819,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                feed = "feed_value"
-                name = f"projects/{project}/feeds/{feed}"
-
                 request = asset_v1.GetFeedRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
                 response = client.get_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -881,7 +881,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_feed]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -929,7 +929,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.list_feeds(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -979,7 +979,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_feeds]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1028,7 +1028,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.update_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1084,7 +1084,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_feed]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1123,12 +1123,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                feed = "feed_value"
-                name = f"projects/{project}/feeds/{feed}"
-
                 request = asset_v1.DeleteFeedRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1175,7 +1171,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_feed]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1223,6 +1219,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 # Make the request
                 page_result = client.search_all_resources(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1363,7 +1361,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.search_all_resources]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1422,6 +1420,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 # Make the request
                 page_result = client.search_all_iam_policies(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1542,7 +1542,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.search_all_iam_policies]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1601,7 +1601,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.analyze_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1632,7 +1632,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.analyze_iam_policy]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1699,6 +1699,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1733,7 +1735,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.analyze_iam_policy_longrunning]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((

@@ -426,16 +426,14 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                parent = f"projects/{project}/locations/{location}"
-
                 request = redis_v1.ListInstancesRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
                 page_result = client.list_instances(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -490,7 +488,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_instances]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -538,19 +536,14 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                instance = "instance_value"
-                name = f"projects/{project}/locations/{location}/instances/{instance}"
-
                 request = redis_v1.GetInstanceRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
                 response = client.get_instance(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -598,7 +591,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -653,17 +646,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                parent = f"projects/{project}/locations/{location}"
-
                 instance = redis_v1.Instance()
                 instance.name = "name_value"
                 instance.tier = "STANDARD_HA"
                 instance.memory_size_gb = 1499
 
                 request = redis_v1.CreateInstanceRequest(
-                    parent=parent,
+                    parent="parent_value",
                     instance_id="instance_id_value",
                     instance=instance,
                 )
@@ -674,6 +663,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -750,7 +741,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -819,6 +810,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -886,7 +879,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -936,13 +929,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                instance = "instance_value"
-                name = f"projects/{project}/locations/{location}/instances/{instance}"
-
                 request = redis_v1.UpgradeInstanceRequest(
-                    name=name,
+                    name="name_value",
                     redis_version="redis_version_value",
                 )
 
@@ -952,6 +940,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1013,7 +1003,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.upgrade_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1084,6 +1074,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1145,7 +1137,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.import_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1212,6 +1204,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1273,7 +1267,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.export_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1324,13 +1318,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                instance = "instance_value"
-                name = f"projects/{project}/locations/{location}/instances/{instance}"
-
                 request = redis_v1.FailoverInstanceRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1339,6 +1328,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1401,7 +1392,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.failover_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1450,13 +1441,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 client = redis_v1.CloudRedisClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                instance = "instance_value"
-                name = f"projects/{project}/locations/{location}/instances/{instance}"
-
                 request = redis_v1.DeleteInstanceRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1465,6 +1451,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1527,7 +1515,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((

@@ -32,23 +32,19 @@ async def sample_update_log_metric():
     client = logging_v2.MetricsServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    metric = "metric_value"
-    metric_name = f"projects/{project}/metrics/{metric}"
-
     metric = logging_v2.LogMetric()
     metric.name = "name_value"
     metric.filter = "filter_value"
 
     request = logging_v2.UpdateLogMetricRequest(
-        metric_name=metric_name,
+        metric_name="metric_name_value",
         metric=metric,
     )
 
     # Make the request
     response = await client.update_log_metric(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_MetricsServiceV2_UpdateLogMetric_async]

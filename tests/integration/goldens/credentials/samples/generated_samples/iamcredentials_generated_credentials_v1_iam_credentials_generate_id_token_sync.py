@@ -32,19 +32,15 @@ def sample_generate_id_token():
     client = credentials_v1.IAMCredentialsClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    service_account = "service_account_value"
-    name = f"projects/{project}/serviceAccounts/{service_account}"
-
     request = credentials_v1.GenerateIdTokenRequest(
-        name=name,
+        name="name_value",
         audience="audience_value",
     )
 
     # Make the request
     response = client.generate_id_token(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_GenerateIdToken_sync]
