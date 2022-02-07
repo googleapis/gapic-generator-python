@@ -325,6 +325,24 @@ jobs:
         run: nox -s lint_setup_py
       - name: Run lint session on the generated output.
         run: nox -s lint
+  lint-goldens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          cache: 'pip'
+      - name: Install nox.
+      run: |
+          python -m pip install nox
+      - name: Run blacken and lint on the generated output.
+        run: |
+        nox -f tests/integration/goldens/asset/noxfile.py -s blacken lint_setup_py lint
+        nox -f tests/integration/goldens/credentials/noxfile.py -s blacken lint_setup_py lint
+        nox -f tests/integration/goldens/logging/noxfile.py -s blacken lint_setup_py lint
+        nox -f tests/integration/goldens/redis/noxfile.py -s blacken lint_setup_py lint
   style-check:
     runs-on: ubuntu-latest
     steps:
