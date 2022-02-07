@@ -184,45 +184,44 @@ def showcase_library(
     session.install("grpcio-tools")
 
     # Install a client library for Showcase.
-    tmp_dir = ".showcase"
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        # Download the Showcase descriptor.
+        session.run(
+            "curl",
+            "https://github.com/googleapis/gapic-showcase/releases/"
+            f"download/v{showcase_version}/"
+            f"gapic-showcase-{showcase_version}.desc",
+            "-L",
+            "--output",
+            path.join(tmp_dir, "showcase.desc"),
+            external=True,
+            silent=True,
+        )
 
-    # Download the Showcase descriptor.
-    session.run(
-        "curl",
-        "https://github.com/googleapis/gapic-showcase/releases/"
-        f"download/v{showcase_version}/"
-        f"gapic-showcase-{showcase_version}.desc",
-        "-L",
-        "--output",
-        path.join(tmp_dir, "showcase.desc"),
-        external=True,
-        silent=True,
-    )
+        # Write out a client library for Showcase.
+        template_opt = f"python-gapic-templates={templates}"
+        opts = "--python_gapic_opt="
+        opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest"))
+        cmd_tup = (
+            "python",
+            "-m",
+            "grpc_tools.protoc",
+            f"--experimental_allow_proto3_optional",
+            f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
+            opts,
+            f"--python_gapic_out={tmp_dir}",
+            f"google/showcase/v1beta1/echo.proto",
+            f"google/showcase/v1beta1/identity.proto",
+            f"google/showcase/v1beta1/messaging.proto",
+        )
+        session.run(
+            *cmd_tup, external=True,
+        )
 
-    # Write out a client library for Showcase.
-    template_opt = f"python-gapic-templates={templates}"
-    opts = "--python_gapic_opt="
-    opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest"))
-    cmd_tup = (
-        "python",
-        "-m",
-        "grpc_tools.protoc",
-        f"--experimental_allow_proto3_optional",
-        f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
-        opts,
-        f"--python_gapic_out={tmp_dir}",
-        f"google/showcase/v1beta1/echo.proto",
-        f"google/showcase/v1beta1/identity.proto",
-        f"google/showcase/v1beta1/messaging.proto",
-    )
-    session.run(
-        *cmd_tup, external=True,
-    )
+        # Install the library.
+        session.install("-e", tmp_dir)
 
-    # Install the library.
-    session.install("-e", tmp_dir)
-
-    yield tmp_dir
+        yield tmp_dir
 
 
 @nox.session(python=NEWEST_PYTHON)
