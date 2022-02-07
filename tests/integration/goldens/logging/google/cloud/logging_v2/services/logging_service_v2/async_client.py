@@ -330,7 +330,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.write_log_entries(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -515,7 +515,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 page_result = client.list_log_entries(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -667,7 +667,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 page_result = client.list_monitored_resource_descriptors(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -758,7 +758,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 page_result = client.list_logs(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -888,7 +888,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 stream = client.tail_log_entries(requests=request_generator())
 
-                # Handle response
+                # Handle the response
                 for response in stream:
                     print(response)
 

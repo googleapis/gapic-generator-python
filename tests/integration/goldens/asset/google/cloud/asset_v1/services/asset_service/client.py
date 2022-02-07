@@ -432,7 +432,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 response = operation.result()
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -523,7 +523,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 page_result = client.list_assets(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -638,7 +638,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.batch_get_assets_history(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -720,7 +720,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.create_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -826,7 +826,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.get_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -929,7 +929,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.list_feeds(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1028,7 +1028,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.update_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1220,7 +1220,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 page_result = client.search_all_resources(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1421,7 +1421,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 page_result = client.search_all_iam_policies(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1601,7 +1601,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.analyze_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1700,7 +1700,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 response = operation.result()
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

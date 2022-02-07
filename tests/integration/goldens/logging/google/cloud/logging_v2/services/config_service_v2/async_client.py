@@ -219,7 +219,7 @@ class ConfigServiceV2AsyncClient:
                 # Make the request
                 page_result = client.list_buckets(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -334,7 +334,7 @@ class ConfigServiceV2AsyncClient:
                 # Make the request
                 response = client.get_bucket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -409,7 +409,7 @@ class ConfigServiceV2AsyncClient:
                 # Make the request
                 response = client.create_bucket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -491,7 +491,7 @@ class ConfigServiceV2AsyncClient:
                 # Make the request
                 response = client.update_bucket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -690,7 +690,7 @@ class ConfigServiceV2AsyncClient:
                 # Make the request
                 page_result = client.list_views(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -797,7 +797,7 @@ class ConfigServiceV2AsyncClient:
                 # Make the request
                 response = client.get_view(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -873,7 +873,7 @@ class ConfigServiceV2AsyncClient:
                 # Make the request
                 response = client.create_view(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -948,7 +948,7 @@ class ConfigServiceV2AsyncClient:
                 # Make the request
                 response = client.update_view(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1083,7 +1083,7 @@ class ConfigServiceV2AsyncClient:
                 # Make the request
                 page_result = client.list_sinks(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1203,7 +1203,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.get_sink(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1330,7 +1330,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.create_sink(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1461,7 +1461,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.update_sink(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1709,7 +1709,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 page_result = client.list_exclusions(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1829,7 +1829,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.get_exclusion(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1958,7 +1958,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.create_exclusion(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2089,7 +2089,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.update_exclusion(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2333,7 +2333,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.get_cmek_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2435,7 +2435,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.update_cmek_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

@@ -39,7 +39,7 @@ def sample_list_views():
     # Make the request
     page_result = client.list_views(request=request)
 
-    # Handle response
+    # Handle the response
     for response in page_result:
         print(response)
 

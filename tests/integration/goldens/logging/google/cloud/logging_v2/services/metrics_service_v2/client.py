@@ -400,7 +400,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 # Make the request
                 page_result = client.list_log_metrics(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -510,7 +510,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 # Make the request
                 response = client.get_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -622,7 +622,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 # Make the request
                 response = client.create_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -747,7 +747,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 # Make the request
                 response = client.update_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

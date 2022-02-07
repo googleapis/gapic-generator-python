@@ -47,7 +47,7 @@ async def sample_import_instance():
 
     response = await operation.result()
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ImportInstance_async]

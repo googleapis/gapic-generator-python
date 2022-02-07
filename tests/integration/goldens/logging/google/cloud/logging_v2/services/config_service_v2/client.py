@@ -443,7 +443,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 page_result = client.list_buckets(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -559,7 +559,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_bucket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -636,7 +636,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.create_bucket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -720,7 +720,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_bucket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -925,7 +925,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 page_result = client.list_views(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1033,7 +1033,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_view(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1111,7 +1111,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.create_view(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1188,7 +1188,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_view(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1327,7 +1327,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 page_result = client.list_sinks(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1440,7 +1440,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_sink(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1560,7 +1560,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.create_sink(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1692,7 +1692,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_sink(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1926,7 +1926,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 page_result = client.list_exclusions(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -2039,7 +2039,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_exclusion(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2161,7 +2161,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.create_exclusion(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2293,7 +2293,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_exclusion(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2531,7 +2531,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_cmek_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2635,7 +2635,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_cmek_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

@@ -245,7 +245,7 @@ class CloudRedisAsyncClient:
                 # Make the request
                 page_result = client.list_instances(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -354,7 +354,7 @@ class CloudRedisAsyncClient:
                 # Make the request
                 response = client.get_instance(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -474,7 +474,7 @@ class CloudRedisAsyncClient:
 
                 response = operation.result()
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -620,7 +620,7 @@ class CloudRedisAsyncClient:
 
                 response = operation.result()
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -749,7 +749,7 @@ class CloudRedisAsyncClient:
 
                 response = operation.result()
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -882,7 +882,7 @@ class CloudRedisAsyncClient:
 
                 response = operation.result()
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1011,7 +1011,7 @@ class CloudRedisAsyncClient:
 
                 response = operation.result()
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1134,7 +1134,7 @@ class CloudRedisAsyncClient:
 
                 response = operation.result()
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1256,7 +1256,7 @@ class CloudRedisAsyncClient:
 
                 response = operation.result()
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

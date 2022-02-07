@@ -746,7 +746,7 @@ def test_render_calling_form_request():
                    # Make the request
                    response = TEST_INVOCATION_TXT
 
-                   # Handle response
+                   # Handle the response
                    print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,

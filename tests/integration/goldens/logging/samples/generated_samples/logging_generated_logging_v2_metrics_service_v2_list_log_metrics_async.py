@@ -39,7 +39,7 @@ async def sample_list_log_metrics():
     # Make the request
     page_result = client.list_log_metrics(request=request)
 
-    # Handle response
+    # Handle the response
     async for response in page_result:
         print(response)
 

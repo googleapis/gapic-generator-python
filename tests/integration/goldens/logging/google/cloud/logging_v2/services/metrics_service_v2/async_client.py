@@ -212,7 +212,7 @@ class MetricsServiceV2AsyncClient:
                 # Make the request
                 page_result = client.list_log_metrics(request=request)
 
-                # Handle response
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -329,7 +329,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.get_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -448,7 +448,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.create_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -572,7 +572,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.update_log_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

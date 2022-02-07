@@ -47,7 +47,7 @@ async def sample_export_assets():
 
     response = await operation.result()
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_ExportAssets_async]

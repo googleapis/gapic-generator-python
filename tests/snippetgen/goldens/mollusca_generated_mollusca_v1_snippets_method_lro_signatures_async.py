@@ -51,7 +51,7 @@ async def sample_method_lro_signatures():
 
     response = await operation.result()
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_MethodLroSignatures_async]

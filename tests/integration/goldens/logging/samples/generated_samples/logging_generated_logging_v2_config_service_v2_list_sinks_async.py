@@ -39,7 +39,7 @@ async def sample_list_sinks():
     # Make the request
     page_result = client.list_sinks(request=request)
 
-    # Handle response
+    # Handle the response
     async for response in page_result:
         print(response)
 

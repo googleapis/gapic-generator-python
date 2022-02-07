@@ -39,7 +39,7 @@ def sample_list_assets():
     # Make the request
     page_result = client.list_assets(request=request)
 
-    # Handle response
+    # Handle the response
     for response in page_result:
         print(response)
 

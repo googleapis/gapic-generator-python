@@ -47,7 +47,7 @@ async def sample_export_instance():
 
     response = await operation.result()
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ExportInstance_async]

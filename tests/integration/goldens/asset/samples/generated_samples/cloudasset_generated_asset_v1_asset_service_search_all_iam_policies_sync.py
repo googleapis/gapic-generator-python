@@ -39,7 +39,7 @@ def sample_search_all_iam_policies():
     # Make the request
     page_result = client.search_all_iam_policies(request=request)
 
-    # Handle response
+    # Handle the response
     for response in page_result:
         print(response)
 

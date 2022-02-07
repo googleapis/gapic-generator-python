@@ -48,7 +48,7 @@ async def sample_method_bidi_streaming():
     # Make the request
     stream = await client.method_bidi_streaming(requests=request_generator())
 
-    # Handle response
+    # Handle the response
     async for response in stream:
         print(response)
 
