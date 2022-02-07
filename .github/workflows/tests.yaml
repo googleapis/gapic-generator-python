@@ -343,18 +343,18 @@ jobs:
           nox -f tests/integration/goldens/credentials/noxfile.py -s blacken lint_setup_py lint
           nox -f tests/integration/goldens/logging/noxfile.py -s blacken lint_setup_py lint
           nox -f tests/integration/goldens/redis/noxfile.py -s blacken lint_setup_py lint
-    style-check:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - name: Set up Python 3.9
-          uses: actions/setup-python@v2
-          with:
-            python-version: 3.9
-            cache: 'pip'
-        - name: Install autopep8
-          run: |
-              python -m pip install autopep8
-        - name: Check diff
-          run: |
-              find gapic tests -name "*.py" -not -path 'tests/**/goldens/*' | xargs autopep8 --diff --exit-code
+  style-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          cache: 'pip'
+      - name: Install autopep8
+        run: |
+            python -m pip install autopep8
+      - name: Check diff
+        run: |
+            find gapic tests -name "*.py" -not -path 'tests/**/goldens/*' | xargs autopep8 --diff --exit-code
