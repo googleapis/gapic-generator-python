@@ -333,6 +333,15 @@ class Field:
 
 
 @dataclasses.dataclass(frozen=True)
+class FieldHeader:
+    raw: str
+
+    @property
+    def disambiguated(self) -> str:
+        return self.raw + "_" if self.raw in utils.RESERVED_NAMES else self.raw
+
+
+@dataclasses.dataclass(frozen=True)
 class Oneof:
     """Description of a field."""
     oneof_pb: descriptor_pb2.OneofDescriptorProto
@@ -1070,12 +1079,8 @@ class Method:
     #               e.g. doesn't work with basic case of gRPC transcoding
 
     @property
-    def field_headers(self) -> Sequence[dict]:
+    def field_headers(self) -> Sequence[FieldHeader]:
         """Return the field headers defined for this method."""
-
-        def disambiguate_field_headers(input_str: str) -> str:
-            """Used to prevent collisions with python keywords"""
-            return input_str + "_" if input_str in utils.RESERVED_NAMES else input_str
 
         http = self.options.Extensions[annotations_pb2.http]
 
@@ -1090,7 +1095,7 @@ class Method:
             http.custom.path,
         ]
         field_headers = (
-            tuple({"raw": field_header, "disambiguated": disambiguate_field_headers(field_header)}
+            tuple(FieldHeader(field_header)
                   for field_header in pattern.findall(verb))
             for verb in potential_verbs
             if verb
