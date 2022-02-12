@@ -402,7 +402,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_log(request=request)
+                client.delete_log(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogRequest, dict]):
@@ -455,7 +455,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_log]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -511,7 +511,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 # Make the request
                 response = client.write_log_entries(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -687,6 +687,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_log_entries(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -830,6 +832,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_monitored_resource_descriptors(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -913,6 +917,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_logs(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -969,7 +975,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_logs]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1028,12 +1034,15 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 # Here we create a generator that yields a single `request` for
                 # demonstrative purposes.
                 requests = [request]
+
                 def request_generator():
                     for request in requests:
                         yield request
 
                 # Make the request
                 stream = client.tail_log_entries(requests=request_generator())
+
+                # Handle the response
                 for response in stream:
                     print(response)
 

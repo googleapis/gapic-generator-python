@@ -1,6 +1,36 @@
 # Changelog
 
 
+### [0.63.2](https://github.com/googleapis/gapic-generator-python/compare/v0.63.1...v0.63.2) (2022-02-09)
+
+
+### Bug Fixes
+
+* fix lint sessions on generated samples ([#1192](https://github.com/googleapis/gapic-generator-python/issues/1192)) ([4d0ea18](https://github.com/googleapis/gapic-generator-python/commit/4d0ea182aa5500eee0f5485e88e14043974ae78b))
+
+### [0.63.1](https://github.com/googleapis/gapic-generator-python/compare/v0.63.0...v0.63.1) (2022-02-03)
+
+
+### Bug Fixes
+
+* disambiguate method names that are reserved in transport classes ([#1187](https://github.com/googleapis/gapic-generator-python/issues/1187)) ([78626d8](https://github.com/googleapis/gapic-generator-python/commit/78626d89665128ef7d078ee12b49480475cce9e2))
+
+## [0.63.0](https://github.com/googleapis/gapic-generator-python/compare/v0.62.1...v0.63.0) (2022-02-03)
+
+
+### Features
+
+* adds dynamic routing files. ([8c191a5](https://github.com/googleapis/gapic-generator-python/commit/8c191a5475f208213806fff81c0efa1d26216cd9))
+* adds dynamic routing. ([#1135](https://github.com/googleapis/gapic-generator-python/issues/1135)) ([8c191a5](https://github.com/googleapis/gapic-generator-python/commit/8c191a5475f208213806fff81c0efa1d26216cd9))
+* enable snippetgen for default templates ([#1171](https://github.com/googleapis/gapic-generator-python/issues/1171)) ([c1af051](https://github.com/googleapis/gapic-generator-python/commit/c1af051743dde2fb40e028c51de85dfea47a793d))
+
+### [0.62.1](https://github.com/googleapis/gapic-generator-python/compare/v0.62.0...v0.62.1) (2022-02-02)
+
+
+### Bug Fixes
+
+* **deps:** require setuptools<=60.5.0 ([#1179](https://github.com/googleapis/gapic-generator-python/issues/1179)) ([fb56af7](https://github.com/googleapis/gapic-generator-python/commit/fb56af7cd33931f6747b5ce1fb8502bcbc74dcc7))
+
 ## [0.62.0](https://github.com/googleapis/gapic-generator-python/compare/v0.61.0...v0.62.0) (2022-01-28)
 
 
