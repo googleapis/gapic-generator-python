@@ -395,42 +395,6 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
         )
-
-    {% if 'grpc' in opts.transport %}
-    if "grpc" in transport_name:
-        # test that the credentials from file are saved and used as the credentials.
-        with mock.patch.object(
-            google.auth, "load_credentials_from_file", autospec=True
-        ) as load_creds, mock.patch.object(
-            google.auth, "default", autospec=True
-        ) as adc, mock.patch.object(
-            grpc_helpers, "create_channel"
-        ) as create_channel:
-            creds = ga_credentials.AnonymousCredentials()
-            file_creds = ga_credentials.AnonymousCredentials()
-            load_creds.return_value = (file_creds, None)
-            adc.return_value = (creds, None)
-            client = client_class(client_options=options, transport=transport_name)
-            {% with host = (service.host|default('localhost', true)) %}
-            create_channel.assert_called_with(
-                "{{ host }}{% if ":" not in service.host %}:443{% endif %}",
-                credentials=file_creds,
-                credentials_file=None,
-                quota_project_id=None,
-                default_scopes=(
-                    {% for scope in service.oauth_scopes %}
-                    '{{ scope }}',
-                    {% endfor %}),
-                scopes=None,
-                default_host="{{ host }}",
-                ssl_credentials=None,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-            {% endwith %}
-    {% endif %}
 {% if 'grpc' in opts.transport %}
 {# TODO(dovs): genericize this function#}
 
@@ -450,6 +414,63 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
         )
+
+
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
+])
+def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(client_class, transport_class, transport_name):
+    # Check the case credentials file is provided.
+    options = client_options.ClientOptions(
+        credentials_file="credentials.json"
+    )
+
+    with mock.patch.object(transport_class, '__init__') as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file="credentials.json",
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+        )
+
+    # test that the credentials from file are saved and used as the credentials.
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel"
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
+        load_creds.return_value = (file_creds, None)
+        adc.return_value = (creds, None)
+        client = client_class(client_options=options, transport=transport_name)
+        {% with host = (service.host|default('localhost', true)) %}
+        create_channel.assert_called_with(
+            "{{ host }}{% if ":" not in service.host %}:443{% endif %}",
+            credentials=file_creds,
+            credentials_file=None,
+            quota_project_id=None,
+            default_scopes=(
+                {% for scope in service.oauth_scopes %}
+                '{{ scope }}',
+                {% endfor %}),
+            scopes=None,
+            default_host="{{ host }}",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+        {% endwith %}
 {% endif %}
 
 
@@ -473,7 +494,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         {% if method.void %}
@@ -550,7 +571,7 @@ def test_{{ method_name }}_empty_call():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
         client.{{ method_name }}()
         call.assert_called()
@@ -574,12 +595,12 @@ def test_{{ method_name }}_field_headers():
     request = {{ method.input.ident }}()
 
     {% for field_header in method.field_headers %}
-    request.{{ field_header }} = '{{ field_header }}/value'
+    request.{{ field_header.disambiguated }} = '{{ field_header.raw }}/value'
     {% endfor %}
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
         {% if method.void %}
         call.return_value = None
@@ -602,7 +623,7 @@ def test_{{ method_name }}_field_headers():
     assert (
         'x-goog-request-params',
         '{% for field_header in method.field_headers -%}
-        {{ field_header }}={{ field_header }}/value
+        {{ field_header.raw }}={{ field_header.raw }}/value
         {%- if not loop.last %}&{% endif %}
         {%- endfor -%}',
     ) in kw['metadata']
@@ -617,7 +638,7 @@ def test_{{ method_name }}_from_dict_foreign():
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         {% if method.void %}
@@ -647,7 +668,7 @@ def test_{{ method_name }}_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         {% if method.void %}
@@ -725,7 +746,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -762,7 +783,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
-                ('{{ field_header }}', ''),
+                ('{{ field_header.raw }}', ''),
                 {% endif %}
                 {% endfor %}
             )),
@@ -787,7 +808,7 @@ def test_{{ method_name }}_pages(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-         type(client.transport.{{ method.name|snake_case }}),
+         type(client.transport.{{ method.transport_safe_name|snake_case }}),
         '__call__') as call:
         # Set the response to a series of pages.
         {% if method.paged_result_field.map%}
@@ -1163,7 +1184,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 def test_{{ method_name }}_rest_unset_required_fields():
     transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = transport.{{ method.name|snake_case }}._get_unset_required_fields({})
+    unset_fields = transport.{{ method.transport_safe_name|snake_case }}._get_unset_required_fields({})
     assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
 
 
@@ -1624,7 +1645,7 @@ def test_{{ service.name|snake_case }}_base_transport():
     # raise NotImplementedError.
     methods = (
         {% for method in service.methods.values() %}
-        '{{ method.name|snake_case }}',
+        '{{ method.transport_safe_name|snake_case }}',
         {% endfor %}
         {% if opts.add_iam_methods %}
         'set_iam_policy',

@@ -442,6 +442,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_buckets(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -503,7 +505,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_buckets]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -557,7 +559,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_bucket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -585,7 +587,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -634,7 +636,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.create_bucket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -662,7 +664,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -718,7 +720,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_bucket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -746,7 +748,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -792,7 +794,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_bucket(request=request)
+                client.delete_bucket(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict]):
@@ -815,7 +817,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -857,7 +859,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.undelete_bucket(request=request)
+                client.undelete_bucket(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict]):
@@ -880,7 +882,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.undelete_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -922,6 +924,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_views(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -975,7 +979,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_views]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1029,7 +1033,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_view(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1059,7 +1063,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_view]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1107,7 +1111,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.create_view(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1137,7 +1141,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_view]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1184,7 +1188,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_view(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1214,7 +1218,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_view]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1257,7 +1261,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_view(request=request)
+                client.delete_view(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteViewRequest, dict]):
@@ -1280,7 +1284,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_view]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1322,6 +1326,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_sinks(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1379,7 +1385,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_sinks]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1434,7 +1440,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_sink(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1497,7 +1503,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_sink]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1554,7 +1560,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.create_sink(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1627,7 +1633,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_sink]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1686,7 +1692,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_sink(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1781,7 +1787,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_sink]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1827,7 +1833,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_sink(request=request)
+                client.delete_sink(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict]):
@@ -1877,7 +1883,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_sink]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1919,6 +1925,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
                 # Make the request
                 page_result = client.list_exclusions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1976,7 +1984,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_exclusions]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2031,7 +2039,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_exclusion(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2097,7 +2105,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_exclusion]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2153,7 +2161,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.create_exclusion(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2230,7 +2238,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_exclusion]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2285,7 +2293,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_exclusion(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2377,7 +2385,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_exclusion]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2421,7 +2429,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_exclusion(request=request)
+                client.delete_exclusion(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict]):
@@ -2472,7 +2480,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_exclusion]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2523,7 +2531,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.get_cmek_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2567,7 +2575,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_cmek_settings]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2627,7 +2635,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 # Make the request
                 response = client.update_cmek_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2671,7 +2679,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_cmek_settings]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((

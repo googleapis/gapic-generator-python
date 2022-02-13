@@ -19,6 +19,7 @@ from typing import Sequence
 
 from google.api import field_behavior_pb2
 from google.api import http_pb2
+from google.api import routing_pb2
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
 
@@ -286,7 +287,39 @@ def test_method_field_headers_present():
     for v in verbs:
         rule = http_pb2.HttpRule(**{v: '/v1/{parent=projects/*}/topics'})
         method = make_method('DoSomething', http_rule=rule)
-        assert method.field_headers == ('parent',)
+        assert method.field_headers == (wrappers.FieldHeader('parent'),)
+        assert method.field_headers[0].raw == 'parent'
+        assert method.field_headers[0].disambiguated == 'parent'
+
+        # test that reserved keyword in field header is disambiguated
+        rule = http_pb2.HttpRule(**{v: '/v1/{object=objects/*}/topics'})
+        method = make_method('DoSomething', http_rule=rule)
+        assert method.field_headers == (wrappers.FieldHeader('object'),)
+        assert method.field_headers[0].raw == 'object'
+        assert method.field_headers[0].disambiguated == 'object_'
+
+
+def test_method_routing_rule():
+    routing_rule = routing_pb2.RoutingRule()
+    param = routing_rule.routing_parameters.add()
+    param.field = 'table_name'
+    param.path_template = 'projects/*/{table_location=instances/*}/tables/*'
+    method = make_method('DoSomething', routing_rule=routing_rule)
+    assert method.explicit_routing
+    assert method.routing_rule.routing_parameters == [wrappers.RoutingParameter(
+        x.field, x.path_template) for x in routing_rule.routing_parameters]
+    assert method.routing_rule.routing_parameters[0].sample_request is not None
+
+
+def test_method_routing_rule_empty_routing_parameters():
+    routing_rule = routing_pb2.RoutingRule()
+    method = make_method('DoSomething', routing_rule=routing_rule)
+    assert method.routing_rule is None
+
+
+def test_method_routing_rule_not_set():
+    method = make_method('DoSomething')
+    assert method.routing_rule is None
 
 
 def test_method_http_opt():
@@ -838,3 +871,21 @@ def test_is_operation_polling_method():
     )
 
     assert not invalid_method.is_operation_polling_method
+
+
+def test_transport_safe_name():
+    unsafe_methods = {
+        name: make_method(name=name)
+        for name in ["CreateChannel", "GrpcChannel", "OperationsClient"]
+    }
+
+    safe_methods = {
+        name: make_method(name=name)
+        for name in ["Call", "Put", "Hold", "Raise"]
+    }
+
+    for name, method in safe_methods.items():
+        assert method.transport_safe_name == name
+
+    for name, method in unsafe_methods.items():
+        assert method.transport_safe_name == f"{name}_"

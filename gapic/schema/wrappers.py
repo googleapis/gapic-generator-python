@@ -33,12 +33,13 @@ import json
 import re
 from itertools import chain
 from typing import (Any, cast, Dict, FrozenSet, Iterator, Iterable, List, Mapping,
-                    ClassVar, Optional, Sequence, Set, Tuple, Union)
+                    ClassVar, Optional, Sequence, Set, Tuple, Union, Pattern)
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
 from google.api import http_pb2
 from google.api import resource_pb2
+from google.api import routing_pb2
 from google.api_core import exceptions
 from google.api_core import path_template
 from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
@@ -47,6 +48,7 @@ from google.protobuf.json_format import MessageToDict  # type: ignore
 
 from gapic import utils
 from gapic.schema import metadata
+from gapic.utils import uri_sample
 
 
 @dataclasses.dataclass(frozen=True)
@@ -95,29 +97,42 @@ class Field:
 
     @utils.cached_property
     def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, Dict[str, Any], List[Any], None]:
-        # Return messages as dicts and let the message ctor handle the conversion.
-        if self.message:
-            if self.map:
-                # Not worth the hassle, just return an empty map.
-                return {}
+        visited_messages = set()
 
-            msg_dict = {
-                f.name: f.mock_value_original_type
-                for f in self.message.fields.values()
-            }
+        def recursive_mock_original_type(field):
+            if field.message:
+                # Return messages as dicts and let the message ctor handle the conversion.
+                if field.message in visited_messages:
+                    return {}
 
-            return [msg_dict] if self.repeated else msg_dict
+                visited_messages.add(field.message)
+                if field.map:
+                    # Not worth the hassle, just return an empty map.
+                    return {}
 
-        answer = self.primitive_mock() or None
+                msg_dict = {
+                    f.name: recursive_mock_original_type(f)
+                    for f in field.message.fields.values()
+                }
 
-        # If this is a repeated field, then the mock answer should
-        # be a list.
-        if self.repeated:
-            first_item = self.primitive_mock(suffix=1) or None
-            second_item = self.primitive_mock(suffix=2) or None
-            answer = [first_item, second_item]
+                return [msg_dict] if field.repeated else msg_dict
 
-        return answer
+            if field.enum:
+                # First Truthy value, fallback to the first value
+                return next((v for v in field.type.values if v.number), field.type.values[0]).number
+
+            answer = field.primitive_mock() or None
+
+            # If this is a repeated field, then the mock answer should
+            # be a list.
+            if field.repeated:
+                first_item = field.primitive_mock(suffix=1) or None
+                second_item = field.primitive_mock(suffix=2) or None
+                answer = [first_item, second_item]
+
+            return answer
+
+        return recursive_mock_original_type(self)
 
     @utils.cached_property
     def mock_value(self) -> str:
@@ -315,6 +330,15 @@ class Field:
             if self.enum else None,
             meta=self.meta.with_context(collisions=collisions),
         )
+
+
+@dataclasses.dataclass(frozen=True)
+class FieldHeader:
+    raw: str
+
+    @property
+    def disambiguated(self) -> str:
+        return self.raw + "_" if self.raw in utils.RESERVED_NAMES else self.raw
 
 
 @dataclasses.dataclass(frozen=True)
@@ -764,6 +788,118 @@ class RetryInfo:
 
 
 @dataclasses.dataclass(frozen=True)
+class RoutingParameter:
+    field: str
+    path_template: str
+
+    def _split_into_segments(self, path_template):
+        segments = path_template.split("/")
+        named_segment_ids = [i for i, x in enumerate(
+            segments) if "{" in x or "}" in x]
+        # bar/{foo}/baz, bar/{foo=one/two/three}/baz.
+        assert len(named_segment_ids) <= 2
+        if len(named_segment_ids) == 2:
+            # Need to merge a named segment.
+            i, j = named_segment_ids
+            segments = (
+                segments[:i] +
+                [self._merge_segments(segments[i: j + 1])] + segments[j + 1:]
+            )
+        return segments
+
+    def _convert_segment_to_regex(self, segment):
+        # Named segment
+        if "{" in segment:
+            assert "}" in segment
+            # Strip "{" and "}"
+            segment = segment[1:-1]
+            if "=" not in segment:
+                # e.g. {foo} should be {foo=*}
+                return self._convert_segment_to_regex("{" + f"{segment}=*" + "}")
+            key, sub_path_template = segment.split("=")
+            group_name = f"?P<{key}>"
+            sub_regex = self._convert_to_regex(sub_path_template)
+            return f"({group_name}{sub_regex})"
+        # Wildcards
+        if "**" in segment:
+            # ?: nameless capture
+            return ".*"
+        if "*" in segment:
+            return "[^/]+"
+        # Otherwise it's collection ID segment: transformed identically.
+        return segment
+
+    def _merge_segments(self, segments):
+        acc = segments[0]
+        for x in segments[1:]:
+            # Don't add "/" if it's followed by a "**"
+            # because "**" will eat it.
+            if x == ".*":
+                acc += "(?:/.*)?"
+            else:
+                acc += "/"
+                acc += x
+        return acc
+
+    def _how_many_named_segments(self, path_template):
+        return path_template.count("{")
+
+    def _convert_to_regex(self, path_template):
+        if self._how_many_named_segments(path_template) > 1:
+            # This also takes care of complex patterns (i.e. {foo}~{bar})
+            raise ValueError("There must be exactly one named segment. {} has {}.".format(
+                path_template, self._how_many_named_segments(path_template)))
+        segments = self._split_into_segments(path_template)
+        segment_regexes = [self._convert_segment_to_regex(x) for x in segments]
+        final_regex = self._merge_segments(segment_regexes)
+        return final_regex
+
+    def _to_regex(self, path_template: str) -> Pattern:
+        """Converts path_template into a Python regular expression string.
+        Args:
+            path_template (str): A path template corresponding to a resource name.
+                It can only have 0 or 1 named segments. It can not contain complex resource ID path segments.
+                See https://google.aip.dev/122, https://google.aip.dev/4222
+                 and https://google.aip.dev/client-libraries/4231 for more details.
+        Returns:
+            Pattern: A Pattern object that matches strings conforming to the path_template.
+        """
+        return re.compile(f"^{self._convert_to_regex(path_template)}$")
+
+    def to_regex(self) -> Pattern:
+        return self._to_regex(self.path_template)
+
+    @property
+    def key(self) -> Union[str, None]:
+        if self.path_template == "":
+            return self.field
+        regex = self.to_regex()
+        group_names = list(regex.groupindex)
+        # Only 1 named segment is allowed and so only 1 key.
+        return group_names[0] if group_names else self.field
+
+    @property
+    def sample_request(self) -> str:
+        """return json dict for sample request matching the uri template."""
+        sample = uri_sample.sample_from_path_template(
+            self.field, self.path_template)
+        return json.dumps(sample)
+
+
+@dataclasses.dataclass(frozen=True)
+class RoutingRule:
+    routing_parameters: List[RoutingParameter]
+
+    @classmethod
+    def try_parse_routing_rule(cls, routing_rule: routing_pb2.RoutingRule) -> Optional['RoutingRule']:
+        params = getattr(routing_rule, 'routing_parameters')
+        if not params:
+            return None
+        params = [RoutingParameter(x.field, x.path_template) for x in params]
+        return cls(params)
+
+
+@dataclasses.dataclass(frozen=True)
 class HttpRule:
     """Representation of the method's http bindings."""
     method: str
@@ -773,8 +909,12 @@ class HttpRule:
     def path_fields(self, method: "Method") -> List[Tuple[Field, str, str]]:
         """return list of (name, template) tuples extracted from uri."""
         input = method.input
-        return [(input.get_field(*match.group("name").split(".")), match.group("name"), match.group("template"))
-                for match in path_template._VARIABLE_RE.finditer(self.uri)]
+        return [
+            (input.get_field(*match.group("name").split(".")),
+             match.group("name"), match.group("template"))
+            for match in path_template._VARIABLE_RE.finditer(self.uri)
+            if match.group("name")
+        ]
 
     def sample_request(self, method: "Method") -> Dict[str, Any]:
         """return json dict for sample request matching the uri template."""
@@ -788,59 +928,18 @@ class HttpRule:
             Returns:
                   A new nested dict with the templates instantiated.
             """
-
             request: Dict[str, Any] = {}
 
-            def _sample_names() -> Iterator[str]:
-                sample_num: int = 0
-                while True:
-                    sample_num += 1
-                    yield "sample{}".format(sample_num)
-
-            def add_field(obj, path, value):
-                """Insert a field into a nested dict and return the (outer) dict.
-                 Keys and sub-dicts are inserted if necessary to create the path.
-                 e.g. if obj, as passed in, is {}, path is "a.b.c", and value is
-                 "hello", obj will be updated to:
-                  {'a':
-                     {'b':
-                      {
-                      'c': 'hello'
-                      }
-                     }
-                  }
-
-                Args:
-                  obj: a (possibly) nested dict (parsed json)
-                  path: a segmented field name, e.g. "a.b.c"
-                    where each part is a dict key.
-                  value: the value of the new key.
-                Returns:
-                      obj, possibly modified
-                Raises:
-                      AttributeError if the path references a key that is
-                  not a dict.: e.g. path='a.b', obj = {'a':'abc'}
-                """
-
-                segments = path.split('.')
-                leaf = segments.pop()
-                subfield = obj
-                for segment in segments:
-                    subfield = subfield.setdefault(segment, {})
-                subfield[leaf] = value
-                return obj
-
-            sample_names = _sample_names()
+            sample_names_ = uri_sample.sample_names()
             for field, path, template in paths:
                 sample_value = re.sub(
                     r"(\*\*|\*)",
-                    lambda n: next(sample_names),
+                    lambda n: next(sample_names_),
                     template or '*'
                 ) if field.type == PrimitiveType.build(str) else field.mock_value_original_type
-                add_field(request, path, sample_value)
+                uri_sample.add_field(request, path, sample_value)
 
             return request
-
         sample = sample_from_path_fields(self.path_fields(method))
         return sample
 
@@ -874,6 +973,21 @@ class Method:
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
+
+    @property
+    def transport_safe_name(self) -> str:
+        # These names conflict with other methods in the transport.
+        # We don't want to disambiguate the names at the client level
+        # because the disambiguated name is less convenient and user friendly.
+        #
+        # Note: this should really be a class variable,
+        # but python 3.6 can't handle that.
+        TRANSPORT_UNSAFE_NAMES = {
+            "CreateChannel",
+            "GrpcChannel",
+            "OperationsClient",
+        }
+        return f"{self.name}_" if self.name in TRANSPORT_UNSAFE_NAMES else self.name
 
     @property
     def is_operation_polling_method(self):
@@ -965,8 +1079,9 @@ class Method:
     #               e.g. doesn't work with basic case of gRPC transcoding
 
     @property
-    def field_headers(self) -> Sequence[str]:
+    def field_headers(self) -> Sequence[FieldHeader]:
         """Return the field headers defined for this method."""
+
         http = self.options.Extensions[annotations_pb2.http]
 
         pattern = re.compile(r'\{([a-z][\w\d_.]+)=')
@@ -979,8 +1094,25 @@ class Method:
             http.patch,
             http.custom.path,
         ]
+        field_headers = (
+            tuple(FieldHeader(field_header)
+                  for field_header in pattern.findall(verb))
+            for verb in potential_verbs
+            if verb
+        )
+        return next(field_headers, ())
 
-        return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
+    @property
+    def explicit_routing(self):
+        return routing_pb2.routing in self.options.Extensions
+
+    @property
+    def routing_rule(self):
+        if self.explicit_routing:
+            routing_ext = self.options.Extensions[routing_pb2.routing]
+            routing_rule = RoutingRule.try_parse_routing_rule(routing_ext)
+            return routing_rule
+        return None
 
     @property
     def http_options(self) -> List[HttpRule]:

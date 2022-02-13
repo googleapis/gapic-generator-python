@@ -432,6 +432,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
                 # Make the request
                 page_result = client.list_instances(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -486,7 +488,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_instances]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -541,7 +543,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 # Make the request
                 response = client.get_instance(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -589,7 +591,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -661,6 +663,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -737,7 +741,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -806,6 +810,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -873,7 +879,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -934,6 +940,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -995,7 +1003,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.upgrade_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1066,6 +1074,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1127,7 +1137,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.import_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1194,6 +1204,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1255,7 +1267,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.export_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1316,6 +1328,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1378,7 +1392,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.failover_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1437,6 +1451,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1499,7 +1515,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_instance]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
