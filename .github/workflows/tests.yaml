@@ -15,13 +15,14 @@ concurrency:
 
 jobs:
   docs:
+    # Don't upgrade python version; there's a bug in 3.10 sphinx
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.9"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
@@ -31,10 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python "3.10"
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
@@ -47,10 +48,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python "3.10"
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -66,23 +67,25 @@ jobs:
           ./gapic-showcase run &
           cd -
         env:
-          SHOWCASE_VERSION: 0.18.0
+          SHOWCASE_VERSION: 0.19.0
       - name: Install nox.
         run: python -m pip install nox
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
             sudo mkdir -p /usr/src/protoc/
             sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
             cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
+            unzip protoc-3.19.0.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run showcase tests.
         run: nox -s ${{ matrix.target }}
   showcase-mtls:
+    if: ${{ false }}            # TODO(dovs): reenable when #1218 is fixed
     strategy:
       matrix:
         target: [showcase_mtls, showcase_mtls_alternative_templates]
+      max-parallel: 1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -90,10 +93,10 @@ jobs:
         run: |
           sudo mkdir -p /tmp/workspace/tests/cert/
           sudo chown -R ${USER} /tmp/workspace/
-      - name: Set up Python 3.9
+      - name: Set up Python "3.10"
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
           cache: 'pip'
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
@@ -103,13 +106,13 @@ jobs:
           sudo apt-get install -y curl pandoc unzip gcc
       - name: Install nox.
         run: python -m pip install nox
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
           sudo mkdir -p /usr/src/protoc/
           sudo chown -R ${USER} /usr/src
-          curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+          curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
           cd /usr/src/protoc/
-          unzip protoc-3.12.1.zip
+          unzip protoc-3.19.0.zip
           sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
           cd -
       - name: Run showcase tests.
@@ -119,82 +122,73 @@ jobs:
             cd gapic_showcase
             curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v${SHOWCASE_VERSION}/gapic-showcase-${SHOWCASE_VERSION}-linux-amd64.tar.gz | tar xz
             ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
-            showcase_pid=$!
-
-            cleanup() {
-              echo "kill showcase server"
-            	kill $showcase_pid
-            	# Wait for the process to die, but don't report error from the kill.
-            	wait $showcase_pid || exit $exit_code
-            }
-            trap cleanup EXIT
 
             cd ..
             nox -s ${{ matrix.target }}
         env:
-          SHOWCASE_VERSION: 0.18.0
+          SHOWCASE_VERSION: 0.19.0
   # TODO(yon-mg): add compute unit tests
   showcase-unit:
     strategy:
       matrix:
-        python: [3.6, 3.7, 3.8, 3.9]
+        python: ["3.6", "3.7", "3.8", "3.9", "3.10"]
         variant: ['', _alternative_templates]
         exclude:
-          - python: 3.6
+          - python: "3.6"
             variant: _alternative_templates
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python }}
+      - name: Set up Python "${{ matrix.python }}"
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python }}
+          python-version: "${{ matrix.python }}"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
             sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
             sudo mkdir -p /usr/src/protoc/
             sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
             cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
+            unzip protoc-3.19.0.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
         run: python -m pip install nox
       - name: Run unit tests.
         run: nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
         env:
-          SHOWCASE_VERSION: 0.18.0
+          SHOWCASE_VERSION: 0.19.0
   showcase-unit-add-iam-methods:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python "3.10"
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
             sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
             sudo mkdir -p /usr/src/protoc/
             sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
             cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
+            unzip protoc-3.19.0.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
         run: python -m pip install nox
       - name: Run unit tests.
         run: nox -s showcase_unit_add_iam_methods
         env:
-          SHOWCASE_VERSION: 0.18.0
+          SHOWCASE_VERSION: 0.19.0
   showcase-mypy:
     runs-on: ubuntu-latest
     strategy:
@@ -202,37 +196,37 @@ jobs:
         variant: ['', _alternative_templates]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python "3.10"
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
             sudo apt-get update
             sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
             sudo mkdir -p /usr/src/protoc/
             sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
             cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
+            unzip protoc-3.19.0.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
         run: python -m pip install nox
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy${{ matrix.variant }}
         env:
-          SHOWCASE_VERSION: 0.18.0
+          SHOWCASE_VERSION: 0.19.0
   snippetgen:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python "3.10"
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -245,7 +239,7 @@ jobs:
   unit:
     strategy:
       matrix:
-        python: [3.6, 3.7, 3.8, 3.9]
+        python: ["3.6", "3.7", "3.8", "3.9", "3.10"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -266,10 +260,10 @@ jobs:
   fragment:
     strategy:
       matrix:
-        python: [3.6, 3.7, 3.8, 3.9]
+        python: ["3.6", "3.7", "3.8", "3.9", "3.10"]
         variant: ['', _alternative_templates]
         exclude:
-          - python: 3.6
+          - python: "3.6"
             variant: _alternative_templates
     runs-on: ubuntu-latest
     steps:
@@ -320,10 +314,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
           cache: 'pip'
       - name: Install nox.
         run: |
@@ -338,10 +332,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python "3.10"
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
           cache: 'pip'
       - name: Install autopep8
         run: |
