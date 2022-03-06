@@ -2329,7 +2329,11 @@ def test_{{ service.name|snake_case }}_host_no_port():
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}'),
     )
+    {% if 'rest' in opts.transport %}
     assert client.transport._host == '{{ host }}:443'
+    {% else %}
+    assert client.transport._host == 'https://{{ host }}:443'
+    {% endif %}
     {% endwith %}
 
 
@@ -2339,7 +2343,11 @@ def test_{{ service.name|snake_case }}_host_with_port():
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}:8000'),
     )
+    {% if 'rest' in opts.transport %}
     assert client.transport._host == '{{ host }}:8000'
+    {% else %}
+    assert client.transport._host == 'https://{{ host }}:8000'
+    {% endif %}
     {% endwith %}
 
 {% if 'grpc' in opts.transport %}
