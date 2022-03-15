@@ -1585,7 +1585,11 @@ class Service:
     @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
-        return any([m.lro for m in self.methods.values()])
+        return any(m.lro for m in self.methods.values())
+
+    @property
+    def has_extended_lro(self) -> bool:
+        return any(m.extended_lro for m in self.methods.values())
 
     @property
     def has_pagers(self) -> bool:

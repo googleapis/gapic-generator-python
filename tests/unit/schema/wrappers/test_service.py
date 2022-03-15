@@ -633,6 +633,7 @@ def test_extended_operations_lro_detection():
         ],
     )
 
+    assert not ops_service.has_extended_lro
     assert not ops_service.any_extended_operations_methods
     assert not polling_method.operation_service
 
