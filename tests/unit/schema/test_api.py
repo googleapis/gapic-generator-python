@@ -1242,10 +1242,17 @@ def test_extended_lro_no_such_service():
                 "extended_lro.proto",
                 package="exlro",
                 messages=(
-                    make_message_pb2(name="Operation", fields=operation_fields),
-                    make_message_pb2(name="InitialRequest"),
-                    make_message_pb2(name="GetOperationRequest"),
+                    make_message_pb2(
+                        name="Operation",
+                        fields=operation_fields,
                     ),
+                    make_message_pb2(
+                        name="InitialRequest"
+                    ),
+                    make_message_pb2(
+                        name="GetOperationRequest"
+                    ),
+                ),
                 services=(
                     descriptor_pb2.ServiceDescriptorProto(
                         name="OpsService",
@@ -1296,9 +1303,16 @@ def test_extended_lro_no_polling_method():
                 "extended_lro.proto",
                 package="exlro",
                 messages=(
-                    make_message_pb2(name="Operation", fields=operation_fields),
-                    make_message_pb2(name="InitialRequest"),
-                    make_message_pb2(name="GetOperationRequest"),
+                    make_message_pb2(
+                        name="Operation",
+                        fields=operation_fields,
+                    ),
+                    make_message_pb2(
+                        name="InitialRequest",
+                    ),
+                    make_message_pb2(
+                        name="GetOperationRequest",
+                    ),
                 ),
                 services=(
                     descriptor_pb2.ServiceDescriptorProto(
@@ -1352,10 +1366,19 @@ def test_extended_lro_different_output_types():
                 "extended_lro.proto",
                 package="exlro",
                 messages=(
-                    make_message_pb2(name="Operation", fields=operation_fields),
-                    make_message_pb2(name="InitialRequest"),
-                    make_message_pb2(name="GetOperationRequest"),
-                    make_message_pb2(name="GetOperationResponse"),
+                    make_message_pb2(
+                        name="Operation",
+                        fields=operation_fields,
+                    ),
+                    make_message_pb2(
+                        name="InitialRequest",
+                    ),
+                    make_message_pb2(
+                        name="GetOperationRequest",
+                    ),
+                    make_message_pb2(
+                        name="GetOperationResponse",
+                    ),
                 ),
                 services=(
                     descriptor_pb2.ServiceDescriptorProto(

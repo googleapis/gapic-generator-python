@@ -717,7 +717,9 @@ def test_transport_adc(transport_class):
     {% endif %}
 ])
 def test_transport_kind(transport_name):
-    transport = {{ service.client_name }}.get_transport_class(transport_name)()
+    transport = {{ service.client_name }}.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     assert transport.kind == transport_name
 
 {% if 'grpc' in opts.transport %}

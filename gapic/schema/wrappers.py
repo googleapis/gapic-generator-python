@@ -834,7 +834,7 @@ class ExtendedOperationInfo:
     request_type: MessageType
     operation_type: MessageType
 
-    def with_context(self, *, collisions: FrozenSet[str]) -> 'OperationInfo':
+    def with_context(self, *, collisions: FrozenSet[str]) -> 'ExtendedOperationInfo':
         """Return a derivative of this OperationInfo with the provided context.
 
           This method is used to address naming collisions. The returned
@@ -1064,7 +1064,8 @@ class Method:
     input: MessageType
     output: MessageType
     lro: Optional[OperationInfo] = dataclasses.field(default=None)
-    extended_lro: Optional[ExtendedOperationInfo] = dataclasses.field(default=None)
+    extended_lro: Optional[ExtendedOperationInfo] = dataclasses.field(
+        default=None)
     retry: Optional[RetryInfo] = dataclasses.field(default=None)
     timeout: Optional[float] = None
     meta: metadata.Metadata = dataclasses.field(

@@ -942,7 +942,9 @@ class _ProtoBuilder:
             None,
         )
         if not op_service_pb:
-            raise ValueError(f"Could not find custom operation service: {op_service_name}")
+            raise ValueError(
+                f"Could not find custom operation service: {op_service_name}"
+            )
 
         operation_polling_method_pb = next(
             (
@@ -965,7 +967,9 @@ class _ProtoBuilder:
         operation_type = service_address.resolve(
             operation_polling_method_pb.output_type.lstrip(".")
         )
-        method_output_type = service_address.resolve(meth_pb.output_type.lstrip("."))
+        method_output_type = service_address.resolve(
+            meth_pb.output_type.lstrip(".")
+        )
         if operation_type != method_output_type:
             raise ValueError(
                 f"Inconsistent return types between extended lro method '{meth_pb.name}'"
@@ -1014,7 +1018,10 @@ class _ProtoBuilder:
             answer[meth_pb.name] = wrappers.Method(
                 input=self.api_messages[meth_pb.input_type.lstrip('.')],
                 lro=self._maybe_get_lro(service_address, meth_pb),
-                extended_lro=self._maybe_get_extended_lro(service_address, meth_pb),
+                extended_lro=self._maybe_get_extended_lro(
+                    service_address,
+                    meth_pb,
+                ),
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=service_address.child(meth_pb.name, path + (i,)),

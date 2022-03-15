@@ -924,7 +924,11 @@ def test_differently_named_extended_operation_fields(
     operation = make_message(
         name="Operation",
         fields=[
-            make_field(name=name.lower(), type=T.Value("TYPE_STRING"), number=i)
+            make_field(
+                name=name.lower(),
+                type=T.Value("TYPE_STRING"),
+                number=i,
+            )
             for i, name in enumerate(all_field_names, start=1)
         ]
     )
