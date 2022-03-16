@@ -209,6 +209,22 @@ def test_proto_names():
     assert proto.disambiguate('foo') == '_foo'
 
 
+def test_proto_with_invalid_characters():
+    # Protos with filenames that contain `.` in the basename
+    # cannot be directly imported. Test that `.` is changed to `_`
+    # See https://peps.python.org/pep-0008/#package-and-module-names
+    fd = (
+        make_file_pb2(
+            name='k8s.min.proto',
+            package='google.keywords.v1',
+            messages=(make_message_pb2(name='ImportRequest', fields=()),),
+        ),
+    )
+    api_schema = api.API.build(fd, package='google.keywords.v1')
+    assert set(api_schema.protos.keys()) == {
+        'k8s_min.proto',
+    }
+
 def test_proto_keyword_fname():
     # Protos with filenames that happen to be python keywords
     # cannot be directly imported.
