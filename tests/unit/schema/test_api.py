@@ -225,6 +225,7 @@ def test_proto_with_invalid_characters():
         'k8s_min.proto',
     }
 
+
 def test_proto_keyword_fname():
     # Protos with filenames that happen to be python keywords
     # cannot be directly imported.
