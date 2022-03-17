@@ -20,7 +20,7 @@ from setuptools import find_packages, setup  # type: ignore
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-version = "0.63.2"
+version = "0.63.7"
 
 with io.open(os.path.join(PACKAGE_ROOT, "README.rst")) as file_obj:
     README = file_obj.read()
@@ -44,7 +44,7 @@ setup(
     include_package_data=True,
     install_requires=(
         "click >= 6.7",
-        "google-api-core >= 2.2.0",
+        "google-api-core >= 2.3.2",
         "googleapis-common-protos >= 1.55.0",
         "grpcio >= 1.24.3",
         "jinja2 >= 2.10",

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -383,8 +383,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             ) -> pagers.ListLogMetricsPager:
         r"""Lists logs-based metrics.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -493,8 +492,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -600,8 +598,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -725,8 +722,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -848,8 +844,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             ) -> None:
         r"""Deletes a logs-based metric.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 

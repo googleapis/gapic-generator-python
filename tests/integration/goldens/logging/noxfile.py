@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,14 @@ import sys
 
 import nox  # type: ignore
 
+ALL_PYTHON = [
+    "3.6",
+    "3.7",
+    "3.8",
+    "3.9",
+    "3.10",
+]
+
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
@@ -43,7 +51,7 @@ nox.sessions = [
     "lint_setup_py",
 ]
 
-@nox.session(python=['3.6', '3.7', '3.8', '3.9', '3.10'])
+@nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
 
@@ -54,6 +62,7 @@ def unit(session):
         'py.test',
         '--quiet',
         '--cov=google/cloud/logging_v2/',
+        '--cov=tests/',
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',
@@ -73,7 +82,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=['3.6', '3.7', '3.8', '3.9'])
+@nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
     session.install('mypy', 'types-pkg_resources')

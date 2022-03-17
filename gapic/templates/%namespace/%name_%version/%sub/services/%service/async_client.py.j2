@@ -209,7 +209,7 @@ class {{ service.async_client_name }}:
 
         {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
         {% if snippet is not none %}
-        .. code-block::
+        .. code-block:: python
 
 {{ snippet.full_snippet|indent(width=12, first=True) }}
         {% endif %}
@@ -327,7 +327,7 @@ class {{ service.async_client_name }}:
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
-                ("{{ field_header }}", request.{{ field_header }}),
+                ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
                 {% endif %}
                 {% endfor %}
             )),

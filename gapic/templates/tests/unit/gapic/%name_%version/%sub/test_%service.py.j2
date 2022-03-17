@@ -84,23 +84,33 @@ def test__get_default_mtls_endpoint():
     assert {{ service.client_name }}._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [
-    {{ service.client_name }},
+@pytest.mark.parametrize("client_class,transport_name", [
     {% if 'grpc' in opts.transport %}
-    {{ service.async_client_name }},
+    ({{ service.client_name }}, "grpc"),
+    ({{ service.async_client_name }}, "grpc_asyncio"),
+    {% endif %}
+    {% if 'rest' in opts.transport %}
+    ({{ service.client_name }}, "rest"),
     {% endif %}
 ])
-def test_{{ service.client_name|snake_case }}_from_service_account_info(client_class):
+def test_{{ service.client_name|snake_case }}_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         {% if service.host %}
-        assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
+        assert client.transport._host == (
+            '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
+            {% if 'rest' in opts.transport %}
+            if transport_name in ['grpc', 'grpc_asyncio']
+            else     
+            'https://{{ service.host }}'
+            {% endif %}
+        )
         {% endif %}
 
 
@@ -125,26 +135,36 @@ def test_{{ service.client_name|snake_case }}_service_account_always_use_jwt(tra
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [
-    {{ service.client_name }},
+@pytest.mark.parametrize("client_class,transport_name", [
     {% if 'grpc' in opts.transport %}
-    {{ service.async_client_name }},
+    ({{ service.client_name }}, "grpc"),
+    ({{ service.async_client_name }}, "grpc_asyncio"),
+    {% endif %}
+    {% if 'rest' in opts.transport %}
+    ({{ service.client_name }}, "rest"),
     {% endif %}
 ])
-def test_{{ service.client_name|snake_case }}_from_service_account_file(client_class):
+def test_{{ service.client_name|snake_case }}_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         {% if service.host %}
-        assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
+        assert client.transport._host == (
+            '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
+            {% if 'rest' in opts.transport %}
+            if transport_name in ['grpc', 'grpc_asyncio']
+            else     
+            'https://{{ service.host }}'
+            {% endif %}
+        )
         {% endif %}
 
 
@@ -800,7 +820,7 @@ def test_{{ method_name }}_field_headers():
     request = {{ method.input.ident }}()
 
     {% for field_header in method.field_headers %}
-    request.{{ field_header }} = '{{ field_header }}/value'
+    request.{{ field_header.disambiguated }} = '{{ field_header.raw }}/value'
     {% endfor %}
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -828,7 +848,7 @@ def test_{{ method_name }}_field_headers():
     assert (
         'x-goog-request-params',
         '{% for field_header in method.field_headers -%}
-        {{ field_header }}={{ field_header }}/value
+        {{ field_header.raw }}={{ field_header.raw }}/value
         {%- if not loop.last %}&{% endif %}
         {%- endfor -%}',
     ) in kw['metadata']
@@ -845,7 +865,7 @@ async def test_{{ method_name }}_field_headers_async():
     request = {{ method.input.ident }}()
 
     {% for field_header in method.field_headers %}
-    request.{{ field_header }} = '{{ field_header }}/value'
+    request.{{ field_header.disambiguated }} = '{{ field_header.raw }}/value'
     {% endfor %}
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -874,7 +894,7 @@ async def test_{{ method_name }}_field_headers_async():
     assert (
         'x-goog-request-params',
         '{% for field_header in method.field_headers -%}
-        {{ field_header }}={{ field_header }}/value
+        {{ field_header.raw }}={{ field_header.raw }}/value
         {%- if not loop.last %}&{% endif %}
         {%- endfor -%}',
     ) in kw['metadata']
@@ -1123,7 +1143,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
-                ('{{ field_header }}', ''),
+                ('{{ field_header.raw }}', ''),
                 {% endif %}
                 {% endfor %}
             )),
@@ -1280,7 +1300,7 @@ async def test_{{ method_name }}_async_pager():
         async_pager = await client.{{ method_name }}(request={},)
         assert async_pager.next_page_token == 'abc'
         responses = []
-        async for response in async_pager:
+        async for response in async_pager: # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -1368,7 +1388,7 @@ async def test_{{ method_name }}_async_pages():
         {% endif %}
         )
         pages = []
-        async for page_ in (await client.{{ method_name }}(request={})).pages:
+        async for page_ in (await client.{{ method_name }}(request={})).pages: # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -2318,23 +2338,54 @@ def test_{{ service.name|snake_case }}_rest_lro_client():
 
 {% endif %} {# rest #}
 
-def test_{{ service.name|snake_case }}_host_no_port():
+@pytest.mark.parametrize("transport_name", [
+    {% if 'grpc' in opts.transport %}
+    "grpc",
+    "grpc_asyncio",
+    {% endif %}
+    {% if 'rest' in opts.transport %}
+    "rest",
+    {% endif %}
+])
+def test_{{ service.name|snake_case }}_host_no_port(transport_name):
     {% with host = (service.host|default('localhost', true)).split(':')[0] %}
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}'),
+         transport=transport_name,
     )
-    assert client.transport._host == '{{ host }}:443'
+    assert client.transport._host == (
+        '{{ host }}:443'
+        {% if 'rest' in opts.transport %}
+        if transport_name in ['grpc', 'grpc_asyncio']
+        else 'https://{{ host }}'
+        {% endif %}
+    )
     {% endwith %}
 
-
-def test_{{ service.name|snake_case }}_host_with_port():
+@pytest.mark.parametrize("transport_name", [
+    {% if 'grpc' in opts.transport %}
+    "grpc",
+    "grpc_asyncio",
+    {% endif %}
+    {% if 'rest' in opts.transport %}
+    "rest",
+    {% endif %}
+])
+def test_{{ service.name|snake_case }}_host_with_port(transport_name):
     {% with host = (service.host|default('localhost', true)).split(':')[0] %}
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}:8000'),
+        transport=transport_name,
     )
-    assert client.transport._host == '{{ host }}:8000'
+    assert client.transport._host == (
+        '{{ host }}:8000'
+        {% if 'rest' in opts.transport %}
+        if transport_name in ['grpc', 'grpc_asyncio']
+        else 'https://{{ host }}:8000'
+        {% endif %}
+    )
     {% endwith %}
 
 {% if 'grpc' in opts.transport %}

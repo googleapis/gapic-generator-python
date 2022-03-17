@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -209,7 +209,7 @@ class IAMCredentialsAsyncClient:
         account.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.iam import credentials_v1
 
@@ -363,7 +363,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         account.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.iam import credentials_v1
 
@@ -510,7 +510,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         private key.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.iam import credentials_v1
 
@@ -644,7 +644,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         private key.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.iam import credentials_v1
 

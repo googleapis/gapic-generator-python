@@ -1,6 +1,43 @@
 # Changelog
 
 
+### [0.63.7](https://github.com/googleapis/gapic-generator-python/compare/v0.63.6...v0.63.7) (2022-03-08)
+
+
+### Bug Fixes
+
+* resolve issue where rest transport is not used in certain tests ([#1231](https://github.com/googleapis/gapic-generator-python/issues/1231)) ([90ab41a](https://github.com/googleapis/gapic-generator-python/commit/90ab41ab1f1b058ec0eb4a96b973031898f64df0))
+
+### [0.63.6](https://github.com/googleapis/gapic-generator-python/compare/v0.63.5...v0.63.6) (2022-03-04)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >=2.3.2 ([#1225](https://github.com/googleapis/gapic-generator-python/issues/1225)) ([f59917f](https://github.com/googleapis/gapic-generator-python/commit/f59917fdbdf5ee4091e35d721811dcd7f4b9a3f3))
+
+### [0.63.5](https://github.com/googleapis/gapic-generator-python/compare/v0.63.4...v0.63.5) (2022-02-25)
+
+
+### Bug Fixes
+
+* update license year to 2022 ([#1199](https://github.com/googleapis/gapic-generator-python/issues/1199)) ([31292d5](https://github.com/googleapis/gapic-generator-python/commit/31292d59c8d08695f3e2dfa75861c86d723a9d35))
+
+### [0.63.4](https://github.com/googleapis/gapic-generator-python/compare/v0.63.3...v0.63.4) (2022-02-22)
+
+
+### Bug Fixes
+
+* fix snippet region tag format ([#1210](https://github.com/googleapis/gapic-generator-python/issues/1210)) ([e895106](https://github.com/googleapis/gapic-generator-python/commit/e8951064827c726bb651801336b86188e2628386))
+
+### [0.63.3](https://github.com/googleapis/gapic-generator-python/compare/v0.63.2...v0.63.3) (2022-02-16)
+
+
+### Bug Fixes
+
+* disambiguate field headers whose names are reserved python words ([#1178](https://github.com/googleapis/gapic-generator-python/issues/1178)) ([98aa690](https://github.com/googleapis/gapic-generator-python/commit/98aa6906031276dcad899fdb88f47cbafc651ae4))
+* fix docstring code block formatting ([#1206](https://github.com/googleapis/gapic-generator-python/issues/1206)) ([500dfe7](https://github.com/googleapis/gapic-generator-python/commit/500dfe7e401888b3bea6488d6e6fee9955f1a2ab))
+* HTTP body field messages with enums or recursive fields ([#1201](https://github.com/googleapis/gapic-generator-python/issues/1201)) ([246bfe2](https://github.com/googleapis/gapic-generator-python/commit/246bfe2948362bc8f6035aafc0dbd9e65f5acc2b))
+
 ### [0.63.2](https://github.com/googleapis/gapic-generator-python/compare/v0.63.1...v0.63.2) (2022-02-09)
 
 
