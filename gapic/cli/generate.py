@@ -57,7 +57,7 @@ def generate(
     # This object is a frozen representation of the whole API, and is sent
     # to each template in the rendering step.
     api_schema = api.API.build(req.proto_file, opts=opts, package=package)
-
+    
     # Translate into a protobuf CodeGeneratorResponse; this reads the
     # individual templates and renders them.
     # If there are issues, error out appropriately.

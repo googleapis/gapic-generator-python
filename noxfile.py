@@ -57,11 +57,11 @@ def unit(session):
             or [
                 "-vv",
                 "-n=auto",
-                "--cov=gapic",
-                "--cov-config=.coveragerc",
-                "--cov-report=term",
-                "--cov-fail-under=100",
-                path.join("tests", "unit"),
+                #"--cov=gapic",
+                #"--cov-config=.coveragerc",
+                #"--cov-report=term",
+                #"--cov-fail-under=100",
+                path.join("tests", "unit", "schema", "test_api.py"),
             ]
         ),
     )
@@ -197,11 +197,18 @@ def showcase_library(
             external=True,
             silent=True,
         )
-
+        session.run(
+            "git",
+            "clone",
+            "https://github.com/googleapis/gapic-showcase.git",
+            f"{tmp_dir}/gapic-showcase"
+        )
+        #breakpoint()
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="
-        opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest"))
+        #breakpoint()
+        opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/gapic-showcase/schema/google/showcase/v1beta1/showcase_v1beta1.yaml"))
         cmd_tup = (
             "python",
             "-m",

@@ -45,13 +45,14 @@ setup(
     install_requires=(
         "click >= 6.7",
         "google-api-core >= 2.2.0",
-        "googleapis-common-protos >= 1.54.0",
+        "googleapis-common-protos >= 1.55.0",
         "grpcio >= 1.24.3",
         "jinja2 >= 2.10",
         "protobuf >= 3.18.0",
         "pypandoc >= 1.4",
         "PyYAML >= 5.1.1",
-        "dataclasses < 0.8; python_version < '3.7'"
+        "dataclasses < 0.8; python_version < '3.7'",
+        "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     ),
     extras_require={':python_version<"3.7"': ("dataclasses >= 0.4, < 0.8",),},
     tests_require=("pyfakefs >= 3.6",),

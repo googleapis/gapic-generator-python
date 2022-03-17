@@ -340,7 +340,6 @@ class Oneof:
     def __getattr__(self, name):
         return getattr(self.oneof_pb, name)
 
-
 @dataclasses.dataclass(frozen=True)
 class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
@@ -1340,6 +1339,45 @@ class Method:
             meta=self.meta.with_context(collisions=collisions),
         )
 
+@dataclasses.dataclass(frozen=True)
+class MixinMethod():
+    
+    @property
+    def http_options(self) -> List[HttpRule]:
+        """Return a list of the http bindings for this method."""
+        http = self.options.Extensions[annotations_pb2.http]
+        http_options = [http] + list(http.additional_bindings)
+        opt_gen = (HttpRule.try_parse_http_rule(http_rule)
+                   for http_rule in http_options)
+        return [rule for rule in opt_gen if rule]
+
+    @property
+    def http_opt(self) -> Optional[Dict[str, str]]:
+        """Return the (main) http option for this method.
+
+          e.g. {'verb': 'post'
+                'url': '/some/path'
+                'body': '*'}
+
+        """
+        http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]
+        http = self.options.Extensions[annotations_pb2.http].ListFields()
+
+        if len(http) < 1:
+            return None
+
+        http_method = http[0]
+        answer: Dict[str, str] = {
+            'verb': http_method[0].name,
+            'url': http_method[1],
+        }
+        if len(http) > 1:
+            body_spec = http[1]
+            answer[body_spec[0].name] = body_spec[1]
+
+        # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
+        # TODO(yon-mg): enums for http verbs?
+        return answer
 
 @dataclasses.dataclass(frozen=True)
 class CommonResource:
