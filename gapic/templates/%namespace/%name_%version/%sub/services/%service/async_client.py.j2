@@ -33,6 +33,9 @@ except AttributeError:  # pragma: NO COVER
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
+{% if api.has_location_mixin() %}
+from google.cloud.location import locations_pb2
+{% endif %}
 {% endfilter %}
 from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
@@ -374,8 +377,9 @@ class {{ service.async_client_name }}:
         {{ "\n" }}
     {% endfor %}
 
+    {% include '%namespace/%name_%version/%sub/services/%service/_async_mixins.py.j2' %}
 
-    {% if opts.add_iam_methods or api.has_iam_mixin() %}
+    {% if opts.add_iam_methods %}
     async def set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest = None,
