@@ -238,7 +238,7 @@ class API:
     naming: api_naming.Naming
     all_protos: Mapping[str, Proto]
     service_yaml_config: service_pb2.Service
-    opts: Options = Options(),
+    opts: Options = Options()
     subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
    
     @classmethod
@@ -338,7 +338,6 @@ class API:
         # Parse the google.api.Service proto from the service_yaml data.
         service_yaml_config = service_pb2.Service()
         ParseDict(opts.service_yaml_config, service_yaml_config)
-        assert len(service_yaml_config.apis) > 0
 
         # Done; return the API.
         return cls(naming=naming,
