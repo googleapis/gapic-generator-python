@@ -17,7 +17,6 @@ Everything else in the :mod:`~.schema` module is usually accessed
 through an :class:`~.API` object.
 """
 
-from __future__ import annotations
 import collections
 import dataclasses
 import itertools
@@ -31,22 +30,18 @@ from google.api_core import exceptions
 from google.api import http_pb2  # type: ignore
 from google.api import resource_pb2  # type: ignore
 from google.api import service_pb2  # type: ignore
-from google.protobuf import any_pb2
 from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2
-from google.cloud.location import locations_pb2
-from google.protobuf import descriptor_pb2
-from google.protobuf import empty_pb2
+from google.iam.v1 import iam_policy_pb2 # type: ignore
+from google.cloud.location import locations_pb2 # type: ignore
+from google.protobuf import descriptor_pb2 # type: ignore
 from google.protobuf.json_format import MessageToJson
 from google.protobuf.json_format import ParseDict
 from google.protobuf.descriptor import ServiceDescriptor
 import grpc  # type: ignore
-from google.rpc import status_pb2
 from google.protobuf.descriptor_pb2 import MethodDescriptorProto
-from google.protobuf import duration_pb2
-from google.api.annotations_pb2 import http
+from google.api import annotations_pb2 # type: ignore
 from gapic.schema import metadata
 from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
@@ -503,7 +498,7 @@ class API:
 
     @property
     def mixin_api_methods(self) -> Dict[str, MethodDescriptorProto]:
-        methods = {}
+        methods: Dict[str, MethodDescriptorProto] = {}
         if self.has_location_mixin():
             methods = {**methods, **self._get_methods_from_service(locations_pb2)}
         if self.has_iam_mixin():
@@ -534,7 +529,7 @@ class API:
                 m = methods[rule.selector]
                 x = descriptor_pb2.MethodDescriptorProto()
                 m.CopyToProto(x)
-                x.options.Extensions[http].CopyFrom(rule)
+                x.options.Extensions[annotations_pb2.http].CopyFrom(rule)
                 methods_to_generate[x.name] = x
         return methods_to_generate
 
