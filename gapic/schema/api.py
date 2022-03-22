@@ -33,15 +33,15 @@ from google.api import service_pb2  # type: ignore
 from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2 # type: ignore
-from google.cloud.location import locations_pb2 # type: ignore
-from google.protobuf import descriptor_pb2 # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.protobuf import descriptor_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from google.protobuf.json_format import ParseDict
 from google.protobuf.descriptor import ServiceDescriptor
 import grpc  # type: ignore
 from google.protobuf.descriptor_pb2 import MethodDescriptorProto
-from google.api import annotations_pb2 # type: ignore
+from google.api import annotations_pb2  # type: ignore
 from gapic.schema import metadata
 from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
@@ -55,6 +55,7 @@ from gapic.utils import RESERVED_NAMES
 TRANSPORT_GRPC = "grpc"
 TRANSPORT_GRPC_ASYNC = "grpc-async"
 TRANSPORT_REST = "rest"
+
 
 @dataclasses.dataclass(frozen=True)
 class Proto:
@@ -235,7 +236,7 @@ class API:
     service_yaml_config: service_pb2.Service
     opts: Options = Options()
     subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
-   
+
     @classmethod
     def build(
         cls,
@@ -500,9 +501,11 @@ class API:
     def mixin_api_methods(self) -> Dict[str, MethodDescriptorProto]:
         methods: Dict[str, MethodDescriptorProto] = {}
         if self.has_location_mixin():
-            methods = {**methods, **self._get_methods_from_service(locations_pb2)}
+            methods = {**methods, **
+                self._get_methods_from_service(locations_pb2)}
         if self.has_iam_mixin():
-            methods = {**methods, **self._get_methods_from_service(iam_policy_pb2)}
+            methods = {**methods, **
+                self._get_methods_from_service(iam_policy_pb2)}
         # For LRO, expose operations client instead.
         return methods
 
@@ -522,7 +525,8 @@ class API:
         for service_name in services:
             service: ServiceDescriptor = services[service_name]
             for method in service.methods:
-                fqn = "{}.{}.{}".format(service_pb.DESCRIPTOR.package, service.name, method.name)
+                fqn = "{}.{}.{}".format(
+                    service_pb.DESCRIPTOR.package, service.name, method.name)
                 methods[fqn] = method
         for rule in self.service_yaml_config.http.rules:
             if rule.selector in methods:

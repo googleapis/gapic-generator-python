@@ -349,6 +349,7 @@ class Oneof:
     def __getattr__(self, name):
         return getattr(self.oneof_pb, name)
 
+
 @dataclasses.dataclass(frozen=True)
 class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""

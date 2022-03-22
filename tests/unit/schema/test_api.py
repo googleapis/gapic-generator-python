@@ -19,7 +19,7 @@ from unittest import mock
 
 import pytest
 
-from google.api import annotations_pb2 # type: ignore
+from google.api import annotations_pb2  # type: ignore
 from google.api import client_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions
@@ -29,7 +29,7 @@ from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf.json_format import MessageToJson
 from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2 # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 from gapic.schema import api
 from gapic.schema import imp
@@ -1827,7 +1827,8 @@ def test_mixin_api_methods_locations():
     m2.options.Extensions[annotations_pb2.http].get = '/v1/{name=examples/*}/*'
     m2.options.Extensions[annotations_pb2.http].body = '*'
     api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
-    assert api_schema.mixin_api_methods == {'ListLocations': m1, 'GetLocation': m2}
+    assert api_schema.mixin_api_methods == {
+        'ListLocations': m1, 'GetLocation': m2}
 
 
 def test_mixin_api_methods_iam():
@@ -1842,7 +1843,7 @@ def test_mixin_api_methods_iam():
         'post': '/v1/{resource=examples/*}/*',
         'body': '*'
     }
-    r2 =  {
+    r2 = {
         'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
         'get': '/v1/{resource=examples/*}/*',
         'body': '*'
@@ -1880,5 +1881,6 @@ def test_mixin_api_methods_iam():
     m3.options.Extensions[annotations_pb2.http].post = r3['post']
     m3.options.Extensions[annotations_pb2.http].body = r3['body']
     api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
-    assert api_schema.mixin_api_methods == {'SetIamPolicy': m1, 'GetIamPolicy': m2, 'TestIamPermissions': m3}
+    assert api_schema.mixin_api_methods == {
+        'SetIamPolicy': m1, 'GetIamPolicy': m2, 'TestIamPermissions': m3}
     assert not api_schema.has_operations_mixin()
