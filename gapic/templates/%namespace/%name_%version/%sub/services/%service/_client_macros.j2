@@ -209,6 +209,8 @@
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
         {% elif method.extended_lro and full_extended_lro %}

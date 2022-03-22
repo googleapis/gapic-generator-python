@@ -9,6 +9,7 @@
  #}
 from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator
 
+from google.api_core import gapic_v1
 {% filter sort_lines %}
 {% for method in service.methods.values() | selectattr('paged_result_field') %}
 {{ method.input.ident.python_import }}
@@ -19,6 +20,8 @@ from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Opt
 {% endfor %}
 {% endfilter %}
 {% endif %}
+
+from .client import OptionalRetry
 
 
 class {{ method.name }}Pager:
@@ -43,6 +46,8 @@ class {{ method.name }}Pager:
             request: {{ method.input.ident }},
             response: {{ method.output.ident }},
             *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
@@ -59,6 +64,8 @@ class {{ method.name }}Pager:
         self._method = method
         self._request = {{ method.input.ident }}(request)
         self._response = response
+        self._retry = retry
+        self._timeout = timeout
         self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
@@ -69,7 +76,7 @@ class {{ method.name }}Pager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     {% if method.paged_result_field.map %}
