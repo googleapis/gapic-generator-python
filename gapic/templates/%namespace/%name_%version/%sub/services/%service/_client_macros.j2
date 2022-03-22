@@ -181,6 +181,17 @@
         )
         {% endif %} {# method.explicit_routing #}
 
+        {% if method.paged_result_field %}
+        # This method is paged; wrap the requests and responses in a
+        # pager, which provides an `__iter__` convenience method.
+        response = {{ method.client_output.ident }}(
+            method=rpc,
+            request=request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+        {% else %}
         # Send the request.
         {%+ if not method.void %}response = {% endif %}rpc(
             {% if not method.client_streaming %}
@@ -201,20 +212,9 @@
             {{ method.lro.response_type.ident }},
             metadata_type={{ method.lro.metadata_type.ident }},
         )
-        {% elif method.paged_result_field %}
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = {{ method.client_output.ident }}(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
         {% elif method.extended_lro and full_extended_lro %}
 {{ extended_operation_service_setup(api, method) }}
+        {% endif %}
         {% endif %}
         {% if not method.void %}
 
