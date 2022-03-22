@@ -282,50 +282,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         return self._stubs['{{ method.transport_safe_name|snake_case }}']
     {% endfor %}
 
-    {% if api.has_location_mixin() %}
-    {% if "ListLocations" in api.mixin_api_methods %}
-    @property
-    def list_locations(
-        self,
-    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
-        r"""Return a callable for the list locations method over gRPC.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
-                "/google.cloud.location.Locations/ListLocations",
-                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
-                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
-            )
-        return self._stubs["list_locations"]
-    {% endif %}
-    
-    {% if "GetLocation" in api.mixin_api_methods %}
-    @property
-    def get_location(
-        self,
-    ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
-        r"""Return a callable for the list locations method over gRPC.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
-                "/google.cloud.location.Locations/GetLocation",
-                request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
-                response_deserializer=locations_pb2.Location.FromString,
-            )
-        return self._stubs["get_location"]
-    {% endif %}
-    {% endif %}
-
-
-    {% if opts.add_iam_methods or api.has_iam_mixin() %}
+    {% if opts.add_iam_methods %}
     @property
     def set_iam_policy(
         self,
@@ -409,6 +366,8 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
     def close(self):
         return self.grpc_channel.close()
+
+    {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 
 
 __all__ = (

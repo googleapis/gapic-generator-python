@@ -11,7 +11,7 @@ import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-{% if service.has_lro %}
+{% if service.has_lro or api.has_operations_mixin() %}
 from google.api_core import operations_v1
 {% endif %}
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -22,9 +22,12 @@ from google.oauth2 import service_account # type: ignore
 {{ method.input.ident.python_import }}
 {{ method.output.ident.python_import }}
 {% endfor %}
-{% if opts.add_iam_methods %}
+{% if opts.add_iam_methods or api.has_iam_mixin() %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+{% endif %}
+{% if api.has_location_mixin() %}
+from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 
@@ -150,7 +153,7 @@ class {{ service.name }}Transport(abc.ABC):
         """
         raise NotImplementedError()
 
-    {% if service.has_lro %}
+    {% if service.has_lro or api.has_operations_mixin() %}
 
     @property
     def operations_client(self):
@@ -169,6 +172,65 @@ class {{ service.name }}Transport(abc.ABC):
         raise NotImplementedError()
     {% endfor %}
 
+    {% if api.has_iam_mixin() %}
+    {% if "SetIamPolicy" in api.mixin_api_methods %}
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+
+    {% if "GetIamPolicy" in api.mixin_api_methods %}
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+
+    {% if "TestIamPermissions" in api.mixin_api_methods %}
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+    {% endif %}
+
+    {% if api.has_location_mixin() %}
+    {% if "GetLocation" in api.mixin_api_methods %}
+    @property
+    def get_location(self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+
+    {% if "ListLocations" in api.mixin_api_methods %}
+    @property
+    def list_locations(self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+    {% endif %}
 
     {% if opts.add_iam_methods %}
     @property
