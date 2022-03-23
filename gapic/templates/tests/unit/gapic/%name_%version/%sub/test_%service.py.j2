@@ -2131,10 +2131,17 @@ def test_{{ service.name|snake_case }}_base_transport():
         {% for method in service.methods.values() %}
         '{{ method.transport_safe_name|snake_case }}',
         {% endfor %}
-        {% if opts.add_iam_methods %}
+        {% if opts.add_iam_methods or api.has_iam_mixin() %}
         'set_iam_policy',
         'get_iam_policy',
         'test_iam_permissions',
+        {% endif %}
+        {% if api.has_location_mixin() %}
+        'get_location',
+        'list_locations',
+        {% endif %}
+        {% if api.has_operations_mixin() %}
+        'operations_client',
         {% endif %}
     )
     for method in methods:

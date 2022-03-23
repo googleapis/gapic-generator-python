@@ -234,7 +234,6 @@ class API:
     naming: api_naming.Naming
     all_protos: Mapping[str, Proto]
     service_yaml_config: service_pb2.Service
-    opts: Options = Options()
     subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
 
     @classmethod
