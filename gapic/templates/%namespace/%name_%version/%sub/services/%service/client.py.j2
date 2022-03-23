@@ -37,7 +37,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% if api.has_location_mixin() %}
-from google.cloud.location import locations_pb2
+from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO

@@ -44,7 +44,7 @@
 
     {% endif %} {# Location #}
 
-    {% if api.has_iam_mixin() %}
+    {% if not opts.add_iam_methods and api.has_iam_mixin() %}
 
     {% if "SetIamPolicy" in api.mixin_api_methods %}
     @property
