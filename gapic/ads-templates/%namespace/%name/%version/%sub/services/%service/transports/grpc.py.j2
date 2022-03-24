@@ -365,7 +365,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     def close(self):
         self.grpc_channel.close()
 
-    {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
+    {% include '%namespace/%name/%version/%sub/services/%service/transports/_mixins.py.j2' %}
 
 __all__ = (
     '{{ service.name }}GrpcTransport',

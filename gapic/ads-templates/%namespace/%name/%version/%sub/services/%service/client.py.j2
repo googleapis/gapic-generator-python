@@ -501,7 +501,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         {{ "\n" }}
     {% endfor %}
 
-    {% include '%namespace/%name_%version/%sub/services/%service/_mixins.py.j2' %}
+    {% include '%namespace/%name/%version/%sub/services/%service/_mixins.py.j2' %}
 
     {% if opts.add_iam_methods %}
     def set_iam_policy(
