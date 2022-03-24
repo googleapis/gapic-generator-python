@@ -502,7 +502,7 @@ class API:
         if self.has_location_mixin():
             methods = {**methods, **
                 self._get_methods_from_service(locations_pb2)}
-        if self.has_iam_mixin():
+        if not self._has_iam_overrides() and self.has_iam_mixin():
             methods = {**methods, **
                 self._get_methods_from_service(iam_policy_pb2)}
         # For LRO, expose operations client instead.
@@ -516,6 +516,17 @@ class API:
 
     def has_operations_mixin(self) -> bool:
         return len(list(filter(lambda api: api.name == "google.longrunning.Operations", self.service_yaml_config.apis))) > 0
+
+    def _has_iam_overrides(self) -> bool:
+        if not self.has_iam_mixin():
+            return False
+        iam_mixin_methods: Dict[str, MethodDescriptorProto] = self._get_methods_from_service(
+            iam_policy_pb2)
+        for (_, s) in self.services.items():
+            for m_name in iam_mixin_methods:
+                if m_name in s.methods:
+                    return True
+        return False
 
     def _get_methods_from_service(self, service_pb) -> Dict[str, MethodDescriptorProto]:
         services = service_pb.DESCRIPTOR.services_by_name

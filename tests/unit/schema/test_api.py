@@ -86,6 +86,7 @@ def test_api_build():
                     ),
                 ),
             ),),
+
         ),
     )
 
@@ -1836,7 +1837,19 @@ def test_mixin_api_methods_iam():
         make_file_pb2(
             name='example.proto',
             package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),
+            make_message_pb2(name='ExampleResponse', fields=())),
+            services=(descriptor_pb2.ServiceDescriptorProto(
+                name='FooService',
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='FooMethod',
+                        # Input and output types don't matter.
+                        input_type='google.example.v1.ExampleRequest',
+                        output_type='google.example.v1.ExampleResponse',
+                    ),
+                ),
+            ),),
         ),)
     r1 = {
         'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
@@ -1884,3 +1897,53 @@ def test_mixin_api_methods_iam():
     assert api_schema.mixin_api_methods == {
         'SetIamPolicy': m1, 'GetIamPolicy': m2, 'TestIamPermissions': m3}
     assert not api_schema.has_operations_mixin()
+
+
+def test_mixin_api_methods_iam_overrides():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),
+            make_message_pb2(name='ExampleResponse', fields=()),
+                      ),
+            services=(descriptor_pb2.ServiceDescriptorProto(
+                name='FooService',
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='TestIamPermissions',
+                        # Input and output types don't matter.
+                        input_type='google.example.v1.ExampleRequest',
+                        output_type='google.example.v1.ExampleResponse',
+                    ),
+                ),
+            ),),
+        ),
+    )
+    r1 = {
+        'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
+        'post': '/v1/{resource=examples/*}/*',
+        'body': '*'
+    }
+    r2 = {
+        'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
+        'get': '/v1/{resource=examples/*}/*',
+        'body': '*'
+    }
+    r3 = {
+        'selector': 'google.iam.v1.IAMPolicy.TestIamPermissions',
+        'post': '/v1/{resource=examples/*}/*',
+        'body': '*'
+    }
+    opts = Options(service_yaml_config={
+        'apis': [
+            {
+                'name': 'google.iam.v1.IAMPolicy'
+            }
+        ],
+        'http': {
+            'rules': [r1, r2, r3]
+        }
+    })
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    assert api_schema.mixin_api_methods == {}

@@ -165,7 +165,8 @@ def fragment_alternative_templates(session):
 
 @contextmanager
 def showcase_library(
-    session, templates="DEFAULT", other_opts: typing.Iterable[str] = ()
+    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
+    include_service_yaml=False,
 ):
     """Install the generated library into the session for showcase tests."""
 
@@ -198,16 +199,21 @@ def showcase_library(
             external=True,
             silent=True,
         )
-        session.run(
-            "git",
-            "clone",
-            "https://github.com/googleapis/gapic-showcase.git",
-            f"{tmp_dir}/gapic-showcase"
-        )
+        if include_service_yaml:
+            print("*"*100)
+            session.run(
+                "git",
+                "clone",
+                "https://github.com/googleapis/gapic-showcase.git",
+                f"{tmp_dir}/gapic-showcase"
+            )
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="
-        opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/gapic-showcase/schema/google/showcase/v1beta1/showcase_v1beta1.yaml"))
+        if include_service_yaml:
+            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/gapic-showcase/schema/google/showcase/v1beta1/showcase_v1beta1.yaml"))
+        else:
+            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest",))            
         cmd_tup = (
             "python",
             "-m",
@@ -352,6 +358,13 @@ def showcase_unit_add_iam_methods(session):
         # 2. Run the tests again with latest version of dependencies.
         session.install(".", "--upgrade", "--force-reinstall")
         run_showcase_unit_tests(session, fail_under=100)
+
+
+@nox.session(python=NEWEST_PYTHON)
+def showcase_unit_mixins(session):
+    with showcase_library(session, include_service_yaml=True) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
 
 
 @nox.session(python=NEWEST_PYTHON)
