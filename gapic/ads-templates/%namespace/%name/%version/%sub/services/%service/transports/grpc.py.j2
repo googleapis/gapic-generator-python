@@ -6,7 +6,7 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers
-{% if service.has_lro %}
+{% if service.has_lro or api.has_operations_mixin() %}
 from google.api_core import operations_v1
 {% endif %}
 from google.api_core import gapic_v1
@@ -21,9 +21,12 @@ import grpc  # type: ignore
 {{ method.input.ident.python_import }}
 {{ method.output.ident.python_import }}
 {% endfor %}
-{% if opts.add_iam_methods %}
+{% if opts.add_iam_methods or api.has_iam_mixin() %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+{% endif %}
+{% if api.has_location_mixin() %}
+from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
@@ -361,6 +364,8 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
     def close(self):
         self.grpc_channel.close()
+
+    {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 
 __all__ = (
     '{{ service.name }}GrpcTransport',

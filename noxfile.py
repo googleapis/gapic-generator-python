@@ -366,6 +366,14 @@ def showcase_unit_mixins(session):
         session.chdir(lib)
         run_showcase_unit_tests(session)
 
+@nox.session(python=ALL_PYTHON[1:])  # Do not test 3.6
+def showcase_unit_alternative_templates_mixins(session):
+    with showcase_library(
+        session, templates=ADS_TEMPLATES, other_opts=("old-naming",),
+        include_service_yaml=True
+    ) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
 
 @nox.session(python=NEWEST_PYTHON)
 def showcase_mypy(
