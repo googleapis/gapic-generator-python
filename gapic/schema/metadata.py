@@ -26,8 +26,9 @@ in a separate structure, and this object model re-connects the comments
 with the things they describe for easy access in templates.
 """
 
+from collections import namedtuple
 import dataclasses
-from typing import FrozenSet, Tuple
+from typing import FrozenSet, NamedTuple, Tuple, Optional
 
 from google.protobuf import descriptor_pb2
 
@@ -362,14 +363,19 @@ class Metadata:
 class FieldIdentifier:
     ident: Address
     repeated: bool
+    mapping: tuple = None
 
     def __str__(self) -> str:
+        if self.mapping:
+            return f'Mapping[{self.mapping[0].ident}, {self.mapping[1].ident}]'
         if self.repeated:
             return f'Sequence[{self.ident}]'
         return str(self.ident)
 
     @property
     def sphinx(self) -> str:
+        if self.mapping:
+             return f'Mapping[{self.mapping[0].ident.sphinx}, {self.mapping[1].ident.sphinx}]'
         if self.repeated:
             return f'Sequence[{self.ident.sphinx}]'
         return self.ident.sphinx
