@@ -27,7 +27,7 @@ with the things they describe for easy access in templates.
 """
 
 import dataclasses
-from typing import FrozenSet, Tuple
+from typing import FrozenSet, Tuple, Optional
 
 from google.protobuf import descriptor_pb2
 
@@ -362,7 +362,7 @@ class Metadata:
 class FieldIdentifier:
     ident: Address
     repeated: bool
-    mapping: tuple = None
+    mapping: Optional[tuple] = None
 
     def __str__(self) -> str:
         if self.mapping:
