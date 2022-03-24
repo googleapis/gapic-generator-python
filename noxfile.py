@@ -200,7 +200,6 @@ def showcase_library(
             silent=True,
         )
         if include_service_yaml:
-            print("*"*100)
             session.run(
                 "git",
                 "clone",
@@ -366,6 +365,7 @@ def showcase_unit_mixins(session):
         session.chdir(lib)
         run_showcase_unit_tests(session)
 
+
 @nox.session(python=ALL_PYTHON[1:])  # Do not test 3.6
 def showcase_unit_alternative_templates_mixins(session):
     with showcase_library(
@@ -374,6 +374,7 @@ def showcase_unit_alternative_templates_mixins(session):
     ) as lib:
         session.chdir(lib)
         run_showcase_unit_tests(session)
+
 
 @nox.session(python=NEWEST_PYTHON)
 def showcase_mypy(
