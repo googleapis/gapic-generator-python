@@ -379,6 +379,7 @@ class {{ service.async_client_name }}:
 
     {% include '%namespace/%name_%version/%sub/services/%service/_async_mixins.py.j2' %}
 
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if opts.add_iam_methods %}
     async def set_iam_policy(
         self,

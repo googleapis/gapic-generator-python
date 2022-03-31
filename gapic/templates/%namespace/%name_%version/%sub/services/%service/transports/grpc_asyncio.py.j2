@@ -7,7 +7,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
-{% if service.has_lro or api.has_operations_mixin() %}
+{% if service.has_lro %}
 from google.api_core import operations_v1
 {% endif %}
 from google.auth import credentials as ga_credentials   # type: ignore
@@ -156,7 +156,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        {% if service.has_lro or api.has_operations_mixin() %}
+        {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
         {% endif %}
 
@@ -232,7 +232,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         """
         # Return the channel from cache.
         return self._grpc_channel
-    {% if service.has_lro or api.has_operations_mixin() %}
+    {% if service.has_lro %}
 
     @property
     def operations_client(self) -> operations_v1.OperationsAsyncClient:
@@ -282,6 +282,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         return self._stubs['{{ method.transport_safe_name|snake_case }}']
     {% endfor %}
 
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if opts.add_iam_methods %}
     @property
     def set_iam_policy(

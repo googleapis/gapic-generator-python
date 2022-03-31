@@ -6,7 +6,7 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers
-{% if service.has_lro or api.has_operations_mixin() %}
+{% if service.has_lro %}
 from google.api_core import operations_v1
 {% endif %}
 from google.api_core import gapic_v1
@@ -281,6 +281,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         return self._stubs['{{ method.transport_safe_name|snake_case }}']
     {% endfor %}
 
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if opts.add_iam_methods %}
     @property
     def set_iam_policy(

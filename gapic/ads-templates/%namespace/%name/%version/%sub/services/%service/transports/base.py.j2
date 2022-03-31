@@ -11,7 +11,7 @@ import google.api_core  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
-{% if service.has_lro or api.has_operations_mixin() %}
+{% if service.has_lro %}
 from google.api_core import operations_v1
 {% endif %}
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -153,7 +153,7 @@ class {{ service.name }}Transport(abc.ABC):
         """
         raise NotImplementedError()
 
-    {% if service.has_lro or api.has_operations_mixin() %}
+    {% if service.has_lro %}
 
     @property
     def operations_client(self):
@@ -172,6 +172,7 @@ class {{ service.name }}Transport(abc.ABC):
         raise NotImplementedError()
     {% endfor %}
 
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if not opts.add_iam_methods and api.has_iam_mixin() %}
     {% if "SetIamPolicy" in api.mixin_api_methods %}
     @property
@@ -232,6 +233,7 @@ class {{ service.name }}Transport(abc.ABC):
     {% endif %}
     {% endif %}
 
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if opts.add_iam_methods %}
     @property
     def set_iam_policy(

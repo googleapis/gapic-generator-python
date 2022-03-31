@@ -1,5 +1,6 @@
     {# IAM mixins #}
 
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if not opts.add_iam_methods and api.has_iam_mixin() %}
     {% if "SetIamPolicy" in api.mixin_api_methods %}
     def set_iam_policy(
@@ -393,17 +394,4 @@
         # Done; return the response.
         return response
     {% endif %}
-    {% endif %}
-
-    {# LRO mixin #}
-
-    {% if api.has_operations_mixin() %}
-    def operations_client(self):
-        r"""Reference to long running operations client.
-
-        Returns:
-            google.api_core.operations_v1.OperationsClient:
-                Long running operations client.
-        """
-        return self._transport.operations_client
     {% endif %}

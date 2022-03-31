@@ -572,6 +572,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     {% include '%namespace/%name_%version/%sub/services/%service/_mixins.py.j2' %}
 
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if opts.add_iam_methods %}
     def set_iam_policy(
         self,

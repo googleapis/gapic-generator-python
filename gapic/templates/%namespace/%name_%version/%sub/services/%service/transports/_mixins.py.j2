@@ -44,6 +44,7 @@
 
     {% endif %} {# Location #}
 
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if not opts.add_iam_methods and api.has_iam_mixin() %}
 
     {% if "SetIamPolicy" in api.mixin_api_methods %}
@@ -131,7 +132,5 @@
         return self._stubs["test_iam_permissions"]
     {% endif %}
     {% endif %} {# IAM #}
-
-    {# LRO is included in the grpc.py directly #}
 
     {% endif %} {# grpc is transport #}
