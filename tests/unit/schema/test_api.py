@@ -1896,7 +1896,7 @@ def test_mixin_api_methods_iam():
     api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
     assert api_schema.mixin_api_methods == {
         'SetIamPolicy': m1, 'GetIamPolicy': m2, 'TestIamPermissions': m3}
-    assert not api_schema.has_operations_mixin()
+    assert not api_schema.has_operations_mixin
 
 
 def test_mixin_api_methods_iam_overrides():

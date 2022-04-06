@@ -32,11 +32,11 @@ except AttributeError:  # pragma: NO COVER
 {{ ref_type.ident.python_import }}
 {% endfor %}
 {% endfor %}
-{% if opts.add_iam_methods or api.has_iam_mixin() %}
+{% if opts.add_iam_methods or api.has_iam_mixin %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
-{% if api.has_location_mixin() %}
+{% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}

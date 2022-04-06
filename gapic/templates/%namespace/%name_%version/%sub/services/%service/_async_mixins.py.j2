@@ -1,7 +1,7 @@
     {# IAM mixins #}
 
     {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
-    {% if not opts.add_iam_methods and api.has_iam_mixin() %}
+    {% if not opts.add_iam_methods and api.has_iam_mixin %}
     {% if "SetIamPolicy" in api.mixin_api_methods %}
     async def set_iam_policy(
         self,
@@ -288,7 +288,7 @@
 
     {# Location mixin #}
 
-    {% if api.has_location_mixin() %}
+    {% if api.has_location_mixin %}
     {% if "GetLocation" in api.mixin_api_methods %}
     async def get_location(
         self,

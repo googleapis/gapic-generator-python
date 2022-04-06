@@ -1,4 +1,4 @@
-{% if api.has_location_mixin() and ('grpc' in opts.transport or 'grpc_asyncio' in opts.transport) %}
+{% if api.has_location_mixin and ('grpc' in opts.transport or 'grpc_asyncio' in opts.transport) %}
 
 {# ListLocation #}
 
@@ -264,7 +264,7 @@ def test_get_location_from_dict():
 {% endif %} {# location_mixin #}
 
 {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
-{% if (opts.add_iam_methods or api.has_iam_mixin()) and ('grpc' in opts.transport or 'grpc_asyncio' in opts.transport) %}
+{% if (opts.add_iam_methods or api.has_iam_mixin) and ('grpc' in opts.transport or 'grpc_asyncio' in opts.transport) %}
 {% for mode in ["", "async"] %}
 {% if mode == "async" %}
 @pytest.mark.asyncio

@@ -201,16 +201,21 @@ def showcase_library(
         )
         if include_service_yaml:
             session.run(
-                "git",
-                "clone",
-                "https://github.com/googleapis/gapic-showcase.git",
-                f"{tmp_dir}/gapic-showcase"
+                "curl",
+                "https://github.com/googleapis/gapic-showcase/releases/"
+                f"download/v{showcase_version}/"
+                f"showcase_v1beta1.yaml",
+                "-L",
+                "--output",
+                path.join(tmp_dir, "showcase_v1beta1.yaml"),
+                external=True,
+                silent=True,
             )
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="
         if include_service_yaml:
-            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/gapic-showcase/schema/google/showcase/v1beta1/showcase_v1beta1.yaml"))
+            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/showcase_v1beta1.yaml"))
         else:
             opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest",))            
         cmd_tup = (

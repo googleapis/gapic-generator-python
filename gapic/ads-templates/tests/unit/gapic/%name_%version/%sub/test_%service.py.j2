@@ -43,7 +43,7 @@ from google.longrunning import operations_pb2
 from google.protobuf import json_format
 {% endif %}{# rest transport #}
 {% endif %}{# lro #}
-{% if api.has_location_mixin() %}
+{% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2
 {% endif %}
 from google.api_core import gapic_v1
@@ -55,7 +55,7 @@ from google.api_core import gapic_v1
 {% endfor %}
 {% endfor %}
 {# TODO: Remove once https://github.com/googleapis/gapic-generator-python/pull/1240 is merged #}
-{% if opts.add_iam_methods or api.has_iam_mixin() %}
+{% if opts.add_iam_methods or api.has_iam_mixin %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -1676,12 +1676,12 @@ def test_{{ service.name|snake_case }}_base_transport():
         '{{ method.transport_safe_name|snake_case }}',
         {% endfor %}
         {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
-        {% if opts.add_iam_methods or api.has_iam_mixin() %}
+        {% if opts.add_iam_methods or api.has_iam_mixin %}
         'set_iam_policy',
         'get_iam_policy',
         'test_iam_permissions',
         {% endif %}
-        {% if api.has_location_mixin() %}
+        {% if api.has_location_mixin %}
         'get_location',
         'list_locations',
         {% endif %}

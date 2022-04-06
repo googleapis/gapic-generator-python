@@ -496,29 +496,33 @@ class API:
 
         return op_serv
 
-    @property
+    @cached_property
     def mixin_api_methods(self) -> Dict[str, MethodDescriptorProto]:
         methods: Dict[str, MethodDescriptorProto] = {}
-        if self.has_location_mixin():
+        if self.has_location_mixin:
             methods = {**methods, **
                 self._get_methods_from_service(locations_pb2)}
-        if not self._has_iam_overrides() and self.has_iam_mixin():
+        if not self._has_iam_overrides and self.has_iam_mixin:
             methods = {**methods, **
                 self._get_methods_from_service(iam_policy_pb2)}
         # For LRO, expose operations client instead.
         return methods
 
+    @cached_property
     def has_location_mixin(self) -> bool:
         return len(list(filter(lambda api: api.name == "google.cloud.location.Locations", self.service_yaml_config.apis))) > 0
 
+    @cached_property
     def has_iam_mixin(self) -> bool:
         return len(list(filter(lambda api: api.name == "google.iam.v1.IAMPolicy", self.service_yaml_config.apis))) > 0
 
+    @cached_property
     def has_operations_mixin(self) -> bool:
         return len(list(filter(lambda api: api.name == "google.longrunning.Operations", self.service_yaml_config.apis))) > 0
 
+    @cached_property
     def _has_iam_overrides(self) -> bool:
-        if not self.has_iam_mixin():
+        if not self.has_iam_mixin:
             return False
         iam_mixin_methods: Dict[str, MethodDescriptorProto] = self._get_methods_from_service(
             iam_policy_pb2)
