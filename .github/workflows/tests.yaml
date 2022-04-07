@@ -136,6 +136,8 @@ jobs:
         exclude:
           - python: "3.6"
             variant: _alternative_templates
+          - python: "3.6"
+            variant: _alternative_templates_mixins
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
