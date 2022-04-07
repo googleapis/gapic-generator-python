@@ -214,6 +214,30 @@ def test_proto_names():
     assert proto.disambiguate('foo') == '_foo'
 
 
+def test_proto_with_invalid_characters():
+    # Protos with filenames that contain `.` in the basename
+    # cannot be directly imported. Test that `.` is changed to `_`
+    # See https://peps.python.org/pep-0008/#package-and-module-names
+
+    test_cases = [
+        {'name': 'k8s.min.proto', 'expected': 'k8s_min.proto'},
+        {'name': 'k8s.min.test.proto', 'expected': 'k8s_min_test.proto'}
+    ]
+
+    for test_case in test_cases:
+        fd = (
+            make_file_pb2(
+                name=test_case['name'],
+                package='google.keywords.v1',
+                messages=(make_message_pb2(name='ImportRequest', fields=()),),
+            ),
+        )
+        api_schema = api.API.build(fd, package='google.keywords.v1')
+        assert set(api_schema.protos.keys()) == {
+            test_case['expected'],
+        }
+
+
 def test_proto_keyword_fname():
     # Protos with filenames that happen to be python keywords
     # cannot be directly imported.
@@ -1139,6 +1163,305 @@ def test_cross_file_lro():
     assert method.lro.metadata_type.name == 'AsyncDoThingMetadata'
 
 
+def test_extended_lro():
+    initiate_options = descriptor_pb2.MethodOptions()
+    initiate_options.Extensions[ex_ops_pb2.operation_service] = "OpsService"
+
+    polling_method_options = descriptor_pb2.MethodOptions()
+    polling_method_options.Extensions[ex_ops_pb2.operation_polling_method] = True
+
+    T = descriptor_pb2.FieldDescriptorProto.Type
+    operation_fields = tuple(
+        make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
+        for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+    )
+    for f in operation_fields:
+        options = descriptor_pb2.FieldOptions()
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    api_schema = api.Proto.build(
+        make_file_pb2(
+            "extended_lro.proto",
+            package="exlro",
+            messages=(
+                make_message_pb2(name="Operation", fields=operation_fields),
+                make_message_pb2(name="InitialRequest"),
+                make_message_pb2(name="GetOperationRequest"),
+                ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="OpsService",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Get",
+                            input_type="exlro.GetOperationRequest",
+                            output_type="exlro.Operation",
+                            options=polling_method_options,
+                            ),
+                        ),
+                    ),
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="BasicService",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Initiate",
+                            input_type="exlro.InitialRequest",
+                            output_type="exlro.Operation",
+                            options=initiate_options,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        file_to_generate=True,
+        naming=make_naming(),
+    )
+
+    initiate = api_schema.services["exlro.BasicService"].methods["Initiate"]
+    assert initiate.extended_lro
+    assert initiate.extended_lro.request_type == api_schema.messages["exlro.GetOperationRequest"]
+    assert initiate.extended_lro.operation_type == api_schema.messages["exlro.Operation"]
+
+
+def test_extended_lro_no_such_service():
+    initiate_options = descriptor_pb2.MethodOptions()
+    initiate_options.Extensions[ex_ops_pb2.operation_service] = "Nonesuch"
+
+    polling_method_options = descriptor_pb2.MethodOptions()
+    polling_method_options.Extensions[ex_ops_pb2.operation_polling_method] = True
+
+    T = descriptor_pb2.FieldDescriptorProto.Type
+    operation_fields = tuple(
+        make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
+        for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+    )
+    for f in operation_fields:
+        options = descriptor_pb2.FieldOptions()
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    with pytest.raises(ValueError):
+        api_schema = api.Proto.build(
+            make_file_pb2(
+                "extended_lro.proto",
+                package="exlro",
+                messages=(
+                    make_message_pb2(
+                        name="Operation",
+                        fields=operation_fields,
+                    ),
+                    make_message_pb2(
+                        name="InitialRequest"
+                    ),
+                    make_message_pb2(
+                        name="GetOperationRequest"
+                    ),
+                ),
+                services=(
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="OpsService",
+                        method=(
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Get",
+                                input_type="exlro.GetOperationRequest",
+                                output_type="exlro.Operation",
+                                options=polling_method_options,
+                                ),
+                            ),
+                        ),
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="BasicService",
+                        method=(
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Initiate",
+                                input_type="exlro.InitialRequest",
+                                output_type="exlro.Operation",
+                                options=initiate_options,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            file_to_generate=True,
+            naming=make_naming(),
+        )
+
+
+def test_extended_lro_no_polling_method():
+    initiate_options = descriptor_pb2.MethodOptions()
+    initiate_options.Extensions[ex_ops_pb2.operation_service] = "OpsService"
+
+    T = descriptor_pb2.FieldDescriptorProto.Type
+    operation_fields = tuple(
+        make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
+        for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+    )
+    for f in operation_fields:
+        options = descriptor_pb2.FieldOptions()
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    with pytest.raises(ValueError):
+        api_schema = api.Proto.build(
+            make_file_pb2(
+                "extended_lro.proto",
+                package="exlro",
+                messages=(
+                    make_message_pb2(
+                        name="Operation",
+                        fields=operation_fields,
+                    ),
+                    make_message_pb2(
+                        name="InitialRequest",
+                    ),
+                    make_message_pb2(
+                        name="GetOperationRequest",
+                    ),
+                ),
+                services=(
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="OpsService",
+                        method=(
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Get",
+                                input_type="exlro.GetOperationRequest",
+                                output_type="exlro.Operation",
+                                ),
+                            ),
+                        ),
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="BasicService",
+                        method=(
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Initiate",
+                                input_type="exlro.InitialRequest",
+                                output_type="exlro.Operation",
+                                options=initiate_options,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            file_to_generate=True,
+            naming=make_naming(),
+        )
+
+
+def test_extended_lro_different_output_types():
+    initiate_options = descriptor_pb2.MethodOptions()
+    initiate_options.Extensions[ex_ops_pb2.operation_service] = "OpsService"
+
+    polling_method_options = descriptor_pb2.MethodOptions()
+    polling_method_options.Extensions[ex_ops_pb2.operation_polling_method] = True
+
+    T = descriptor_pb2.FieldDescriptorProto.Type
+    operation_fields = tuple(
+        make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
+        for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+    )
+    for f in operation_fields:
+        options = descriptor_pb2.FieldOptions()
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    with pytest.raises(ValueError):
+        api_schema = api.Proto.build(
+            make_file_pb2(
+                "extended_lro.proto",
+                package="exlro",
+                messages=(
+                    make_message_pb2(
+                        name="Operation",
+                        fields=operation_fields,
+                    ),
+                    make_message_pb2(
+                        name="InitialRequest",
+                    ),
+                    make_message_pb2(
+                        name="GetOperationRequest",
+                    ),
+                    make_message_pb2(
+                        name="GetOperationResponse",
+                    ),
+                ),
+                services=(
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="OpsService",
+                        method=(
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Get",
+                                input_type="exlro.GetOperationRequest",
+                                output_type="exlro.GetOperationResponse",
+                                options=polling_method_options,
+                                ),
+                            ),
+                        ),
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="BasicService",
+                        method=(
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Initiate",
+                                input_type="exlro.InitialRequest",
+                                output_type="exlro.Operation",
+                                options=initiate_options,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            file_to_generate=True,
+            naming=make_naming(),
+        )
+
+
+def test_extended_lro_not_an_operation():
+    initiate_options = descriptor_pb2.MethodOptions()
+    initiate_options.Extensions[ex_ops_pb2.operation_service] = "OpsService"
+
+    polling_method_options = descriptor_pb2.MethodOptions()
+    polling_method_options.Extensions[ex_ops_pb2.operation_polling_method] = True
+
+    with pytest.raises(ValueError):
+        api_schema = api.Proto.build(
+            make_file_pb2(
+                "extended_lro.proto",
+                package="exlro",
+                messages=(
+                    make_message_pb2(name="Operation"),
+                    make_message_pb2(name="InitialRequest"),
+                    make_message_pb2(name="GetOperationRequest"),
+                    ),
+                services=(
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="OpsService",
+                        method=(
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Get",
+                                input_type="exlro.GetOperationRequest",
+                                output_type="exlro.Operation",
+                                options=polling_method_options,
+                                ),
+                            ),
+                        ),
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="BasicService",
+                        method=(
+                            descriptor_pb2.MethodDescriptorProto(
+                                name="Initiate",
+                                input_type="exlro.InitialRequest",
+                                output_type="exlro.Operation",
+                                options=initiate_options,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            file_to_generate=True,
+            naming=make_naming(),
+        )
+
+
 def test_enums():
     L = descriptor_pb2.SourceCodeInfo.Location
     enum_pb = descriptor_pb2.EnumDescriptorProto(name='Silly', value=(
@@ -1704,8 +2027,8 @@ def generate_basic_extended_operations_setup():
                 initial_input_message,
             ],
             services=[
-                regular_service,
                 ops_service,
+                regular_service,
             ],
         ),
     ]
@@ -1716,25 +2039,31 @@ def generate_basic_extended_operations_setup():
 def test_extended_operations_lro_operation_service():
     file_protos = generate_basic_extended_operations_setup()
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+    regular_service = api_schema.services["google.extended_operations.v1.stuff.RegularService"]
+    initial_method = regular_service.methods["CreateTask"]
 
-    expected = api_schema.services['google.extended_operations.v1.stuff.CustomOperations']
+    operation_service = api_schema.services['google.extended_operations.v1.stuff.CustomOperations']
+    expected = operation_service
     actual = api_schema.get_custom_operation_service(initial_method)
 
     assert expected is actual
 
-    assert actual.custom_polling_method is actual.methods["Get"]
+    assert actual.operation_polling_method is actual.methods["Get"]
+
+    expected = {operation_service}
+    actual = api_schema.get_extended_operations_services(regular_service)
+    assert expected == actual
 
 
 def test_extended_operations_lro_operation_service_no_annotation():
     file_protos = generate_basic_extended_operations_setup()
-
     api_schema = api.API.build(file_protos)
     initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+
     # It's easier to manipulate data structures after building the API.
     del initial_method.options.Extensions[ex_ops_pb2.operation_service]
 
-    with pytest.raises(KeyError):
+    with pytest.raises(ValueError):
         api_schema.get_custom_operation_service(initial_method)
 
 
@@ -1745,7 +2074,7 @@ def test_extended_operations_lro_operation_service_no_such_service():
     initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
     initial_method.options.Extensions[ex_ops_pb2.operation_service] = "UnrealService"
 
-    with pytest.raises(KeyError):
+    with pytest.raises(ValueError):
         api_schema.get_custom_operation_service(initial_method)
 
 
