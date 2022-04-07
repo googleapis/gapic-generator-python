@@ -68,6 +68,8 @@ def test_list_locations_from_dict():
 
 {# GetLocation #}
 
+{% if "GetLocation" in api.mixin_api_methods %}
+
 def test_get_location(transport: str = "grpc"):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
