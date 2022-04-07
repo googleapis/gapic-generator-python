@@ -1,7 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-{% import "%namespace/%name_%version/%sub/services/%service/client_macros.j2" as macros %}
+{% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
 
 from collections import OrderedDict
 {% if service.any_extended_operations_methods %}

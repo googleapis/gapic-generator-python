@@ -253,8 +253,6 @@
             {% endfor %}
         {% endif %}
 
-        {# TODO(dovs): make the appropriate subclass that defines appropriate accessors #}
-        {# TODO(dovs): in the extended operation class implement done() #}
         response = {{ "_CustomOperation" if method.output.differently_named_extended_operation_fields else "extended_operation.ExtendedOperation" }}.make(get_operation, cancel_operation, response)
 
 {% endwith %}
