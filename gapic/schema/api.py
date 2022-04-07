@@ -569,6 +569,7 @@ class API:
                 x.options.Extensions[annotations_pb2.http].CopyFrom(rule)
                 methods_to_generate[x.name] = x
         return methods_to_generate
+
     def get_extended_operations_services(self, service) -> Set["wrappers.Service"]:
         """Return a set of all the extended operation services used by the input service.
 
