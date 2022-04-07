@@ -364,7 +364,7 @@ def showcase_unit_add_iam_methods(session):
         run_showcase_unit_tests(session, fail_under=100)
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def showcase_unit_mixins(session):
     with showcase_library(session, include_service_yaml=True) as lib:
         session.chdir(lib)
