@@ -22,7 +22,7 @@ from google.oauth2 import service_account # type: ignore
 {{ method.input.ident.python_import }}
 {{ method.output.ident.python_import }}
 {% endfor %}
-{% if opts.add_iam_methods %}
+{% if opts.add_iam_methods or api.has_iam_mixin %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
