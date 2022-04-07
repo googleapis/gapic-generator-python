@@ -1,6 +1,29 @@
 # Changelog
 
 
+### [0.63.8](https://github.com/googleapis/gapic-generator-python/compare/v0.63.7...v0.63.8) (2022-04-04)
+
+
+### Bug Fixes
+
+* **deps:** exclude click 8.1.0 ([#1255](https://github.com/googleapis/gapic-generator-python/issues/1255)) ([daf63eb](https://github.com/googleapis/gapic-generator-python/commit/daf63ebe2392fd6fde65326fffc5519cd126c2ae))
+* fix docstring for map fields ([#1249](https://github.com/googleapis/gapic-generator-python/issues/1249)) ([3100464](https://github.com/googleapis/gapic-generator-python/commit/310046478092b4fc4ef9dfdd1e50363ca6fc72c5))
+* sanitize file names ([#1236](https://github.com/googleapis/gapic-generator-python/issues/1236)) ([3072ffb](https://github.com/googleapis/gapic-generator-python/commit/3072ffb6000983ecb06d8dd7b44f77da61cc992e))
+
+### [0.63.7](https://github.com/googleapis/gapic-generator-python/compare/v0.63.6...v0.63.7) (2022-03-08)
+
+
+### Bug Fixes
+
+* resolve issue where rest transport is not used in certain tests ([#1231](https://github.com/googleapis/gapic-generator-python/issues/1231)) ([90ab41a](https://github.com/googleapis/gapic-generator-python/commit/90ab41ab1f1b058ec0eb4a96b973031898f64df0))
+
+### [0.63.6](https://github.com/googleapis/gapic-generator-python/compare/v0.63.5...v0.63.6) (2022-03-04)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >=2.3.2 ([#1225](https://github.com/googleapis/gapic-generator-python/issues/1225)) ([f59917f](https://github.com/googleapis/gapic-generator-python/commit/f59917fdbdf5ee4091e35d721811dcd7f4b9a3f3))
+
 ### [0.63.5](https://github.com/googleapis/gapic-generator-python/compare/v0.63.4...v0.63.5) (2022-02-25)
 
 

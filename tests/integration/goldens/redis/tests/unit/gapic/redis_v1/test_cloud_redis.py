@@ -73,20 +73,22 @@ def test__get_default_mtls_endpoint():
     assert CloudRedisClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [
-    CloudRedisClient,
-    CloudRedisAsyncClient,
+@pytest.mark.parametrize("client_class,transport_name", [
+    (CloudRedisClient, "grpc"),
+    (CloudRedisAsyncClient, "grpc_asyncio"),
 ])
-def test_cloud_redis_client_from_service_account_info(client_class):
+def test_cloud_redis_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == 'redis.googleapis.com:443'
+        assert client.transport._host == (
+            'redis.googleapis.com:443'
+        )
 
 
 @pytest.mark.parametrize("transport_class,transport_name", [
@@ -105,23 +107,25 @@ def test_cloud_redis_client_service_account_always_use_jwt(transport_class, tran
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [
-    CloudRedisClient,
-    CloudRedisAsyncClient,
+@pytest.mark.parametrize("client_class,transport_name", [
+    (CloudRedisClient, "grpc"),
+    (CloudRedisAsyncClient, "grpc_asyncio"),
 ])
-def test_cloud_redis_client_from_service_account_file(client_class):
+def test_cloud_redis_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == 'redis.googleapis.com:443'
+        assert client.transport._host == (
+            'redis.googleapis.com:443'
+        )
 
 
 def test_cloud_redis_client_get_transport_class():
@@ -541,7 +545,6 @@ def test_list_instances_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ListInstancesRequest()
 
-
 @pytest.mark.asyncio
 async def test_list_instances_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ListInstancesRequest):
     client = CloudRedisAsyncClient(
@@ -682,7 +685,6 @@ def test_list_instances_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_instances_flattened_async():
     client = CloudRedisAsyncClient(
@@ -710,7 +712,6 @@ async def test_list_instances_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_instances_flattened_error_async():
@@ -996,7 +997,6 @@ def test_get_instance_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.GetInstanceRequest()
 
-
 @pytest.mark.asyncio
 async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceRequest):
     client = CloudRedisAsyncClient(
@@ -1165,7 +1165,6 @@ def test_get_instance_flattened_error():
             name='name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_get_instance_flattened_async():
     client = CloudRedisAsyncClient(
@@ -1193,7 +1192,6 @@ async def test_get_instance_flattened_async():
         arg = args[0].name
         mock_val = 'name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_get_instance_flattened_error_async():
@@ -1257,7 +1255,6 @@ def test_create_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.CreateInstanceRequest()
-
 
 @pytest.mark.asyncio
 async def test_create_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.CreateInstanceRequest):
@@ -1406,7 +1403,6 @@ def test_create_instance_flattened_error():
             instance=cloud_redis.Instance(name='name_value'),
         )
 
-
 @pytest.mark.asyncio
 async def test_create_instance_flattened_async():
     client = CloudRedisAsyncClient(
@@ -1444,7 +1440,6 @@ async def test_create_instance_flattened_async():
         arg = args[0].instance
         mock_val = cloud_redis.Instance(name='name_value')
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_create_instance_flattened_error_async():
@@ -1510,7 +1505,6 @@ def test_update_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.UpdateInstanceRequest()
-
 
 @pytest.mark.asyncio
 async def test_update_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpdateInstanceRequest):
@@ -1654,7 +1648,6 @@ def test_update_instance_flattened_error():
             instance=cloud_redis.Instance(name='name_value'),
         )
 
-
 @pytest.mark.asyncio
 async def test_update_instance_flattened_async():
     client = CloudRedisAsyncClient(
@@ -1688,7 +1681,6 @@ async def test_update_instance_flattened_async():
         arg = args[0].instance
         mock_val = cloud_redis.Instance(name='name_value')
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_update_instance_flattened_error_async():
@@ -1753,7 +1745,6 @@ def test_upgrade_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.UpgradeInstanceRequest()
-
 
 @pytest.mark.asyncio
 async def test_upgrade_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpgradeInstanceRequest):
@@ -1897,7 +1888,6 @@ def test_upgrade_instance_flattened_error():
             redis_version='redis_version_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_upgrade_instance_flattened_async():
     client = CloudRedisAsyncClient(
@@ -1931,7 +1921,6 @@ async def test_upgrade_instance_flattened_async():
         arg = args[0].redis_version
         mock_val = 'redis_version_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_upgrade_instance_flattened_error_async():
@@ -1996,7 +1985,6 @@ def test_import_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ImportInstanceRequest()
-
 
 @pytest.mark.asyncio
 async def test_import_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ImportInstanceRequest):
@@ -2140,7 +2128,6 @@ def test_import_instance_flattened_error():
             input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
         )
 
-
 @pytest.mark.asyncio
 async def test_import_instance_flattened_async():
     client = CloudRedisAsyncClient(
@@ -2174,7 +2161,6 @@ async def test_import_instance_flattened_async():
         arg = args[0].input_config
         mock_val = cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value'))
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_import_instance_flattened_error_async():
@@ -2239,7 +2225,6 @@ def test_export_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ExportInstanceRequest()
-
 
 @pytest.mark.asyncio
 async def test_export_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ExportInstanceRequest):
@@ -2383,7 +2368,6 @@ def test_export_instance_flattened_error():
             output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value')),
         )
 
-
 @pytest.mark.asyncio
 async def test_export_instance_flattened_async():
     client = CloudRedisAsyncClient(
@@ -2417,7 +2401,6 @@ async def test_export_instance_flattened_async():
         arg = args[0].output_config
         mock_val = cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value'))
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_export_instance_flattened_error_async():
@@ -2482,7 +2465,6 @@ def test_failover_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.FailoverInstanceRequest()
-
 
 @pytest.mark.asyncio
 async def test_failover_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.FailoverInstanceRequest):
@@ -2626,7 +2608,6 @@ def test_failover_instance_flattened_error():
             data_protection_mode=cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS,
         )
 
-
 @pytest.mark.asyncio
 async def test_failover_instance_flattened_async():
     client = CloudRedisAsyncClient(
@@ -2660,7 +2641,6 @@ async def test_failover_instance_flattened_async():
         arg = args[0].data_protection_mode
         mock_val = cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_failover_instance_flattened_error_async():
@@ -2725,7 +2705,6 @@ def test_delete_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.DeleteInstanceRequest()
-
 
 @pytest.mark.asyncio
 async def test_delete_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.DeleteInstanceRequest):
@@ -2864,7 +2843,6 @@ def test_delete_instance_flattened_error():
             name='name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_delete_instance_flattened_async():
     client = CloudRedisAsyncClient(
@@ -2894,7 +2872,6 @@ async def test_delete_instance_flattened_async():
         arg = args[0].name
         mock_val = 'name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_delete_instance_flattened_error_async():
@@ -2997,6 +2974,15 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+])
+def test_transport_kind(transport_name):
+    transport = CloudRedisClient.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = CloudRedisClient(
@@ -3048,6 +3034,14 @@ def test_cloud_redis_base_transport():
     # also raise NotImplementedError
     with pytest.raises(NotImplementedError):
         transport.operations_client
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        'kind',
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_cloud_redis_base_transport_with_credentials_file():
@@ -3191,20 +3185,33 @@ def test_cloud_redis_grpc_transport_client_cert_source_for_mtls(
             )
 
 
-def test_cloud_redis_host_no_port():
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+    "grpc_asyncio",
+])
+def test_cloud_redis_host_no_port(transport_name):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='redis.googleapis.com'),
+         transport=transport_name,
     )
-    assert client.transport._host == 'redis.googleapis.com:443'
+    assert client.transport._host == (
+        'redis.googleapis.com:443'
+    )
 
-
-def test_cloud_redis_host_with_port():
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+    "grpc_asyncio",
+])
+def test_cloud_redis_host_with_port(transport_name):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='redis.googleapis.com:8000'),
+        transport=transport_name,
     )
-    assert client.transport._host == 'redis.googleapis.com:8000'
+    assert client.transport._host == (
+        'redis.googleapis.com:8000'
+    )
 
 def test_cloud_redis_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())

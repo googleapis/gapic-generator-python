@@ -67,20 +67,22 @@ def test__get_default_mtls_endpoint():
     assert IAMCredentialsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [
-    IAMCredentialsClient,
-    IAMCredentialsAsyncClient,
+@pytest.mark.parametrize("client_class,transport_name", [
+    (IAMCredentialsClient, "grpc"),
+    (IAMCredentialsAsyncClient, "grpc_asyncio"),
 ])
-def test_iam_credentials_client_from_service_account_info(client_class):
+def test_iam_credentials_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == 'iamcredentials.googleapis.com:443'
+        assert client.transport._host == (
+            'iamcredentials.googleapis.com:443'
+        )
 
 
 @pytest.mark.parametrize("transport_class,transport_name", [
@@ -99,23 +101,25 @@ def test_iam_credentials_client_service_account_always_use_jwt(transport_class, 
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [
-    IAMCredentialsClient,
-    IAMCredentialsAsyncClient,
+@pytest.mark.parametrize("client_class,transport_name", [
+    (IAMCredentialsClient, "grpc"),
+    (IAMCredentialsAsyncClient, "grpc_asyncio"),
 ])
-def test_iam_credentials_client_from_service_account_file(client_class):
+def test_iam_credentials_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == 'iamcredentials.googleapis.com:443'
+        assert client.transport._host == (
+            'iamcredentials.googleapis.com:443'
+        )
 
 
 def test_iam_credentials_client_get_transport_class():
@@ -533,7 +537,6 @@ def test_generate_access_token_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateAccessTokenRequest()
 
-
 @pytest.mark.asyncio
 async def test_generate_access_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateAccessTokenRequest):
     client = IAMCredentialsAsyncClient(
@@ -685,7 +688,6 @@ def test_generate_access_token_flattened_error():
             lifetime=duration_pb2.Duration(seconds=751),
         )
 
-
 @pytest.mark.asyncio
 async def test_generate_access_token_flattened_async():
     client = IAMCredentialsAsyncClient(
@@ -723,7 +725,6 @@ async def test_generate_access_token_flattened_async():
         mock_val = ['scope_value']
         assert arg == mock_val
         assert DurationRule().to_proto(args[0].lifetime) == duration_pb2.Duration(seconds=751)
-
 
 @pytest.mark.asyncio
 async def test_generate_access_token_flattened_error_async():
@@ -793,7 +794,6 @@ def test_generate_id_token_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateIdTokenRequest()
-
 
 @pytest.mark.asyncio
 async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateIdTokenRequest):
@@ -948,7 +948,6 @@ def test_generate_id_token_flattened_error():
             include_email=True,
         )
 
-
 @pytest.mark.asyncio
 async def test_generate_id_token_flattened_async():
     client = IAMCredentialsAsyncClient(
@@ -988,7 +987,6 @@ async def test_generate_id_token_flattened_async():
         arg = args[0].include_email
         mock_val = True
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_generate_id_token_flattened_error_async():
@@ -1060,7 +1058,6 @@ def test_sign_blob_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignBlobRequest()
-
 
 @pytest.mark.asyncio
 async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=common.SignBlobRequest):
@@ -1212,7 +1209,6 @@ def test_sign_blob_flattened_error():
             payload=b'payload_blob',
         )
 
-
 @pytest.mark.asyncio
 async def test_sign_blob_flattened_async():
     client = IAMCredentialsAsyncClient(
@@ -1248,7 +1244,6 @@ async def test_sign_blob_flattened_async():
         arg = args[0].payload
         mock_val = b'payload_blob'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_sign_blob_flattened_error_async():
@@ -1319,7 +1314,6 @@ def test_sign_jwt_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignJwtRequest()
-
 
 @pytest.mark.asyncio
 async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=common.SignJwtRequest):
@@ -1471,7 +1465,6 @@ def test_sign_jwt_flattened_error():
             payload='payload_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_sign_jwt_flattened_async():
     client = IAMCredentialsAsyncClient(
@@ -1507,7 +1500,6 @@ async def test_sign_jwt_flattened_async():
         arg = args[0].payload
         mock_val = 'payload_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_sign_jwt_flattened_error_async():
@@ -1612,6 +1604,15 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+])
+def test_transport_kind(transport_name):
+    transport = IAMCredentialsClient.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = IAMCredentialsClient(
@@ -1653,6 +1654,14 @@ def test_iam_credentials_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        'kind',
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_iam_credentials_base_transport_with_credentials_file():
@@ -1796,20 +1805,33 @@ def test_iam_credentials_grpc_transport_client_cert_source_for_mtls(
             )
 
 
-def test_iam_credentials_host_no_port():
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+    "grpc_asyncio",
+])
+def test_iam_credentials_host_no_port(transport_name):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='iamcredentials.googleapis.com'),
+         transport=transport_name,
     )
-    assert client.transport._host == 'iamcredentials.googleapis.com:443'
+    assert client.transport._host == (
+        'iamcredentials.googleapis.com:443'
+    )
 
-
-def test_iam_credentials_host_with_port():
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+    "grpc_asyncio",
+])
+def test_iam_credentials_host_with_port(transport_name):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='iamcredentials.googleapis.com:8000'),
+        transport=transport_name,
     )
-    assert client.transport._host == 'iamcredentials.googleapis.com:8000'
+    assert client.transport._host == (
+        'iamcredentials.googleapis.com:8000'
+    )
 
 def test_iam_credentials_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())

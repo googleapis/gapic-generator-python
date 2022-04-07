@@ -76,20 +76,22 @@ def test__get_default_mtls_endpoint():
     assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [
-    AssetServiceClient,
-    AssetServiceAsyncClient,
+@pytest.mark.parametrize("client_class,transport_name", [
+    (AssetServiceClient, "grpc"),
+    (AssetServiceAsyncClient, "grpc_asyncio"),
 ])
-def test_asset_service_client_from_service_account_info(client_class):
+def test_asset_service_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == 'cloudasset.googleapis.com:443'
+        assert client.transport._host == (
+            'cloudasset.googleapis.com:443'
+        )
 
 
 @pytest.mark.parametrize("transport_class,transport_name", [
@@ -108,23 +110,25 @@ def test_asset_service_client_service_account_always_use_jwt(transport_class, tr
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [
-    AssetServiceClient,
-    AssetServiceAsyncClient,
+@pytest.mark.parametrize("client_class,transport_name", [
+    (AssetServiceClient, "grpc"),
+    (AssetServiceAsyncClient, "grpc_asyncio"),
 ])
-def test_asset_service_client_from_service_account_file(client_class):
+def test_asset_service_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == 'cloudasset.googleapis.com:443'
+        assert client.transport._host == (
+            'cloudasset.googleapis.com:443'
+        )
 
 
 def test_asset_service_client_get_transport_class():
@@ -539,7 +543,6 @@ def test_export_assets_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ExportAssetsRequest()
 
-
 @pytest.mark.asyncio
 async def test_export_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.ExportAssetsRequest):
     client = AssetServiceAsyncClient(
@@ -689,7 +692,6 @@ def test_list_assets_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListAssetsRequest()
 
-
 @pytest.mark.asyncio
 async def test_list_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListAssetsRequest):
     client = AssetServiceAsyncClient(
@@ -828,7 +830,6 @@ def test_list_assets_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_assets_flattened_async():
     client = AssetServiceAsyncClient(
@@ -856,7 +857,6 @@ async def test_list_assets_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_assets_flattened_error_async():
@@ -1110,7 +1110,6 @@ def test_batch_get_assets_history_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetAssetsHistoryRequest()
 
-
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_async(transport: str = 'grpc_asyncio', request_type=asset_service.BatchGetAssetsHistoryRequest):
     client = AssetServiceAsyncClient(
@@ -1265,7 +1264,6 @@ def test_create_feed_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateFeedRequest()
 
-
 @pytest.mark.asyncio
 async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.CreateFeedRequest):
     client = AssetServiceAsyncClient(
@@ -1410,7 +1408,6 @@ def test_create_feed_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_create_feed_flattened_async():
     client = AssetServiceAsyncClient(
@@ -1438,7 +1435,6 @@ async def test_create_feed_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_create_feed_flattened_error_async():
@@ -1511,7 +1507,6 @@ def test_get_feed_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetFeedRequest()
-
 
 @pytest.mark.asyncio
 async def test_get_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.GetFeedRequest):
@@ -1657,7 +1652,6 @@ def test_get_feed_flattened_error():
             name='name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_get_feed_flattened_async():
     client = AssetServiceAsyncClient(
@@ -1685,7 +1679,6 @@ async def test_get_feed_flattened_async():
         arg = args[0].name
         mock_val = 'name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_get_feed_flattened_error_async():
@@ -1750,7 +1743,6 @@ def test_list_feeds_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListFeedsRequest()
-
 
 @pytest.mark.asyncio
 async def test_list_feeds_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListFeedsRequest):
@@ -1888,7 +1880,6 @@ def test_list_feeds_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_feeds_flattened_async():
     client = AssetServiceAsyncClient(
@@ -1916,7 +1907,6 @@ async def test_list_feeds_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_feeds_flattened_error_async():
@@ -1989,7 +1979,6 @@ def test_update_feed_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateFeedRequest()
-
 
 @pytest.mark.asyncio
 async def test_update_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.UpdateFeedRequest):
@@ -2135,7 +2124,6 @@ def test_update_feed_flattened_error():
             feed=asset_service.Feed(name='name_value'),
         )
 
-
 @pytest.mark.asyncio
 async def test_update_feed_flattened_async():
     client = AssetServiceAsyncClient(
@@ -2163,7 +2151,6 @@ async def test_update_feed_flattened_async():
         arg = args[0].feed
         mock_val = asset_service.Feed(name='name_value')
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_update_feed_flattened_error_async():
@@ -2227,7 +2214,6 @@ def test_delete_feed_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest()
-
 
 @pytest.mark.asyncio
 async def test_delete_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.DeleteFeedRequest):
@@ -2364,7 +2350,6 @@ def test_delete_feed_flattened_error():
             name='name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_delete_feed_flattened_async():
     client = AssetServiceAsyncClient(
@@ -2392,7 +2377,6 @@ async def test_delete_feed_flattened_async():
         arg = args[0].name
         mock_val = 'name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_delete_feed_flattened_error_async():
@@ -2459,7 +2443,6 @@ def test_search_all_resources_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllResourcesRequest()
-
 
 @pytest.mark.asyncio
 async def test_search_all_resources_async(transport: str = 'grpc_asyncio', request_type=asset_service.SearchAllResourcesRequest):
@@ -2609,7 +2592,6 @@ def test_search_all_resources_flattened_error():
             asset_types=['asset_types_value'],
         )
 
-
 @pytest.mark.asyncio
 async def test_search_all_resources_flattened_async():
     client = AssetServiceAsyncClient(
@@ -2645,7 +2627,6 @@ async def test_search_all_resources_flattened_async():
         arg = args[0].asset_types
         mock_val = ['asset_types_value']
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_search_all_resources_flattened_error_async():
@@ -2903,7 +2884,6 @@ def test_search_all_iam_policies_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllIamPoliciesRequest()
 
-
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.SearchAllIamPoliciesRequest):
     client = AssetServiceAsyncClient(
@@ -3047,7 +3027,6 @@ def test_search_all_iam_policies_flattened_error():
             query='query_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_flattened_async():
     client = AssetServiceAsyncClient(
@@ -3079,7 +3058,6 @@ async def test_search_all_iam_policies_flattened_async():
         arg = args[0].query
         mock_val = 'query_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_flattened_error_async():
@@ -3336,7 +3314,6 @@ def test_analyze_iam_policy_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyRequest()
 
-
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeIamPolicyRequest):
     client = AssetServiceAsyncClient(
@@ -3483,7 +3460,6 @@ def test_analyze_iam_policy_longrunning_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest()
-
 
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
@@ -3669,6 +3645,15 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+])
+def test_transport_kind(transport_name):
+    transport = AssetServiceClient.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = AssetServiceClient(
@@ -3723,6 +3708,14 @@ def test_asset_service_base_transport():
     # also raise NotImplementedError
     with pytest.raises(NotImplementedError):
         transport.operations_client
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        'kind',
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_asset_service_base_transport_with_credentials_file():
@@ -3866,20 +3859,33 @@ def test_asset_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
-def test_asset_service_host_no_port():
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+    "grpc_asyncio",
+])
+def test_asset_service_host_no_port(transport_name):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='cloudasset.googleapis.com'),
+         transport=transport_name,
     )
-    assert client.transport._host == 'cloudasset.googleapis.com:443'
+    assert client.transport._host == (
+        'cloudasset.googleapis.com:443'
+    )
 
-
-def test_asset_service_host_with_port():
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+    "grpc_asyncio",
+])
+def test_asset_service_host_with_port(transport_name):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='cloudasset.googleapis.com:8000'),
+        transport=transport_name,
     )
-    assert client.transport._host == 'cloudasset.googleapis.com:8000'
+    assert client.transport._host == (
+        'cloudasset.googleapis.com:8000'
+    )
 
 def test_asset_service_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())

@@ -20,7 +20,7 @@ from setuptools import find_packages, setup  # type: ignore
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-version = "0.63.5"
+version = "0.63.8"
 
 with io.open(os.path.join(PACKAGE_ROOT, "README.rst")) as file_obj:
     README = file_obj.read()
@@ -43,7 +43,9 @@ setup(
     platforms="Posix; MacOS X",
     include_package_data=True,
     install_requires=(
-        "click >= 6.7",
+        # There is a typing issue with click==8.1.0
+        # See https://github.com/pallets/click/issues/2227
+        "click >= 6.7,!=8.1.0",
         "google-api-core >= 2.3.2",
         "googleapis-common-protos >= 1.54.0",
         "grpcio >= 1.24.3",

@@ -72,20 +72,22 @@ def test__get_default_mtls_endpoint():
     assert MetricsServiceV2Client._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [
-    MetricsServiceV2Client,
-    MetricsServiceV2AsyncClient,
+@pytest.mark.parametrize("client_class,transport_name", [
+    (MetricsServiceV2Client, "grpc"),
+    (MetricsServiceV2AsyncClient, "grpc_asyncio"),
 ])
-def test_metrics_service_v2_client_from_service_account_info(client_class):
+def test_metrics_service_v2_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == 'logging.googleapis.com:443'
+        assert client.transport._host == (
+            'logging.googleapis.com:443'
+        )
 
 
 @pytest.mark.parametrize("transport_class,transport_name", [
@@ -104,23 +106,25 @@ def test_metrics_service_v2_client_service_account_always_use_jwt(transport_clas
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [
-    MetricsServiceV2Client,
-    MetricsServiceV2AsyncClient,
+@pytest.mark.parametrize("client_class,transport_name", [
+    (MetricsServiceV2Client, "grpc"),
+    (MetricsServiceV2AsyncClient, "grpc_asyncio"),
 ])
-def test_metrics_service_v2_client_from_service_account_file(client_class):
+def test_metrics_service_v2_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == 'logging.googleapis.com:443'
+        assert client.transport._host == (
+            'logging.googleapis.com:443'
+        )
 
 
 def test_metrics_service_v2_client_get_transport_class():
@@ -542,7 +546,6 @@ def test_list_log_metrics_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.ListLogMetricsRequest()
 
-
 @pytest.mark.asyncio
 async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.ListLogMetricsRequest):
     client = MetricsServiceV2AsyncClient(
@@ -681,7 +684,6 @@ def test_list_log_metrics_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_log_metrics_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -709,7 +711,6 @@ async def test_list_log_metrics_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_log_metrics_flattened_error_async():
@@ -973,7 +974,6 @@ def test_get_log_metric_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.GetLogMetricRequest()
 
-
 @pytest.mark.asyncio
 async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.GetLogMetricRequest):
     client = MetricsServiceV2AsyncClient(
@@ -1120,7 +1120,6 @@ def test_get_log_metric_flattened_error():
             metric_name='metric_name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_get_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -1148,7 +1147,6 @@ async def test_get_log_metric_flattened_async():
         arg = args[0].metric_name
         mock_val = 'metric_name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_get_log_metric_flattened_error_async():
@@ -1223,7 +1221,6 @@ def test_create_log_metric_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.CreateLogMetricRequest()
-
 
 @pytest.mark.asyncio
 async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.CreateLogMetricRequest):
@@ -1376,7 +1373,6 @@ def test_create_log_metric_flattened_error():
             metric=logging_metrics.LogMetric(name='name_value'),
         )
 
-
 @pytest.mark.asyncio
 async def test_create_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -1408,7 +1404,6 @@ async def test_create_log_metric_flattened_async():
         arg = args[0].metric
         mock_val = logging_metrics.LogMetric(name='name_value')
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_create_log_metric_flattened_error_async():
@@ -1484,7 +1479,6 @@ def test_update_log_metric_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.UpdateLogMetricRequest()
-
 
 @pytest.mark.asyncio
 async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.UpdateLogMetricRequest):
@@ -1637,7 +1631,6 @@ def test_update_log_metric_flattened_error():
             metric=logging_metrics.LogMetric(name='name_value'),
         )
 
-
 @pytest.mark.asyncio
 async def test_update_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -1669,7 +1662,6 @@ async def test_update_log_metric_flattened_async():
         arg = args[0].metric
         mock_val = logging_metrics.LogMetric(name='name_value')
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_update_log_metric_flattened_error_async():
@@ -1734,7 +1726,6 @@ def test_delete_log_metric_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest()
-
 
 @pytest.mark.asyncio
 async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.DeleteLogMetricRequest):
@@ -1871,7 +1862,6 @@ def test_delete_log_metric_flattened_error():
             metric_name='metric_name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_delete_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -1899,7 +1889,6 @@ async def test_delete_log_metric_flattened_async():
         arg = args[0].metric_name
         mock_val = 'metric_name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_delete_log_metric_flattened_error_async():
@@ -2002,6 +1991,15 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+])
+def test_transport_kind(transport_name):
+    transport = MetricsServiceV2Client.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = MetricsServiceV2Client(
@@ -2044,6 +2042,14 @@ def test_metrics_service_v2_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        'kind',
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_metrics_service_v2_base_transport_with_credentials_file():
@@ -2199,20 +2205,33 @@ def test_metrics_service_v2_grpc_transport_client_cert_source_for_mtls(
             )
 
 
-def test_metrics_service_v2_host_no_port():
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+    "grpc_asyncio",
+])
+def test_metrics_service_v2_host_no_port(transport_name):
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='logging.googleapis.com'),
+         transport=transport_name,
     )
-    assert client.transport._host == 'logging.googleapis.com:443'
+    assert client.transport._host == (
+        'logging.googleapis.com:443'
+    )
 
-
-def test_metrics_service_v2_host_with_port():
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+    "grpc_asyncio",
+])
+def test_metrics_service_v2_host_with_port(transport_name):
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='logging.googleapis.com:8000'),
+        transport=transport_name,
     )
-    assert client.transport._host == 'logging.googleapis.com:8000'
+    assert client.transport._host == (
+        'logging.googleapis.com:8000'
+    )
 
 def test_metrics_service_v2_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
