@@ -464,13 +464,14 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
             },
             )},
         naming=DummyNaming(name="mollusc", version="v1", warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod", proto_package="google.mollusca"),
     )
 
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
         actual_response = g.get_response(
             api_schema, opts=Options.build("autogen-snippets=False"))
 
+    print(actual_response)
     expected_snippet_index_json = {
         "snippets": [
             {

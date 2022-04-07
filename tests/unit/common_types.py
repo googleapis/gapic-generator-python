@@ -27,6 +27,7 @@ from gapic.schema import wrappers
 
 @dataclasses.dataclass(frozen=True)
 class DummyMethod:
+    name: bool = False
     input: bool = False
     output: bool = False
     lro: bool = False
@@ -35,9 +36,11 @@ class DummyMethod:
     client_streaming: bool = False
     server_streaming: bool = False
     flattened_fields: Dict[str, Any] = dataclasses.field(default_factory=dict)
+    client_output_async: bool = False
 
 
-DummyIdent = namedtuple("DummyIdent", ["name"])
+DummyIdent = namedtuple("DummyIdent", ["name", "sphinx"])
+DummyIdent.__new__.__defaults__ = (False,) * len(DummyIdent._fields)
 
 DummyMessageTypePB = namedtuple("DummyMessageTypePB", ["name"])
 
@@ -99,7 +102,7 @@ DummyApiSchema = namedtuple("DummyApiSchema",
 DummyApiSchema.__new__.__defaults__ = (False,) * len(DummyApiSchema._fields)
 
 DummyNaming = namedtuple(
-    "DummyNaming", ["warehouse_package_name", "name", "version", "versioned_module_name", "module_namespace"])
+    "DummyNaming", ["warehouse_package_name", "name", "version", "versioned_module_name", "module_namespace", "proto_package"])
 DummyNaming.__new__.__defaults__ = (False,) * len(DummyNaming._fields)
 
 

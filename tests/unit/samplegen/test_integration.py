@@ -92,6 +92,7 @@ def test_generate_sample_basic():
         service_pb=namedtuple('service_pb', ['name'])('MolluscService'),
         methods={
             "Classify": DummyMethod(
+                name="Classify",
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
                 flattened_fields={
@@ -176,11 +177,12 @@ def test_generate_sample_basic_async():
         service_pb=namedtuple('service_pb', ['name'])('MolluscService'),
         methods={
             "Classify": DummyMethod(
+                name="Classify",
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
                 flattened_fields={
                     "classify_target": DummyField(name="classify_target")
-                }
+                },
             )
         },
         visible_resources={},
@@ -261,6 +263,7 @@ def test_generate_sample_basic_unflattenable():
         service_pb=namedtuple('service_pb', ['name'])('MolluscService'),
         methods={
             "Classify": DummyMethod(
+                name="Classify",
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
             )
@@ -336,6 +339,8 @@ def test_generate_sample_void_method():
         service_pb=namedtuple('service_pb', ['name'])('MolluscService'),
         methods={
             "Classify": DummyMethod(
+                name="Classify",
+                client_output=DummyIdent(name="classify", sphinx="classify"),
                 void=True,
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
