@@ -132,7 +132,7 @@ jobs:
     strategy:
       matrix:
         python: ["3.6", "3.7", "3.8", "3.9", "3.10"]
-        variant: ['', _alternative_templates]
+        variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins]
         exclude:
           - python: "3.6"
             variant: _alternative_templates
