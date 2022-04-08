@@ -2068,7 +2068,7 @@ def test_generate_sample_spec_basic():
     }
 
 
-def test__fill_sample_metadata_server_streaming():
+def test__set_sample_metadata_server_streaming():
     sample = {
         "rpc": "Ramshorn",
         "transport": "grpc",
@@ -2144,7 +2144,7 @@ def test__fill_sample_metadata_server_streaming():
     }
 
 
-def test__fill_sample_metadata_client_streaming():
+def test__set_sample_metadata_client_streaming():
     sample = {
         "rpc": "Ramshorn",
         "transport": "grpc",
