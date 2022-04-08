@@ -4474,7 +4474,7 @@
           },
           {
             "name": "labels",
-            "type": "Sequence[google.cloud.logging_v2.types.WriteLogEntriesRequest.LabelsEntry]"
+            "type": "Mapping[str, str]"
           },
           {
             "name": "entries",
@@ -4566,7 +4566,7 @@
           },
           {
             "name": "labels",
-            "type": "Sequence[google.cloud.logging_v2.types.WriteLogEntriesRequest.LabelsEntry]"
+            "type": "Mapping[str, str]"
           },
           {
             "name": "entries",
