@@ -625,78 +625,77 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
     expected_snippet_metadata_json = {
         "clientLibrary": {
             "apis": [
-            {
-                "id": "google.mollusca",
-                "version": "v1"
-            }
+                {
+                    "id": "google.mollusca",
+                    "version": "v1"
+                    }
             ],
             "language": "PYTHON",
             "name": "mollusc-cephalopod-teuthida-"
         },
-    "snippets": [
-        {
-        "clientMethod": {
-            "method": {
-            "service": {
-                "shortName": "Mollusc"
-            },
-            "shortName": "GetSquidStreaming"
-            }
-        },
-        "file": "squid_sample_1cfd0b3d.py",
-        "segments": [
-            {"type": "FULL"},
-            {"type": "SHORT"},
-            {"type": "CLIENT_INITIALIZATION"},
-            {"type": "REQUEST_INITIALIZATION"},
-            {"type": "REQUEST_EXECUTION"},
-            {"type": "RESPONSE_HANDLING"}
-        ],
-        "title": "squid_sample_1cfd0b3d.py"
-        },
-        {
-        "clientMethod": {
-            "method": {
-            "service": {
-                "shortName": "Mollusc"
-            },
-            "shortName": "GetSquidStreaming"
-            }
-        },
-        "file": "squid_sample_cf4d4fa4.py",
-        "segments": [
-            {"type": "FULL"},
-            {"type": "SHORT"},
-            {"type": "CLIENT_INITIALIZATION"},
-            {"type": "REQUEST_INITIALIZATION"},
-            {"type": "REQUEST_EXECUTION"},
-            {"type": "RESPONSE_HANDLING"}
-        ],
-        "title": "squid_sample_cf4d4fa4.py"
-        },
-        {
-        "clientMethod": {
-            "method": {
-            "service": {
-                "shortName": "Mollusc"
-            },
-            "shortName": "GetSquidStreaming"
-            }
-        },
-        "file": "7384949e.py",
-        "segments": [
-            {"type": "FULL"},
-            {"type": "SHORT"},
-            {"type": "CLIENT_INITIALIZATION"},
-            {"type": "REQUEST_INITIALIZATION"},
-            {"type": "REQUEST_EXECUTION"},
-            {"type": "RESPONSE_HANDLING"}
-        ],
-        "title": "7384949e.py"
-        }
-    ]
+        "snippets": [
+            {
+                "clientMethod": {
+                    "method": {
+                        "service": {
+                            "shortName": "Mollusc"
+                            },
+                        "shortName": "GetSquidStreaming"
+                    }
+                },
+                "file": "squid_sample_1cfd0b3d.py",
+                "segments": [
+                    {"type": "FULL"},
+                    {"type": "SHORT"},
+                    {"type": "CLIENT_INITIALIZATION"},
+                    {"type": "REQUEST_INITIALIZATION"},
+                    {"type": "REQUEST_EXECUTION"},
+                    {"type": "RESPONSE_HANDLING"}
+                ],
+                "title": "squid_sample_1cfd0b3d.py"
+                },
+            {
+                "clientMethod": {
+                    "method": {
+                        "service": {
+                            "shortName": "Mollusc"
+                            },
+                        "shortName": "GetSquidStreaming"
+                    }
+                },
+                "file": "squid_sample_cf4d4fa4.py",
+                "segments": [
+                    {"type": "FULL"},
+                    {"type": "SHORT"},
+                    {"type": "CLIENT_INITIALIZATION"},
+                    {"type": "REQUEST_INITIALIZATION"},
+                    {"type": "REQUEST_EXECUTION"},
+                    {"type": "RESPONSE_HANDLING"}
+                ],
+                "title": "squid_sample_cf4d4fa4.py"
+                },
+            {
+                "clientMethod": {
+                    "method": {
+                        "service": {
+                            "shortName": "Mollusc"
+                            },
+                        "shortName": "GetSquidStreaming"
+                    }
+                },
+                "file": "7384949e.py",
+                "segments": [
+                    {"type": "FULL"},
+                    {"type": "SHORT"},
+                    {"type": "CLIENT_INITIALIZATION"},
+                    {"type": "REQUEST_INITIALIZATION"},
+                    {"type": "REQUEST_EXECUTION"},
+                    {"type": "RESPONSE_HANDLING"}
+                ],
+                "title": "7384949e.py"
+                }
+            ]
     }
-
 
     assert actual_response.supported_features == CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
     assert len(actual_response.file) == 4
