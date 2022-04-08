@@ -1030,9 +1030,9 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     snippet_metadata = snippet_metadata_pb2.Snippet()  # type: ignore
     snippet_metadata.region_tag = sample["region_tag"]
     snippet_metadata.description = f"Sample for {sample['rpc']}"
-    snippet_metadata.language = snippet_metadata_pb2.Language.PYTHON
+    snippet_metadata.language = snippet_metadata_pb2.Language.PYTHON  # type: ignore
     snippet_metadata.canonical = True
-    snippet_metadata.origin = snippet_metadata_pb2.Snippet.Origin.API_DEFINITION
+    snippet_metadata.origin = snippet_metadata_pb2.Snippet.Origin.API_DEFINITION  # type: ignore
 
     # Service Client
     snippet_metadata.client_method.client.short_name = service.async_client_name if async_ else service.client_name
@@ -1060,20 +1060,20 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     # Client Method Parameters
     parameters = snippet_metadata.client_method.parameters
     if not method.client_streaming:
-        parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(
+        parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
             type=method.input.ident.sphinx, name="request"))
         for field in method.flattened_fields.values():
-            parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(
+            parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
                 type=field.ident.sphinx, name=field.name))
     else:
-        parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(
+        parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
             type=f"Iterator[{method.input.ident.sphinx}]", name="requests"))
 
-    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(
+    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
         name="retry", type="google.api_core.retry.Retry"))
-    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(
+    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
         name="timeout", type="float"))
-    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(
+    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
         name="metadata", type="Sequence[Tuple[str, str]"))
 
     return snippet_metadata
