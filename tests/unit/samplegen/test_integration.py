@@ -63,27 +63,44 @@ def test_generate_sample_basic():
     # or in features that are sufficiently small and trivial that it doesn't make sense
     # to have standalone tests.
 
+
+    classify_target_field = DummyField(
+        name="classify_target",
+        type=DummyMessageTypePB(name="ClassifyTarget"),
+        message=DummyMessage(
+            type="CLASSIFY TYPE",
+            fields={
+                "video": DummyField(
+                    type=DummyMessageTypePB(name="Video"),
+                    message=DummyMessage(type="VIDEO TYPE"),
+                ),
+                "location_annotation": DummyField(
+                    type=DummyMessageTypePB(name="Location"),
+                    message=DummyMessage(type="LOCATION TYPE"),
+                )
+            },
+        ),
+        ident=DummyIdent(sphinx="molluscs_v1.ClassifyTarget")
+    )
+
+
     input_type = DummyMessage(
         type="REQUEST TYPE",
         fields={
-            "classify_target": DummyField(
-                type=DummyMessageTypePB(name="ClassifyTarget"),
-                message=DummyMessage(
-                    type="CLASSIFY TYPE",
-                    fields={
-                        "video": DummyField(
-                            type=DummyMessageTypePB(name="Video"),
-                            message=DummyMessage(type="VIDEO TYPE"),
-                        ),
-                        "location_annotation": DummyField(
-                            type=DummyMessageTypePB(name="Location"),
-                            message=DummyMessage(type="LOCATION TYPE"),
-                        )
-                    },
-                )
+            "classify_target": classify_target_field
+        },
+        ident=DummyIdent(name="molluscs.v1.ClassifyRequest",
+                         sphinx="molluscs_v1.classify_request")
+    )
+
+    output_type = DummyMessage(
+        type="RESPONSE TYPE",
+        fields={
+            "classification": DummyField(
+                type=DummyMessageTypePB(name="Classification"),
             )
         },
-        ident=DummyIdent(name="molluscs.v1.ClassifyRequest")
+        ident=DummyIdent(sphinx="molluscs_v1.classification")
     )
 
     api_naming = naming.NewNaming(
@@ -95,8 +112,9 @@ def test_generate_sample_basic():
                 name="Classify",
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
+                client_output=output_type,
                 flattened_fields={
-                    "classify_target": DummyField(name="classify_target")
+                    "classify_target": classify_target_field
                 }
             )
         },
@@ -131,14 +149,34 @@ def test_generate_sample_basic():
     )
 
     assert sample_str == golden_snippet("sample_basic.py")
+
     assert json_format.MessageToDict(metadata) == {
         'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
-        'clientMethod':
-            {'method': {
+        'description': 'Sample for Classify',
+        'language': 'PYTHON',
+        'clientMethod': {
+            'shortName': 'classify', 
+            'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient.classify', 
+            'parameters': [
+                {'type': 'molluscs_v1.classify_request', 'name': 'request'},
+                {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'},
+                {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
+                {'type': 'float', 'name': 'timeout'},
+                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+            ], 
+            'resultType': 'molluscs_v1.classification',
+            'client': {
+                'shortName': 'MolluscServiceClient', 
+                'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient'
+            }, 
+            'method': {
                 'shortName': 'Classify',
-                'service': {'shortName': 'Mollusc'}
-            }}
-        }
+                'fullName': '.MolluscService.Classify', 
+                'service': {'shortName': 'MolluscService', 'fullName': '.MolluscService'}}
+            }, 
+            'canonical': True,
+            'origin': 'API_DEFINITION'
+    }
 
 
 def test_generate_sample_basic_async():
@@ -148,27 +186,42 @@ def test_generate_sample_basic_async():
     # or in features that are sufficiently small and trivial that it doesn't make sense
     # to have standalone tests.
 
+    classify_target_field = DummyField(
+        name="classify_target",
+        type=DummyMessageTypePB(name="ClassifyTarget"),
+        message=DummyMessage(
+            type="CLASSIFY TYPE",
+            fields={
+                "video": DummyField(
+                    type=DummyMessageTypePB(name="Video"),
+                    message=DummyMessage(type="VIDEO TYPE"),
+                ),
+                "location_annotation": DummyField(
+                    type=DummyMessageTypePB(name="Location"),
+                    message=DummyMessage(type="LOCATION TYPE"),
+                )
+            },
+        ),
+        ident=DummyIdent(sphinx="molluscs_v1.ClassifyTarget")
+    )
+
     input_type = DummyMessage(
         type="REQUEST TYPE",
         fields={
-            "classify_target": DummyField(
-                type=DummyMessageTypePB(name="ClassifyTarget"),
-                message=DummyMessage(
-                    type=DummyMessageTypePB(name="CLASSIFY TYPE"),
-                    fields={
-                        "video": DummyField(
-                            type=DummyMessageTypePB(name="Video"),
-                            message=DummyMessage(type="VIDEO TYPE"),
-                        ),
-                        "location_annotation": DummyField(
-                            type=DummyMessageTypePB(name="Location"),
-                            message=DummyMessage(type="LOCATION TYPE"),
-                        )
-                    },
-                )
+            "classify_target": classify_target_field
+        },
+        ident=DummyIdent(name="molluscs.v1.ClassifyRequest",
+                         sphinx="molluscs_v1.classify_request")
+    )
+
+    output_type = DummyMessage(
+        type="RESPONSE TYPE",
+        fields={
+            "classification": DummyField(
+                type=DummyMessageTypePB(name="Classification"),
             )
         },
-        ident=DummyIdent(name="molluscs.v1.ClassifyRequest")
+        ident=DummyIdent(sphinx="molluscs_v1.classification")
     )
 
     api_naming = naming.NewNaming(
@@ -180,9 +233,11 @@ def test_generate_sample_basic_async():
                 name="Classify",
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
+                client_output_async=output_type,
+                client_output=output_type,
                 flattened_fields={
-                    "classify_target": DummyField(name="classify_target")
-                },
+                    "classify_target": classify_target_field
+                }
             )
         },
         visible_resources={},
@@ -217,15 +272,38 @@ def test_generate_sample_basic_async():
     )
 
     assert sample_str == golden_snippet("sample_basic_async.py")
+
     assert json_format.MessageToDict(metadata) == {
         'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_async',
-        'clientMethod':
-        {
-            'async': True,
+        'description': 'Sample for Classify',
+        'language': 'PYTHON',
+        'clientMethod': {
+            'shortName': 'classify',
+            'fullName': 'molluscs.v1.molluscclient.MolluscServiceAsyncClient.classify', 
+            'async': True, 
+            'parameters': [
+                {'type': 'molluscs_v1.classify_request', 'name': 'request'}, 
+                {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'}, 
+                {'type': 'google.api_core.retry.Retry', 'name': 'retry'}, 
+                {'type': 'float', 'name': 'timeout'}, 
+                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+            ], 
+            'resultType': 'molluscs_v1.classification', 
+            'client': {
+                'shortName': 'MolluscServiceAsyncClient', 
+                'fullName': 'molluscs.v1.molluscclient.MolluscServiceAsyncClient'
+            }, 
             'method': {
-                'shortName': 'Classify',
-                'service': {'shortName': 'Mollusc'}
-                }}
+                'shortName': 'Classify', 
+                'fullName': '.MolluscService.Classify', 
+                'service': {
+                    'shortName': 'MolluscService', 
+                    'fullName': '.MolluscService'
+                }
+            }
+        }, 
+        'canonical': True, 
+        'origin': 'API_DEFINITION'
     }
 
 
@@ -254,7 +332,18 @@ def test_generate_sample_basic_unflattenable():
                 )
             )
         },
-        ident=DummyIdent(name="molluscs.v1.ClassifyRequest")
+        ident=DummyIdent(name="molluscs.v1.ClassifyRequest",
+                         sphinx="molluscs_v1.classify_request")
+    )
+
+    output_type = DummyMessage(
+        type="RESPONSE TYPE",
+        fields={
+            "classification": DummyField(
+                type=DummyMessageTypePB(name="Classification"),
+            )
+        },
+        ident=DummyIdent(sphinx="molluscs_v1.classification")
     )
 
     api_naming = naming.NewNaming(
@@ -266,6 +355,7 @@ def test_generate_sample_basic_unflattenable():
                 name="Classify",
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
+                client_output=output_type,
             )
         },
         visible_resources={},
@@ -299,38 +389,63 @@ def test_generate_sample_basic_unflattenable():
     )
 
     assert sample_str == golden_snippet("sample_basic_unflattenable.py")
+
     assert json_format.MessageToDict(metadata) == {
         'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
-        'clientMethod':
-        {
+        'description': 'Sample for Classify',
+        'language': 'PYTHON',
+        'clientMethod': {
+            'shortName': 'classify',
+            'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient.classify',
+            'parameters': [
+                {'type': 'molluscs_v1.classify_request', 'name': 'request'},
+                {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
+                {'type': 'float', 'name': 'timeout'},
+                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+            ],
+            'resultType': 'molluscs_v1.classification',
+            'client': {
+                'shortName': 'MolluscServiceClient',
+                'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient'
+            },
             'method': {
                 'shortName': 'Classify',
-                'service': {'shortName': 'Mollusc'}
-                }}
+                'fullName': '.MolluscService.Classify',
+                'service': {'shortName': 'MolluscService', 'fullName': '.MolluscService'}
+            }
+        },
+        'canonical': True,
+        'origin': 'API_DEFINITION'
     }
 
 
 def test_generate_sample_void_method():
+    classify_target_field = DummyField(
+        name="classify_target",
+        type=DummyMessageTypePB(name="ClassifyTarget"),
+        message=DummyMessage(
+            type="CLASSIFY TYPE",
+            fields={
+                "video": DummyField(
+                    type=DummyMessageTypePB(name="Video"),
+                    message=DummyMessage(type="VIDEO TYPE"),
+                ),
+                "location_annotation": DummyField(
+                    type=DummyMessageTypePB(name="Location"),
+                    message=DummyMessage(type="LOCATION TYPE"),
+                )
+            },
+        ),
+        ident=DummyIdent(sphinx="molluscs_v1.ClassifyTarget")
+    )
+
     input_type = DummyMessage(
         type="REQUEST TYPE",
         fields={
-            "classify_target": DummyField(
-                type=DummyMessageTypePB(name="ClassifyTarget"),
-                message=DummyMessage(
-                    fields={
-                        "video": DummyField(
-                            type=DummyMessageTypePB(name="Video"),
-                            message=DummyMessage(type="VIDEO TYPE"),
-                        ),
-                        "location_annotation": DummyField(
-                            type=DummyMessageTypePB(name="Location"),
-                            message=DummyMessage(type="LOCATION TYPE"),
-                        )
-                    },
-                )
-            )
+            "classify_target": classify_target_field
         },
-        ident=DummyIdent(name="molluscs.v1.ClassifyRequest")
+        ident=DummyIdent(name="molluscs.v1.ClassifyRequest",
+                         sphinx="molluscs_v1.classify_request")
     )
 
     api_naming = naming.NewNaming(
@@ -345,7 +460,7 @@ def test_generate_sample_void_method():
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
                 flattened_fields={
-                    "classify_target": DummyField(name="classify_target")
+                    "classify_target": classify_target_field,
                 }
             )
         },
@@ -379,15 +494,35 @@ def test_generate_sample_void_method():
     )
 
     assert sample_str == golden_snippet("sample_basic_void_method.py")
+
     assert json_format.MessageToDict(metadata) == {
-        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
-        'clientMethod':
-        {
+        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync', 
+        'description': 'Sample for Classify', 
+        'language': 'PYTHON', 
+        'clientMethod': {
+            'shortName': 'classify',
+            'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient.classify',
+            'parameters': [
+                {'type': 'molluscs_v1.classify_request', 'name': 'request'}, 
+                {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'}, 
+                {'type': 'google.api_core.retry.Retry', 'name': 'retry'}, 
+                {'type': 'float', 'name': 'timeout'}, 
+                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+            ], 
+            'client': {
+                'shortName': 'MolluscServiceClient', 
+                'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient'
+            }, 
             'method': {
-                'shortName': 'Classify',
-                'service': {'shortName': 'Mollusc'}
-                }}
+                'shortName': 'Classify', 
+                'fullName': '.MolluscService.Classify', 
+                'service': {'shortName': 'MolluscService', 'fullName': '.MolluscService'}
+            }
+        }, 
+        'canonical': True, 
+        'origin': 'API_DEFINITION'
     }
+
 
 
 def test_generate_sample_service_not_found():
