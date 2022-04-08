@@ -36,6 +36,7 @@ class DummyMethod:
     client_streaming: bool = False
     server_streaming: bool = False
     flattened_fields: Dict[str, Any] = dataclasses.field(default_factory=dict)
+    client_output: bool = False
     client_output_async: bool = False
 
 
@@ -60,6 +61,7 @@ DummyFieldBase = namedtuple("DummyField",
                          "field_pb",
                          "meta",
                          "is_primitive",
+                         "ident",
                          "type"])
 DummyFieldBase.__new__.__defaults__ = (False,) * len(DummyFieldBase._fields)
 
