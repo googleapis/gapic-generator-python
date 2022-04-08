@@ -63,7 +63,6 @@ def test_generate_sample_basic():
     # or in features that are sufficiently small and trivial that it doesn't make sense
     # to have standalone tests.
 
-
     classify_target_field = DummyField(
         name="classify_target",
         type=DummyMessageTypePB(name="ClassifyTarget"),
@@ -82,7 +81,6 @@ def test_generate_sample_basic():
         ),
         ident=DummyIdent(sphinx="molluscs_v1.ClassifyTarget")
     )
-
 
     input_type = DummyMessage(
         type="REQUEST TYPE",
@@ -155,27 +153,27 @@ def test_generate_sample_basic():
         'description': 'Sample for Classify',
         'language': 'PYTHON',
         'clientMethod': {
-            'shortName': 'classify', 
-            'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient.classify', 
+            'shortName': 'classify',
+            'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient.classify',
             'parameters': [
                 {'type': 'molluscs_v1.classify_request', 'name': 'request'},
                 {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'},
                 {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
                 {'type': 'float', 'name': 'timeout'},
                 {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
-            ], 
+            ],
             'resultType': 'molluscs_v1.classification',
             'client': {
-                'shortName': 'MolluscServiceClient', 
+                'shortName': 'MolluscServiceClient',
                 'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient'
-            }, 
+            },
             'method': {
                 'shortName': 'Classify',
-                'fullName': '.MolluscService.Classify', 
+                'fullName': '.MolluscService.Classify',
                 'service': {'shortName': 'MolluscService', 'fullName': '.MolluscService'}}
-            }, 
-            'canonical': True,
-            'origin': 'API_DEFINITION'
+            },
+        'canonical': True,
+        'origin': 'API_DEFINITION'
     }
 
 
@@ -279,30 +277,30 @@ def test_generate_sample_basic_async():
         'language': 'PYTHON',
         'clientMethod': {
             'shortName': 'classify',
-            'fullName': 'molluscs.v1.molluscclient.MolluscServiceAsyncClient.classify', 
-            'async': True, 
+            'fullName': 'molluscs.v1.molluscclient.MolluscServiceAsyncClient.classify',
+            'async': True,
             'parameters': [
-                {'type': 'molluscs_v1.classify_request', 'name': 'request'}, 
-                {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'}, 
-                {'type': 'google.api_core.retry.Retry', 'name': 'retry'}, 
-                {'type': 'float', 'name': 'timeout'}, 
+                {'type': 'molluscs_v1.classify_request', 'name': 'request'},
+                {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'},
+                {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
+                {'type': 'float', 'name': 'timeout'},
                 {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
-            ], 
-            'resultType': 'molluscs_v1.classification', 
+            ],
+            'resultType': 'molluscs_v1.classification',
             'client': {
-                'shortName': 'MolluscServiceAsyncClient', 
+                'shortName': 'MolluscServiceAsyncClient',
                 'fullName': 'molluscs.v1.molluscclient.MolluscServiceAsyncClient'
-            }, 
+            },
             'method': {
-                'shortName': 'Classify', 
-                'fullName': '.MolluscService.Classify', 
+                'shortName': 'Classify',
+                'fullName': '.MolluscService.Classify',
                 'service': {
-                    'shortName': 'MolluscService', 
+                    'shortName': 'MolluscService',
                     'fullName': '.MolluscService'
                 }
             }
-        }, 
-        'canonical': True, 
+        },
+        'canonical': True,
         'origin': 'API_DEFINITION'
     }
 
@@ -496,33 +494,32 @@ def test_generate_sample_void_method():
     assert sample_str == golden_snippet("sample_basic_void_method.py")
 
     assert json_format.MessageToDict(metadata) == {
-        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync', 
-        'description': 'Sample for Classify', 
-        'language': 'PYTHON', 
+        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
+        'description': 'Sample for Classify',
+        'language': 'PYTHON',
         'clientMethod': {
             'shortName': 'classify',
             'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient.classify',
             'parameters': [
-                {'type': 'molluscs_v1.classify_request', 'name': 'request'}, 
-                {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'}, 
-                {'type': 'google.api_core.retry.Retry', 'name': 'retry'}, 
-                {'type': 'float', 'name': 'timeout'}, 
+                {'type': 'molluscs_v1.classify_request', 'name': 'request'},
+                {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'},
+                {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
+                {'type': 'float', 'name': 'timeout'},
                 {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
-            ], 
+            ],
             'client': {
-                'shortName': 'MolluscServiceClient', 
+                'shortName': 'MolluscServiceClient',
                 'fullName': 'molluscs.v1.molluscclient.MolluscServiceClient'
-            }, 
+            },
             'method': {
-                'shortName': 'Classify', 
-                'fullName': '.MolluscService.Classify', 
+                'shortName': 'Classify',
+                'fullName': '.MolluscService.Classify',
                 'service': {'shortName': 'MolluscService', 'fullName': '.MolluscService'}
             }
-        }, 
-        'canonical': True, 
+        },
+        'canonical': True,
         'origin': 'API_DEFINITION'
     }
-
 
 
 def test_generate_sample_service_not_found():
