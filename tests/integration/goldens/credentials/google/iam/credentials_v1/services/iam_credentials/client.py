@@ -397,7 +397,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         .. code-block:: python
 
-                    from google.iam import credentials_v1
+            from google.iam import credentials_v1
 
             def sample_generate_access_token():
                 # Create a client
@@ -543,7 +543,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         .. code-block:: python
 
-                    from google.iam import credentials_v1
+            from google.iam import credentials_v1
 
             def sample_generate_id_token():
                 # Create a client
@@ -682,7 +682,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         .. code-block:: python
 
-                    from google.iam import credentials_v1
+            from google.iam import credentials_v1
 
             def sample_sign_blob():
                 # Create a client
@@ -808,7 +808,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         .. code-block:: python
 
-                    from google.iam import credentials_v1
+            from google.iam import credentials_v1
 
             def sample_sign_jwt():
                 # Create a client
