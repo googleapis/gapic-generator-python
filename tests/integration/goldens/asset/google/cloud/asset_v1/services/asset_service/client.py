@@ -406,7 +406,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         the export operation result. For regular-size resource parent,
         the export operation usually finishes within 5 minutes.
 
-
         .. code-block:: python
 
                     from google.cloud import asset_v1
@@ -503,7 +502,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ) -> pagers.ListAssetsPager:
         r"""Lists assets with time and resource types and returns
         paged results in response.
-
 
         .. code-block:: python
 
@@ -618,7 +616,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
-
         .. code-block:: python
 
                     from google.cloud import asset_v1
@@ -693,7 +690,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
         updates.
-
 
         .. code-block:: python
 
@@ -905,7 +901,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
-
 
         .. code-block:: python
 
@@ -1194,7 +1189,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         the ``cloudasset.assets.searchAllResources`` permission on the
         desired scope, otherwise the request will be rejected.
 
-
         .. code-block:: python
 
                     from google.cloud import asset_v1
@@ -1394,7 +1388,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         ``cloudasset.assets.searchAllIamPolicies`` permission on the
         desired scope, otherwise the request will be rejected.
 
-
         .. code-block:: python
 
                     from google.cloud import asset_v1
@@ -1570,7 +1563,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
 
-
         .. code-block:: python
 
                     from google.cloud import asset_v1
@@ -1659,7 +1651,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         intervals of at least 2 seconds with exponential backoff retry
         to poll the operation result. The metadata contains the request
         to help callers to map responses to requests.
-
 
         .. code-block:: python
 

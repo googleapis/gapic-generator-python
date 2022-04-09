@@ -415,7 +415,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         regions available to the project are queried, and the results
         are aggregated.
 
-
         .. code-block:: python
 
                     from google.cloud import redis_v1
@@ -633,7 +632,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         The returned operation is automatically deleted after a few
         hours, so there is no need to call DeleteOperation.
 
-
         .. code-block:: python
 
                     from google.cloud import redis_v1
@@ -781,7 +779,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         operation is automatically deleted after a few hours, so
         there is no need to call DeleteOperation.
 
-
         .. code-block:: python
 
                     from google.cloud import redis_v1
@@ -914,7 +911,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         r"""Upgrades Redis instance to the newer Redis version
         specified in the request.
 
-
         .. code-block:: python
 
                     from google.cloud import redis_v1
@@ -1044,7 +1040,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
-
         .. code-block:: python
 
                     from google.cloud import redis_v1
@@ -1173,7 +1168,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
-
         .. code-block:: python
 
                     from google.cloud import redis_v1
@@ -1300,7 +1294,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 
-
         .. code-block:: python
 
                     from google.cloud import redis_v1
@@ -1421,7 +1414,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             ) -> operation.Operation:
         r"""Deletes a specific Redis instance.  Instance stops
         serving and data is deleted.
-
 
         .. code-block:: python
 

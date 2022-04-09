@@ -615,7 +615,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         entries. Once a bucket has been created, the region
         cannot be changed.
 
-
         .. code-block:: python
 
                     from google.cloud import logging_v2
@@ -699,7 +698,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         A buckets region may not be modified after it is created.
 
-
         .. code-block:: python
 
                     from google.cloud import logging_v2
@@ -774,7 +772,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         state. After 7 days, the bucket will be purged and all logs in
         the bucket will be permanently deleted.
 
-
         .. code-block:: python
 
                     from google.cloud import logging_v2
@@ -837,7 +834,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Undeletes a bucket. A bucket that has been deleted
         may be undeleted within the grace period of 7 days.
-
 
         .. code-block:: python
 
@@ -1084,7 +1080,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Creates a view over logs in a bucket. A bucket may
         contain a maximum of 50 views.
 
-
         .. code-block:: python
 
                     from google.cloud import logging_v2
@@ -1160,7 +1155,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogView:
         r"""Updates a view. This method replaces the following fields in the
         existing view with values from the new view: ``filter``.
-
 
         .. code-block:: python
 
@@ -1524,7 +1518,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         permitted to write to the destination. A sink can export log
         entries only from the resource owning the sink.
 
-
         .. code-block:: python
 
                     from google.cloud import logging_v2
@@ -1654,7 +1647,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         The updated sink might also have a new ``writer_identity``; see
         the ``unique_writer_identity`` field.
-
 
         .. code-block:: python
 
@@ -1801,7 +1793,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Deletes a sink. If the sink has a unique ``writer_identity``,
         then that service account is also deleted.
-
 
         .. code-block:: python
 
@@ -2120,7 +2111,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         can be excluded. You can have up to 10 exclusions in a
         resource.
 
-
         .. code-block:: python
 
                     from google.cloud import logging_v2
@@ -2250,7 +2240,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing
         exclusion.
-
 
         .. code-block:: python
 
@@ -2492,7 +2481,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
 
-
         .. code-block:: python
 
                     from google.cloud import logging_v2
@@ -2594,7 +2582,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         See `Enabling CMEK for Logs
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
-
 
         .. code-block:: python
 
