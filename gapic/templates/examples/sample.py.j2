@@ -27,7 +27,6 @@
 {% for import_statement in imports %}
 {{ import_statement }}
 {% endfor %}
-from {{ sample.module_namespace|join(".") }} import {{ sample.module_name }}
 
 
 {# also need calling form #}

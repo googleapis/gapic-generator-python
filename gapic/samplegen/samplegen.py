@@ -1079,8 +1079,8 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     return snippet_metadata
 
 
-def _populate_sample_imports(sample: Dict, rpc: wrappers.Method):
-    """Populates sample's sorted list of imports."""
+def _get_sample_imports(sample: Dict, rpc: wrappers.Method):
+    """Returns sorted sample import statements"""
     module_namespace = ".".join(sample["module_namespace"])
     module_name = sample["module_name"]
     module_import = f"from {module_namespace} import {module_name}"
@@ -1090,7 +1090,7 @@ def _populate_sample_imports(sample: Dict, rpc: wrappers.Method):
     del rpc
 
     imports = [module_import]
-    sample['imports'] = sorted(set(imports))
+    return sorted(set(imports))
 
 
 def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tuple[str, Any]:
@@ -1120,6 +1120,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tup
         )
 
     calling_form = types.CallingForm.method_default(rpc)
+    imports = _get_sample_imports(sample, rpc)
 
     v = Validator(rpc, api_schema)
     # Tweak some small aspects of the sample to set defaults for optional
@@ -1135,7 +1136,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tup
 
     return sample_template.render(
         sample=sample,
-        imports=[],
+        imports=imports,
         calling_form=calling_form,
         calling_form_enum=types.CallingForm,
         trim_blocks=True,
