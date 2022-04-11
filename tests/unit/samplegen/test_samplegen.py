@@ -36,7 +36,6 @@ from ..common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming,
 from gapic.samplegen_utils import utils
 
 
-# validate_response tests
 @pytest.fixture(scope="module")
 def api_naming():
     return DummyNaming(
@@ -90,7 +89,7 @@ def dummy_api_schema(request_message, api_naming):
 
 @pytest.fixture(scope="module")
 def dummy_api_schema_with_request_from_another_package(
-    request_message_from_another_package, api_naming):
+        request_message_from_another_package, api_naming):
     return DummyApiSchema(
         services={"Mollusc": DummyService(
             methods={}, client_name="MolluscClient",
@@ -318,7 +317,8 @@ def test_preprocess_sample_void_method():
     assert sample["response"] == []
 
 
-def test_preprocess_sample_with_request_module_name(dummy_api_schema_with_request_from_another_package):
+def test_preprocess_sample_with_request_module_name(
+        dummy_api_schema_with_request_from_another_package):
     sample = {"service": "Mollusc", "rpc": "Classify"}
     api_schema = dummy_api_schema_with_request_from_another_package
     rpc = DummyMethod(input=api_schema.messages)
@@ -341,7 +341,7 @@ def test_get_sample_imports(dummy_api_schema):
 
 
 def test_get_sample_imports_with_request_from_another_package(
-    dummy_api_schema_with_request_from_another_package):
+        dummy_api_schema_with_request_from_another_package):
     sample = {"service": "Mollusc", "rpc": "Classify"}
     api_schema = dummy_api_schema_with_request_from_another_package
     rpc = DummyMethod(input=api_schema.messages)
