@@ -20,6 +20,7 @@ from typing import(Any, Dict, Iterable, Optional)
 
 from google.protobuf import descriptor_pb2
 
+from gapic.schema import metadata
 from gapic.schema import wrappers
 
 # Injected dummy test types
@@ -79,6 +80,7 @@ class DummyMessage:
         self.options = options
         self.ident = ident
         self.resource_path = resource_path
+        self.meta = metadata.Metadata()
 
     def get_field(self, field_name: str):
         return self.fields[field_name]
