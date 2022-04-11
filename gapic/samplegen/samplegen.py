@@ -1142,6 +1142,8 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tup
     v.validate_response(sample["response"])
 
     snippet_metadata = _fill_sample_metadata(sample, api_schema)
+
+    # The sample must be preprocessed before calling _get_sample_imports.
     imports = _get_sample_imports(sample, rpc)
 
     return sample_template.render(

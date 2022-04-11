@@ -74,13 +74,13 @@ class DummyField(DummyFieldBase):
 
 
 class DummyMessage:
-    def __init__(self, *, fields={}, type="", options=False, ident=False, resource_path=False):
+    def __init__(self, *, fields={}, type="", options=False, ident=False, resource_path=False, meta=None):
         self.fields = fields
         self.type = type
         self.options = options
         self.ident = ident
         self.resource_path = resource_path
-        self.meta = metadata.Metadata()
+        self.meta = meta or metadata.Metadata()
 
     def get_field(self, field_name: str):
         return self.fields[field_name]
