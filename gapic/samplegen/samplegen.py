@@ -1079,6 +1079,20 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     return snippet_metadata
 
 
+def _populate_sample_imports(sample: Dict, rpc: wrappers.Method):
+    """Populates sample's sorted list of imports."""
+    module_namespace = ".".join(sample["module_namespace"])
+    module_name = sample["module_name"]
+    module_import = f"from {module_namespace} import {module_name}"
+
+    # TODO: extract request import as:
+    # str(rpc.input.meta.address.python_import)
+    del rpc
+
+    imports = [module_import]
+    sample['imports'] = sorted(set(imports))
+
+
 def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tuple[str, Any]:
     """Generate a standalone, runnable sample.
 
