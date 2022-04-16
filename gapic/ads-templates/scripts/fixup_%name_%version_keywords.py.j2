@@ -32,7 +32,7 @@ class {{ api.naming.module_name }}CallTransformer(cst.CSTTransformer):
     {% endfor %}{% endfor %}
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     {% for method in all_methods|sort(attribute='name')|unique(attribute='name') %}
-        '{{ method.name|snake_case }}': ({% for field in method.legacy_flattened_fields.values() %}'{{ field.name }}', {% endfor %}),
+        '{{ method.safe_name|snake_case }}': ({% for field in method.legacy_flattened_fields.values() %}'{{ field.name }}', {% endfor %}),
     {% endfor %}
     }
     {% endwith %}

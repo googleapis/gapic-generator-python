@@ -69,12 +69,12 @@ class {{ service.name }}RestInterceptor:
     .. code-block:: python
         class MyCustom{{ service.name }}Interceptor({{ service.name }}RestInterceptor):
     {% for _, method in service.methods|dictsort if not method.client_streaming %}
-            def pre_{{ method.name|snake_case }}(request, metadata):
+            def pre_{{ method.safe_name|snake_case }}(request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
     {% if not method.void %}
-            def post_{{ method.name|snake_case }}(response):
+            def post_{{ method.safe_name|snake_case }}(response):
                 logging.log(f"Received response: {response}")
     {% endif %}
 
@@ -85,8 +85,8 @@ class {{ service.name }}RestInterceptor:
 
     """
     {% for method in service.methods.values()|sort(attribute="name") if not method.client_streaming %}
-    def pre_{{ method.name|snake_case }}(self, request: {{method.input.ident}}, metadata: Sequence[Tuple[str, str]]) -> Tuple[{{method.input.ident}}, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for {{ method.name|snake_case }}
+    def pre_{{ method.safe_name|snake_case }}(self, request: {{method.input.ident}}, metadata: Sequence[Tuple[str, str]]) -> Tuple[{{method.input.ident}}, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for {{ method.safe_name|snake_case }}
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the {{ service.name }} server.
@@ -95,11 +95,11 @@ class {{ service.name }}RestInterceptor:
 
     {% if not method.void %}
     {% if not method.server_streaming %}
-    def post_{{ method.name|snake_case }}(self, response: {{method.output.ident}}) -> {{method.output.ident}}:
+    def post_{{ method.safe_name|snake_case }}(self, response: {{method.output.ident}}) -> {{method.output.ident}}:
     {% else %}
-    def post_{{ method.name|snake_case }}(self, response: rest_streaming.ResponseIterator) -> rest_streaming.ResponseIterator:
+    def post_{{ method.safe_name|snake_case }}(self, response: rest_streaming.ResponseIterator) -> rest_streaming.ResponseIterator:
     {% endif %}
-        """Post-rpc interceptor for {{ method.name|snake_case }}
+        """Post-rpc interceptor for {{ method.safe_name|snake_case }}
 
         Override in a subclass to manipulate the response
         after it is returned by the {{ service.name }} server but before
@@ -250,9 +250,9 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
     {% endif %}{# service.has_lro #}
     {% for method in service.methods.values()|sort(attribute="name") %}
-    class _{{method.name}}({{service.name}}RestStub):
+    class _{{method.safe_name}}({{service.name}}RestStub):
         def __hash__(self):
-            return hash("{{method.name}}")
+            return hash("{{method.safe_name}}")
 
         {% if not method.client_streaming %}
         {% if method.input.required_fields %}
@@ -277,7 +277,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                 ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
     {% if method.http_options and not method.client_streaming %}
             r"""Call the {{- ' ' -}}
-            {{ (method.name|snake_case).replace('_',' ')|wrap(
+            {{ (method.safe_name|snake_case).replace('_',' ')|wrap(
                     width=70, offset=45, indent=8) }}
             {{- ' ' -}} method over HTTP.
 
@@ -308,7 +308,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             },
             {% endfor %}{# rule in method.http_options #}
             ]
-            request, metadata = self._interceptor.pre_{{ method.name|snake_case }}(request, metadata)
+            request, metadata = self._interceptor.pre_{{ method.safe_name|snake_case }}(request, metadata)
             request_kwargs = {{method.input.ident}}.to_dict(request)
             transcoded_request = path_template.transcode(
                 http_options, **request_kwargs)
@@ -373,7 +373,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                 ignore_unknown_fields=True
             )
             {% endif %}{# method.lro #}
-            resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
+            resp = self._interceptor.post_{{ method.safe_name|snake_case }}(resp)
             return resp
 
             {% endif %}{# method.void #}
@@ -396,12 +396,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     {% for method in service.methods.values()|sort(attribute="name") %}
 
     @property
-    def {{method.transport_safe_name | snake_case}}(self) -> Callable[
+    def {{method.safe_name | snake_case}}(self) -> Callable[
             [{{method.input.ident}}],
             {{method.output.ident}}]:
-        stub = self._STUBS.get("{{method.transport_safe_name | snake_case}}")
+        stub = self._STUBS.get("{{method.safe_name | snake_case}}")
         if not stub:
-            stub = self._STUBS["{{method.transport_safe_name | snake_case}}"] = self._{{method.name}}(self._session, self._host, self._interceptor)
+            stub = self._STUBS["{{method.safe_name | snake_case}}"] = self._{{method.safe_name}}(self._session, self._host, self._interceptor)
 
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast

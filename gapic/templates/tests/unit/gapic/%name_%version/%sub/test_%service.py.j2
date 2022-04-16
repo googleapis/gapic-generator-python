@@ -601,7 +601,7 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 {% endfor -%} {#- method in methods for rest #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport and
-    not method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
+    not method.http_options %}{% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
 def test_{{ method_name }}_rest_error():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -759,7 +759,7 @@ def test_{{ service.name|snake_case }}_base_transport():
     # raise NotImplementedError.
     methods = (
         {% for method in service.methods.values() %}
-        '{{ method.transport_safe_name|snake_case }}',
+        '{{ method.safe_name|snake_case }}',
         {% endfor %}
         {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
         {% if opts.add_iam_methods or api.has_iam_mixin %}

@@ -21,8 +21,8 @@ from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Opt
 {% endif %}
 
 
-class {{ method.name }}Pager:
-    """A pager for iterating through ``{{ method.name|snake_case }}`` requests.
+class {{ method.safe_name }}Pager:
+    """A pager for iterating through ``{{ method.safe_name|snake_case }}`` requests.
 
     This class thinly wraps an initial
     :class:`{{ method.output.ident.sphinx }}` object, and
@@ -30,7 +30,7 @@ class {{ method.name }}Pager:
     ``{{ method.paged_result_field.name }}`` field.
 
     If there are more pages, the ``__iter__`` method will make additional
-    ``{{ method.name }}`` requests and continue to iterate
+    ``{{ method.safe_name }}`` requests and continue to iterate
     through the ``{{ method.paged_result_field.name }}`` field on the
     corresponding responses.
 
@@ -91,8 +91,8 @@ class {{ method.name }}Pager:
 
 {# TODO(yon-mg): remove on rest async transport impl #}
 {% if 'grpc' in opts.transport %}
-class {{ method.name }}AsyncPager:
-    """A pager for iterating through ``{{ method.name|snake_case }}`` requests.
+class {{ method.safe_name }}AsyncPager:
+    """A pager for iterating through ``{{ method.safe_name|snake_case }}`` requests.
 
     This class thinly wraps an initial
     :class:`{{ method.output.ident.sphinx }}` object, and
@@ -100,7 +100,7 @@ class {{ method.name }}AsyncPager:
     ``{{ method.paged_result_field.name }}`` field.
 
     If there are more pages, the ``__aiter__`` method will make additional
-    ``{{ method.name }}`` requests and continue to iterate
+    ``{{ method.safe_name }}`` requests and continue to iterate
     through the ``{{ method.paged_result_field.name }}`` field on the
     corresponding responses.
 

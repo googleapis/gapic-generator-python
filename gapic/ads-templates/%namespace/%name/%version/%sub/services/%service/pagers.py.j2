@@ -20,8 +20,8 @@ from typing import Any, Callable, Iterable, Sequence, Tuple, Optional, Iterator
 {% endfilter %}
 {% endif %}
 
-class {{ method.name }}Pager:
-    """A pager for iterating through ``{{ method.name|snake_case }}`` requests.
+class {{ method.safe_name }}Pager:
+    """A pager for iterating through ``{{ method.safe_name|snake_case }}`` requests.
 
     This class thinly wraps an initial
     :class:`{{ method.output.ident.sphinx }}` object, and
@@ -29,7 +29,7 @@ class {{ method.name }}Pager:
     ``{{ method.paged_result_field.name }}`` field.
 
     If there are more pages, the ``__iter__`` method will make additional
-    ``{{ method.name }}`` requests and continue to iterate
+    ``{{ method.safe_name }}`` requests and continue to iterate
     through the ``{{ method.paged_result_field.name }}`` field on the
     corresponding responses.
 

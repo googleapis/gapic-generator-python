@@ -40,7 +40,7 @@ def test_method_types():
     output_msg = make_message(name='Output', module='baz')
     method = make_method('DoSomething', input_msg, output_msg,
                          package='foo.bar', module='bacon')
-    assert method.name == 'DoSomething'
+    assert method.safe_name == 'DoSomething'
     assert method.input.name == 'Input'
     assert method.output.name == 'Output'
 
@@ -946,19 +946,19 @@ def test_differently_named_extended_operation_fields(
     assert expected == actual
 
 
-def test_transport_safe_name():
+def test_safe_name():
     unsafe_methods = {
         name: make_method(name=name)
-        for name in ["CreateChannel", "GrpcChannel", "OperationsClient"]
+        for name in ["CreateChannel", "GrpcChannel", "OperationsClient", "import", "Import", "Raise"]
     }
 
     safe_methods = {
         name: make_method(name=name)
-        for name in ["Call", "Put", "Hold", "Raise"]
+        for name in ["Call", "Put", "Hold"]
     }
 
     for name, method in safe_methods.items():
-        assert method.transport_safe_name == name
+        assert method.safe_name == name
 
     for name, method in unsafe_methods.items():
-        assert method.transport_safe_name == f"{name}_"
+        assert method.safe_name == f"{name}_"

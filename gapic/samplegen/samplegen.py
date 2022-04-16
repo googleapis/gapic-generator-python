@@ -1051,13 +1051,13 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     snippet_metadata.client_method.method.service.full_name = f"{api_schema.naming.proto_package}.{service.name}"
 
     # RPC
-    snippet_metadata.client_method.method.short_name = method.name
-    snippet_metadata.client_method.method.full_name = f"{api_schema.naming.proto_package}.{service.name}.{method.name}"
+    snippet_metadata.client_method.method.short_name = method.safe_name
+    snippet_metadata.client_method.method.full_name = f"{api_schema.naming.proto_package}.{service.name}.{method.safe_name}"
 
     # Client Method
     setattr(snippet_metadata.client_method, "async", async_)
     snippet_metadata.client_method.short_name = utils.to_snake_case(
-        method.name)
+        method.safe_name)
     snippet_metadata.client_method.full_name = f"{snippet_metadata.client_method.client.full_name}.{snippet_metadata.client_method.short_name}"
 
     if not method.void:

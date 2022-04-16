@@ -123,8 +123,8 @@ class {{ service.name }}Transport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             {% for method in service.methods.values() %}
-            self.{{ method.transport_safe_name|snake_case }}: gapic_v1.method.wrap_method(
-                self.{{ method.transport_safe_name|snake_case }},
+            self.{{ method.safe_name|snake_case }}: gapic_v1.method.wrap_method(
+                self.{{ method.safe_name|snake_case }},
                 {% if method.retry %}
                 default_retry=retries.Retry(
                     {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
@@ -163,7 +163,7 @@ class {{ service.name }}Transport(abc.ABC):
     {% for method in service.methods.values() %}
 
     @property
-    def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
+    def {{ method.safe_name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
             Union[
                 {{ method.output.ident }},

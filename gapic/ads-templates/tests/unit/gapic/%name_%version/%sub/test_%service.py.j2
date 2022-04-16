@@ -502,7 +502,7 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 {% endif %}
 
 
-{% for method in service.methods.values() if 'grpc' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
+{% for method in service.methods.values() if 'grpc' in opts.transport %}{% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
   dict,
@@ -522,7 +522,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            type(client.transport.{{ method.safe_name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         {% if method.void %}
@@ -548,7 +548,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         )
         {% endif %}
         {% if method.client_streaming %}
-        response = client.{{ method.name|snake_case }}(iter(requests))
+        response = client.{{ method.safe_name|snake_case }}(iter(requests))
         {% else %}
         response = client.{{ method_name }}(request)
         {% endif %}
@@ -603,7 +603,7 @@ def test_{{ method_name }}_empty_call():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            type(client.transport.{{ method.safe_name|snake_case }}),
             '__call__') as call:
         client.{{ method_name }}()
         call.assert_called()
@@ -632,7 +632,7 @@ def test_{{ method_name }}_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            type(client.transport.{{ method.safe_name|snake_case }}),
             '__call__') as call:
         {% if method.void %}
         call.return_value = None
@@ -670,7 +670,7 @@ def test_{{ method_name }}_from_dict_foreign():
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            type(client.transport.{{ method.safe_name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         {% if method.void %}
@@ -700,7 +700,7 @@ def test_{{ method_name }}_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            type(client.transport.{{ method.safe_name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         {% if method.void %}
@@ -778,7 +778,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            type(client.transport.{{ method.safe_name|snake_case }}),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -840,7 +840,7 @@ def test_{{ method_name }}_pages(transport_name: str = "grpc"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-         type(client.transport.{{ method.transport_safe_name|snake_case }}),
+         type(client.transport.{{ method.safe_name|snake_case }}),
         '__call__') as call:
         # Set the response to a series of pages.
         {% if method.paged_result_field.map%}
@@ -914,7 +914,7 @@ def test_{{ method_name }}_raw_page_lro():
 
 {% endfor %} {# method in methods for grpc #}
 
-{% for method in service.methods.values() if 'rest' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}{% if method.http_options %}
+{% for method in service.methods.values() if 'rest' in opts.transport %}{% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}{% if method.http_options %}
 {# TODO(kbandes): remove this if condition when client streaming are supported. #}
 {% if not method.client_streaming %}
 @pytest.mark.parametrize("request_type", [
@@ -982,7 +982,7 @@ def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
     {{ method.input.ident }},
     dict,
 ])
-def test_{{ method.name|snake_case }}_rest(request_type):
+def test_{{ method.safe_name|snake_case }}_rest(request_type):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -1038,7 +1038,7 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         {% if method.client_streaming %}
-        response = client.{{ method.name|snake_case }}(iter(requests))
+        response = client.{{ method.safe_name|snake_case }}(iter(requests))
         {% elif method.server_streaming %}
         with mock.patch.object(response_value, 'iter_content') as iter_content:
             iter_content.return_value = iter(json_return_value)
@@ -1106,7 +1106,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1126,7 +1126,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}",
@@ -1190,7 +1190,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             req.return_value = response_value
 
             {% if method.client_streaming %}
-            response = client.{{ method.name|snake_case }}(iter(requests))
+            response = client.{{ method.safe_name|snake_case }}(iter(requests))
             {% elif method.server_streaming %}
             with mock.patch.object(response_value, 'iter_content') as iter_content:
                 iter_content.return_value = iter(json_return_value)
@@ -1218,7 +1218,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 def test_{{ method_name }}_rest_unset_required_fields():
     transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = transport.{{ method.transport_safe_name|snake_case }}._get_unset_required_fields({})
+    unset_fields = transport.{{ method.safe_name|snake_case }}._get_unset_required_fields({})
     assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
 
 
@@ -1238,9 +1238,9 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
          mock.patch.object(operation.Operation, "_set_result_from_operation"), \
          {% endif %}
          {% if not method.void %}
-         mock.patch.object(transports.{{ service.name }}RestInterceptor, "post_{{method.name|snake_case}}") as post, \
+         mock.patch.object(transports.{{ service.name }}RestInterceptor, "post_{{method.safe_name|snake_case}}") as post, \
          {% endif %}
-         mock.patch.object(transports.{{ service.name }}RestInterceptor, "pre_{{ method.name|snake_case }}") as pre:
+         mock.patch.object(transports.{{ service.name }}RestInterceptor, "pre_{{ method.safe_name|snake_case }}") as pre:
         pre.assert_not_called()
         {% if not method.void %}
         post.assert_not_called()
@@ -1301,14 +1301,14 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
         response_value.request = Request()
         req.return_value = response_value
         {% if method.client_streaming %}
-        client.{{ method.name|snake_case }}(iter(requests))
+        client.{{ method.safe_name|snake_case }}(iter(requests))
         {% else %}
         client.{{ method_name }}(request)
         {% endif %}
 
 
 {% if method.flattened_fields and "rest" in opts.transport %}
-def test_{{ method.name|snake_case }}_rest_flattened():
+def test_{{ method.safe_name|snake_case }}_rest_flattened():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -1562,7 +1562,7 @@ def test_{{ method_name }}_rest_no_http_options():
 {% endfor -%} {#- method in methods for rest #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport and
-    not method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
+    not method.http_options %}{% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
 def test_{{ method_name }}_rest_error():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1679,7 +1679,7 @@ def test_{{ service.name|snake_case }}_base_transport():
     # raise NotImplementedError.
     methods = (
         {% for method in service.methods.values() %}
-        '{{ method.transport_safe_name|snake_case }}',
+        '{{ method.safe_name|snake_case }}',
         {% endfor %}
         {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
         {% if opts.add_iam_methods or api.has_iam_mixin %}

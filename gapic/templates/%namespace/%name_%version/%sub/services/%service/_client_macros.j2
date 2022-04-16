@@ -38,7 +38,7 @@
             {% endif %}
         r"""{{ method.meta.doc|rst(width=72, indent=8)|trim }}
 
-        {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
+        {% with snippet = snippet_index.get_snippet(service.name, method.safe_name, sync=True) %}
         {% if snippet is not none %}
         .. code-block:: python
 
@@ -80,7 +80,7 @@
         {% endif %}
         """
         {% if method.is_deprecated %}
-        warnings.warn("{{ service.client_name }}.{{ method.name|snake_case }} is deprecated",
+        warnings.warn("{{ service.client_name }}.{{ method.safe_name|snake_case }} is deprecated",
             DeprecationWarning)
 
         {% endif %}
@@ -142,7 +142,7 @@
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.{{ method.transport_safe_name|snake_case}}]
+        rpc = self._transport._wrapped_methods[self._transport.{{ method.safe_name|snake_case}}]
 
         {% if method.explicit_routing %}
         header_params = {}
@@ -235,7 +235,7 @@
         operation_request.{{ field.name }} = response.{{ field.operation_response_field }}
 {% endfor %}
 
-        get_operation = functools.partial(operation_service.{{ op_service.operation_polling_method.name|snake_case }}, operation_request)
+        get_operation = functools.partial(operation_service.{{ op_service.operation_polling_method.safe_name|snake_case }}, operation_request)
         # Cancel is not part of extended operations yet.
         cancel_operation = lambda: None
 

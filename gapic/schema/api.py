@@ -475,8 +475,9 @@ class API:
                 transport = service_desc.clients.get_or_create(tprt)
                 transport.library_client = client_name
                 for method in methods:
-                    method_desc = transport.rpcs.get_or_create(method.name)
-                    method_desc.methods.append(to_snake_case(method.name))
+                    method_desc = transport.rpcs.get_or_create(
+                        method.safe_name)
+                    method_desc.methods.append(to_snake_case(method.safe_name))
 
         return gm
 
@@ -499,7 +500,7 @@ class API:
         """
         if not method.output.is_extended_operation:
             raise ValueError(
-                f"Method is not an extended operation LRO: {method.name}")
+                f"Method is not an extended operation LRO: {method.safe_name}")
 
         op_serv_name = self.naming.proto_package + "." + \
             method.options.Extensions[ex_ops_pb2.operation_service]
@@ -559,7 +560,7 @@ class API:
             service: ServiceDescriptor = services[service_name]
             for method in service.methods:
                 fqn = "{}.{}.{}".format(
-                    service_pb.DESCRIPTOR.package, service.name, method.name)
+                    service_pb.DESCRIPTOR.package, service.name, method.safe_name)
                 methods[fqn] = method
         for rule in self.service_yaml_config.http.rules:
             if rule.selector in methods:

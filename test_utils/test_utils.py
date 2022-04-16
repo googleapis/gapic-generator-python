@@ -77,7 +77,7 @@ def make_service_with_method_options(
     # Return a service object to test.
     return wrappers.Service(
         service_pb=service_pb,
-        methods={method.name: method},
+        methods={method.safe_name: method},
         visible_resources=visible_resources or {},
     )
 

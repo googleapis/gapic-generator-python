@@ -188,7 +188,7 @@ class {{ service.async_client_name }}:
         )
 
     {% for method in service.methods.values() %}
-      {% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
+      {% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
     {%+ if not method.server_streaming %}async {% endif %}def {{ method_name }}(self,
       {% endwith %}
             {% if not method.client_streaming %}
@@ -211,7 +211,7 @@ class {{ service.async_client_name }}:
             {% endif %}
         r"""{{ method.meta.doc|rst(width=72, indent=8)|trim }}
 
-        {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
+        {% with snippet = snippet_index.get_snippet(service.name, method.safe_name, sync=True) %}
         {% if snippet is not none %}
         .. code-block:: python
 
@@ -253,7 +253,7 @@ class {{ service.async_client_name }}:
         {% endif %}
         """
         {% if method.is_deprecated %}
-        warnings.warn("{{ service.async_client_name }}.{{ method.name|snake_case }} is deprecated",
+        warnings.warn("{{ service.async_client_name }}.{{ method.safe_name|snake_case }} is deprecated",
             DeprecationWarning)
 
         {% endif %}
@@ -306,7 +306,7 @@ class {{ service.async_client_name }}:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.{{ method.transport_safe_name|snake_case }},
+            self._client._transport.{{ method.safe_name|snake_case }},
             {% if method.retry %}
             default_retry=retries.Retry(
                 {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
