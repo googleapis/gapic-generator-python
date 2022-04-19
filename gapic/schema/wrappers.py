@@ -1200,7 +1200,8 @@ class Method:
 
         http = self.options.Extensions[annotations_pb2.http]
 
-        pattern = re.compile(r'\{([a-z][\w\d_.]+)=')
+        # Copied from Node generator.
+        pattern = re.compile(r'{(.*?)[=}]')
 
         potential_verbs = [
             http.get,
