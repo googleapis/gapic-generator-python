@@ -1205,6 +1205,7 @@ class Method:
         http = self.options.Extensions[annotations_pb2.http]
 
         # Copied from Node generator.
+        # https://github.com/googleapis/gapic-generator-typescript/blob/3ab47f04678d72171ddf25b439d50f6dfb44584c/typescript/src/schema/proto.ts#L587
         pattern = re.compile(r'{(.*?)[=}]')
 
         potential_verbs = [
