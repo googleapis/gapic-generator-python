@@ -31,36 +31,46 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.api import distribution_pb2  # type: ignore
-from google.api import metric_pb2  # type: ignore
-from google.cloud.logging_v2.services.metrics_service_v2 import pagers
-from google.cloud.logging_v2.types import logging_metrics
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
+from google.cloud.eventarc_v1.services.eventarc import pagers
+from google.cloud.eventarc_v1.types import eventarc
+from google.cloud.eventarc_v1.types import trigger
+from google.cloud.eventarc_v1.types import trigger as gce_trigger
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import MetricsServiceV2GrpcAsyncIOTransport
-from .client import MetricsServiceV2Client
+from .transports.base import EventarcTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc_asyncio import EventarcGrpcAsyncIOTransport
+from .client import EventarcClient
 
 
-class MetricsServiceV2AsyncClient:
-    """Service for configuring logs-based metrics."""
+class EventarcAsyncClient:
+    """Eventarc allows users to subscribe to various events that are
+    provided by Google Cloud services and forward them to supported
+    destinations.
+    """
 
-    _client: MetricsServiceV2Client
+    _client: EventarcClient
 
-    DEFAULT_ENDPOINT = MetricsServiceV2Client.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT = EventarcClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = EventarcClient.DEFAULT_MTLS_ENDPOINT
 
-    log_metric_path = staticmethod(MetricsServiceV2Client.log_metric_path)
-    parse_log_metric_path = staticmethod(MetricsServiceV2Client.parse_log_metric_path)
-    common_billing_account_path = staticmethod(MetricsServiceV2Client.common_billing_account_path)
-    parse_common_billing_account_path = staticmethod(MetricsServiceV2Client.parse_common_billing_account_path)
-    common_folder_path = staticmethod(MetricsServiceV2Client.common_folder_path)
-    parse_common_folder_path = staticmethod(MetricsServiceV2Client.parse_common_folder_path)
-    common_organization_path = staticmethod(MetricsServiceV2Client.common_organization_path)
-    parse_common_organization_path = staticmethod(MetricsServiceV2Client.parse_common_organization_path)
-    common_project_path = staticmethod(MetricsServiceV2Client.common_project_path)
-    parse_common_project_path = staticmethod(MetricsServiceV2Client.parse_common_project_path)
-    common_location_path = staticmethod(MetricsServiceV2Client.common_location_path)
-    parse_common_location_path = staticmethod(MetricsServiceV2Client.parse_common_location_path)
+    service_path = staticmethod(EventarcClient.service_path)
+    parse_service_path = staticmethod(EventarcClient.parse_service_path)
+    service_account_path = staticmethod(EventarcClient.service_account_path)
+    parse_service_account_path = staticmethod(EventarcClient.parse_service_account_path)
+    trigger_path = staticmethod(EventarcClient.trigger_path)
+    parse_trigger_path = staticmethod(EventarcClient.parse_trigger_path)
+    common_billing_account_path = staticmethod(EventarcClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(EventarcClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(EventarcClient.common_folder_path)
+    parse_common_folder_path = staticmethod(EventarcClient.parse_common_folder_path)
+    common_organization_path = staticmethod(EventarcClient.common_organization_path)
+    parse_common_organization_path = staticmethod(EventarcClient.parse_common_organization_path)
+    common_project_path = staticmethod(EventarcClient.common_project_path)
+    parse_common_project_path = staticmethod(EventarcClient.parse_common_project_path)
+    common_location_path = staticmethod(EventarcClient.common_location_path)
+    parse_common_location_path = staticmethod(EventarcClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -73,9 +83,9 @@ class MetricsServiceV2AsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            MetricsServiceV2AsyncClient: The constructed client.
+            EventarcAsyncClient: The constructed client.
         """
-        return MetricsServiceV2Client.from_service_account_info.__func__(MetricsServiceV2AsyncClient, info, *args, **kwargs)  # type: ignore
+        return EventarcClient.from_service_account_info.__func__(EventarcAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -89,9 +99,9 @@ class MetricsServiceV2AsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            MetricsServiceV2AsyncClient: The constructed client.
+            EventarcAsyncClient: The constructed client.
         """
-        return MetricsServiceV2Client.from_service_account_file.__func__(MetricsServiceV2AsyncClient, filename, *args, **kwargs)  # type: ignore
+        return EventarcClient.from_service_account_file.__func__(EventarcAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -127,26 +137,26 @@ class MetricsServiceV2AsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return MetricsServiceV2Client.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return EventarcClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> MetricsServiceV2Transport:
+    def transport(self) -> EventarcTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            MetricsServiceV2Transport: The transport used by the client instance.
+            EventarcTransport: The transport used by the client instance.
         """
         return self._client.transport
 
-    get_transport_class = functools.partial(type(MetricsServiceV2Client).get_transport_class, type(MetricsServiceV2Client))
+    get_transport_class = functools.partial(type(EventarcClient).get_transport_class, type(EventarcClient))
 
     def __init__(self, *,
             credentials: ga_credentials.Credentials = None,
-            transport: Union[str, MetricsServiceV2Transport] = "grpc_asyncio",
+            transport: Union[str, EventarcTransport] = "grpc_asyncio",
             client_options: ClientOptions = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
-        """Instantiates the metrics service v2 client.
+        """Instantiates the eventarc client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -154,7 +164,7 @@ class MetricsServiceV2AsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.MetricsServiceV2Transport]): The
+            transport (Union[str, ~.EventarcTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (ClientOptions): Custom options for the client. It
@@ -178,7 +188,7 @@ class MetricsServiceV2AsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = MetricsServiceV2Client(
+        self._client = EventarcClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
@@ -186,46 +196,137 @@ class MetricsServiceV2AsyncClient:
 
         )
 
-    async def list_log_metrics(self,
-            request: Union[logging_metrics.ListLogMetricsRequest, dict] = None,
+    async def get_trigger(self,
+            request: Union[eventarc.GetTriggerRequest, dict] = None,
+            *,
+            name: str = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> trigger.Trigger:
+        r"""Get a single trigger.
+
+        .. code-block:: python
+
+            from google.cloud import eventarc_v1
+
+            async def sample_get_trigger():
+                # Create a client
+                client = eventarc_v1.EventarcAsyncClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.GetTriggerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_trigger(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict]):
+                The request object. The request message for the
+                GetTrigger method.
+            name (:class:`str`):
+                Required. The name of the trigger to
+                get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_v1.types.Trigger:
+                A representation of the trigger
+                resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
+
+        request = eventarc.GetTriggerRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_trigger,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_triggers(self,
+            request: Union[eventarc.ListTriggersRequest, dict] = None,
             *,
             parent: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListLogMetricsAsyncPager:
-        r"""Lists logs-based metrics.
+            ) -> pagers.ListTriggersAsyncPager:
+        r"""List triggers.
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+            from google.cloud import eventarc_v1
 
-            async def sample_list_log_metrics():
+            async def sample_list_triggers():
                 # Create a client
-                client = logging_v2.MetricsServiceV2AsyncClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
-                request = logging_v2.ListLogMetricsRequest(
+                request = eventarc_v1.ListTriggersRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_log_metrics(request=request)
+                page_result = client.list_triggers(request=request)
 
                 # Handle the response
                 async for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListLogMetricsRequest, dict]):
-                The request object. The parameters to ListLogMetrics.
+            request (Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict]):
+                The request object. The request message for the
+                ListTriggers method.
             parent (:class:`str`):
-                Required. The name of the project containing the
-                metrics:
-
-                ::
-
-                    "projects/[PROJECT_ID]"
+                Required. The parent collection to
+                list triggers on.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -237,8 +338,9 @@ class MetricsServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.logging_v2.services.metrics_service_v2.pagers.ListLogMetricsAsyncPager:
-                Result returned from ListLogMetrics.
+            google.cloud.eventarc_v1.services.eventarc.pagers.ListTriggersAsyncPager:
+                The response message for the
+                ListTriggers method.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -252,7 +354,7 @@ class MetricsServiceV2AsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = logging_metrics.ListLogMetricsRequest(request)
+        request = eventarc.ListTriggersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -262,16 +364,8 @@ class MetricsServiceV2AsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_log_metrics,
-            default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
+            self._client._transport.list_triggers,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -293,7 +387,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers.ListLogMetricsAsyncPager(
+        response = pagers.ListTriggersAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -303,176 +397,73 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         # Done; return the response.
         return response
 
-    async def get_log_metric(self,
-            request: Union[logging_metrics.GetLogMetricRequest, dict] = None,
-            *,
-            metric_name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> logging_metrics.LogMetric:
-        r"""Gets a logs-based metric.
-
-        .. code-block:: python
-
-            from google.cloud import logging_v2
-
-            async def sample_get_log_metric():
-                # Create a client
-                client = logging_v2.MetricsServiceV2AsyncClient()
-
-                # Initialize request argument(s)
-                request = logging_v2.GetLogMetricRequest(
-                    metric_name="metric_name_value",
-                )
-
-                # Make the request
-                response = await client.get_log_metric(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.logging_v2.types.GetLogMetricRequest, dict]):
-                The request object. The parameters to GetLogMetric.
-            metric_name (:class:`str`):
-                Required. The resource name of the desired metric:
-
-                ::
-
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
-
-                This corresponds to the ``metric_name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.logging_v2.types.LogMetric:
-                Describes a logs-based metric. The
-                value of the metric is the number of log
-                entries that match a logs filter in a
-                given time interval.
-                Logs-based metrics can also be used to
-                extract values from logs and create a
-                distribution of the values. The
-                distribution records the statistics of
-                the extracted values along with an
-                optional histogram of the values as
-                specified by the bucket options.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([metric_name])
-        if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
-
-        request = logging_metrics.GetLogMetricRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if metric_name is not None:
-            request.metric_name = metric_name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_log_metric,
-            default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("metric_name", request.metric_name),
-            )),
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def create_log_metric(self,
-            request: Union[logging_metrics.CreateLogMetricRequest, dict] = None,
+    async def create_trigger(self,
+            request: Union[eventarc.CreateTriggerRequest, dict] = None,
             *,
             parent: str = None,
-            metric: logging_metrics.LogMetric = None,
+            trigger: gce_trigger.Trigger = None,
+            trigger_id: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> logging_metrics.LogMetric:
-        r"""Creates a logs-based metric.
+            ) -> operation_async.AsyncOperation:
+        r"""Create a new trigger in a particular project and
+        location.
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+            from google.cloud import eventarc_v1
 
-            async def sample_create_log_metric():
+            async def sample_create_trigger():
                 # Create a client
-                client = logging_v2.MetricsServiceV2AsyncClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
-                metric = logging_v2.LogMetric()
-                metric.name = "name_value"
-                metric.filter = "filter_value"
+                trigger = eventarc_v1.Trigger()
+                trigger.name = "name_value"
+                trigger.event_filters.attribute = "attribute_value"
+                trigger.event_filters.value = "value_value"
+                trigger.destination.cloud_run.service = "service_value"
+                trigger.destination.cloud_run.region = "region_value"
 
-                request = logging_v2.CreateLogMetricRequest(
+                request = eventarc_v1.CreateTriggerRequest(
                     parent="parent_value",
-                    metric=metric,
+                    trigger=trigger,
+                    trigger_id="trigger_id_value",
+                    validate_only=True,
                 )
 
                 # Make the request
-                response = await client.create_log_metric(request=request)
+                operation = client.create_trigger(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.CreateLogMetricRequest, dict]):
-                The request object. The parameters to CreateLogMetric.
+            request (Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict]):
+                The request object. The request message for the
+                CreateTrigger method.
             parent (:class:`str`):
-                Required. The resource name of the project in which to
-                create the metric:
-
-                ::
-
-                    "projects/[PROJECT_ID]"
-
-                The new metric must be provided in the request.
+                Required. The parent collection in
+                which to add this trigger.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            metric (:class:`google.cloud.logging_v2.types.LogMetric`):
-                Required. The new logs-based metric,
-                which must not have an identifier that
-                already exists.
+            trigger (:class:`google.cloud.eventarc_v1.types.Trigger`):
+                Required. The trigger to create.
+                This corresponds to the ``trigger`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            trigger_id (:class:`str`):
+                Required. The user-provided ID to be
+                assigned to the trigger.
 
-                This corresponds to the ``metric`` field
+                This corresponds to the ``trigger_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -482,42 +473,38 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.logging_v2.types.LogMetric:
-                Describes a logs-based metric. The
-                value of the metric is the number of log
-                entries that match a logs filter in a
-                given time interval.
-                Logs-based metrics can also be used to
-                extract values from logs and create a
-                distribution of the values. The
-                distribution records the statistics of
-                the extracted values along with an
-                optional histogram of the values as
-                specified by the bucket options.
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.eventarc_v1.types.Trigger` A
+                representation of the trigger resource.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, metric])
+        has_flattened_params = any([parent, trigger, trigger_id])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = logging_metrics.CreateLogMetricRequest(request)
+        request = eventarc.CreateTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if parent is not None:
             request.parent = parent
-        if metric is not None:
-            request.metric = metric
+        if trigger is not None:
+            request.trigger = trigger
+        if trigger_id is not None:
+            request.trigger_id = trigger_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_log_metric,
-            default_timeout=60.0,
+            self._client._transport.create_trigger,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -537,65 +524,76 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             metadata=metadata,
         )
 
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            gce_trigger.Trigger,
+            metadata_type=eventarc.OperationMetadata,
+        )
+
         # Done; return the response.
         return response
 
-    async def update_log_metric(self,
-            request: Union[logging_metrics.UpdateLogMetricRequest, dict] = None,
+    async def update_trigger(self,
+            request: Union[eventarc.UpdateTriggerRequest, dict] = None,
             *,
-            metric_name: str = None,
-            metric: logging_metrics.LogMetric = None,
+            trigger: gce_trigger.Trigger = None,
+            update_mask: field_mask_pb2.FieldMask = None,
+            allow_missing: bool = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> logging_metrics.LogMetric:
-        r"""Creates or updates a logs-based metric.
+            ) -> operation_async.AsyncOperation:
+        r"""Update a single trigger.
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+            from google.cloud import eventarc_v1
 
-            async def sample_update_log_metric():
+            async def sample_update_trigger():
                 # Create a client
-                client = logging_v2.MetricsServiceV2AsyncClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
-                metric = logging_v2.LogMetric()
-                metric.name = "name_value"
-                metric.filter = "filter_value"
-
-                request = logging_v2.UpdateLogMetricRequest(
-                    metric_name="metric_name_value",
-                    metric=metric,
+                request = eventarc_v1.UpdateTriggerRequest(
+                    validate_only=True,
                 )
 
                 # Make the request
-                response = await client.update_log_metric(request=request)
+                operation = client.update_trigger(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.UpdateLogMetricRequest, dict]):
-                The request object. The parameters to UpdateLogMetric.
-            metric_name (:class:`str`):
-                Required. The resource name of the metric to update:
-
-                ::
-
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
-
-                The updated metric must be provided in the request and
-                it's ``name`` field must be the same as ``[METRIC_ID]``
-                If the metric does not exist in ``[PROJECT_ID]``, then a
-                new metric is created.
-
-                This corresponds to the ``metric_name`` field
+            request (Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict]):
+                The request object. The request message for the
+                UpdateTrigger method.
+            trigger (:class:`google.cloud.eventarc_v1.types.Trigger`):
+                The trigger to be updated.
+                This corresponds to the ``trigger`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            metric (:class:`google.cloud.logging_v2.types.LogMetric`):
-                Required. The updated metric.
-                This corresponds to the ``metric`` field
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The fields to be updated; only fields explicitly
+                provided will be updated. If no field mask is provided,
+                all provided fields in the request will be updated. To
+                update all fields, provide a field mask of "*".
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            allow_missing (:class:`bool`):
+                If set to true, and the trigger is not found, a new
+                trigger will be created. In this situation,
+                ``update_mask`` is ignored.
+
+                This corresponds to the ``allow_missing`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -605,50 +603,38 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.logging_v2.types.LogMetric:
-                Describes a logs-based metric. The
-                value of the metric is the number of log
-                entries that match a logs filter in a
-                given time interval.
-                Logs-based metrics can also be used to
-                extract values from logs and create a
-                distribution of the values. The
-                distribution records the statistics of
-                the extracted values along with an
-                optional histogram of the values as
-                specified by the bucket options.
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.eventarc_v1.types.Trigger` A
+                representation of the trigger resource.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([metric_name, metric])
+        has_flattened_params = any([trigger, update_mask, allow_missing])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = logging_metrics.UpdateLogMetricRequest(request)
+        request = eventarc.UpdateTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if metric_name is not None:
-            request.metric_name = metric_name
-        if metric is not None:
-            request.metric = metric
+        if trigger is not None:
+            request.trigger = trigger
+        if update_mask is not None:
+            request.update_mask = update_mask
+        if allow_missing is not None:
+            request.allow_missing = allow_missing
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_log_metric,
-            default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
+            self._client._transport.update_trigger,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -656,7 +642,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
-                ("metric_name", request.metric_name),
+                ("trigger.name", request.trigger.name),
             )),
         )
 
@@ -668,46 +654,69 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             metadata=metadata,
         )
 
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            gce_trigger.Trigger,
+            metadata_type=eventarc.OperationMetadata,
+        )
+
         # Done; return the response.
         return response
 
-    async def delete_log_metric(self,
-            request: Union[logging_metrics.DeleteLogMetricRequest, dict] = None,
+    async def delete_trigger(self,
+            request: Union[eventarc.DeleteTriggerRequest, dict] = None,
             *,
-            metric_name: str = None,
+            name: str = None,
+            allow_missing: bool = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> None:
-        r"""Deletes a logs-based metric.
+            ) -> operation_async.AsyncOperation:
+        r"""Delete a single trigger.
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+            from google.cloud import eventarc_v1
 
-            async def sample_delete_log_metric():
+            async def sample_delete_trigger():
                 # Create a client
-                client = logging_v2.MetricsServiceV2AsyncClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
-                request = logging_v2.DeleteLogMetricRequest(
-                    metric_name="metric_name_value",
+                request = eventarc_v1.DeleteTriggerRequest(
+                    name="name_value",
+                    validate_only=True,
                 )
 
                 # Make the request
-                await client.delete_log_metric(request=request)
+                operation = client.delete_trigger(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict]):
-                The request object. The parameters to DeleteLogMetric.
-            metric_name (:class:`str`):
-                Required. The resource name of the metric to delete:
+            request (Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict]):
+                The request object. The request message for the
+                DeleteTrigger method.
+            name (:class:`str`):
+                Required. The name of the trigger to
+                be deleted.
 
-                ::
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            allow_missing (:class:`bool`):
+                If set to true, and the trigger is
+                not found, the request will succeed but
+                no action will be taken on the server.
 
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
-
-                This corresponds to the ``metric_name`` field
+                This corresponds to the ``allow_missing`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -715,35 +724,38 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.eventarc_v1.types.Trigger` A
+                representation of the trigger resource.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([metric_name])
+        has_flattened_params = any([name, allow_missing])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = logging_metrics.DeleteLogMetricRequest(request)
+        request = eventarc.DeleteTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if metric_name is not None:
-            request.metric_name = metric_name
+        if name is not None:
+            request.name = name
+        if allow_missing is not None:
+            request.allow_missing = allow_missing
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_log_metric,
-            default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
+            self._client._transport.delete_trigger,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -751,17 +763,28 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
-                ("metric_name", request.metric_name),
+                ("name", request.name),
             )),
         )
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            trigger.Trigger,
+            metadata_type=eventarc.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def __aenter__(self):
         return self
@@ -772,7 +795,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-logging",
+            "google-cloud-eventarc",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
@@ -780,5 +803,5 @@ except pkg_resources.DistributionNotFound:
 
 
 __all__ = (
-    "MetricsServiceV2AsyncClient",
+    "EventarcAsyncClient",
 )
