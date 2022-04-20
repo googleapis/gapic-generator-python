@@ -617,6 +617,10 @@ class MessageType:
             KeyError: If a repeated field is used in the non-terminal position
                 in the path.
         """
+        # This covers the case when field_path is a string path.
+        if len(field_path) == 1 and '.' in field_path[0]:
+            field_path = field_path[0].split('.')
+
         # If collisions are not explicitly specified, retrieve them
         # from this message's address.
         # This ensures that calls to `get_field` will return a field with
