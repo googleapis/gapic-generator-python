@@ -28,7 +28,7 @@ Documentation
 
 .. _documentation: https://gapic-generator-python.readthedocs.io/
 
-.. |release level| image:: https://img.shields.io/badge/release%20level-beta-yellow.svg?style&#x3D;flat
+.. |release level| image:: https://img.shields.io/badge/support-GA-gold.svg
   :target: https://cloud.google.com/terms/launch-stages
 .. |docs| image:: https://readthedocs.org/projects/gapic-generator-python/badge/?version=latest
   :target: https://gapic-generator-python.readthedocs.io/
