@@ -80,19 +80,19 @@ that is conducive to making CLI commands available.
     # Install this package using
     pip install gapic-generator
 
-	# Install a version of python that is supported by the microgenerator.
-	# We use 3.9.12 as an example.
-	# You may need to install additional packages in order to
-	# build python from source.
-	# Setting a 'global' python is convenient for development but may interfere
-	# with other system activities. Adjust as your environment requires.
-	pyenv install 3.9.12 && pyenv global 3.9.12
+    # Install a version of python that is supported by the microgenerator.
+    # We use 3.9.12 as an example.
+    # You may need to install additional packages in order to
+    # build python from source.
+    # Setting a 'global' python is convenient for development but may interfere
+    # with other system activities. Adjust as your environment requires.
+    pyenv install 3.9.12 && pyenv global 3.9.12
 
-	# Install the tool. This will handle the virtualenv for you, and
-	# make an appropriately-aliased executable.
-	# The `--editable` flag is only necessary if you want to work on the
-	# tool (as opposed to just use it).
-	python -m pip install --editable .
+    # Install the tool. This will handle the virtualenv for you, and
+    # make an appropriately-aliased executable.
+    # The `--editable` flag is only necessary if you want to work on the
+    # tool (as opposed to just use it).
+    python -m pip install --editable .
 
 To ensure the tool is installed properly:
 
