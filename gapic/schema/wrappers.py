@@ -632,7 +632,7 @@ class MessageType:
         return parsing_regex_str
 
     def get_field(self, *field_path: str,
-                  collisions: Set[str] = set()) -> Field:
+                  collisions: Set[str] = None) -> Field:
         """Return a field arbitrarily deep in this message's structure.
 
         This method recursively traverses the message tree to return the
@@ -701,7 +701,7 @@ class MessageType:
     def with_context(self, *,
                      collisions: Set[str],
                      skip_fields: bool = False,
-                     visited_messages: Set["MessageType"] = set(),
+                     visited_messages: Set["MessageType"] = None,
                      ) -> 'MessageType':
         """Return a derivative of this message with the provided context.
 
@@ -1558,8 +1558,10 @@ class Method:
             self,
             lro=maybe_lro,
             extended_lro=maybe_extended_lro,
-            input=self.input.with_context(collisions=collisions, visited_messages=visited_messages),
-            output=self.output.with_context(collisions=collisions, visited_messages=visited_messages),
+            input=self.input.with_context(
+                collisions=collisions, visited_messages=visited_messages),
+            output=self.output.with_context(
+                collisions=collisions, visited_messages=visited_messages),
             meta=self.meta.with_context(collisions=collisions),
         )
 
