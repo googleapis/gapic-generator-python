@@ -24,15 +24,9 @@ regarding:
 Documentation
 -------------
 
-`Documentation`_ is available on Read the Docs.
+See the `documentation`_.
 
-.. _documentation: https://gapic-generator-python.readthedocs.io/
+.. _documentation: https://googleapis.dev/python/gapic-generator-python/latest
 
 .. |release level| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
-.. |pypi| image:: https://img.shields.io/pypi/v/gapic-generator.svg
-   :target: https://pypi.org/project/gapic-generator/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/gapic-generator.svg
-   :target: https://pypi.org/project/gapic-generator/
-.. |docs| image:: https://readthedocs.org/projects/gapic-generator-python/badge/?version=latest
-  :target: https://gapic-generator-python.readthedocs.io/
