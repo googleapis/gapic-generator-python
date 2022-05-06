@@ -283,11 +283,11 @@ def test_wait_operation(transport: str = "grpc"):
     with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
         {% if mode == "" %}
-        call.return_value = operations_pb2.Operation
+        call.return_value = operations_pb2.Operation()
         response = client.wait_operation(request)
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation
+            operations_pb2.Operation()
         )
         response = await client.wait_operation(request)
         {% endif %}
@@ -325,12 +325,12 @@ def test_wait_operation_field_headers():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
         {% if mode == "" %}
-        call.return_value = operations_pb2.Operation
+        call.return_value = operations_pb2.Operation()
 
         client.wait_operation(request)
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation
+            operations_pb2.Operation()
         )
         await client.wait_operation(request)
         {% endif %}
@@ -364,7 +364,7 @@ def test_wait_operation_from_dict():
     with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
         {% if mode == "" %}
-        call.return_value = operations_pb2.Operation
+        call.return_value = operations_pb2.Operation()
 
         response = client.wait_operation(
             request={
@@ -373,7 +373,7 @@ def test_wait_operation_from_dict():
         )
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation
+            operations_pb2.Operation()
         )
         response = await client.wait_operation(
             request={
@@ -412,11 +412,11 @@ def test_get_operation(transport: str = "grpc"):
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
         {% if mode == "" %}
-        call.return_value = operations_pb2.Operation
+        call.return_value = operations_pb2.Operation()
         response = client.get_operation(request)
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation
+            operations_pb2.Operation()
         )
         response = await client.get_operation(request)
         {% endif %}
@@ -454,12 +454,12 @@ def test_get_operation_field_headers():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         {% if mode == "" %}
-        call.return_value = operations_pb2.Operation
+        call.return_value = operations_pb2.Operation()
 
         client.get_operation(request)
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation
+            operations_pb2.Operation()
         )
         await client.get_operation(request)
         {% endif %}
@@ -493,7 +493,7 @@ def test_get_operation_from_dict():
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
         {% if mode == "" %}
-        call.return_value = operations_pb2.Operation
+        call.return_value = operations_pb2.Operation()
 
         response = client.get_operation(
             request={
@@ -502,7 +502,7 @@ def test_get_operation_from_dict():
         )
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation
+            operations_pb2.Operation()
         )
         response = await client.get_operation(
             request={
@@ -541,11 +541,11 @@ def test_list_operations(transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
         {% if mode == "" %}
-        call.return_value = operations_pb2.ListOperationsResponse
+        call.return_value = operations_pb2.ListOperationsResponse()
         response = client.list_operations(request)
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse
+            operations_pb2.ListOperationsResponse()
         )
         response = await client.list_operations(request)
         {% endif %}
@@ -583,12 +583,12 @@ def test_list_operations_field_headers():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         {% if mode == "" %}
-        call.return_value = operations_pb2.ListOperationsResponse
+        call.return_value = operations_pb2.ListOperationsResponse()
 
         client.list_operations(request)
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse
+            operations_pb2.ListOperationsResponse()
         )
         await client.list_operations(request)
         {% endif %}
@@ -622,7 +622,7 @@ def test_list_operations_from_dict():
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
         {% if mode == "" %}
-        call.return_value = operations_pb2.ListOperationsResponse
+        call.return_value = operations_pb2.ListOperationsResponse()
 
         response = client.list_operations(
             request={
@@ -631,7 +631,7 @@ def test_list_operations_from_dict():
         )
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse
+            operations_pb2.ListOperationsResponse()
         )
         response = await client.list_operations(
             request={
