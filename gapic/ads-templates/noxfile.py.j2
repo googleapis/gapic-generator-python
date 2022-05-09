@@ -14,6 +14,9 @@ ALL_PYTHON = [
     "3.10",
 ]
 
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
@@ -24,11 +27,12 @@ def unit(session):
     session.run(
         'py.test',
         '--quiet',
-        '--cov={{ api.naming.module_namespace|join("/") }}/{{ api.naming.versioned_module_name }}/',
+        '--cov={{ api.naming.module_namespace[0] }}',
         '--cov=tests/',
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',
+        "--cov-fail-under=100",
         os.path.join('tests', 'unit', 'gapic', '{{ api.naming.versioned_module_name }}'),
     )
 

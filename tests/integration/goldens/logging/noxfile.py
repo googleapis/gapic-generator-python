@@ -35,9 +35,9 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
 PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
 
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
-DEFAULT_PYTHON_VERSION = "3.9"
+DEFAULT_PYTHON_VERSION = "3.10"
 
 nox.sessions = [
     "unit",
@@ -51,6 +51,9 @@ nox.sessions = [
     "lint_setup_py",
 ]
 
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
@@ -61,11 +64,12 @@ def unit(session):
     session.run(
         'py.test',
         '--quiet',
-        '--cov=google/cloud/logging_v2/',
+        '--cov=google',
         '--cov=tests/',
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',
+        "--cov-fail-under=100",
         os.path.join('tests', 'unit', ''.join(session.posargs))
     )
 

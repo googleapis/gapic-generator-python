@@ -313,6 +313,8 @@ jobs:
       - name: Integration Tests
         run: bazel test tests/integration:asset tests/integration:credentials tests/integration:eventarc tests/integration:logging tests/integration:redis
   goldens-lint:
+    needs:
+      - integration
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -331,6 +333,31 @@ jobs:
           nox -f tests/integration/goldens/eventarc/noxfile.py -s blacken lint_setup_py lint
           nox -f tests/integration/goldens/logging/noxfile.py -s blacken lint_setup_py lint
           nox -f tests/integration/goldens/redis/noxfile.py -s blacken lint_setup_py lint
+  goldens-unit:
+    needs:
+      - goldens-lint
+    strategy:
+      matrix:
+        python: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        variant: ["asset", "credentials", "eventarc", "logging", "redis"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: "${{ matrix.python }}"
+          cache: 'pip'
+      - name: Install nox.
+        run: |
+            python -m pip install nox
+      - name: Apply workarounds in downstream client.
+        run: |
+            ./tests/integration/goldens/apply-workarounds-${{ matrix.variant }}.sh
+      - name: Run unit tests for the generated output.
+        run: |
+          nox -s unit-${{ matrix.python }}
+        working-directory: tests/integration/goldens/${{ matrix.variant }}
   style-check:
     runs-on: ubuntu-latest
     steps:
