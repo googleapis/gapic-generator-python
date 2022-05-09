@@ -5,15 +5,15 @@
 import os
 import mock
 
-import grpc
-from grpc.experimental import aio
+import grpc                         # type: ignore
+from grpc.experimental import aio   # type: ignore
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable
 import json
 {% endif %}
 import math
 import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules.dates import DurationRule, TimestampRule # type: ignore
 
 {% if 'rest' in opts.transport %}
 from requests import Response
@@ -23,10 +23,10 @@ from requests.sessions import Session
 
 {# Import the service itself as well as every proto module that it imports. #}
 {% filter sort_lines %}
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+import google.auth                                          # type: ignore
+from google.auth import credentials as ga_credentials       # type: ignore
+from google.auth.exceptions import MutualTLSChannelError    # type: ignore
+from google.oauth2 import service_account                   # type: ignore
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
 
@@ -38,7 +38,7 @@ from google.api_core import path_template
 from google.api_core import future
 from google.api_core import operation
 from google.api_core import operations_v1
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2 # type: ignore
 {% if "rest" in opts.transport %}
 from google.protobuf import json_format
 {% endif %}{# rest transport #}
@@ -547,7 +547,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
             {% endfor %}
         )
         {% endif %}
-        {% if method.client_streaming %}
+        {% if method.void %}
+        client.{{ method_name }}(request)
+        {%elif method.client_streaming %}
         response = client.{{ method.name|snake_case }}(iter(requests))
         {% else %}
         response = client.{{ method_name }}(request)
@@ -562,10 +564,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
 
+    {% if not method.void %}
     # Establish that the response is the type that we expect.
-    {% if method.void %}
-    assert response is None
-    {% elif method.lro %}
+    {% if method.lro %}
     assert isinstance(response, future.Future)
     {% elif method.extended_lro %}
     assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
@@ -590,6 +591,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endif %}{# end of not method.void #}
 
 
 {% if not method.client_streaming %}
@@ -682,11 +684,19 @@ def test_{{ method_name }}_from_dict_foreign():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
+        {% if method.void %}
+        client.{{ method_name }}(request={
+            {% for field in method.input.fields.values() %}
+            '{{ field.name }}': {{ field.mock_value }},
+            {% endfor %}
+            }
+        {% else %}
         response = client.{{ method_name }}(request={
             {% for field in method.input.fields.values() %}
             '{{ field.name }}': {{ field.mock_value }},
             {% endfor %}
             }
+        {% endif %}
         )
         call.assert_called()
 
@@ -809,9 +819,8 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
         {% if method.field_headers %}
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
@@ -820,6 +829,8 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
                 {% endfor %}
             )),
         )
+        {% else %}
+        metadata = ()
         {% endif %}
         pager = client.{{ method_name }}(request={})
 
@@ -1037,7 +1048,9 @@ def test_{{ method.name|snake_case }}_rest(request_type):
     {% endif %}
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
-        {% if method.client_streaming %}
+        {% if method.void %}
+        client.{{ method_name }}(request)
+        {% elif method.client_streaming %}
         response = client.{{ method.name|snake_case }}(iter(requests))
         {% elif method.server_streaming %}
         with mock.patch.object(response_value, 'iter_content') as iter_content:
@@ -1058,10 +1071,9 @@ def test_{{ method.name|snake_case }}_rest(request_type):
     response = next(response)
     {% endif %}
 
+    {% if not method.void %}
     # Establish that the response is the type that we expect.
-    {% if method.void %}
-    assert response is None
-    {% elif method.lro %}
+    {% if method.lro %}
     assert response.operation.name == "operations/spam"
     {% elif method.extended_lro %}
     assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
@@ -1079,6 +1091,7 @@ def test_{{ method.name|snake_case }}_rest(request_type):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endif %}{# end of not method.void #}
 
 
     {% if method.input.required_fields %}
@@ -1189,7 +1202,9 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
 
-            {% if method.client_streaming %}
+            {% if method.void %}
+            client.{{ method_name }}(request)
+            {% elif method.client_streaming %}
             response = client.{{ method.name|snake_case }}(iter(requests))
             {% elif method.server_streaming %}
             with mock.patch.object(response_value, 'iter_content') as iter_content:

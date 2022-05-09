@@ -313,6 +313,9 @@ jobs:
       - name: Integration Tests
         run: bazel test tests/integration:asset tests/integration:credentials tests/integration:eventarc tests/integration:logging tests/integration:redis
   goldens-lint:
+    strategy:
+      matrix:
+        variant: ["asset", "credentials", "eventarc", "logging", "redis"]
     needs:
       - integration
     runs-on: ubuntu-latest
@@ -328,11 +331,12 @@ jobs:
             python -m pip install nox
       - name: Run blacken and lint on the generated output.
         run: |
-          nox -f tests/integration/goldens/asset/noxfile.py -s blacken lint_setup_py lint
-          nox -f tests/integration/goldens/credentials/noxfile.py -s blacken lint_setup_py lint
-          nox -f tests/integration/goldens/eventarc/noxfile.py -s blacken lint_setup_py lint
-          nox -f tests/integration/goldens/logging/noxfile.py -s blacken lint_setup_py lint
-          nox -f tests/integration/goldens/redis/noxfile.py -s blacken lint_setup_py lint
+          nox -s blacken lint_setup_py lint
+        working-directory: tests/integration/goldens/${{ matrix.variant }}
+      - name: Run mypy on the generated output
+        run: |
+          nox -s mypy
+        working-directory: tests/integration/goldens/${{ matrix.variant }}
   goldens-unit:
     needs:
       - goldens-lint

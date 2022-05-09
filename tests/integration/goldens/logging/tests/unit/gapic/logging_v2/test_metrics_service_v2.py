@@ -16,11 +16,11 @@
 import os
 import mock
 
-import grpc
-from grpc.experimental import aio
+import grpc                         # type: ignore
+from grpc.experimental import aio   # type: ignore
 import math
 import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules.dates import DurationRule, TimestampRule # type: ignore
 
 
 from google.api import distribution_pb2  # type: ignore
@@ -33,17 +33,17 @@ from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
+from google.auth import credentials as ga_credentials       # type: ignore
+from google.auth.exceptions import MutualTLSChannelError    # type: ignore
 from google.cloud.logging_v2.services.metrics_service_v2 import MetricsServiceV2AsyncClient
 from google.cloud.logging_v2.services.metrics_service_v2 import MetricsServiceV2Client
 from google.cloud.logging_v2.services.metrics_service_v2 import pagers
 from google.cloud.logging_v2.services.metrics_service_v2 import transports
 from google.cloud.logging_v2.types import logging_metrics
-from google.oauth2 import service_account
+from google.oauth2 import service_account                   # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import google.auth                                          # type: ignore
 
 
 def client_cert_source_callback():
@@ -766,12 +766,12 @@ def test_list_log_metrics_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
+
         pager = client.list_log_metrics(request={})
 
         assert pager._metadata == metadata
@@ -1699,15 +1699,12 @@ def test_delete_log_metric(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-        response = client.delete_log_metric(request)
+        client.delete_log_metric(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_log_metric_empty_call():
@@ -1750,9 +1747,6 @@ async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 @pytest.mark.asyncio

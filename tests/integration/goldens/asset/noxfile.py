@@ -86,15 +86,16 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=ALL_PYTHON)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
-    session.install('mypy', 'types-pkg_resources')
+    session.install('mypy', 'types-pkg_resources', 'types-mock', 'types-protobuf', 'pytest')
     session.install('.')
     session.run(
         'mypy',
         '--explicit-package-bases',
         'google',
+        'tests',
     )
 
 

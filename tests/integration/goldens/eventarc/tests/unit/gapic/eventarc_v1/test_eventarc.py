@@ -16,11 +16,11 @@
 import os
 import mock
 
-import grpc
-from grpc.experimental import aio
+import grpc                         # type: ignore
+from grpc.experimental import aio   # type: ignore
 import math
 import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules.dates import DurationRule, TimestampRule # type: ignore
 
 
 from google.api_core import client_options
@@ -33,8 +33,8 @@ from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.api_core import path_template
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
+from google.auth import credentials as ga_credentials       # type: ignore
+from google.auth.exceptions import MutualTLSChannelError    # type: ignore
 from google.cloud.eventarc_v1.services.eventarc import EventarcAsyncClient
 from google.cloud.eventarc_v1.services.eventarc import EventarcClient
 from google.cloud.eventarc_v1.services.eventarc import pagers
@@ -42,11 +42,11 @@ from google.cloud.eventarc_v1.services.eventarc import transports
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
-from google.longrunning import operations_pb2
-from google.oauth2 import service_account
+from google.longrunning import operations_pb2 # type: ignore
+from google.oauth2 import service_account                   # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import google.auth                                          # type: ignore
 
 
 def client_cert_source_callback():
@@ -1013,12 +1013,12 @@ def test_list_triggers_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
+
         pager = client.list_triggers(request={})
 
         assert pager._metadata == metadata

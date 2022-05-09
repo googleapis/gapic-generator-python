@@ -16,11 +16,11 @@
 import os
 import mock
 
-import grpc
-from grpc.experimental import aio
+import grpc                         # type: ignore
+from grpc.experimental import aio   # type: ignore
 import math
 import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules.dates import DurationRule, TimestampRule # type: ignore
 
 
 from google.api_core import client_options
@@ -29,17 +29,17 @@ from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
+from google.auth import credentials as ga_credentials       # type: ignore
+from google.auth.exceptions import MutualTLSChannelError    # type: ignore
 from google.cloud.logging_v2.services.config_service_v2 import ConfigServiceV2AsyncClient
 from google.cloud.logging_v2.services.config_service_v2 import ConfigServiceV2Client
 from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.services.config_service_v2 import transports
 from google.cloud.logging_v2.types import logging_config
-from google.oauth2 import service_account
+from google.oauth2 import service_account                   # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import google.auth                                          # type: ignore
 
 
 def client_cert_source_callback():
@@ -761,12 +761,12 @@ def test_list_buckets_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
+
         pager = client.list_buckets(request={})
 
         assert pager._metadata == metadata
@@ -1428,15 +1428,12 @@ def test_delete_bucket(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-        response = client.delete_bucket(request)
+        client.delete_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteBucketRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_bucket_empty_call():
@@ -1479,9 +1476,6 @@ async def test_delete_bucket_async(transport: str = 'grpc_asyncio', request_type
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteBucketRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 @pytest.mark.asyncio
@@ -1572,15 +1566,12 @@ def test_undelete_bucket(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-        response = client.undelete_bucket(request)
+        client.undelete_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UndeleteBucketRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_undelete_bucket_empty_call():
@@ -1623,9 +1614,6 @@ async def test_undelete_bucket_async(transport: str = 'grpc_asyncio', request_ty
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UndeleteBucketRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 @pytest.mark.asyncio
@@ -1967,12 +1955,12 @@ def test_list_views_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
+
         pager = client.list_views(request={})
 
         assert pager._metadata == metadata
@@ -2610,15 +2598,12 @@ def test_delete_view(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-        response = client.delete_view(request)
+        client.delete_view(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteViewRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_view_empty_call():
@@ -2661,9 +2646,6 @@ async def test_delete_view_async(transport: str = 'grpc_asyncio', request_type=l
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteViewRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 @pytest.mark.asyncio
@@ -3005,12 +2987,12 @@ def test_list_sinks_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
+
         pager = client.list_sinks(request={})
 
         assert pager._metadata == metadata
@@ -3987,15 +3969,12 @@ def test_delete_sink(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-        response = client.delete_sink(request)
+        client.delete_sink(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteSinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_sink_empty_call():
@@ -4038,9 +4017,6 @@ async def test_delete_sink_async(transport: str = 'grpc_asyncio', request_type=l
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteSinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 @pytest.mark.asyncio
@@ -4464,12 +4440,12 @@ def test_list_exclusions_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
+
         pager = client.list_exclusions(request={})
 
         assert pager._metadata == metadata
@@ -5395,15 +5371,12 @@ def test_delete_exclusion(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-        response = client.delete_exclusion(request)
+        client.delete_exclusion(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteExclusionRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_exclusion_empty_call():
@@ -5446,9 +5419,6 @@ async def test_delete_exclusion_async(transport: str = 'grpc_asyncio', request_t
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteExclusionRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 @pytest.mark.asyncio

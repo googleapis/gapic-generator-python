@@ -16,11 +16,11 @@
 import os
 import mock
 
-import grpc
-from grpc.experimental import aio
+import grpc                         # type: ignore
+from grpc.experimental import aio   # type: ignore
 import math
 import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules.dates import DurationRule, TimestampRule # type: ignore
 
 
 from google.api_core import client_options
@@ -33,21 +33,21 @@ from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.api_core import path_template
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
+from google.auth import credentials as ga_credentials       # type: ignore
+from google.auth.exceptions import MutualTLSChannelError    # type: ignore
 from google.cloud.asset_v1.services.asset_service import AssetServiceAsyncClient
 from google.cloud.asset_v1.services.asset_service import AssetServiceClient
 from google.cloud.asset_v1.services.asset_service import pagers
 from google.cloud.asset_v1.services.asset_service import transports
 from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
-from google.longrunning import operations_pb2
-from google.oauth2 import service_account
+from google.longrunning import operations_pb2 # type: ignore
+from google.oauth2 import service_account                   # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
-import google.auth
+import google.auth                                          # type: ignore
 
 
 def client_cert_source_callback():
@@ -912,12 +912,12 @@ def test_list_assets_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
+
         pager = client.list_assets(request={})
 
         assert pager._metadata == metadata
@@ -2187,15 +2187,12 @@ def test_delete_feed(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-        response = client.delete_feed(request)
+        client.delete_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_feed_empty_call():
@@ -2238,9 +2235,6 @@ async def test_delete_feed_async(transport: str = 'grpc_asyncio', request_type=a
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 @pytest.mark.asyncio
@@ -2684,12 +2678,12 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('scope', ''),
             )),
         )
+
         pager = client.search_all_resources(request={})
 
         assert pager._metadata == metadata
@@ -3114,12 +3108,12 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('scope', ''),
             )),
         )
+
         pager = client.search_all_iam_policies(request={})
 
         assert pager._metadata == metadata

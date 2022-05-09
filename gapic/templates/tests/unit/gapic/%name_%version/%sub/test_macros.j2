@@ -42,7 +42,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
             {% endfor %}
         )
         {% endif %}
-        {% if method.client_streaming %}
+        {% if method.void %}
+        client.{{ method_name }}(request)
+        {% elif method.client_streaming %}
         response = client.{{ method.safe_name|snake_case }}(iter(requests))
         {% else %}
         response = client.{{ method_name }}(request)
@@ -57,10 +59,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
 
+    {% if not method.void %}
     # Establish that the response is the type that we expect.
-    {% if method.void %}
-    assert response is None
-    {% elif method.lro or (method.extended_lro and full_extended_lro) %}
+    {% if method.lro or (method.extended_lro and full_extended_lro) %}
     assert isinstance(response, future.Future)
     {% elif method.extended_lro and not full_extended_lro %}
     assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
@@ -85,6 +86,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endif %}{# end of not method.void #}
 
 
 {% if not method.client_streaming %}
@@ -125,6 +127,12 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     requests = [request]
     {% endif %}
 
+    {% if method.client_streaming and method.server_streaming %}
+    def request_generator():
+        for request in requests: # pragma: no branch
+            yield request
+    {% endif %}
+
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.{{ method.transport_safe_name|snake_case }}),
@@ -140,7 +148,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
         call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
         {% elif method.client_streaming and method.server_streaming %}
-        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value = mock.AsyncMock(aio.StreamStreamCall, autospec=True)
         call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
         {% else %}
         call.return_value ={{ '' }}
@@ -156,7 +164,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         ))
         {% endif %}
         {% if method.client_streaming and method.server_streaming %}
-        response = await client.{{ method.name|snake_case }}(iter(requests))
+        stream = await client.{{ method.name|snake_case }}(requests=request_generator())
         {% elif method.client_streaming and not method.server_streaming %}
         response = await (await client.{{ method.name|snake_case }}(iter(requests)))
         {% else %}
@@ -172,13 +180,15 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
 
+    {% if not method.void %}
     # Establish that the response is the type that we expect.
-    {% if method.void %}
-    assert response is None
-    {% elif method.lro %}
+    {% if method.lro %}
     assert isinstance(response, future.Future)
     {% elif method.extended_lro and not full_extended_lro %}
     assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
+    {% elif method.client_streaming and method.server_streaming %}
+    async for response in stream: # pragma: no branch
+        assert isinstance(response, {{ method.output.ident }})
     {% elif method.server_streaming %}
     message = await response.read()
     assert isinstance(message, {{ method.output.ident }})
@@ -196,6 +206,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     {% endif %}{# oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endif %}{# end of not method.void #}
 
 
 @pytest.mark.asyncio
@@ -353,11 +364,19 @@ def test_{{ method_name }}_from_dict_foreign():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
+        {% if method.void %}
+        client.{{ method_name }}(request={
+            {% for field in method.input.fields.values() %}
+            '{{ field.name }}': {{ field.mock_value }},
+            {% endfor %}
+            }
+        {% else %}
         response = client.{{ method_name }}(request={
             {% for field in method.input.fields.values() %}
             '{{ field.name }}': {{ field.mock_value }},
             {% endfor %}
             }
+        {% endif %}
         )
         call.assert_called()
 
@@ -571,9 +590,8 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
         {% if method.field_headers %}
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
@@ -582,7 +600,10 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
                 {% endfor %}
             )),
         )
+        {% else %}
+        metadata = ()
         {% endif %}
+
         pager = client.{{ method_name }}(request={})
 
         assert pager._metadata == metadata
@@ -909,7 +930,9 @@ def test_{{ method_name }}_rest(request_type):
         {% endif %}
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
-        {% if method.client_streaming %}
+        {% if method.void %}
+        client.{{ method_name }}(request)
+        {% elif method.client_streaming %}
         response = client.{{ method_name }}(iter(requests))
         {% elif method.server_streaming %}
         with mock.patch.object(response_value, 'iter_content') as iter_content:
@@ -930,10 +953,9 @@ def test_{{ method_name }}_rest(request_type):
     response = next(response)
     {% endif %}
 
+    {% if not method.void %}
     # Establish that the response is the type that we expect.
-    {% if method.void %}
-    assert response is None
-    {% elif method.lro %}
+    {% if method.lro %}
     assert response.operation.name == "operations/spam"
     {% elif method.extended_lro and not full_extended_lro %}
     assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
@@ -951,6 +973,7 @@ def test_{{ method_name }}_rest(request_type):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endif %}{# end of not method.void #}
 
 
     {% if method.input.required_fields %}
@@ -1056,7 +1079,9 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
 
-            {% if method.client_streaming %}
+            {% if method.void %}
+            client.{{ method_name }}(request)
+            {% elif method.client_streaming %}
             response = client.{{ method_name }}(iter(requests))
             {% elif method.server_streaming %}
             with mock.patch.object(response_value, 'iter_content') as iter_content:

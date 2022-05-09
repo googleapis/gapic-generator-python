@@ -16,11 +16,11 @@
 import os
 import mock
 
-import grpc
-from grpc.experimental import aio
+import grpc                         # type: ignore
+from grpc.experimental import aio   # type: ignore
 import math
 import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules.dates import DurationRule, TimestampRule # type: ignore
 
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -30,8 +30,8 @@ from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
+from google.auth import credentials as ga_credentials       # type: ignore
+from google.auth.exceptions import MutualTLSChannelError    # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import LoggingServiceV2AsyncClient
 from google.cloud.logging_v2.services.logging_service_v2 import LoggingServiceV2Client
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
@@ -40,12 +40,12 @@ from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
 from google.logging.type import http_request_pb2  # type: ignore
 from google.logging.type import log_severity_pb2  # type: ignore
-from google.oauth2 import service_account
+from google.oauth2 import service_account                   # type: ignore
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import google.auth                                          # type: ignore
 
 
 def client_cert_source_callback():
@@ -517,15 +517,12 @@ def test_delete_log(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-        response = client.delete_log(request)
+        client.delete_log(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.DeleteLogRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_log_empty_call():
@@ -568,9 +565,6 @@ async def test_delete_log_async(transport: str = 'grpc_asyncio', request_type=lo
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.DeleteLogRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 @pytest.mark.asyncio
@@ -1147,6 +1141,7 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+
         pager = client.list_log_entries(request={})
 
         assert pager._metadata == metadata
@@ -1417,6 +1412,7 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
         )
 
         metadata = ()
+
         pager = client.list_monitored_resource_descriptors(request={})
 
         assert pager._metadata == metadata
@@ -1835,12 +1831,12 @@ def test_list_logs_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
+
         pager = client.list_logs(request={})
 
         assert pager._metadata == metadata
@@ -2029,14 +2025,18 @@ async def test_tail_log_entries_async(transport: str = 'grpc_asyncio', request_t
     request = request_type()
     requests = [request]
 
+    def request_generator():
+        for request in requests: # pragma: no branch
+            yield request
+
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.tail_log_entries),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value = mock.AsyncMock(aio.StreamStreamCall, autospec=True)
         call.return_value.read = mock.AsyncMock(side_effect=[logging.TailLogEntriesResponse()])
-        response = await client.tail_log_entries(iter(requests))
+        stream = await client.tail_log_entries(requests=request_generator())
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -2044,8 +2044,8 @@ async def test_tail_log_entries_async(transport: str = 'grpc_asyncio', request_t
         assert next(args[0]) == request
 
     # Establish that the response is the type that we expect.
-    message = await response.read()
-    assert isinstance(message, logging.TailLogEntriesResponse)
+    async for response in stream: # pragma: no branch
+        assert isinstance(response, logging.TailLogEntriesResponse)
 
 
 @pytest.mark.asyncio
