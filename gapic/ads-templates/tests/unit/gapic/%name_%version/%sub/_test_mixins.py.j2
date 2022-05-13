@@ -200,6 +200,8 @@ def test_wait_operation_from_dict():
 
 {% endif %} {# WaitOperation #}
 
+{% if "GetOperation" in api.mixin_api_methods %}
+
 def test_get_operation(transport: str = "grpc"):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
