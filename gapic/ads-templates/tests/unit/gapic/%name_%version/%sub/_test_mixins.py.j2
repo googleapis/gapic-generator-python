@@ -1,4 +1,4 @@
-{% if api.has_operations_mixin and ('grpc' in opts.transport or 'grpc_asyncio' in opts.transport) %}
+{% if api.has_operations_mixin and 'grpc' in opts.transport %}
 
 {% if "DeleteOperation" in api.mixin_api_methods %}
 def test_delete_operation(transport: str = "grpc"):
