@@ -1,30 +1,5 @@
     {% if "grpc" in opts.transport %}
 
-    {% if api.has_operations_mixin %}
-    
-    {% if "ListOperations" in api.mixin_api_methods %}
-    @property
-    def list_operations(
-        self,
-    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
-        r"""Return a callable for the list locations method over gRPC.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
-                "/google.longrunning/ListOperations",
-                request_serializer=locations_pb2.ListOperationsRequest.SerializeToString,
-                response_deserializer=locations_pb2.ListOperationsResponse.FromString,
-            )
-        return self._stubs["list_operations"]
-    {% endif %}
-
-    {% endif %} {# LRO #}
-
-
     {% if api.has_location_mixin %}
 
     {% if "ListLocations" in api.mixin_api_methods %}
