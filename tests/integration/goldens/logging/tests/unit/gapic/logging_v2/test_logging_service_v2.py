@@ -2184,7 +2184,7 @@ def test_logging_service_v2_base_transport():
         'list_monitored_resource_descriptors',
         'list_logs',
         'tail_log_entries',
-    )
+       )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())

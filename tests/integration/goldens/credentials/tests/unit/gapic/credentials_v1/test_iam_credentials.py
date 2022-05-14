@@ -1647,7 +1647,7 @@ def test_iam_credentials_base_transport():
         'generate_id_token',
         'sign_blob',
         'sign_jwt',
-    )
+       )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())

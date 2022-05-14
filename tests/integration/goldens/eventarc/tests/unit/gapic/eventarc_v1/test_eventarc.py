@@ -2032,7 +2032,7 @@ def test_eventarc_base_transport():
         'create_trigger',
         'update_trigger',
         'delete_trigger',
-    )
+       )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
