@@ -66,6 +66,7 @@ class {{ service.name }}Transport(abc.ABC):
             quota_project_id: Optional[str] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
+            audience: Optional[str] = None,
             **kwargs,
             ) -> None:
         """Instantiate the transport.
@@ -95,7 +96,9 @@ class {{ service.name }}Transport(abc.ABC):
         {% if service.any_extended_operations_methods %}
         self._extended_operations_services: Dict[str, Any] = {}
         {% endif %}
-
+        # Default value for audience is host.
+        if not audience:
+            audience = host
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ':' not in host:
             host += ':443'
@@ -123,6 +126,9 @@ class {{ service.name }}Transport(abc.ABC):
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
             credentials = credentials.with_always_use_jwt_access(True)
+
+        if hasattr(credentials, "with_audience"):
+            credentials = credentials.with_audience(audience)
 
         # Save the credentials.
         self._credentials = credentials
