@@ -128,6 +128,16 @@ class FragTester:
                 )
             )
 
+            self.session.install("mypy", "types-pkg_resources", "types-mock", "types-protobuf", "pytest")
+            outputs.append(
+                self.session.run(
+                    "mypy",
+                    "--explicit-package-bases",
+                    str(Path(tmp_dir)),
+                    silent=True,
+                )
+            )
+
             return "".join(outputs)
 
 
