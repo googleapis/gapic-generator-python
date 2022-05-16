@@ -6,15 +6,16 @@
 import os
 import mock
 
-import grpc
-from grpc.experimental import aio
+import grpc                         # type: ignore
+from grpc.experimental import aio   # type: ignore
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable
 import json
 {% endif %}
 import math
 import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules.dates import DurationRule, TimestampRule # type: ignore
+from typing import Any, Dict, Tuple
 
 {% if 'rest' in opts.transport %}
 from requests import Response
@@ -24,10 +25,10 @@ from requests.sessions import Session
 
 {# Import the service itself as well as every proto module that it imports. #}
 {% filter sort_lines %}
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+import google.auth                                          # type: ignore
+from google.auth import credentials as ga_credentials       # type: ignore
+from google.auth.exceptions import MutualTLSChannelError    # type: ignore
+from google.oauth2 import service_account                   # type: ignore
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 {% if 'grpc' in opts.transport %}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.async_client_name }}
@@ -45,7 +46,7 @@ from google.api_core import future
 {% if service.has_lro %}
 from google.api_core import operation
 from google.api_core import operations_v1
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2 # type: ignore
 {% if "rest" in opts.transport %}
 from google.protobuf import json_format
 {% endif %}{# rest transport #}

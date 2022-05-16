@@ -42,7 +42,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
             {% endfor %}
         )
         {% endif %}
-        {% if method.client_streaming %}
+        {% if method.void %}
+        client.{{ method_name }}(request)
+        {% elif method.client_streaming %}
         response = client.{{ method.safe_name|snake_case }}(iter(requests))
         {% else %}
         response = client.{{ method_name }}(request)
@@ -57,10 +59,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
 
+    {% if not method.void %}
     # Establish that the response is the type that we expect.
-    {% if method.void %}
-    assert response is None
-    {% elif method.lro or (method.extended_lro and full_extended_lro) %}
+    {% if method.lro or (method.extended_lro and full_extended_lro) %}
     assert isinstance(response, future.Future)
     {% elif method.extended_lro and not full_extended_lro %}
     assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
@@ -85,6 +86,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endif %}{# end of not method.void #}
 
 
 {% if not method.client_streaming %}
@@ -125,6 +127,12 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     requests = [request]
     {% endif %}
 
+    {% if method.client_streaming %}
+    def request_generator():
+        for request in requests: # pragma: no branch
+            yield request
+    {% endif %}
+
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.{{ method.transport_safe_name|snake_case }}),
@@ -140,7 +148,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
         call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
         {% elif method.client_streaming and method.server_streaming %}
-        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value = mock.AsyncMock(aio.StreamStreamCall, autospec=True)
         call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
         {% else %}
         call.return_value ={{ '' }}
@@ -155,10 +163,8 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
             {% endfor %}
         ))
         {% endif %}
-        {% if method.client_streaming and method.server_streaming %}
-        response = await client.{{ method.name|snake_case }}(iter(requests))
-        {% elif method.client_streaming and not method.server_streaming %}
-        response = await (await client.{{ method.name|snake_case }}(iter(requests)))
+        {% if method.client_streaming %}
+        stream = await client.{{ method.name|snake_case }}(requests=request_generator())
         {% else %}
         response = await client.{{ method_name }}(request)
         {% endif %}
@@ -172,16 +178,15 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
 
+    {% if not method.void %}
     # Establish that the response is the type that we expect.
-    {% if method.void %}
-    assert response is None
-    {% elif method.lro %}
+    {% if method.lro %}
     assert isinstance(response, future.Future)
     {% elif method.extended_lro and not full_extended_lro %}
     assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
-    {% elif method.server_streaming %}
-    message = await response.read()
-    assert isinstance(message, {{ method.output.ident }})
+    {% elif method.client_streaming %}
+    async for response in stream: # pragma: no branch
+        assert isinstance(response, {{ method.output.ident }})
     {% else %}
     assert isinstance(response, {{ method.client_output_async.ident }})
     {% for field in method_output.fields.values() | rejectattr('message') %}
@@ -196,6 +201,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     {% endif %}{# oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endif %}{# end of not method.void #}
 
 
 @pytest.mark.asyncio
@@ -353,11 +359,19 @@ def test_{{ method_name }}_from_dict_foreign():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
+        {% if method.void %}
+        client.{{ method_name }}(request={
+            {% for field in method.input.fields.values() %}
+            '{{ field.name }}': {{ field.mock_value }},
+            {% endfor %}
+            }
+        {% else %}
         response = client.{{ method_name }}(request={
             {% for field in method.input.fields.values() %}
             '{{ field.name }}': {{ field.mock_value }},
             {% endfor %}
             }
+        {% endif %}
         )
         call.assert_called()
 
@@ -571,9 +585,8 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
         {% if method.field_headers %}
-        metadata = tuple(metadata) + (
+        metadata = (
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
@@ -582,7 +595,10 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
                 {% endfor %}
             )),
         )
+        {% else %}
+        metadata = ()
         {% endif %}
+
         pager = client.{{ method_name }}(request={})
 
         assert pager._metadata == metadata
@@ -848,7 +864,7 @@ def test_{{ method_name }}_rest(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {{ method.http_options[0].sample_request(method) }}
+    request_init: Dict[str, Any] = {{ method.http_options[0].sample_request(method) }}
     {% for field in method.body_fields.values() %}
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
@@ -909,7 +925,9 @@ def test_{{ method_name }}_rest(request_type):
         {% endif %}
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
-        {% if method.client_streaming %}
+        {% if method.void %}
+        client.{{ method_name }}(request)
+        {% elif method.client_streaming %}
         response = client.{{ method_name }}(iter(requests))
         {% elif method.server_streaming %}
         with mock.patch.object(response_value, 'iter_content') as iter_content:
@@ -930,10 +948,9 @@ def test_{{ method_name }}_rest(request_type):
     response = next(response)
     {% endif %}
 
+    {% if not method.void %}
     # Establish that the response is the type that we expect.
-    {% if method.void %}
-    assert response is None
-    {% elif method.lro %}
+    {% if method.lro %}
     assert response.operation.name == "operations/spam"
     {% elif method.extended_lro and not full_extended_lro %}
     assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
@@ -951,13 +968,14 @@ def test_{{ method_name }}_rest(request_type):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endif %}{# end of not method.void #}
 
 
     {% if method.input.required_fields %}
 def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ident }}):
     transport_class = transports.{{ service.rest_transport_name }}
 
-    request_init = {}
+    request_init: Dict[str, str] = {}
     {% for req_field in method.input.required_fields if req_field.is_primitive %}
     {% if req_field.field_pb.type == 9 %}
     request_init["{{ req_field.name }}"] = "{{ req_field.field_pb.default_value }}"
@@ -1056,7 +1074,9 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
 
-            {% if method.client_streaming %}
+            {% if method.void %}
+            client.{{ method_name }}(request)
+            {% elif method.client_streaming %}
             response = client.{{ method_name }}(iter(requests))
             {% elif method.server_streaming %}
             with mock.patch.object(response_value, 'iter_content') as iter_content:
@@ -1154,7 +1174,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
     )
 
     # send a request that will satisfy transcoding
-    request_init = {{ method.http_options[0].sample_request(method) }}
+    request_init: Dict[str, Any] = {{ method.http_options[0].sample_request(method) }}
     {% for field in method.body_fields.values() %}
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
@@ -1171,7 +1191,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = PreparedRequest()
         req.return_value = response_value
         {% if method.client_streaming %}
         client.{{ method_name }}(iter(requests))
@@ -1199,7 +1219,7 @@ def test_{{ method_name }}_rest_flattened():
         {% endif %}
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {{ method.http_options[0].sample_request(method) }}
+        sample_request: Dict[str, Any] = {{ method.http_options[0].sample_request(method) }}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -1277,7 +1297,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
         #with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         {% if method.paged_result_field.map%}
-        response = (
+        response: Tuple[Any, ...] = (
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}={
                     'a':{{ method.paged_result_field.type.fields.get('value').ident }}(),
@@ -1304,7 +1324,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
             ),
         )
         {% else %}
-        response = (
+        response: Tuple[Any, ...] = (
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
                     {{ method.paged_result_field.type.ident }}(),
@@ -1345,7 +1365,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {{ method.http_options[0].sample_request(method) }}
+        sample_request: Dict[str, Any] = {{ method.http_options[0].sample_request(method) }}
         {% for field in method.body_fields.values() %}
         {% if not field.oneof or field.proto3_optional %}
         {# ignore oneof fields that might conflict with sample_request #}
