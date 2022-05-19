@@ -302,6 +302,7 @@ def run_showcase_unit_tests(session, fail_under=100):
         "pytest",
         "pytest-cov",
         "pytest-xdist",
+        "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
     )
 
