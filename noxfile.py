@@ -138,6 +138,7 @@ def fragment(session, use_ads_templates=False):
         "pytest",
         "pytest-cov",
         "pytest-xdist",
+        "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
         "grpcio-tools",
     )
