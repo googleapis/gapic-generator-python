@@ -138,7 +138,6 @@ def fragment(session, use_ads_templates=False):
         "pytest",
         "pytest-cov",
         "pytest-xdist",
-        "asyncmock",
         "pytest-asyncio",
         "grpcio-tools",
     )
@@ -246,7 +245,7 @@ def showcase(
     """Run the Showcase test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
-        session.install("mock", "pytest", "pytest-asyncio")
+        session.install("pytest", "pytest-asyncio")
         session.run(
             "py.test",
             "--quiet",
@@ -265,7 +264,7 @@ def showcase_mtls(
     """Run the Showcase mtls test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
-        session.install("mock", "pytest", "pytest-asyncio")
+        session.install("pytest", "pytest-asyncio")
         session.run(
             "py.test",
             "--quiet",
@@ -303,7 +302,6 @@ def run_showcase_unit_tests(session, fail_under=100):
         "pytest",
         "pytest-cov",
         "pytest-xdist",
-        "asyncmock",
         "pytest-asyncio",
     )
 
@@ -417,7 +415,7 @@ def snippetgen(session):
     # Install gapic-generator-python
     session.install("-e", ".")
 
-    session.install("grpcio-tools", "mock", "pytest", "pytest-asyncio")
+    session.install("grpcio-tools", "pytest", "pytest-asyncio")
 
     session.run("py.test", "-vv", "tests/snippetgen")
 
