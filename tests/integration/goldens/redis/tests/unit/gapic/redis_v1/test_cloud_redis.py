@@ -3022,7 +3022,7 @@ def test_cloud_redis_base_transport():
         'export_instance',
         'failover_instance',
         'delete_instance',
-       )
+    )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())

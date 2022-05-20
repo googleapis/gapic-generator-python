@@ -6065,7 +6065,7 @@ def test_config_service_v2_base_transport():
         'delete_exclusion',
         'get_cmek_settings',
         'update_cmek_settings',
-       )
+    )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())

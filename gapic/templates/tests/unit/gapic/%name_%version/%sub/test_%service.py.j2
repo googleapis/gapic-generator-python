@@ -780,7 +780,7 @@ def test_{{ service.name|snake_case }}_base_transport():
         {% if "TestIamPermissions" in api.mixin_api_methods %}
         'test_iam_permissions',
         {% endif %}
-        {% endif %} {# has_iam_mixin #}
+        {% endif %}
         {% if api.has_location_mixin %}
         {% if "GetLocation" in api.mixin_api_methods %}
         'get_location',
@@ -788,7 +788,7 @@ def test_{{ service.name|snake_case }}_base_transport():
         {% if "ListLocations" in api.mixin_api_methods %}
         'list_locations',
         {% endif %}
-        {% endif %} {# Location Mixin #}
+        {% endif %}
         {% if api.has_operations_mixin %}
         {% if "GetOperation" in api.mixin_api_methods %}
         'get_operation',
@@ -805,7 +805,7 @@ def test_{{ service.name|snake_case }}_base_transport():
         {% if "ListOperations" in api.mixin_api_methods %}
         'list_operations',
         {% endif %}
-        {% endif %} {# has_operations_mixin #}
+        {% endif %}
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

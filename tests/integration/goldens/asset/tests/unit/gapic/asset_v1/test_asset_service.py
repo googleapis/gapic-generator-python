@@ -3696,7 +3696,7 @@ def test_asset_service_base_transport():
         'search_all_iam_policies',
         'analyze_iam_policy',
         'analyze_iam_policy_longrunning',
-       )
+    )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())

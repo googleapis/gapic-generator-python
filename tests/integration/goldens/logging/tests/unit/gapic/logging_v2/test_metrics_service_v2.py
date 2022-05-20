@@ -2035,7 +2035,7 @@ def test_metrics_service_v2_base_transport():
         'create_log_metric',
         'update_log_metric',
         'delete_log_metric',
-       )
+    )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
