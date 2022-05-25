@@ -15,7 +15,7 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
+import google.iam.credentials.version as credentials_version
 
 import google.auth  # type: ignore
 import google.api_core
@@ -27,14 +27,9 @@ from google.oauth2 import service_account # type: ignore
 
 from google.iam.credentials_v1.types import common
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            'google-iam-credentials',
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=credentials_version.__version__,
+)
 
 
 class IAMCredentialsTransport(abc.ABC):

@@ -17,13 +17,26 @@ import io
 import os
 import setuptools  # type: ignore
 
-version = '0.1.0'
-
 package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, 'README.rst')
 with io.open(readme_filename, encoding='utf-8') as readme_file:
     readme = readme_file.read()
+
+version = {}
+with open(os.path.join(package_root, 'google/cloud/redis/version.py')) as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
+
+packages = [
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
+]
+
+namespaces = ['google.cloud', 'google.cloud.redis']
+if "google.cloud" in packages:
+    namespaces.append("google.cloud")
 
 setuptools.setup(
     name='google-cloud-redis',
@@ -32,8 +45,8 @@ setuptools.setup(
     url="https://github.com/googleapis/python-google-cloud-redis",
     version=version,
     long_description=readme,
-    packages=setuptools.PEP420PackageFinder.find(),
-    namespace_packages=('google', 'google.cloud'),
+    packages=packages,
+    namespace_packages=namespaces,
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(

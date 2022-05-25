@@ -10,7 +10,7 @@ import functools
 import os
 import re
 from typing import Dict, Mapping, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
-import pkg_resources
+import {{ api.naming.module_namespace|join('.') }}.{{ api.naming.module_name }}.version as {{ api.naming.module_name }}_version
 {% if service.any_deprecated %}
 import warnings
 {% endif %}
@@ -662,16 +662,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
-        return response
+      st  return response
     {% endif %}
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "{{ api.naming.warehouse_package_name }}",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version={{ api.naming.module_name }}_version.__version__,
+)
 
 
 __all__ = (
