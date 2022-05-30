@@ -1,0 +1,45 @@
+{% extends "_base.py.j2" %}
+
+{% block content %}
+
+{% with p = proto.disambiguate('proto') %}
+{% if proto.messages|length or proto.all_enums|length %}
+import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
+{% endif %}
+
+{% filter sort_lines %}
+{% for import_ in proto.python_modules %}
+{{ import_ }}
+{% endfor %}
+{% endfilter %}
+
+
+__manifest__ = (
+    {% for enum in proto.enums.values() %}
+        {% if enum.name.endswith('Response') %}
+        '{{ enum.name }}',
+        {% endif %}
+    {% endfor %}
+    {% for message in proto.messages.values() %}
+        {% if message.name.endswith('Response') %}
+        '{{ message.name }}',
+        {% endif %}
+    {% endfor %}
+)
+
+
+{% for enum in proto.enums.values() %}
+    {% if enum.name.endswith('Response') %}
+    {% include '%namespace/%name_%version/%sub/types/_enum.py.j2' with context %}
+    {% endif %}
+{% endfor %}
+
+{% for message in proto.messages.values() %}
+    {% if message.name.endswith('Response') %}
+    {% include "%namespace/%name_%version/%sub/types/_message.py.j2" with context %}
+    {% endif %}
+{% endfor %}
+{% endwith %}
+
+__all__ = tuple(sorted(__manifest__))
+{% endblock %}
