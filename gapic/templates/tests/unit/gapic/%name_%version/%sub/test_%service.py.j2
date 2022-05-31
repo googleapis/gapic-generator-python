@@ -234,6 +234,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -251,6 +252,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -268,6 +270,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -295,6 +298,23 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
+        )
+    # Check the case api_endpoint is provided
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
+    with mock.patch.object(transport_class, '__init__') as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience="https://language.googleapis.com"
         )
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name,use_client_cert_env", [
@@ -342,6 +362,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -368,6 +389,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                         quota_project_id=None,
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
                         always_use_jwt_access=True,
+                        api_audience=None,
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -385,6 +407,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                     quota_project_id=None,
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
+                    api_audience=None,
                 )
 
 
@@ -473,6 +496,7 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
@@ -502,6 +526,7 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 {% if 'grpc' in opts.transport %}
 {# TODO(dovs): genericize this function#}
@@ -521,7 +546,51 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
+
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
+@pytest.mark.parametrize("transport_class", [transports.{{ service.grpc_transport_name }}, transports.{{ service.grpc_asyncio_transport_name }}])
+def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_source(
+    transport_class
+):
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
+
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = ga_credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(google.auth, 'default') as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=None,
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
@@ -546,6 +615,7 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
     # test that the credentials from file are saved and used as the credentials.
@@ -862,6 +932,29 @@ def test_{{ service.name|snake_case }}_transport_auth_adc(transport_class):
         )
 
 
+{% if 'grpc' in opts.transport %}
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.{{ service.name }}GrpcTransport,
+        transports.{{ service.name }}GrpcAsyncIOTransport,
+        transports.{{ service.name }}RestTransport,
+    ],
+)
+def test_{{ service.name|snake_case }}_transport_auth_gdch_credentials(transport_class):
+    host = 'https://language.com'
+    api_audience_tests = [None, 'https://language2.com']
+    api_audience_expect = [host, 'https://language2.com']
+    for t, e in zip(api_audience_tests, api_audience_expect):
+        with mock.patch.object(google.auth, 'default', autospec=True) as adc:
+            gdch_mock = mock.MagicMock()
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
+            adc.return_value = (gdch_mock, None)
+            transport_class(host=host, api_audience=t)
+            gdch_mock.with_gdch_audience.assert_called_once_with(
+                e
+            )
+{% endif %}
 
 
 @pytest.mark.parametrize(
@@ -1078,50 +1171,6 @@ def test_{{ service.name|snake_case }}_grpc_asyncio_transport_channel():
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
     assert transport._ssl_channel_credentials == None
-
-
-# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
-# removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize("transport_class", [transports.{{ service.grpc_transport_name }}, transports.{{ service.grpc_asyncio_transport_name }}])
-def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_source(
-    transport_class
-):
-    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
-        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
-            mock_ssl_cred = mock.Mock()
-            grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-            mock_grpc_channel = mock.Mock()
-            grpc_create_channel.return_value = mock_grpc_channel
-
-            cred = ga_credentials.AnonymousCredentials()
-            with pytest.warns(DeprecationWarning):
-                with mock.patch.object(google.auth, 'default') as adc:
-                    adc.return_value = (cred, None)
-                    transport = transport_class(
-                        host="squid.clam.whelk",
-                        api_mtls_endpoint="mtls.squid.clam.whelk",
-                        client_cert_source=client_cert_source_callback,
-                    )
-                    adc.assert_called_once()
-
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
-            grpc_create_channel.assert_called_once_with(
-                "mtls.squid.clam.whelk:443",
-                credentials=cred,
-                credentials_file=None,
-                scopes=None,
-                ssl_credentials=mock_ssl_cred,
-                quota_project_id=None,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-            assert transport.grpc_channel == mock_grpc_channel
-            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
@@ -1353,6 +1402,7 @@ def test_api_key_credentials(client_class, transport_class):
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
 {% endblock %}
