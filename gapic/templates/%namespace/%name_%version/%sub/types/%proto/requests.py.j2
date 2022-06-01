@@ -34,6 +34,20 @@ __protobuf__ = {{ p }}.module(
 )
 
 
+__manifest__ = (
+    {% for enum in proto.enums.values() %}
+        {% if enum.name.endswith('Request') %}
+        '{{ enum.name }}',
+        {% endif %}
+    {% endfor %}
+    {% for message in proto.messages.values() %}
+        {% if message.name.endswith('Request') %}
+        '{{ message.name }}',
+        {% endif %}
+    {% endfor %}
+)
+
+
 {% for enum in proto.enums.values() %}
     {% if enum.name.endswith('Request') %}
     {% include '%namespace/%name_%version/%sub/types/_enum.py.j2' with context %}
@@ -47,5 +61,5 @@ __protobuf__ = {{ p }}.module(
 {% endfor %}
 {% endwith %}
 
-__all__ = tuple(sorted(__protobuf__.manifest))
+__all__ = tuple(sorted(__manifest__))
 {% endblock %}
