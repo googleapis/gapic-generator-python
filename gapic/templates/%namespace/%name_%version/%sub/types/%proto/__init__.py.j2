@@ -29,8 +29,8 @@ __protobuf__ = {{ p }}.module(
     },
 )
 
-from .requests import *
-from .responses import *
+from .requests import *  # type: ignore
+from .responses import *  # type: ignore
 
 {% for enum in proto.enums.values() %}
     {% if not (enum.name.endswith('Request') or enum.name.endswith('Response')) %}

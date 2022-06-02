@@ -390,7 +390,7 @@ def showcase_mypy(
         session.chdir(lib)
 
         # Run the tests.
-        session.run("mypy", "--explicit-package-bases", "google")
+        session.run("mypy", "--explicit-package-bases", "--implicit-reexport", "google")
 
 
 @nox.session(python=NEWEST_PYTHON)

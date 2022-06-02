@@ -1,7 +1,7 @@
 class {{ enum.name }}({{ p }}.Enum):
     r"""{{ enum.meta.doc|rst(indent=4) }}"""
     {% if submodule_magic is defined %}
-    __module__ = __module__.rsplit('.', maxsplit=1)[0]
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
     {% endif %}
     {% if enum.enum_pb.HasField("options") %}
     _pb_options = {{ enum.options_dict }}
