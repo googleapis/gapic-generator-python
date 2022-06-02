@@ -25,7 +25,9 @@ class {{ message.name }}({{ p }}.Message):
     {% endfor %}
     {% endif %}
     """
+    {% if submodule_magic is defined %}
     __module__ = __module__.rsplit('.', maxsplit=1)[0]
+    {% endif %}
     {# Iterate over nested enums. -#}
     {% for enum in message.nested_enums.values() %}
         {% filter indent(first=True) %}

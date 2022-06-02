@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% with p = proto.disambiguate('proto') %}
+{% with p = proto.disambiguate('proto'), submodule_magic = True %}
 {% if proto.messages|length or proto.all_enums|length %}
 import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
 {% endif %}
