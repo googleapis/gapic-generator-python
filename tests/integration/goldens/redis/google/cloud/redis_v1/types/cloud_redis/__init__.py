@@ -43,6 +43,22 @@ __protobuf__ = proto.module(
     },
 )
 
+from .requests import (
+        ListInstancesRequest,
+        GetInstanceRequest,
+        CreateInstanceRequest,
+        UpdateInstanceRequest,
+        UpgradeInstanceRequest,
+        DeleteInstanceRequest,
+        ImportInstanceRequest,
+        ExportInstanceRequest,
+        FailoverInstanceRequest,
+)
+
+from .responses import (
+        ListInstancesResponse,
+)
+
 
 class Instance(proto.Message):
     r"""A Google Cloud Redis instance.
@@ -272,217 +288,6 @@ class Instance(proto.Message):
     )
 
 
-class ListInstancesRequest(proto.Message):
-    r"""Request for
-    [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
-
-    Attributes:
-        parent (str):
-            Required. The resource name of the instance location using
-            the form: ``projects/{project_id}/locations/{location_id}``
-            where ``location_id`` refers to a GCP region.
-        page_size (int):
-            The maximum number of items to return.
-
-            If not specified, a default value of 1000 will be used by
-            the service. Regardless of the page_size value, the response
-            may include a partial list and a caller should only rely on
-            response's
-            [``next_page_token``][google.cloud.redis.v1.ListInstancesResponse.next_page_token]
-            to determine if there are more instances left to be queried.
-        page_token (str):
-            The ``next_page_token`` value returned from a previous
-            [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances]
-            request, if any.
-    """
-
-    parent = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    page_size = proto.Field(
-        proto.INT32,
-        number=2,
-    )
-    page_token = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-
-
-class ListInstancesResponse(proto.Message):
-    r"""Response for
-    [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
-
-    Attributes:
-        instances (Sequence[google.cloud.redis_v1.types.Instance]):
-            A list of Redis instances in the project in the specified
-            location, or across all locations.
-
-            If the ``location_id`` in the parent field of the request is
-            "-", all regions available to the project are queried, and
-            the results aggregated. If in such an aggregated query a
-            location is unavailable, a dummy Redis entry is included in
-            the response with the ``name`` field set to a value of the
-            form
-            ``projects/{project_id}/locations/{location_id}/instances/``-
-            and the ``status`` field set to ERROR and ``status_message``
-            field set to "location not available for ListInstances".
-        next_page_token (str):
-            Token to retrieve the next page of results,
-            or empty if there are no more results in the
-            list.
-        unreachable (Sequence[str]):
-            Locations that could not be reached.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    instances = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message='Instance',
-    )
-    next_page_token = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    unreachable = proto.RepeatedField(
-        proto.STRING,
-        number=3,
-    )
-
-
-class GetInstanceRequest(proto.Message):
-    r"""Request for
-    [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-    """
-
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class CreateInstanceRequest(proto.Message):
-    r"""Request for
-    [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
-
-    Attributes:
-        parent (str):
-            Required. The resource name of the instance location using
-            the form: ``projects/{project_id}/locations/{location_id}``
-            where ``location_id`` refers to a GCP region.
-        instance_id (str):
-            Required. The logical name of the Redis instance in the
-            customer project with the following restrictions:
-
-            -  Must contain only lowercase letters, numbers, and
-               hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-40 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the customer project / location
-        instance (google.cloud.redis_v1.types.Instance):
-            Required. A Redis [Instance] resource
-    """
-
-    parent = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    instance_id = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    instance = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message='Instance',
-    )
-
-
-class UpdateInstanceRequest(proto.Message):
-    r"""Request for
-    [UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].
-
-    Attributes:
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Mask of fields to update. At least one path must
-            be supplied in this field. The elements of the repeated
-            paths field may only include these fields from
-            [Instance][google.cloud.redis.v1.Instance]:
-
-            -  ``displayName``
-            -  ``labels``
-            -  ``memorySizeGb``
-            -  ``redisConfig``
-        instance (google.cloud.redis_v1.types.Instance):
-            Required. Update description. Only fields specified in
-            update_mask are updated.
-    """
-
-    update_mask = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=field_mask_pb2.FieldMask,
-    )
-    instance = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message='Instance',
-    )
-
-
-class UpgradeInstanceRequest(proto.Message):
-    r"""Request for
-    [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-        redis_version (str):
-            Required. Specifies the target version of
-            Redis software to upgrade to.
-    """
-
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    redis_version = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-
-
-class DeleteInstanceRequest(proto.Message):
-    r"""Request for
-    [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-    """
-
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
 class GcsSource(proto.Message):
     r"""The Cloud Storage location for the input content
 
@@ -516,30 +321,6 @@ class InputConfig(proto.Message):
         number=1,
         oneof='source',
         message='GcsSource',
-    )
-
-
-class ImportInstanceRequest(proto.Message):
-    r"""Request for
-    [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-        input_config (google.cloud.redis_v1.types.InputConfig):
-            Required. Specify data to be imported.
-    """
-
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    input_config = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message='InputConfig',
     )
 
 
@@ -577,63 +358,6 @@ class OutputConfig(proto.Message):
         number=1,
         oneof='destination',
         message='GcsDestination',
-    )
-
-
-class ExportInstanceRequest(proto.Message):
-    r"""Request for
-    [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-        output_config (google.cloud.redis_v1.types.OutputConfig):
-            Required. Specify data to be exported.
-    """
-
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    output_config = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message='OutputConfig',
-    )
-
-
-class FailoverInstanceRequest(proto.Message):
-    r"""Request for
-    [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-        data_protection_mode (google.cloud.redis_v1.types.FailoverInstanceRequest.DataProtectionMode):
-            Optional. Available data protection modes that the user can
-            choose. If it's unspecified, data protection mode will be
-            LIMITED_DATA_LOSS by default.
-    """
-    class DataProtectionMode(proto.Enum):
-        r"""Specifies different modes of operation in relation to the
-        data retention.
-        """
-        DATA_PROTECTION_MODE_UNSPECIFIED = 0
-        LIMITED_DATA_LOSS = 1
-        FORCE_DATA_LOSS = 2
-
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    data_protection_mode = proto.Field(
-        proto.ENUM,
-        number=2,
-        enum=DataProtectionMode,
     )
 
 

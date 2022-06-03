@@ -29,6 +29,7 @@ __protobuf__ = {{ p }}.module(
     },
 )
 
+{% if has_requests %}
 from .requests import (
     {% for enum in proto.enums.values() %}
         {% if enum.name.endswith('Request') %}
@@ -41,6 +42,9 @@ from .requests import (
         {% endif %}
     {% endfor %}
 )
+{% endif %}
+
+{% if has_responses %}
 from .responses import (
     {% for enum in proto.enums.values() %}
         {% if enum.name.endswith('Response') %}
@@ -53,6 +57,7 @@ from .responses import (
         {% endif %}
     {% endfor %}
 )
+{% endif %}
 
 {% for enum in proto.enums.values() %}
     {% if not (enum.name.endswith('Request') or enum.name.endswith('Response')) %}

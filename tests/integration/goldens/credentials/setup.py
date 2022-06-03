@@ -41,6 +41,7 @@ setuptools.setup(
         'libcst >= 0.2.5',
         'googleapis-common-protos >= 1.55.0, <2.0.0dev',
         'proto-plus >= 1.19.7',
+        'protobuf >= 3.19.0, <4.0.0dev',
     ),
     python_requires='>=3.6',
     classifiers=[

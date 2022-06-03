@@ -33,6 +33,18 @@ __protobuf__ = proto.module(
     },
 )
 
+from .requests import (
+        ListLogMetricsRequest,
+        GetLogMetricRequest,
+        CreateLogMetricRequest,
+        UpdateLogMetricRequest,
+        DeleteLogMetricRequest,
+)
+
+from .responses import (
+        ListLogMetricsResponse,
+)
+
 
 class LogMetric(proto.Message):
     r"""Describes a logs-based metric. The value of the metric is the
@@ -211,166 +223,6 @@ class LogMetric(proto.Message):
         proto.ENUM,
         number=4,
         enum=ApiVersion,
-    )
-
-
-class ListLogMetricsRequest(proto.Message):
-    r"""The parameters to ListLogMetrics.
-
-    Attributes:
-        parent (str):
-            Required. The name of the project containing the metrics:
-
-            ::
-
-                "projects/[PROJECT_ID]".
-        page_token (str):
-            Optional. If present, then retrieve the next batch of
-            results from the preceding call to this method.
-            ``pageToken`` must be the value of ``nextPageToken`` from
-            the previous response. The values of other method parameters
-            should be identical to those in the previous call.
-        page_size (int):
-            Optional. The maximum number of results to return from this
-            request. Non-positive values are ignored. The presence of
-            ``nextPageToken`` in the response indicates that more
-            results might be available.
-    """
-
-    parent = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    page_token = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    page_size = proto.Field(
-        proto.INT32,
-        number=3,
-    )
-
-
-class ListLogMetricsResponse(proto.Message):
-    r"""Result returned from ListLogMetrics.
-
-    Attributes:
-        metrics (Sequence[google.cloud.logging_v2.types.LogMetric]):
-            A list of logs-based metrics.
-        next_page_token (str):
-            If there might be more results than appear in this response,
-            then ``nextPageToken`` is included. To get the next set of
-            results, call this method again using the value of
-            ``nextPageToken`` as ``pageToken``.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    metrics = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message='LogMetric',
-    )
-    next_page_token = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-
-
-class GetLogMetricRequest(proto.Message):
-    r"""The parameters to GetLogMetric.
-
-    Attributes:
-        metric_name (str):
-            Required. The resource name of the desired metric:
-
-            ::
-
-                "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
-    """
-
-    metric_name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class CreateLogMetricRequest(proto.Message):
-    r"""The parameters to CreateLogMetric.
-
-    Attributes:
-        parent (str):
-            Required. The resource name of the project in which to
-            create the metric:
-
-            ::
-
-                "projects/[PROJECT_ID]"
-
-            The new metric must be provided in the request.
-        metric (google.cloud.logging_v2.types.LogMetric):
-            Required. The new logs-based metric, which
-            must not have an identifier that already exists.
-    """
-
-    parent = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    metric = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message='LogMetric',
-    )
-
-
-class UpdateLogMetricRequest(proto.Message):
-    r"""The parameters to UpdateLogMetric.
-
-    Attributes:
-        metric_name (str):
-            Required. The resource name of the metric to update:
-
-            ::
-
-                "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
-
-            The updated metric must be provided in the request and it's
-            ``name`` field must be the same as ``[METRIC_ID]`` If the
-            metric does not exist in ``[PROJECT_ID]``, then a new metric
-            is created.
-        metric (google.cloud.logging_v2.types.LogMetric):
-            Required. The updated metric.
-    """
-
-    metric_name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    metric = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message='LogMetric',
-    )
-
-
-class DeleteLogMetricRequest(proto.Message):
-    r"""The parameters to DeleteLogMetric.
-
-    Attributes:
-        metric_name (str):
-            Required. The resource name of the metric to delete:
-
-            ::
-
-                "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
-    """
-
-    metric_name = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 

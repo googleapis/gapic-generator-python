@@ -25,12 +25,19 @@ __protobuf__ = proto.module(
     manifest={
         'GetTriggerRequest',
         'ListTriggersRequest',
-        'ListTriggersResponse',
         'CreateTriggerRequest',
         'UpdateTriggerRequest',
         'DeleteTriggerRequest',
-        'OperationMetadata',
     },
+)
+
+
+__manifest__ = (
+        'GetTriggerRequest',
+        'ListTriggersRequest',
+        'CreateTriggerRequest',
+        'UpdateTriggerRequest',
+        'DeleteTriggerRequest',
 )
 
 
@@ -41,6 +48,7 @@ class GetTriggerRequest(proto.Message):
         name (str):
             Required. The name of the trigger to get.
     """
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
 
     name = proto.Field(
         proto.STRING,
@@ -73,6 +81,7 @@ class ListTriggersRequest(proto.Message):
             append a ``desc`` suffix; for example:
             ``name desc, trigger_id``.
     """
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
 
     parent = proto.Field(
         proto.STRING,
@@ -92,40 +101,6 @@ class ListTriggersRequest(proto.Message):
     )
 
 
-class ListTriggersResponse(proto.Message):
-    r"""The response message for the ListTriggers method.
-
-    Attributes:
-        triggers (Sequence[google.cloud.eventarc_v1.types.Trigger]):
-            The requested triggers, up to the number specified in
-            ``page_size``.
-        next_page_token (str):
-            A page token that can be sent to ListTriggers
-            to request the next page. If this is empty, then
-            there are no more pages.
-        unreachable (Sequence[str]):
-            Unreachable resources, if any.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    triggers = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gce_trigger.Trigger,
-    )
-    next_page_token = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    unreachable = proto.RepeatedField(
-        proto.STRING,
-        number=3,
-    )
-
-
 class CreateTriggerRequest(proto.Message):
     r"""The request message for the CreateTrigger method.
 
@@ -142,6 +117,7 @@ class CreateTriggerRequest(proto.Message):
             Required. If set, validate the request and
             preview the review, but do not actually post it.
     """
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
 
     parent = proto.Field(
         proto.STRING,
@@ -181,6 +157,7 @@ class UpdateTriggerRequest(proto.Message):
             Required. If set, validate the request and
             preview the review, but do not actually post it.
     """
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
 
     trigger = proto.Field(
         proto.MESSAGE,
@@ -221,6 +198,7 @@ class DeleteTriggerRequest(proto.Message):
             Required. If set, validate the request and
             preview the review, but do not actually post it.
     """
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
 
     name = proto.Field(
         proto.STRING,
@@ -240,66 +218,4 @@ class DeleteTriggerRequest(proto.Message):
     )
 
 
-class OperationMetadata(proto.Message):
-    r"""Represents the metadata of the long-running operation.
-
-    Attributes:
-        create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the operation was
-            created.
-        end_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the operation finished
-            running.
-        target (str):
-            Output only. Server-defined resource path for
-            the target of the operation.
-        verb (str):
-            Output only. Name of the verb executed by the
-            operation.
-        status_message (str):
-            Output only. Human-readable status of the
-            operation, if any.
-        requested_cancellation (bool):
-            Output only. Identifies whether the user has requested
-            cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
-        api_version (str):
-            Output only. API version used to start the
-            operation.
-    """
-
-    create_time = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=timestamp_pb2.Timestamp,
-    )
-    end_time = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message=timestamp_pb2.Timestamp,
-    )
-    target = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-    verb = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    status_message = proto.Field(
-        proto.STRING,
-        number=5,
-    )
-    requested_cancellation = proto.Field(
-        proto.BOOL,
-        number=6,
-    )
-    api_version = proto.Field(
-        proto.STRING,
-        number=7,
-    )
-
-
-__all__ = tuple(sorted(__protobuf__.manifest))
+__all__ = tuple(sorted(__manifest__))

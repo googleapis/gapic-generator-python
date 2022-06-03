@@ -23,14 +23,18 @@ __protobuf__ = proto.module(
     package='google.iam.credentials.v1',
     manifest={
         'GenerateAccessTokenRequest',
-        'GenerateAccessTokenResponse',
         'SignBlobRequest',
-        'SignBlobResponse',
         'SignJwtRequest',
-        'SignJwtResponse',
         'GenerateIdTokenRequest',
-        'GenerateIdTokenResponse',
     },
+)
+
+
+__manifest__ = (
+        'GenerateAccessTokenRequest',
+        'SignBlobRequest',
+        'SignJwtRequest',
+        'GenerateIdTokenRequest',
 )
 
 
@@ -71,6 +75,7 @@ class GenerateAccessTokenRequest(proto.Message):
             not specified, the token's lifetime will be set
             to a default value of one hour.
     """
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
 
     name = proto.Field(
         proto.STRING,
@@ -88,28 +93,6 @@ class GenerateAccessTokenRequest(proto.Message):
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
-    )
-
-
-class GenerateAccessTokenResponse(proto.Message):
-    r"""
-
-    Attributes:
-        access_token (str):
-            The OAuth 2.0 access token.
-        expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Token expiration time.
-            The expiration time is always set.
-    """
-
-    access_token = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    expire_time = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -140,6 +123,7 @@ class SignBlobRequest(proto.Message):
         payload (bytes):
             Required. The bytes to sign.
     """
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
 
     name = proto.Field(
         proto.STRING,
@@ -152,26 +136,6 @@ class SignBlobRequest(proto.Message):
     payload = proto.Field(
         proto.BYTES,
         number=5,
-    )
-
-
-class SignBlobResponse(proto.Message):
-    r"""
-
-    Attributes:
-        key_id (str):
-            The ID of the key used to sign the blob.
-        signed_blob (bytes):
-            The signed blob.
-    """
-
-    key_id = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    signed_blob = proto.Field(
-        proto.BYTES,
-        number=4,
     )
 
 
@@ -203,6 +167,7 @@ class SignJwtRequest(proto.Message):
             Required. The JWT payload to sign: a JSON
             object that contains a JWT Claims Set.
     """
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
 
     name = proto.Field(
         proto.STRING,
@@ -215,26 +180,6 @@ class SignJwtRequest(proto.Message):
     payload = proto.Field(
         proto.STRING,
         number=5,
-    )
-
-
-class SignJwtResponse(proto.Message):
-    r"""
-
-    Attributes:
-        key_id (str):
-            The ID of the key used to sign the JWT.
-        signed_jwt (str):
-            The signed JWT.
-    """
-
-    key_id = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    signed_jwt = proto.Field(
-        proto.STRING,
-        number=2,
     )
 
 
@@ -271,6 +216,7 @@ class GenerateIdTokenRequest(proto.Message):
             ``true``, the token will contain ``email`` and
             ``email_verified`` claims.
     """
+    __module__ = __module__.rsplit('.', maxsplit=1)[0]  # type: ignore
 
     name = proto.Field(
         proto.STRING,
@@ -290,18 +236,4 @@ class GenerateIdTokenRequest(proto.Message):
     )
 
 
-class GenerateIdTokenResponse(proto.Message):
-    r"""
-
-    Attributes:
-        token (str):
-            The OpenId Connect ID token.
-    """
-
-    token = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-__all__ = tuple(sorted(__protobuf__.manifest))
+__all__ = tuple(sorted(__manifest__))
