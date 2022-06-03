@@ -274,10 +274,14 @@ class Generator:
                 ):
                     continue
 
-                has_requests = any(enum.name.endswith('Request') for enum in proto.enums.values())
-                has_requests |= any(message.name.endswith('Request') for message in proto.messages.values())
-                has_responses = any(enum.name.endswith('Response') for enum in proto.enums.values())
-                has_responses |= any(message.name.endswith('Response') for message in proto.messages.values())
+                has_requests = any(enum.name.endswith('Request')
+                                   for enum in proto.enums.values())
+                has_requests |= any(message.name.endswith('Request')
+                                    for message in proto.messages.values())
+                has_responses = any(enum.name.endswith('Response')
+                                    for enum in proto.enums.values())
+                has_responses |= any(message.name.endswith('Response')
+                                     for message in proto.messages.values())
 
                 answer.update(
                     self._get_file(
