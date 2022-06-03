@@ -19,19 +19,6 @@ from google.api import distribution_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-
-__protobuf__ = proto.module(
-    package='google.logging.v2',
-    manifest={
-        'ListLogMetricsRequest',
-        'GetLogMetricRequest',
-        'CreateLogMetricRequest',
-        'UpdateLogMetricRequest',
-        'DeleteLogMetricRequest',
-    },
-)
-
-
 __manifest__ = (
         'ListLogMetricsRequest',
         'GetLogMetricRequest',

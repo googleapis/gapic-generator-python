@@ -25,12 +25,6 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import code_pb2  # type: ignore
 
-__protobuf__ = proto.module(
-    package='google.cloud.asset.v1',
-    manifest={
-    },
-)
-
 __manifest__ = (
 )
 

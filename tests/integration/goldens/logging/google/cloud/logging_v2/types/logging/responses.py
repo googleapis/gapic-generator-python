@@ -20,17 +20,6 @@ from google.cloud.logging_v2.types import log_entry
 from google.protobuf import duration_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
-__protobuf__ = proto.module(
-    package='google.logging.v2',
-    manifest={
-        'WriteLogEntriesResponse',
-        'ListLogEntriesResponse',
-        'ListMonitoredResourceDescriptorsResponse',
-        'ListLogsResponse',
-        'TailLogEntriesResponse',
-    },
-)
-
 __manifest__ = (
         'WriteLogEntriesResponse',
         'ListLogEntriesResponse',

@@ -15,12 +15,6 @@
 #
 
 
-__protobuf__ = proto.module(
-    package='google.iam.credentials.v1',
-    manifest={
-    },
-)
-
 __manifest__ = (
 )
 

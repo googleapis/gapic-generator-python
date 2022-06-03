@@ -18,16 +18,6 @@ import proto  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-__protobuf__ = proto.module(
-    package='google.iam.credentials.v1',
-    manifest={
-        'GenerateAccessTokenResponse',
-        'SignBlobResponse',
-        'SignJwtResponse',
-        'GenerateIdTokenResponse',
-    },
-)
-
 __manifest__ = (
         'GenerateAccessTokenResponse',
         'SignBlobResponse',

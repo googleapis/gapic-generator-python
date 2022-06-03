@@ -19,19 +19,6 @@ from google.cloud.eventarc_v1.types import trigger as gce_trigger
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-
-__protobuf__ = proto.module(
-    package='google.cloud.eventarc.v1',
-    manifest={
-        'GetTriggerRequest',
-        'ListTriggersRequest',
-        'CreateTriggerRequest',
-        'UpdateTriggerRequest',
-        'DeleteTriggerRequest',
-    },
-)
-
-
 __manifest__ = (
         'GetTriggerRequest',
         'ListTriggersRequest',

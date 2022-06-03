@@ -18,37 +18,6 @@ import proto  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-
-__protobuf__ = proto.module(
-    package='google.logging.v2',
-    manifest={
-        'ListBucketsRequest',
-        'CreateBucketRequest',
-        'UpdateBucketRequest',
-        'GetBucketRequest',
-        'DeleteBucketRequest',
-        'UndeleteBucketRequest',
-        'ListViewsRequest',
-        'CreateViewRequest',
-        'UpdateViewRequest',
-        'GetViewRequest',
-        'DeleteViewRequest',
-        'ListSinksRequest',
-        'GetSinkRequest',
-        'CreateSinkRequest',
-        'UpdateSinkRequest',
-        'DeleteSinkRequest',
-        'ListExclusionsRequest',
-        'GetExclusionRequest',
-        'CreateExclusionRequest',
-        'UpdateExclusionRequest',
-        'DeleteExclusionRequest',
-        'GetCmekSettingsRequest',
-        'UpdateCmekSettingsRequest',
-    },
-)
-
-
 __manifest__ = (
         'ListBucketsRequest',
         'CreateBucketRequest',

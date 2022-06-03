@@ -13,25 +13,6 @@ import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
 {% endfor %}
 {% endfilter %}
 
-__protobuf__ = {{ p }}.module(
-    package='{{ '.'.join(proto.meta.address.package) }}',
-    {% if api.naming.proto_package != '.'.join(proto.meta.address.package) %}
-    marshal='{{ api.naming.proto_package }}',
-    {% endif %}
-    manifest={
-    {% for enum in proto.enums.values() %}
-        {% if enum.name.endswith('Response') %}
-        '{{ enum.name }}',
-        {% endif %}
-    {% endfor %}
-    {% for message in proto.messages.values() %}
-        {% if message.name.endswith('Response') %}
-        '{{ message.name }}',
-        {% endif %}
-    {% endfor %}
-    },
-)
-
 __manifest__ = (
     {% for enum in proto.enums.values() %}
         {% if enum.name.endswith('Response') %}

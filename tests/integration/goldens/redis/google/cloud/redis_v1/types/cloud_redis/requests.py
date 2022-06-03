@@ -18,23 +18,6 @@ import proto  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-
-__protobuf__ = proto.module(
-    package='google.cloud.redis.v1',
-    manifest={
-        'ListInstancesRequest',
-        'GetInstanceRequest',
-        'CreateInstanceRequest',
-        'UpdateInstanceRequest',
-        'UpgradeInstanceRequest',
-        'DeleteInstanceRequest',
-        'ImportInstanceRequest',
-        'ExportInstanceRequest',
-        'FailoverInstanceRequest',
-    },
-)
-
-
 __manifest__ = (
         'ListInstancesRequest',
         'GetInstanceRequest',

@@ -17,12 +17,6 @@ import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
 
-__protobuf__ = proto.module(
-    package='google.cloud.eventarc.v1',
-    manifest={
-    },
-)
-
 __manifest__ = (
 )
 

@@ -21,20 +21,6 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
-__protobuf__ = proto.module(
-    package='google.cloud.asset.v1',
-    manifest={
-        'ExportAssetsResponse',
-        'ListAssetsResponse',
-        'BatchGetAssetsHistoryResponse',
-        'ListFeedsResponse',
-        'SearchAllResourcesResponse',
-        'SearchAllIamPoliciesResponse',
-        'AnalyzeIamPolicyResponse',
-        'AnalyzeIamPolicyLongrunningResponse',
-    },
-)
-
 __manifest__ = (
         'ExportAssetsResponse',
         'ListAssetsResponse',
