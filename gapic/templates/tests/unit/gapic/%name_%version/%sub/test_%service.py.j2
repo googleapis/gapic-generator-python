@@ -929,7 +929,6 @@ def test_{{ service.name|snake_case }}_transport_auth_adc(transport_class):
         )
 
 
-{% if 'grpc' in opts.transport %}
 @pytest.mark.parametrize(
     "transport_class",
     [
@@ -951,7 +950,6 @@ def test_{{ service.name|snake_case }}_transport_auth_gdch_credentials(transport
             gdch_mock.with_gdch_audience.assert_called_once_with(
                 e
             )
-{% endif %}
 
 
 @pytest.mark.parametrize(
