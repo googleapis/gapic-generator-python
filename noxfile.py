@@ -138,7 +138,7 @@ def fragment(session, use_ads_templates=False):
         "pytest",
         "pytest-cov",
         "pytest-xdist",
-        "asyncmock",
+        "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
         "grpcio-tools",
     )
@@ -246,7 +246,7 @@ def showcase(
     """Run the Showcase test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
-        session.install("mock", "pytest", "pytest-asyncio")
+        session.install("pytest", "pytest-asyncio")
         session.run(
             "py.test",
             "--quiet",
@@ -265,7 +265,7 @@ def showcase_mtls(
     """Run the Showcase mtls test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
-        session.install("mock", "pytest", "pytest-asyncio")
+        session.install("pytest", "pytest-asyncio")
         session.run(
             "py.test",
             "--quiet",
@@ -303,7 +303,7 @@ def run_showcase_unit_tests(session, fail_under=100):
         "pytest",
         "pytest-cov",
         "pytest-xdist",
-        "asyncmock",
+        "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
     )
 
@@ -347,16 +347,6 @@ def showcase_unit_alternative_templates(session):
 def showcase_unit_add_iam_methods(session):
     with showcase_library(session, other_opts=("add-iam-methods",)) as lib:
         session.chdir(lib)
-
-        # Unit tests are run twice with different dependencies.
-        # 1. Run tests at lower bound of dependencies.
-        session.install("nox")
-        session.run("nox", "-s", "update_lower_bounds")
-        session.install(".", "--force-reinstall", "-c", "constraints.txt")
-        run_showcase_unit_tests(session, fail_under=0)
-
-        # 2. Run the tests again with latest version of dependencies.
-        session.install(".", "--upgrade", "--force-reinstall")
         run_showcase_unit_tests(session, fail_under=100)
 
 
@@ -417,7 +407,7 @@ def snippetgen(session):
     # Install gapic-generator-python
     session.install("-e", ".")
 
-    session.install("grpcio-tools", "mock", "pytest", "pytest-asyncio")
+    session.install("grpcio-tools", "pytest", "pytest-asyncio")
 
     session.run("py.test", "-vv", "tests/snippetgen")
 
