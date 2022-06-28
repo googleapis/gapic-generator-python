@@ -929,14 +929,22 @@ def test_{{ service.name|snake_case }}_transport_auth_adc(transport_class):
         )
 
 
+{% if 'grpc' in opts.transport %}
 @pytest.mark.parametrize(
     "transport_class",
     [
         transports.{{ service.name }}GrpcTransport,
         transports.{{ service.name }}GrpcAsyncIOTransport,
+    ],
+)
+{% elif 'rest' in opts.transport %}
+@pytest.mark.parametrize(
+    "transport_class",
+    [
         transports.{{ service.name }}RestTransport,
     ],
 )
+{% endif %}
 def test_{{ service.name|snake_case }}_transport_auth_gdch_credentials(transport_class):
     host = 'https://language.com'
     api_audience_tests = [None, 'https://language2.com']
