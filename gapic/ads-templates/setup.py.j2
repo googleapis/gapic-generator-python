@@ -14,7 +14,6 @@ setuptools.setup(
     author_email="googleapis-packages@google.com",
     url="https://github.com/googleapis/python-{{ api.naming.warehouse_package_name }}",
     version=version,
-    long_description=readme,
     {% if api.naming.namespace %}
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages={{ api.naming.namespace_packages }},
