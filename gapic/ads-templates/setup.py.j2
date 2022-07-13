@@ -2,45 +2,57 @@
 
 {% block content %}
 
+import io
+import os
 import setuptools  # type: ignore
 
+version = '0.1.0'
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+
+readme_filename = os.path.join(package_root, 'README.rst')
+with io.open(readme_filename, encoding='utf-8') as readme_file:
+    readme = readme_file.read()
 
 setuptools.setup(
     name='{{ api.naming.warehouse_package_name }}',
-    version='0.0.1',
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    url="https://github.com/googleapis/python-{{ api.naming.warehouse_package_name }}",
+    version=version,
+    long_description=readme,
     {% if api.naming.namespace %}
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages={{ api.naming.namespace_packages }},
     {% else %}
-    packages=setuptools.find_packages(),
+    packages=setuptools.PEP420PackageFinder.find(),
     {% endif %}
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
         {# TODO(dovs): remove when 1.x deprecation is complete #}
         {% if 'rest' in opts.transport %}
-        'google-api-core[grpc] >= 2.4.0, < 3.0.0dev',
+        'google-api-core[grpc] >= 2.8.0, < 3.0.0dev',
         {% else %}
-        'google-api-core[grpc] >= 1.28.0, < 3.0.0dev',
+        'google-api-core[grpc] >= 2.8.0, < 3.0.0dev',
         {% endif %}
-        'googleapis-common-protos >= 1.53.0',
-        'grpcio >= 1.10.0',
-        'proto-plus >= 1.19.4',
-    {% if api.requires_package(('google', 'iam', 'v1')) %}
-        'grpc-google-iam-v1',
+        'libcst >= 0.2.5',
+        'googleapis-common-protos >= 1.55.0, <2.0.0dev',
+        'proto-plus >= 1.19.7',
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
+    {% if api.requires_package(('google', 'iam', 'v1')) or opts.add_iam_methods or api.has_iam_mixin %}
+        'grpc-google-iam-v1 >= 0.12.4, < 0.13dev',
+    {% endif %}
+    {% if api.requires_package(('google', 'cloud', 'documentai', 'v1')) %}
+        'google-cloud-documentai >= 1.2.1, < 1.4.2dev',
     {% endif %}
     ),
-    python_requires='>=3.7',{# Lazy import requires module-level getattr #}
-    setup_requires=[
-        'libcst >= 0.2.5',
-    ],
-    scripts=[
-        'scripts/fixup_{{ api.naming.versioned_module_name }}_keywords.py',
-    ],
+    python_requires='>=3.6',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
