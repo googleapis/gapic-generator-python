@@ -37,8 +37,8 @@ def test_unary_with_dict(echo):
 
 def test_unary_error(echo):
     message = 'Bad things! Bad things!'
-    # Note: InvalidArgument is from gRPC, InternalServerError from http
-    with pytest.raises((exceptions.InvalidArgument, exceptions.InternalServerError)) as exc:
+    # Note: InvalidArgument is from gRPC, BadRequest from http
+    with pytest.raises((exceptions.InvalidArgument, exceptions.BadRequest)) as exc:
         echo.echo({
             'error': {
                 'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
