@@ -63,8 +63,8 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     {% endif %}
     python_requires='>=3.7',{# Lazy import requires module-level getattr #}
-    setup_requires=setup
-    scripts=scripts
+    setup_requires=setup,
+    scripts=scripts,
     install_requires=dependencies,
     include_package_data=True,
     zip_safe=False,
