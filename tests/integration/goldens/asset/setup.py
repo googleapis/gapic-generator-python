@@ -15,46 +15,65 @@
 #
 import io
 import os
-import setuptools  # type: ignore
 
-version = '0.1.0'
+import setuptools
+
+name = 'google-cloud-asset'
+description = "'google-cloud-asset' client library"
+version = "0.1.0"
+release_status = "Development Status :: 3 - Alpha"
+dependencies = [
+    'libcst >= 0.2.5',
+    'googleapis-common-protos >= 1.55.0, <2.0.0dev',
+    'protobuf >= 3.19.0, <4.0.0dev',
+    'proto-plus >= 1.19.7',
+        'grpc-google-iam-v1 >= 0.12.4, < 0.13dev',
+]
+url = "https://github.com/googleapis/python-google-cloud-asset"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-readme_filename = os.path.join(package_root, 'README.rst')
-with io.open(readme_filename, encoding='utf-8') as readme_file:
+readme_filename = os.path.join(package_root, "README.rst")
+with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
+packages = [
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
+]
+
+namespaces = ["google"]
+if "google.cloud" in packages:
+    namespaces.append("google.cloud")
+
+
 setuptools.setup(
-    name='google-cloud-asset',
+    name=name,
+    version=version,
+    description=description,
+    long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    url="https://github.com/googleapis/python-google-cloud-asset",
-    version=version,
-    long_description=readme,
-    packages=setuptools.PEP420PackageFinder.find(),
-    namespace_packages=('google', 'google.cloud'),
-    platforms='Posix; MacOS X; Windows',
-    include_package_data=True,
-    install_requires=(
-        'google-api-core[grpc] >= 2.8.0, < 3.0.0dev',
-        'libcst >= 0.2.5',
-        'googleapis-common-protos >= 1.55.0, <2.0.0dev',
-        'proto-plus >= 1.19.7',
-        'grpc-google-iam-v1 >= 0.12.4, < 0.13dev',
-    ),
-    python_requires='>=3.6',
+    license="Apache 2.0",
+    url=url,
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Topic :: Internet',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        release_status,
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Operating System :: OS Independent",
+        "Topic :: Internet",
     ],
+    platforms="Posix; MacOS X; Windows",
+    packages=packages,
+    python_requires=">=3.6",
+    namespace_packages=namespaces,
+    install_requires=dependencies,
+    include_package_data=True,
     zip_safe=False,
 )
