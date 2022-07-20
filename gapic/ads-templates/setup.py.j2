@@ -25,12 +25,7 @@ dependencies = [
 packages = [
     package
     for package in setuptools.PEP420PackageFinder.find()
-    if package.startswith("google")
 ]
-
-namespaces = ["google"]
-if "google.cloud" in packages:
-    namespaces.append("google.cloud")
 
 setup = [
     'libcst >= 0.2.5',
@@ -57,7 +52,7 @@ setuptools.setup(
     platforms="Posix; MacOS X; Windows",
     {% if api.naming.namespace %}
     packages=packages,
-    namespace_packages=namespaces,
+    namespace_packages={{ api.naming.namespace_packages }},
     {% else %}
     packages=setuptools.find_packages(),
     {% endif %}
