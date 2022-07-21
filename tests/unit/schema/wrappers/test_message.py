@@ -222,6 +222,7 @@ def test_resource_path_with_wildcard():
     assert re.match(message.path_regex_str,
                     "kingdoms/my-kingdom/phyla/my-phylum/classes/") is None
 
+
 def test_resource_path_pure_wildcard():
     options = descriptor_pb2.MessageOptions()
     resource = options.Extensions[resource_pb2.resource]
