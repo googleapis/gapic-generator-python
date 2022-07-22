@@ -2,41 +2,42 @@
 
 {% block content %}
 
-import setuptools  # type: ignore
+import setuptools # type: ignore
 
-
-setuptools.setup(
-    name='{{ api.naming.warehouse_package_name }}',
-    version='0.0.1',
-    {% if api.naming.namespace %}
-    packages=setuptools.PEP420PackageFinder.find(),
-    namespace_packages={{ api.naming.namespace_packages }},
+name = '{{ api.naming.warehouse_package_name }}'
+description = '{{ api.naming.warehouse_package_name }}',
+version = '0.0.1',
+dependencies = [
+    {# TODO(dovs): remove when 1.x deprecation is complete #}
+    {% if 'rest' in opts.transport %}
+    'google-api-core[grpc] >= 2.4.0, < 3.0.0dev',
     {% else %}
-    packages=setuptools.find_packages(),
+    'google-api-core[grpc] >= 1.28.0, < 3.0.0dev',
     {% endif %}
-    platforms='Posix; MacOS X; Windows',
-    include_package_data=True,
-    install_requires=(
-        {# TODO(dovs): remove when 1.x deprecation is complete #}
-        {% if 'rest' in opts.transport %}
-        'google-api-core[grpc] >= 2.4.0, < 3.0.0dev',
-        {% else %}
-        'google-api-core[grpc] >= 1.28.0, < 3.0.0dev',
-        {% endif %}
-        'googleapis-common-protos >= 1.53.0',
-        'grpcio >= 1.10.0',
-        'proto-plus >= 1.19.4',
+    'googleapis-common-protos >= 1.53.0',
+    'grpcio >= 1.10.0',
+    'proto-plus >= 1.19.4',
     {% if api.requires_package(('google', 'iam', 'v1')) %}
         'grpc-google-iam-v1',
     {% endif %}
-    ),
-    python_requires='>=3.7',{# Lazy import requires module-level getattr #}
-    setup_requires=[
-        'libcst >= 0.2.5',
-    ],
-    scripts=[
-        'scripts/fixup_{{ api.naming.versioned_module_name }}_keywords.py',
-    ],
+]
+
+packages = [
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+]
+
+setup = [
+    'libcst >= 0.2.5',
+]
+
+scripts=[
+    'scripts/fixup_{{ api.naming.versioned_module_name }}_keywords.py',
+]
+
+setuptools.setup(
+    name=name,
+    version=version,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -48,6 +49,18 @@ setuptools.setup(
         'Topic :: Internet',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
+    platforms="Posix; MacOS X; Windows",
+    {% if api.naming.namespace %}
+    packages=packages,
+    namespace_packages={{ api.naming.namespace_packages }},
+    {% else %}
+    packages=setuptools.find_packages(),
+    {% endif %}
+    python_requires='>=3.7',{# Lazy import requires module-level getattr #}
+    setup_requires=setup,
+    scripts=scripts,
+    install_requires=dependencies,
+    include_package_data=True,
     zip_safe=False,
 )
 {% endblock %}
