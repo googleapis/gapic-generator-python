@@ -1,6 +1,20 @@
 # Changelog
 
 
+## [1.1.2](https://github.com/googleapis/gapic-generator-python/compare/v1.1.1...v1.1.2) (2022-07-21)
+
+
+### Bug Fixes
+
+* fix wildcard resource names helper method ([#1363](https://github.com/googleapis/gapic-generator-python/issues/1363)) ([b4ecb44](https://github.com/googleapis/gapic-generator-python/commit/b4ecb44e190005f87ccbc7d1aae6f5f2e5f20115))
+
+## [1.1.1](https://github.com/googleapis/gapic-generator-python/compare/v1.1.0...v1.1.1) (2022-07-04)
+
+
+### Bug Fixes
+
+* resolve issue where rest test appears in grpc-only client ([#1343](https://github.com/googleapis/gapic-generator-python/issues/1343)) ([22cd2ca](https://github.com/googleapis/gapic-generator-python/commit/22cd2cafe830f383229f0e556beead05e63a055c))
+
 ## [1.1.0](https://github.com/googleapis/gapic-generator-python/compare/v1.0.1...v1.1.0) (2022-06-23)
 
 
