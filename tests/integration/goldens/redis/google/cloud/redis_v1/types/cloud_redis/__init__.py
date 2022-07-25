@@ -444,7 +444,7 @@ class ZoneMetadata(proto.Message):
     """
 
 
-class _MagicProtoCompletion_google_cloud_redis_v1(proto.Message):
+class _MagicProtoCompletion_google_cloud_redis_v1_4(proto.Message):
     """
     This is magic. This class needs to be here, so the Metaclass-proto-miracle-workings
     could properly construct all the protobuf classes and pretend like if they were from

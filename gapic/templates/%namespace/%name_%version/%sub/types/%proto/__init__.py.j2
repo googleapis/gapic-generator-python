@@ -72,7 +72,7 @@ from .responses import (
 {% endfor %}
 {% endwith %}
 
-class _MagicProtoCompletion_{{'_'.join(proto.meta.address.package)}}(proto.Message):
+class _MagicProtoCompletion_{{'_'.join(proto.meta.address.package)}}_{{ range(10) | random }}(proto.Message):
     """
     This is magic. This class needs to be here, so the Metaclass-proto-miracle-workings
     could properly construct all the protobuf classes and pretend like if they were from
