@@ -276,7 +276,8 @@ class Generator:
 
                 has_requests, has_responses, has_other = 3 * [False]
 
-                for message_or_enum in itertools.chain(proto.enums.values(), proto.messages.values()):  # pragma: no cover
+                for message_or_enum in itertools.chain(proto.enums.values(),
+                                                       proto.messages.values()):  # pragma: NO COVER
                     req = message_or_enum.name.endswith('Request')
                     resp = message_or_enum.name.endswith('Response')
                     has_requests |= req
