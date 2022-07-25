@@ -274,19 +274,19 @@ class Generator:
                 ):
                     continue
 
-                has_requests = any(enum.name.endswith('Request')
-                                   for enum in proto.enums.values())
-                has_requests |= any(message.name.endswith('Request')
-                                    for message in proto.messages.values())
-                has_responses = any(enum.name.endswith('Response')
-                                    for enum in proto.enums.values())
-                has_responses |= any(message.name.endswith('Response')
-                                     for message in proto.messages.values())
+                has_requests, has_responses, has_other = 3*[False]
+
+                for message_or_enum in itertools.chain(proto.enums.values(), proto.messages.values()):
+                    req = message_or_enum.name.endswith('Request')
+                    resp = message_or_enum.name.endswith('Response')
+                    has_requests |= req
+                    has_responses |= resp
+                    has_other |= not (req or resp)
 
                 answer.update(
                     self._get_file(
                         template_name, api_schema=api_schema, proto=proto, opts=opts, snippet_index=snippet_index,
-                        has_requests=has_requests, has_responses=has_responses
+                        has_requests=has_requests, has_responses=has_responses, has_other=has_other
                     )
                 )
 

@@ -60,6 +60,7 @@ __protobuf__ = proto.module(
     },
 )
 
+
 from .requests import (
         ExportAssetsRequest,
         ListAssetsRequest,
@@ -872,7 +873,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
     )
 
 
-#class _MagicProtoCompletion_google_cloud_asset_v1_5(proto.Message):
+#class _MagicProtoCompletion_google_cloud_asset_v1_8(proto.Message):
 #    """
 #    This is magic. This class needs to be here, so the Metaclass-proto-miracle-workings
 #    could properly construct all the protobuf classes and pretend like if they were from

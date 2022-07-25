@@ -29,6 +29,8 @@ __protobuf__ = {{ p }}.module(
     },
 )
 
+{% if has_other %}
+
 {% if has_requests %}
 from .requests import (
     {% for enum in proto.enums.values() %}
@@ -70,6 +72,18 @@ from .responses import (
     {% include "%namespace/%name_%version/%sub/types/_message.py.j2" with context %}
     {% endif %}
 {% endfor %}
+
+{% else %}
+
+{% for enum in proto.enums.values() %}
+    {% include '%namespace/%name_%version/%sub/types/_enum.py.j2' with context %}
+{% endfor %}
+
+{% for message in proto.messages.values() %}
+    {% include "%namespace/%name_%version/%sub/types/_message.py.j2" with context %}
+{% endfor %}
+
+{% endif %}
 {% endwith %}
 
 #class _MagicProtoCompletion_{{'_'.join(proto.meta.address.package)}}_{{ range(10) | random }}(proto.Message):
