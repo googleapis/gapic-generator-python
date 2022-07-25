@@ -48,4 +48,12 @@ from .responses import (
 )
 
 
+class _MagicProtoCompletion_google_iam_credentials_v1(proto.Message):
+    """
+    This is magic. This class needs to be here, so the Metaclass-proto-miracle-workings
+    could properly construct all the protobuf classes and pretend like if they were from
+    this file and not from other/requests/responses.py.
+    """
+    pass
+
 __all__ = tuple(sorted(__protobuf__.manifest))
