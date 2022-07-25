@@ -109,7 +109,7 @@ class OperationMetadata(proto.Message):
     )
 
 
-#class _MagicProtoCompletion_google_cloud_eventarc_v1_8(proto.Message):
+#class _MagicProtoCompletion_google_cloud_eventarc_v1_6(proto.Message):
 #    """
 #    This is magic. This class needs to be here, so the Metaclass-proto-miracle-workings
 #    could properly construct all the protobuf classes and pretend like if they were from

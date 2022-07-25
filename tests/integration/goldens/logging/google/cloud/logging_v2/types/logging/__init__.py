@@ -80,7 +80,7 @@ class WriteLogEntriesPartialErrors(proto.Message):
     )
 
 
-#class _MagicProtoCompletion_google_logging_v2_3(proto.Message):
+#class _MagicProtoCompletion_google_logging_v2_0(proto.Message):
 #    """
 #    This is magic. This class needs to be here, so the Metaclass-proto-miracle-workings
 #    could properly construct all the protobuf classes and pretend like if they were from
