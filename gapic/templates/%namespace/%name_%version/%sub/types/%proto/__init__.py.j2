@@ -29,6 +29,17 @@ __protobuf__ = {{ p }}.module(
     },
 )
 
+{# Few words about the has_other variable... #}
+{# Because of https://github.com/googleapis/gapic-generator-python/issues/1252 #}
+{# There has to be a limit to how big the auto-generated files can be. (The files generated #}
+{# for the python-compute library were too big for example.) That's why, for big protos #}
+{# that have big number of messages divided, they get split into 3 files: this file, requests.py and responses.py #}
+{# This way, the files aren't too big and everyone is happy. #}
+{# Why not do the split for EVERY proto? Because for some reason, due to the metaclass magic of proto.Message class, #}
+{# THERE ALWAYS HAS TO BE AT LEAST ONE CLASS DEFINED IN THIS (__init__.py) FILE! #}
+{# Without a class definition here, there will be errors and the classes won't get initialized properly. #}
+{# That's why, if a protocol has a type that's not a request nor response, it will get split into multiple files. #}
+{# If it doesn't have a type like that (likely a small proto), everything will be defined in this file alone. #}
 {% if has_other %}
 
 {% if has_requests %}

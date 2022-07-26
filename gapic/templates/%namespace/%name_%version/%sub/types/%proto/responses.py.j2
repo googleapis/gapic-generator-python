@@ -15,12 +15,12 @@ import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
 
 __manifest__ = (
     {% for enum in proto.enums.values() %}
-        {% if enum.name.endswith('Response') %}
+        {% if enum.name.endswith('Response') and has_other %}
         '{{ enum.name }}',
         {% endif %}
     {% endfor %}
     {% for message in proto.messages.values() %}
-        {% if message.name.endswith('Response') %}
+        {% if message.name.endswith('Response') and has_other %}
         '{{ message.name }}',
         {% endif %}
     {% endfor %}
@@ -28,13 +28,13 @@ __manifest__ = (
 
 
 {% for enum in proto.enums.values() %}
-    {% if enum.name.endswith('Response') %}
+    {% if enum.name.endswith('Response') and has_other %}
     {% include '%namespace/%name_%version/%sub/types/_enum.py.j2' with context %}
     {% endif %}
 {% endfor %}
 
 {% for message in proto.messages.values() %}
-    {% if message.name.endswith('Response') %}
+    {% if message.name.endswith('Response') and has_other %}
     {% include "%namespace/%name_%version/%sub/types/_message.py.j2" with context %}
     {% endif %}
 {% endfor %}

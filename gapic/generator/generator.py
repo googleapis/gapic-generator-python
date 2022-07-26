@@ -355,6 +355,12 @@ class Generator:
             name=fn,
         )
 
+        # Do not render responses.py and requests.py if we don't do the split.
+        # if fn.endswith(('responses.py', 'requests.py')) and not context['has_other']:
+        #     # print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ', fn)
+        #     return {}
+
+
         # Quick check: Do not render empty files.
         if utils.empty(cgr_file.content) and not fn.endswith(
             ("py.typed", "__init__.py")
