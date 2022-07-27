@@ -516,6 +516,30 @@ class API:
         return op_serv
 
     @cached_property
+    def mixin_api_signatures(self):
+        methods = self.mixin_api_methods
+        class _MixinMethod:
+            def __init__(self, name, request_type, response_type):
+                self.name = name
+                self.request_type = request_type
+                self.response_type = response_type
+        res = {}
+        for name in methods:
+            request_type, return_type = None, None
+            if name == 'DeleteOperation':
+                request_type = 'operations_pb2.DeleteOperationRequest'
+                return_type = 'None'
+            elif name == 'WaitOperation':
+                request_type = 'operations_pb2.WaitOperationRequest'
+                return_type = 'operations_pb2.Operation'
+            elif name == 'ListOperations':
+                request_type = 'operations_pb2.ListOperationsRequest'
+                return_type = 'operations_pb2.ListOperationsResponse'
+            if request_type and return_type:
+                res[name] = _MixinMethod(name, request_type, return_type)
+        return res
+
+    @cached_property
     def mixin_api_methods(self) -> Dict[str, MethodDescriptorProto]:
         methods: Dict[str, MethodDescriptorProto] = {}
         if self.has_location_mixin:
@@ -528,6 +552,19 @@ class API:
             methods = {**methods, **
                 self._get_methods_from_service(operations_pb2)}
         return methods
+
+    @cached_property
+    def mixin_http_options(self):
+        api_methods = self.mixin_api_methods
+        res = {}
+        for s in api_methods:
+            m = api_methods[s]
+            http = m.options.Extensions[annotations_pb2.http] 
+            http_options = [http] + list(http.additional_bindings)
+            opt_gen = (wrappers.HttpRule.try_parse_http_rule(http_rule)
+                   for http_rule in http_options)
+            res[s] = [rule for rule in opt_gen if rule]
+        return res
 
     @cached_property
     def has_location_mixin(self) -> bool:
