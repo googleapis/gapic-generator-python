@@ -181,6 +181,7 @@ def test_options_bool_flags():
          "add-iam-methods",
          "metadata",
          "warehouse-package-name",
+         "rest-numeric-enums",
          ]}
 
     for opt, attr in opt_str_to_attr_name.items():
