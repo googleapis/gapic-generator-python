@@ -169,6 +169,7 @@ def test_options_service_yaml_config(fs):
     }
     assert opts.service_yaml_config == expected_config
 
+
 def test_options_transport():
     opts = Options.build("")
     assert opts.transport == ["grpc"]
@@ -177,10 +178,11 @@ def test_options_transport():
     assert opts.transport == ["rest"]
 
     opts = Options.build("transport=grpc+rest")
-    assert opts.transport == ["grpc","rest"]
+    assert opts.transport == ["grpc", "rest"]
 
     opts = Options.build("transport=alpha+beta+gamma")
-    assert opts.transport == ["alpha","beta","gamma"]
+    assert opts.transport == ["alpha", "beta", "gamma"]
+
 
 def test_options_bool_flags():
     # Most options are default False.

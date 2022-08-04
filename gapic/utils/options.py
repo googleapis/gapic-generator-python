@@ -64,7 +64,8 @@ class Options:
         # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
         'transport',
         'warehouse-package-name',  # change the package name on PyPI
-        'rest-numeric-enums',   # when transport includes "rest", request response enums be JSON-encoded as numbers
+        # when transport includes "rest", request response enums be JSON-encoded as numbers
+        'rest-numeric-enums',
     ))
 
     @classmethod
