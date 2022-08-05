@@ -523,6 +523,7 @@ class API:
                 self.name = name
                 self.request_type = request_type
                 self.response_type = response_type
+ 
         res = {}
         for name in methods:
             request_type, return_type = None, None
@@ -561,7 +562,7 @@ class API:
             m = api_methods[s]
             http = m.options.Extensions[annotations_pb2.http] 
             http_options = [http] + list(http.additional_bindings)
-            opt_gen = (wrappers.HttpRule.try_parse_http_rule(http_rule)
+            opt_gen = (wrappers.MixinHttpRule.try_parse_http_rule(http_rule)
                    for http_rule in http_options)
             res[s] = [rule for rule in opt_gen if rule]
         return res

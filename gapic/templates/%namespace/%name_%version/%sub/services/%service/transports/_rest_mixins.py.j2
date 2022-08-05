@@ -65,10 +65,14 @@
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
-
-            resp = json.loads(response.content.decode("utf-8"))
+            {% if sig.response_type == "None" %}
+            return self._interceptor.post_{{ name|snake_case }}(None)
+            {% else %}
+            resp = {{ sig.response_type }}()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_{{ name|snake_case }}(resp)
             return resp
+            {% endif %}
 
     {% endfor %}
     {% endif %} {# rest in opts.transport #}

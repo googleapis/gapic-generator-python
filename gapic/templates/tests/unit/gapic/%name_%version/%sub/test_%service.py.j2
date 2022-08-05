@@ -25,6 +25,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 {% endif %}
 
 {# Import the service itself as well as every proto module that it imports. #}
@@ -51,9 +52,6 @@ from google.api_core import future
 from google.api_core import operation
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
-{% if "rest" in opts.transport %}
-from google.protobuf import json_format
-{% endif %}{# rest transport #}
 {% endif %}{# lro #}
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2
