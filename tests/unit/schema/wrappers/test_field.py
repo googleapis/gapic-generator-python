@@ -435,6 +435,7 @@ def test_merged_mock_value_message():
     mock = field.merged_mock_value(None)
     assert mock == {"bar": "bar_value", "foo": 324}
 
+
 def test_mock_value_original_type_enum():
     mollusc_field = make_field(
         name="class",
