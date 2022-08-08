@@ -6,9 +6,6 @@
         return self._{{ name }}(self._session, self._host, self._interceptor) # type: ignore
     
     class _{{ name }}({{service.name}}RestStub):
-        def __hash__(self):
-            return hash("{{ name|snake_case }}")
-        
         def __call__(self,
             request: {{ sig.request_type }}, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
