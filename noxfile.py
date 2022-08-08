@@ -380,7 +380,7 @@ def showcase_mypy(
         session.chdir(lib)
 
         # Run the tests.
-        session.run("mypy", "--explicit-package-bases", "--ignore-missing-imports", "google")
+        session.run("mypy", "--explicit-package-bases", "google")
 
 
 @nox.session(python=NEWEST_PYTHON)
