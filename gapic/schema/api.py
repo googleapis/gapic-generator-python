@@ -518,12 +518,6 @@ class API:
     @cached_property
     def mixin_api_signatures(self):
         methods = self.mixin_api_methods
-        class _MixinMethod:
-            def __init__(self, name, request_type, response_type):
-                self.name = name
-                self.request_type = request_type
-                self.response_type = response_type
- 
         res = {}
         for name in methods:
             request_type, return_type = None, None
@@ -536,8 +530,14 @@ class API:
             elif name == 'ListOperations':
                 request_type = 'operations_pb2.ListOperationsRequest'
                 return_type = 'operations_pb2.ListOperationsResponse'
+            elif name == 'CancelOperation':
+                request_type = 'operations_pb2.CancelOperationRequest'
+                return_type = 'None'
+            elif name == 'GetOperation':
+                request_type = 'operations_pb2.GetOperationRequest'
+                return_type = 'operations_pb2.Operation'
             if request_type and return_type:
-                res[name] = _MixinMethod(name, request_type, return_type)
+                res[name] = wrappers.MixinMethod(name, request_type, return_type)
         return res
 
     @cached_property

@@ -1062,6 +1062,14 @@ class HttpRule:
         return cls(method, uri, body)
 
 
+@dataclasses.dataclass(frozen=True)
+class MixinMethod:
+    name: str
+    request_type: str
+    response_type: str
+
+
+@dataclasses.dataclass(frozen=True)
 class MixinHttpRule(HttpRule):
     def path_fields(self, uri):
         """return list of (name, template) tuples extracted from uri."""
