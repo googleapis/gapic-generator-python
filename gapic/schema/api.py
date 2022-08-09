@@ -537,7 +537,8 @@ class API:
                 request_type = 'operations_pb2.GetOperationRequest'
                 return_type = 'operations_pb2.Operation'
             if request_type and return_type:
-                res[name] = wrappers.MixinMethod(name, request_type, return_type)
+                res[name] = wrappers.MixinMethod(
+                    name, request_type, return_type)
         return res
 
     @cached_property
@@ -560,7 +561,7 @@ class API:
         res = {}
         for s in api_methods:
             m = api_methods[s]
-            http = m.options.Extensions[annotations_pb2.http] 
+            http = m.options.Extensions[annotations_pb2.http]
             http_options = [http] + list(http.additional_bindings)
             opt_gen = (wrappers.MixinHttpRule.try_parse_http_rule(http_rule)
                    for http_rule in http_options)

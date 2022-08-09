@@ -1074,16 +1074,17 @@ class MixinHttpRule(HttpRule):
     def path_fields(self, uri):
         """return list of (name, template) tuples extracted from uri."""
         return [
-                (match.group("name"), match.group("template"))
-                for match in path_template._VARIABLE_RE.finditer(uri)
-                if match.group("name")
+            (match.group("name"), match.group("template"))
+            for match in path_template._VARIABLE_RE.finditer(uri)
+            if match.group("name")
         ]
+
     @property
     def sample_request(self):
         req = uri_sample.sample_from_path_fields(self.path_fields(self.uri))
         if not self.body or self.body == "" or self.body == "*":
             return req
-        req[self.body] = {} # just an empty json.
+        req[self.body] = {}  # just an empty json.
         return req
 
 

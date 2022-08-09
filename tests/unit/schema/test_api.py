@@ -2371,11 +2371,11 @@ def test_mixin_api_signatures():
 
 def test_mixin_http_options():
     fd = (
-    make_file_pb2(
-        name='example.proto',
-        package='google.example.v1',
-        messages=(make_message_pb2(name='ExampleRequest', fields=()),),
-    ),)
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+            ),)
     opts = Options(service_yaml_config={
         'apis': [
             {
