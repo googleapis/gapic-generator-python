@@ -48,7 +48,7 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ["google"]
+namespaces = ['google.cloud', 'google.cloud.asset']
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
 
@@ -76,8 +76,8 @@ setuptools.setup(
         "Topic :: Internet",
     ],
     platforms="Posix; MacOS X; Windows",
-    packages=packages,
     python_requires=">=3.7",
+    packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
     include_package_data=True,

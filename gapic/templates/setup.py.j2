@@ -43,15 +43,17 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
+{% if api.naming.namespace %}
 packages = [
     package
     for package in setuptools.PEP420PackageFinder.find()
     if package.startswith("google")
 ]
 
-namespaces = ["google"]
+namespaces = ['{{ api.naming.module_namespace|join('.') }}', '{{ api.naming.module_namespace|join('.') }}.{{ api.naming.module_name }}']
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
+{% endif %}
 
 
 setuptools.setup(
@@ -77,8 +79,8 @@ setuptools.setup(
         "Topic :: Internet",
     ],
     platforms="Posix; MacOS X; Windows",
-    packages=packages,
     python_requires=">=3.7",
+    packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
     include_package_data=True,
