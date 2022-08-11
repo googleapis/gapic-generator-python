@@ -52,6 +52,12 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
+{% if opts.rest_numeric_enums %}
+# TODO (numeric enums): This file was generated with the option to
+#   request that the server respond with enums JSON-encoded as
+#   numbers. The code below does not implement that functionality yet.
+
+{% endif %}
 
 class {{ service.name }}RestInterceptor:
     """Interceptor for {{ service.name }}.
@@ -144,6 +150,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             always_use_jwt_access: Optional[bool]=False,
             url_scheme: str='https',
             interceptor: Optional[{{ service.name }}RestInterceptor] = None,
+            api_audience: Optional[str] = None,
             ) -> None:
         """Instantiate the transport.
 
@@ -194,6 +201,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            api_audience=api_audience
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST)
@@ -256,8 +264,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         {% if not method.client_streaming %}
         {% if method.input.required_fields %}
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
-            "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
+        {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
+            "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% elif req_field.field_pb.type in [11, 14] %}{}{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
         {% endfor %}
         }
 

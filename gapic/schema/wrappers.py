@@ -28,6 +28,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 """
 
 import collections
+import copy
 import dataclasses
 import json
 import keyword
@@ -150,6 +151,13 @@ class Field:
             return answer
 
         return recursive_mock_original_type(self)
+
+    def merged_mock_value(self, other_mock: Dict[Any, Any]):
+        mock = self.mock_value_original_type
+        if isinstance(mock, dict) and isinstance(other_mock, dict):
+            mock = copy.deepcopy(mock)
+            mock.update(other_mock)
+        return mock
 
     @utils.cached_property
     def mock_value(self) -> str:
@@ -596,6 +604,10 @@ class MessageType:
             ) +
             "$"
         )
+        # Special case for wildcard resource names
+        if parsing_regex_str == "^*$":
+            parsing_regex_str = "^.*$"
+
         return parsing_regex_str
 
     def get_field(self, *field_path: str,

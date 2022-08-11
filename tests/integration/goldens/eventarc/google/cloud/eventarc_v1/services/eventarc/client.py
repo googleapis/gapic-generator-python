@@ -176,7 +176,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
     @staticmethod
     def parse_service_path(path: str) -> Dict[str,str]:
         """Parses a service path into its component segments."""
-        m = re.match(r"^*$", path)
+        m = re.match(r"^.*$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -399,6 +399,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def get_trigger(self,
