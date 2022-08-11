@@ -157,7 +157,7 @@ def fragment(session, use_ads_templates=False):
             session.log(tester(frag))
 
 
-@nox.session(python=ALL_PYTHON[1:])
+@nox.session(python=ALL_PYTHON)
 def fragment_alternative_templates(session):
     fragment(session, use_ads_templates=True)
 
