@@ -34,7 +34,6 @@ ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
 ALL_PYTHON = (
-    "3.6",
     "3.7",
     "3.8",
     "3.9",
@@ -334,7 +333,7 @@ def showcase_unit(
         run_showcase_unit_tests(session)
 
 
-@nox.session(python=ALL_PYTHON[1:])  # Do not test 3.6
+@nox.session(python=ALL_PYTHON)
 def showcase_unit_alternative_templates(session):
     with showcase_library(
         session, templates=ADS_TEMPLATES, other_opts=("old-naming",)
@@ -357,7 +356,7 @@ def showcase_unit_mixins(session):
         run_showcase_unit_tests(session)
 
 
-@nox.session(python=ALL_PYTHON[1:])  # Do not test 3.6
+@nox.session(python=ALL_PYTHON)
 def showcase_unit_alternative_templates_mixins(session):
     with showcase_library(
         session, templates=ADS_TEMPLATES, other_opts=("old-naming",),
