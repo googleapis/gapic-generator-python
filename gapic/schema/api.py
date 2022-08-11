@@ -517,10 +517,17 @@ class API:
 
     @cached_property
     def mixin_api_signatures(self):
+        """Compile useful info about MixIn API signatures.
+
+        Returns:
+            Mapping[str, wrappers.MixinMethod]: Useful info
+                about MixIn methods present for the main API.
+        """
         methods = self.mixin_api_methods
         res = {}
         for name in methods:
             request_type, return_type = None, None
+            # LRO
             if name == 'DeleteOperation':
                 request_type = 'operations_pb2.DeleteOperationRequest'
                 return_type = 'None'
@@ -536,6 +543,23 @@ class API:
             elif name == 'GetOperation':
                 request_type = 'operations_pb2.GetOperationRequest'
                 return_type = 'operations_pb2.Operation'
+            # IAM
+            elif name == 'TestIamPermissions':
+                request_type = 'iam_policy_pb2.TestIamPermissionsRequest'
+                return_type = 'iam_policy_pb2.TestIamPermissionsResponse'
+            elif name == 'GetIamPolicy':
+                request_type = 'iam_policy_pb2.GetIamPolicyRequest'
+                return_type = 'policy_pb2.Policy'
+            elif name == 'SetIamPolicy':
+                request_type = 'iam_policy_pb2.SetIamPolicyRequest'
+                return_type = 'policy_pb2.Policy'
+            # Location
+            elif name == 'ListLocations':
+                request_type = 'locations_pb2.ListLocationsRequest'
+                return_type = 'locations_pb2.ListLocationsResponse'
+            elif name == 'GetLocation':
+                request_type = 'locations_pb2.GetLocationRequest'
+                return_type = 'locations_pb2.Location'
             if request_type and return_type:
                 res[name] = wrappers.MixinMethod(
                     name, request_type, return_type)
@@ -557,6 +581,7 @@ class API:
 
     @cached_property
     def mixin_http_options(self):
+        """Gather HTTP options for the MixIn methods."""
         api_methods = self.mixin_api_methods
         res = {}
         for s in api_methods:

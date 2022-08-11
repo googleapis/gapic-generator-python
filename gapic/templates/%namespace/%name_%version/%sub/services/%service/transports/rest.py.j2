@@ -359,7 +359,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                 including_default_value_fields=False,
                 use_integers_for_enums=False
             )
-            {%- endif %}{# body_spec #}
+            {%- endif %}
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
