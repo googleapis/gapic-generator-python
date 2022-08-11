@@ -18,19 +18,24 @@ import os
 
 import setuptools
 
+
 name = 'google-cloud-eventarc'
-description = "'google-cloud-eventarc' client library"
-version = "0.1.0"
+description = "Eventarc API client library"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
-    'libcst >= 0.2.5',
+    'google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*',
     'googleapis-common-protos >= 1.55.0, <2.0.0dev',
+    'proto-plus >= 1.19.7, <2.0.0dev',
     'protobuf >= 3.19.0, <4.0.0dev',
-    'proto-plus >= 1.19.7',
 ]
 url = "https://github.com/googleapis/python-google-cloud-eventarc"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
+
+version = {}
+with open(os.path.join(package_root, 'google/cloud/eventarc/version.py')) as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
@@ -46,6 +51,7 @@ namespaces = ["google"]
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
 
+
 setuptools.setup(
     name=name,
     version=version,
@@ -59,7 +65,8 @@ setuptools.setup(
         release_status,
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -69,7 +76,7 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     namespace_packages=namespaces,
     install_requires=dependencies,
     include_package_data=True,

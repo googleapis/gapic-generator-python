@@ -15,7 +15,7 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
+import google.cloud.asset.version as asset_version
 
 import google.auth  # type: ignore
 import google.api_core
@@ -30,14 +30,9 @@ from google.cloud.asset_v1.types import asset_service
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            'google-cloud-asset',
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=asset_version.__version__,
+)
 
 
 class AssetServiceTransport(abc.ABC):
