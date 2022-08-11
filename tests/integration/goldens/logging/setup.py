@@ -47,7 +47,7 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ['google.cloud', 'google.cloud.logging']
+namespaces = ['google.cloud']
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
 

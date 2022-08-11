@@ -50,7 +50,7 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ['{{ api.naming.module_namespace|join('.') }}', '{{ api.naming.module_namespace|join('.') }}.{{ api.naming.module_name }}']
+namespaces = ['{{ api.naming.module_namespace|join('.') }}']
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
 {% endif %}
