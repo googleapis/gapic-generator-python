@@ -572,7 +572,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
-        {% if method.field_headers %}
+        {% if not method.explicit_routing and method.field_headers %}
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
@@ -852,7 +852,7 @@ def test_{{ method_name }}_rest(request_type):
     {% for field in method.body_fields.values() %}
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
-    request_init["{{ field.name }}"] = {{ field.mock_value_original_type }}
+    request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
     {% endif %}
     {% endfor %}
     request = request_type(request_init)
@@ -973,7 +973,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         ))
 
     # verify fields with default values are dropped
-    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
+    {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
@@ -982,7 +982,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
+    {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     assert "{{ field_name }}" in jsonified_request
     assert jsonified_request["{{ field_name }}"] == request_init["{{ req_field.name }}"]
@@ -1067,7 +1067,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             {% endif %}
 
             expected_params = [
-            {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
+            {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
                 (
                     "{{ req_field.name | camel_case }}",
                     {% if req_field.field_pb.type == 9 %}
@@ -1158,7 +1158,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
     {% for field in method.body_fields.values() %}
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
-    request_init["{{ field.name }}"] = {{ field.mock_value_original_type }}
+    request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
     {% endif %}
     {% endfor %}
     request = request_type(request_init)
