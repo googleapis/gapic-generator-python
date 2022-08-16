@@ -873,7 +873,7 @@ class ExtendedOperationInfo:
     request_type: MessageType
     operation_type: MessageType
 
-    def with_context(self, *, collisions: FrozenSet[str]) -> 'ExtendedOperationInfo':
+    def with_context(self, *, collisions: Set[str]) -> 'ExtendedOperationInfo':
         """Return a derivative of this OperationInfo with the provided context.
 
           This method is used to address naming collisions. The returned
@@ -1846,7 +1846,7 @@ class Service:
             None
         )
 
-    def with_context(self, *, collisions: FrozenSet[str]) -> 'Service':
+    def with_context(self, *, collisions: Set[str], visited_messages=None) -> 'Service':
         """Return a derivative of this service with the provided context.
 
         This method is used to address naming collisions. The returned

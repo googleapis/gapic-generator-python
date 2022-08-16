@@ -54,7 +54,7 @@ class Address(BaseAddress):
     api_naming: naming.Naming = dataclasses.field(
         default_factory=naming.NewNaming,
     )
-    collisions: Set[str] = dataclasses.field(default_factory=frozenset)
+    collisions: Set[str] = dataclasses.field(default_factory=set)
 
     def __eq__(self, other) -> bool:
         # We don't want to use api_naming or collisions to determine equality,
