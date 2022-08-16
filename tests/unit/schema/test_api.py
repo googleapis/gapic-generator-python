@@ -33,6 +33,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 from gapic.schema import api
 from gapic.schema import imp
+from gapic.schema import mixins
 from gapic.schema import naming
 from gapic.schema import wrappers
 from gapic.utils import Options
@@ -2278,14 +2279,8 @@ def test_mixin_api_methods_iam_overrides():
     assert api_schema.mixin_api_methods == {}
 
 
-def test_mixin_api_signatures():
-    fd = (
-        make_file_pb2(
-            name='example.proto',
-            package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
-        ),)
-    opts = Options(service_yaml_config={
+def create_service_config_with_all_mixins(http_opt_uri='/v1/{name=examples/*}/*'):
+    service_yaml_config = {
         'apis': [
             {
                 'name': 'google.cloud.location.Locations',
@@ -2302,54 +2297,54 @@ def test_mixin_api_signatures():
                 # Locations
                 {
                     'selector': 'google.cloud.location.Locations.ListLocations',
-                    'get': '/v1/{name=examples/*}/*',
+                    'get': http_opt_uri,
                     'body': '*'
                 },
                 {
                     'selector': 'google.cloud.location.Locations.GetLocation',
-                    'get': '/v1/{name=examples/*}/*',
+                    'get': http_opt_uri,
                     'body': '*'
                 },
                 # LRO
                 {
                     'selector': 'google.longrunning.Operations.CancelOperation',
-                    'post': '/v1/{name=examples/*}/*',
+                    'post': http_opt_uri,
                     'body': '*',
                 },
                 {
                     'selector': 'google.longrunning.Operations.DeleteOperation',
-                    'get': '/v1/{name=examples/*}/*',
+                    'get': http_opt_uri,
                     'body': '*'
                 },
                 {
                     'selector': 'google.longrunning.Operations.WaitOperation',
-                    'post': '/v1/{name=examples/*}/*',
+                    'post': http_opt_uri,
                     'body': '*'
                 },
                 {
                     'selector': 'google.longrunning.Operations.GetOperation',
-                    'post': '/v1/{name=examples/*}/*',
+                    'post': http_opt_uri,
                     'body': '*'
                 },
                 {
                     'selector': 'google.longrunning.Operations.ListOperations',
-                    'post': '/v1/{name=examples/*}/*',
+                    'post': http_opt_uri,
                     'body': '*'
                 },
                 # IAM
                 {
                     'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
-                    'post': '/v1/{resource=examples/*}/*',
+                    'post': http_opt_uri,
                     'body': '*'
                 },
                 {
                     'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
-                    'get': '/v1/{resource=examples/*}/*',
+                    'get': http_opt_uri,
                     'body': '*'
                 },
                 {
                     'selector': 'google.iam.v1.IAMPolicy.TestIamPermissions',
-                    'post': '/v1/{resource=examples/*}/*',
+                    'post': http_opt_uri,
                     'body': '*'
                 },
                 {
@@ -2357,16 +2352,21 @@ def test_mixin_api_signatures():
                 }
             ]
         }
-    })
+    }
+    return service_yaml_config
+
+
+def test_mixin_api_signatures():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+        ),)
+    opts = Options(service_yaml_config=create_service_config_with_all_mixins())
     api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
     res = api_schema.mixin_api_signatures
-    assert res == {
-        'CancelOperation': wrappers.MixinMethod('CancelOperation', 'operations_pb2.CancelOperationRequest', 'None'),
-        'DeleteOperation': wrappers.MixinMethod('DeleteOperation', 'operations_pb2.DeleteOperationRequest', 'None'),
-        'WaitOperation': wrappers.MixinMethod('WaitOperation', 'operations_pb2.WaitOperationRequest', 'operations_pb2.Operation'),
-        'ListOperations': wrappers.MixinMethod('ListOperations', 'operations_pb2.ListOperationsRequest', 'operations_pb2.ListOperationsResponse'),
-        'GetOperation': wrappers.MixinMethod('GetOperation', 'operations_pb2.GetOperationRequest', 'operations_pb2.Operation')
-    }
+    assert res == mixins.MIXINS_MAP
 
 
 def test_mixin_http_options():

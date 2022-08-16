@@ -43,6 +43,7 @@ import grpc  # type: ignore
 from google.protobuf.descriptor_pb2 import MethodDescriptorProto
 from google.api import annotations_pb2  # type: ignore
 from gapic.schema import metadata
+from gapic.schema import mixins
 from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
 from gapic.utils import cached_property
@@ -515,6 +516,7 @@ class API:
 
         return op_serv
 
+
     @cached_property
     def mixin_api_signatures(self):
         """Compile useful info about MixIn API signatures.
@@ -523,47 +525,8 @@ class API:
             Mapping[str, wrappers.MixinMethod]: Useful info
                 about MixIn methods present for the main API.
         """
-        methods = self.mixin_api_methods
-        res = {}
-        for name in methods:
-            request_type, return_type = None, None
-            # LRO
-            if name == 'DeleteOperation':
-                request_type = 'operations_pb2.DeleteOperationRequest'
-                return_type = 'None'
-            elif name == 'WaitOperation':
-                request_type = 'operations_pb2.WaitOperationRequest'
-                return_type = 'operations_pb2.Operation'
-            elif name == 'ListOperations':
-                request_type = 'operations_pb2.ListOperationsRequest'
-                return_type = 'operations_pb2.ListOperationsResponse'
-            elif name == 'CancelOperation':
-                request_type = 'operations_pb2.CancelOperationRequest'
-                return_type = 'None'
-            elif name == 'GetOperation':
-                request_type = 'operations_pb2.GetOperationRequest'
-                return_type = 'operations_pb2.Operation'
-            # IAM
-            elif name == 'TestIamPermissions':
-                request_type = 'iam_policy_pb2.TestIamPermissionsRequest'
-                return_type = 'iam_policy_pb2.TestIamPermissionsResponse'
-            elif name == 'GetIamPolicy':
-                request_type = 'iam_policy_pb2.GetIamPolicyRequest'
-                return_type = 'policy_pb2.Policy'
-            elif name == 'SetIamPolicy':
-                request_type = 'iam_policy_pb2.SetIamPolicyRequest'
-                return_type = 'policy_pb2.Policy'
-            # Location
-            elif name == 'ListLocations':
-                request_type = 'locations_pb2.ListLocationsRequest'
-                return_type = 'locations_pb2.ListLocationsResponse'
-            elif name == 'GetLocation':
-                request_type = 'locations_pb2.GetLocationRequest'
-                return_type = 'locations_pb2.Location'
-            if request_type and return_type:
-                res[name] = wrappers.MixinMethod(
-                    name, request_type, return_type)
-        return res
+        return {name: mixins.MIXINS_MAP[name] for name in self.mixin_api_methods}
+
 
     @cached_property
     def mixin_api_methods(self) -> Dict[str, MethodDescriptorProto]:
