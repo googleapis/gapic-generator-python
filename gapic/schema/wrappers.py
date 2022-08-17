@@ -357,7 +357,7 @@ class Field:
             self,
             *,
             collisions: Set[str],
-            visited_messages: Set["MessageType"],
+            visited_messages: Set["MessageType"] = None,
     ) -> 'Field':
         """Return a derivative of this field with the provided context.
 
@@ -873,7 +873,10 @@ class ExtendedOperationInfo:
     request_type: MessageType
     operation_type: MessageType
 
-    def with_context(self, *, collisions: Set[str]) -> 'ExtendedOperationInfo':
+    def with_context(self, *,
+                     collisions: Set[str],
+                     visited_messages: Set["MessageType"] = None,
+                     ) -> 'ExtendedOperationInfo':
         """Return a derivative of this OperationInfo with the provided context.
 
           This method is used to address naming collisions. The returned
@@ -883,10 +886,12 @@ class ExtendedOperationInfo:
         return self if not collisions else dataclasses.replace(
             self,
             request_type=self.request_type.with_context(
-                collisions=collisions
+                collisions=collisions,
+                visited_messages=visited_messages,
             ),
             operation_type=self.operation_type.with_context(
                 collisions=collisions,
+                visited_messages=visited_messages,
             ),
         )
 
@@ -897,7 +902,10 @@ class OperationInfo:
     response_type: MessageType
     metadata_type: MessageType
 
-    def with_context(self, *, collisions: Set[str]) -> 'OperationInfo':
+    def with_context(self, *,
+                     collisions: Set[str],
+                     visited_messages: Set["MessageType"] = None,
+                     ) -> 'OperationInfo':
         """Return a derivative of this OperationInfo with the provided context.
 
           This method is used to address naming collisions. The returned
@@ -907,10 +915,12 @@ class OperationInfo:
         return dataclasses.replace(
             self,
             response_type=self.response_type.with_context(
-                collisions=collisions
+                collisions=collisions,
+                visited_messages=visited_messages,
             ),
             metadata_type=self.metadata_type.with_context(
-                collisions=collisions
+                collisions=collisions,
+                visited_messages=visited_messages,
             ),
         )
 
@@ -1535,7 +1545,10 @@ class Method:
         """Return True if this method has no return value, False otherwise."""
         return self.output.ident.proto == 'google.protobuf.Empty'
 
-    def with_context(self, *, collisions: Set[str], visited_messages=None) -> 'Method':
+    def with_context(self, *,
+                     collisions: Set[str],
+                     visited_messages: Set["MessageType"] = None,
+                     ) -> 'Method':
         """Return a derivative of this method with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -1545,12 +1558,14 @@ class Method:
         maybe_lro = None
         if self.lro:
             maybe_lro = self.lro.with_context(
-                collisions=collisions
+                collisions=collisions,
+                visited_messages=visited_messages,
             ) if collisions else self.lro
 
         maybe_extended_lro = (
             self.extended_lro.with_context(
-                collisions=collisions
+                collisions=collisions,
+                visited_messages=visited_messages,
             ) if self.extended_lro else None
         )
 
@@ -1559,9 +1574,13 @@ class Method:
             lro=maybe_lro,
             extended_lro=maybe_extended_lro,
             input=self.input.with_context(
-                collisions=collisions, visited_messages=visited_messages),
+                collisions=collisions,
+                visited_messages=visited_messages,
+            ),
             output=self.output.with_context(
-                collisions=collisions, visited_messages=visited_messages),
+                collisions=collisions,
+                visited_messages=visited_messages,
+            ),
             meta=self.meta.with_context(collisions=collisions),
         )
 
@@ -1846,7 +1865,10 @@ class Service:
             None
         )
 
-    def with_context(self, *, collisions: Set[str], visited_messages=None) -> 'Service':
+    def with_context(self, *,
+                     collisions: Set[str],
+                     visited_messages: Set["MessageType"] = None,
+                     ) -> 'Service':
         """Return a derivative of this service with the provided context.
 
         This method is used to address naming collisions. The returned
