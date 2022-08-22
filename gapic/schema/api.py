@@ -516,7 +516,6 @@ class API:
 
         return op_serv
 
-
     @cached_property
     def mixin_api_signatures(self):
         """Compile useful info about MixIn API signatures.
@@ -526,7 +525,6 @@ class API:
                 about MixIn methods present for the main API.
         """
         return {name: mixins.MIXINS_MAP[name] for name in self.mixin_api_methods}
-
 
     @cached_property
     def mixin_api_methods(self) -> Dict[str, MethodDescriptorProto]:
