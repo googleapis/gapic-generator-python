@@ -128,6 +128,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    {% if not opts.rest_numeric_enums %}
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
+    {% endif %}
     """
 
 
@@ -146,6 +152,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             interceptor: Optional[{{ service.name }}RestInterceptor] = None,
             ) -> None:
         """Instantiate the transport.
+
+       {% if not opts.rest_numeric_enums %}
+       NOTE: This REST transport functionality is currently in a beta
+       state (preview). We welcome your feedback via a GitHub issue in
+       this library's repository. Thank you!
+       {% endif %}
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
@@ -256,8 +268,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         {% if not method.client_streaming %}
         {% if method.input.required_fields %}
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
-            "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
+        {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
+            "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% elif req_field.field_pb.type in [11, 14] %}{}{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
         {% endfor %}
         }
 
@@ -318,12 +330,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             body = {% if body_spec == '*' -%}
                 {{method.input.ident}}.to_json(
                 {{method.input.ident}}(transcoded_request['body']),
-            {%- else -%}
+            {% else -%}
                 {{method.input.fields[body_spec].type.ident}}.to_json(
                 {{method.input.fields[body_spec].type.ident}}(transcoded_request['body']),
-            {%- endif %}{# body_spec == "*" #}
+            {% endif %}{# body_spec == "*" #}
                 including_default_value_fields=False,
-                use_integers_for_enums=False
+                use_integers_for_enums={{ opts.rest_numeric_enums }}
             )
             {%- endif %}{# body_spec #}
 
@@ -334,12 +346,16 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             query_params = json.loads({{method.input.ident}}.to_json(
                 {{method.input.ident}}(transcoded_request['query_params']),
                 including_default_value_fields=False,
-                use_integers_for_enums=False
+                use_integers_for_enums={{ opts.rest_numeric_enums }}
             ))
 
             {% if method.input.required_fields %}
             query_params.update(self._get_unset_required_fields(query_params))
             {% endif %}{# required fields #}
+
+            {% if opts.rest_numeric_enums %}
+            query_params["$alt"] = "json;enum-encoding=int"
+            {% endif %}
 
             # Send the request
             headers = dict(metadata)

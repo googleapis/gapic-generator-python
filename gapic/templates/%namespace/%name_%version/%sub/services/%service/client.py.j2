@@ -290,6 +290,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             transport (Union[str, {{ service.name }}Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+                {% if 'rest' in opts.transport and not opts.rest_numeric_enums %}
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
+                {% endif %}
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
@@ -424,8 +429,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 expression that further constrains the role binding
                 based on attributes about the request and/or target
                 resource.
+
                 **JSON Example**
+
                 ::
+
                     {
                       "bindings": [
                         {
@@ -449,8 +457,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                         }
                       ]
                     }
+
                 **YAML Example**
+
                 ::
+
                     bindings:
                     - members:
                       - user:mike@example.com
@@ -465,6 +476,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                         title: expirable access
                         description: Does not grant access after Sep 2020
                         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
                 developer's
                 guide <https://cloud.google.com/iam/docs>`__.
@@ -535,8 +547,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 expression that further constrains the role binding
                 based on attributes about the request and/or target
                 resource.
+
                 **JSON Example**
+
                 ::
+
                     {
                       "bindings": [
                         {
@@ -560,8 +575,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                         }
                       ]
                     }
+
                 **YAML Example**
+
                 ::
+
                     bindings:
                     - members:
                       - user:mike@example.com
@@ -576,6 +594,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                         title: expirable access
                         description: Does not grant access after Sep 2020
                         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
                 developer's
                 guide <https://cloud.google.com/iam/docs>`__.
