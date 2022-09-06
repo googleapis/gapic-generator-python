@@ -276,7 +276,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, {{ service.name }}Transport, None] = None,
-            client_options: Optional[client_options_lib.ClientOptions] = None,
+            client_options: Union[client_options_lib.ClientOptions, dict, None] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiates the {{ (service.client_name|snake_case).replace('_', ' ') }}.
@@ -295,7 +295,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
                 {% endif %}
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Union[google.api_core.client_options.ClientOptions, dict, None]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
