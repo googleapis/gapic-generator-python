@@ -295,7 +295,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
                 {% endif %}
-            client_options (Union[google.api_core.client_options.ClientOptions, dict, None]): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
