@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import collections
-from textwrap import wrap
 
 from unittest import mock
 
