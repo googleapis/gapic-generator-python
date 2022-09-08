@@ -7,14 +7,15 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 {% endif %}
 import math
@@ -25,6 +26,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 {% endif %}
 
 {# Import the service itself as well as every proto module that it imports. #}
@@ -51,9 +53,6 @@ from google.api_core import future
 from google.api_core import operation
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
-{% if "rest" in opts.transport %}
-from google.protobuf import json_format
-{% endif %}{# rest transport #}
 {% endif %}{# lro #}
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2
@@ -628,10 +627,10 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 
 {% for method in service.methods.values() if 'rest' in opts.transport %}
 {% if method.extended_lro %}
-{{ test_macros.rest_required_tests(method, service, full_extended_lro=True) }}
+{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums, full_extended_lro=True) }}
 
 {% endif %}
-{{ test_macros.rest_required_tests(method, service) }}
+{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums) }}
 
 {% endfor -%} {#- method in methods for rest #}
 

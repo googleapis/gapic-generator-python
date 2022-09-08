@@ -28,6 +28,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 """
 
 import collections
+import copy
 import dataclasses
 import json
 import keyword
@@ -127,16 +128,29 @@ class Field:
                     # Not worth the hassle, just return an empty map.
                     return {}
 
-                msg_dict = {
-                    f.name: recursive_mock_original_type(f)
-                    for f in field.message.fields.values()
-                }
+                adr = field.type.meta.address
+                if adr.name == "Any" and adr.package == ("google", "protobuf"):
+                    # If it is Any type pack a random but validly encoded type,
+                    # Duration in this specific case.
+                    msg_dict = {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b'\x08\x0c\x10\xdb\x07',
+                    }
+                else:
+                    msg_dict = {
+                        f.name: recursive_mock_original_type(f)
+                        for f in field.message.fields.values()
+                    }
 
                 return [msg_dict] if field.repeated else msg_dict
 
             if field.enum:
                 # First Truthy value, fallback to the first value
-                return next((v for v in field.type.values if v.number), field.type.values[0]).number
+                answer = next(
+                    (v for v in field.type.values if v.number), field.type.values[0]).number
+                if field.repeated:
+                    answer = [answer]
+                return answer
 
             answer = field.primitive_mock() or None
 
@@ -150,6 +164,13 @@ class Field:
             return answer
 
         return recursive_mock_original_type(self)
+
+    def merged_mock_value(self, other_mock: Dict[Any, Any]):
+        mock = self.mock_value_original_type
+        if isinstance(mock, dict) and isinstance(other_mock, dict):
+            mock = copy.deepcopy(mock)
+            mock.update(other_mock)
+        return mock
 
     @utils.cached_property
     def mock_value(self) -> str:
@@ -225,9 +246,16 @@ class Field:
             if self.type.python_type == bool:
                 answer = True
             elif self.type.python_type == str:
-                answer = f"{self.name}_value_{suffix}" if suffix else f"{self.name}_value"
+                if self.name == "type_url":
+                    # It is most likely a mock for Any type. We don't really care
+                    # which mock value to put, so lets put a value which makes
+                    # Any deserializer happy, which will wtill work even if it
+                    # is not Any.
+                    answer = "type.googleapis.com/google.protobuf.Empty"
+                else:
+                    answer = f"{self.name}_value{suffix}" if suffix else f"{self.name}_value"
             elif self.type.python_type == bytes:
-                answer_str = f"{self.name}_blob_{suffix}" if suffix else f"{self.name}_blob"
+                answer_str = f"{self.name}_blob{suffix}" if suffix else f"{self.name}_blob"
                 answer = bytes(answer_str, encoding="utf-8")
             elif self.type.python_type == int:
                 answer = sum([ord(i) for i in self.name]) + suffix
@@ -1064,6 +1092,32 @@ class HttpRule:
 
         body = http_rule.body or None
         return cls(method, uri, body)
+
+
+@dataclasses.dataclass(frozen=True)
+class MixinMethod:
+    name: str
+    request_type: str
+    response_type: str
+
+
+@dataclasses.dataclass(frozen=True)
+class MixinHttpRule(HttpRule):
+    def path_fields(self, uri):
+        """return list of (name, template) tuples extracted from uri."""
+        return [
+            (match.group("name"), match.group("template"))
+            for match in path_template._VARIABLE_RE.finditer(uri)
+            if match.group("name")
+        ]
+
+    @property
+    def sample_request(self):
+        req = uri_sample.sample_from_path_fields(self.path_fields(self.uri))
+        if not self.body or self.body == "" or self.body == "*":
+            return req
+        req[self.body] = {}  # just an empty json.
+        return req
 
 
 @dataclasses.dataclass(frozen=True)
