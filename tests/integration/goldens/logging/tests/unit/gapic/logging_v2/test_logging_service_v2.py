@@ -17,8 +17,8 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import grpc
@@ -26,7 +26,7 @@ from grpc.experimental import aio
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 
 from google.api import monitored_resource_pb2  # type: ignore
 from google.api_core import client_options

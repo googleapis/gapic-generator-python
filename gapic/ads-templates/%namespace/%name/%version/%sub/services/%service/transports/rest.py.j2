@@ -128,6 +128,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    {% if not opts.rest_numeric_enums %}
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
+    {% endif %}
     """
 
 
@@ -146,6 +152,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             interceptor: Optional[{{ service.name }}RestInterceptor] = None,
             ) -> None:
         """Instantiate the transport.
+
+       {% if not opts.rest_numeric_enums %}
+       NOTE: This REST transport functionality is currently in a beta
+       state (preview). We welcome your feedback via a GitHub issue in
+       this library's repository. Thank you!
+       {% endif %}
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
@@ -318,12 +330,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             body = {% if body_spec == '*' -%}
                 {{method.input.ident}}.to_json(
                 {{method.input.ident}}(transcoded_request['body']),
-            {%- else -%}
+            {% else -%}
                 {{method.input.fields[body_spec].type.ident}}.to_json(
                 {{method.input.fields[body_spec].type.ident}}(transcoded_request['body']),
-            {%- endif %}{# body_spec == "*" #}
+            {% endif %}{# body_spec == "*" #}
                 including_default_value_fields=False,
-                use_integers_for_enums=False
+                use_integers_for_enums={{ opts.rest_numeric_enums }}
             )
             {%- endif %}{# body_spec #}
 
@@ -334,12 +346,16 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             query_params = json.loads({{method.input.ident}}.to_json(
                 {{method.input.ident}}(transcoded_request['query_params']),
                 including_default_value_fields=False,
-                use_integers_for_enums=False
+                use_integers_for_enums={{ opts.rest_numeric_enums }}
             ))
 
             {% if method.input.required_fields %}
             query_params.update(self._get_unset_required_fields(query_params))
             {% endif %}{# required fields #}
+
+            {% if opts.rest_numeric_enums %}
+            query_params["$alt"] = "json;enum-encoding=int"
+            {% endif %}
 
             # Send the request
             headers = dict(metadata)
@@ -348,7 +364,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 {% if body_spec %}
                 data=body,
                 {% endif %}
