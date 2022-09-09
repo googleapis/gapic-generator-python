@@ -22,4 +22,4 @@ from google.api_core import exceptions
 
 def test_serialize_boolean(compliance):
     request = showcase.EnumRequest(unknown_enum = True)
-    compliance.get_enum(request)
+    compliance.get_enum(request=request)
