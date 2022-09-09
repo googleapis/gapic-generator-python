@@ -20,6 +20,11 @@ from grpc_status import rpc_status
 from google.api_core import exceptions
 
 
-def test_serialize_boolean(compliance):
+def test_requesting_known_and_unknown_enums(compliance):
     request = showcase.EnumRequest(unknown_enum = True)
-    compliance.get_enum(request=request)
+    response = compliance.get_enum(request)
+    verify = compliance.verify_enum(response)
+
+    request = showcase.EnumRequest(unknown_enum = False)
+    response = compliance.get_enum(request)
+    verify = compliance.verify_enum(response)
