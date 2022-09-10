@@ -277,6 +277,8 @@ def test_{{ method_name }}_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
+
+    print(f"*** FIXME-kw ***\n{kw['metadata']}\n*** ***\n")
     assert (
         'x-goog-request-params',
         '{% for field_header in method.field_headers -%}
