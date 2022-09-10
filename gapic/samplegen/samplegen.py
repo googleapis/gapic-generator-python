@@ -364,7 +364,8 @@ class Validator:
             elif attr.enum:
                 # A little bit hacky, but 'values' is a list, and this is the easiest
                 # way to verify that the value is a valid enum variant.
-                witness = any(e.name == val for e in attr.enum.values)
+                # Here val could be a list consisting of a single enum name.
+                witness = any(e.name in val for e in attr.enum.values)
                 if not witness:
                     raise types.InvalidEnumVariant(
                         "Invalid variant for enum {}: '{}'".format(attr, val)
@@ -936,6 +937,23 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                     yield spec
 
 
+def _field_value_from_field(field: wrappers.Field) -> Any:
+    if field.is_primitive:
+        field_value = field.mock_value_original_type
+    elif field.enum:
+        # Choose the last enum value in the list since index 0 is often "unspecified"
+        field_value = field.enum.values[-1].name
+
+    if field.repeated:
+        # This is technically wrong: AttributeRequestSetup.value has type str
+        # and will be populated with field_value here. We will accept this for
+        # now. Going forward the configurable snippetgen will likely need to
+        # re-implement how requests are constructed.
+        return [field_value]
+    else:
+        return field_value
+
+
 def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str = ""):
     """Generate dummy input for a given message.
 
@@ -969,13 +987,9 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
         field_name = ".".join([field_name_prefix, field.name]).lstrip('.')
 
         # TODO(busunkim): Properly handle map fields
-        if field.is_primitive:
+        if field.is_primitive or field.enum:
             request.append(
-                {"field": field_name, "value": field.mock_value_original_type})
-        elif field.enum:
-            # Choose the last enum value in the list since index 0 is often "unspecified"
-            request.append(
-                {"field": field_name, "value": field.enum.values[-1].name})
+                {"field": field_name, "value": _field_value_from_field(field)})
         else:
             # This is a message type, recurse
             # TODO(busunkim):  Some real world APIs have
@@ -1014,7 +1028,7 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 spec = {
                     "rpc": rpc_name,
                     "transport": transport,
-                    # `request` and `response` is populated in `preprocess_sample`
+                    # `request` and `response` are populated in `preprocess_sample`
                     "service": f"{api_schema.naming.proto_package}.{service_name}",
                     "region_tag": region_tag,
                     "description": f"Snippet for {utils.to_snake_case(rpc_name)}"
