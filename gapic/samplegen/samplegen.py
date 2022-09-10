@@ -980,7 +980,7 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
                 field_value = [enum_value]
             else:
                 field_value = enum_value
-            
+
             request.append(
                 {"field": field_name, "value": field_value})
         else:
