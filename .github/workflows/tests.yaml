@@ -79,7 +79,7 @@ jobs:
             unzip protoc-${PROTOC_VERSION}.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
         env:
-          PROTOC_VERSION: 3.19.0
+          PROTOC_VERSION: 3.21.3
       - name: Run showcase tests.
         run: nox -s ${{ matrix.target }}
   showcase-mtls:
@@ -128,7 +128,7 @@ jobs:
             cd ..
             nox -s ${{ matrix.target }}
         env:
-          SHOWCASE_VERSION: 0.19.0
+          SHOWCASE_VERSION: 0.25.0
   # TODO(yon-mg): add compute unit tests
   showcase-unit:
     strategy:
@@ -160,7 +160,7 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
         env:
-          SHOWCASE_VERSION: 0.19.0
+          SHOWCASE_VERSION: 0.25.0
   showcase-unit-add-iam-methods:
     runs-on: ubuntu-latest
     steps:
@@ -187,7 +187,7 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit_add_iam_methods
         env:
-          SHOWCASE_VERSION: 0.19.0
+          SHOWCASE_VERSION: 0.25.0
   showcase-mypy:
     runs-on: ubuntu-latest
     strategy:
@@ -217,7 +217,7 @@ jobs:
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy${{ matrix.variant }}
         env:
-          SHOWCASE_VERSION: 0.19.0
+          SHOWCASE_VERSION: 0.25.0
   snippetgen:
     runs-on: ubuntu-latest
     steps:
