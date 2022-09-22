@@ -18,14 +18,23 @@ import os
 
 import setuptools
 
+package_root = os.path.abspath(os.path.dirname(__file__))
+
 name = 'google-cloud-eventarc'
-description = "'google-cloud-eventarc' client library"
-version = "0.1.0"
+
+
+description = "'google cloud eventarc' client library"
+
+version = {}
+with open(os.path.join(package_root, 'google/cloud/asset/version.py')) as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
+
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     'libcst >= 0.2.5',
     'googleapis-common-protos >= 1.55.0, <2.0.0dev',
-    'protobuf >= 3.19.0, <4.0.0dev',
+    'protobuf >= 3.20.2, <4.0.0dev',
     'proto-plus >= 1.19.7',
 ]
 url = "https://github.com/googleapis/python-google-cloud-eventarc"
