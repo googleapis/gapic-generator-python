@@ -7,6 +7,8 @@ import os
 
 import setuptools
 
+package_root = os.path.abspath(os.path.dirname(__file__))
+
 name = '{{ api.naming.warehouse_package_name }}'
 
 {% set warehouse_description = api.naming.warehouse_package_name.replace('-',' ') %}
