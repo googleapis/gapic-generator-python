@@ -32,6 +32,7 @@ version = version["__version__"]
 
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
+    'google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*',
     'libcst >= 0.2.5',
     'googleapis-common-protos >= 1.55.0, <2.0.0dev',
     'protobuf >= 3.20.2, <4.0.0dev',
