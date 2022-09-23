@@ -18,23 +18,14 @@ import os
 
 import setuptools
 
-package_root = os.path.abspath(os.path.dirname(__file__))
-
 name = 'google-cloud-asset'
-
-
-description = "'google cloud asset' client library"
-
-version = {}
-with open(os.path.join(package_root, 'google/cloud/asset/version.py')) as fp:
-    exec(fp.read(), version)
-version = version["__version__"]
-
+description = "'google-cloud-asset' client library"
+version = "0.1.0"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     'libcst >= 0.2.5',
     'googleapis-common-protos >= 1.55.0, <2.0.0dev',
-    'protobuf >= 3.20.2, <4.0.0dev',
+    'protobuf >= 3.19.0, <4.0.0dev',
     'proto-plus >= 1.19.7',
         'grpc-google-iam-v1 >= 0.12.4, < 0.13dev',
 ]
