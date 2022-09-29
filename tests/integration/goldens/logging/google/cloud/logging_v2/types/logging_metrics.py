@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import cast, Mapping, Sequence
+
 import proto  # type: ignore
 
 from google.api import distribution_pb2  # type: ignore
@@ -166,52 +168,52 @@ class LogMetric(proto.Message):
         V2 = 0
         V1 = 1
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    description = proto.Field(
+    ))
+    description = cast(str, proto.Field(
         proto.STRING,
         number=2,
-    )
-    filter = proto.Field(
+    ))
+    filter = cast(str, proto.Field(
         proto.STRING,
         number=3,
-    )
-    metric_descriptor = proto.Field(
+    ))
+    metric_descriptor = cast(metric_pb2.MetricDescriptor, proto.Field(
         proto.MESSAGE,
         number=5,
         message=metric_pb2.MetricDescriptor,
-    )
-    value_extractor = proto.Field(
+    ))
+    value_extractor = cast(str, proto.Field(
         proto.STRING,
         number=6,
-    )
-    label_extractors = proto.MapField(
+    ))
+    label_extractors = cast(Mapping[str, str], proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
-    )
-    bucket_options = proto.Field(
+    ))
+    bucket_options = cast(distribution_pb2.Distribution.BucketOptions, proto.Field(
         proto.MESSAGE,
         number=8,
         message=distribution_pb2.Distribution.BucketOptions,
-    )
-    create_time = proto.Field(
+    ))
+    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
-    )
-    update_time = proto.Field(
+    ))
+    update_time = cast(timestamp_pb2.Timestamp, proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
-    )
-    version = proto.Field(
+    ))
+    version = cast(ApiVersion, proto.Field(
         proto.ENUM,
         number=4,
         enum=ApiVersion,
-    )
+    ))
 
 
 class ListLogMetricsRequest(proto.Message):
@@ -237,18 +239,18 @@ class ListLogMetricsRequest(proto.Message):
             results might be available.
     """
 
-    parent = proto.Field(
+    parent = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    page_token = proto.Field(
+    ))
+    page_token = cast(str, proto.Field(
         proto.STRING,
         number=2,
-    )
-    page_size = proto.Field(
+    ))
+    page_size = cast(int, proto.Field(
         proto.INT32,
         number=3,
-    )
+    ))
 
 
 class ListLogMetricsResponse(proto.Message):
@@ -268,15 +270,15 @@ class ListLogMetricsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metrics = proto.RepeatedField(
+    metrics = cast(Sequence['LogMetric'], proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogMetric',
-    )
-    next_page_token = proto.Field(
+    ))
+    next_page_token = cast(str, proto.Field(
         proto.STRING,
         number=2,
-    )
+    ))
 
 
 class GetLogMetricRequest(proto.Message):
@@ -291,10 +293,10 @@ class GetLogMetricRequest(proto.Message):
                 "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
     """
 
-    metric_name = proto.Field(
+    metric_name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
+    ))
 
 
 class CreateLogMetricRequest(proto.Message):
@@ -315,15 +317,15 @@ class CreateLogMetricRequest(proto.Message):
             must not have an identifier that already exists.
     """
 
-    parent = proto.Field(
+    parent = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    metric = proto.Field(
+    ))
+    metric = cast('LogMetric', proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogMetric',
-    )
+    ))
 
 
 class UpdateLogMetricRequest(proto.Message):
@@ -345,15 +347,15 @@ class UpdateLogMetricRequest(proto.Message):
             Required. The updated metric.
     """
 
-    metric_name = proto.Field(
+    metric_name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    metric = proto.Field(
+    ))
+    metric = cast('LogMetric', proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogMetric',
-    )
+    ))
 
 
 class DeleteLogMetricRequest(proto.Message):
@@ -368,10 +370,10 @@ class DeleteLogMetricRequest(proto.Message):
                 "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
     """
 
-    metric_name = proto.Field(
+    metric_name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
+    ))
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

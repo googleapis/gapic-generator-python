@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import cast, Mapping, Sequence
+
 import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
@@ -42,10 +44,10 @@ class GetTriggerRequest(proto.Message):
             Required. The name of the trigger to get.
     """
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
+    ))
 
 
 class ListTriggersRequest(proto.Message):
@@ -74,22 +76,22 @@ class ListTriggersRequest(proto.Message):
             ``name desc, trigger_id``.
     """
 
-    parent = proto.Field(
+    parent = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    page_size = proto.Field(
+    ))
+    page_size = cast(int, proto.Field(
         proto.INT32,
         number=2,
-    )
-    page_token = proto.Field(
+    ))
+    page_token = cast(str, proto.Field(
         proto.STRING,
         number=3,
-    )
-    order_by = proto.Field(
+    ))
+    order_by = cast(str, proto.Field(
         proto.STRING,
         number=4,
-    )
+    ))
 
 
 class ListTriggersResponse(proto.Message):
@@ -111,19 +113,19 @@ class ListTriggersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    triggers = proto.RepeatedField(
+    triggers = cast(Sequence[gce_trigger.Trigger], proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gce_trigger.Trigger,
-    )
-    next_page_token = proto.Field(
+    ))
+    next_page_token = cast(str, proto.Field(
         proto.STRING,
         number=2,
-    )
-    unreachable = proto.RepeatedField(
+    ))
+    unreachable = cast(Sequence[str], proto.RepeatedField(
         proto.STRING,
         number=3,
-    )
+    ))
 
 
 class CreateTriggerRequest(proto.Message):
@@ -143,23 +145,23 @@ class CreateTriggerRequest(proto.Message):
             preview the review, but do not actually post it.
     """
 
-    parent = proto.Field(
+    parent = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    trigger = proto.Field(
+    ))
+    trigger = cast(gce_trigger.Trigger, proto.Field(
         proto.MESSAGE,
         number=2,
         message=gce_trigger.Trigger,
-    )
-    trigger_id = proto.Field(
+    ))
+    trigger_id = cast(str, proto.Field(
         proto.STRING,
         number=3,
-    )
-    validate_only = proto.Field(
+    ))
+    validate_only = cast(bool, proto.Field(
         proto.BOOL,
         number=4,
-    )
+    ))
 
 
 class UpdateTriggerRequest(proto.Message):
@@ -182,24 +184,24 @@ class UpdateTriggerRequest(proto.Message):
             preview the review, but do not actually post it.
     """
 
-    trigger = proto.Field(
+    trigger = cast(gce_trigger.Trigger, proto.Field(
         proto.MESSAGE,
         number=1,
         message=gce_trigger.Trigger,
-    )
-    update_mask = proto.Field(
+    ))
+    update_mask = cast(field_mask_pb2.FieldMask, proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
-    )
-    allow_missing = proto.Field(
+    ))
+    allow_missing = cast(bool, proto.Field(
         proto.BOOL,
         number=3,
-    )
-    validate_only = proto.Field(
+    ))
+    validate_only = cast(bool, proto.Field(
         proto.BOOL,
         number=4,
-    )
+    ))
 
 
 class DeleteTriggerRequest(proto.Message):
@@ -222,22 +224,22 @@ class DeleteTriggerRequest(proto.Message):
             preview the review, but do not actually post it.
     """
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    etag = proto.Field(
+    ))
+    etag = cast(str, proto.Field(
         proto.STRING,
         number=2,
-    )
-    allow_missing = proto.Field(
+    ))
+    allow_missing = cast(bool, proto.Field(
         proto.BOOL,
         number=3,
-    )
-    validate_only = proto.Field(
+    ))
+    validate_only = cast(bool, proto.Field(
         proto.BOOL,
         number=4,
-    )
+    ))
 
 
 class OperationMetadata(proto.Message):
@@ -270,36 +272,36 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(
+    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
-    )
-    end_time = proto.Field(
+    ))
+    end_time = cast(timestamp_pb2.Timestamp, proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
-    )
-    target = proto.Field(
+    ))
+    target = cast(str, proto.Field(
         proto.STRING,
         number=3,
-    )
-    verb = proto.Field(
+    ))
+    verb = cast(str, proto.Field(
         proto.STRING,
         number=4,
-    )
-    status_message = proto.Field(
+    ))
+    status_message = cast(str, proto.Field(
         proto.STRING,
         number=5,
-    )
-    requested_cancellation = proto.Field(
+    ))
+    requested_cancellation = cast(bool, proto.Field(
         proto.BOOL,
         number=6,
-    )
-    api_version = proto.Field(
+    ))
+    api_version = cast(str, proto.Field(
         proto.STRING,
         number=7,
-    )
+    ))
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
