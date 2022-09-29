@@ -212,7 +212,7 @@ def test_{{ method.name|snake_case }}_routing_parameters():
     {% for routing_param in method.routing_rule.routing_parameters %}
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = {{ method.input.ident }}({{ routing_param.sample_request }})
+    request = {{ method.input.ident }}(**{{ routing_param.sample_request }})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -363,7 +363,7 @@ def test_{{ method_name }}_from_dict_foreign():
 
 {% endif %}
 
-{% if method.flattened_fields %}
+{% if method.flattened_fields and not method.client_streaming %}
 def test_{{ method_name }}_flattened():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1102,6 +1102,8 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
                     "{{ req_field.name | camel_case }}",
                     {% if req_field.field_pb.type == 9 %}
                     "{{ req_field.field_pb.default_value }}",
+                    {% elif req_field.field_pb.type == 8 %}
+                    str({{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}).lower(),
                     {% else %}
                     str({{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}),
                     {% endif %}{# default is str #}
@@ -1222,7 +1224,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
         {% endif %}
 
 
-{% if method.flattened_fields %}
+{% if method.flattened_fields and not method.client_streaming %}
 def test_{{ method_name }}_rest_flattened():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
