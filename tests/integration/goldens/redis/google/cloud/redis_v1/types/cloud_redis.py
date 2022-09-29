@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import cast, Mapping, Sequence
+
 import proto  # type: ignore
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -188,88 +190,88 @@ class Instance(proto.Message):
         DIRECT_PEERING = 1
         PRIVATE_SERVICE_ACCESS = 2
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    display_name = proto.Field(
+    ))
+    display_name = cast(str, proto.Field(
         proto.STRING,
         number=2,
-    )
-    labels = proto.MapField(
+    ))
+    labels = cast(Mapping[str, str], proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
-    )
-    location_id = proto.Field(
+    ))
+    location_id = cast(str, proto.Field(
         proto.STRING,
         number=4,
-    )
-    alternative_location_id = proto.Field(
+    ))
+    alternative_location_id = cast(str, proto.Field(
         proto.STRING,
         number=5,
-    )
-    redis_version = proto.Field(
+    ))
+    redis_version = cast(str, proto.Field(
         proto.STRING,
         number=7,
-    )
-    reserved_ip_range = proto.Field(
+    ))
+    reserved_ip_range = cast(str, proto.Field(
         proto.STRING,
         number=9,
-    )
-    host = proto.Field(
+    ))
+    host = cast(str, proto.Field(
         proto.STRING,
         number=10,
-    )
-    port = proto.Field(
+    ))
+    port = cast(int, proto.Field(
         proto.INT32,
         number=11,
-    )
-    current_location_id = proto.Field(
+    ))
+    current_location_id = cast(str, proto.Field(
         proto.STRING,
         number=12,
-    )
-    create_time = proto.Field(
+    ))
+    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
-    )
-    state = proto.Field(
+    ))
+    state = cast(State, proto.Field(
         proto.ENUM,
         number=14,
         enum=State,
-    )
-    status_message = proto.Field(
+    ))
+    status_message = cast(str, proto.Field(
         proto.STRING,
         number=15,
-    )
-    redis_configs = proto.MapField(
+    ))
+    redis_configs = cast(Mapping[str, str], proto.MapField(
         proto.STRING,
         proto.STRING,
         number=16,
-    )
-    tier = proto.Field(
+    ))
+    tier = cast(Tier, proto.Field(
         proto.ENUM,
         number=17,
         enum=Tier,
-    )
-    memory_size_gb = proto.Field(
+    ))
+    memory_size_gb = cast(int, proto.Field(
         proto.INT32,
         number=18,
-    )
-    authorized_network = proto.Field(
+    ))
+    authorized_network = cast(str, proto.Field(
         proto.STRING,
         number=20,
-    )
-    persistence_iam_identity = proto.Field(
+    ))
+    persistence_iam_identity = cast(str, proto.Field(
         proto.STRING,
         number=21,
-    )
-    connect_mode = proto.Field(
+    ))
+    connect_mode = cast(ConnectMode, proto.Field(
         proto.ENUM,
         number=22,
         enum=ConnectMode,
-    )
+    ))
 
 
 class ListInstancesRequest(proto.Message):
@@ -296,18 +298,18 @@ class ListInstancesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(
+    parent = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    page_size = proto.Field(
+    ))
+    page_size = cast(int, proto.Field(
         proto.INT32,
         number=2,
-    )
-    page_token = proto.Field(
+    ))
+    page_token = cast(str, proto.Field(
         proto.STRING,
         number=3,
-    )
+    ))
 
 
 class ListInstancesResponse(proto.Message):
@@ -340,19 +342,19 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(
+    instances = cast(Sequence['Instance'], proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='Instance',
-    )
-    next_page_token = proto.Field(
+    ))
+    next_page_token = cast(str, proto.Field(
         proto.STRING,
         number=2,
-    )
-    unreachable = proto.RepeatedField(
+    ))
+    unreachable = cast(Sequence[str], proto.RepeatedField(
         proto.STRING,
         number=3,
-    )
+    ))
 
 
 class GetInstanceRequest(proto.Message):
@@ -366,10 +368,10 @@ class GetInstanceRequest(proto.Message):
             where ``location_id`` refers to a GCP region.
     """
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
+    ))
 
 
 class CreateInstanceRequest(proto.Message):
@@ -395,19 +397,19 @@ class CreateInstanceRequest(proto.Message):
             Required. A Redis [Instance] resource
     """
 
-    parent = proto.Field(
+    parent = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    instance_id = proto.Field(
+    ))
+    instance_id = cast(str, proto.Field(
         proto.STRING,
         number=2,
-    )
-    instance = proto.Field(
+    ))
+    instance = cast('Instance', proto.Field(
         proto.MESSAGE,
         number=3,
         message='Instance',
-    )
+    ))
 
 
 class UpdateInstanceRequest(proto.Message):
@@ -430,16 +432,16 @@ class UpdateInstanceRequest(proto.Message):
             update_mask are updated.
     """
 
-    update_mask = proto.Field(
+    update_mask = cast(field_mask_pb2.FieldMask, proto.Field(
         proto.MESSAGE,
         number=1,
         message=field_mask_pb2.FieldMask,
-    )
-    instance = proto.Field(
+    ))
+    instance = cast('Instance', proto.Field(
         proto.MESSAGE,
         number=2,
         message='Instance',
-    )
+    ))
 
 
 class UpgradeInstanceRequest(proto.Message):
@@ -456,14 +458,14 @@ class UpgradeInstanceRequest(proto.Message):
             Redis software to upgrade to.
     """
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    redis_version = proto.Field(
+    ))
+    redis_version = cast(str, proto.Field(
         proto.STRING,
         number=2,
-    )
+    ))
 
 
 class DeleteInstanceRequest(proto.Message):
@@ -477,10 +479,10 @@ class DeleteInstanceRequest(proto.Message):
             where ``location_id`` refers to a GCP region.
     """
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
+    ))
 
 
 class GcsSource(proto.Message):
@@ -492,10 +494,10 @@ class GcsSource(proto.Message):
             'gs://my_bucket/my_object').
     """
 
-    uri = proto.Field(
+    uri = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
+    ))
 
 
 class InputConfig(proto.Message):
@@ -511,12 +513,12 @@ class InputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    gcs_source = proto.Field(
+    gcs_source = cast('GcsSource', proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='source',
         message='GcsSource',
-    )
+    ))
 
 
 class ImportInstanceRequest(proto.Message):
@@ -532,15 +534,15 @@ class ImportInstanceRequest(proto.Message):
             Required. Specify data to be imported.
     """
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    input_config = proto.Field(
+    ))
+    input_config = cast('InputConfig', proto.Field(
         proto.MESSAGE,
         number=3,
         message='InputConfig',
-    )
+    ))
 
 
 class GcsDestination(proto.Message):
@@ -553,10 +555,10 @@ class GcsDestination(proto.Message):
             overwritten.
     """
 
-    uri = proto.Field(
+    uri = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
+    ))
 
 
 class OutputConfig(proto.Message):
@@ -572,12 +574,12 @@ class OutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_destination = proto.Field(
+    gcs_destination = cast('GcsDestination', proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='destination',
         message='GcsDestination',
-    )
+    ))
 
 
 class ExportInstanceRequest(proto.Message):
@@ -593,15 +595,15 @@ class ExportInstanceRequest(proto.Message):
             Required. Specify data to be exported.
     """
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    output_config = proto.Field(
+    ))
+    output_config = cast('OutputConfig', proto.Field(
         proto.MESSAGE,
         number=3,
         message='OutputConfig',
-    )
+    ))
 
 
 class FailoverInstanceRequest(proto.Message):
@@ -626,15 +628,15 @@ class FailoverInstanceRequest(proto.Message):
         LIMITED_DATA_LOSS = 1
         FORCE_DATA_LOSS = 2
 
-    name = proto.Field(
+    name = cast(str, proto.Field(
         proto.STRING,
         number=1,
-    )
-    data_protection_mode = proto.Field(
+    ))
+    data_protection_mode = cast(DataProtectionMode, proto.Field(
         proto.ENUM,
         number=2,
         enum=DataProtectionMode,
-    )
+    ))
 
 
 class OperationMetadata(proto.Message):
@@ -658,36 +660,36 @@ class OperationMetadata(proto.Message):
             API version.
     """
 
-    create_time = proto.Field(
+    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
-    )
-    end_time = proto.Field(
+    ))
+    end_time = cast(timestamp_pb2.Timestamp, proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
-    )
-    target = proto.Field(
+    ))
+    target = cast(str, proto.Field(
         proto.STRING,
         number=3,
-    )
-    verb = proto.Field(
+    ))
+    verb = cast(str, proto.Field(
         proto.STRING,
         number=4,
-    )
-    status_detail = proto.Field(
+    ))
+    status_detail = cast(str, proto.Field(
         proto.STRING,
         number=5,
-    )
-    cancel_requested = proto.Field(
+    ))
+    cancel_requested = cast(bool, proto.Field(
         proto.BOOL,
         number=6,
-    )
-    api_version = proto.Field(
+    ))
+    api_version = cast(str, proto.Field(
         proto.STRING,
         number=7,
-    )
+    ))
 
 
 class LocationMetadata(proto.Message):
@@ -705,12 +707,12 @@ class LocationMetadata(proto.Message):
             instance.
     """
 
-    available_zones = proto.MapField(
+    available_zones = cast(Mapping[str, 'ZoneMetadata'], proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
         message='ZoneMetadata',
-    )
+    ))
 
 
 class ZoneMetadata(proto.Message):
