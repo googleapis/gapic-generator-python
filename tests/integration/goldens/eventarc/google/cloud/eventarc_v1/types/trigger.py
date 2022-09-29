@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import cast, Mapping, Sequence
-
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -94,52 +92,52 @@ class Trigger(proto.Message):
             proceeding.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    uid = cast(str, proto.Field(
+    )
+    uid = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    create_time = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
-    ))
-    update_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    update_time = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
-    ))
-    event_filters = cast(Sequence['EventFilter'], proto.RepeatedField(
+    )
+    event_filters = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message='EventFilter',
-    ))
-    service_account = cast(str, proto.Field(
+    )
+    service_account = proto.Field(
         proto.STRING,
         number=9,
-    ))
-    destination = cast('Destination', proto.Field(
+    )
+    destination = proto.Field(
         proto.MESSAGE,
         number=10,
         message='Destination',
-    ))
-    transport = cast('Transport', proto.Field(
+    )
+    transport = proto.Field(
         proto.MESSAGE,
         number=11,
         message='Transport',
-    ))
-    labels = cast(Mapping[str, str], proto.MapField(
+    )
+    labels = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=12,
-    ))
-    etag = cast(str, proto.Field(
+    )
+    etag = proto.Field(
         proto.STRING,
         number=99,
-    ))
+    )
 
 
 class EventFilter(proto.Message):
@@ -157,14 +155,14 @@ class EventFilter(proto.Message):
             Required. The value for the attribute.
     """
 
-    attribute = cast(str, proto.Field(
+    attribute = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    value = cast(str, proto.Field(
+    )
+    value = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class Destination(proto.Message):
@@ -181,12 +179,12 @@ class Destination(proto.Message):
             This field is a member of `oneof`_ ``descriptor``.
     """
 
-    cloud_run = cast('CloudRun', proto.Field(
+    cloud_run = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='descriptor',
         message='CloudRun',
-    ))
+    )
 
 
 class Transport(proto.Message):
@@ -204,12 +202,12 @@ class Transport(proto.Message):
             This field is a member of `oneof`_ ``intermediary``.
     """
 
-    pubsub = cast('Pubsub', proto.Field(
+    pubsub = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='intermediary',
         message='Pubsub',
-    ))
+    )
 
 
 class CloudRun(proto.Message):
@@ -234,18 +232,18 @@ class CloudRun(proto.Message):
             deployed in.
     """
 
-    service = cast(str, proto.Field(
+    service = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    path = cast(str, proto.Field(
+    )
+    path = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    region = cast(str, proto.Field(
+    )
+    region = proto.Field(
         proto.STRING,
         number=3,
-    ))
+    )
 
 
 class Pubsub(proto.Message):
@@ -268,14 +266,14 @@ class Pubsub(proto.Message):
             ``projects/{PROJECT_ID}/subscriptions/{SUBSCRIPTION_NAME}``.
     """
 
-    topic = cast(str, proto.Field(
+    topic = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    subscription = cast(str, proto.Field(
+    )
+    subscription = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

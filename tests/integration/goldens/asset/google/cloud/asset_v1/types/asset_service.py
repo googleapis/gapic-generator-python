@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import cast, Mapping, Sequence
-
 import proto  # type: ignore
 
 from google.cloud.asset_v1.types import assets as gca_assets
@@ -124,29 +122,29 @@ class ExportAssetsRequest(proto.Message):
             where the results will be output to.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    read_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    read_time = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
-    ))
-    asset_types = cast(Sequence[str], proto.RepeatedField(
+    )
+    asset_types = proto.RepeatedField(
         proto.STRING,
         number=3,
-    ))
-    content_type = cast('ContentType', proto.Field(
+    )
+    content_type = proto.Field(
         proto.ENUM,
         number=4,
         enum='ContentType',
-    ))
-    output_config = cast('OutputConfig', proto.Field(
+    )
+    output_config = proto.Field(
         proto.MESSAGE,
         number=5,
         message='OutputConfig',
-    ))
+    )
 
 
 class ExportAssetsResponse(proto.Message):
@@ -171,21 +169,21 @@ class ExportAssetsResponse(proto.Message):
             it exceeds a single Google Cloud Storage object limit.
     """
 
-    read_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    read_time = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
-    ))
-    output_config = cast('OutputConfig', proto.Field(
+    )
+    output_config = proto.Field(
         proto.MESSAGE,
         number=2,
         message='OutputConfig',
-    ))
-    output_result = cast('OutputResult', proto.Field(
+    )
+    output_result = proto.Field(
         proto.MESSAGE,
         number=3,
         message='OutputResult',
-    ))
+    )
 
 
 class ListAssetsRequest(proto.Message):
@@ -245,32 +243,32 @@ class ListAssetsRequest(proto.Message):
             of assets.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    read_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    read_time = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
-    ))
-    asset_types = cast(Sequence[str], proto.RepeatedField(
+    )
+    asset_types = proto.RepeatedField(
         proto.STRING,
         number=3,
-    ))
-    content_type = cast('ContentType', proto.Field(
+    )
+    content_type = proto.Field(
         proto.ENUM,
         number=4,
         enum='ContentType',
-    ))
-    page_size = cast(int, proto.Field(
+    )
+    page_size = proto.Field(
         proto.INT32,
         number=5,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=6,
-    ))
+    )
 
 
 class ListAssetsResponse(proto.Message):
@@ -292,20 +290,20 @@ class ListAssetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    read_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    read_time = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
-    ))
-    assets = cast(Sequence[gca_assets.Asset], proto.RepeatedField(
+    )
+    assets = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gca_assets.Asset,
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=3,
-    ))
+    )
 
 
 class BatchGetAssetsHistoryRequest(proto.Message):
@@ -340,24 +338,24 @@ class BatchGetAssetsHistoryRequest(proto.Message):
             whose time window overlap with read_time_window.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    asset_names = cast(Sequence[str], proto.RepeatedField(
+    )
+    asset_names = proto.RepeatedField(
         proto.STRING,
         number=2,
-    ))
-    content_type = cast('ContentType', proto.Field(
+    )
+    content_type = proto.Field(
         proto.ENUM,
         number=3,
         enum='ContentType',
-    ))
-    read_time_window = cast(gca_assets.TimeWindow, proto.Field(
+    )
+    read_time_window = proto.Field(
         proto.MESSAGE,
         number=4,
         message=gca_assets.TimeWindow,
-    ))
+    )
 
 
 class BatchGetAssetsHistoryResponse(proto.Message):
@@ -368,11 +366,11 @@ class BatchGetAssetsHistoryResponse(proto.Message):
             A list of assets with valid time windows.
     """
 
-    assets = cast(Sequence[gca_assets.TemporalAsset], proto.RepeatedField(
+    assets = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_assets.TemporalAsset,
-    ))
+    )
 
 
 class CreateFeedRequest(proto.Message):
@@ -400,19 +398,19 @@ class CreateFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    feed_id = cast(str, proto.Field(
+    )
+    feed_id = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    feed = cast('Feed', proto.Field(
+    )
+    feed = proto.Field(
         proto.MESSAGE,
         number=3,
         message='Feed',
-    ))
+    )
 
 
 class GetFeedRequest(proto.Message):
@@ -426,10 +424,10 @@ class GetFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class ListFeedsRequest(proto.Message):
@@ -445,10 +443,10 @@ class ListFeedsRequest(proto.Message):
             "projects/my-project-id").
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class ListFeedsResponse(proto.Message):
@@ -459,11 +457,11 @@ class ListFeedsResponse(proto.Message):
             A list of feeds.
     """
 
-    feeds = cast(Sequence['Feed'], proto.RepeatedField(
+    feeds = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='Feed',
-    ))
+    )
 
 
 class UpdateFeedRequest(proto.Message):
@@ -482,16 +480,16 @@ class UpdateFeedRequest(proto.Message):
             contain fields that are immutable or only set by the server.
     """
 
-    feed = cast('Feed', proto.Field(
+    feed = proto.Field(
         proto.MESSAGE,
         number=1,
         message='Feed',
-    ))
-    update_mask = cast(field_mask_pb2.FieldMask, proto.Field(
+    )
+    update_mask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
-    ))
+    )
 
 
 class DeleteFeedRequest(proto.Message):
@@ -505,10 +503,10 @@ class DeleteFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class OutputConfig(proto.Message):
@@ -534,18 +532,18 @@ class OutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_destination = cast('GcsDestination', proto.Field(
+    gcs_destination = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='destination',
         message='GcsDestination',
-    ))
-    bigquery_destination = cast('BigQueryDestination', proto.Field(
+    )
+    bigquery_destination = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof='destination',
         message='BigQueryDestination',
-    ))
+    )
 
 
 class OutputResult(proto.Message):
@@ -560,12 +558,12 @@ class OutputResult(proto.Message):
             This field is a member of `oneof`_ ``result``.
     """
 
-    gcs_result = cast('GcsOutputResult', proto.Field(
+    gcs_result = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='result',
         message='GcsOutputResult',
-    ))
+    )
 
 
 class GcsOutputResult(proto.Message):
@@ -577,10 +575,10 @@ class GcsOutputResult(proto.Message):
             "gs://bucket_name/object_name".
     """
 
-    uris = cast(Sequence[str], proto.RepeatedField(
+    uris = proto.RepeatedField(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class GcsDestination(proto.Message):
@@ -621,16 +619,16 @@ class GcsDestination(proto.Message):
             This field is a member of `oneof`_ ``object_uri``.
     """
 
-    uri = cast(str, proto.Field(
+    uri = proto.Field(
         proto.STRING,
         number=1,
         oneof='object_uri',
-    ))
-    uri_prefix = cast(str, proto.Field(
+    )
+    uri_prefix = proto.Field(
         proto.STRING,
         number=2,
         oneof='object_uri',
-    ))
+    )
 
 
 class BigQueryDestination(proto.Message):
@@ -711,27 +709,27 @@ class BigQueryDestination(proto.Message):
             a table.
     """
 
-    dataset = cast(str, proto.Field(
+    dataset = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    table = cast(str, proto.Field(
+    )
+    table = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    force = cast(bool, proto.Field(
+    )
+    force = proto.Field(
         proto.BOOL,
         number=3,
-    ))
-    partition_spec = cast('PartitionSpec', proto.Field(
+    )
+    partition_spec = proto.Field(
         proto.MESSAGE,
         number=4,
         message='PartitionSpec',
-    ))
-    separate_tables_per_asset_type = cast(bool, proto.Field(
+    )
+    separate_tables_per_asset_type = proto.Field(
         proto.BOOL,
         number=5,
-    ))
+    )
 
 
 class PartitionSpec(proto.Message):
@@ -754,11 +752,11 @@ class PartitionSpec(proto.Message):
         READ_TIME = 1
         REQUEST_TIME = 2
 
-    partition_key = cast(PartitionKey, proto.Field(
+    partition_key = proto.Field(
         proto.ENUM,
         number=1,
         enum=PartitionKey,
-    ))
+    )
 
 
 class PubsubDestination(proto.Message):
@@ -770,10 +768,10 @@ class PubsubDestination(proto.Message):
             ``projects/PROJECT_ID/topics/TOPIC_ID``.
     """
 
-    topic = cast(str, proto.Field(
+    topic = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class FeedOutputConfig(proto.Message):
@@ -788,12 +786,12 @@ class FeedOutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    pubsub_destination = cast('PubsubDestination', proto.Field(
+    pubsub_destination = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='destination',
         message='PubsubDestination',
-    ))
+    )
 
 
 class Feed(proto.Message):
@@ -857,33 +855,33 @@ class Feed(proto.Message):
             for detailed instructions.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    asset_names = cast(Sequence[str], proto.RepeatedField(
+    )
+    asset_names = proto.RepeatedField(
         proto.STRING,
         number=2,
-    ))
-    asset_types = cast(Sequence[str], proto.RepeatedField(
+    )
+    asset_types = proto.RepeatedField(
         proto.STRING,
         number=3,
-    ))
-    content_type = cast('ContentType', proto.Field(
+    )
+    content_type = proto.Field(
         proto.ENUM,
         number=4,
         enum='ContentType',
-    ))
-    feed_output_config = cast('FeedOutputConfig', proto.Field(
+    )
+    feed_output_config = proto.Field(
         proto.MESSAGE,
         number=5,
         message='FeedOutputConfig',
-    ))
-    condition = cast(expr_pb2.Expr, proto.Field(
+    )
+    condition = proto.Field(
         proto.MESSAGE,
         number=6,
         message=expr_pb2.Expr,
-    ))
+    )
 
 
 class SearchAllResourcesRequest(proto.Message):
@@ -1006,30 +1004,30 @@ class SearchAllResourcesRequest(proto.Message):
                ``additionalAttributes``) are not supported.
     """
 
-    scope = cast(str, proto.Field(
+    scope = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    query = cast(str, proto.Field(
+    )
+    query = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    asset_types = cast(Sequence[str], proto.RepeatedField(
+    )
+    asset_types = proto.RepeatedField(
         proto.STRING,
         number=3,
-    ))
-    page_size = cast(int, proto.Field(
+    )
+    page_size = proto.Field(
         proto.INT32,
         number=4,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=5,
-    ))
-    order_by = cast(str, proto.Field(
+    )
+    order_by = proto.Field(
         proto.STRING,
         number=6,
-    ))
+    )
 
 
 class SearchAllResourcesResponse(proto.Message):
@@ -1051,15 +1049,15 @@ class SearchAllResourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results = cast(Sequence[gca_assets.ResourceSearchResult], proto.RepeatedField(
+    results = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_assets.ResourceSearchResult,
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class SearchAllIamPoliciesRequest(proto.Message):
@@ -1175,30 +1173,30 @@ class SearchAllIamPoliciesRequest(proto.Message):
                ``policy``) are not supported.
     """
 
-    scope = cast(str, proto.Field(
+    scope = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    query = cast(str, proto.Field(
+    )
+    query = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    page_size = cast(int, proto.Field(
+    )
+    page_size = proto.Field(
         proto.INT32,
         number=3,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=4,
-    ))
-    asset_types = cast(Sequence[str], proto.RepeatedField(
+    )
+    asset_types = proto.RepeatedField(
         proto.STRING,
         number=5,
-    ))
-    order_by = cast(str, proto.Field(
+    )
+    order_by = proto.Field(
         proto.STRING,
         number=7,
-    ))
+    )
 
 
 class SearchAllIamPoliciesResponse(proto.Message):
@@ -1220,15 +1218,15 @@ class SearchAllIamPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results = cast(Sequence[gca_assets.IamPolicySearchResult], proto.RepeatedField(
+    results = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_assets.IamPolicySearchResult,
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class IamPolicyAnalysisQuery(proto.Message):
@@ -1278,10 +1276,10 @@ class IamPolicyAnalysisQuery(proto.Message):
                 types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#analyzable_asset_types>`__.
         """
 
-        full_resource_name = cast(str, proto.Field(
+        full_resource_name = proto.Field(
             proto.STRING,
             number=1,
-        ))
+        )
 
     class IdentitySelector(proto.Message):
         r"""Specifies an identity for which to determine resource access,
@@ -1303,10 +1301,10 @@ class IamPolicyAnalysisQuery(proto.Message):
                 supported. You must give a specific identity.
         """
 
-        identity = cast(str, proto.Field(
+        identity = proto.Field(
             proto.STRING,
             number=1,
-        ))
+        )
 
     class AccessSelector(proto.Message):
         r"""Specifies roles and/or permissions to analyze, to determine
@@ -1323,14 +1321,14 @@ class IamPolicyAnalysisQuery(proto.Message):
                 result.
         """
 
-        roles = cast(Sequence[str], proto.RepeatedField(
+        roles = proto.RepeatedField(
             proto.STRING,
             number=1,
-        ))
-        permissions = cast(Sequence[str], proto.RepeatedField(
+        )
+        permissions = proto.RepeatedField(
             proto.STRING,
             number=2,
-        ))
+        )
 
     class Options(proto.Message):
         r"""Contains query options.
@@ -1424,30 +1422,30 @@ class IamPolicyAnalysisQuery(proto.Message):
                 Default is false.
         """
 
-        expand_groups = cast(bool, proto.Field(
+        expand_groups = proto.Field(
             proto.BOOL,
             number=1,
-        ))
-        expand_roles = cast(bool, proto.Field(
+        )
+        expand_roles = proto.Field(
             proto.BOOL,
             number=2,
-        ))
-        expand_resources = cast(bool, proto.Field(
+        )
+        expand_resources = proto.Field(
             proto.BOOL,
             number=3,
-        ))
-        output_resource_edges = cast(bool, proto.Field(
+        )
+        output_resource_edges = proto.Field(
             proto.BOOL,
             number=4,
-        ))
-        output_group_edges = cast(bool, proto.Field(
+        )
+        output_group_edges = proto.Field(
             proto.BOOL,
             number=5,
-        ))
-        analyze_service_account_impersonation = cast(bool, proto.Field(
+        )
+        analyze_service_account_impersonation = proto.Field(
             proto.BOOL,
             number=6,
-        ))
+        )
 
     class ConditionContext(proto.Message):
         r"""The IAM conditions context.
@@ -1464,42 +1462,42 @@ class IamPolicyAnalysisQuery(proto.Message):
                 This field is a member of `oneof`_ ``TimeContext``.
         """
 
-        access_time = cast(timestamp_pb2.Timestamp, proto.Field(
+        access_time = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof='TimeContext',
             message=timestamp_pb2.Timestamp,
-        ))
+        )
 
-    scope = cast(str, proto.Field(
+    scope = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    resource_selector = cast(ResourceSelector, proto.Field(
+    )
+    resource_selector = proto.Field(
         proto.MESSAGE,
         number=2,
         message=ResourceSelector,
-    ))
-    identity_selector = cast(IdentitySelector, proto.Field(
+    )
+    identity_selector = proto.Field(
         proto.MESSAGE,
         number=3,
         message=IdentitySelector,
-    ))
-    access_selector = cast(AccessSelector, proto.Field(
+    )
+    access_selector = proto.Field(
         proto.MESSAGE,
         number=4,
         message=AccessSelector,
-    ))
-    options = cast(Options, proto.Field(
+    )
+    options = proto.Field(
         proto.MESSAGE,
         number=5,
         message=Options,
-    ))
-    condition_context = cast(ConditionContext, proto.Field(
+    )
+    condition_context = proto.Field(
         proto.MESSAGE,
         number=6,
         message=ConditionContext,
-    ))
+    )
 
 
 class AnalyzeIamPolicyRequest(proto.Message):
@@ -1524,16 +1522,16 @@ class AnalyzeIamPolicyRequest(proto.Message):
             Default is empty.
     """
 
-    analysis_query = cast('IamPolicyAnalysisQuery', proto.Field(
+    analysis_query = proto.Field(
         proto.MESSAGE,
         number=1,
         message='IamPolicyAnalysisQuery',
-    ))
-    execution_timeout = cast(duration_pb2.Duration, proto.Field(
+    )
+    execution_timeout = proto.Field(
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
-    ))
+    )
 
 
 class AnalyzeIamPolicyResponse(proto.Message):
@@ -1576,40 +1574,40 @@ class AnalyzeIamPolicyResponse(proto.Message):
                 the query handling.
         """
 
-        analysis_query = cast('IamPolicyAnalysisQuery', proto.Field(
+        analysis_query = proto.Field(
             proto.MESSAGE,
             number=1,
             message='IamPolicyAnalysisQuery',
-        ))
-        analysis_results = cast(Sequence[gca_assets.IamPolicyAnalysisResult], proto.RepeatedField(
+        )
+        analysis_results = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=gca_assets.IamPolicyAnalysisResult,
-        ))
-        fully_explored = cast(bool, proto.Field(
+        )
+        fully_explored = proto.Field(
             proto.BOOL,
             number=3,
-        ))
-        non_critical_errors = cast(Sequence[gca_assets.IamPolicyAnalysisState], proto.RepeatedField(
+        )
+        non_critical_errors = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message=gca_assets.IamPolicyAnalysisState,
-        ))
+        )
 
-    main_analysis = cast(IamPolicyAnalysis, proto.Field(
+    main_analysis = proto.Field(
         proto.MESSAGE,
         number=1,
         message=IamPolicyAnalysis,
-    ))
-    service_account_impersonation_analysis = cast(Sequence[IamPolicyAnalysis], proto.RepeatedField(
+    )
+    service_account_impersonation_analysis = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=IamPolicyAnalysis,
-    ))
-    fully_explored = cast(bool, proto.Field(
+    )
+    fully_explored = proto.Field(
         proto.BOOL,
         number=3,
-    ))
+    )
 
 
 class IamPolicyAnalysisOutputConfig(proto.Message):
@@ -1652,10 +1650,10 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
                 it will be overwritten with the analysis result.
         """
 
-        uri = cast(str, proto.Field(
+        uri = proto.Field(
             proto.STRING,
             number=1,
-        ))
+        )
 
     class BigQueryDestination(proto.Message):
         r"""A BigQuery destination.
@@ -1710,36 +1708,36 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
             PARTITION_KEY_UNSPECIFIED = 0
             REQUEST_TIME = 1
 
-        dataset = cast(str, proto.Field(
+        dataset = proto.Field(
             proto.STRING,
             number=1,
-        ))
-        table_prefix = cast(str, proto.Field(
+        )
+        table_prefix = proto.Field(
             proto.STRING,
             number=2,
-        ))
-        partition_key = cast('IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey', proto.Field(
+        )
+        partition_key = proto.Field(
             proto.ENUM,
             number=3,
             enum='IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey',
-        ))
-        write_disposition = cast(str, proto.Field(
+        )
+        write_disposition = proto.Field(
             proto.STRING,
             number=4,
-        ))
+        )
 
-    gcs_destination = cast(GcsDestination, proto.Field(
+    gcs_destination = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof='destination',
         message=GcsDestination,
-    ))
-    bigquery_destination = cast(BigQueryDestination, proto.Field(
+    )
+    bigquery_destination = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof='destination',
         message=BigQueryDestination,
-    ))
+    )
 
 
 class AnalyzeIamPolicyLongrunningRequest(proto.Message):
@@ -1754,16 +1752,16 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
             where the results will be output to.
     """
 
-    analysis_query = cast('IamPolicyAnalysisQuery', proto.Field(
+    analysis_query = proto.Field(
         proto.MESSAGE,
         number=1,
         message='IamPolicyAnalysisQuery',
-    ))
-    output_config = cast('IamPolicyAnalysisOutputConfig', proto.Field(
+    )
+    output_config = proto.Field(
         proto.MESSAGE,
         number=2,
         message='IamPolicyAnalysisOutputConfig',
-    ))
+    )
 
 
 class AnalyzeIamPolicyLongrunningResponse(proto.Message):

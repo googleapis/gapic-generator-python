@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import cast, Mapping, Sequence
-
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -74,23 +72,23 @@ class GenerateAccessTokenRequest(proto.Message):
             to a default value of one hour.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    delegates = cast(Sequence[str], proto.RepeatedField(
+    )
+    delegates = proto.RepeatedField(
         proto.STRING,
         number=2,
-    ))
-    scope = cast(Sequence[str], proto.RepeatedField(
+    )
+    scope = proto.RepeatedField(
         proto.STRING,
         number=4,
-    ))
-    lifetime = cast(duration_pb2.Duration, proto.Field(
+    )
+    lifetime = proto.Field(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
-    ))
+    )
 
 
 class GenerateAccessTokenResponse(proto.Message):
@@ -104,15 +102,15 @@ class GenerateAccessTokenResponse(proto.Message):
             The expiration time is always set.
     """
 
-    access_token = cast(str, proto.Field(
+    access_token = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    expire_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    expire_time = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
-    ))
+    )
 
 
 class SignBlobRequest(proto.Message):
@@ -143,18 +141,18 @@ class SignBlobRequest(proto.Message):
             Required. The bytes to sign.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    delegates = cast(Sequence[str], proto.RepeatedField(
+    )
+    delegates = proto.RepeatedField(
         proto.STRING,
         number=3,
-    ))
-    payload = cast(bytes, proto.Field(
+    )
+    payload = proto.Field(
         proto.BYTES,
         number=5,
-    ))
+    )
 
 
 class SignBlobResponse(proto.Message):
@@ -167,14 +165,14 @@ class SignBlobResponse(proto.Message):
             The signed blob.
     """
 
-    key_id = cast(str, proto.Field(
+    key_id = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    signed_blob = cast(bytes, proto.Field(
+    )
+    signed_blob = proto.Field(
         proto.BYTES,
         number=4,
-    ))
+    )
 
 
 class SignJwtRequest(proto.Message):
@@ -206,18 +204,18 @@ class SignJwtRequest(proto.Message):
             object that contains a JWT Claims Set.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    delegates = cast(Sequence[str], proto.RepeatedField(
+    )
+    delegates = proto.RepeatedField(
         proto.STRING,
         number=3,
-    ))
-    payload = cast(str, proto.Field(
+    )
+    payload = proto.Field(
         proto.STRING,
         number=5,
-    ))
+    )
 
 
 class SignJwtResponse(proto.Message):
@@ -230,14 +228,14 @@ class SignJwtResponse(proto.Message):
             The signed JWT.
     """
 
-    key_id = cast(str, proto.Field(
+    key_id = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    signed_jwt = cast(str, proto.Field(
+    )
+    signed_jwt = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class GenerateIdTokenRequest(proto.Message):
@@ -274,22 +272,22 @@ class GenerateIdTokenRequest(proto.Message):
             ``email_verified`` claims.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    delegates = cast(Sequence[str], proto.RepeatedField(
+    )
+    delegates = proto.RepeatedField(
         proto.STRING,
         number=2,
-    ))
-    audience = cast(str, proto.Field(
+    )
+    audience = proto.Field(
         proto.STRING,
         number=3,
-    ))
-    include_email = cast(bool, proto.Field(
+    )
+    include_email = proto.Field(
         proto.BOOL,
         number=4,
-    ))
+    )
 
 
 class GenerateIdTokenResponse(proto.Message):
@@ -300,10 +298,10 @@ class GenerateIdTokenResponse(proto.Message):
             The OpenId Connect ID token.
     """
 
-    token = cast(str, proto.Field(
+    token = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

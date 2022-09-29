@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import cast, Mapping, Sequence
-
 import proto  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -179,83 +177,83 @@ class LogEntry(proto.Message):
             associated with the log entry, if any.
     """
 
-    log_name = cast(str, proto.Field(
+    log_name = proto.Field(
         proto.STRING,
         number=12,
-    ))
-    resource = cast(monitored_resource_pb2.MonitoredResource, proto.Field(
+    )
+    resource = proto.Field(
         proto.MESSAGE,
         number=8,
         message=monitored_resource_pb2.MonitoredResource,
-    ))
-    proto_payload = cast(any_pb2.Any, proto.Field(
+    )
+    proto_payload = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof='payload',
         message=any_pb2.Any,
-    ))
-    text_payload = cast(str, proto.Field(
+    )
+    text_payload = proto.Field(
         proto.STRING,
         number=3,
         oneof='payload',
-    ))
-    json_payload = cast(struct_pb2.Struct, proto.Field(
+    )
+    json_payload = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof='payload',
         message=struct_pb2.Struct,
-    ))
-    timestamp = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
-    ))
-    receive_timestamp = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    receive_timestamp = proto.Field(
         proto.MESSAGE,
         number=24,
         message=timestamp_pb2.Timestamp,
-    ))
-    severity = cast(log_severity_pb2.LogSeverity, proto.Field(
+    )
+    severity = proto.Field(
         proto.ENUM,
         number=10,
         enum=log_severity_pb2.LogSeverity,
-    ))
-    insert_id = cast(str, proto.Field(
+    )
+    insert_id = proto.Field(
         proto.STRING,
         number=4,
-    ))
-    http_request = cast(http_request_pb2.HttpRequest, proto.Field(
+    )
+    http_request = proto.Field(
         proto.MESSAGE,
         number=7,
         message=http_request_pb2.HttpRequest,
-    ))
-    labels = cast(Mapping[str, str], proto.MapField(
+    )
+    labels = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=11,
-    ))
-    operation = cast('LogEntryOperation', proto.Field(
+    )
+    operation = proto.Field(
         proto.MESSAGE,
         number=15,
         message='LogEntryOperation',
-    ))
-    trace = cast(str, proto.Field(
+    )
+    trace = proto.Field(
         proto.STRING,
         number=22,
-    ))
-    span_id = cast(str, proto.Field(
+    )
+    span_id = proto.Field(
         proto.STRING,
         number=27,
-    ))
-    trace_sampled = cast(bool, proto.Field(
+    )
+    trace_sampled = proto.Field(
         proto.BOOL,
         number=30,
-    ))
-    source_location = cast('LogEntrySourceLocation', proto.Field(
+    )
+    source_location = proto.Field(
         proto.MESSAGE,
         number=23,
         message='LogEntrySourceLocation',
-    ))
+    )
 
 
 class LogEntryOperation(proto.Message):
@@ -280,22 +278,22 @@ class LogEntryOperation(proto.Message):
             last log entry in the operation.
     """
 
-    id = cast(str, proto.Field(
+    id = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    producer = cast(str, proto.Field(
+    )
+    producer = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    first = cast(bool, proto.Field(
+    )
+    first = proto.Field(
         proto.BOOL,
         number=3,
-    ))
-    last = cast(bool, proto.Field(
+    )
+    last = proto.Field(
         proto.BOOL,
         number=4,
-    ))
+    )
 
 
 class LogEntrySourceLocation(proto.Message):
@@ -320,18 +318,18 @@ class LogEntrySourceLocation(proto.Message):
             (Go), ``function`` (Python).
     """
 
-    file = cast(str, proto.Field(
+    file = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    line = cast(int, proto.Field(
+    )
+    line = proto.Field(
         proto.INT64,
         number=2,
-    ))
-    function = cast(str, proto.Field(
+    )
+    function = proto.Field(
         proto.STRING,
         number=3,
-    ))
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

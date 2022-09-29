@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import cast, Mapping, Sequence
-
 import proto  # type: ignore
 
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -106,37 +104,37 @@ class LogBucket(proto.Message):
             Output only. The bucket lifecycle state.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    description = cast(str, proto.Field(
+    )
+    description = proto.Field(
         proto.STRING,
         number=3,
-    ))
-    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    create_time = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
-    ))
-    update_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    update_time = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
-    ))
-    retention_days = cast(int, proto.Field(
+    )
+    retention_days = proto.Field(
         proto.INT32,
         number=11,
-    ))
-    locked = cast(bool, proto.Field(
+    )
+    locked = proto.Field(
         proto.BOOL,
         number=9,
-    ))
-    lifecycle_state = cast('LifecycleState', proto.Field(
+    )
+    lifecycle_state = proto.Field(
         proto.ENUM,
         number=12,
         enum='LifecycleState',
-    ))
+    )
 
 
 class LogView(proto.Message):
@@ -164,28 +162,28 @@ class LogView(proto.Message):
             resource.type = "gce_instance" AND LOG_ID("stdout")
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    description = cast(str, proto.Field(
+    )
+    description = proto.Field(
         proto.STRING,
         number=3,
-    ))
-    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    create_time = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
-    ))
-    update_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    update_time = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
-    ))
-    filter = cast(str, proto.Field(
+    )
+    filter = proto.Field(
         proto.STRING,
         number=7,
-    ))
+    )
 
 
 class LogSink(proto.Message):
@@ -300,60 +298,60 @@ class LogSink(proto.Message):
         V2 = 1
         V1 = 2
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    destination = cast(str, proto.Field(
+    )
+    destination = proto.Field(
         proto.STRING,
         number=3,
-    ))
-    filter = cast(str, proto.Field(
+    )
+    filter = proto.Field(
         proto.STRING,
         number=5,
-    ))
-    description = cast(str, proto.Field(
+    )
+    description = proto.Field(
         proto.STRING,
         number=18,
-    ))
-    disabled = cast(bool, proto.Field(
+    )
+    disabled = proto.Field(
         proto.BOOL,
         number=19,
-    ))
-    exclusions = cast(Sequence['LogExclusion'], proto.RepeatedField(
+    )
+    exclusions = proto.RepeatedField(
         proto.MESSAGE,
         number=16,
         message='LogExclusion',
-    ))
-    output_version_format = cast(VersionFormat, proto.Field(
+    )
+    output_version_format = proto.Field(
         proto.ENUM,
         number=6,
         enum=VersionFormat,
-    ))
-    writer_identity = cast(str, proto.Field(
+    )
+    writer_identity = proto.Field(
         proto.STRING,
         number=8,
-    ))
-    include_children = cast(bool, proto.Field(
+    )
+    include_children = proto.Field(
         proto.BOOL,
         number=9,
-    ))
-    bigquery_options = cast('BigQueryOptions', proto.Field(
+    )
+    bigquery_options = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof='options',
         message='BigQueryOptions',
-    ))
-    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    create_time = proto.Field(
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
-    ))
-    update_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    update_time = proto.Field(
         proto.MESSAGE,
         number=14,
         message=timestamp_pb2.Timestamp,
-    ))
+    )
 
 
 class BigQueryOptions(proto.Message):
@@ -381,14 +379,14 @@ class BigQueryOptions(proto.Message):
             will have this field set to false.
     """
 
-    use_partitioned_tables = cast(bool, proto.Field(
+    use_partitioned_tables = proto.Field(
         proto.BOOL,
         number=1,
-    ))
-    uses_timestamp_column_partitioning = cast(bool, proto.Field(
+    )
+    uses_timestamp_column_partitioning = proto.Field(
         proto.BOOL,
         number=3,
-    ))
+    )
 
 
 class ListBucketsRequest(proto.Message):
@@ -422,18 +420,18 @@ class ListBucketsRequest(proto.Message):
             results might be available.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    page_size = cast(int, proto.Field(
+    )
+    page_size = proto.Field(
         proto.INT32,
         number=3,
-    ))
+    )
 
 
 class ListBucketsResponse(proto.Message):
@@ -453,15 +451,15 @@ class ListBucketsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    buckets = cast(Sequence['LogBucket'], proto.RepeatedField(
+    buckets = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogBucket',
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class CreateBucketRequest(proto.Message):
@@ -488,19 +486,19 @@ class CreateBucketRequest(proto.Message):
             name field in the bucket is ignored.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    bucket_id = cast(str, proto.Field(
+    )
+    bucket_id = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    bucket = cast('LogBucket', proto.Field(
+    )
+    bucket = proto.Field(
         proto.MESSAGE,
         number=3,
         message='LogBucket',
-    ))
+    )
 
 
 class UpdateBucketRequest(proto.Message):
@@ -536,20 +534,20 @@ class UpdateBucketRequest(proto.Message):
             Example: ``updateMask=retention_days``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    bucket = cast('LogBucket', proto.Field(
+    )
+    bucket = proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogBucket',
-    ))
-    update_mask = cast(field_mask_pb2.FieldMask, proto.Field(
+    )
+    update_mask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
-    ))
+    )
 
 
 class GetBucketRequest(proto.Message):
@@ -570,10 +568,10 @@ class GetBucketRequest(proto.Message):
             ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class DeleteBucketRequest(proto.Message):
@@ -594,10 +592,10 @@ class DeleteBucketRequest(proto.Message):
             ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class UndeleteBucketRequest(proto.Message):
@@ -618,10 +616,10 @@ class UndeleteBucketRequest(proto.Message):
             ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class ListViewsRequest(proto.Message):
@@ -647,18 +645,18 @@ class ListViewsRequest(proto.Message):
             results might be available.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    page_size = cast(int, proto.Field(
+    )
+    page_size = proto.Field(
         proto.INT32,
         number=3,
-    ))
+    )
 
 
 class ListViewsResponse(proto.Message):
@@ -678,15 +676,15 @@ class ListViewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    views = cast(Sequence['LogView'], proto.RepeatedField(
+    views = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogView',
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class CreateViewRequest(proto.Message):
@@ -708,19 +706,19 @@ class CreateViewRequest(proto.Message):
             Required. The new view.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    view_id = cast(str, proto.Field(
+    )
+    view_id = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    view = cast('LogView', proto.Field(
+    )
+    view = proto.Field(
         proto.MESSAGE,
         number=3,
         message='LogView',
-    ))
+    )
 
 
 class UpdateViewRequest(proto.Message):
@@ -750,20 +748,20 @@ class UpdateViewRequest(proto.Message):
             Example: ``updateMask=filter``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    view = cast('LogView', proto.Field(
+    )
+    view = proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogView',
-    ))
-    update_mask = cast(field_mask_pb2.FieldMask, proto.Field(
+    )
+    update_mask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
-    ))
+    )
 
 
 class GetViewRequest(proto.Message):
@@ -781,10 +779,10 @@ class GetViewRequest(proto.Message):
             ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class DeleteViewRequest(proto.Message):
@@ -802,10 +800,10 @@ class DeleteViewRequest(proto.Message):
             ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class ListSinksRequest(proto.Message):
@@ -834,18 +832,18 @@ class ListSinksRequest(proto.Message):
             results might be available.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    page_size = cast(int, proto.Field(
+    )
+    page_size = proto.Field(
         proto.INT32,
         number=3,
-    ))
+    )
 
 
 class ListSinksResponse(proto.Message):
@@ -865,15 +863,15 @@ class ListSinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sinks = cast(Sequence['LogSink'], proto.RepeatedField(
+    sinks = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogSink',
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class GetSinkRequest(proto.Message):
@@ -893,10 +891,10 @@ class GetSinkRequest(proto.Message):
             Example: ``"projects/my-project-id/sinks/my-sink-id"``.
     """
 
-    sink_name = cast(str, proto.Field(
+    sink_name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class CreateSinkRequest(proto.Message):
@@ -935,19 +933,19 @@ class CreateSinkRequest(proto.Message):
             [LogSink][google.logging.v2.LogSink].
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    sink = cast('LogSink', proto.Field(
+    )
+    sink = proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogSink',
-    ))
-    unique_writer_identity = cast(bool, proto.Field(
+    )
+    unique_writer_identity = proto.Field(
         proto.BOOL,
         number=3,
-    ))
+    )
 
 
 class UpdateSinkRequest(proto.Message):
@@ -1003,24 +1001,24 @@ class UpdateSinkRequest(proto.Message):
             Example: ``updateMask=filter``.
     """
 
-    sink_name = cast(str, proto.Field(
+    sink_name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    sink = cast('LogSink', proto.Field(
+    )
+    sink = proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogSink',
-    ))
-    unique_writer_identity = cast(bool, proto.Field(
+    )
+    unique_writer_identity = proto.Field(
         proto.BOOL,
         number=3,
-    ))
-    update_mask = cast(field_mask_pb2.FieldMask, proto.Field(
+    )
+    update_mask = proto.Field(
         proto.MESSAGE,
         number=4,
         message=field_mask_pb2.FieldMask,
-    ))
+    )
 
 
 class DeleteSinkRequest(proto.Message):
@@ -1041,10 +1039,10 @@ class DeleteSinkRequest(proto.Message):
             Example: ``"projects/my-project-id/sinks/my-sink-id"``.
     """
 
-    sink_name = cast(str, proto.Field(
+    sink_name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class LogExclusion(proto.Message):
@@ -1093,32 +1091,32 @@ class LogExclusion(proto.Message):
             exclusions.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    description = cast(str, proto.Field(
+    )
+    description = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    filter = cast(str, proto.Field(
+    )
+    filter = proto.Field(
         proto.STRING,
         number=3,
-    ))
-    disabled = cast(bool, proto.Field(
+    )
+    disabled = proto.Field(
         proto.BOOL,
         number=4,
-    ))
-    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    create_time = proto.Field(
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
-    ))
-    update_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    update_time = proto.Field(
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
-    ))
+    )
 
 
 class ListExclusionsRequest(proto.Message):
@@ -1148,18 +1146,18 @@ class ListExclusionsRequest(proto.Message):
             results might be available.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    page_size = cast(int, proto.Field(
+    )
+    page_size = proto.Field(
         proto.INT32,
         number=3,
-    ))
+    )
 
 
 class ListExclusionsResponse(proto.Message):
@@ -1179,15 +1177,15 @@ class ListExclusionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    exclusions = cast(Sequence['LogExclusion'], proto.RepeatedField(
+    exclusions = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogExclusion',
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class GetExclusionRequest(proto.Message):
@@ -1208,10 +1206,10 @@ class GetExclusionRequest(proto.Message):
             ``"projects/my-project-id/exclusions/my-exclusion-id"``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class CreateExclusionRequest(proto.Message):
@@ -1237,15 +1235,15 @@ class CreateExclusionRequest(proto.Message):
             resource.
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    exclusion = cast('LogExclusion', proto.Field(
+    )
+    exclusion = proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogExclusion',
-    ))
+    )
 
 
 class UpdateExclusionRequest(proto.Message):
@@ -1280,20 +1278,20 @@ class UpdateExclusionRequest(proto.Message):
             ``"filter,description"``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    exclusion = cast('LogExclusion', proto.Field(
+    )
+    exclusion = proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogExclusion',
-    ))
-    update_mask = cast(field_mask_pb2.FieldMask, proto.Field(
+    )
+    update_mask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
-    ))
+    )
 
 
 class DeleteExclusionRequest(proto.Message):
@@ -1315,10 +1313,10 @@ class DeleteExclusionRequest(proto.Message):
             ``"projects/my-project-id/exclusions/my-exclusion-id"``.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class GetCmekSettingsRequest(proto.Message):
@@ -1347,10 +1345,10 @@ class GetCmekSettingsRequest(proto.Message):
             applies to all projects and folders in the GCP organization.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class UpdateCmekSettingsRequest(proto.Message):
@@ -1395,20 +1393,20 @@ class UpdateCmekSettingsRequest(proto.Message):
             Example: ``"updateMask=kmsKeyName"``
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    cmek_settings = cast('CmekSettings', proto.Field(
+    )
+    cmek_settings = proto.Field(
         proto.MESSAGE,
         number=2,
         message='CmekSettings',
-    ))
-    update_mask = cast(field_mask_pb2.FieldMask, proto.Field(
+    )
+    update_mask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
-    ))
+    )
 
 
 class CmekSettings(proto.Message):
@@ -1473,18 +1471,18 @@ class CmekSettings(proto.Message):
             for more information.
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    kms_key_name = cast(str, proto.Field(
+    )
+    kms_key_name = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    service_account_id = cast(str, proto.Field(
+    )
+    service_account_id = proto.Field(
         proto.STRING,
         number=3,
-    ))
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

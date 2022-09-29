@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import cast, Mapping, Sequence
-
 import proto  # type: ignore
 
 from google.cloud.orgpolicy.v1 import orgpolicy_pb2  # type: ignore
@@ -72,30 +70,30 @@ class TemporalAsset(proto.Message):
         DOES_NOT_EXIST = 3
         DELETED = 4
 
-    window = cast('TimeWindow', proto.Field(
+    window = proto.Field(
         proto.MESSAGE,
         number=1,
         message='TimeWindow',
-    ))
-    deleted = cast(bool, proto.Field(
+    )
+    deleted = proto.Field(
         proto.BOOL,
         number=2,
-    ))
-    asset = cast('Asset', proto.Field(
+    )
+    asset = proto.Field(
         proto.MESSAGE,
         number=3,
         message='Asset',
-    ))
-    prior_asset_state = cast(PriorAssetState, proto.Field(
+    )
+    prior_asset_state = proto.Field(
         proto.ENUM,
         number=4,
         enum=PriorAssetState,
-    ))
-    prior_asset = cast('Asset', proto.Field(
+    )
+    prior_asset = proto.Field(
         proto.MESSAGE,
         number=5,
         message='Asset',
-    ))
+    )
 
 
 class TimeWindow(proto.Message):
@@ -110,16 +108,16 @@ class TimeWindow(proto.Message):
             instead.
     """
 
-    start_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    start_time = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
-    ))
-    end_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    end_time = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
-    ))
+    )
 
 
 class Asset(proto.Message):
@@ -210,61 +208,61 @@ class Asset(proto.Message):
             ``["projects/123456789", "folders/5432", "organizations/1234"]``
     """
 
-    update_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    update_time = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
-    ))
-    name = cast(str, proto.Field(
+    )
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    asset_type = cast(str, proto.Field(
+    )
+    asset_type = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    resource = cast('Resource', proto.Field(
+    )
+    resource = proto.Field(
         proto.MESSAGE,
         number=3,
         message='Resource',
-    ))
-    iam_policy = cast(policy_pb2.Policy, proto.Field(
+    )
+    iam_policy = proto.Field(
         proto.MESSAGE,
         number=4,
         message=policy_pb2.Policy,
-    ))
-    org_policy = cast(Sequence[orgpolicy_pb2.Policy], proto.RepeatedField(
+    )
+    org_policy = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=orgpolicy_pb2.Policy,
-    ))
-    access_policy = cast(access_policy_pb2.AccessPolicy, proto.Field(
+    )
+    access_policy = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof='access_context_policy',
         message=access_policy_pb2.AccessPolicy,
-    ))
-    access_level = cast(access_level_pb2.AccessLevel, proto.Field(
+    )
+    access_level = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof='access_context_policy',
         message=access_level_pb2.AccessLevel,
-    ))
-    service_perimeter = cast(service_perimeter_pb2.ServicePerimeter, proto.Field(
+    )
+    service_perimeter = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof='access_context_policy',
         message=service_perimeter_pb2.ServicePerimeter,
-    ))
-    os_inventory = cast(inventory_pb2.Inventory, proto.Field(
+    )
+    os_inventory = proto.Field(
         proto.MESSAGE,
         number=12,
         message=inventory_pb2.Inventory,
-    ))
-    ancestors = cast(Sequence[str], proto.RepeatedField(
+    )
+    ancestors = proto.RepeatedField(
         proto.STRING,
         number=10,
-    ))
+    )
 
 
 class Resource(proto.Message):
@@ -316,35 +314,35 @@ class Resource(proto.Message):
             https://cloud.google.com/about/locations/.
     """
 
-    version = cast(str, proto.Field(
+    version = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    discovery_document_uri = cast(str, proto.Field(
+    )
+    discovery_document_uri = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    discovery_name = cast(str, proto.Field(
+    )
+    discovery_name = proto.Field(
         proto.STRING,
         number=3,
-    ))
-    resource_url = cast(str, proto.Field(
+    )
+    resource_url = proto.Field(
         proto.STRING,
         number=4,
-    ))
-    parent = cast(str, proto.Field(
+    )
+    parent = proto.Field(
         proto.STRING,
         number=5,
-    ))
-    data = cast(struct_pb2.Struct, proto.Field(
+    )
+    data = proto.Field(
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,
-    ))
-    location = cast(str, proto.Field(
+    )
+    location = proto.Field(
         proto.STRING,
         number=8,
-    ))
+    )
 
 
 class ResourceSearchResult(proto.Message):
@@ -566,78 +564,78 @@ class ResourceSearchResult(proto.Message):
                ``cloudresourcemanager.googleapis.com/Project``
     """
 
-    name = cast(str, proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    asset_type = cast(str, proto.Field(
+    )
+    asset_type = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    project = cast(str, proto.Field(
+    )
+    project = proto.Field(
         proto.STRING,
         number=3,
-    ))
-    folders = cast(Sequence[str], proto.RepeatedField(
+    )
+    folders = proto.RepeatedField(
         proto.STRING,
         number=17,
-    ))
-    organization = cast(str, proto.Field(
+    )
+    organization = proto.Field(
         proto.STRING,
         number=18,
-    ))
-    display_name = cast(str, proto.Field(
+    )
+    display_name = proto.Field(
         proto.STRING,
         number=4,
-    ))
-    description = cast(str, proto.Field(
+    )
+    description = proto.Field(
         proto.STRING,
         number=5,
-    ))
-    location = cast(str, proto.Field(
+    )
+    location = proto.Field(
         proto.STRING,
         number=6,
-    ))
-    labels = cast(Mapping[str, str], proto.MapField(
+    )
+    labels = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
-    ))
-    network_tags = cast(Sequence[str], proto.RepeatedField(
+    )
+    network_tags = proto.RepeatedField(
         proto.STRING,
         number=8,
-    ))
-    kms_key = cast(str, proto.Field(
+    )
+    kms_key = proto.Field(
         proto.STRING,
         number=10,
-    ))
-    create_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    create_time = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
-    ))
-    update_time = cast(timestamp_pb2.Timestamp, proto.Field(
+    )
+    update_time = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
-    ))
-    state = cast(str, proto.Field(
+    )
+    state = proto.Field(
         proto.STRING,
         number=13,
-    ))
-    additional_attributes = cast(struct_pb2.Struct, proto.Field(
+    )
+    additional_attributes = proto.Field(
         proto.MESSAGE,
         number=9,
         message=struct_pb2.Struct,
-    ))
-    parent_full_resource_name = cast(str, proto.Field(
+    )
+    parent_full_resource_name = proto.Field(
         proto.STRING,
         number=19,
-    ))
-    parent_asset_type = cast(str, proto.Field(
+    )
+    parent_asset_type = proto.Field(
         proto.STRING,
         number=103,
-    ))
+    )
 
 
 class IamPolicySearchResult(proto.Message):
@@ -748,48 +746,48 @@ class IamPolicySearchResult(proto.Message):
                     ``compute.disk.get``.
             """
 
-            permissions = cast(Sequence[str], proto.RepeatedField(
+            permissions = proto.RepeatedField(
                 proto.STRING,
                 number=1,
-            ))
+            )
 
-        matched_permissions = cast(Mapping[str, 'IamPolicySearchResult.Explanation.Permissions'], proto.MapField(
+        matched_permissions = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=1,
             message='IamPolicySearchResult.Explanation.Permissions',
-        ))
+        )
 
-    resource = cast(str, proto.Field(
+    resource = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    asset_type = cast(str, proto.Field(
+    )
+    asset_type = proto.Field(
         proto.STRING,
         number=5,
-    ))
-    project = cast(str, proto.Field(
+    )
+    project = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    folders = cast(Sequence[str], proto.RepeatedField(
+    )
+    folders = proto.RepeatedField(
         proto.STRING,
         number=6,
-    ))
-    organization = cast(str, proto.Field(
+    )
+    organization = proto.Field(
         proto.STRING,
         number=7,
-    ))
-    policy = cast(policy_pb2.Policy, proto.Field(
+    )
+    policy = proto.Field(
         proto.MESSAGE,
         number=3,
         message=policy_pb2.Policy,
-    ))
-    explanation = cast(Explanation, proto.Field(
+    )
+    explanation = proto.Field(
         proto.MESSAGE,
         number=4,
         message=Explanation,
-    ))
+    )
 
 
 class IamPolicyAnalysisState(proto.Message):
@@ -812,15 +810,15 @@ class IamPolicyAnalysisState(proto.Message):
             of failure.
     """
 
-    code = cast(code_pb2.Code, proto.Field(
+    code = proto.Field(
         proto.ENUM,
         number=1,
         enum=code_pb2.Code,
-    ))
-    cause = cast(str, proto.Field(
+    )
+    cause = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class ConditionEvaluation(proto.Message):
@@ -837,11 +835,11 @@ class ConditionEvaluation(proto.Message):
         FALSE = 2
         CONDITIONAL = 3
 
-    evaluation_value = cast(EvaluationValue, proto.Field(
+    evaluation_value = proto.Field(
         proto.ENUM,
         number=1,
         enum=EvaluationValue,
-    ))
+    )
 
 
 class IamPolicyAnalysisResult(proto.Message):
@@ -884,15 +882,15 @@ class IamPolicyAnalysisResult(proto.Message):
                 The analysis state of this resource.
         """
 
-        full_resource_name = cast(str, proto.Field(
+        full_resource_name = proto.Field(
             proto.STRING,
             number=1,
-        ))
-        analysis_state = cast('IamPolicyAnalysisState', proto.Field(
+        )
+        analysis_state = proto.Field(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisState',
-        ))
+        )
 
     class Access(proto.Message):
         r"""An IAM role or permission under analysis.
@@ -917,21 +915,21 @@ class IamPolicyAnalysisResult(proto.Message):
                 The analysis state of this access.
         """
 
-        role = cast(str, proto.Field(
+        role = proto.Field(
             proto.STRING,
             number=1,
             oneof='oneof_access',
-        ))
-        permission = cast(str, proto.Field(
+        )
+        permission = proto.Field(
             proto.STRING,
             number=2,
             oneof='oneof_access',
-        ))
-        analysis_state = cast('IamPolicyAnalysisState', proto.Field(
+        )
+        analysis_state = proto.Field(
             proto.MESSAGE,
             number=3,
             message='IamPolicyAnalysisState',
-        ))
+        )
 
     class Identity(proto.Message):
         r"""An identity under analysis.
@@ -954,15 +952,15 @@ class IamPolicyAnalysisResult(proto.Message):
                 The analysis state of this identity.
         """
 
-        name = cast(str, proto.Field(
+        name = proto.Field(
             proto.STRING,
             number=1,
-        ))
-        analysis_state = cast('IamPolicyAnalysisState', proto.Field(
+        )
+        analysis_state = proto.Field(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisState',
-        ))
+        )
 
     class Edge(proto.Message):
         r"""A directional edge.
@@ -978,14 +976,14 @@ class IamPolicyAnalysisResult(proto.Message):
                 node or an email of an identity.
         """
 
-        source_node = cast(str, proto.Field(
+        source_node = proto.Field(
             proto.STRING,
             number=1,
-        ))
-        target_node = cast(str, proto.Field(
+        )
+        target_node = proto.Field(
             proto.STRING,
             number=2,
-        ))
+        )
 
     class AccessControlList(proto.Message):
         r"""An access control list, derived from the above IAM policy binding,
@@ -1035,26 +1033,26 @@ class IamPolicyAnalysisResult(proto.Message):
                 defined in the above IAM policy binding.
         """
 
-        resources = cast(Sequence['IamPolicyAnalysisResult.Resource'], proto.RepeatedField(
+        resources = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message='IamPolicyAnalysisResult.Resource',
-        ))
-        accesses = cast(Sequence['IamPolicyAnalysisResult.Access'], proto.RepeatedField(
+        )
+        accesses = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisResult.Access',
-        ))
-        resource_edges = cast(Sequence['IamPolicyAnalysisResult.Edge'], proto.RepeatedField(
+        )
+        resource_edges = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message='IamPolicyAnalysisResult.Edge',
-        ))
-        condition_evaluation = cast('ConditionEvaluation', proto.Field(
+        )
+        condition_evaluation = proto.Field(
             proto.MESSAGE,
             number=4,
             message='ConditionEvaluation',
-        ))
+        )
 
     class IdentityList(proto.Message):
         r"""The identities and group edges.
@@ -1081,40 +1079,40 @@ class IamPolicyAnalysisResult(proto.Message):
                 enabled in request.
         """
 
-        identities = cast(Sequence['IamPolicyAnalysisResult.Identity'], proto.RepeatedField(
+        identities = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message='IamPolicyAnalysisResult.Identity',
-        ))
-        group_edges = cast(Sequence['IamPolicyAnalysisResult.Edge'], proto.RepeatedField(
+        )
+        group_edges = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisResult.Edge',
-        ))
+        )
 
-    attached_resource_full_name = cast(str, proto.Field(
+    attached_resource_full_name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    iam_binding = cast(policy_pb2.Binding, proto.Field(
+    )
+    iam_binding = proto.Field(
         proto.MESSAGE,
         number=2,
         message=policy_pb2.Binding,
-    ))
-    access_control_lists = cast(Sequence[AccessControlList], proto.RepeatedField(
+    )
+    access_control_lists = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=AccessControlList,
-    ))
-    identity_list = cast(IdentityList, proto.Field(
+    )
+    identity_list = proto.Field(
         proto.MESSAGE,
         number=4,
         message=IdentityList,
-    ))
-    fully_explored = cast(bool, proto.Field(
+    )
+    fully_explored = proto.Field(
         proto.BOOL,
         number=5,
-    ))
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

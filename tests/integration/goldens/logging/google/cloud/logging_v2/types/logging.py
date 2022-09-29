@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import cast, Mapping, Sequence
-
 import proto  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -63,10 +61,10 @@ class DeleteLogRequest(proto.Message):
             [LogEntry][google.logging.v2.LogEntry].
     """
 
-    log_name = cast(str, proto.Field(
+    log_name = proto.Field(
         proto.STRING,
         number=1,
-    ))
+    )
 
 
 class WriteLogEntriesRequest(proto.Message):
@@ -160,33 +158,33 @@ class WriteLogEntriesRequest(proto.Message):
             properly before sending valuable data.
     """
 
-    log_name = cast(str, proto.Field(
+    log_name = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    resource = cast(monitored_resource_pb2.MonitoredResource, proto.Field(
+    )
+    resource = proto.Field(
         proto.MESSAGE,
         number=2,
         message=monitored_resource_pb2.MonitoredResource,
-    ))
-    labels = cast(Mapping[str, str], proto.MapField(
+    )
+    labels = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
-    ))
-    entries = cast(Sequence[log_entry.LogEntry], proto.RepeatedField(
+    )
+    entries = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=log_entry.LogEntry,
-    ))
-    partial_success = cast(bool, proto.Field(
+    )
+    partial_success = proto.Field(
         proto.BOOL,
         number=5,
-    ))
-    dry_run = cast(bool, proto.Field(
+    )
+    dry_run = proto.Field(
         proto.BOOL,
         number=6,
-    ))
+    )
 
 
 class WriteLogEntriesResponse(proto.Message):
@@ -208,12 +206,12 @@ class WriteLogEntriesPartialErrors(proto.Message):
             include per-entry errors.
     """
 
-    log_entry_errors = cast(Mapping[int, status_pb2.Status], proto.MapField(
+    log_entry_errors = proto.MapField(
         proto.INT32,
         proto.MESSAGE,
         number=1,
         message=status_pb2.Status,
-    ))
+    )
 
 
 class ListLogEntriesRequest(proto.Message):
@@ -272,26 +270,26 @@ class ListLogEntriesRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    resource_names = cast(Sequence[str], proto.RepeatedField(
+    resource_names = proto.RepeatedField(
         proto.STRING,
         number=8,
-    ))
-    filter = cast(str, proto.Field(
+    )
+    filter = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    order_by = cast(str, proto.Field(
+    )
+    order_by = proto.Field(
         proto.STRING,
         number=3,
-    ))
-    page_size = cast(int, proto.Field(
+    )
+    page_size = proto.Field(
         proto.INT32,
         number=4,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=5,
-    ))
+    )
 
 
 class ListLogEntriesResponse(proto.Message):
@@ -323,15 +321,15 @@ class ListLogEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entries = cast(Sequence[log_entry.LogEntry], proto.RepeatedField(
+    entries = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=log_entry.LogEntry,
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class ListMonitoredResourceDescriptorsRequest(proto.Message):
@@ -351,14 +349,14 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    page_size = cast(int, proto.Field(
+    page_size = proto.Field(
         proto.INT32,
         number=1,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class ListMonitoredResourceDescriptorsResponse(proto.Message):
@@ -378,15 +376,15 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_descriptors = cast(Sequence[monitored_resource_pb2.MonitoredResourceDescriptor], proto.RepeatedField(
+    resource_descriptors = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class ListLogsRequest(proto.Message):
@@ -425,22 +423,22 @@ class ListLogsRequest(proto.Message):
             "billingAccounts/[BILLING_ACCOUNT_ID]" "folders/[FOLDER_ID]".
     """
 
-    parent = cast(str, proto.Field(
+    parent = proto.Field(
         proto.STRING,
         number=1,
-    ))
-    page_size = cast(int, proto.Field(
+    )
+    page_size = proto.Field(
         proto.INT32,
         number=2,
-    ))
-    page_token = cast(str, proto.Field(
+    )
+    page_token = proto.Field(
         proto.STRING,
         number=3,
-    ))
-    resource_names = cast(Sequence[str], proto.RepeatedField(
+    )
+    resource_names = proto.RepeatedField(
         proto.STRING,
         number=8,
-    ))
+    )
 
 
 class ListLogsResponse(proto.Message):
@@ -462,14 +460,14 @@ class ListLogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    log_names = cast(Sequence[str], proto.RepeatedField(
+    log_names = proto.RepeatedField(
         proto.STRING,
         number=3,
-    ))
-    next_page_token = cast(str, proto.Field(
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
-    ))
+    )
 
 
 class TailLogEntriesRequest(proto.Message):
@@ -511,19 +509,19 @@ class TailLogEntriesRequest(proto.Message):
             milliseconds.
     """
 
-    resource_names = cast(Sequence[str], proto.RepeatedField(
+    resource_names = proto.RepeatedField(
         proto.STRING,
         number=1,
-    ))
-    filter = cast(str, proto.Field(
+    )
+    filter = proto.Field(
         proto.STRING,
         number=2,
-    ))
-    buffer_window = cast(duration_pb2.Duration, proto.Field(
+    )
+    buffer_window = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
-    ))
+    )
 
 
 class TailLogEntriesResponse(proto.Message):
@@ -563,26 +561,26 @@ class TailLogEntriesResponse(proto.Message):
             RATE_LIMIT = 1
             NOT_CONSUMED = 2
 
-        reason = cast('TailLogEntriesResponse.SuppressionInfo.Reason', proto.Field(
+        reason = proto.Field(
             proto.ENUM,
             number=1,
             enum='TailLogEntriesResponse.SuppressionInfo.Reason',
-        ))
-        suppressed_count = cast(int, proto.Field(
+        )
+        suppressed_count = proto.Field(
             proto.INT32,
             number=2,
-        ))
+        )
 
-    entries = cast(Sequence[log_entry.LogEntry], proto.RepeatedField(
+    entries = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=log_entry.LogEntry,
-    ))
-    suppression_info = cast(Sequence[SuppressionInfo], proto.RepeatedField(
+    )
+    suppression_info = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=SuppressionInfo,
-    ))
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
