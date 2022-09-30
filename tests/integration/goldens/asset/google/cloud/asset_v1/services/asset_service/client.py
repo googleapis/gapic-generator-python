@@ -302,7 +302,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, AssetServiceTransport, None] = None,
-            client_options: Optional[client_options_lib.ClientOptions] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiates the asset service client.
@@ -316,7 +316,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             transport (Union[str, AssetServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
