@@ -156,7 +156,7 @@ class Generator:
         # TODO: Support the generation of REST snippets.
         autogen_specs = [
             spec for spec in autogen_specs
-            if spec["transport"] != "rest"
+            if spec["transport"] != api.TRANSPORT_REST
         ]
 
         # Also process any handwritten sample specs

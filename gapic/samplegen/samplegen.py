@@ -1021,7 +1021,7 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 transport_type = "rest"
             for rpc_name, method_list in client.rpcs.items():
                 # Region Tag Format:
-                # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async}]
+                # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async|rest}]
                 region_tag = f"{api_short_name}_{api_version}_generated_{service_name}_{rpc_name}_{transport_type}"
                 spec = {
                     "rpc": rpc_name,
