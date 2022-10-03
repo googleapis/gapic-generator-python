@@ -3,10 +3,4 @@
 {% include "_license.j2" %}
 {% endblock %}
 {% block content %}
-
-{% set package_path = api.naming.warehouse_package_name.replace('-','.') %}
-from {{package_path}} import version as package_version
-
-__version__ = package_version.__version__
-
 {% endblock %}
