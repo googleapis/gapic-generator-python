@@ -41,6 +41,7 @@ setuptools.setup(
         'libcst >= 0.2.5',
         'googleapis-common-protos >= 1.55.0, <2.0.0dev',
         'proto-plus >= 1.19.7',
+        'importlib-metadata; python_version < "3.8"',
     ),
     python_requires='>=3.7',
     classifiers=[

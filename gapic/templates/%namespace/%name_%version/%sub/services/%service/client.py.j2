@@ -10,7 +10,11 @@ import functools
 import os
 import re
 from typing import Dict, Mapping, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
-import pkg_resources
+try:
+    import importlib.metadata as importlib_metadata
+except ImportError: # pragma: NO COVER
+    # for python 3.7 compatibility
+    import importlib_metadata
 {% if service.any_deprecated %}
 import warnings
 {% endif %}
@@ -686,11 +690,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% endif %}
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
+        gapic_version=importlib_metadata.distribution(
             "{{ api.naming.warehouse_package_name }}",
         ).version,
     )
-except pkg_resources.DistributionNotFound:
+except importlib_metadata.PackageNotFoundError:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 

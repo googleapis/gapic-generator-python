@@ -17,7 +17,11 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+try:
+    import importlib.metadata as importlib_metadata
+except ImportError: # pragma: NO COVER
+    # for python 3.7 compatibility
+    import importlib_metadata
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -1851,11 +1855,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
+        gapic_version=importlib_metadata.distribution(
             "google-cloud-asset",
         ).version,
     )
-except pkg_resources.DistributionNotFound:
+except importlib_metadata.PackageNotFoundError:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 

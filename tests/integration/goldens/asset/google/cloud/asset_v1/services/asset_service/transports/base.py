@@ -15,7 +15,11 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
+try:
+    import importlib.metadata as importlib_metadata
+except ImportError: # pragma: NO COVER
+    # for python 3.7 compatibility
+    import importlib_metadata
 
 import google.auth  # type: ignore
 import google.api_core
@@ -32,11 +36,11 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
+        gapic_version=importlib_metadata.distribution(
             'google-cloud-asset',
         ).version,
     )
-except pkg_resources.DistributionNotFound:
+except importlib_metadata.PackageNotFoundError:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
