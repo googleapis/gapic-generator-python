@@ -11,31 +11,34 @@ package_root = os.path.abspath(os.path.dirname(__file__))
 
 name = '{{ api.naming.warehouse_package_name }}'
 
-{% set warehouse_description = api.naming.warehouse_package_name.replace('-',' ') %}
-{% set package_path = api.naming.warehouse_package_name.replace('-','/') %}
+{% set warehouse_description = api.naming.warehouse_package_name.replace('-',' ')|title %}
+{% set package_path = api.naming.module_namespace|join('/') + "/" + api.naming.module_name %}
 
-description = "{{ warehouse_description }} client library"
+description = "{{ warehouse_description }} API client library"
 
 version = {}
 with open(os.path.join(package_root, '{{ package_path }}/version.py')) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
 
-release_status = "Development Status :: 3 - Alpha"
+if version[0] == "0":
+    release_status = "Development Status :: 4 - Beta"
+else:
+    release_status = "Development Status :: 5 - Production/Stable"
+
 dependencies = [
-    'google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*',
-    'googleapis-common-protos >= 1.55.0, <2.0.0dev',
+    "google-api-core[grpc] >= 1.33.2, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
     "proto-plus >= 1.22.0, <2.0.0dev",
-    "protobuf >= 3.20.2, <5.0.0dev",
+    "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if api.requires_package(('google', 'iam', 'v1')) or opts.add_iam_methods or api.has_iam_mixin %}
-        'grpc-google-iam-v1 >= 0.12.4, < 0.13dev',
+        'grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev',
     {% endif %}
     {% if api.requires_package(('google', 'cloud', 'documentai', 'v1')) %}
         'google-cloud-documentai >= 1.2.1, < 2.0.0dev',
     {% endif %}
 ]
-url = "https://github.com/googleapis/python-{{ api.naming.warehouse_package_name }}"
+url = "https://github.com/googleapis/python-{{ api.naming.warehouse_package_name|replace("google-cloud-", "") }}"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
