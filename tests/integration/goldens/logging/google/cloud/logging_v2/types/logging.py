@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import Mapping, Sequence
+
 import proto  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -61,7 +63,7 @@ class DeleteLogRequest(proto.Message):
             [LogEntry][google.logging.v2.LogEntry].
     """
 
-    log_name = proto.Field(
+    log_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -158,30 +160,30 @@ class WriteLogEntriesRequest(proto.Message):
             properly before sending valuable data.
     """
 
-    log_name = proto.Field(
+    log_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource = proto.Field(
+    resource: monitored_resource_pb2.MonitoredResource = proto.Field(
         proto.MESSAGE,
         number=2,
         message=monitored_resource_pb2.MonitoredResource,
     )
-    labels = proto.MapField(
+    labels: Mapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    entries = proto.RepeatedField(
+    entries: Sequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=log_entry.LogEntry,
     )
-    partial_success = proto.Field(
+    partial_success: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    dry_run = proto.Field(
+    dry_run: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -206,7 +208,7 @@ class WriteLogEntriesPartialErrors(proto.Message):
             include per-entry errors.
     """
 
-    log_entry_errors = proto.MapField(
+    log_entry_errors: Mapping[int, status_pb2.Status] = proto.MapField(
         proto.INT32,
         proto.MESSAGE,
         number=1,
@@ -270,23 +272,23 @@ class ListLogEntriesRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    resource_names = proto.RepeatedField(
+    resource_names: Sequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -321,12 +323,12 @@ class ListLogEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entries = proto.RepeatedField(
+    entries: Sequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=log_entry.LogEntry,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -349,11 +351,11 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -376,12 +378,12 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_descriptors = proto.RepeatedField(
+    resource_descriptors: Sequence[monitored_resource_pb2.MonitoredResourceDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -423,19 +425,19 @@ class ListLogsRequest(proto.Message):
             "billingAccounts/[BILLING_ACCOUNT_ID]" "folders/[FOLDER_ID]".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    resource_names = proto.RepeatedField(
+    resource_names: Sequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
@@ -460,11 +462,11 @@ class ListLogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    log_names = proto.RepeatedField(
+    log_names: Sequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -509,15 +511,15 @@ class TailLogEntriesRequest(proto.Message):
             milliseconds.
     """
 
-    resource_names = proto.RepeatedField(
+    resource_names: Sequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    buffer_window = proto.Field(
+    buffer_window: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
@@ -561,22 +563,22 @@ class TailLogEntriesResponse(proto.Message):
             RATE_LIMIT = 1
             NOT_CONSUMED = 2
 
-        reason = proto.Field(
+        reason: 'TailLogEntriesResponse.SuppressionInfo.Reason' = proto.Field(
             proto.ENUM,
             number=1,
             enum='TailLogEntriesResponse.SuppressionInfo.Reason',
         )
-        suppressed_count = proto.Field(
+        suppressed_count: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    entries = proto.RepeatedField(
+    entries: Sequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=log_entry.LogEntry,
     )
-    suppression_info = proto.RepeatedField(
+    suppression_info: Sequence[SuppressionInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=SuppressionInfo,

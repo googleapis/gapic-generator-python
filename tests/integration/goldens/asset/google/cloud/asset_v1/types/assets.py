@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import Mapping, Sequence
+
 import proto  # type: ignore
 
 from google.cloud.orgpolicy.v1 import orgpolicy_pb2  # type: ignore
@@ -70,26 +72,26 @@ class TemporalAsset(proto.Message):
         DOES_NOT_EXIST = 3
         DELETED = 4
 
-    window = proto.Field(
+    window: 'TimeWindow' = proto.Field(
         proto.MESSAGE,
         number=1,
         message='TimeWindow',
     )
-    deleted = proto.Field(
+    deleted: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    asset = proto.Field(
+    asset: 'Asset' = proto.Field(
         proto.MESSAGE,
         number=3,
         message='Asset',
     )
-    prior_asset_state = proto.Field(
+    prior_asset_state: PriorAssetState = proto.Field(
         proto.ENUM,
         number=4,
         enum=PriorAssetState,
     )
-    prior_asset = proto.Field(
+    prior_asset: 'Asset' = proto.Field(
         proto.MESSAGE,
         number=5,
         message='Asset',
@@ -108,12 +110,12 @@ class TimeWindow(proto.Message):
             instead.
     """
 
-    start_time = proto.Field(
+    start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
@@ -208,58 +210,58 @@ class Asset(proto.Message):
             ``["projects/123456789", "folders/5432", "organizations/1234"]``
     """
 
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_type = proto.Field(
+    asset_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    resource = proto.Field(
+    resource: 'Resource' = proto.Field(
         proto.MESSAGE,
         number=3,
         message='Resource',
     )
-    iam_policy = proto.Field(
+    iam_policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=4,
         message=policy_pb2.Policy,
     )
-    org_policy = proto.RepeatedField(
+    org_policy: Sequence[orgpolicy_pb2.Policy] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=orgpolicy_pb2.Policy,
     )
-    access_policy = proto.Field(
+    access_policy: access_policy_pb2.AccessPolicy = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof='access_context_policy',
         message=access_policy_pb2.AccessPolicy,
     )
-    access_level = proto.Field(
+    access_level: access_level_pb2.AccessLevel = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof='access_context_policy',
         message=access_level_pb2.AccessLevel,
     )
-    service_perimeter = proto.Field(
+    service_perimeter: service_perimeter_pb2.ServicePerimeter = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof='access_context_policy',
         message=service_perimeter_pb2.ServicePerimeter,
     )
-    os_inventory = proto.Field(
+    os_inventory: inventory_pb2.Inventory = proto.Field(
         proto.MESSAGE,
         number=12,
         message=inventory_pb2.Inventory,
     )
-    ancestors = proto.RepeatedField(
+    ancestors: Sequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
@@ -314,32 +316,32 @@ class Resource(proto.Message):
             https://cloud.google.com/about/locations/.
     """
 
-    version = proto.Field(
+    version: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    discovery_document_uri = proto.Field(
+    discovery_document_uri: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    discovery_name = proto.Field(
+    discovery_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    resource_url = proto.Field(
+    resource_url: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    data = proto.Field(
+    data: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=8,
     )
@@ -564,75 +566,75 @@ class ResourceSearchResult(proto.Message):
                ``cloudresourcemanager.googleapis.com/Project``
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_type = proto.Field(
+    asset_type: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    folders = proto.RepeatedField(
+    folders: Sequence[str] = proto.RepeatedField(
         proto.STRING,
         number=17,
     )
-    organization = proto.Field(
+    organization: str = proto.Field(
         proto.STRING,
         number=18,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    location = proto.Field(
+    location: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    labels = proto.MapField(
+    labels: Mapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    network_tags = proto.RepeatedField(
+    network_tags: Sequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    kms_key = proto.Field(
+    kms_key: str = proto.Field(
         proto.STRING,
         number=10,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(
+    state: str = proto.Field(
         proto.STRING,
         number=13,
     )
-    additional_attributes = proto.Field(
+    additional_attributes: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=9,
         message=struct_pb2.Struct,
     )
-    parent_full_resource_name = proto.Field(
+    parent_full_resource_name: str = proto.Field(
         proto.STRING,
         number=19,
     )
-    parent_asset_type = proto.Field(
+    parent_asset_type: str = proto.Field(
         proto.STRING,
         number=103,
     )
@@ -746,44 +748,44 @@ class IamPolicySearchResult(proto.Message):
                     ``compute.disk.get``.
             """
 
-            permissions = proto.RepeatedField(
+            permissions: Sequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=1,
             )
 
-        matched_permissions = proto.MapField(
+        matched_permissions: Mapping[str, 'IamPolicySearchResult.Explanation.Permissions'] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=1,
             message='IamPolicySearchResult.Explanation.Permissions',
         )
 
-    resource = proto.Field(
+    resource: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    asset_type = proto.Field(
+    asset_type: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    project = proto.Field(
+    project: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    folders = proto.RepeatedField(
+    folders: Sequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
-    organization = proto.Field(
+    organization: str = proto.Field(
         proto.STRING,
         number=7,
     )
-    policy = proto.Field(
+    policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
         number=3,
         message=policy_pb2.Policy,
     )
-    explanation = proto.Field(
+    explanation: Explanation = proto.Field(
         proto.MESSAGE,
         number=4,
         message=Explanation,
@@ -810,12 +812,12 @@ class IamPolicyAnalysisState(proto.Message):
             of failure.
     """
 
-    code = proto.Field(
+    code: code_pb2.Code = proto.Field(
         proto.ENUM,
         number=1,
         enum=code_pb2.Code,
     )
-    cause = proto.Field(
+    cause: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -835,7 +837,7 @@ class ConditionEvaluation(proto.Message):
         FALSE = 2
         CONDITIONAL = 3
 
-    evaluation_value = proto.Field(
+    evaluation_value: EvaluationValue = proto.Field(
         proto.ENUM,
         number=1,
         enum=EvaluationValue,
@@ -882,11 +884,11 @@ class IamPolicyAnalysisResult(proto.Message):
                 The analysis state of this resource.
         """
 
-        full_resource_name = proto.Field(
+        full_resource_name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        analysis_state = proto.Field(
+        analysis_state: 'IamPolicyAnalysisState' = proto.Field(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisState',
@@ -915,17 +917,17 @@ class IamPolicyAnalysisResult(proto.Message):
                 The analysis state of this access.
         """
 
-        role = proto.Field(
+        role: str = proto.Field(
             proto.STRING,
             number=1,
             oneof='oneof_access',
         )
-        permission = proto.Field(
+        permission: str = proto.Field(
             proto.STRING,
             number=2,
             oneof='oneof_access',
         )
-        analysis_state = proto.Field(
+        analysis_state: 'IamPolicyAnalysisState' = proto.Field(
             proto.MESSAGE,
             number=3,
             message='IamPolicyAnalysisState',
@@ -952,11 +954,11 @@ class IamPolicyAnalysisResult(proto.Message):
                 The analysis state of this identity.
         """
 
-        name = proto.Field(
+        name: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        analysis_state = proto.Field(
+        analysis_state: 'IamPolicyAnalysisState' = proto.Field(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisState',
@@ -976,11 +978,11 @@ class IamPolicyAnalysisResult(proto.Message):
                 node or an email of an identity.
         """
 
-        source_node = proto.Field(
+        source_node: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        target_node = proto.Field(
+        target_node: str = proto.Field(
             proto.STRING,
             number=2,
         )
@@ -1033,22 +1035,22 @@ class IamPolicyAnalysisResult(proto.Message):
                 defined in the above IAM policy binding.
         """
 
-        resources = proto.RepeatedField(
+        resources: Sequence['IamPolicyAnalysisResult.Resource'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message='IamPolicyAnalysisResult.Resource',
         )
-        accesses = proto.RepeatedField(
+        accesses: Sequence['IamPolicyAnalysisResult.Access'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisResult.Access',
         )
-        resource_edges = proto.RepeatedField(
+        resource_edges: Sequence['IamPolicyAnalysisResult.Edge'] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message='IamPolicyAnalysisResult.Edge',
         )
-        condition_evaluation = proto.Field(
+        condition_evaluation: 'ConditionEvaluation' = proto.Field(
             proto.MESSAGE,
             number=4,
             message='ConditionEvaluation',
@@ -1079,37 +1081,37 @@ class IamPolicyAnalysisResult(proto.Message):
                 enabled in request.
         """
 
-        identities = proto.RepeatedField(
+        identities: Sequence['IamPolicyAnalysisResult.Identity'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message='IamPolicyAnalysisResult.Identity',
         )
-        group_edges = proto.RepeatedField(
+        group_edges: Sequence['IamPolicyAnalysisResult.Edge'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisResult.Edge',
         )
 
-    attached_resource_full_name = proto.Field(
+    attached_resource_full_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    iam_binding = proto.Field(
+    iam_binding: policy_pb2.Binding = proto.Field(
         proto.MESSAGE,
         number=2,
         message=policy_pb2.Binding,
     )
-    access_control_lists = proto.RepeatedField(
+    access_control_lists: Sequence[AccessControlList] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=AccessControlList,
     )
-    identity_list = proto.Field(
+    identity_list: IdentityList = proto.Field(
         proto.MESSAGE,
         number=4,
         message=IdentityList,
     )
-    fully_explored = proto.Field(
+    fully_explored: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
