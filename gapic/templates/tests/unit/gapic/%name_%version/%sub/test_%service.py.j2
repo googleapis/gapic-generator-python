@@ -21,7 +21,7 @@ import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 {% if 'rest' in opts.transport %}
 from requests import Response
 from requests import Request, PreparedRequest
@@ -63,8 +63,7 @@ from google.longrunning import operations_pb2
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
 {% for ref_type in method.ref_types
-   if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
-           or ref_type.ident.python_import.package == ('google', 'protobuf') and ref_type.ident.python_import.module == 'empty_pb2') %}
+   if not (ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation') %}
 {{ ref_type.ident.python_import }}
 {% endfor %}
 {% endfor %}

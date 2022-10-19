@@ -1,6 +1,37 @@
 # Changelog
 
 
+## [1.4.4](https://github.com/googleapis/gapic-generator-python/compare/v1.4.3...v1.4.4) (2022-09-20)
+
+
+### Bug Fixes
+
+* Do not generate _flattened() unit tests for client streaming methods ([#1454](https://github.com/googleapis/gapic-generator-python/issues/1454)) ([29610ad](https://github.com/googleapis/gapic-generator-python/commit/29610ad68cfd8326e5430413d0ead1951a9b06b2))
+
+## [1.4.3](https://github.com/googleapis/gapic-generator-python/compare/v1.4.2...v1.4.3) (2022-09-19)
+
+
+### Bug Fixes
+
+* Accept 4.x protobuf for gapic-generator-python ([#1453](https://github.com/googleapis/gapic-generator-python/issues/1453)) ([d9099dd](https://github.com/googleapis/gapic-generator-python/commit/d9099ddaff1fadb9fc3ebbab1702d50e609986cc))
+* Femove `vars` and `set`from reserved names ([#1451](https://github.com/googleapis/gapic-generator-python/issues/1451)) ([ae3e6bf](https://github.com/googleapis/gapic-generator-python/commit/ae3e6bf350191cf65337a37822c6d1dff8e6dca4))
+
+## [1.4.2](https://github.com/googleapis/gapic-generator-python/compare/v1.4.1...v1.4.2) (2022-09-13)
+
+
+### Bug Fixes
+
+* Unit test generation for boolean query prams ([#1447](https://github.com/googleapis/gapic-generator-python/issues/1447)) ([dd68dd1](https://github.com/googleapis/gapic-generator-python/commit/dd68dd1f288c4fbbdb7f54900094379ee1d771c0))
+
+## [1.4.1](https://github.com/googleapis/gapic-generator-python/compare/v1.4.0...v1.4.1) (2022-09-09)
+
+
+### Bug Fixes
+
+* Fix test generation for `*Value` wrapper classes ([#1437](https://github.com/googleapis/gapic-generator-python/issues/1437)) ([9e9971f](https://github.com/googleapis/gapic-generator-python/commit/9e9971f6321207fe33a0d28f32a07e3b1f0e795a))
+* Remove grpc only methods from rest.py ([#1440](https://github.com/googleapis/gapic-generator-python/issues/1440)) ([c12a1c2](https://github.com/googleapis/gapic-generator-python/commit/c12a1c208dc91d8b222653b0d9d9696448751c91))
+* **rest:** Use strict encoding to lowercase query string bools ([#1436](https://github.com/googleapis/gapic-generator-python/issues/1436)) ([e667406](https://github.com/googleapis/gapic-generator-python/commit/e6674061ebd919281b49838f44fc0be8730595dc))
+
 ## [1.4.0](https://github.com/googleapis/gapic-generator-python/compare/v1.3.1...v1.4.0) (2022-09-07)
 
 

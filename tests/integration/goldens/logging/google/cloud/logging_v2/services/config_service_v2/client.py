@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -41,6 +41,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import ConfigServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ConfigServiceV2GrpcTransport
 from .transports.grpc_asyncio import ConfigServiceV2GrpcAsyncIOTransport
+from .transports.rest import ConfigServiceV2RestTransport
 
 
 class ConfigServiceV2ClientMeta(type):
@@ -53,6 +54,7 @@ class ConfigServiceV2ClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ConfigServiceV2Transport]]
     _transport_registry["grpc"] = ConfigServiceV2GrpcTransport
     _transport_registry["grpc_asyncio"] = ConfigServiceV2GrpcAsyncIOTransport
+    _transport_registry["rest"] = ConfigServiceV2RestTransport
 
     def get_transport_class(cls,
             label: str = None,
@@ -333,7 +335,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, ConfigServiceV2Transport, None] = None,
-            client_options: Optional[client_options_lib.ClientOptions] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiates the config service v2 client.
@@ -347,7 +349,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             transport (Union[str, ConfigServiceV2Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                NOTE: "rest" transport functionality is currently in a
+                beta state (preview). We welcome your feedback via an
+                issue in this library's source repository.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -377,6 +382,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
 
