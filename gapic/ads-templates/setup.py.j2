@@ -11,7 +11,7 @@ name = '{{ api.naming.warehouse_package_name }}'
 {% set package_path = api.naming.module_namespace|join('/') + "/" + api.naming.module_name %}
 
 version = {}
-with open(os.path.join(package_root, '{{ package_path }}/version.py')) as fp:
+with open(os.path.join(package_root, '{{ package_path }}/gapic_version.py')) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
 
