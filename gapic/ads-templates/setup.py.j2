@@ -2,53 +2,57 @@
 
 {% block content %}
 
-import setuptools # type: ignore
+import setuptools  # type: ignore
+
+package_root = os.path.abspath(os.path.dirname(__file__))
 
 name = '{{ api.naming.warehouse_package_name }}'
-description = '{{ api.naming.warehouse_package_name }}',
-version = '0.0.1',
+
+{% set package_path = api.naming.module_namespace|join('/') + "/" + api.naming.module_name %}
+
+version = {}
+with open(os.path.join(package_root, '{{ package_path }}/version.py')) as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
+
+if version[0] == "0":
+    release_status = "Development Status :: 4 - Beta"
+else:
+    release_status = "Development Status :: 5 - Production/Stable"
+
 dependencies = [
     {# TODO(dovs): remove when 1.x deprecation is complete #}
     {% if 'rest' in opts.transport %}
-    'google-api-core[grpc] >= 2.4.0, < 3.0.0dev',
+    'google-api-core[grpc] >= 2.10.0, < 3.0.0dev',
     {% else %}
     'google-api-core[grpc] >= 1.28.0, < 3.0.0dev',
     {% endif %}
-    platforms='Posix; MacOS X; Windows',
-    include_package_data=True,
-    install_requires=(
-        {# TODO(dovs): remove when 1.x deprecation is complete #}
-        {% if 'rest' in opts.transport %}
-        'google-api-core[grpc] >= 2.10.0, < 3.0.0dev',
-        {% else %}
-        'google-api-core[grpc] >= 1.28.0, < 3.0.0dev',
-        {% endif %}
-        'googleapis-common-protos >= 1.53.0',
-        'grpcio >= 1.10.0',
-        'proto-plus >= 1.19.4',
+    'googleapis-common-protos >= 1.53.0',
+    'grpcio >= 1.10.0',
+    'proto-plus >= 1.19.4',
     {% if api.requires_package(('google', 'iam', 'v1')) %}
         'grpc-google-iam-v1',
-    {% endif %}
-]
+    {% endif %}]
 
 packages = [
     package
     for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
 ]
 
-setup = [
-    'libcst >= 0.2.5',
-]
+setup_requires = [
+        'libcst >= 0.2.5',
+    ]
 
-scripts=[
-    'scripts/fixup_{{ api.naming.versioned_module_name }}_keywords.py',
-]
+scripts = [
+        'scripts/fixup_{{ api.naming.versioned_module_name }}_keywords.py',
+    ]
 
 setuptools.setup(
     name=name,
     version=version,
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        release_status,
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.7',
@@ -58,18 +62,18 @@ setuptools.setup(
         'Topic :: Internet',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    platforms="Posix; MacOS X; Windows",
+    platforms='Posix; MacOS X; Windows',
     {% if api.naming.namespace %}
-    packages=packages,
+    packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages={{ api.naming.namespace_packages }},
     {% else %}
     packages=setuptools.find_packages(),
     {% endif %}
-    python_requires='>=3.7',{# Lazy import requires module-level getattr #}
-    setup_requires=setup,
-    scripts=scripts,
+    python_requires='>=3.7',
     install_requires=dependencies,
     include_package_data=True,
+    setup_requires=setup_requires,
+    scripts=scripts,
     zip_safe=False,
 )
 {% endblock %}
