@@ -310,7 +310,8 @@ class EventarcRestTransport(EventarcTransport):
                     # use the credentials which are saved
                     credentials=self._credentials,
                     scopes=self._scopes,
-                    http_options=http_options)
+                    http_options=http_options,
+                    uri_prefix="v1")
 
             self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
@@ -331,7 +332,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.CreateTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the create trigger method over HTTP.
@@ -419,7 +420,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.DeleteTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the delete trigger method over HTTP.
@@ -498,7 +499,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.GetTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> trigger.Trigger:
             r"""Call the get trigger method over HTTP.
@@ -578,7 +579,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.ListTriggersRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> eventarc.ListTriggersResponse:
             r"""Call the list triggers method over HTTP.
@@ -658,7 +659,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.UpdateTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the update trigger method over HTTP.

@@ -291,7 +291,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __call__(self,
                 request: logging_metrics.CreateLogMetricRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_metrics.LogMetric:
             r"""Call the create log metric method over HTTP.
@@ -387,7 +387,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __call__(self,
                 request: logging_metrics.DeleteLogMetricRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ):
             r"""Call the delete log metric method over HTTP.
@@ -451,7 +451,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __call__(self,
                 request: logging_metrics.GetLogMetricRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_metrics.LogMetric:
             r"""Call the get log metric method over HTTP.
@@ -538,7 +538,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __call__(self,
                 request: logging_metrics.ListLogMetricsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_metrics.ListLogMetricsResponse:
             r"""Call the list log metrics method over HTTP.
@@ -614,7 +614,7 @@ class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
         def __call__(self,
                 request: logging_metrics.UpdateLogMetricRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_metrics.LogMetric:
             r"""Call the update log metric method over HTTP.

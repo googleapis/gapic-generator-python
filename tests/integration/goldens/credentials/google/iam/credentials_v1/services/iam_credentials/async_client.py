@@ -202,7 +202,7 @@ class IAMCredentialsAsyncClient:
             scope: Sequence[str] = None,
             lifetime: duration_pb2.Duration = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateAccessTokenResponse:
         r"""Generates an OAuth 2.0 access token for a service
@@ -362,7 +362,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             audience: str = None,
             include_email: bool = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateIdTokenResponse:
         r"""Generates an OpenID Connect ID token for a service
@@ -515,7 +515,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             delegates: Sequence[str] = None,
             payload: bytes = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignBlobResponse:
         r"""Signs a blob using a service account's system-managed
@@ -655,7 +655,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             delegates: Sequence[str] = None,
             payload: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed

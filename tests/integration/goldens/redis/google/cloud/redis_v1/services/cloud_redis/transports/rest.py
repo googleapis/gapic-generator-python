@@ -419,7 +419,8 @@ class CloudRedisRestTransport(CloudRedisTransport):
                     # use the credentials which are saved
                     credentials=self._credentials,
                     scopes=self._scopes,
-                    http_options=http_options)
+                    http_options=http_options,
+                    uri_prefix="v1")
 
             self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
@@ -440,7 +441,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.CreateInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
@@ -528,7 +529,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.DeleteInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
@@ -607,7 +608,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.ExportInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the export instance method over HTTP.
@@ -695,7 +696,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.FailoverInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the failover instance method over HTTP.
@@ -783,7 +784,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.GetInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> cloud_redis.Instance:
             r"""Call the get instance method over HTTP.
@@ -861,7 +862,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.ImportInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the import instance method over HTTP.
@@ -949,7 +950,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.ListInstancesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> cloud_redis.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
@@ -1029,7 +1030,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.UpdateInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
@@ -1117,7 +1118,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.UpgradeInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the upgrade instance method over HTTP.
