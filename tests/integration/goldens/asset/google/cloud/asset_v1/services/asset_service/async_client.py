@@ -1065,7 +1065,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             *,
             scope: str = None,
             query: str = None,
-            asset_types: Sequence[str] = None,
+            asset_types: MutableSequence[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1175,7 +1175,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            asset_types (:class:`Sequence[str]`):
+            asset_types (:class:`MutableSequence[str]`):
                 Optional. A list of asset types that this request
                 searches for. If empty, it will search all the
                 `searchable asset

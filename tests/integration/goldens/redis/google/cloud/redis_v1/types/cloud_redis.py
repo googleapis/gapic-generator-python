@@ -67,7 +67,7 @@ class Instance(proto.Message):
         display_name (str):
             An arbitrary and optional user-provided name
             for the instance.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Resource labels to represent user provided
             metadata
         location_id (str):
@@ -126,7 +126,7 @@ class Instance(proto.Message):
         status_message (str):
             Output only. Additional information about the
             current status of this instance, if available.
-        redis_configs (Mapping[str, str]):
+        redis_configs (MutableMapping[str, str]):
             Optional. Redis configuration parameters, according to
             http://redis.io/topics/config. Currently, the only supported
             parameters are:
@@ -317,7 +317,7 @@ class ListInstancesResponse(proto.Message):
     [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
 
     Attributes:
-        instances (Sequence[google.cloud.redis_v1.types.Instance]):
+        instances (MutableSequence[google.cloud.redis_v1.types.Instance]):
             A list of Redis instances in the project in the specified
             location, or across all locations.
 
@@ -334,7 +334,7 @@ class ListInstancesResponse(proto.Message):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
             list.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
 
@@ -351,7 +351,7 @@ class ListInstancesResponse(proto.Message):
         proto.STRING,
         number=2,
     )
-    unreachable: Sequence[str] = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -699,7 +699,7 @@ class LocationMetadata(proto.Message):
     ``google.cloud.location.Location.metadata`` field.
 
     Attributes:
-        available_zones (Mapping[str, google.cloud.redis_v1.types.ZoneMetadata]):
+        available_zones (MutableMapping[str, google.cloud.redis_v1.types.ZoneMetadata]):
             Output only. The set of available zones in the location. The
             map is keyed by the lowercase ID of each zone, as defined by
             GCE. These keys can be specified in ``location_id`` or

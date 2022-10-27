@@ -127,7 +127,7 @@ class LogMetric(proto.Message):
 
             Example:
             ``REGEXP_EXTRACT(jsonPayload.request, ".*quantity=(\d+).*")``
-        label_extractors (Mapping[str, str]):
+        label_extractors (MutableMapping[str, str]):
             Optional. A map from a label key string to an extractor
             expression which is used to extract data from a log entry
             field and assign as the label value. Each label key
@@ -257,7 +257,7 @@ class ListLogMetricsResponse(proto.Message):
     r"""Result returned from ListLogMetrics.
 
     Attributes:
-        metrics (Sequence[google.cloud.logging_v2.types.LogMetric]):
+        metrics (MutableSequence[google.cloud.logging_v2.types.LogMetric]):
             A list of logs-based metrics.
         next_page_token (str):
             If there might be more results than appear in this response,

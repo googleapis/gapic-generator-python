@@ -1242,7 +1242,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             *,
             scope: str = None,
             query: str = None,
-            asset_types: Sequence[str] = None,
+            asset_types: MutableSequence[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1352,7 +1352,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            asset_types (Sequence[str]):
+            asset_types (MutableSequence[str]):
                 Optional. A list of asset types that this request
                 searches for. If empty, it will search all the
                 `searchable asset

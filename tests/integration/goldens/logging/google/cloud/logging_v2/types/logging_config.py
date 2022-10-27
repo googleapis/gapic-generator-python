@@ -238,7 +238,7 @@ class LogSink(proto.Message):
         disabled (bool):
             Optional. If set to True, then this sink is
             disabled and it does not export any log entries.
-        exclusions (Sequence[google.cloud.logging_v2.types.LogExclusion]):
+        exclusions (MutableSequence[google.cloud.logging_v2.types.LogExclusion]):
             Optional. Log entries that match any of the exclusion
             filters will not be exported. If a log entry is matched by
             both ``filter`` and one of ``exclusion_filters`` it will not
@@ -440,7 +440,7 @@ class ListBucketsResponse(proto.Message):
     r"""The response from ListBuckets.
 
     Attributes:
-        buckets (Sequence[google.cloud.logging_v2.types.LogBucket]):
+        buckets (MutableSequence[google.cloud.logging_v2.types.LogBucket]):
             A list of buckets.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -665,7 +665,7 @@ class ListViewsResponse(proto.Message):
     r"""The response from ListViews.
 
     Attributes:
-        views (Sequence[google.cloud.logging_v2.types.LogView]):
+        views (MutableSequence[google.cloud.logging_v2.types.LogView]):
             A list of views.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -852,7 +852,7 @@ class ListSinksResponse(proto.Message):
     r"""Result returned from ``ListSinks``.
 
     Attributes:
-        sinks (Sequence[google.cloud.logging_v2.types.LogSink]):
+        sinks (MutableSequence[google.cloud.logging_v2.types.LogSink]):
             A list of sinks.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -1166,7 +1166,7 @@ class ListExclusionsResponse(proto.Message):
     r"""Result returned from ``ListExclusions``.
 
     Attributes:
-        exclusions (Sequence[google.cloud.logging_v2.types.LogExclusion]):
+        exclusions (MutableSequence[google.cloud.logging_v2.types.LogExclusion]):
             A list of exclusions.
         next_page_token (str):
             If there might be more results than appear in this response,

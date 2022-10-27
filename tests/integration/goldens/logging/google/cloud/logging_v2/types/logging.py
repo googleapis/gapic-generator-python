@@ -108,13 +108,13 @@ class WriteLogEntriesRequest(proto.Message):
                     "zone": "us-central1-a", "instance_id": "00000000000000000000" }}
 
             See [LogEntry][google.logging.v2.LogEntry].
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Default labels that are added to the ``labels``
             field of all log entries in ``entries``. If a log entry
             already has a label with the same key as a label in this
             parameter, then the log entry's label is not changed. See
             [LogEntry][google.logging.v2.LogEntry].
-        entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
+        entries (MutableSequence[google.cloud.logging_v2.types.LogEntry]):
             Required. The log entries to send to Logging. The order of
             log entries in this list does not matter. Values supplied in
             this method's ``log_name``, ``resource``, and ``labels``
@@ -198,7 +198,7 @@ class WriteLogEntriesPartialErrors(proto.Message):
     r"""Error details for WriteLogEntries with partial success.
 
     Attributes:
-        log_entry_errors (Mapping[int, google.rpc.status_pb2.Status]):
+        log_entry_errors (MutableMapping[int, google.rpc.status_pb2.Status]):
             When ``WriteLogEntriesRequest.partial_success`` is true,
             records the error status for entries that were not written
             due to a permanent error, keyed by the entry's zero-based
@@ -220,7 +220,7 @@ class ListLogEntriesRequest(proto.Message):
     r"""The parameters to ``ListLogEntries``.
 
     Attributes:
-        resource_names (Sequence[str]):
+        resource_names (MutableSequence[str]):
             Required. Names of one or more parent resources from which
             to retrieve log entries:
 
@@ -272,7 +272,7 @@ class ListLogEntriesRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    resource_names: Sequence[str] = proto.RepeatedField(
+    resource_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
@@ -298,7 +298,7 @@ class ListLogEntriesResponse(proto.Message):
     r"""Result returned from ``ListLogEntries``.
 
     Attributes:
-        entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
+        entries (MutableSequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. If ``entries`` is empty,
             ``nextPageToken`` may still be returned, indicating that
             more entries may exist. See ``nextPageToken`` for more
@@ -365,7 +365,7 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     r"""Result returned from ListMonitoredResourceDescriptors.
 
     Attributes:
-        resource_descriptors (Sequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
+        resource_descriptors (MutableSequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
             A list of resource descriptors.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -413,7 +413,7 @@ class ListLogsRequest(proto.Message):
             ``pageToken`` must be the value of ``nextPageToken`` from
             the previous response. The values of other method parameters
             should be identical to those in the previous call.
-        resource_names (Sequence[str]):
+        resource_names (MutableSequence[str]):
             Optional. The resource name that owns the logs:
             projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
             organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
@@ -437,7 +437,7 @@ class ListLogsRequest(proto.Message):
         proto.STRING,
         number=3,
     )
-    resource_names: Sequence[str] = proto.RepeatedField(
+    resource_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
@@ -447,7 +447,7 @@ class ListLogsResponse(proto.Message):
     r"""Result returned from ListLogs.
 
     Attributes:
-        log_names (Sequence[str]):
+        log_names (MutableSequence[str]):
             A list of log names. For example,
             ``"projects/my-project/logs/syslog"`` or
             ``"organizations/123/logs/cloudresourcemanager.googleapis.com%2Factivity"``.
@@ -462,7 +462,7 @@ class ListLogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    log_names: Sequence[str] = proto.RepeatedField(
+    log_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -476,7 +476,7 @@ class TailLogEntriesRequest(proto.Message):
     r"""The parameters to ``TailLogEntries``.
 
     Attributes:
-        resource_names (Sequence[str]):
+        resource_names (MutableSequence[str]):
             Required. Name of a parent resource from which to retrieve
             log entries:
 
@@ -511,7 +511,7 @@ class TailLogEntriesRequest(proto.Message):
             milliseconds.
     """
 
-    resource_names: Sequence[str] = proto.RepeatedField(
+    resource_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -530,12 +530,12 @@ class TailLogEntriesResponse(proto.Message):
     r"""Result returned from ``TailLogEntries``.
 
     Attributes:
-        entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
+        entries (MutableSequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. Each response in the stream will
             order entries with increasing values of
             ``LogEntry.timestamp``. Ordering is not guaranteed between
             separate responses.
-        suppression_info (Sequence[google.cloud.logging_v2.types.TailLogEntriesResponse.SuppressionInfo]):
+        suppression_info (MutableSequence[google.cloud.logging_v2.types.TailLogEntriesResponse.SuppressionInfo]):
             If entries that otherwise would have been
             included in the session were not sent back to
             the client, counts of relevant entries omitted

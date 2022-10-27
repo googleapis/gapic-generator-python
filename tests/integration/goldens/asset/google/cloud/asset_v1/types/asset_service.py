@@ -93,7 +93,7 @@ class ExportAssetsRequest(proto.Message):
             collection and indexing, there is a volatile
             window during which running the same query may
             get different results.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             A list of asset types to take a snapshot for. For example:
             "compute.googleapis.com/Disk".
 
@@ -133,7 +133,7 @@ class ExportAssetsRequest(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    asset_types: Sequence[str] = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -207,7 +207,7 @@ class ListAssetsRequest(proto.Message):
             collection and indexing, there is a volatile
             window during which running the same query may
             get different results.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             A list of asset types to take a snapshot for. For example:
             "compute.googleapis.com/Disk".
 
@@ -254,7 +254,7 @@ class ListAssetsRequest(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    asset_types: Sequence[str] = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -279,7 +279,7 @@ class ListAssetsResponse(proto.Message):
     Attributes:
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time the snapshot was taken.
-        assets (Sequence[google.cloud.asset_v1.types.Asset]):
+        assets (MutableSequence[google.cloud.asset_v1.types.Asset]):
             Assets.
         next_page_token (str):
             Token to retrieve the next page of results.
@@ -318,7 +318,7 @@ class BatchGetAssetsHistoryRequest(proto.Message):
             (such as "organizations/123"), a project ID
             (such as "projects/my-project-id")", or a
             project number (such as "projects/12345").
-        asset_names (Sequence[str]):
+        asset_names (MutableSequence[str]):
             A list of the full names of the assets. See:
             https://cloud.google.com/asset-inventory/docs/resource-name-format
             Example:
@@ -344,7 +344,7 @@ class BatchGetAssetsHistoryRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    asset_names: Sequence[str] = proto.RepeatedField(
+    asset_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -364,7 +364,7 @@ class BatchGetAssetsHistoryResponse(proto.Message):
     r"""Batch get assets history response.
 
     Attributes:
-        assets (Sequence[google.cloud.asset_v1.types.TemporalAsset]):
+        assets (MutableSequence[google.cloud.asset_v1.types.TemporalAsset]):
             A list of assets with valid time windows.
     """
 
@@ -455,7 +455,7 @@ class ListFeedsResponse(proto.Message):
     r"""
 
     Attributes:
-        feeds (Sequence[google.cloud.asset_v1.types.Feed]):
+        feeds (MutableSequence[google.cloud.asset_v1.types.Feed]):
             A list of feeds.
     """
 
@@ -572,12 +572,12 @@ class GcsOutputResult(proto.Message):
     r"""A Cloud Storage output result.
 
     Attributes:
-        uris (Sequence[str]):
+        uris (MutableSequence[str]):
             List of uris of the Cloud Storage objects. Example:
             "gs://bucket_name/object_name".
     """
 
-    uris: Sequence[str] = proto.RepeatedField(
+    uris: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -814,7 +814,7 @@ class Feed(proto.Message):
 
             The client-assigned feed identifier must be unique within
             the parent project/folder/organization.
-        asset_names (Sequence[str]):
+        asset_names (MutableSequence[str]):
             A list of the full names of the assets to receive updates.
             You must specify either or both of asset_names and
             asset_types. Only asset updates matching specified
@@ -824,7 +824,7 @@ class Feed(proto.Message):
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
             for more info.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             A list of types of the assets to receive updates. You must
             specify either or both of asset_names and asset_types. Only
             asset updates matching specified asset_names or asset_types
@@ -861,11 +861,11 @@ class Feed(proto.Message):
         proto.STRING,
         number=1,
     )
-    asset_names: Sequence[str] = proto.RepeatedField(
+    asset_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    asset_types: Sequence[str] = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -950,7 +950,7 @@ class SearchAllResourcesRequest(proto.Message):
                resources that contain "Important" as a word in any of
                the searchable fields and are also located in the
                "us-west1" region or the "global" location.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             Optional. A list of asset types that this request searches
             for. If empty, it will search all the `searchable asset
             types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
@@ -1014,7 +1014,7 @@ class SearchAllResourcesRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    asset_types: Sequence[str] = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -1036,7 +1036,7 @@ class SearchAllResourcesResponse(proto.Message):
     r"""Search all resources response.
 
     Attributes:
-        results (Sequence[google.cloud.asset_v1.types.ResourceSearchResult]):
+        results (MutableSequence[google.cloud.asset_v1.types.ResourceSearchResult]):
             A list of Resources that match the search
             query. It contains the resource standard
             metadata information.
@@ -1140,7 +1140,7 @@ class SearchAllIamPoliciesRequest(proto.Message):
             be the value of ``next_page_token`` from the previous
             response. The values of all other method parameters must be
             identical to those in the previous call.
-        asset_types (Sequence[str]):
+        asset_types (MutableSequence[str]):
             Optional. A list of asset types that the IAM policies are
             attached to. If empty, it will search the IAM policies that
             are attached to all the `searchable asset
@@ -1191,7 +1191,7 @@ class SearchAllIamPoliciesRequest(proto.Message):
         proto.STRING,
         number=4,
     )
-    asset_types: Sequence[str] = proto.RepeatedField(
+    asset_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
     )
@@ -1205,7 +1205,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
     r"""Search all IAM policies response.
 
     Attributes:
-        results (Sequence[google.cloud.asset_v1.types.IamPolicySearchResult]):
+        results (MutableSequence[google.cloud.asset_v1.types.IamPolicySearchResult]):
             A list of IamPolicy that match the search
             query. Related information such as the
             associated resource is returned along with the
@@ -1316,18 +1316,18 @@ class IamPolicyAnalysisQuery(proto.Message):
         roles and permissions should be equal or less than 10.
 
         Attributes:
-            roles (Sequence[str]):
+            roles (MutableSequence[str]):
                 Optional. The roles to appear in result.
-            permissions (Sequence[str]):
+            permissions (MutableSequence[str]):
                 Optional. The permissions to appear in
                 result.
         """
 
-        roles: Sequence[str] = proto.RepeatedField(
+        roles: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
         )
-        permissions: Sequence[str] = proto.RepeatedField(
+        permissions: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
@@ -1544,7 +1544,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
         main_analysis (google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis):
             The main analysis that matches the original
             request.
-        service_account_impersonation_analysis (Sequence[google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
+        service_account_impersonation_analysis (MutableSequence[google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
             The service account impersonation analysis if
             [AnalyzeIamPolicyRequest.analyze_service_account_impersonation][]
             is enabled.
@@ -1562,7 +1562,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
         Attributes:
             analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
                 The analysis query.
-            analysis_results (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult]):
+            analysis_results (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult]):
                 A list of
                 [IamPolicyAnalysisResult][google.cloud.asset.v1.IamPolicyAnalysisResult]
                 that matches the analysis query, or empty if no result is
@@ -1571,7 +1571,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
                 Represents whether all entries in the
                 [analysis_results][google.cloud.asset.v1.AnalyzeIamPolicyResponse.IamPolicyAnalysis.analysis_results]
                 have been fully explored to answer the query.
-            non_critical_errors (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisState]):
+            non_critical_errors (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisState]):
                 A list of non-critical errors happened during
                 the query handling.
         """

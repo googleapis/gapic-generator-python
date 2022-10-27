@@ -46,7 +46,7 @@ class GenerateAccessTokenRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        delegates (Sequence[str]):
+        delegates (MutableSequence[str]):
             The sequence of service accounts in a delegation chain. Each
             service account must be granted the
             ``roles/iam.serviceAccountTokenCreator`` role on its next
@@ -60,7 +60,7 @@ class GenerateAccessTokenRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        scope (Sequence[str]):
+        scope (MutableSequence[str]):
             Required. Code to identify the scopes to be
             included in the OAuth 2.0 access token. See
             https://developers.google.com/identity/protocols/googlescopes
@@ -78,11 +78,11 @@ class GenerateAccessTokenRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    delegates: Sequence[str] = proto.RepeatedField(
+    delegates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    scope: Sequence[str] = proto.RepeatedField(
+    scope: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )
@@ -125,7 +125,7 @@ class SignBlobRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        delegates (Sequence[str]):
+        delegates (MutableSequence[str]):
             The sequence of service accounts in a delegation chain. Each
             service account must be granted the
             ``roles/iam.serviceAccountTokenCreator`` role on its next
@@ -147,7 +147,7 @@ class SignBlobRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    delegates: Sequence[str] = proto.RepeatedField(
+    delegates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -187,7 +187,7 @@ class SignJwtRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        delegates (Sequence[str]):
+        delegates (MutableSequence[str]):
             The sequence of service accounts in a delegation chain. Each
             service account must be granted the
             ``roles/iam.serviceAccountTokenCreator`` role on its next
@@ -210,7 +210,7 @@ class SignJwtRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    delegates: Sequence[str] = proto.RepeatedField(
+    delegates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
@@ -250,7 +250,7 @@ class GenerateIdTokenRequest(proto.Message):
             ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
             The ``-`` wildcard character is required; replacing it with
             a project ID is invalid.
-        delegates (Sequence[str]):
+        delegates (MutableSequence[str]):
             The sequence of service accounts in a delegation chain. Each
             service account must be granted the
             ``roles/iam.serviceAccountTokenCreator`` role on its next
@@ -278,7 +278,7 @@ class GenerateIdTokenRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    delegates: Sequence[str] = proto.RepeatedField(
+    delegates: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )

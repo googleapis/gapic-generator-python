@@ -51,7 +51,7 @@ class Trigger(proto.Message):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last-modified time.
-        event_filters (Sequence[google.cloud.eventarc_v1.types.EventFilter]):
+        event_filters (MutableSequence[google.cloud.eventarc_v1.types.EventFilter]):
             Required. null The list of filters that
             applies to event attributes. Only events that
             match all the provided filters will be sent to
@@ -83,7 +83,7 @@ class Trigger(proto.Message):
             intermediary. This field contains a reference to
             that transport intermediary. This information
             can be used for debugging purposes.
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. User labels attached to the
             triggers that can be used to group resources.
         etag (str):

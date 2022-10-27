@@ -392,8 +392,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             request: Union[common.GenerateAccessTokenRequest, dict] = None,
             *,
             name: str = None,
-            delegates: Sequence[str] = None,
-            scope: Sequence[str] = None,
+            delegates: MutableSequence[str] = None,
+            scope: MutableSequence[str] = None,
             lifetime: duration_pb2.Duration = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -443,7 +443,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (Sequence[str]):
+            delegates (MutableSequence[str]):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -461,7 +461,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            scope (Sequence[str]):
+            scope (MutableSequence[str]):
                 Required. Code to identify the scopes
                 to be included in the OAuth 2.0 access
                 token. See
@@ -545,7 +545,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             request: Union[common.GenerateIdTokenRequest, dict] = None,
             *,
             name: str = None,
-            delegates: Sequence[str] = None,
+            delegates: MutableSequence[str] = None,
             audience: str = None,
             include_email: bool = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -596,7 +596,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (Sequence[str]):
+            delegates (MutableSequence[str]):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -692,7 +692,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             request: Union[common.SignBlobRequest, dict] = None,
             *,
             name: str = None,
-            delegates: Sequence[str] = None,
+            delegates: MutableSequence[str] = None,
             payload: bytes = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -742,7 +742,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (Sequence[str]):
+            delegates (MutableSequence[str]):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -825,7 +825,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             request: Union[common.SignJwtRequest, dict] = None,
             *,
             name: str = None,
-            delegates: Sequence[str] = None,
+            delegates: MutableSequence[str] = None,
             payload: str = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -875,7 +875,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (Sequence[str]):
+            delegates (MutableSequence[str]):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its

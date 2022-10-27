@@ -98,14 +98,14 @@ class ListTriggersResponse(proto.Message):
     r"""The response message for the ListTriggers method.
 
     Attributes:
-        triggers (Sequence[google.cloud.eventarc_v1.types.Trigger]):
+        triggers (MutableSequence[google.cloud.eventarc_v1.types.Trigger]):
             The requested triggers, up to the number specified in
             ``page_size``.
         next_page_token (str):
             A page token that can be sent to ListTriggers
             to request the next page. If this is empty, then
             there are no more pages.
-        unreachable (Sequence[str]):
+        unreachable (MutableSequence[str]):
             Unreachable resources, if any.
     """
 
@@ -122,7 +122,7 @@ class ListTriggersResponse(proto.Message):
         proto.STRING,
         number=2,
     )
-    unreachable: Sequence[str] = proto.RepeatedField(
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )

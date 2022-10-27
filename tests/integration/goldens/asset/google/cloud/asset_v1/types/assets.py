@@ -172,7 +172,7 @@ class Asset(proto.Message):
             See `this
             topic <https://cloud.google.com/iam/docs/policies#inheritance>`__
             for more information.
-        org_policy (Sequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
+        org_policy (MutableSequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
             A representation of an `organization
             policy <https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy>`__.
             There can be more than one organization policy with
@@ -197,7 +197,7 @@ class Asset(proto.Message):
             `this
             topic <https://cloud.google.com/compute/docs/instances/os-inventory-management>`__
             for more information.
-        ancestors (Sequence[str]):
+        ancestors (MutableSequence[str]):
             The ancestry path of an asset in Google Cloud `resource
             hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
             represented as a list of relative resource names. An
@@ -261,7 +261,7 @@ class Asset(proto.Message):
         number=12,
         message=inventory_pb2.Inventory,
     )
-    ancestors: Sequence[str] = proto.RepeatedField(
+    ancestors: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
     )
@@ -381,7 +381,7 @@ class ResourceSearchResult(proto.Message):
             -  use a free text query. Example: ``12345``
             -  specify the ``scope`` field as this project in your
                search request.
-        folders (Sequence[str]):
+        folders (MutableSequence[str]):
             The folder(s) that this resource belongs to, in the form of
             folders/{FOLDER_NUMBER}. This field is available when the
             resource belongs to one or more folders.
@@ -430,7 +430,7 @@ class ResourceSearchResult(proto.Message):
 
             -  use a field query. Example: ``location:us-west*``
             -  use a free text query. Example: ``us-west*``
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Labels associated with this resource. See `Labelling and
             grouping GCP
             resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
@@ -448,7 +448,7 @@ class ResourceSearchResult(proto.Message):
                   ``labels.env:*``
 
             -  use a free text query. Example: ``prod``
-        network_tags (Sequence[str]):
+        network_tags (MutableSequence[str]):
             Network tags associated with this resource. Like labels,
             network tags are a type of annotations used to group GCP
             resources. See `Labelling GCP
@@ -578,7 +578,7 @@ class ResourceSearchResult(proto.Message):
         proto.STRING,
         number=3,
     )
-    folders: Sequence[str] = proto.RepeatedField(
+    folders: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=17,
     )
@@ -603,7 +603,7 @@ class ResourceSearchResult(proto.Message):
         proto.STRING,
         number=7,
     )
-    network_tags: Sequence[str] = proto.RepeatedField(
+    network_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
@@ -676,7 +676,7 @@ class IamPolicySearchResult(proto.Message):
 
             -  specify the ``scope`` field as this project in your
                search request.
-        folders (Sequence[str]):
+        folders (MutableSequence[str]):
             The folder(s) that the IAM policy belongs to, in the form of
             folders/{FOLDER_NUMBER}. This field is available when the
             IAM policy belongs to one or more folders.
@@ -726,7 +726,7 @@ class IamPolicySearchResult(proto.Message):
         r"""Explanation about the IAM policy search result.
 
         Attributes:
-            matched_permissions (Mapping[str, google.cloud.asset_v1.types.IamPolicySearchResult.Explanation.Permissions]):
+            matched_permissions (MutableMapping[str, google.cloud.asset_v1.types.IamPolicySearchResult.Explanation.Permissions]):
                 The map from roles to their included permissions that match
                 the permission query (i.e., a query containing
                 ``policy.role.permissions:``). Example: if query
@@ -743,12 +743,12 @@ class IamPolicySearchResult(proto.Message):
             r"""IAM permissions
 
             Attributes:
-                permissions (Sequence[str]):
+                permissions (MutableSequence[str]):
                     A list of permissions. A sample permission string:
                     ``compute.disk.get``.
             """
 
-            permissions: Sequence[str] = proto.RepeatedField(
+            permissions: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=1,
             )
@@ -772,7 +772,7 @@ class IamPolicySearchResult(proto.Message):
         proto.STRING,
         number=2,
     )
-    folders: Sequence[str] = proto.RepeatedField(
+    folders: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
     )
@@ -857,7 +857,7 @@ class IamPolicyAnalysisResult(proto.Message):
             policy attaches.
         iam_binding (google.iam.v1.policy_pb2.Binding):
             The Cloud IAM policy binding under analysis.
-        access_control_lists (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.AccessControlList]):
+        access_control_lists (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.AccessControlList]):
             The access control lists derived from the
             [iam_binding][google.cloud.asset.v1.IamPolicyAnalysisResult.iam_binding]
             that match or potentially match resource and access
@@ -1008,19 +1008,19 @@ class IamPolicyAnalysisResult(proto.Message):
         -  AccessControlList 2: [R2, R3], [P3]
 
         Attributes:
-            resources (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Resource]):
+            resources (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Resource]):
                 The resources that match one of the following conditions:
 
                 -  The resource_selector, if it is specified in request;
                 -  Otherwise, resources reachable from the policy attached
                    resource.
-            accesses (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Access]):
+            accesses (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Access]):
                 The accesses that match one of the following conditions:
 
                 -  The access_selector, if it is specified in request;
                 -  Otherwise, access specifiers reachable from the policy
                    binding's role.
-            resource_edges (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Edge]):
+            resource_edges (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Edge]):
                 Resource edges of the graph starting from the policy
                 attached resource to any descendant resources. The
                 [Edge.source_node][google.cloud.asset.v1.IamPolicyAnalysisResult.Edge.source_node]
@@ -1060,14 +1060,14 @@ class IamPolicyAnalysisResult(proto.Message):
         r"""The identities and group edges.
 
         Attributes:
-            identities (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Identity]):
+            identities (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Identity]):
                 Only the identities that match one of the following
                 conditions will be presented:
 
                 -  The identity_selector, if it is specified in request;
                 -  Otherwise, identities reachable from the policy binding's
                    members.
-            group_edges (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Edge]):
+            group_edges (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Edge]):
                 Group identity edges of the graph starting from the
                 binding's group members to any node of the
                 [identities][google.cloud.asset.v1.IamPolicyAnalysisResult.IdentityList.identities].
