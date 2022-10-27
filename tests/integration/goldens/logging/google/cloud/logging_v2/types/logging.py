@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Mapping, Sequence
+from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
@@ -169,12 +169,12 @@ class WriteLogEntriesRequest(proto.Message):
         number=2,
         message=monitored_resource_pb2.MonitoredResource,
     )
-    labels: Mapping[str, str] = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    entries: Sequence[log_entry.LogEntry] = proto.RepeatedField(
+    entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=log_entry.LogEntry,
@@ -208,7 +208,7 @@ class WriteLogEntriesPartialErrors(proto.Message):
             include per-entry errors.
     """
 
-    log_entry_errors: Mapping[int, status_pb2.Status] = proto.MapField(
+    log_entry_errors: MutableMapping[int, status_pb2.Status] = proto.MapField(
         proto.INT32,
         proto.MESSAGE,
         number=1,
@@ -323,7 +323,7 @@ class ListLogEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entries: Sequence[log_entry.LogEntry] = proto.RepeatedField(
+    entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=log_entry.LogEntry,
@@ -378,7 +378,7 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_descriptors: Sequence[monitored_resource_pb2.MonitoredResourceDescriptor] = proto.RepeatedField(
+    resource_descriptors: MutableSequence[monitored_resource_pb2.MonitoredResourceDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
@@ -573,12 +573,12 @@ class TailLogEntriesResponse(proto.Message):
             number=2,
         )
 
-    entries: Sequence[log_entry.LogEntry] = proto.RepeatedField(
+    entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=log_entry.LogEntry,
     )
-    suppression_info: Sequence[SuppressionInfo] = proto.RepeatedField(
+    suppression_info: MutableSequence[SuppressionInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=SuppressionInfo,

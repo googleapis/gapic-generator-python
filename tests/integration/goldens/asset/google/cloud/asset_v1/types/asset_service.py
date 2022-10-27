@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Mapping, Sequence
+from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
@@ -297,7 +297,7 @@ class ListAssetsResponse(proto.Message):
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    assets: Sequence[gca_assets.Asset] = proto.RepeatedField(
+    assets: MutableSequence[gca_assets.Asset] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gca_assets.Asset,
@@ -368,7 +368,7 @@ class BatchGetAssetsHistoryResponse(proto.Message):
             A list of assets with valid time windows.
     """
 
-    assets: Sequence[gca_assets.TemporalAsset] = proto.RepeatedField(
+    assets: MutableSequence[gca_assets.TemporalAsset] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_assets.TemporalAsset,
@@ -459,7 +459,7 @@ class ListFeedsResponse(proto.Message):
             A list of feeds.
     """
 
-    feeds: Sequence['Feed'] = proto.RepeatedField(
+    feeds: MutableSequence['Feed'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='Feed',
@@ -1051,7 +1051,7 @@ class SearchAllResourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results: Sequence[gca_assets.ResourceSearchResult] = proto.RepeatedField(
+    results: MutableSequence[gca_assets.ResourceSearchResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_assets.ResourceSearchResult,
@@ -1220,7 +1220,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    results: Sequence[gca_assets.IamPolicySearchResult] = proto.RepeatedField(
+    results: MutableSequence[gca_assets.IamPolicySearchResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gca_assets.IamPolicySearchResult,
@@ -1581,7 +1581,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
             number=1,
             message='IamPolicyAnalysisQuery',
         )
-        analysis_results: Sequence[gca_assets.IamPolicyAnalysisResult] = proto.RepeatedField(
+        analysis_results: MutableSequence[gca_assets.IamPolicyAnalysisResult] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=gca_assets.IamPolicyAnalysisResult,
@@ -1590,7 +1590,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
             proto.BOOL,
             number=3,
         )
-        non_critical_errors: Sequence[gca_assets.IamPolicyAnalysisState] = proto.RepeatedField(
+        non_critical_errors: MutableSequence[gca_assets.IamPolicyAnalysisState] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message=gca_assets.IamPolicyAnalysisState,
@@ -1601,7 +1601,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
         number=1,
         message=IamPolicyAnalysis,
     )
-    service_account_impersonation_analysis: Sequence[IamPolicyAnalysis] = proto.RepeatedField(
+    service_account_impersonation_analysis: MutableSequence[IamPolicyAnalysis] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=IamPolicyAnalysis,

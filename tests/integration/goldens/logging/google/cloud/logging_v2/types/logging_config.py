@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Mapping, Sequence
+from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
@@ -320,7 +320,7 @@ class LogSink(proto.Message):
         proto.BOOL,
         number=19,
     )
-    exclusions: Sequence['LogExclusion'] = proto.RepeatedField(
+    exclusions: MutableSequence['LogExclusion'] = proto.RepeatedField(
         proto.MESSAGE,
         number=16,
         message='LogExclusion',
@@ -453,7 +453,7 @@ class ListBucketsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    buckets: Sequence['LogBucket'] = proto.RepeatedField(
+    buckets: MutableSequence['LogBucket'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogBucket',
@@ -678,7 +678,7 @@ class ListViewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    views: Sequence['LogView'] = proto.RepeatedField(
+    views: MutableSequence['LogView'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogView',
@@ -865,7 +865,7 @@ class ListSinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sinks: Sequence['LogSink'] = proto.RepeatedField(
+    sinks: MutableSequence['LogSink'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogSink',
@@ -1179,7 +1179,7 @@ class ListExclusionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    exclusions: Sequence['LogExclusion'] = proto.RepeatedField(
+    exclusions: MutableSequence['LogExclusion'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogExclusion',

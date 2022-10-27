@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Mapping, Sequence
+from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
@@ -198,7 +198,7 @@ class Instance(proto.Message):
         proto.STRING,
         number=2,
     )
-    labels: Mapping[str, str] = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
@@ -245,7 +245,7 @@ class Instance(proto.Message):
         proto.STRING,
         number=15,
     )
-    redis_configs: Mapping[str, str] = proto.MapField(
+    redis_configs: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=16,
@@ -342,7 +342,7 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances: Sequence['Instance'] = proto.RepeatedField(
+    instances: MutableSequence['Instance'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='Instance',
@@ -707,7 +707,7 @@ class LocationMetadata(proto.Message):
             instance.
     """
 
-    available_zones: Mapping[str, 'ZoneMetadata'] = proto.MapField(
+    available_zones: MutableMapping[str, 'ZoneMetadata'] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,

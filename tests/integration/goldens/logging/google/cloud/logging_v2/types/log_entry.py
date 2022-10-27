@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Mapping, Sequence
+from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
@@ -229,7 +229,7 @@ class LogEntry(proto.Message):
         number=7,
         message=http_request_pb2.HttpRequest,
     )
-    labels: Mapping[str, str] = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=11,

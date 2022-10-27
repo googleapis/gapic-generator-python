@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Mapping, Sequence
+from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
@@ -233,7 +233,7 @@ class Asset(proto.Message):
         number=4,
         message=policy_pb2.Policy,
     )
-    org_policy: Sequence[orgpolicy_pb2.Policy] = proto.RepeatedField(
+    org_policy: MutableSequence[orgpolicy_pb2.Policy] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=orgpolicy_pb2.Policy,
@@ -598,7 +598,7 @@ class ResourceSearchResult(proto.Message):
         proto.STRING,
         number=6,
     )
-    labels: Mapping[str, str] = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
@@ -753,7 +753,7 @@ class IamPolicySearchResult(proto.Message):
                 number=1,
             )
 
-        matched_permissions: Mapping[str, 'IamPolicySearchResult.Explanation.Permissions'] = proto.MapField(
+        matched_permissions: MutableMapping[str, 'IamPolicySearchResult.Explanation.Permissions'] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=1,
@@ -1035,17 +1035,17 @@ class IamPolicyAnalysisResult(proto.Message):
                 defined in the above IAM policy binding.
         """
 
-        resources: Sequence['IamPolicyAnalysisResult.Resource'] = proto.RepeatedField(
+        resources: MutableSequence['IamPolicyAnalysisResult.Resource'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message='IamPolicyAnalysisResult.Resource',
         )
-        accesses: Sequence['IamPolicyAnalysisResult.Access'] = proto.RepeatedField(
+        accesses: MutableSequence['IamPolicyAnalysisResult.Access'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisResult.Access',
         )
-        resource_edges: Sequence['IamPolicyAnalysisResult.Edge'] = proto.RepeatedField(
+        resource_edges: MutableSequence['IamPolicyAnalysisResult.Edge'] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message='IamPolicyAnalysisResult.Edge',
@@ -1081,12 +1081,12 @@ class IamPolicyAnalysisResult(proto.Message):
                 enabled in request.
         """
 
-        identities: Sequence['IamPolicyAnalysisResult.Identity'] = proto.RepeatedField(
+        identities: MutableSequence['IamPolicyAnalysisResult.Identity'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message='IamPolicyAnalysisResult.Identity',
         )
-        group_edges: Sequence['IamPolicyAnalysisResult.Edge'] = proto.RepeatedField(
+        group_edges: MutableSequence['IamPolicyAnalysisResult.Edge'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message='IamPolicyAnalysisResult.Edge',
@@ -1101,7 +1101,7 @@ class IamPolicyAnalysisResult(proto.Message):
         number=2,
         message=policy_pb2.Binding,
     )
-    access_control_lists: Sequence[AccessControlList] = proto.RepeatedField(
+    access_control_lists: MutableSequence[AccessControlList] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=AccessControlList,

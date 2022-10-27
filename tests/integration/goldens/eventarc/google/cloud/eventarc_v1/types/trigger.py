@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Mapping, Sequence
+from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
@@ -112,7 +112,7 @@ class Trigger(proto.Message):
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    event_filters: Sequence['EventFilter'] = proto.RepeatedField(
+    event_filters: MutableSequence['EventFilter'] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message='EventFilter',
@@ -131,7 +131,7 @@ class Trigger(proto.Message):
         number=11,
         message='Transport',
     )
-    labels: Mapping[str, str] = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=12,

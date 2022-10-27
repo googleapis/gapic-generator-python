@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Mapping, Sequence
+from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
@@ -189,7 +189,7 @@ class LogMetric(proto.Message):
         proto.STRING,
         number=6,
     )
-    label_extractors: Mapping[str, str] = proto.MapField(
+    label_extractors: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
@@ -270,7 +270,7 @@ class ListLogMetricsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metrics: Sequence['LogMetric'] = proto.RepeatedField(
+    metrics: MutableSequence['LogMetric'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogMetric',

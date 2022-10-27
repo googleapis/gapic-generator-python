@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Mapping, Sequence
+from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
@@ -113,7 +113,7 @@ class ListTriggersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    triggers: Sequence[gce_trigger.Trigger] = proto.RepeatedField(
+    triggers: MutableSequence[gce_trigger.Trigger] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gce_trigger.Trigger,
