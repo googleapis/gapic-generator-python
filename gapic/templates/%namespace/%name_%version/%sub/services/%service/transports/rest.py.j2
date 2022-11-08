@@ -175,10 +175,10 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: ga_credentials.Credentials=None,
-            credentials_file: str=None,
-            scopes: Sequence[str]=None,
-            client_cert_source_for_mtls: Callable[[
-                ], Tuple[bytes, bytes]]=None,
+            credentials_file: Optional[str]=None,
+            scopes: Optional[Sequence[str]]=None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]]=None,
             quota_project_id: Optional[str]=None,
             client_info: gapic_v1.client_info.ClientInfo=DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool]=False,
@@ -319,7 +319,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         def __call__(self,
                 request: {{method.input.ident}}, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
     {% if method.http_options and not method.client_streaming %}

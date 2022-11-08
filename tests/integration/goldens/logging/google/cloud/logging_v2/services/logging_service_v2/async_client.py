@@ -140,9 +140,9 @@ class LoggingServiceV2AsyncClient:
     get_transport_class = functools.partial(type(LoggingServiceV2Client).get_transport_class, type(LoggingServiceV2Client))
 
     def __init__(self, *,
-            credentials: ga_credentials.Credentials = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, LoggingServiceV2Transport] = "grpc_asyncio",
-            client_options: ClientOptions = None,
+            client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiates the logging service v2 client.
@@ -186,11 +186,11 @@ class LoggingServiceV2AsyncClient:
         )
 
     async def delete_log(self,
-            request: Union[logging.DeleteLogRequest, dict] = None,
+            request: Union[logging.DeleteLogRequest, dict, None] = None,
             *,
-            log_name: str = None,
+            log_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
         r"""Deletes all the log entries in a log. The log
@@ -223,7 +223,7 @@ class LoggingServiceV2AsyncClient:
                 await client.delete_log(request=request)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.DeleteLogRequest, dict]):
+            request (Union[google.cloud.logging_v2.types.DeleteLogRequest, dict, None]):
                 The request object. The parameters to DeleteLog.
             log_name (:class:`str`):
                 Required. The resource name of the log to delete:
@@ -298,14 +298,14 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
     async def write_log_entries(self,
-            request: Union[logging.WriteLogEntriesRequest, dict] = None,
+            request: Union[logging.WriteLogEntriesRequest, dict, None] = None,
             *,
-            log_name: str = None,
-            resource: monitored_resource_pb2.MonitoredResource = None,
-            labels: MutableMapping[str, str] = None,
-            entries: MutableSequence[log_entry.LogEntry] = None,
+            log_name: Optional[str] = None,
+            resource: Optional[monitored_resource_pb2.MonitoredResource] = None,
+            labels: Optional[MutableMapping[str, str]] = None,
+            entries: Optional[MutableSequence[log_entry.LogEntry]] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging.WriteLogEntriesResponse:
         r"""Writes log entries to Logging. This API method is the
@@ -346,7 +346,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.WriteLogEntriesRequest, dict]):
+            request (Union[google.cloud.logging_v2.types.WriteLogEntriesRequest, dict, None]):
                 The request object. The parameters to WriteLogEntries.
             log_name (:class:`str`):
                 Optional. A default log resource name that is assigned
@@ -496,13 +496,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def list_log_entries(self,
-            request: Union[logging.ListLogEntriesRequest, dict] = None,
+            request: Union[logging.ListLogEntriesRequest, dict, None] = None,
             *,
-            resource_names: MutableSequence[str] = None,
-            filter: str = None,
-            order_by: str = None,
+            resource_names: Optional[MutableSequence[str]] = None,
+            filter: Optional[str] = None,
+            order_by: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogEntriesAsyncPager:
         r"""Lists log entries. Use this method to retrieve log entries that
@@ -538,7 +538,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict]):
+            request (Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict, None]):
                 The request object. The parameters to `ListLogEntries`.
             resource_names (:class:`MutableSequence[str]`):
                 Required. Names of one or more parent resources from
@@ -660,10 +660,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def list_monitored_resource_descriptors(self,
-            request: Union[logging.ListMonitoredResourceDescriptorsRequest, dict] = None,
+            request: Union[logging.ListMonitoredResourceDescriptorsRequest, dict, None] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListMonitoredResourceDescriptorsAsyncPager:
         r"""Lists the descriptors for monitored resource types
@@ -696,7 +696,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListMonitoredResourceDescriptorsRequest, dict]):
+            request (Union[google.cloud.logging_v2.types.ListMonitoredResourceDescriptorsRequest, dict, None]):
                 The request object. The parameters to
                 ListMonitoredResourceDescriptors
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -754,11 +754,11 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def list_logs(self,
-            request: Union[logging.ListLogsRequest, dict] = None,
+            request: Union[logging.ListLogsRequest, dict, None] = None,
             *,
-            parent: str = None,
+            parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogsAsyncPager:
         r"""Lists the logs in projects, organizations, folders,
@@ -793,7 +793,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListLogsRequest, dict]):
+            request (Union[google.cloud.logging_v2.types.ListLogsRequest, dict, None]):
                 The request object. The parameters to ListLogs.
             parent (:class:`str`):
                 Required. The resource name that owns the logs:
@@ -882,10 +882,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     def tail_log_entries(self,
-            requests: AsyncIterator[logging.TailLogEntriesRequest] = None,
+            requests: Optional[AsyncIterator[logging.TailLogEntriesRequest]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> Awaitable[AsyncIterable[logging.TailLogEntriesResponse]]:
         r"""Streaming read of log entries as they are ingested.

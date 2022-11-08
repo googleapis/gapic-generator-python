@@ -57,7 +57,7 @@ class LoggingServiceV2ClientMeta(type):
     _transport_registry["rest"] = LoggingServiceV2RestTransport
 
     def get_transport_class(cls,
-            label: str = None,
+            label: Optional[str] = None,
         ) -> Type[LoggingServiceV2Transport]:
         """Returns an appropriate transport class.
 
@@ -380,11 +380,11 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             )
 
     def delete_log(self,
-            request: Union[logging.DeleteLogRequest, dict] = None,
+            request: Union[logging.DeleteLogRequest, dict, None] = None,
             *,
-            log_name: str = None,
+            log_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
         r"""Deletes all the log entries in a log. The log
@@ -484,14 +484,14 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
     def write_log_entries(self,
-            request: Union[logging.WriteLogEntriesRequest, dict] = None,
+            request: Union[logging.WriteLogEntriesRequest, dict, None] = None,
             *,
-            log_name: str = None,
-            resource: monitored_resource_pb2.MonitoredResource = None,
-            labels: MutableMapping[str, str] = None,
-            entries: MutableSequence[log_entry.LogEntry] = None,
+            log_name: Optional[str] = None,
+            resource: Optional[monitored_resource_pb2.MonitoredResource] = None,
+            labels: Optional[MutableMapping[str, str]] = None,
+            entries: Optional[MutableSequence[log_entry.LogEntry]] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging.WriteLogEntriesResponse:
         r"""Writes log entries to Logging. This API method is the
@@ -673,13 +673,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def list_log_entries(self,
-            request: Union[logging.ListLogEntriesRequest, dict] = None,
+            request: Union[logging.ListLogEntriesRequest, dict, None] = None,
             *,
-            resource_names: MutableSequence[str] = None,
-            filter: str = None,
-            order_by: str = None,
+            resource_names: Optional[MutableSequence[str]] = None,
+            filter: Optional[str] = None,
+            order_by: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogEntriesPager:
         r"""Lists log entries. Use this method to retrieve log entries that
@@ -829,10 +829,10 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def list_monitored_resource_descriptors(self,
-            request: Union[logging.ListMonitoredResourceDescriptorsRequest, dict] = None,
+            request: Union[logging.ListMonitoredResourceDescriptorsRequest, dict, None] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListMonitoredResourceDescriptorsPager:
         r"""Lists the descriptors for monitored resource types
@@ -916,11 +916,11 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def list_logs(self,
-            request: Union[logging.ListLogsRequest, dict] = None,
+            request: Union[logging.ListLogsRequest, dict, None] = None,
             *,
-            parent: str = None,
+            parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListLogsPager:
         r"""Lists the logs in projects, organizations, folders,
@@ -1036,10 +1036,10 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def tail_log_entries(self,
-            requests: Iterator[logging.TailLogEntriesRequest] = None,
+            requests: Optional[Iterator[logging.TailLogEntriesRequest]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> Iterable[logging.TailLogEntriesResponse]:
         r"""Streaming read of log entries as they are ingested.

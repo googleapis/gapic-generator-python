@@ -56,7 +56,7 @@ class IAMCredentialsClientMeta(type):
     _transport_registry["rest"] = IAMCredentialsRestTransport
 
     def get_transport_class(cls,
-            label: str = None,
+            label: Optional[str] = None,
         ) -> Type[IAMCredentialsTransport]:
         """Returns an appropriate transport class.
 
@@ -389,14 +389,14 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             )
 
     def generate_access_token(self,
-            request: Union[common.GenerateAccessTokenRequest, dict] = None,
+            request: Union[common.GenerateAccessTokenRequest, dict, None] = None,
             *,
-            name: str = None,
-            delegates: MutableSequence[str] = None,
-            scope: MutableSequence[str] = None,
-            lifetime: duration_pb2.Duration = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            scope: Optional[MutableSequence[str]] = None,
+            lifetime: Optional[duration_pb2.Duration] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateAccessTokenResponse:
         r"""Generates an OAuth 2.0 access token for a service
@@ -542,14 +542,14 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         return response
 
     def generate_id_token(self,
-            request: Union[common.GenerateIdTokenRequest, dict] = None,
+            request: Union[common.GenerateIdTokenRequest, dict, None] = None,
             *,
-            name: str = None,
-            delegates: MutableSequence[str] = None,
-            audience: str = None,
-            include_email: bool = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            audience: Optional[str] = None,
+            include_email: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateIdTokenResponse:
         r"""Generates an OpenID Connect ID token for a service
@@ -689,13 +689,13 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         return response
 
     def sign_blob(self,
-            request: Union[common.SignBlobRequest, dict] = None,
+            request: Union[common.SignBlobRequest, dict, None] = None,
             *,
-            name: str = None,
-            delegates: MutableSequence[str] = None,
-            payload: bytes = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            payload: Optional[bytes] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignBlobResponse:
         r"""Signs a blob using a service account's system-managed
@@ -822,13 +822,13 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         return response
 
     def sign_jwt(self,
-            request: Union[common.SignJwtRequest, dict] = None,
+            request: Union[common.SignJwtRequest, dict, None] = None,
             *,
-            name: str = None,
-            delegates: MutableSequence[str] = None,
-            payload: str = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            payload: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
