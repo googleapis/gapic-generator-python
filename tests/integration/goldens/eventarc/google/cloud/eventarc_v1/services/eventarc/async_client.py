@@ -197,7 +197,7 @@ class EventarcAsyncClient:
         )
 
     async def get_trigger(self,
-            request: Union[eventarc.GetTriggerRequest, dict, None] = None,
+            request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -233,7 +233,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict, None]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict]]):
                 The request object. The request message for the
                 GetTrigger method.
             name (:class:`str`):
@@ -298,7 +298,7 @@ class EventarcAsyncClient:
         return response
 
     async def list_triggers(self,
-            request: Union[eventarc.ListTriggersRequest, dict, None] = None,
+            request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -335,7 +335,7 @@ class EventarcAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict, None]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict]]):
                 The request object. The request message for the
                 ListTriggers method.
             parent (:class:`str`):
@@ -412,7 +412,7 @@ class EventarcAsyncClient:
         return response
 
     async def create_trigger(self,
-            request: Union[eventarc.CreateTriggerRequest, dict, None] = None,
+            request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             trigger: Optional[gce_trigger.Trigger] = None,
@@ -465,7 +465,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict, None]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict]]):
                 The request object. The request message for the
                 CreateTrigger method.
             parent (:class:`str`):
@@ -557,7 +557,7 @@ class EventarcAsyncClient:
         return response
 
     async def update_trigger(self,
-            request: Union[eventarc.UpdateTriggerRequest, dict, None] = None,
+            request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
             *,
             trigger: Optional[gce_trigger.Trigger] = None,
             update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -599,7 +599,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict, None]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict]]):
                 The request object. The request message for the
                 UpdateTrigger method.
             trigger (:class:`google.cloud.eventarc_v1.types.Trigger`):
@@ -694,7 +694,7 @@ class EventarcAsyncClient:
         return response
 
     async def delete_trigger(self,
-            request: Union[eventarc.DeleteTriggerRequest, dict, None] = None,
+            request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             allow_missing: Optional[bool] = None,
@@ -736,7 +736,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict, None]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict]]):
                 The request object. The request message for the
                 DeleteTrigger method.
             name (:class:`str`):

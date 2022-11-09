@@ -319,7 +319,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, EventarcTransport, None] = None,
+            transport: Optional[Union[str, EventarcTransport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -409,7 +409,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
             )
 
     def get_trigger(self,
-            request: Union[eventarc.GetTriggerRequest, dict, None] = None,
+            request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -510,7 +510,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def list_triggers(self,
-            request: Union[eventarc.ListTriggersRequest, dict, None] = None,
+            request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -624,7 +624,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def create_trigger(self,
-            request: Union[eventarc.CreateTriggerRequest, dict, None] = None,
+            request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             trigger: Optional[gce_trigger.Trigger] = None,
@@ -769,7 +769,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def update_trigger(self,
-            request: Union[eventarc.UpdateTriggerRequest, dict, None] = None,
+            request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
             *,
             trigger: Optional[gce_trigger.Trigger] = None,
             update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -906,7 +906,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def delete_trigger(self,
-            request: Union[eventarc.DeleteTriggerRequest, dict, None] = None,
+            request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             allow_missing: Optional[bool] = None,

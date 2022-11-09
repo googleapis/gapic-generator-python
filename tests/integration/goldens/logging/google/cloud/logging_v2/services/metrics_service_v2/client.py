@@ -291,7 +291,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, MetricsServiceV2Transport, None] = None,
+            transport: Optional[Union[str, MetricsServiceV2Transport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -381,7 +381,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             )
 
     def list_log_metrics(self,
-            request: Union[logging_metrics.ListLogMetricsRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -497,7 +497,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def get_log_metric(self,
-            request: Union[logging_metrics.GetLogMetricRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.GetLogMetricRequest, dict]] = None,
             *,
             metric_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -609,7 +609,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def create_log_metric(self,
-            request: Union[logging_metrics.CreateLogMetricRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.CreateLogMetricRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             metric: Optional[logging_metrics.LogMetric] = None,
@@ -740,7 +740,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def update_log_metric(self,
-            request: Union[logging_metrics.UpdateLogMetricRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.UpdateLogMetricRequest, dict]] = None,
             *,
             metric_name: Optional[str] = None,
             metric: Optional[logging_metrics.LogMetric] = None,
@@ -870,7 +870,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def delete_log_metric(self,
-            request: Union[logging_metrics.DeleteLogMetricRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.DeleteLogMetricRequest, dict]] = None,
             *,
             metric_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,

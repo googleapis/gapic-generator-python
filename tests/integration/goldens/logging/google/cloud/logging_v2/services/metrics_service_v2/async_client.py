@@ -187,7 +187,7 @@ class MetricsServiceV2AsyncClient:
         )
 
     async def list_log_metrics(self,
-            request: Union[logging_metrics.ListLogMetricsRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -224,7 +224,7 @@ class MetricsServiceV2AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListLogMetricsRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.ListLogMetricsRequest, dict]]):
                 The request object. The parameters to ListLogMetrics.
             parent (:class:`str`):
                 Required. The name of the project containing the
@@ -311,7 +311,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def get_log_metric(self,
-            request: Union[logging_metrics.GetLogMetricRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.GetLogMetricRequest, dict]] = None,
             *,
             metric_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -347,7 +347,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.GetLogMetricRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.GetLogMetricRequest, dict]]):
                 The request object. The parameters to GetLogMetric.
             metric_name (:class:`str`):
                 Required. The resource name of the desired metric:
@@ -431,7 +431,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def create_log_metric(self,
-            request: Union[logging_metrics.CreateLogMetricRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.CreateLogMetricRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             metric: Optional[logging_metrics.LogMetric] = None,
@@ -473,7 +473,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.CreateLogMetricRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.CreateLogMetricRequest, dict]]):
                 The request object. The parameters to CreateLogMetric.
             parent (:class:`str`):
                 Required. The resource name of the project in which to
@@ -562,7 +562,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def update_log_metric(self,
-            request: Union[logging_metrics.UpdateLogMetricRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.UpdateLogMetricRequest, dict]] = None,
             *,
             metric_name: Optional[str] = None,
             metric: Optional[logging_metrics.LogMetric] = None,
@@ -604,7 +604,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.UpdateLogMetricRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.UpdateLogMetricRequest, dict]]):
                 The request object. The parameters to UpdateLogMetric.
             metric_name (:class:`str`):
                 Required. The resource name of the metric to update:
@@ -700,7 +700,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def delete_log_metric(self,
-            request: Union[logging_metrics.DeleteLogMetricRequest, dict, None] = None,
+            request: Optional[Union[logging_metrics.DeleteLogMetricRequest, dict]] = None,
             *,
             metric_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -733,7 +733,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 await client.delete_log_metric(request=request)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict]]):
                 The request object. The parameters to DeleteLogMetric.
             metric_name (:class:`str`):
                 Required. The resource name of the metric to delete:

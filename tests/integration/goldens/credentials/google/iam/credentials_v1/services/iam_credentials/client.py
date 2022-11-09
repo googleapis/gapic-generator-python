@@ -299,7 +299,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, IAMCredentialsTransport, None] = None,
+            transport: Optional[Union[str, IAMCredentialsTransport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -389,7 +389,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             )
 
     def generate_access_token(self,
-            request: Union[common.GenerateAccessTokenRequest, dict, None] = None,
+            request: Optional[Union[common.GenerateAccessTokenRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             delegates: Optional[MutableSequence[str]] = None,
@@ -542,7 +542,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         return response
 
     def generate_id_token(self,
-            request: Union[common.GenerateIdTokenRequest, dict, None] = None,
+            request: Optional[Union[common.GenerateIdTokenRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             delegates: Optional[MutableSequence[str]] = None,
@@ -689,7 +689,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         return response
 
     def sign_blob(self,
-            request: Union[common.SignBlobRequest, dict, None] = None,
+            request: Optional[Union[common.SignBlobRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             delegates: Optional[MutableSequence[str]] = None,
@@ -822,7 +822,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         return response
 
     def sign_jwt(self,
-            request: Union[common.SignJwtRequest, dict, None] = None,
+            request: Optional[Union[common.SignJwtRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             delegates: Optional[MutableSequence[str]] = None,

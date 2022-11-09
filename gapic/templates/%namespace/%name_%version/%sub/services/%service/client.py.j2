@@ -275,7 +275,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, {{ service.name }}Transport, None] = None,
+            transport: Optional[Union[str, {{ service.name }}Transport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:

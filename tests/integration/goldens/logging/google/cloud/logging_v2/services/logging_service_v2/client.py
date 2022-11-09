@@ -290,7 +290,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, LoggingServiceV2Transport, None] = None,
+            transport: Optional[Union[str, LoggingServiceV2Transport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -380,7 +380,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             )
 
     def delete_log(self,
-            request: Union[logging.DeleteLogRequest, dict, None] = None,
+            request: Optional[Union[logging.DeleteLogRequest, dict]] = None,
             *,
             log_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -484,7 +484,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
     def write_log_entries(self,
-            request: Union[logging.WriteLogEntriesRequest, dict, None] = None,
+            request: Optional[Union[logging.WriteLogEntriesRequest, dict]] = None,
             *,
             log_name: Optional[str] = None,
             resource: Optional[monitored_resource_pb2.MonitoredResource] = None,
@@ -673,7 +673,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def list_log_entries(self,
-            request: Union[logging.ListLogEntriesRequest, dict, None] = None,
+            request: Optional[Union[logging.ListLogEntriesRequest, dict]] = None,
             *,
             resource_names: Optional[MutableSequence[str]] = None,
             filter: Optional[str] = None,
@@ -829,7 +829,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def list_monitored_resource_descriptors(self,
-            request: Union[logging.ListMonitoredResourceDescriptorsRequest, dict, None] = None,
+            request: Optional[Union[logging.ListMonitoredResourceDescriptorsRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -916,7 +916,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def list_logs(self,
-            request: Union[logging.ListLogsRequest, dict, None] = None,
+            request: Optional[Union[logging.ListLogsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,

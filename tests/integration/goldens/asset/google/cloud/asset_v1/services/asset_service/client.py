@@ -303,7 +303,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, AssetServiceTransport, None] = None,
+            transport: Optional[Union[str, AssetServiceTransport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -393,7 +393,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             )
 
     def export_assets(self,
-            request: Union[asset_service.ExportAssetsRequest, dict, None] = None,
+            request: Optional[Union[asset_service.ExportAssetsRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -507,7 +507,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def list_assets(self,
-            request: Union[asset_service.ListAssetsRequest, dict, None] = None,
+            request: Optional[Union[asset_service.ListAssetsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -623,7 +623,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def batch_get_assets_history(self,
-            request: Union[asset_service.BatchGetAssetsHistoryRequest, dict, None] = None,
+            request: Optional[Union[asset_service.BatchGetAssetsHistoryRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -708,7 +708,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def create_feed(self,
-            request: Union[asset_service.CreateFeedRequest, dict, None] = None,
+            request: Optional[Union[asset_service.CreateFeedRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -827,7 +827,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def get_feed(self,
-            request: Union[asset_service.GetFeedRequest, dict, None] = None,
+            request: Optional[Union[asset_service.GetFeedRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -934,7 +934,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def list_feeds(self,
-            request: Union[asset_service.ListFeedsRequest, dict, None] = None,
+            request: Optional[Union[asset_service.ListFeedsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1037,7 +1037,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def update_feed(self,
-            request: Union[asset_service.UpdateFeedRequest, dict, None] = None,
+            request: Optional[Union[asset_service.UpdateFeedRequest, dict]] = None,
             *,
             feed: Optional[asset_service.Feed] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1148,7 +1148,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def delete_feed(self,
-            request: Union[asset_service.DeleteFeedRequest, dict, None] = None,
+            request: Optional[Union[asset_service.DeleteFeedRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1238,7 +1238,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
     def search_all_resources(self,
-            request: Union[asset_service.SearchAllResourcesRequest, dict, None] = None,
+            request: Optional[Union[asset_service.SearchAllResourcesRequest, dict]] = None,
             *,
             scope: Optional[str] = None,
             query: Optional[str] = None,
@@ -1445,7 +1445,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def search_all_iam_policies(self,
-            request: Union[asset_service.SearchAllIamPoliciesRequest, dict, None] = None,
+            request: Optional[Union[asset_service.SearchAllIamPoliciesRequest, dict]] = None,
             *,
             scope: Optional[str] = None,
             query: Optional[str] = None,
@@ -1631,7 +1631,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def analyze_iam_policy(self,
-            request: Union[asset_service.AnalyzeIamPolicyRequest, dict, None] = None,
+            request: Optional[Union[asset_service.AnalyzeIamPolicyRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -1717,7 +1717,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return response
 
     def analyze_iam_policy_longrunning(self,
-            request: Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict, None] = None,
+            request: Optional[Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,

@@ -334,7 +334,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, ConfigServiceV2Transport, None] = None,
+            transport: Optional[Union[str, ConfigServiceV2Transport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -424,7 +424,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )
 
     def list_buckets(self,
-            request: Union[logging_config.ListBucketsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.ListBucketsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -547,7 +547,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def get_bucket(self,
-            request: Union[logging_config.GetBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -626,7 +626,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def create_bucket(self,
-            request: Union[logging_config.CreateBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -708,7 +708,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_bucket(self,
-            request: Union[logging_config.UpdateBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -797,7 +797,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def delete_bucket(self,
-            request: Union[logging_config.DeleteBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.DeleteBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -868,7 +868,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def undelete_bucket(self,
-            request: Union[logging_config.UndeleteBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UndeleteBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -938,7 +938,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def list_views(self,
-            request: Union[logging_config.ListViewsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.ListViewsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1053,7 +1053,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def get_view(self,
-            request: Union[logging_config.GetViewRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetViewRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -1134,7 +1134,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def create_view(self,
-            request: Union[logging_config.CreateViewRequest, dict, None] = None,
+            request: Optional[Union[logging_config.CreateViewRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -1217,7 +1217,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_view(self,
-            request: Union[logging_config.UpdateViewRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateViewRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -1299,7 +1299,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def delete_view(self,
-            request: Union[logging_config.DeleteViewRequest, dict, None] = None,
+            request: Optional[Union[logging_config.DeleteViewRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -1368,7 +1368,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def list_sinks(self,
-            request: Union[logging_config.ListSinksRequest, dict, None] = None,
+            request: Optional[Union[logging_config.ListSinksRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1487,7 +1487,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def get_sink(self,
-            request: Union[logging_config.GetSinkRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetSinkRequest, dict]] = None,
             *,
             sink_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1602,7 +1602,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def create_sink(self,
-            request: Union[logging_config.CreateSinkRequest, dict, None] = None,
+            request: Optional[Union[logging_config.CreateSinkRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             sink: Optional[logging_config.LogSink] = None,
@@ -1737,7 +1737,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_sink(self,
-            request: Union[logging_config.UpdateSinkRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateSinkRequest, dict]] = None,
             *,
             sink_name: Optional[str] = None,
             sink: Optional[logging_config.LogSink] = None,
@@ -1896,7 +1896,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def delete_sink(self,
-            request: Union[logging_config.DeleteSinkRequest, dict, None] = None,
+            request: Optional[Union[logging_config.DeleteSinkRequest, dict]] = None,
             *,
             sink_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1994,7 +1994,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def list_exclusions(self,
-            request: Union[logging_config.ListExclusionsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.ListExclusionsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2113,7 +2113,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def get_exclusion(self,
-            request: Union[logging_config.GetExclusionRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetExclusionRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2231,7 +2231,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def create_exclusion(self,
-            request: Union[logging_config.CreateExclusionRequest, dict, None] = None,
+            request: Optional[Union[logging_config.CreateExclusionRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             exclusion: Optional[logging_config.LogExclusion] = None,
@@ -2369,7 +2369,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_exclusion(self,
-            request: Union[logging_config.UpdateExclusionRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateExclusionRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             exclusion: Optional[logging_config.LogExclusion] = None,
@@ -2521,7 +2521,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def delete_exclusion(self,
-            request: Union[logging_config.DeleteExclusionRequest, dict, None] = None,
+            request: Optional[Union[logging_config.DeleteExclusionRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2619,7 +2619,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def get_cmek_settings(self,
-            request: Union[logging_config.GetCmekSettingsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetCmekSettingsRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -2722,7 +2722,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_cmek_settings(self,
-            request: Union[logging_config.UpdateCmekSettingsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateCmekSettingsRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,

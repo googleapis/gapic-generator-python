@@ -186,7 +186,7 @@ class LoggingServiceV2AsyncClient:
         )
 
     async def delete_log(self,
-            request: Union[logging.DeleteLogRequest, dict, None] = None,
+            request: Optional[Union[logging.DeleteLogRequest, dict]] = None,
             *,
             log_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -223,7 +223,7 @@ class LoggingServiceV2AsyncClient:
                 await client.delete_log(request=request)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.DeleteLogRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.DeleteLogRequest, dict]]):
                 The request object. The parameters to DeleteLog.
             log_name (:class:`str`):
                 Required. The resource name of the log to delete:
@@ -298,7 +298,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
     async def write_log_entries(self,
-            request: Union[logging.WriteLogEntriesRequest, dict, None] = None,
+            request: Optional[Union[logging.WriteLogEntriesRequest, dict]] = None,
             *,
             log_name: Optional[str] = None,
             resource: Optional[monitored_resource_pb2.MonitoredResource] = None,
@@ -346,7 +346,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.WriteLogEntriesRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.WriteLogEntriesRequest, dict]]):
                 The request object. The parameters to WriteLogEntries.
             log_name (:class:`str`):
                 Optional. A default log resource name that is assigned
@@ -496,7 +496,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def list_log_entries(self,
-            request: Union[logging.ListLogEntriesRequest, dict, None] = None,
+            request: Optional[Union[logging.ListLogEntriesRequest, dict]] = None,
             *,
             resource_names: Optional[MutableSequence[str]] = None,
             filter: Optional[str] = None,
@@ -538,7 +538,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict]]):
                 The request object. The parameters to `ListLogEntries`.
             resource_names (:class:`MutableSequence[str]`):
                 Required. Names of one or more parent resources from
@@ -660,7 +660,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def list_monitored_resource_descriptors(self,
-            request: Union[logging.ListMonitoredResourceDescriptorsRequest, dict, None] = None,
+            request: Optional[Union[logging.ListMonitoredResourceDescriptorsRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -696,7 +696,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListMonitoredResourceDescriptorsRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.ListMonitoredResourceDescriptorsRequest, dict]]):
                 The request object. The parameters to
                 ListMonitoredResourceDescriptors
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -754,7 +754,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def list_logs(self,
-            request: Union[logging.ListLogsRequest, dict, None] = None,
+            request: Optional[Union[logging.ListLogsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -793,7 +793,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListLogsRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.ListLogsRequest, dict]]):
                 The request object. The parameters to ListLogs.
             parent (:class:`str`):
                 Required. The resource name that owns the logs:

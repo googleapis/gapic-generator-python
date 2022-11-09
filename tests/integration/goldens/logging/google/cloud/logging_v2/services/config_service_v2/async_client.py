@@ -194,7 +194,7 @@ class ConfigServiceV2AsyncClient:
         )
 
     async def list_buckets(self,
-            request: Union[logging_config.ListBucketsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.ListBucketsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -231,7 +231,7 @@ class ConfigServiceV2AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListBucketsRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.ListBucketsRequest, dict]]):
                 The request object. The parameters to `ListBuckets`.
             parent (:class:`str`):
                 Required. The parent resource whose buckets are to be
@@ -317,7 +317,7 @@ class ConfigServiceV2AsyncClient:
         return response
 
     async def get_bucket(self,
-            request: Union[logging_config.GetBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -352,7 +352,7 @@ class ConfigServiceV2AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.GetBucketRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.GetBucketRequest, dict]]):
                 The request object. The parameters to `GetBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -395,7 +395,7 @@ class ConfigServiceV2AsyncClient:
         return response
 
     async def create_bucket(self,
-            request: Union[logging_config.CreateBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -433,7 +433,7 @@ class ConfigServiceV2AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.CreateBucketRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.CreateBucketRequest, dict]]):
                 The request object. The parameters to `CreateBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -476,7 +476,7 @@ class ConfigServiceV2AsyncClient:
         return response
 
     async def update_bucket(self,
-            request: Union[logging_config.UpdateBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -521,7 +521,7 @@ class ConfigServiceV2AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.UpdateBucketRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.UpdateBucketRequest, dict]]):
                 The request object. The parameters to `UpdateBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -564,7 +564,7 @@ class ConfigServiceV2AsyncClient:
         return response
 
     async def delete_bucket(self,
-            request: Union[logging_config.DeleteBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.DeleteBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -598,7 +598,7 @@ class ConfigServiceV2AsyncClient:
                 await client.delete_bucket(request=request)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict]]):
                 The request object. The parameters to `DeleteBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -634,7 +634,7 @@ class ConfigServiceV2AsyncClient:
         )
 
     async def undelete_bucket(self,
-            request: Union[logging_config.UndeleteBucketRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UndeleteBucketRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -667,7 +667,7 @@ class ConfigServiceV2AsyncClient:
                 await client.undelete_bucket(request=request)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict]]):
                 The request object. The parameters to `UndeleteBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -703,7 +703,7 @@ class ConfigServiceV2AsyncClient:
         )
 
     async def list_views(self,
-            request: Union[logging_config.ListViewsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.ListViewsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -740,7 +740,7 @@ class ConfigServiceV2AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListViewsRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.ListViewsRequest, dict]]):
                 The request object. The parameters to `ListViews`.
             parent (:class:`str`):
                 Required. The bucket whose views are to be listed:
@@ -818,7 +818,7 @@ class ConfigServiceV2AsyncClient:
         return response
 
     async def get_view(self,
-            request: Union[logging_config.GetViewRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetViewRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -853,7 +853,7 @@ class ConfigServiceV2AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.GetViewRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.GetViewRequest, dict]]):
                 The request object. The parameters to `GetView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -898,7 +898,7 @@ class ConfigServiceV2AsyncClient:
         return response
 
     async def create_view(self,
-            request: Union[logging_config.CreateViewRequest, dict, None] = None,
+            request: Optional[Union[logging_config.CreateViewRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -935,7 +935,7 @@ class ConfigServiceV2AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.CreateViewRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.CreateViewRequest, dict]]):
                 The request object. The parameters to `CreateView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -980,7 +980,7 @@ class ConfigServiceV2AsyncClient:
         return response
 
     async def update_view(self,
-            request: Union[logging_config.UpdateViewRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateViewRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -1016,7 +1016,7 @@ class ConfigServiceV2AsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.UpdateViewRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.UpdateViewRequest, dict]]):
                 The request object. The parameters to `UpdateView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1061,7 +1061,7 @@ class ConfigServiceV2AsyncClient:
         return response
 
     async def delete_view(self,
-            request: Union[logging_config.DeleteViewRequest, dict, None] = None,
+            request: Optional[Union[logging_config.DeleteViewRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -1093,7 +1093,7 @@ class ConfigServiceV2AsyncClient:
                 await client.delete_view(request=request)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.DeleteViewRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.DeleteViewRequest, dict]]):
                 The request object. The parameters to `DeleteView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1129,7 +1129,7 @@ class ConfigServiceV2AsyncClient:
         )
 
     async def list_sinks(self,
-            request: Union[logging_config.ListSinksRequest, dict, None] = None,
+            request: Optional[Union[logging_config.ListSinksRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1166,7 +1166,7 @@ class ConfigServiceV2AsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListSinksRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.ListSinksRequest, dict]]):
                 The request object. The parameters to `ListSinks`.
             parent (:class:`str`):
                 Required. The parent resource whose sinks are to be
@@ -1256,7 +1256,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def get_sink(self,
-            request: Union[logging_config.GetSinkRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetSinkRequest, dict]] = None,
             *,
             sink_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1292,7 +1292,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.GetSinkRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.GetSinkRequest, dict]]):
                 The request object. The parameters to `GetSink`.
             sink_name (:class:`str`):
                 Required. The resource name of the sink:
@@ -1379,7 +1379,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def create_sink(self,
-            request: Union[logging_config.CreateSinkRequest, dict, None] = None,
+            request: Optional[Union[logging_config.CreateSinkRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             sink: Optional[logging_config.LogSink] = None,
@@ -1425,7 +1425,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.CreateSinkRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.CreateSinkRequest, dict]]):
                 The request object. The parameters to `CreateSink`.
             parent (:class:`str`):
                 Required. The resource in which to create the sink:
@@ -1514,7 +1514,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def update_sink(self,
-            request: Union[logging_config.UpdateSinkRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateSinkRequest, dict]] = None,
             *,
             sink_name: Optional[str] = None,
             sink: Optional[logging_config.LogSink] = None,
@@ -1562,7 +1562,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.UpdateSinkRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.UpdateSinkRequest, dict]]):
                 The request object. The parameters to `UpdateSink`.
             sink_name (:class:`str`):
                 Required. The full resource name of the sink to update,
@@ -1681,7 +1681,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def delete_sink(self,
-            request: Union[logging_config.DeleteSinkRequest, dict, None] = None,
+            request: Optional[Union[logging_config.DeleteSinkRequest, dict]] = None,
             *,
             sink_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1715,7 +1715,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 await client.delete_sink(request=request)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict]]):
                 The request object. The parameters to `DeleteSink`.
             sink_name (:class:`str`):
                 Required. The full resource name of the sink to delete,
@@ -1787,7 +1787,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
     async def list_exclusions(self,
-            request: Union[logging_config.ListExclusionsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.ListExclusionsRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1824,7 +1824,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                     print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.ListExclusionsRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.ListExclusionsRequest, dict]]):
                 The request object. The parameters to `ListExclusions`.
             parent (:class:`str`):
                 Required. The parent resource whose exclusions are to be
@@ -1914,7 +1914,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def get_exclusion(self,
-            request: Union[logging_config.GetExclusionRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetExclusionRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1950,7 +1950,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.GetExclusionRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.GetExclusionRequest, dict]]):
                 The request object. The parameters to `GetExclusion`.
             name (:class:`str`):
                 Required. The resource name of an existing exclusion:
@@ -2040,7 +2040,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def create_exclusion(self,
-            request: Union[logging_config.CreateExclusionRequest, dict, None] = None,
+            request: Optional[Union[logging_config.CreateExclusionRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             exclusion: Optional[logging_config.LogExclusion] = None,
@@ -2085,7 +2085,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.CreateExclusionRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.CreateExclusionRequest, dict]]):
                 The request object. The parameters to `CreateExclusion`.
             parent (:class:`str`):
                 Required. The parent resource in which to create the
@@ -2178,7 +2178,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def update_exclusion(self,
-            request: Union[logging_config.UpdateExclusionRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateExclusionRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             exclusion: Optional[logging_config.LogExclusion] = None,
@@ -2222,7 +2222,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.UpdateExclusionRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.UpdateExclusionRequest, dict]]):
                 The request object. The parameters to `UpdateExclusion`.
             name (:class:`str`):
                 Required. The resource name of the exclusion to update:
@@ -2330,7 +2330,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def delete_exclusion(self,
-            request: Union[logging_config.DeleteExclusionRequest, dict, None] = None,
+            request: Optional[Union[logging_config.DeleteExclusionRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2363,7 +2363,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 await client.delete_exclusion(request=request)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict]]):
                 The request object. The parameters to `DeleteExclusion`.
             name (:class:`str`):
                 Required. The resource name of an existing exclusion to
@@ -2436,7 +2436,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
     async def get_cmek_settings(self,
-            request: Union[logging_config.GetCmekSettingsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.GetCmekSettingsRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -2479,7 +2479,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.GetCmekSettingsRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.GetCmekSettingsRequest, dict]]):
                 The request object. The parameters to
                 [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
                 See [Enabling CMEK for Logs
@@ -2538,7 +2538,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def update_cmek_settings(self,
-            request: Union[logging_config.UpdateCmekSettingsRequest, dict, None] = None,
+            request: Optional[Union[logging_config.UpdateCmekSettingsRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
@@ -2587,7 +2587,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.cloud.logging_v2.types.UpdateCmekSettingsRequest, dict, None]):
+            request (Optional[Union[google.cloud.logging_v2.types.UpdateCmekSettingsRequest, dict]]):
                 The request object. The parameters to
                 [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
                 See [Enabling CMEK for Logs

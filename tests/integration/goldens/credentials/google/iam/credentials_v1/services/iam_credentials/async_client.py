@@ -195,7 +195,7 @@ class IAMCredentialsAsyncClient:
         )
 
     async def generate_access_token(self,
-            request: Union[common.GenerateAccessTokenRequest, dict, None] = None,
+            request: Optional[Union[common.GenerateAccessTokenRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             delegates: Optional[MutableSequence[str]] = None,
@@ -236,7 +236,7 @@ class IAMCredentialsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.GenerateAccessTokenRequest, dict, None]):
+            request (Optional[Union[google.iam.credentials_v1.types.GenerateAccessTokenRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -355,7 +355,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def generate_id_token(self,
-            request: Union[common.GenerateIdTokenRequest, dict, None] = None,
+            request: Optional[Union[common.GenerateIdTokenRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             delegates: Optional[MutableSequence[str]] = None,
@@ -396,7 +396,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.GenerateIdTokenRequest, dict, None]):
+            request (Optional[Union[google.iam.credentials_v1.types.GenerateIdTokenRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -509,7 +509,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def sign_blob(self,
-            request: Union[common.SignBlobRequest, dict, None] = None,
+            request: Optional[Union[common.SignBlobRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             delegates: Optional[MutableSequence[str]] = None,
@@ -549,7 +549,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.SignBlobRequest, dict, None]):
+            request (Optional[Union[google.iam.credentials_v1.types.SignBlobRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -649,7 +649,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def sign_jwt(self,
-            request: Union[common.SignJwtRequest, dict, None] = None,
+            request: Optional[Union[common.SignJwtRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             delegates: Optional[MutableSequence[str]] = None,
@@ -689,7 +689,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.SignJwtRequest, dict, None]):
+            request (Optional[Union[google.iam.credentials_v1.types.SignJwtRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for

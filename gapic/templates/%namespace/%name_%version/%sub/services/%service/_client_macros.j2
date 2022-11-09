@@ -17,7 +17,7 @@
 {% macro client_method(method, name, snippet_index, api, service, full_extended_lro=False) %}
     def {{ name }}(self,
             {% if not method.client_streaming %}
-            request: Union[{{ method.input.ident }}, dict, None] = None,
+            request: Optional[Union[{{ method.input.ident }}, dict]] = None,
             *,
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}: Optional[{{ field.ident }}] = None,
