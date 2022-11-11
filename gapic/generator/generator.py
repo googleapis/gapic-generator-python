@@ -19,7 +19,7 @@ import re
 import os
 import pathlib
 import typing
-from typing import Any, DefaultDict, Dict, Mapping, Tuple
+from typing import Any, DefaultDict, Dict, Mapping, Optional, Tuple
 from hashlib import sha256
 from collections import OrderedDict, defaultdict
 from gapic.samplegen_utils.utils import coerce_response_name, is_valid_sample_cfg, render_format_string
@@ -217,9 +217,10 @@ class Generator:
 
         if index.metadata_index.snippets:
             # NOTE(busunkim): Not all fields are yet populated in the snippet metadata.
-            # Expected filename: snippet_metadata_{apishortname}_{apiversion}.json
+            # Expected filename: snippet_metadata.{proto_package}.json
+            # For example: snippet_metadata_google.cloud.aiplatform.v1.json
             snippet_metadata_path = str(pathlib.Path(
-                out_dir) / f"snippet_metadata_{api_schema.naming.name}_{api_schema.naming.version}.json").lower()
+                out_dir) / f"snippet_metadata_{api_schema.naming.proto_package}.json").lower()
             output_files[snippet_metadata_path] = CodeGeneratorResponse.File(
                 content=formatter.fix_whitespace(index.get_metadata_json()), name=snippet_metadata_path)
 
@@ -361,7 +362,7 @@ class Generator:
         return {fn: cgr_file}
 
     def _get_filename(
-        self, template_name: str, *, api_schema: api.API, context: dict = None,
+        self, template_name: str, *, api_schema: api.API, context: Optional[dict] = None,
     ) -> str:
         """Return the appropriate output filename for this template.
 
