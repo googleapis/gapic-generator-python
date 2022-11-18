@@ -17,13 +17,13 @@
 {% macro client_method(method, name, snippet_index, api, service, full_extended_lro=False) %}
     def {{ name }}(self,
             {% if not method.client_streaming %}
-            request: Union[{{ method.input.ident }}, dict] = None,
+            request: Optional[Union[{{ method.input.ident }}, dict]] = None,
             *,
             {% for field in method.flattened_fields.values() %}
-            {{ field.name }}: {{ field.ident }} = None,
+            {{ field.name }}: Optional[{{ field.ident }}] = None,
             {% endfor %}
             {% else %}
-            requests: Iterator[{{ method.input.ident }}] = None,
+            requests: Optional[Iterator[{{ method.input.ident }}]] = None,
             *,
             {% endif %}
             retry: OptionalRetry = gapic_v1.method.DEFAULT,

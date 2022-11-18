@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union, cast
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union, cast
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -57,7 +57,7 @@ class LoggingServiceV2ClientMeta(type):
     _transport_registry["rest"] = LoggingServiceV2RestTransport
 
     def get_transport_class(cls,
-            label: str = None,
+            label: Optional[str] = None,
         ) -> Type[LoggingServiceV2Transport]:
         """Returns an appropriate transport class.
 
@@ -290,7 +290,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, LoggingServiceV2Transport, None] = None,
+            transport: Optional[Union[str, LoggingServiceV2Transport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -380,9 +380,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             )
 
     def delete_log(self,
-            request: Union[logging.DeleteLogRequest, dict] = None,
+            request: Optional[Union[logging.DeleteLogRequest, dict]] = None,
             *,
-            log_name: str = None,
+            log_name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -484,12 +484,12 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
     def write_log_entries(self,
-            request: Union[logging.WriteLogEntriesRequest, dict] = None,
+            request: Optional[Union[logging.WriteLogEntriesRequest, dict]] = None,
             *,
-            log_name: str = None,
-            resource: monitored_resource_pb2.MonitoredResource = None,
-            labels: Mapping[str, str] = None,
-            entries: Sequence[log_entry.LogEntry] = None,
+            log_name: Optional[str] = None,
+            resource: Optional[monitored_resource_pb2.MonitoredResource] = None,
+            labels: Optional[MutableMapping[str, str]] = None,
+            entries: Optional[MutableSequence[log_entry.LogEntry]] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -578,7 +578,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (Mapping[str, str]):
+            labels (MutableMapping[str, str]):
                 Optional. Default labels that are added to the
                 ``labels`` field of all log entries in ``entries``. If a
                 log entry already has a label with the same key as a
@@ -588,7 +588,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
+            entries (MutableSequence[google.cloud.logging_v2.types.LogEntry]):
                 Required. The log entries to send to Logging. The order
                 of log entries in this list does not matter. Values
                 supplied in this method's ``log_name``, ``resource``,
@@ -673,11 +673,11 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def list_log_entries(self,
-            request: Union[logging.ListLogEntriesRequest, dict] = None,
+            request: Optional[Union[logging.ListLogEntriesRequest, dict]] = None,
             *,
-            resource_names: Sequence[str] = None,
-            filter: str = None,
-            order_by: str = None,
+            resource_names: Optional[MutableSequence[str]] = None,
+            filter: Optional[str] = None,
+            order_by: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -717,7 +717,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Args:
             request (Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict]):
                 The request object. The parameters to `ListLogEntries`.
-            resource_names (Sequence[str]):
+            resource_names (MutableSequence[str]):
                 Required. Names of one or more parent resources from
                 which to retrieve log entries:
 
@@ -829,7 +829,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def list_monitored_resource_descriptors(self,
-            request: Union[logging.ListMonitoredResourceDescriptorsRequest, dict] = None,
+            request: Optional[Union[logging.ListMonitoredResourceDescriptorsRequest, dict]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -916,9 +916,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def list_logs(self,
-            request: Union[logging.ListLogsRequest, dict] = None,
+            request: Optional[Union[logging.ListLogsRequest, dict]] = None,
             *,
-            parent: str = None,
+            parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1036,7 +1036,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return response
 
     def tail_log_entries(self,
-            requests: Iterator[logging.TailLogEntriesRequest] = None,
+            requests: Optional[Iterator[logging.TailLogEntriesRequest]] = None,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
