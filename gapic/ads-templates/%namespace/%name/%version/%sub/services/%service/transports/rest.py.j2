@@ -284,7 +284,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         def __call__(self,
                 request: {{method.input.ident}}, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+                timeout: float=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
     {% if method.http_options and not method.client_streaming %}
