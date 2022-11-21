@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -60,7 +60,7 @@ class CloudRedisClientMeta(type):
     _transport_registry["rest"] = CloudRedisRestTransport
 
     def get_transport_class(cls,
-            label: str = None,
+            label: Optional[str] = None,
         ) -> Type[CloudRedisTransport]:
         """Returns an appropriate transport class.
 
@@ -314,7 +314,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, CloudRedisTransport, None] = None,
+            transport: Optional[Union[str, CloudRedisTransport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -404,9 +404,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             )
 
     def list_instances(self,
-            request: Union[cloud_redis.ListInstancesRequest, dict] = None,
+            request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,
             *,
-            parent: str = None,
+            parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -529,9 +529,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def get_instance(self,
-            request: Union[cloud_redis.GetInstanceRequest, dict] = None,
+            request: Optional[Union[cloud_redis.GetInstanceRequest, dict]] = None,
             *,
-            name: str = None,
+            name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -629,11 +629,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def create_instance(self,
-            request: Union[cloud_redis.CreateInstanceRequest, dict] = None,
+            request: Optional[Union[cloud_redis.CreateInstanceRequest, dict]] = None,
             *,
-            parent: str = None,
-            instance_id: str = None,
-            instance: cloud_redis.Instance = None,
+            parent: Optional[str] = None,
+            instance_id: Optional[str] = None,
+            instance: Optional[cloud_redis.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -792,10 +792,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def update_instance(self,
-            request: Union[cloud_redis.UpdateInstanceRequest, dict] = None,
+            request: Optional[Union[cloud_redis.UpdateInstanceRequest, dict]] = None,
             *,
-            update_mask: field_mask_pb2.FieldMask = None,
-            instance: cloud_redis.Instance = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            instance: Optional[cloud_redis.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -935,10 +935,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def upgrade_instance(self,
-            request: Union[cloud_redis.UpgradeInstanceRequest, dict] = None,
+            request: Optional[Union[cloud_redis.UpgradeInstanceRequest, dict]] = None,
             *,
-            name: str = None,
-            redis_version: str = None,
+            name: Optional[str] = None,
+            redis_version: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1064,10 +1064,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def import_instance(self,
-            request: Union[cloud_redis.ImportInstanceRequest, dict] = None,
+            request: Optional[Union[cloud_redis.ImportInstanceRequest, dict]] = None,
             *,
-            name: str = None,
-            input_config: cloud_redis.InputConfig = None,
+            name: Optional[str] = None,
+            input_config: Optional[cloud_redis.InputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1203,10 +1203,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def export_instance(self,
-            request: Union[cloud_redis.ExportInstanceRequest, dict] = None,
+            request: Optional[Union[cloud_redis.ExportInstanceRequest, dict]] = None,
             *,
-            name: str = None,
-            output_config: cloud_redis.OutputConfig = None,
+            name: Optional[str] = None,
+            output_config: Optional[cloud_redis.OutputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1338,10 +1338,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def failover_instance(self,
-            request: Union[cloud_redis.FailoverInstanceRequest, dict] = None,
+            request: Optional[Union[cloud_redis.FailoverInstanceRequest, dict]] = None,
             *,
-            name: str = None,
-            data_protection_mode: cloud_redis.FailoverInstanceRequest.DataProtectionMode = None,
+            name: Optional[str] = None,
+            data_protection_mode: Optional[cloud_redis.FailoverInstanceRequest.DataProtectionMode] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1468,9 +1468,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def delete_instance(self,
-            request: Union[cloud_redis.DeleteInstanceRequest, dict] = None,
+            request: Optional[Union[cloud_redis.DeleteInstanceRequest, dict]] = None,
             *,
-            name: str = None,
+            name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),

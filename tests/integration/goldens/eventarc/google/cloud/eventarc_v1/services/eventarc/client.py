@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -61,7 +61,7 @@ class EventarcClientMeta(type):
     _transport_registry["rest"] = EventarcRestTransport
 
     def get_transport_class(cls,
-            label: str = None,
+            label: Optional[str] = None,
         ) -> Type[EventarcTransport]:
         """Returns an appropriate transport class.
 
@@ -319,7 +319,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, EventarcTransport, None] = None,
+            transport: Optional[Union[str, EventarcTransport]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -409,9 +409,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
             )
 
     def get_trigger(self,
-            request: Union[eventarc.GetTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
             *,
-            name: str = None,
+            name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -510,9 +510,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def list_triggers(self,
-            request: Union[eventarc.ListTriggersRequest, dict] = None,
+            request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
             *,
-            parent: str = None,
+            parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -624,11 +624,11 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def create_trigger(self,
-            request: Union[eventarc.CreateTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
             *,
-            parent: str = None,
-            trigger: gce_trigger.Trigger = None,
-            trigger_id: str = None,
+            parent: Optional[str] = None,
+            trigger: Optional[gce_trigger.Trigger] = None,
+            trigger_id: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -769,11 +769,11 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def update_trigger(self,
-            request: Union[eventarc.UpdateTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
             *,
-            trigger: gce_trigger.Trigger = None,
-            update_mask: field_mask_pb2.FieldMask = None,
-            allow_missing: bool = None,
+            trigger: Optional[gce_trigger.Trigger] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            allow_missing: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -906,10 +906,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def delete_trigger(self,
-            request: Union[eventarc.DeleteTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
             *,
-            name: str = None,
-            allow_missing: bool = None,
+            name: Optional[str] = None,
+            allow_missing: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),

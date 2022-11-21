@@ -1,6 +1,34 @@
 # Changelog
 
 
+## [1.6.2](https://github.com/googleapis/gapic-generator-python/compare/v1.6.1...v1.6.2) (2022-11-15)
+
+
+### Bug Fixes
+
+* update dependency googleapis-common-protos to v1.57.0 ([786b0d4](https://github.com/googleapis/gapic-generator-python/commit/786b0d401fe6a188005b4bf076595a37821ee761))
+
+## [1.6.1](https://github.com/googleapis/gapic-generator-python/compare/v1.6.0...v1.6.1) (2022-11-11)
+
+
+### Bug Fixes
+
+* Allow google-cloud-documentai &lt; 3 ([#1487](https://github.com/googleapis/gapic-generator-python/issues/1487)) ([b717e92](https://github.com/googleapis/gapic-generator-python/commit/b717e92f8e184edcc6e2ad3b696817435e5e37e5))
+* Fix typo in testing/constraints-3.7.txt ([#1483](https://github.com/googleapis/gapic-generator-python/issues/1483)) ([0ba5bc1](https://github.com/googleapis/gapic-generator-python/commit/0ba5bc16e4ad2197cb7071a9f8c9164b1c6f080d))
+
+## [1.6.0](https://github.com/googleapis/gapic-generator-python/compare/v1.5.0...v1.6.0) (2022-11-09)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([#1474](https://github.com/googleapis/gapic-generator-python/issues/1474)) ([3bd2f87](https://github.com/googleapis/gapic-generator-python/commit/3bd2f8703e4a1a67e6a4c281890c4f99eda13fe7))
+
+
+### Bug Fixes
+
+* Detect changed Python files in Git pre-commit hook ([#1475](https://github.com/googleapis/gapic-generator-python/issues/1475)) ([2a232fc](https://github.com/googleapis/gapic-generator-python/commit/2a232fcc5297d6cd2ee1562c01843a3074a4da1f))
+* Snippetgen handling of repeated enum field ([#1443](https://github.com/googleapis/gapic-generator-python/issues/1443)) ([70d7882](https://github.com/googleapis/gapic-generator-python/commit/70d7882b39c754ebebfd2b57fa5e89f515e3192f))
+
 ## [1.5.0](https://github.com/googleapis/gapic-generator-python/compare/v1.4.4...v1.5.0) (2022-10-17)
 
 
