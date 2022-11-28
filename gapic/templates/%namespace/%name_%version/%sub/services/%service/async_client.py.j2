@@ -192,7 +192,7 @@ class {{ service.async_client_name }}:
 
     {% for method in service.methods.values() %}
       {% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
-    {%+ if not method.server_streaming %}async {% endif %}def {{ method_name }}(self,
+    async def {{ method_name }}(self,
       {% endwith %}
             {% if not method.client_streaming %}
             request: Optional[Union[{{ method.input.ident }}, dict]] = None,
@@ -343,7 +343,7 @@ class {{ service.async_client_name }}:
 
         # Send the request.
         {%+ if not method.void %}response = {% endif %}
-        {% if not method.server_streaming %}await {% endif %}rpc(
+        await rpc(
             {% if not method.client_streaming %}
             request,
             {% else %}
