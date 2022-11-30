@@ -183,6 +183,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     message = await response.read()
     assert isinstance(message, {{ method.output.ident }})
     {% else %}
+    response = await response
     assert isinstance(response, {{ method.client_output_async.ident }})
     {% for field in method_output.fields.values() | rejectattr('message') %}
     {% if not field.oneof or field.proto3_optional %}
