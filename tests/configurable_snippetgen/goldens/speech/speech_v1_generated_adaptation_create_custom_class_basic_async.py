@@ -26,43 +26,47 @@ from google.cloud import speech_v1
 
 async def sample_create_custom_class_basic(
     parent: str = "projects/[PROJECT]/locations/us",
-    custom_class_id: str = "passengerships") -> speech_v1.CustomClass:
-  """Custom Class Creation.
+    custom_class_id: str = "passengerships",
+) -> speech_v1.CustomClass:
+    """Custom Class Creation.
 
-  Shows how to create a custom class.
+    Shows how to create a custom class.
 
-  Args:
-    parent: The custom class parent element
-    custom_class_id: The id for the custom class
+    Args:
+      parent: The custom class parent element
+      custom_class_id: The id for the custom class
 
-  Returns:
-    a CustomClass
-  """
-  client = speech_v1.AdaptationAsyncClient(
-      client_options={"api_endpoint": "https://us-speech.googleapis.com"})
+    Returns:
+      a CustomClass
+    """
+    client = speech_v1.AdaptationAsyncClient(
+        client_options={"api_endpoint": "https://us-speech.googleapis.com"}
+    )
 
-  request = speech_v1.CreateCustomClassRequest(
-      parent=parent,
-      custom_class_id=custom_class_id,
-      custom_class=speech_v1.CustomClass(items=[
-          speech_v1.CustomClass.ClassItem(value="Titanic"),
-          speech_v1.CustomClass.ClassItem(value="RMS Queen Mary")
-      ]),
-  )
+    request = speech_v1.CreateCustomClassRequest(
+        parent=parent,
+        custom_class_id=custom_class_id,
+        custom_class=speech_v1.CustomClass(
+            items=[
+                speech_v1.CustomClass.ClassItem(value="Titanic"),
+                speech_v1.CustomClass.ClassItem(value="RMS Queen Mary"),
+            ]
+        ),
+    )
 
-  print("Calling the CreateCustomClass operation.")
-  response = await client.create_custom_class(request=request)
-  created_custom_class = response.result()
+    print("Calling the CreateCustomClass operation.")
+    response = await client.create_custom_class(request=request)
+    created_custom_class = response.result()
 
-  print("A Custom Class with the following name has been created.")
-  print(created_custom_class.name)
+    print("A Custom Class with the following name has been created.")
+    print(created_custom_class.name)
 
-  print("The Custom class contains the following items.")
-  items_list = created_custom_class.items
-  for item in items_list:
-    print(item)
+    print("The Custom class contains the following items.")
+    items_list = created_custom_class.items
+    for item in items_list:
+        print(item)
 
-  return created_custom_class
+    return created_custom_class
 
 
 # [END speech_v1_generated_Adaptation_CreateCustomClass_Basic_async]
