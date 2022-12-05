@@ -32,7 +32,8 @@ CURRENT_DIRECTORY = Path(__file__).parent.absolute()
 # run from a copy of googleapis with a sibling copy of api-common-protos
 # We use this for testing the configurable snippetgen in isolation
 # from the rest of the GAPIC generator until it is ready to be integrated.
-SPEECH_V1_REQUEST_PATH = CURRENT_DIRECTORY / "resources" / "speech" / "request.desc"
+SPEECH_V1_REQUEST_PATH = CURRENT_DIRECTORY / \
+    "resources" / "speech" / "request.desc"
 
 
 def test_request():
