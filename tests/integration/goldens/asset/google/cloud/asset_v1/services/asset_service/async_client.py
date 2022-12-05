@@ -1680,7 +1680,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(package_version.__version__)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 __all__ = (

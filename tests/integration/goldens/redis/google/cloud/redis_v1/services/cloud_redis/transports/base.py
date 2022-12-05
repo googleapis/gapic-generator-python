@@ -30,7 +30,7 @@ from google.oauth2 import service_account # type: ignore
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2  # type: ignore
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(package_version.__version__)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 class CloudRedisTransport(abc.ABC):

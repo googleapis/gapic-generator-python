@@ -31,7 +31,7 @@ from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.longrunning import operations_pb2  # type: ignore
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(package_version.__version__)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 class EventarcTransport(abc.ABC):

@@ -28,7 +28,7 @@ from google.oauth2 import service_account # type: ignore
 
 from google.iam.credentials_v1.types import common
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(package_version.__version__)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 class IAMCredentialsTransport(abc.ABC):
