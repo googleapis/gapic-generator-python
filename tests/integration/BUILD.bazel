@@ -94,18 +94,17 @@ py_gapic_library(
     transport = "grpc+rest",
 )
 
-# Uncomment once python-api-core-1.34.0 released and integrated in googleapis
-#py_test(
-#    name = "eventarc_py_gapic_test",
-#    srcs = [
-#        "eventarc_py_gapic_pytest.py",
-#        "eventarc_py_gapic_test.py",
-#    ],
-#    legacy_create_init = False,
-#    deps = [
-#        ":eventarc_py_gapic",
-#    ],
-#)
+py_test(
+    name = "eventarc_py_gapic_test",
+    srcs = [
+        "eventarc_py_gapic_pytest.py",
+        "eventarc_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":eventarc_py_gapic",
+    ],
+)
 
 # Logging.
 py_gapic_library(
@@ -120,18 +119,17 @@ py_gapic_library(
     transport = "grpc+rest",
 )
 
-# Uncomment once https://github.com/googleapis/gapic-generator-python/issues/1359 is fixed
-#py_test(
-#    name = "logging_py_gapic_test",
-#    srcs = [
-#        "logging_py_gapic_pytest.py",
-#        "logging_py_gapic_test.py",
-#    ],
-#    legacy_create_init = False,
-#    deps = [
-#        ":logging_py_gapic",
-#    ],
-#)
+py_test(
+    name = "logging_py_gapic_test",
+    srcs = [
+        "logging_py_gapic_pytest.py",
+        "logging_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":logging_py_gapic",
+    ],
+)
 
 py_gapic_library(
     name = "redis_py_gapic",
@@ -143,25 +141,23 @@ py_gapic_library(
     transport = "grpc+rest",
 )
 
-# Uncomment once python-api-core-1.34.0 released and integrated in googleapis
-#
-#py_test(
-#    name = "redis_py_gapic_test",
-#    srcs = [
-#        "redis_py_gapic_pytest.py",
-#        "redis_py_gapic_test.py",
-#    ],
-#    legacy_create_init = False,
-#    deps = [
-#        ":redis_py_gapic",
-#    ],
-#)
-#
-#test_suite(
-#    name = "googleapis_test_suite",
-#    tests = [
-#        ":credentials_py_gapic_test",
-#        ":eventarc_py_gapic_test",
-#        ":redis_py_gapic_test",
-#    ],
-#)
+py_test(
+    name = "redis_py_gapic_test",
+    srcs = [
+        "redis_py_gapic_pytest.py",
+        "redis_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":redis_py_gapic",
+    ],
+)
+
+test_suite(
+    name = "googleapis_test_suite",
+    tests = [
+        ":credentials_py_gapic_test",
+        ":eventarc_py_gapic_test",
+        ":redis_py_gapic_test",
+    ],
+)
