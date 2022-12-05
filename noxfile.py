@@ -220,7 +220,7 @@ def showcase_library(
             f"--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             opts,
-            f"--python_gapic_out={tmp_dir}",
+            f"--python_gapic_out=/usr/local/google/home/partheniou/git/gapic-generator-python/showcase_test",
             f"google/showcase/v1beta1/echo.proto",
             f"google/showcase/v1beta1/identity.proto",
             f"google/showcase/v1beta1/messaging.proto",

@@ -480,7 +480,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.AnalyzeIamPolicyRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.AnalyzeIamPolicyResponse:
             r"""Call the analyze iam policy method over HTTP.
@@ -560,7 +560,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.AnalyzeIamPolicyLongrunningRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the analyze iam policy
@@ -649,7 +649,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.BatchGetAssetsHistoryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.BatchGetAssetsHistoryResponse:
             r"""Call the batch get assets history method over HTTP.
@@ -725,7 +725,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.CreateFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.Feed:
             r"""Call the create feed method over HTTP.
@@ -817,7 +817,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.DeleteFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ):
             r"""Call the delete feed method over HTTP.
@@ -881,7 +881,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.ExportAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the export assets method over HTTP.
@@ -967,7 +967,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.GetFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.Feed:
             r"""Call the get feed method over HTTP.
@@ -1050,7 +1050,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.ListAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.ListAssetsResponse:
             r"""Call the list assets method over HTTP.
@@ -1126,7 +1126,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.ListFeedsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.ListFeedsResponse:
             r"""Call the list feeds method over HTTP.
@@ -1202,7 +1202,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.SearchAllIamPoliciesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.SearchAllIamPoliciesResponse:
             r"""Call the search all iam policies method over HTTP.
@@ -1278,7 +1278,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.SearchAllResourcesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.SearchAllResourcesResponse:
             r"""Call the search all resources method over HTTP.
@@ -1354,7 +1354,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.UpdateFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.Feed:
             r"""Call the update feed method over HTTP.
