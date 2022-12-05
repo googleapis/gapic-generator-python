@@ -15,7 +15,6 @@
 import dataclasses
 
 import libcst
-import inflection
 
 from gapic.configurable_snippetgen import snippet_config_language_pb2 as snippet_config
 from gapic.schema import api
