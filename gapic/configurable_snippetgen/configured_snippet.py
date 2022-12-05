@@ -16,7 +16,7 @@ import dataclasses
 
 import libcst
 
-from gapic.configurable_snippetgen import snippet_config_language_pb2 as snippet_config
+from gapic.configurable_snippetgen import snippet_config_language_pb2
 from gapic.schema import api
 
 
@@ -27,7 +27,7 @@ def _make_empty_module() -> libcst.Module:
 @dataclasses.dataclass(frozen=True)
 class ConfiguredSnippet:
     api_schema: api.API
-    config: snippet_config.SnippetConfig
+    config: snippet_config_language_pb2.SnippetConfig
     api_version: str
     is_sync: bool
     _module: libcst.Module = dataclasses.field(
