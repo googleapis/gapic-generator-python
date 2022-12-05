@@ -84,7 +84,7 @@ def cover(session):
 @nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
-    session.install('mypy', 'types-pkg_resources')
+    session.install('mypy')
     session.install('.')
     session.run(
         'mypy',
