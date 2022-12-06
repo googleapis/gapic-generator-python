@@ -85,7 +85,7 @@ def test_region_tag():
 
     assert (
         snippet.region_tag
-        == "speech_v1_generated_Adaptation_CreateCustomClass_Basic_sync"
+        == "speech_v1_config_Adaptation_CreateCustomClass_Basic_sync"
     )
 
 
