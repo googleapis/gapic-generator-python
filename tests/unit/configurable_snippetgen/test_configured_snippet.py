@@ -96,7 +96,7 @@ def test_sample_function_name():
         api_version="v1",
         is_sync=True)
 
-    assert snippet.sample_function_name == "sample_create_custom_class_basic"
+    assert snippet.sample_function_name == "sample_create_custom_class_Basic"
 
 
 def test_code():

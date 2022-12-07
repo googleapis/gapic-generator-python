@@ -46,12 +46,12 @@ class ConfiguredSnippet:
         For example:
             "speech_v1_config_Adaptation_CreateCustomClass_Basic_async"
         """
-        proto_package_name = self.config.rpc.proto_package.split(".")[-1]
+        module_name = self.config.rpc.proto_package.split(".")[-1]
         service_name = self.config.rpc.service_name
         rpc_name = self.config.rpc.rpc_name
         config_id = self.config.metadata.config_id
         sync_or_async = "sync" if self.is_sync else "async"
-        return f"{proto_package_name}_{self.api_version}_config_{service_name}_{rpc_name}_{config_id}_{sync_or_async}"
+        return f"{module_name}_{self.api_version}_config_{service_name}_{rpc_name}_{config_id}_{sync_or_async}"
 
     @property
     def sample_function_name(self) -> str:
@@ -62,4 +62,4 @@ class ConfiguredSnippet:
         """
         snippet_method_name = self.config.signature.snippet_method_name
         config_id = self.config.metadata.config_id
-        return f"sample_{snippet_method_name}_{config_id.lower()}"
+        return f"sample_{snippet_method_name}_{config_id}"

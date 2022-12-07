@@ -24,7 +24,7 @@
 from google.cloud import speech_v1
 
 
-async def sample_create_custom_class_basic(
+async def sample_create_custom_class_Basic(
     parent: str = "projects/[PROJECT]/locations/us",
     custom_class_id: str = "passengerships",
 ) -> speech_v1.CustomClass:
