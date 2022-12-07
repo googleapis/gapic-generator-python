@@ -106,6 +106,7 @@ def test_code():
         api_version="v1",
         is_sync=True)
 
+    # https://github.com/googleapis/gapic-generator-python/issues/1522
     # Placeholder code.  We will gradually add to the ConfiguredSnippet class
     # until the generated code is the same as that of the golden file.
     expected_code = "\n"
