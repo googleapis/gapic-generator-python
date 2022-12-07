@@ -17,6 +17,7 @@ import dataclasses
 import inflection
 import libcst
 
+from gapic.configurable_snippetgen import libcst_utils
 from gapic.configurable_snippetgen import snippet_config_language_pb2
 from gapic.schema import api
 
@@ -25,7 +26,7 @@ def _make_empty_module() -> libcst.Module:
     return libcst.Module(body=[])
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass
 class ConfiguredSnippet:
     api_schema: api.API
     config: snippet_config_language_pb2.SnippetConfig
@@ -78,3 +79,17 @@ class ConfiguredSnippet:
         config_id = self.config.metadata.config_id
         sync_or_async = "sync" if self.is_sync else "async"
         return f"{module_name}_{self.api_version}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
+
+    def _add_sample_function(self):
+        sample_function_def = libcst_utils.base_function_def(
+            function_name=self.sample_function_name, is_sync=self.is_sync
+        )
+        self._module = self._module.with_changes(body=[sample_function_def])
+
+    def generate(self):
+        """Generates the snippet.
+
+        This is the main entrypoint of a ConfiguredSnippet instance, calling
+        other methods to update self._module.
+        """
+        self._add_sample_function()
