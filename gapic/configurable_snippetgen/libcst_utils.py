@@ -17,6 +17,10 @@ import libcst
 from gapic.configurable_snippetgen import snippet_config_language_pb2
 
 
+def empty_module() -> libcst.Module:
+    return libcst.Module(body=[])
+
+
 def base_function_def(function_name: str, is_sync: bool) -> libcst.FunctionDef:
     """Returns a FunctionDef node with a placeholder docstring."""
     params = libcst.Parameters(params=[])
