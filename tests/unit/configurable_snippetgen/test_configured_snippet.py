@@ -26,7 +26,8 @@ from gapic.schema import api
 
 
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
-SPEECH_V1_REQUEST_PATH = CURRENT_DIRECTORY / "resources" / "speech" / "request.desc"
+SPEECH_V1_REQUEST_PATH = CURRENT_DIRECTORY / \
+    "resources" / "speech" / "request.desc"
 CONFIG_JSON_PATH = (
     CURRENT_DIRECTORY / "resources" / "speech" / "speech_createCustomClass.json"
 )
