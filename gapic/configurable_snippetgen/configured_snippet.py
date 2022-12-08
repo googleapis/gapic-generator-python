@@ -28,14 +28,10 @@ class ConfiguredSnippet:
     config: snippet_config_language_pb2.SnippetConfig
     api_version: str
     is_sync: bool
-    _module: libcst.Module = dataclasses.field(default=None, init=False)
-    _sample_function_def: libcst.FunctionDef = dataclasses.field(
-        default=None, init=False
-    )
 
     def __post_init__(self):
-        self._module = libcst_utils.empty_module()
-        self._sample_function_def = libcst_utils.base_function_def(
+        self._module: libcst.Module = libcst_utils.empty_module()
+        self._sample_function_def: libcst.FunctionDef = libcst_utils.base_function_def(
             function_name=self.sample_function_name, is_sync=self.is_sync
         )
 
@@ -83,18 +79,18 @@ class ConfiguredSnippet:
         sync_or_async = "sync" if self.is_sync else "async"
         return f"{module_name}_{self.api_version}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
 
-    def _build_sample_function(self):
+    def _build_sample_function(self) -> None:
         # TODO: add return type.
         # TODO: add sample function parameters.
         # TODO: add docstring.
         # TODO: add sample function body.
         pass
 
-    def _add_sample_function(self):
+    def _add_sample_function(self) -> None:
         self._module = self._module.with_changes(
             body=[self._sample_function_def])
 
-    def generate(self):
+    def generate(self) -> None:
         """Generates the snippet.
 
         This is the main entrypoint of a ConfiguredSnippet instance, calling
