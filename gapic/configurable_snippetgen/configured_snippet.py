@@ -100,4 +100,4 @@ class ConfiguredSnippet:
         self._add_sample_function()
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1535, add imports.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1534, add region tag.
-        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1533, add header. 
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1533, add header.
