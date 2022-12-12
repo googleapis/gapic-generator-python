@@ -80,10 +80,10 @@ class ConfiguredSnippet:
         return f"{module_name}_{self.api_version}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
 
     def _build_sample_function(self) -> None:
-        # TODO: add return type.
-        # TODO: add sample function parameters.
-        # TODO: add docstring.
-        # TODO: add sample function body.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add sample function parameters.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
         pass
 
     def _add_sample_function(self) -> None:
@@ -98,6 +98,6 @@ class ConfiguredSnippet:
         """
         self._build_sample_function()
         self._add_sample_function()
-        # TODO: add imports.
-        # TODO: add region tag.
-        # TODO: add header.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1535, add imports.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1534, add region tag.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1533, add header. 
