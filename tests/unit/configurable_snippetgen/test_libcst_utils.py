@@ -54,6 +54,14 @@ def test_convert_expression_string_value():
     assert node.deep_equals(expected_node), (node, expected_node)
 
 
+def test_convert_expression_should_raise_error_if_unsupported():
+    config_expression = snippet_config_language_pb2.Expression(
+        default_value=snippet_config_language_pb2.Expression.DefaultValue.DEFAULT_VALUE
+    )
+    with pytest.raises(ValueError):
+        libcst_utils.convert_expression(config_expression)
+
+
 def test_convert_parameter():
     config_parameter = snippet_config_language_pb2.Statement.Declaration(
         name="some_variable",
