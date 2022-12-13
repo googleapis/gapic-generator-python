@@ -153,7 +153,7 @@ class ConfiguredSnippet:
         # function's body.
         self._append_service_client_initialization()
 
-    def _add_sample_funciton_parameters(self) -> None:
+    def _add_sample_function_parameters(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add typing annotation in sample function parameters.
         params = []
         for config_parameter in self.config.signature.parameters:
