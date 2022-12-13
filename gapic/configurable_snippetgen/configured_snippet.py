@@ -79,7 +79,7 @@ class ConfiguredSnippet:
         sync_or_async = "sync" if self.is_sync else "async"
         return f"{module_name}_{self.api_version}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
 
-    def _add_sample_funciton_parameters(self) -> None:
+    def _add_sample_function_parameters(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add typing annotation in sample function parameters.
         params = []
         for config_parameter in self.config.signature.parameters:
@@ -93,7 +93,7 @@ class ConfiguredSnippet:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
-        self._add_sample_funciton_parameters()
+        self._add_sample_function_parameters()
 
     def _add_sample_function(self) -> None:
         self._module = self._module.with_changes(
