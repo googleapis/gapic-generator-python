@@ -41,18 +41,27 @@ class ConfiguredSnippet:
         return self._module.code
 
     @property
+    def gapic_module_name(self) -> str:
+        """The GAPIC module name.
+
+        For example:
+            "speech_v1"
+        """
+        module_name = self.config.rpc.proto_package.split(".")[-1]
+        return f"{module_name}_{self.api_version}"
+
+    @property
     def region_tag(self) -> str:
         """The region tag of the snippet.
 
         For example:
             "speech_v1_config_Adaptation_CreateCustomClass_Basic_async"
         """
-        module_name = self.config.rpc.proto_package.split(".")[-1]
         service_name = self.config.rpc.service_name
         rpc_name = self.config.rpc.rpc_name
         config_id = self.config.metadata.config_id
         sync_or_async = "sync" if self.is_sync else "async"
-        return f"{module_name}_{self.api_version}_config_{service_name}_{rpc_name}_{config_id}_{sync_or_async}"
+        return f"{self.gapic_module_name}_config_{service_name}_{rpc_name}_{config_id}_{sync_or_async}"
 
     @property
     def sample_function_name(self) -> str:
@@ -66,18 +75,31 @@ class ConfiguredSnippet:
         return f"sample_{snippet_method_name}_{config_id}"
 
     @property
+    def client_class_name(self) -> str:
+        """The service client's class name.
+
+        For example:
+            "AdaptationClient"
+            "AdaptationAsyncClient"
+        """
+        if self.is_sync:
+            client_class_name = f"{self.config.rpc.service_name}Client"
+        else:
+            client_class_name = f"{self.config.rpc.service_name}AsyncClient"
+        return client_class_name
+
+    @property
     def filename(self) -> str:
         """The snippet's file name.
 
         For example:
             "speech_v1_generated_Adaptation_create_custom_class_Basic_async.py"
         """
-        module_name = self.config.rpc.proto_package.split(".")[-1]
         service_name = self.config.rpc.service_name
         snake_case_rpc_name = inflection.underscore(self.config.rpc.rpc_name)
         config_id = self.config.metadata.config_id
         sync_or_async = "sync" if self.is_sync else "async"
-        return f"{module_name}_{self.api_version}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
+        return f"{self.gapic_module_name}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
 
     def _add_sample_function_parameters(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add typing annotation in sample function parameters.
@@ -89,11 +111,28 @@ class ConfiguredSnippet:
             params=parameters
         )
 
+    def _append_service_client_initialization(self) -> None:
+        initialization_call = libcst.parse_statement(
+            f"client = {self.gapic_module_name}.{self.gapic_module_name}.{self.client_class_name}()"
+        )
+
+        # It seems not a good practice to mutate libcst nodes, but the code
+        # is much simpler this way.
+        # FunctionDef.body is an IndentedBlock, and IndentedBlock.body
+        # is the actual list of statements.
+        self._sample_function_def.body.body.append(initialization_call)
+
+    def _add_sample_function_body(self) -> None:
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
+        # Each call below appends one or more statements to the sample
+        # function's body.
+        self._append_service_client_initialization()
+
     def _build_sample_function(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
-        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
         self._add_sample_function_parameters()
+        self._add_sample_function_body()
 
     def _add_sample_function(self) -> None:
         self._module = self._module.with_changes(
