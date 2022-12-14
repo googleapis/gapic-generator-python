@@ -113,7 +113,7 @@ class ConfiguredSnippet:
 
     def _append_service_client_initialization(self) -> None:
         initialization_call = libcst.parse_statement(
-            f"client = {self.gapic_module_name}.{self.gapic_module_name}.{self.client_class_name}()"
+            f"client = {self.gapic_module_name}.{self.client_class_name}()"
         )
 
         # It seems not a good practice to mutate libcst nodes, but the code
