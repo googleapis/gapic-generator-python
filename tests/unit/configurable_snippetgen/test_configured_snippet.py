@@ -202,6 +202,21 @@ def test_api_endpoint(custom_service_endpoint_dict, expected):
     snippet_config = json_format.ParseDict(
         snippet_config_dict, snippet_config_language_pb2.SnippetConfig()
     )
+    assert snippet.client_class_name == expected
+
+
+@pytest.mark.parametrize(
+    "is_sync,expected",
+    [
+        (True, "speech_v1_generated_Adaptation_create_custom_class_Basic_sync.py"),
+        (False, "speech_v1_generated_Adaptation_create_custom_class_Basic_async.py"),
+    ],
+)
+def test_filename(is_sync, expected):
+    snippet = _make_configured_snippet(
+        SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=is_sync
+    )
+    assert snippet.filename == expected
 
     snippet = configured_snippet.ConfiguredSnippet(
         api_schema, snippet_config, api_version, is_sync

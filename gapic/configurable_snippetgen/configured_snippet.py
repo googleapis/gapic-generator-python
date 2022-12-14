@@ -198,7 +198,6 @@ class ConfiguredSnippet:
     def _build_sample_function(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
-        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
         self._add_sample_function_parameters()
         self._append_to_sample_function_def_body(
             self._get_service_client_initialization()
