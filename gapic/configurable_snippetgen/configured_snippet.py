@@ -22,6 +22,24 @@ from gapic.configurable_snippetgen import snippet_config_language_pb2
 from gapic.schema import api
 
 
+class _AppendToSampleFunctionBody(libcst.CSTTransformer):
+    def __init__(self, statement: libcst.BaseStatement):
+        self.statement = statement
+
+    def visit_IndentedBlock(self, node: libcst.IndentedBlock) -> bool:
+        # Do not visit any nested indented blocks.
+        return False
+
+    def leave_IndentedBlock(
+        self, original_node: libcst.IndentedBlock, updated_node: libcst.IndentedBlock
+    ) -> libcst.IndentedBlock:
+        del original_node
+        # FunctionDef.body is an IndentedBlock, and IndentedBlock.body
+        # is the actual sequence of statements.
+        new_body = list(updated_node.body) + [self.statement]
+        return updated_node.with_changes(body=new_body)
+
+
 @dataclasses.dataclass
 class ConfiguredSnippet:
     api_schema: api.API
@@ -29,7 +47,7 @@ class ConfiguredSnippet:
     api_version: str
     is_sync: bool
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self._module: libcst.Module = libcst_utils.empty_module()
         self._sample_function_def: libcst.FunctionDef = libcst_utils.base_function_def(
             function_name=self.sample_function_name, is_sync=self.is_sync
@@ -101,6 +119,18 @@ class ConfiguredSnippet:
         sync_or_async = "sync" if self.is_sync else "async"
         return f"{self.gapic_module_name}_generated_{service_name}_{snake_case_rpc_name}_{config_id}_{sync_or_async}.py"
 
+    def _append_to_sample_function_def_body(
+        self, statement: libcst.BaseStatement
+    ) -> None:
+        """Appends the statement node to the current sample function def."""
+        transformer = _AppendToSampleFunctionBody(statement)
+
+        # The result of applying a transformer could be of a different type
+        # in general, but we will only update the sample function def here.
+        self._sample_function_def = self._sample_function_def.visit(
+            transformer
+        )  # type: ignore
+
     def _add_sample_function_parameters(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add typing annotation in sample function parameters.
         params = []
@@ -115,12 +145,7 @@ class ConfiguredSnippet:
         initialization_call = libcst.parse_statement(
             f"client = {self.gapic_module_name}.{self.client_class_name}()"
         )
-
-        # It seems not a good practice to mutate libcst nodes, but the code
-        # is much simpler this way.
-        # FunctionDef.body is an IndentedBlock, and IndentedBlock.body
-        # is the actual list of statements.
-        self._sample_function_def.body.body.append(initialization_call)
+        self._append_to_sample_function_def_body(initialization_call)
 
     def _add_sample_function_body(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
