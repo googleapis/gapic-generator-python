@@ -159,7 +159,7 @@ class ConfiguredSnippet:
             params=parameters
         )
 
-    def _append_service_client_initialization(self) -> None:
+    def _get_service_client_initialization(self) -> libcst.BaseStatement:
         if self.api_endpoint is not None:
             client_options_arg = libcst.Arg(
                 keyword=libcst.Name("client_options"),
@@ -167,27 +167,25 @@ class ConfiguredSnippet:
                     [("api_endpoint", self.api_endpoint)]
                 ),
             )
-            initialization_call = libcst.helpers.parse_template_statement(
+            service_client_initialization = libcst.helpers.parse_template_statement(
                 f"client = {self.gapic_module_name}.{self.client_class_name}({{arg}})",
                 arg=client_options_arg,
             )
         else:
-            initialization_call = libcst.parse_statement(
+            service_client_initialization = libcst.parse_statement(
                 f"client = {self.gapic_module_name}.{self.client_class_name}()"
             )
 
-        self._append_to_sample_function_def_body(initialization_call)
+        return service_client_initialization
 
     def _build_sample_function(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
-
         self._add_sample_function_parameters()
-
-        # Each call below appends one or more statements to the sample
-        # function's body.
-        self._append_service_client_initialization()
+        self._append_to_sample_function_def_body(
+            self._get_service_client_initialization()
+        )
 
     def _add_sample_function(self) -> None:
         self._module = self._module.with_changes(
