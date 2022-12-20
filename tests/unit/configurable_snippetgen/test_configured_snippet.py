@@ -17,6 +17,7 @@ from pathlib import Path
 
 from google.protobuf import json_format
 from google.protobuf.compiler import plugin_pb2
+import libcst
 import pytest
 
 from gapic import utils
@@ -129,6 +130,18 @@ def test_filename(is_sync, expected):
         SPEECH_V1_REQUEST_PATH, CONFIG_JSON_PATH, api_version="v1", is_sync=is_sync
     )
     assert snippet.filename == expected
+
+
+def test_AppendToSampleFunctionBody():
+    # Start with a function def with nonempty body to we can be sure the
+    # transformer appends the statement.
+    function_def = libcst.parse_statement("def f():\n    'hello'")
+    statement = libcst.parse_statement("'world'")
+    transformer = configured_snippet._AppendToSampleFunctionBody(statement)
+    updated_function_def = function_def.visit(transformer)
+    expected_function_def = libcst.parse_statement(
+        "def f():\n    'hello'\n    'world'")
+    assert updated_function_def.deep_equals(expected_function_def)
 
 
 def test_code(snippet):
