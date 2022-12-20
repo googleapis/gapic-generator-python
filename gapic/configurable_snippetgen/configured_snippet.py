@@ -149,6 +149,16 @@ class ConfiguredSnippet:
             transformer
         )  # type: ignore
 
+    def _add_sample_function_parameters(self) -> None:
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add typing annotation in sample function parameters.
+        params = []
+        for config_parameter in self.config.signature.parameters:
+            params.append(libcst_utils.convert_parameter(config_parameter))
+        parameters = libcst.Parameters(params=params)
+        self._sample_function_def = self._sample_function_def.with_changes(
+            params=parameters
+        )
+
     def _append_service_client_initialization(self) -> None:
         if self.api_endpoint is not None:
             client_options_arg = libcst.Arg(
@@ -168,27 +178,16 @@ class ConfiguredSnippet:
 
         self._append_to_sample_function_def_body(initialization_call)
 
-    def _add_sample_function_body(self) -> None:
-        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
-        # Each call below appends one or more statements to the sample
-        # function's body.
-        self._append_service_client_initialization()
-
-    def _add_sample_function_parameters(self) -> None:
-        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1537, add typing annotation in sample function parameters.
-        params = []
-        for config_parameter in self.config.signature.parameters:
-            params.append(libcst_utils.convert_parameter(config_parameter))
-        parameters = libcst.Parameters(params=params)
-        self._sample_function_def = self._sample_function_def.with_changes(
-            params=parameters
-        )
-
     def _build_sample_function(self) -> None:
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1536, add return type.
         # TODO: https://github.com/googleapis/gapic-generator-python/issues/1538, add docstring.
+        # TODO: https://github.com/googleapis/gapic-generator-python/issues/1539, add sample function body.
+
         self._add_sample_function_parameters()
-        self._add_sample_function_body()
+
+        # Each call below appends one or more statements to the sample
+        # function's body.
+        self._append_service_client_initialization()
 
     def _add_sample_function(self) -> None:
         self._module = self._module.with_changes(
