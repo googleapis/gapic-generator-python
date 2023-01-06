@@ -25,7 +25,7 @@ setuptools.setup(
         {% endif %}
         "googleapis-common-protos >= 1.53.0",
         "grpcio >= 1.10.0",
-        "proto-plus >= 1.19.4",
+        "proto-plus >= 1.19.4, <2.0.0dev",
         "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
     {% if api.requires_package(('google', 'iam', 'v1')) %}
         'grpc-google-iam-v1',
