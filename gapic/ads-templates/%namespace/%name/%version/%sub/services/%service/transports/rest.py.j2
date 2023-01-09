@@ -69,13 +69,14 @@ class {{ service.name }}RestInterceptor:
     .. code-block:: python
         class MyCustom{{ service.name }}Interceptor({{ service.name }}RestInterceptor):
     {% for _, method in service.methods|dictsort if not method.client_streaming %}
-            def pre_{{ method.name|snake_case }}(request, metadata):
+            def pre_{{ method.name|snake_case }}(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
     {% if not method.void %}
-            def post_{{ method.name|snake_case }}(response):
+            def post_{{ method.name|snake_case }}(self, response):
                 logging.log(f"Received response: {response}")
+                return response
     {% endif %}
 
 {% endfor %}
@@ -140,15 +141,15 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     {# TODO(yon-mg): handle mtls stuff if that is relevant for rest transport #}
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-            credentials: ga_credentials.Credentials=None,
-            credentials_file: str=None,
-            scopes: Sequence[str]=None,
-            client_cert_source_for_mtls: Callable[[
-                ], Tuple[bytes, bytes]]=None,
-            quota_project_id: Optional[str]=None,
-            client_info: gapic_v1.client_info.ClientInfo=DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool]=False,
-            url_scheme: str='https',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
             interceptor: Optional[{{ service.name }}RestInterceptor] = None,
             ) -> None:
         """Instantiate the transport.
@@ -251,7 +252,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                     # use the credentials which are saved
                     credentials=self._credentials,
                     scopes=self._scopes,
-                    http_options=http_options)
+                    http_options=http_options,
+                    path_prefix="{{ service.client_package_version }}")
 
             self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
@@ -283,7 +285,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         def __call__(self,
                 request: {{method.input.ident}}, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
     {% if method.http_options and not method.client_streaming %}

@@ -16,8 +16,9 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+
+from google.cloud.eventarc_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -119,7 +120,7 @@ class EventarcAsyncClient:
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
-        default mTLS endpoint; if the environment variabel is "never", use the default API
+        default mTLS endpoint; if the environment variable is "never", use the default API
         endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
         use the default API endpoint.
 
@@ -151,9 +152,9 @@ class EventarcAsyncClient:
     get_transport_class = functools.partial(type(EventarcClient).get_transport_class, type(EventarcClient))
 
     def __init__(self, *,
-            credentials: ga_credentials.Credentials = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, EventarcTransport] = "grpc_asyncio",
-            client_options: ClientOptions = None,
+            client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiates the eventarc client.
@@ -197,11 +198,11 @@ class EventarcAsyncClient:
         )
 
     async def get_trigger(self,
-            request: Union[eventarc.GetTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
             *,
-            name: str = None,
+            name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> trigger.Trigger:
         r"""Get a single trigger.
@@ -233,7 +234,7 @@ class EventarcAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict]]):
                 The request object. The request message for the
                 GetTrigger method.
             name (:class:`str`):
@@ -298,11 +299,11 @@ class EventarcAsyncClient:
         return response
 
     async def list_triggers(self,
-            request: Union[eventarc.ListTriggersRequest, dict] = None,
+            request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
             *,
-            parent: str = None,
+            parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListTriggersAsyncPager:
         r"""List triggers.
@@ -335,7 +336,7 @@ class EventarcAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict]]):
                 The request object. The request message for the
                 ListTriggers method.
             parent (:class:`str`):
@@ -412,13 +413,13 @@ class EventarcAsyncClient:
         return response
 
     async def create_trigger(self,
-            request: Union[eventarc.CreateTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
             *,
-            parent: str = None,
-            trigger: gce_trigger.Trigger = None,
-            trigger_id: str = None,
+            parent: Optional[str] = None,
+            trigger: Optional[gce_trigger.Trigger] = None,
+            trigger_id: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Create a new trigger in a particular project and
@@ -459,13 +460,13 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict]]):
                 The request object. The request message for the
                 CreateTrigger method.
             parent (:class:`str`):
@@ -557,13 +558,13 @@ class EventarcAsyncClient:
         return response
 
     async def update_trigger(self,
-            request: Union[eventarc.UpdateTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
             *,
-            trigger: gce_trigger.Trigger = None,
-            update_mask: field_mask_pb2.FieldMask = None,
-            allow_missing: bool = None,
+            trigger: Optional[gce_trigger.Trigger] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            allow_missing: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Update a single trigger.
@@ -593,13 +594,13 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict]]):
                 The request object. The request message for the
                 UpdateTrigger method.
             trigger (:class:`google.cloud.eventarc_v1.types.Trigger`):
@@ -694,12 +695,12 @@ class EventarcAsyncClient:
         return response
 
     async def delete_trigger(self,
-            request: Union[eventarc.DeleteTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
             *,
-            name: str = None,
-            allow_missing: bool = None,
+            name: Optional[str] = None,
+            allow_missing: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation_async.AsyncOperation:
         r"""Delete a single trigger.
@@ -730,13 +731,13 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict]):
+            request (Optional[Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict]]):
                 The request object. The request message for the
                 DeleteTrigger method.
             name (:class:`str`):
@@ -827,14 +828,7 @@ class EventarcAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-eventarc",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 __all__ = (

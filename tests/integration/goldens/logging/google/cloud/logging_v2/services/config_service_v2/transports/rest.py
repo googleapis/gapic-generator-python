@@ -67,151 +67,169 @@ class ConfigServiceV2RestInterceptor:
 
     .. code-block:: python
         class MyCustomConfigServiceV2Interceptor(ConfigServiceV2RestInterceptor):
-            def pre_create_bucket(request, metadata):
+            def pre_create_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_bucket(response):
+            def post_create_bucket(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_exclusion(request, metadata):
+            def pre_create_exclusion(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_exclusion(response):
+            def post_create_exclusion(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_sink(request, metadata):
+            def pre_create_sink(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_sink(response):
+            def post_create_sink(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_view(request, metadata):
+            def pre_create_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_view(response):
+            def post_create_view(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_bucket(request, metadata):
+            def pre_delete_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_exclusion(request, metadata):
+            def pre_delete_exclusion(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_sink(request, metadata):
+            def pre_delete_sink(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_view(request, metadata):
+            def pre_delete_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_bucket(request, metadata):
+            def pre_get_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_bucket(response):
+            def post_get_bucket(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_cmek_settings(request, metadata):
+            def pre_get_cmek_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_cmek_settings(response):
+            def post_get_cmek_settings(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_exclusion(request, metadata):
+            def pre_get_exclusion(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_exclusion(response):
+            def post_get_exclusion(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_sink(request, metadata):
+            def pre_get_sink(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_sink(response):
+            def post_get_sink(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_view(request, metadata):
+            def pre_get_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_view(response):
+            def post_get_view(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_buckets(request, metadata):
+            def pre_list_buckets(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_buckets(response):
+            def post_list_buckets(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_exclusions(request, metadata):
+            def pre_list_exclusions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_exclusions(response):
+            def post_list_exclusions(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_sinks(request, metadata):
+            def pre_list_sinks(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_sinks(response):
+            def post_list_sinks(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_views(request, metadata):
+            def pre_list_views(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_views(response):
+            def post_list_views(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_undelete_bucket(request, metadata):
+            def pre_undelete_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_update_bucket(request, metadata):
+            def pre_update_bucket(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_bucket(response):
+            def post_update_bucket(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_cmek_settings(request, metadata):
+            def pre_update_cmek_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_cmek_settings(response):
+            def post_update_cmek_settings(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_exclusion(request, metadata):
+            def pre_update_exclusion(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_exclusion(response):
+            def post_update_exclusion(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_sink(request, metadata):
+            def pre_update_sink(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_sink(response):
+            def post_update_sink(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_view(request, metadata):
+            def pre_update_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_view(response):
+            def post_update_view(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = ConfigServiceV2RestTransport(interceptor=MyCustomConfigServiceV2Interceptor())
         client = ConfigServiceV2Client(transport=transport)
@@ -573,15 +591,15 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
 
     def __init__(self, *,
             host: str = 'logging.googleapis.com',
-            credentials: ga_credentials.Credentials=None,
-            credentials_file: str=None,
-            scopes: Sequence[str]=None,
-            client_cert_source_for_mtls: Callable[[
-                ], Tuple[bytes, bytes]]=None,
-            quota_project_id: Optional[str]=None,
-            client_info: gapic_v1.client_info.ClientInfo=DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool]=False,
-            url_scheme: str='https',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
             interceptor: Optional[ConfigServiceV2RestInterceptor] = None,
             api_audience: Optional[str] = None,
             ) -> None:
@@ -661,7 +679,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.CreateBucketRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogBucket:
             r"""Call the create bucket method over HTTP.
@@ -766,7 +784,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.CreateExclusionRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogExclusion:
             r"""Call the create exclusion method over HTTP.
@@ -882,7 +900,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.CreateSinkRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogSink:
             r"""Call the create sink method over HTTP.
@@ -996,7 +1014,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.CreateViewRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogView:
             r"""Call the create view method over HTTP.
@@ -1103,7 +1121,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.DeleteBucketRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ):
             r"""Call the delete bucket method over HTTP.
@@ -1183,7 +1201,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.DeleteExclusionRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ):
             r"""Call the delete exclusion method over HTTP.
@@ -1263,7 +1281,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.DeleteSinkRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ):
             r"""Call the delete sink method over HTTP.
@@ -1343,7 +1361,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.DeleteViewRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ):
             r"""Call the delete view method over HTTP.
@@ -1423,7 +1441,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.GetBucketRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogBucket:
             r"""Call the get bucket method over HTTP.
@@ -1515,7 +1533,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.GetCmekSettingsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.CmekSettings:
             r"""Call the get cmek settings method over HTTP.
@@ -1613,7 +1631,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.GetExclusionRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogExclusion:
             r"""Call the get exclusion method over HTTP.
@@ -1716,7 +1734,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.GetSinkRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogSink:
             r"""Call the get sink method over HTTP.
@@ -1817,7 +1835,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.GetViewRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogView:
             r"""Call the get view method over HTTP.
@@ -1911,7 +1929,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.ListBucketsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.ListBucketsResponse:
             r"""Call the list buckets method over HTTP.
@@ -2003,7 +2021,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.ListExclusionsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.ListExclusionsResponse:
             r"""Call the list exclusions method over HTTP.
@@ -2095,7 +2113,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.ListSinksRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.ListSinksResponse:
             r"""Call the list sinks method over HTTP.
@@ -2187,7 +2205,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.ListViewsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.ListViewsResponse:
             r"""Call the list views method over HTTP.
@@ -2279,7 +2297,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.UndeleteBucketRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ):
             r"""Call the undelete bucket method over HTTP.
@@ -2372,7 +2390,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.UpdateBucketRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogBucket:
             r"""Call the update bucket method over HTTP.
@@ -2477,7 +2495,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.UpdateCmekSettingsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.CmekSettings:
             r"""Call the update cmek settings method over HTTP.
@@ -2585,7 +2603,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.UpdateExclusionRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogExclusion:
             r"""Call the update exclusion method over HTTP.
@@ -2701,7 +2719,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.UpdateSinkRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogSink:
             r"""Call the update sink method over HTTP.
@@ -2835,7 +2853,7 @@ class ConfigServiceV2RestTransport(ConfigServiceV2Transport):
         def __call__(self,
                 request: logging_config.UpdateViewRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> logging_config.LogView:
             r"""Call the update view method over HTTP.

@@ -16,8 +16,9 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+
+from google.cloud.eventarc_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -61,7 +62,7 @@ class EventarcClientMeta(type):
     _transport_registry["rest"] = EventarcRestTransport
 
     def get_transport_class(cls,
-            label: str = None,
+            label: Optional[str] = None,
         ) -> Type[EventarcTransport]:
         """Returns an appropriate transport class.
 
@@ -272,7 +273,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
-        default mTLS endpoint; if the environment variabel is "never", use the default API
+        default mTLS endpoint; if the environment variable is "never", use the default API
         endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
         use the default API endpoint.
 
@@ -319,8 +320,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, EventarcTransport, None] = None,
-            client_options: Optional[client_options_lib.ClientOptions] = None,
+            transport: Optional[Union[str, EventarcTransport]] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiates the eventarc client.
@@ -337,7 +338,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -367,6 +368,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
 
@@ -408,11 +410,11 @@ class EventarcClient(metaclass=EventarcClientMeta):
             )
 
     def get_trigger(self,
-            request: Union[eventarc.GetTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
             *,
-            name: str = None,
+            name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> trigger.Trigger:
         r"""Get a single trigger.
@@ -509,11 +511,11 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def list_triggers(self,
-            request: Union[eventarc.ListTriggersRequest, dict] = None,
+            request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
             *,
-            parent: str = None,
+            parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListTriggersPager:
         r"""List triggers.
@@ -623,13 +625,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def create_trigger(self,
-            request: Union[eventarc.CreateTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
             *,
-            parent: str = None,
-            trigger: gce_trigger.Trigger = None,
-            trigger_id: str = None,
+            parent: Optional[str] = None,
+            trigger: Optional[gce_trigger.Trigger] = None,
+            trigger_id: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Create a new trigger in a particular project and
@@ -768,13 +770,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def update_trigger(self,
-            request: Union[eventarc.UpdateTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
             *,
-            trigger: gce_trigger.Trigger = None,
-            update_mask: field_mask_pb2.FieldMask = None,
-            allow_missing: bool = None,
+            trigger: Optional[gce_trigger.Trigger] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            allow_missing: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Update a single trigger.
@@ -905,12 +907,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return response
 
     def delete_trigger(self,
-            request: Union[eventarc.DeleteTriggerRequest, dict] = None,
+            request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
             *,
-            name: str = None,
-            allow_missing: bool = None,
+            name: Optional[str] = None,
+            allow_missing: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
         r"""Delete a single trigger.
@@ -1050,14 +1052,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-eventarc",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 __all__ = (

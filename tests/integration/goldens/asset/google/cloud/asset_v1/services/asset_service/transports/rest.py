@@ -69,86 +69,97 @@ class AssetServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomAssetServiceInterceptor(AssetServiceRestInterceptor):
-            def pre_analyze_iam_policy(request, metadata):
+            def pre_analyze_iam_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_analyze_iam_policy(response):
+            def post_analyze_iam_policy(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_analyze_iam_policy_longrunning(request, metadata):
+            def pre_analyze_iam_policy_longrunning(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_analyze_iam_policy_longrunning(response):
+            def post_analyze_iam_policy_longrunning(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_batch_get_assets_history(request, metadata):
+            def pre_batch_get_assets_history(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_batch_get_assets_history(response):
+            def post_batch_get_assets_history(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_create_feed(request, metadata):
+            def pre_create_feed(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_feed(response):
+            def post_create_feed(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_feed(request, metadata):
+            def pre_delete_feed(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_export_assets(request, metadata):
+            def pre_export_assets(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_export_assets(response):
+            def post_export_assets(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_feed(request, metadata):
+            def pre_get_feed(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_feed(response):
+            def post_get_feed(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_assets(request, metadata):
+            def pre_list_assets(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_assets(response):
+            def post_list_assets(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_feeds(request, metadata):
+            def pre_list_feeds(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_feeds(response):
+            def post_list_feeds(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_search_all_iam_policies(request, metadata):
+            def pre_search_all_iam_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search_all_iam_policies(response):
+            def post_search_all_iam_policies(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_search_all_resources(request, metadata):
+            def pre_search_all_resources(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_search_all_resources(response):
+            def post_search_all_resources(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_feed(request, metadata):
+            def pre_update_feed(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_feed(response):
+            def post_update_feed(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = AssetServiceRestTransport(interceptor=MyCustomAssetServiceInterceptor())
         client = AssetServiceClient(transport=transport)
@@ -366,15 +377,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
     def __init__(self, *,
             host: str = 'cloudasset.googleapis.com',
-            credentials: ga_credentials.Credentials=None,
-            credentials_file: str=None,
-            scopes: Sequence[str]=None,
-            client_cert_source_for_mtls: Callable[[
-                ], Tuple[bytes, bytes]]=None,
-            quota_project_id: Optional[str]=None,
-            client_info: gapic_v1.client_info.ClientInfo=DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool]=False,
-            url_scheme: str='https',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
             interceptor: Optional[AssetServiceRestInterceptor] = None,
             api_audience: Optional[str] = None,
             ) -> None:
@@ -458,7 +469,8 @@ class AssetServiceRestTransport(AssetServiceTransport):
                     # use the credentials which are saved
                     credentials=self._credentials,
                     scopes=self._scopes,
-                    http_options=http_options)
+                    http_options=http_options,
+                    path_prefix="v1")
 
             self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
@@ -479,7 +491,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.AnalyzeIamPolicyRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.AnalyzeIamPolicyResponse:
             r"""Call the analyze iam policy method over HTTP.
@@ -559,7 +571,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.AnalyzeIamPolicyLongrunningRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the analyze iam policy
@@ -648,7 +660,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.BatchGetAssetsHistoryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.BatchGetAssetsHistoryResponse:
             r"""Call the batch get assets history method over HTTP.
@@ -724,7 +736,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.CreateFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.Feed:
             r"""Call the create feed method over HTTP.
@@ -816,7 +828,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.DeleteFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ):
             r"""Call the delete feed method over HTTP.
@@ -880,7 +892,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.ExportAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the export assets method over HTTP.
@@ -966,7 +978,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.GetFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.Feed:
             r"""Call the get feed method over HTTP.
@@ -1049,7 +1061,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.ListAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.ListAssetsResponse:
             r"""Call the list assets method over HTTP.
@@ -1125,7 +1137,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.ListFeedsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.ListFeedsResponse:
             r"""Call the list feeds method over HTTP.
@@ -1201,7 +1213,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.SearchAllIamPoliciesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.SearchAllIamPoliciesResponse:
             r"""Call the search all iam policies method over HTTP.
@@ -1277,7 +1289,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.SearchAllResourcesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.SearchAllResourcesResponse:
             r"""Call the search all resources method over HTTP.
@@ -1353,7 +1365,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
         def __call__(self,
                 request: asset_service.UpdateFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> asset_service.Feed:
             r"""Call the update feed method over HTTP.

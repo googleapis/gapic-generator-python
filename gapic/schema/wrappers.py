@@ -82,7 +82,7 @@ class Field:
     @utils.cached_property
     def ident(self) -> metadata.FieldIdentifier:
         """Return the identifier to be used in templates."""
-        mapping: Union[None, Tuple[Field, Field]] = None
+        mapping: Optional[Tuple[Field, Field]] = None
         if self.map:
             mapping = (self.type.fields["key"], self.type.fields["value"])
         return metadata.FieldIdentifier(
@@ -1636,6 +1636,10 @@ class Service:
     def client_name(self) -> str:
         """Returns the name of the generated client class"""
         return self.name + "Client"
+
+    @property
+    def client_package_version(self) -> str:
+        return self.meta.address.package[-1] if self.meta.address.package else ""
 
     @property
     def async_client_name(self) -> str:

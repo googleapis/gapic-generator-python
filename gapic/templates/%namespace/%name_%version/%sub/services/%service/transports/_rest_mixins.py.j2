@@ -9,7 +9,7 @@
         def __call__(self,
             request: {{ sig.request_type }}, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: float=None,
+            timeout: Optional[float]=None,
             metadata: Sequence[Tuple[str, str]]=(),
             ) -> {{ sig.response_type }}:
 

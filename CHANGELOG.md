@@ -1,6 +1,70 @@
 # Changelog
 
 
+## [1.7.1](https://github.com/googleapis/gapic-generator-python/compare/v1.7.0...v1.7.1) (2022-12-13)
+
+
+### Bug Fixes
+
+* Fix unit test with float comparison ([#1541](https://github.com/googleapis/gapic-generator-python/issues/1541)) ([c5741ff](https://github.com/googleapis/gapic-generator-python/commit/c5741ff2f0658800210060392727016d1a5b4a8b))
+
+## [1.7.0](https://github.com/googleapis/gapic-generator-python/compare/v1.6.2...v1.7.0) (2022-12-06)
+
+
+### Features
+
+* Add snippetgen config language and testing resource files ([#1504](https://github.com/googleapis/gapic-generator-python/issues/1504)) ([5b98659](https://github.com/googleapis/gapic-generator-python/commit/5b98659816b38ab5f376a5748b6275f1c2667aaf))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core &gt;=1.34.0, >=2.11.0 ([6de9e28](https://github.com/googleapis/gapic-generator-python/commit/6de9e2881171d873ab3d76bfa386667ae745f0d9))
+* Drop usage of pkg_resources ([#1471](https://github.com/googleapis/gapic-generator-python/issues/1471)) ([a50c290](https://github.com/googleapis/gapic-generator-python/commit/a50c2909b5eb14c16acaf16057944688891eb7af))
+* Fix timeout default values ([6de9e28](https://github.com/googleapis/gapic-generator-python/commit/6de9e2881171d873ab3d76bfa386667ae745f0d9))
+* Snippetgen should call await on the operation coroutine before calling result ([#1495](https://github.com/googleapis/gapic-generator-python/issues/1495)) ([69a49c6](https://github.com/googleapis/gapic-generator-python/commit/69a49c6b9e8a45c87e8f2a9d4b25f00b9a4b01be))
+
+## [1.6.2](https://github.com/googleapis/gapic-generator-python/compare/v1.6.1...v1.6.2) (2022-11-15)
+
+
+### Bug Fixes
+
+* update dependency googleapis-common-protos to v1.57.0 ([786b0d4](https://github.com/googleapis/gapic-generator-python/commit/786b0d401fe6a188005b4bf076595a37821ee761))
+
+## [1.6.1](https://github.com/googleapis/gapic-generator-python/compare/v1.6.0...v1.6.1) (2022-11-11)
+
+
+### Bug Fixes
+
+* Allow google-cloud-documentai &lt; 3 ([#1487](https://github.com/googleapis/gapic-generator-python/issues/1487)) ([b717e92](https://github.com/googleapis/gapic-generator-python/commit/b717e92f8e184edcc6e2ad3b696817435e5e37e5))
+* Fix typo in testing/constraints-3.7.txt ([#1483](https://github.com/googleapis/gapic-generator-python/issues/1483)) ([0ba5bc1](https://github.com/googleapis/gapic-generator-python/commit/0ba5bc16e4ad2197cb7071a9f8c9164b1c6f080d))
+
+## [1.6.0](https://github.com/googleapis/gapic-generator-python/compare/v1.5.0...v1.6.0) (2022-11-09)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([#1474](https://github.com/googleapis/gapic-generator-python/issues/1474)) ([3bd2f87](https://github.com/googleapis/gapic-generator-python/commit/3bd2f8703e4a1a67e6a4c281890c4f99eda13fe7))
+
+
+### Bug Fixes
+
+* Detect changed Python files in Git pre-commit hook ([#1475](https://github.com/googleapis/gapic-generator-python/issues/1475)) ([2a232fc](https://github.com/googleapis/gapic-generator-python/commit/2a232fcc5297d6cd2ee1562c01843a3074a4da1f))
+* Snippetgen handling of repeated enum field ([#1443](https://github.com/googleapis/gapic-generator-python/issues/1443)) ([70d7882](https://github.com/googleapis/gapic-generator-python/commit/70d7882b39c754ebebfd2b57fa5e89f515e3192f))
+
+## [1.5.0](https://github.com/googleapis/gapic-generator-python/compare/v1.4.4...v1.5.0) (2022-10-17)
+
+
+### Features
+
+* Add __version__ in GAPIC clients ([#1350](https://github.com/googleapis/gapic-generator-python/issues/1350)) ([1c91347](https://github.com/googleapis/gapic-generator-python/commit/1c913476b9d2efe8a8db803bfe1d47ad8697bc72))
+
+
+### Bug Fixes
+
+* Add supported dict typing for client_options ([#1464](https://github.com/googleapis/gapic-generator-python/issues/1464)) ([de62f12](https://github.com/googleapis/gapic-generator-python/commit/de62f12b23ce8f434dd429f7761ae0001c8ad34f)), closes [#1380](https://github.com/googleapis/gapic-generator-python/issues/1380)
+* Fix multiple gapic-generator-python bugs ([#1458](https://github.com/googleapis/gapic-generator-python/issues/1458)) ([ab3e361](https://github.com/googleapis/gapic-generator-python/commit/ab3e361c5e69060afb721e76e6fd4fac0d367d15))
+* Snippetgen skip REST snippets ([#1463](https://github.com/googleapis/gapic-generator-python/issues/1463)) ([119a3f1](https://github.com/googleapis/gapic-generator-python/commit/119a3f18d671664309efbf1aee7bafc94b401eed))
+
 ## [1.4.4](https://github.com/googleapis/gapic-generator-python/compare/v1.4.3...v1.4.4) (2022-09-20)
 
 

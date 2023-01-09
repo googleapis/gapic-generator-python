@@ -69,40 +69,45 @@ class EventarcRestInterceptor:
 
     .. code-block:: python
         class MyCustomEventarcInterceptor(EventarcRestInterceptor):
-            def pre_create_trigger(request, metadata):
+            def pre_create_trigger(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_trigger(response):
+            def post_create_trigger(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_trigger(request, metadata):
+            def pre_delete_trigger(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_trigger(response):
+            def post_delete_trigger(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_trigger(request, metadata):
+            def pre_get_trigger(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_trigger(response):
+            def post_get_trigger(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_triggers(request, metadata):
+            def pre_list_triggers(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_triggers(response):
+            def post_list_triggers(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_trigger(request, metadata):
+            def pre_update_trigger(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_trigger(response):
+            def post_update_trigger(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = EventarcRestTransport(interceptor=MyCustomEventarcInterceptor())
         client = EventarcClient(transport=transport)
@@ -218,15 +223,15 @@ class EventarcRestTransport(EventarcTransport):
 
     def __init__(self, *,
             host: str = 'eventarc.googleapis.com',
-            credentials: ga_credentials.Credentials=None,
-            credentials_file: str=None,
-            scopes: Sequence[str]=None,
-            client_cert_source_for_mtls: Callable[[
-                ], Tuple[bytes, bytes]]=None,
-            quota_project_id: Optional[str]=None,
-            client_info: gapic_v1.client_info.ClientInfo=DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool]=False,
-            url_scheme: str='https',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
             interceptor: Optional[EventarcRestInterceptor] = None,
             api_audience: Optional[str] = None,
             ) -> None:
@@ -310,7 +315,8 @@ class EventarcRestTransport(EventarcTransport):
                     # use the credentials which are saved
                     credentials=self._credentials,
                     scopes=self._scopes,
-                    http_options=http_options)
+                    http_options=http_options,
+                    path_prefix="v1")
 
             self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
@@ -331,7 +337,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.CreateTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the create trigger method over HTTP.
@@ -419,7 +425,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.DeleteTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the delete trigger method over HTTP.
@@ -498,7 +504,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.GetTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> trigger.Trigger:
             r"""Call the get trigger method over HTTP.
@@ -578,7 +584,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.ListTriggersRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> eventarc.ListTriggersResponse:
             r"""Call the list triggers method over HTTP.
@@ -658,7 +664,7 @@ class EventarcRestTransport(EventarcTransport):
         def __call__(self,
                 request: eventarc.UpdateTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the update trigger method over HTTP.

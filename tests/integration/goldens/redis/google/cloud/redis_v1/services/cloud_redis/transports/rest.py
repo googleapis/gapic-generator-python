@@ -68,68 +68,77 @@ class CloudRedisRestInterceptor:
 
     .. code-block:: python
         class MyCustomCloudRedisInterceptor(CloudRedisRestInterceptor):
-            def pre_create_instance(request, metadata):
+            def pre_create_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_instance(response):
+            def post_create_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_delete_instance(request, metadata):
+            def pre_delete_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_instance(response):
+            def post_delete_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_export_instance(request, metadata):
+            def pre_export_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_export_instance(response):
+            def post_export_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_failover_instance(request, metadata):
+            def pre_failover_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_failover_instance(response):
+            def post_failover_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_get_instance(request, metadata):
+            def pre_get_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_instance(response):
+            def post_get_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_import_instance(request, metadata):
+            def pre_import_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_import_instance(response):
+            def post_import_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_list_instances(request, metadata):
+            def pre_list_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_instances(response):
+            def post_list_instances(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_update_instance(request, metadata):
+            def pre_update_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_instance(response):
+            def post_update_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
-            def pre_upgrade_instance(request, metadata):
+            def pre_upgrade_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_upgrade_instance(response):
+            def post_upgrade_instance(self, response):
                 logging.log(f"Received response: {response}")
+                return response
 
         transport = CloudRedisRestTransport(interceptor=MyCustomCloudRedisInterceptor())
         client = CloudRedisClient(transport=transport)
@@ -327,15 +336,15 @@ class CloudRedisRestTransport(CloudRedisTransport):
 
     def __init__(self, *,
             host: str = 'redis.googleapis.com',
-            credentials: ga_credentials.Credentials=None,
-            credentials_file: str=None,
-            scopes: Sequence[str]=None,
-            client_cert_source_for_mtls: Callable[[
-                ], Tuple[bytes, bytes]]=None,
-            quota_project_id: Optional[str]=None,
-            client_info: gapic_v1.client_info.ClientInfo=DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool]=False,
-            url_scheme: str='https',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
             interceptor: Optional[CloudRedisRestInterceptor] = None,
             api_audience: Optional[str] = None,
             ) -> None:
@@ -419,7 +428,8 @@ class CloudRedisRestTransport(CloudRedisTransport):
                     # use the credentials which are saved
                     credentials=self._credentials,
                     scopes=self._scopes,
-                    http_options=http_options)
+                    http_options=http_options,
+                    path_prefix="v1")
 
             self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
@@ -440,7 +450,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.CreateInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
@@ -528,7 +538,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.DeleteInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
@@ -607,7 +617,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.ExportInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the export instance method over HTTP.
@@ -695,7 +705,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.FailoverInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the failover instance method over HTTP.
@@ -783,7 +793,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.GetInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> cloud_redis.Instance:
             r"""Call the get instance method over HTTP.
@@ -861,7 +871,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.ImportInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the import instance method over HTTP.
@@ -949,7 +959,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.ListInstancesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> cloud_redis.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
@@ -1029,7 +1039,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.UpdateInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
@@ -1117,7 +1127,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __call__(self,
                 request: cloud_redis.UpgradeInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: float=None,
+                timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the upgrade instance method over HTTP.
