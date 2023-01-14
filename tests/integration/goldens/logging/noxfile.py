@@ -15,12 +15,16 @@
 #
 import os
 import pathlib
+import re
 import shutil
-import subprocess
-import sys
 
+import nox
 
-import nox  # type: ignore
+BLACK_VERSION = "black==22.3.0"
+ISORT_VERSION = "isort==5.10.1"
+LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
+
+DEFAULT_PYTHON_VERSION = "3.9"
 
 ALL_PYTHON = [
     "3.7",
@@ -29,52 +33,93 @@ ALL_PYTHON = [
     "3.10",
     "3.11",
 ]
+UNIT_TEST_STANDARD_DEPENDENCIES = [
+    "mock",
+    "asyncmock",
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
-PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
-
-BLACK_VERSION = "black==22.3.0"
-BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
-DEFAULT_PYTHON_VERSION = "3.11"
-
-nox.sessions = [
+# 'docfx' is excluded since it only needs to run in 'docs-presubmit'
+nox.options.sessions = [
     "unit",
     "cover",
     "mypy",
-    "check_lower_bounds"
-    # exclude update_lower_bounds from default
-    "docs",
-    "blacken",
     "lint",
     "lint_setup_py",
+    "blacken",
+    "docs",
 ]
+
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run isort to sort imports. Then run black
+    to format code to uniform standard.
+    """
+    session.install(BLACK_VERSION, ISORT_VERSION)
+    # Use the --fss option to sort imports using strict alphabetical order.
+    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    session.run(
+        "isort",
+        "--fss",
+        *LINT_PATHS,
+    )
+    session.run(
+        "black",
+        *LINT_PATHS,
+    )
+
+
+def install_unittest_dependencies(session, *constraints):
+    standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES
+    session.install(*standard_deps, *constraints)
+
+    session.install("-e", ".", *constraints)
+
+
+def default(session):
+    # Install all test dependencies, then install this package in-place.
+
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+
+    # Run py.test against the unit tests.
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        os.path.join("tests", "unit"),
+        *session.posargs,
+    )
+
 
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-
-    session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
-    session.install('-e', '.')
-
-    session.run(
-        'py.test',
-        '--quiet',
-        '--cov=google/cloud/logging_v2/',
-        '--cov=tests/',
-        '--cov-config=.coveragerc',
-        '--cov-report=term',
-        '--cov-report=html',
-        os.path.join('tests', 'unit', ''.join(session.posargs))
-    )
+    default(session)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
     This outputs the coverage report aggregating coverage from the unit
-    test runs (not system test runs), and then erases coverage data.
+    test runs and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
@@ -98,43 +143,16 @@ def mypy(session):
     )
 
 
-@nox.session
-def update_lower_bounds(session):
-    """Update lower bounds in constraints.txt to match setup.py"""
-    session.install('google-cloud-testutils')
-    session.install('.')
-
-    session.run(
-        'lower-bound-checker',
-        'update',
-        '--package-name',
-        PACKAGE_NAME,
-        '--constraints-file',
-        str(LOWER_BOUND_CONSTRAINTS_FILE),
-    )
-
-
-@nox.session
-def check_lower_bounds(session):
-    """Check lower bounds in setup.py are reflected in constraints file"""
-    session.install('google-cloud-testutils')
-    session.install('.')
-
-    session.run(
-        'lower-bound-checker',
-        'check',
-        '--package-name',
-        PACKAGE_NAME,
-        '--constraints-file',
-        str(LOWER_BOUND_CONSTRAINTS_FILE),
-    )
-
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
+    session.install(
+        "sphinx==4.0.1",
+        "alabaster",
+        "recommonmark",
+    )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -150,6 +168,106 @@ def docs(session):
         os.path.join("docs", "_build", "html", ""),
     )
 
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def docfx(session):
+    """Build the docfx yaml files for this library."""
+
+    session.install("-e", ".")
+    session.install(
+        "sphinx==4.0.1",
+        "alabaster",
+        "recommonmark",
+        "gcp-sphinx-docfx-yaml",
+    )
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-D",
+        (
+            "extensions=sphinx.ext.autodoc,"
+            "sphinx.ext.autosummary,"
+            "docfx_yaml.extension,"
+            "sphinx.ext.intersphinx,"
+            "sphinx.ext.coverage,"
+            "sphinx.ext.napoleon,"
+            "sphinx.ext.todo,"
+            "sphinx.ext.viewcode,"
+            "recommonmark"
+        ),
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )
+
+
+@nox.session(python=ALL_PYTHON[-1])
+def prerelease_deps(session):
+    """Run all tests with prerelease versions of dependencies installed."""
+
+    # Install all dependencies
+    session.install("-e", ".[all, tests, tracing]")
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES
+    session.install(*unit_deps_all)
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{ALL_PYTHON[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    session.install(*constraints_deps)
+
+    prerel_deps = [
+        "protobuf",
+        # dependency of grpc
+        "six",
+        "googleapis-common-protos",
+        # Exclude version 1.49.0rc1 which has a known issue. See https://github.com/grpc/grpc/pull/30642
+        "grpcio!=1.49.0rc1",
+        "grpcio-status",
+        "google-api-core",
+        "proto-plus",
+        "google-cloud-testutils",
+        # dependencies of google-cloud-testutils"
+        "click",
+    ]
+
+    for dep in prerel_deps:
+        session.install("--pre", "--no-deps", "--upgrade", dep)
+
+    # Remaining dependencies
+    other_deps = [
+        "requests",
+        "google-auth",
+    ]
+    session.install(*other_deps)
+
+    # Print out prerelease package versions
+    session.run(
+        "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
+    )
+    session.run("python", "-c", "import grpc; print(grpc.__version__)")
+
+    session.run("py.test", "tests/unit")
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
@@ -162,7 +280,7 @@ def lint(session):
     session.run(
         "black",
         "--check",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
     session.run("flake8", "google", "tests", "samples")
 
@@ -173,7 +291,7 @@ def blacken(session):
     session.install(BLACK_VERSION)
     session.run(
         "black",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
 
