@@ -1,0 +1,16 @@
+{
+    "name": "{{ api.naming.name | lower }}",
+    "name_pretty": "{{ api.naming.title }}",
+    "api_description": "{{ api.naming.api_description.replace("\n", " ") }}",
+    "product_documentation": "{{ api.naming.documentation_uri }}",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/{{ api.naming.name | lower }}/latest",
+    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "{{ api.naming.warehouse_package_name }}",
+    "api_id": "{{ api.naming.name | lower }}.googleapis.com",
+    "codeowner_team": "",
+    "api_shortname": "{{ api.naming.name | lower }}"
+}

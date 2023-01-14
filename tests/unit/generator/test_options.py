@@ -223,3 +223,39 @@ def test_options_autogen_snippets_false_for_old_naming():
     # Even if autogen-snippets is set to True, do not enable snippetgen
     options = Options.build("old-naming,autogen-snippets=True")
     assert not options.autogen_snippets
+
+def test_read_documentation_uri(fs):
+    service_yaml_fpath = "testapi.yaml"
+    fs.create_file(service_yaml_fpath,
+                   contents=("config_version: 3\n"
+                             "name: testapi.googleapis.com\n"
+                             "publishing:\n"
+                             "  documentation_uri: https://cloud.google.com/test\n"))
+    opt_string = f"service-yaml={service_yaml_fpath}"
+    opts = Options.build(opt_string)
+    assert opts.documentation_uri == "https://cloud.google.com/test"
+
+def test_read_api_description(fs):
+    service_yaml_fpath = "testapi.yaml"
+    fs.create_file(service_yaml_fpath,
+                   contents=("config_version: 3\n"
+                             "name: testapi.googleapis.com\n"
+                             "documentation:\n"
+                             "  summary: |-\n"
+                             "    The Google VMware Engine API lets you programmatically manage VMware\n"
+                             "    environments."))
+    opt_string = f"service-yaml={service_yaml_fpath}"
+    opts = Options.build(opt_string)
+    assert opts.api_description.replace("\n", " ") == \
+        "The Google VMware Engine API lets you programmatically manage VMware environments."
+
+
+def test_read_title(fs):
+    service_yaml_fpath = "testapi.yaml"
+    fs.create_file(service_yaml_fpath,
+                   contents=("config_version: 3\n"
+                             "name: testapi.googleapis.com\n"
+                             "title: Test Title"))
+    opt_string = f"service-yaml={service_yaml_fpath}"
+    opts = Options.build(opt_string)
+    assert opts.title == "Test Title"
