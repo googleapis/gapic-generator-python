@@ -49,6 +49,9 @@ class Options:
     service_yaml_config: Dict[str, Any] = dataclasses.field(
         default_factory=dict)
     rest_numeric_enums: bool = False
+    title: str = ''
+    documentation_uri: str = ''
+    api_description: str = ''
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
@@ -146,6 +149,14 @@ class Options:
         # but it is not a field in the gogle.api.Service proto.
         service_yaml_config.pop('type', None)
 
+        title = service_yaml_config.pop('title', '')
+
+        documentation_uri = service_yaml_config.pop(
+            'publishing', {}).pop('documentation_uri', '')
+
+        api_description = service_yaml_config.pop(
+            'documentation', {}).pop('summary', '')
+
         # Build the options instance.
         sample_paths = opts.pop('samples', [])
 
@@ -182,6 +193,9 @@ class Options:
             transport=opts.pop('transport', ['grpc'])[0].split('+'),
             service_yaml_config=service_yaml_config,
             rest_numeric_enums=bool(opts.pop('rest-numeric-enums', False)),
+            title=title,
+            documentation_uri=documentation_uri,
+            api_description=api_description,
         )
 
         # Note: if we ever need to recursively check directories for sample

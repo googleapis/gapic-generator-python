@@ -27,6 +27,16 @@ def test_long_name():
     assert n.long_name == 'Agrabah Lamp Genie'
 
 
+def test_title():
+    n = make_naming(title='Test Title')
+    n.title == 'Test Title'
+
+
+def test_api_descriptin():
+    n = make_naming(api_description='Test Description')
+    n.api_description == 'Test Description'
+
+
 def test_module_name():
     n = make_naming(
         name='Genie',
@@ -226,6 +236,37 @@ def test_cli_override_warehouse_package_name():
         opts=Options(warehouse_package_name='google-cloud-foo'),
     )
     assert n.warehouse_package_name == "google-cloud-foo"
+
+
+def test_cli_override_title():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.translation')
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(title='Test Title Override'),
+    )
+    assert n.title == "Test Title Override"
+
+
+def test_cli_override_api_description():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.translation')
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(api_description='Test Api Description Override'),
+    )
+    assert n.api_description == "Test Api Description Override"
+
+
+def test_cli_override_documentation_uri():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.translation')
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(
+            documentation_uri='https://cloud.google.com/testoverride'),
+    )
+    assert n.documentation_uri == "https://cloud.google.com/testoverride"
 
 
 def test_build_factory():

@@ -1,0 +1,14 @@
+type: google.api.Service
+config_version: 3
+name: eventarc.googleapis.com
+title: Eventarc API
+
+publishing:
+  organization: CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED
+  new_issue_uri: ''
+  documentation_uri: 'https://cloud.google.com/eventarc'
+  api_short_name: ''
+  github_label: ''
+  doc_tag_prefix: ''
+  codeowner_github_teams:
+  library_settings:

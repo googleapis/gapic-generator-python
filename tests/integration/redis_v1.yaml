@@ -1,0 +1,14 @@
+type: google.api.Service
+config_version: 3
+name: redis.googleapis.com
+title: Google Cloud Memorystore for Redis API
+
+publishing:
+  organization: CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED
+  new_issue_uri: ''
+  documentation_uri: 'https://cloud.google.com/memorystore/docs/redis/'
+  api_short_name: ''
+  github_label: ''
+  doc_tag_prefix: ''
+  codeowner_github_teams:
+  library_settings:

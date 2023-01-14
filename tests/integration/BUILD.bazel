@@ -55,6 +55,7 @@ py_gapic_library(
     opt_args = [
         "autogen-snippets",
     ],
+    service_yaml = "cloudasset_v1.yaml",
     transport = "grpc+rest",
 )
 
@@ -66,6 +67,7 @@ py_gapic_library(
     opt_args = [
         "autogen-snippets",
     ],
+    service_yaml = "iamcredentials_v1.yaml",
     transport = "grpc+rest",
 )
 
@@ -91,6 +93,7 @@ py_gapic_library(
         "python-gapic-name=eventarc",
         "autogen-snippets",
     ],
+    service_yaml = "eventarc_v1.yaml",
     transport = "grpc+rest",
 )
 
@@ -116,6 +119,7 @@ py_gapic_library(
         "python-gapic-name=logging",
         "autogen-snippets",
     ],
+    service_yaml = "logging_v2.yaml",
     transport = "grpc+rest",
 )
 
@@ -138,6 +142,7 @@ py_gapic_library(
     opt_args = [
         "autogen-snippets",
     ],
+    service_yaml = "redis_v1.yaml",
     transport = "grpc+rest",
 )
 

@@ -37,11 +37,14 @@ class Naming(abc.ABC):
     An concrete child of this object is made available to every template
     (as ``api.naming``).
     """
+    api_description: str = ''
+    documentation_uri: str = ''
     name: str = ''
     namespace: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
     version: str = ''
     product_name: str = ''
     proto_package: str = ''
+    title: str = ''
     _warehouse_package_name: str = ''
 
     def __post_init__(self):
@@ -146,6 +149,16 @@ class Naming(abc.ABC):
             package_info = dataclasses.replace(package_info,
                 _warehouse_package_name=opts.warehouse_package_name
                                                )
+        if opts.api_description:
+            package_info = dataclasses.replace(
+                package_info, api_description=opts.api_description)
+
+        if opts.documentation_uri:
+            package_info = dataclasses.replace(
+                package_info, documentation_uri=opts.documentation_uri)
+
+        if opts.title:
+            package_info = dataclasses.replace(package_info, title=opts.title)
 
         # Done; return the naming information.
         return package_info

@@ -1,5 +1,20 @@
-Python Client for {{ api.naming.long_name }} API
-=================================================
+Python Client for {{ api.naming.title }}
+=================={% for i in range( api.naming.title | length ) %}={% endfor %}
+
+|pypi| |versions|
+
+`{{ api.naming.title }}`_: {% if api.naming.api_description %}{{ api.naming.api_description.replace("\n", " ") }}{% endif %}
+
+- `Client Library Documentation`_
+- `Product Documentation`_
+
+.. |pypi| image:: https://img.shields.io/pypi/v/{{ api.naming.warehouse_package_name }}.svg
+   :target: https://pypi.org/project/{{ api.naming.warehouse_package_name }}/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/{{ api.naming.warehouse_package_name }}.svg
+   :target: https://pypi.org/project/{{ api.naming.warehouse_package_name }}/
+.. _{{ api.naming.title }}: {{ api.naming.documentation_uri }}
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/{{ api.naming.name | lower }}/latest
+.. _Product Documentation:  {{ api.naming.documentation_uri }}
 
 Quick Start
 -----------
@@ -8,11 +23,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. Enable the {{ api.naming.long_name }} API.
+3. `Enable the {{ api.naming.title }}.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the {{ api.naming.title }}.:  {{ api.naming.documentation_uri }}
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -29,14 +45,40 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
+Python.
+
+Python >= 3.7
+
+.. _active: https://devguide.python.org/devcycle/#in-development-main-branch
+.. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an `end-of-life`_
+version of Python, we recommend that you update as soon as possible to an actively supported version.
+
+.. _end-of-life: https://devguide.python.org/devcycle/#end-of-life-branches
+
 Mac/Linux
 ^^^^^^^^^
 
 .. code-block:: console
 
-    python3 -m venv <your-env>
+    pip install virtualenv
+    virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install /path/to/library
+    <your-env>/bin/pip install {{ api.naming.warehouse_package_name }}
 
 
 Windows
@@ -44,7 +86,20 @@ Windows
 
 .. code-block:: console
 
-    python3 -m venv <your-env>
+    pip install virtualenv
+    virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install \path\to\library
+    <your-env>\Scripts\pip.exe install {{ api.naming.warehouse_package_name }}
 
+Next Steps
+~~~~~~~~~~
+
+-  Read the `Client Library Documentation`_ for {{ api.naming.title }}
+   to see other available methods on the client.
+-  Read the `{{ api.naming.title }} Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
+
+.. _{{ api.naming.title }} Product documentation:  {{ api.naming.documentation_uri }}
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
