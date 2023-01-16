@@ -20,7 +20,7 @@ import shutil
 
 import nox
 
-BLACK_VERSION = "black==22.3.0"
+PYINK_VERSION = "pyink==22.12.0"
 ISORT_VERSION = "isort==5.10.1"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
@@ -50,7 +50,7 @@ nox.options.sessions = [
     "mypy",
     "lint",
     "lint_setup_py",
-    "blacken",
+    "pyink",
     "docs",
 ]
 
@@ -61,10 +61,10 @@ nox.options.error_on_missing_interpreters = True
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
     """
-    Run isort to sort imports. Then run black
+    Run isort to sort imports. Then run pyink
     to format code to uniform standard.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
+    session.install(PYINK_VERSION, ISORT_VERSION)
     # Use the --fss option to sort imports using strict alphabetical order.
     # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
     session.run(
@@ -73,7 +73,7 @@ def format(session):
         *LINT_PATHS,
     )
     session.run(
-        "black",
+        "pyink",
         *LINT_PATHS,
     )
 
@@ -133,13 +133,15 @@ def mypy(session):
     session.install(
         'mypy',
         'types-requests',
-        'types-protobuf'
+        'types-protobuf',
+        'types-mock',
     )
     session.install('.')
     session.run(
         'mypy',
         '--explicit-package-bases',
         'google',
+        'tests',
     )
 
 
@@ -276,9 +278,9 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install("flake8", PYINK_VERSION)
     session.run(
-        "black",
+        "pyink",
         "--check",
         *LINT_PATHS,
     )
@@ -286,11 +288,11 @@ def lint(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def blacken(session):
-    """Run black. Format code to uniform standard."""
-    session.install(BLACK_VERSION)
+def pyink(session):
+    """Run pyink. Format code to uniform standard."""
+    session.install(PYINK_VERSION)
     session.run(
-        "black",
+        "pyink",
         *LINT_PATHS,
     )
 

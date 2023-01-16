@@ -14,22 +14,23 @@
 # limitations under the License.
 #
 import os
-# try/except added for compatibility with python < 3.8
-try:
+import sys
+
+if sys.version_info >= (3, 8):
     from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
+    from unittest.mock import AsyncMock
+else:
     import mock
 
-import grpc
-from grpc.experimental import aio
+import grpc # type: ignore
+from grpc.experimental import aio # type: ignore
 from collections.abc import Iterable
 from google.protobuf import json_format
 import json
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
+import pytest # type: ignore
+from proto.marshal.rules.dates import DurationRule, TimestampRule  # type: ignore
+from proto.marshal.rules import wrappers # type: ignore
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -45,8 +46,8 @@ from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.api_core import path_template
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
+from google.auth import credentials as ga_credentials # type: ignore
+from google.auth.exceptions import MutualTLSChannelError # type: ignore
 from google.cloud.eventarc_v1.services.eventarc import EventarcAsyncClient
 from google.cloud.eventarc_v1.services.eventarc import EventarcClient
 from google.cloud.eventarc_v1.services.eventarc import pagers
@@ -54,11 +55,12 @@ from google.cloud.eventarc_v1.services.eventarc import transports
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
-from google.longrunning import operations_pb2
-from google.oauth2 import service_account
+from google.longrunning import operations_pb2 # type: ignore
+from google.oauth2 import service_account # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import google.auth # type: ignore
+from typing import Sequence, Tuple
 
 
 def client_cert_source_callback():
@@ -1066,8 +1068,7 @@ def test_list_triggers_pager(transport_name: str = "grpc"):
             ),
             RuntimeError,
         )
-
-        metadata = ()
+        metadata : Sequence[Tuple[str, str]] = ()
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),

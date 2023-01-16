@@ -327,7 +327,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("CreateTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
             "triggerId" : "",            "validateOnly" : False,        }
 
         @classmethod
@@ -415,7 +415,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("DeleteTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
             "validateOnly" : False,        }
 
         @classmethod
@@ -494,7 +494,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("GetTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
         }
 
         @classmethod
@@ -574,7 +574,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("ListTriggers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
         }
 
         @classmethod
@@ -654,7 +654,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("UpdateTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
             "validateOnly" : False,        }
 
         @classmethod

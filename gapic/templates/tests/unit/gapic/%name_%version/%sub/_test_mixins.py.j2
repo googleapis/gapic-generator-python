@@ -15,7 +15,7 @@ def test_{{ name|snake_case }}_rest_bad_request(transport: str = 'rest', request
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = PreparedRequest()
         req.return_value = response_value
         client.{{ name|snake_case }}(request)
 
@@ -91,20 +91,17 @@ def test_delete_operation(transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         {% if mode == "" %}
         call.return_value = None
-        response = client.delete_operation(request)
+        client.delete_operation(request)
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             None
         )
-        response = await client.delete_operation(request)
+        await client.delete_operation(request)
         {% endif %}
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 {% endfor %}
 
 {% for mode in ["", "async"] %}

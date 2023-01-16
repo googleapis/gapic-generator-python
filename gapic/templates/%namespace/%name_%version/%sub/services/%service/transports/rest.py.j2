@@ -27,7 +27,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 {% if api.has_operations_mixin %}
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 from requests import __version__ as requests_version
 import dataclasses
@@ -121,7 +121,7 @@ class {{ service.name }}RestInterceptor:
     {% endfor %}
 
     {% for name, signature in api.mixin_api_signatures.items() %}
-    def pre_{{ name|snake_case }}(self, request: {{signature.request_type}}, metadata: Sequence[Tuple[str, str]]) -> {{signature.response_type}}:
+    def pre_{{ name|snake_case }}(self, request: {{signature.request_type}}, metadata: Sequence[Tuple[str, str]]) -> Tuple[{{signature.request_type}}, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for {{ name|snake_case }}
 
         Override in a subclass to manipulate the request or metadata
@@ -299,7 +299,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
         {% if not method.client_streaming %}
         {% if method.input.required_fields %}
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
         {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
             "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% elif req_field.field_pb.type in [11, 14] %}{}{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
         {% endfor %}
@@ -448,9 +448,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     def {{method.transport_safe_name|snake_case}}(self) -> Callable[
             [{{method.input.ident}}],
             {{method.output.ident}}]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor)
 
     {% endfor %}
 

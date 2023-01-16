@@ -46,6 +46,23 @@ gapic_generator_python()
 
 gapic_generator_register_toolchains()
 
+load("@rules_python//python:pip.bzl", "pip_install")
+
+
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+python_register_toolchains(
+    name = "python39",
+    python_version = "3.9",
+)
+
+ 
+load("@python39//:defs.bzl", "interpreter")
+load("@rules_python//python:pip.bzl", "pip_install")
+
+pip_install(
+    python_interpreter_target = interpreter,
+)
+
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()

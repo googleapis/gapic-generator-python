@@ -3,15 +3,16 @@
 {% block content %}
 
 import os
-# try/except added for compatibility with python < 3.8
-try:
+import sys
+
+if sys.version_info >= (3, 8):
     from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
+    from unittest.mock import AsyncMock
+else:
     import mock
 
-import grpc
-from grpc.experimental import aio
+import grpc # type: ignore
+from grpc.experimental import aio # type: ignore
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable
 from google.protobuf import json_format
@@ -19,7 +20,7 @@ import json
 {% endif %}
 import math
 import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from proto.marshal.rules.dates import DurationRule, TimestampRule  # type: ignore
 
 {% if 'rest' in opts.transport %}
 from requests import Response
@@ -29,9 +30,9 @@ from requests.sessions import Session
 
 {# Import the service itself as well as every proto module that it imports. #}
 {% filter sort_lines %}
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
+import google.auth # type: ignore
+from google.auth import credentials as ga_credentials # type: ignore
+from google.auth.exceptions import MutualTLSChannelError # type: ignore
 from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
@@ -44,13 +45,10 @@ from google.api_core import path_template
 from google.api_core import future
 from google.api_core import operation
 from google.api_core import operations_v1
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2 # type: ignore
 {% endif %}{# lro #}
 {% if api.has_location_mixin %}
-from google.cloud.location import locations_pb2
-{% endif %}
-{% if api.has_operations_mixin %}
-from google.longrunning import operations_pb2
+from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
