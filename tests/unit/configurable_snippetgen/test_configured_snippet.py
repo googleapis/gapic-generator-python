@@ -164,6 +164,20 @@ def test_filename(is_sync, expected):
             },
             "us-speech.googleapis.com",
         ),
+        (
+            {
+                "snippet": {
+                    "serviceClientInitialization": {
+                        "customServiceEndpoint": {
+                            "host": "speech.googleapis.com",
+                            "region": "us",
+                            "port": 123,
+                        }
+                    },
+                }
+            },
+            "us-speech.googleapis.com:123",
+        ),
     ],
 )
 def test_api_endpoint(snippet_config_dict, expected):

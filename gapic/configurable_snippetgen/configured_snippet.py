@@ -123,19 +123,27 @@ class ConfiguredSnippet:
     @property
     def api_endpoint(self) -> Optional[str]:
         """The api_endpoint in client_options."""
-        host = (
-            self.config.snippet.service_client_initialization.custom_service_endpoint.host
-        )
-        region = (
-            self.config.snippet.service_client_initialization.custom_service_endpoint.region
+        service_endpoint = (
+            self.config.snippet.service_client_initialization.custom_service_endpoint
         )
 
-        if not host:
+        if not service_endpoint.host:
             return None
-        elif not region:
-            return host
+
+        # GAPIC Python libraries do not require the schema to be specified.
+        host = service_endpoint.host
+        region = service_endpoint.region
+        port = service_endpoint.port
+
+        if port:
+            host_maybe_with_port = f"{host}:{port}"
         else:
-            return f"{region}-{host}"
+            host_maybe_with_port = host
+
+        if region:
+            return f"{region}-{host_maybe_with_port}"
+        else:
+            return host_maybe_with_port
 
     def _append_to_sample_function_def_body(
         self, statement: libcst.BaseStatement
