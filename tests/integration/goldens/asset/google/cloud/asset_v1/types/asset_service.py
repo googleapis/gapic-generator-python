@@ -64,7 +64,24 @@ __protobuf__ = proto.module(
 
 
 class ContentType(proto.Enum):
-    r"""Asset content type."""
+    r"""Asset content type.
+
+    Values:
+        CONTENT_TYPE_UNSPECIFIED:
+            Unspecified content type.
+        RESOURCE:
+            Resource metadata.
+        IAM_POLICY:
+            The actual IAM policy set on a resource.
+        ORG_POLICY:
+            The Cloud Organization Policy set on an
+            asset.
+        ACCESS_POLICY:
+            The Cloud Access context manager Policy set
+            on an asset.
+        OS_INVENTORY:
+            The runtime OS Inventory information.
+    """
     CONTENT_TYPE_UNSPECIFIED = 0
     RESOURCE = 1
     IAM_POLICY = 2
@@ -749,6 +766,25 @@ class PartitionSpec(proto.Message):
         partition key is a timestamp column, the actual partition is based
         on its date value (expressed in UTC. see details in
         https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables).
+
+        Values:
+            PARTITION_KEY_UNSPECIFIED:
+                Unspecified partition key. If used, it means
+                using non-partitioned table.
+            READ_TIME:
+                The time when the snapshot is taken. If specified as
+                partition key, the result table(s) is partitoned by the
+                additional timestamp column, readTime. If [read_time] in
+                ExportAssetsRequest is specified, the readTime column's
+                value will be the same as it. Otherwise, its value will be
+                the current time that is used to take the snapshot.
+            REQUEST_TIME:
+                The time when the request is received and
+                started to be processed. If specified as
+                partition key, the result table(s) is partitoned
+                by the requestTime column, an additional
+                timestamp column representing when the request
+                was received.
         """
         PARTITION_KEY_UNSPECIFIED = 0
         READ_TIME = 1
@@ -1706,6 +1742,17 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
             reduce query cost by filtering partitions. Refer to
             https://cloud.google.com/bigquery/docs/partitioned-tables for
             details.
+
+            Values:
+                PARTITION_KEY_UNSPECIFIED:
+                    Unspecified partition key. Tables won't be
+                    partitioned using this option.
+                REQUEST_TIME:
+                    The time when the request is received. If
+                    specified as partition key, the result table(s)
+                    is partitoned by the RequestTime column, an
+                    additional timestamp column representing when
+                    the request was received.
             """
             PARTITION_KEY_UNSPECIFIED = 0
             REQUEST_TIME = 1
