@@ -181,7 +181,7 @@ def test_filename(is_sync, expected):
                 "host": "speech.googleapis.com",
                 "schema": "HTTPS",
             },
-            "https://speech.googleapis.com",
+            "speech.googleapis.com",
         ),
     ],
 )
@@ -230,7 +230,7 @@ def test_code(snippet):
     # until the generated code is the same as that of the golden file.
     expected_code = """def sample_create_custom_class_Basic(parent = "projects/[PROJECT]/locations/us", custom_class_id = "passengerships"):
     \"\"
-    client = speech_v1.AdaptationClient(client_options = {"api_endpoint": "https://us-speech.googleapis.com"})
+    client = speech_v1.AdaptationClient(client_options = {"api_endpoint": "us-speech.googleapis.com"})
 """
     assert snippet.code == expected_code
 

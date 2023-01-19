@@ -150,14 +150,8 @@ class ConfiguredSnippet:
             == snippet_config_language_pb2.Snippet.ClientInitialization.ServiceEndpoint.HTTP
         ):
             return f"http://{host_maybe_with_port_and_region}"
-        elif (
-            schema
-            == snippet_config_language_pb2.Snippet.ClientInitialization.ServiceEndpoint.HTTPS
-        ):
-            return f"https://{host_maybe_with_port_and_region}"
         else:
-            # The default:
-            # snippet_config_language_pb2.Snippet.ClientInitialization.ServiceEndpoint.LANGUAGE_DEFAULT
+            # Either the default or HTTPS, in which case the schema is not needed.
             return host_maybe_with_port_and_region
 
     def _append_to_sample_function_def_body(
