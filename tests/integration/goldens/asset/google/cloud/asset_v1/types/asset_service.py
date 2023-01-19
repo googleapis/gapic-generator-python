@@ -67,19 +67,19 @@ class ContentType(proto.Enum):
     r"""Asset content type.
 
     Values:
-        CONTENT_TYPE_UNSPECIFIED:
+        CONTENT_TYPE_UNSPECIFIED (0):
             Unspecified content type.
-        RESOURCE:
+        RESOURCE (1):
             Resource metadata.
-        IAM_POLICY:
+        IAM_POLICY (2):
             The actual IAM policy set on a resource.
-        ORG_POLICY:
+        ORG_POLICY (4):
             The Cloud Organization Policy set on an
             asset.
-        ACCESS_POLICY:
+        ACCESS_POLICY (5):
             The Cloud Access context manager Policy set
             on an asset.
-        OS_INVENTORY:
+        OS_INVENTORY (6):
             The runtime OS Inventory information.
     """
     CONTENT_TYPE_UNSPECIFIED = 0
@@ -768,17 +768,17 @@ class PartitionSpec(proto.Message):
         https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables).
 
         Values:
-            PARTITION_KEY_UNSPECIFIED:
+            PARTITION_KEY_UNSPECIFIED (0):
                 Unspecified partition key. If used, it means
                 using non-partitioned table.
-            READ_TIME:
+            READ_TIME (1):
                 The time when the snapshot is taken. If specified as
                 partition key, the result table(s) is partitoned by the
                 additional timestamp column, readTime. If [read_time] in
                 ExportAssetsRequest is specified, the readTime column's
                 value will be the same as it. Otherwise, its value will be
                 the current time that is used to take the snapshot.
-            REQUEST_TIME:
+            REQUEST_TIME (2):
                 The time when the request is received and
                 started to be processed. If specified as
                 partition key, the result table(s) is partitoned
@@ -1744,10 +1744,10 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
             details.
 
             Values:
-                PARTITION_KEY_UNSPECIFIED:
+                PARTITION_KEY_UNSPECIFIED (0):
                     Unspecified partition key. Tables won't be
                     partitioned using this option.
-                REQUEST_TIME:
+                REQUEST_TIME (1):
                     The time when the request is received. If
                     specified as partition key, the result table(s)
                     is partitoned by the RequestTime column, an

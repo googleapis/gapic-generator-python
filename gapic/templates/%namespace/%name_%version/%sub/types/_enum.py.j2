@@ -3,7 +3,7 @@ class {{ enum.name }}({{ p }}.Enum):
 
     Values:
     {% for enum_value in enum.values %}
-        {{ enum_value.name }}:
+        {{ enum_value.name }} ({{ enum_value.number }}):
             {{ enum_value.meta.doc|rst(width=72, indent=12, nl=False) }}
     {% endfor %}
     """

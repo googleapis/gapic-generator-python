@@ -66,12 +66,12 @@ class LifecycleState(proto.Enum):
     r"""LogBucket lifecycle states.
 
     Values:
-        LIFECYCLE_STATE_UNSPECIFIED:
+        LIFECYCLE_STATE_UNSPECIFIED (0):
             Unspecified state.  This is only used/useful
             for distinguishing unset values.
-        ACTIVE:
+        ACTIVE (1):
             The normal and active state.
-        DELETE_REQUESTED:
+        DELETE_REQUESTED (2):
             The bucket has been marked for deletion by
             the user.
     """
@@ -309,12 +309,12 @@ class LogSink(proto.Message):
         r"""Deprecated. This is unused.
 
         Values:
-            VERSION_FORMAT_UNSPECIFIED:
+            VERSION_FORMAT_UNSPECIFIED (0):
                 An unspecified format version that will
                 default to V2.
-            V2:
+            V2 (1):
                 ``LogEntry`` version 2 format.
-            V1:
+            V1 (2):
                 ``LogEntry`` version 1 format.
         """
         VERSION_FORMAT_UNSPECIFIED = 0

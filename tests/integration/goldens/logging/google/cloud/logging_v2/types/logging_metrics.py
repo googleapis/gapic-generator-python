@@ -167,9 +167,9 @@ class LogMetric(proto.Message):
         r"""Logging API version.
 
         Values:
-            V2:
+            V2 (0):
                 Logging API v2.
-            V1:
+            V1 (1):
                 Logging API v1.
         """
         V2 = 0
