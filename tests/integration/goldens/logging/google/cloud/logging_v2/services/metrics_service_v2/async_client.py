@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import builtins
 from collections import OrderedDict
 import functools
 import re
@@ -255,7 +256,7 @@ class MetricsServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        has_flattened_params = builtins.any([parent])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -384,7 +385,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([metric_name])
+        has_flattened_params = builtins.any([metric_name])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -521,7 +522,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, metric])
+        has_flattened_params = builtins.any([parent, metric])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -651,7 +652,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([metric_name, metric])
+        has_flattened_params = builtins.any([metric_name, metric])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -755,7 +756,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([metric_name])
+        has_flattened_params = builtins.any([metric_name])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")

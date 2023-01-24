@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import builtins
 from collections import OrderedDict
 import os
 import re
@@ -497,7 +498,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name, delegates, scope, lifetime])
+        has_flattened_params = builtins.any([name, delegates, scope, lifetime])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -644,7 +645,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name, delegates, audience, include_email])
+        has_flattened_params = builtins.any([name, delegates, audience, include_email])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -779,7 +780,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name, delegates, payload])
+        has_flattened_params = builtins.any([name, delegates, payload])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -915,7 +916,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name, delegates, payload])
+        has_flattened_params = builtins.any([name, delegates, payload])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
