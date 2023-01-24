@@ -2,6 +2,7 @@
 
 {% block content %}
 
+import builtins
 from collections import OrderedDict
 import os
 import re
@@ -402,7 +403,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         {% if method.flattened_fields %}
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([{{ method.flattened_fields.values()|join(", ", attribute="name") }}])
+        has_flattened_params = builtins.any([{{ method.flattened_fields.values()|join(", ", attribute="name") }}])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')

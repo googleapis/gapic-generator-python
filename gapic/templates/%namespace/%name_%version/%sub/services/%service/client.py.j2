@@ -3,6 +3,7 @@
 {% block content %}
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
 
+import builtins
 from collections import OrderedDict
 {% if service.any_extended_operations_methods %}
 import functools

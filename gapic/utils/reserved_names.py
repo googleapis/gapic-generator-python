@@ -16,14 +16,14 @@
 # from Python's new major release.
 # In an unforseen case if you have to make changes, please follow the process:
 # 1. Run the internal script to check if any of the existing Google APIs use the
-#   item to be added/removed. For external contributors, ask a Googler to do that 
+#   item to be added/removed. For external contributors, ask a Googler to do that
 #   during code review.
 # 2. If no APIs are using it, it's safe to add. Otherwise, consult with your TL.
-# 
+#
 # Changing this list will lead to breaking changes. This is happening because
 # GAPIC will add "_" to field names from that list. This will change the generated
 # client library surface (i.e. breaking change). Example of when this happened:
-# https://github.com/googleapis/gapic-generator-python/issues/835. 
+# https://github.com/googleapis/gapic-generator-python/issues/835.
 
 # Each item in the list belongs to one of the following categories:
 # 1. Python keyword
