@@ -31,6 +31,7 @@
 # 3. Reserved word from Protoplus.
 RESERVED_NAMES = frozenset(
     [
+        "any",
         "format",
         "yield",
         "await",

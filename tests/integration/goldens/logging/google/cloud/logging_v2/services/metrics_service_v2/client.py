@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import builtins
 from collections import OrderedDict
 import os
 import re
@@ -450,7 +449,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = builtins.any([parent])
+        has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -571,7 +570,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = builtins.any([metric_name])
+        has_flattened_params = any([metric_name])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -700,7 +699,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = builtins.any([parent, metric])
+        has_flattened_params = any([parent, metric])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -830,7 +829,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = builtins.any([metric_name, metric])
+        has_flattened_params = any([metric_name, metric])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -926,7 +925,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = builtins.any([metric_name])
+        has_flattened_params = any([metric_name])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')

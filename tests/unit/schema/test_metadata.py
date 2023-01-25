@@ -184,7 +184,15 @@ def test_metadata_with_context():
     assert collisions == {'foo', 'bar'}
 
 
-def test_address_name_python_keyword():
+def test_address_name_builtin_keyword():
+    addr_builtin = metadata.Address(
+        name="Any",
+        module="any",
+        package=("google", "protobuf"),
+        api_naming=naming.NewNaming(proto_package="foo.bar.baz.v1"),
+    )
+    assert addr_builtin.module_alias == "gp_any"
+
     addr_kword = metadata.Address(
         name="Class",
         module="class",
