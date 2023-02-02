@@ -1446,10 +1446,9 @@ def test_{{ method_name }}_rest_error():
     {%- if not method.http_options %}
     # Since a `google.api.http` annotation is required for using a rest transport
     # method, this should error.
-    with pytest.raises(RuntimeError) as runtime_error:
+    with pytest.raises(NotImplementedError) as runtime_error:
         client.{{ method_name }}({})
-    assert ('Cannot define a method without a valid `google.api.http` annotation.'
-        in str(runtime_error.value))
+    assert ("This method does not support REST transport." in str(runtime_error.value))
 
     {%- endif %}
 {% endif %}{# flattened_fields #}

@@ -428,8 +428,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% endif %}{# method.void #}
      {% else %}{# method.http_options and not method.client_streaming #}
             {% if not method.http_options %}
-            raise RuntimeError(
-                "Cannot define a method without a valid 'google.api.http' annotation.")
+            raise NotImplementedError(
+                "This method does not support REST transport.")
 
             {% elif method.client_streaming %}
             raise NotImplementedError(
