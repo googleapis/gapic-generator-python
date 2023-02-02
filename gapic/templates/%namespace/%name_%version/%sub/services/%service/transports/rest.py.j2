@@ -426,20 +426,11 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             return resp
 
             {% endif %}{# method.void #}
-     {% else %}{# method.http_options and not method.client_streaming #}
-            {% if not method.http_options %}
-            raise NotImplementedError("This method does not support REST transport.")
-
-            {% elif method.client_streaming %}
+     {% else %}{# method.http_options #}
             raise NotImplementedError(
-                "Client streaming over REST is not yet defined for python client")
-
-            {% else %}
-            raise NotImplementedError()
-
-            {% endif %}{# method.http_options #}
-
-    {%- endif %}{# unary method #}
+                "Method {{ method.name }} is not available over REST transport"
+            )
+    {% endif %}{# unary method #}
     {% endfor %}
     {% for method in service.methods.values()|sort(attribute="name") %}
 
