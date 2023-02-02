@@ -428,8 +428,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% endif %}{# method.void #}
      {% else %}{# method.http_options and not method.client_streaming #}
             {% if not method.http_options %}
-            raise NotImplementedError(
-                "This method does not support REST transport.")
+            raise NotImplementedError("This method does not support REST transport.")
 
             {% elif method.client_streaming %}
             raise NotImplementedError(
