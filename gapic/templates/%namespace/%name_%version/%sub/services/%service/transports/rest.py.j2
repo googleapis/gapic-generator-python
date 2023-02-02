@@ -426,7 +426,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             return resp
 
             {% endif %}{# method.void #}
-     {% else %}{# method.http_options #}
+    {% else %}{# method.http_options and not method.client_streaming #}
             raise NotImplementedError(
                 "Method {{ method.name }} is not available over REST transport"
             )
