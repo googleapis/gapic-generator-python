@@ -430,7 +430,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             raise NotImplementedError(
                 "Method {{ method.name }} is not available over REST transport"
             )
-    {% endif %}{# unary method #}
+    {% endif %}{# method.http_options and not method.client_streaming #}
     {% endfor %}
     {% for method in service.methods.values()|sort(attribute="name") %}
 
