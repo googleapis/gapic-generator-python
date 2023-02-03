@@ -278,6 +278,6 @@ def test_code_without_endpoint(snippet_without_endpoint):
     assert snippet_without_endpoint.code == expected_code
 
 
-def test_generate_should_raise_error_if_unsopported(snippet_bidi_streaming):
+def test_generate_should_raise_error_if_unsupported(snippet_bidi_streaming):
     with pytest.raises(ValueError):
         snippet_bidi_streaming.generate()
