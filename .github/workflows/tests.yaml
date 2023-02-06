@@ -16,6 +16,7 @@ concurrency:
 env:
   SHOWCASE_VERSION: 0.25.0
   PROTOC_VERSION: 3.20.2
+  PYPANDOC_VERSION: 3.0.1
 
 jobs:
   docs:
@@ -76,6 +77,13 @@ jobs:
             cd /usr/src/protoc/
             unzip protoc-${PROTOC_VERSION}.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install pypandoc
+        run: |
+            sudo mkdir -p /usr/src/pypandoc/
+            sudo chown -R ${USER} /usr/src/
+            wget https://github.com/jgm/pandoc/releases/download/${PYPANDOC_VERSION}/pandoc-${PYPANDOC_VERSION}-linux-amd64.tar.gz -P /usr/src/pypandoc/
+            tar xvzf pandoc-${PYPANDOC_VERSION}-linux-amd64.tar.gz --strip-components 1 -C /usr/src/pypandoc/
+            sudo ln -s /usr/src/pypandoc/bin/pypandoc /usr/local/bin/pypandoc
       - name: Run showcase tests.
         run: nox -s ${{ matrix.target }}
   showcase-mtls:
