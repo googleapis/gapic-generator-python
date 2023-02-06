@@ -16,7 +16,8 @@ concurrency:
 
 jobs:
   docs:
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
@@ -28,7 +29,8 @@ jobs:
       - name: Build the documentation.
         run: nox -s docs
   mypy:
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.11"
@@ -42,7 +44,8 @@ jobs:
     strategy:
       matrix:
         target: [showcase, showcase_alternative_templates]
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.11"
@@ -58,7 +61,8 @@ jobs:
       matrix:
         target: [showcase_mtls, showcase_mtls_alternative_templates]
       max-parallel: 1
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Setup temp directory
@@ -84,7 +88,8 @@ jobs:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins]
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "${{ matrix.python }}"
@@ -95,7 +100,8 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
   showcase-unit-add-iam-methods:
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.11"
@@ -106,7 +112,8 @@ jobs:
       - name: Run unit tests.
         run: nox -s showcase_unit_add_iam_methods
   showcase-mypy:
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     strategy:
       matrix:
         variant: ['', _alternative_templates]
@@ -120,7 +127,8 @@ jobs:
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy${{ matrix.variant }}
   snippetgen:
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.11"
@@ -134,7 +142,8 @@ jobs:
     strategy:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python }}
@@ -149,7 +158,8 @@ jobs:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
         variant: ['', _alternative_templates]
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python }}
@@ -160,7 +170,7 @@ jobs:
       - name: Run fragment tests.
         run: nox -s fragment${{ matrix.variant }}-${{ matrix.python }}
   integration:
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
     container: gcr.io/gapic-images/googleapis
     steps:
       - uses: actions/checkout@v3
@@ -189,7 +199,8 @@ jobs:
         run: bazel test //tests/integration/...
 
   goldens-lint:
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.11
@@ -205,7 +216,8 @@ jobs:
           nox -f tests/integration/goldens/logging/noxfile.py -s blacken lint_setup_py lint
           nox -f tests/integration/goldens/redis/noxfile.py -s blacken lint_setup_py lint
   style-check:
-    runs-on: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
+    runs-on: ubuntu-latest
+    container: gcr.io/cloud-devrel-public-resources/gapic-generator-python-ci:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.11"
