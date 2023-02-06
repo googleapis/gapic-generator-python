@@ -59,6 +59,7 @@ jobs:
           cache: 'pip'
       - name: Install system dependencies.
         run: |
+          cat /etc/apt/sources.list
           sudo apt-get update
           sudo apt-get install -y curl pandoc unzip
       - name: Install showcase
