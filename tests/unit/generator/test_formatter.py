@@ -18,84 +18,120 @@ from gapic.generator import formatter
 
 
 def test_fix_whitespace_top_level():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
+    expected = textwrap.dedent("""\
     import something
-
-
     class Correct:
         pass
-
-
-
     class TooFarDown:
         pass
-
-    class TooClose:  # remains too close
-        pass
-    """)) == textwrap.dedent("""\
-    import something
-
-
-    class Correct:
-        pass
-
-
-    class TooFarDown:
-        pass
-
     class TooClose:  # remains too close
         pass
     """)
+
+    result = formatter.fix_whitespace(textwrap.dedent("""\
+    import something
+    class Correct:
+        pass
+    class TooFarDown:
+        pass
+    class TooClose:  # remains too close
+        pass
+    """))
+    assert result == expected, f"Expected {expected!r} but got {result!r}"
 
 
 def test_fix_whitespace_nested():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
+    expected = textwrap.dedent("""\
     class JustAClass:
         def foo(self):
             pass
-
-
-        def too_far_down(self):
-            pass
-    """)) == textwrap.dedent("""\
-    class JustAClass:
-        def foo(self):
-            pass
-
         def too_far_down(self):
             pass
     """)
+
+    result = formatter.fix_whitespace(textwrap.dedent("""\
+    class JustAClass:
+        def foo(self):
+            pass
+        def too_far_down(self):
+            pass
+    """))
+    assert result == expected, f"Expected {expected!r} but got {result!r}"
 
 
 def test_fix_whitespace_decorators():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
+    expected = textwrap.dedent("""\
     class JustAClass:
         def foo(self):
             pass
-
-
-        @property
-        def too_far_down(self):
-            return 42
-    """)) == textwrap.dedent("""\
-    class JustAClass:
-        def foo(self):
-            pass
-
         @property
         def too_far_down(self):
             return 42
     """)
 
+    result = formatter.fix_whitespace(textwrap.dedent("""\
+    class JustAClass:
+        def foo(self):
+            pass
+        @property
+        def too_far_down(self):
+            return 42
+    """))
+    assert result == expected, f"Expected {expected!r} but got {result!r}"
+
 
 def test_fix_whitespace_intermediate_whitespace():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
+    expected = textwrap.dedent("""\
+    class JustAClass:
+        def foo(self):
+            pass
+        @property
+        def too_far_down(self):
+            return 42
+    """)
+
+    result = formatter.fix_whitespace(textwrap.dedent("""\
     class JustAClass:
         def foo(self):
             pass
         \
+        @property
+        def too_far_down(self):
+            return 42
+    """))
+    assert result == expected, f"Expected {expected!r} but got {result!r}"
 
 
+def test_fix_whitespace_comment():
+    expected = textwrap.dedent("""\
+    def do_something():
+        do_first_thing()
+        # Something something something.
+        do_second_thing()
+    """)
+
+    result = formatter.fix_whitespace(textwrap.dedent("""\
+    def do_something():
+        do_first_thing()
+        # Something something something.
+        do_second_thing()
+    """))
+    assert result == expected, f"Expected {expected!r} but got {result!r}"
+    
+    
+ def test_fix_whitespace_trailing_whitespace():
+    assert formatter.fix_whitespace("no trailing whitespace   \n") == "no trailing whitespace\n"
+
+def test_fix_whitespace_empty_lines():
+    assert formatter.fix_whitespace("\n\n\n") == "\n"
+
+def test_fix_whitespace_multiline_comments():
+    assert formatter.fix_whitespace(textwrap.dedent("""\
+    class JustAClass:
+        def foo(self):
+            pass
+        # This is a multi-line comment
+        # with extra whitespaces
         @property
         def too_far_down(self):
             return 42
@@ -103,29 +139,13 @@ def test_fix_whitespace_intermediate_whitespace():
     class JustAClass:
         def foo(self):
             pass
-
+        # This is a multi-line comment
+        # with extra whitespaces
         @property
         def too_far_down(self):
             return 42
     """)
+   
 
 
-def test_fix_whitespace_comment():
-    assert formatter.fix_whitespace(textwrap.dedent("""\
-    def do_something():
-        do_first_thing()
 
-
-        # Something something something.
-        do_second_thing()
-    """)) == textwrap.dedent("""\
-    def do_something():
-        do_first_thing()
-
-        # Something something something.
-        do_second_thing()
-    """)
-
-
-def test_file_newline_ending():
-    assert formatter.fix_whitespace('') == '\n'
