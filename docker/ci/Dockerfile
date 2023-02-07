@@ -12,13 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.10.6-buster
+FROM python:3.10.9-buster
 
 ENV SHOWCASE_VERSION=0.25.0
 ENV PROTOC_RELEASE=21.12
 ENV PROTOC_VERSION=4.21.12
 
+ENV PYTHON_3_11_VERSION=3.11.1
+
 RUN apt-get update && apt-get install -y pandoc unzip lsb-release
+
+
+###################### Install python 3.11
+
+# Download python 3.11
+RUN wget https://www.python.org/ftp/python/${PYTHON_3_11_VERSION}/Python-${PYTHON_3_11_VERSION}.tgz
+
+# Extract files
+RUN tar -xvf Python-${PYTHON_3_11_VERSION}.tgz
+
+# Install python 3.11
+RUN ./Python-${PYTHON_3_11_VERSION}/configure --enable-optimizations
+RUN make altinstall
+######################
+
 
 COPY requirements.txt ./
 
