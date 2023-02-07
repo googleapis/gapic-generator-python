@@ -18,7 +18,7 @@ ENV SHOWCASE_VERSION=0.25.0
 ENV PROTOC_RELEASE=21.12
 ENV PROTOC_VERSION=4.21.12
 
-RUN apt-get update && apt-get install -y pandoc unzip
+RUN apt-get update && apt-get install -y pandoc unzip lsb-release
 
 COPY requirements.txt ./
 
