@@ -57,6 +57,7 @@ from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 {% if 'grpc' in opts.transport %}
 from .transports.grpc import {{ service.grpc_transport_name }}
 from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
+from .transports.pooled_grpc_asyncio import Pooled{{ service.grpc_asyncio_transport_name }}
 {% endif %}
 {% if 'rest' in opts.transport %}
 from .transports.rest import {{ service.name }}RestTransport
@@ -74,6 +75,7 @@ class {{ service.client_name }}Meta(type):
     {% if "grpc" in opts.transport %}
     _transport_registry["grpc"] = {{ service.grpc_transport_name }}
     _transport_registry["grpc_asyncio"] = {{ service.grpc_asyncio_transport_name }}
+    _transport_registry["pooled_grpc_asyncio"] = Pooled{{ service.grpc_asyncio_transport_name }}
     {% endif %}
     {% if "rest" in opts.transport %}
     _transport_registry["rest"] = {{ service.name }}RestTransport
