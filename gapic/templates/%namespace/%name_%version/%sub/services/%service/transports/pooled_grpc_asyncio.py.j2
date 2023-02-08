@@ -36,8 +36,8 @@ from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .grpc import {{ service.name }}GrpcTransport
 
 
-class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
-    """gRPC AsyncIO backend transport for {{ service.name }}.
+class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
+    """Pooled gRPC AsyncIO backend transport for {{ service.name }}.
 
     {{ service.meta.doc|rst(width=72, indent=4) }}
 
@@ -47,10 +47,14 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
+
+    This class allows channel pooling, so multiple channels can be used concurrently
+    when making requests. Channels are rotated in a round-robin fashion.
     """
 
-    _grpc_channel: aio.Channel
-    _stubs: Dict[str, Callable] = {}
+    _channel_pool: List[aio.Channel] = []
+    _stubs: Dict[Tuple[aio.Channel,str], Callable] = {}
+    _next_idx:int = 0
 
     @classmethod
     def create_channel(cls,
@@ -94,11 +98,11 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         )
 
     def __init__(self, *,
+            pool_size: [Int] = 3,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: Optional[ga_credentials.Credentials] = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
-            channel: Optional[aio.Channel] = None,
             api_mtls_endpoint: Optional[str] = None,
             client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
             ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -111,6 +115,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         """Instantiate the transport.
 
         Args:
+            pool_size (int): the number of grpc channels to maintain in a pool
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
                 {{ ' ' }}The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -125,8 +130,6 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -157,7 +160,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        self._grpc_channel = None
+        self._channel_pool = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
         {% if service.has_lro %}
@@ -169,32 +172,25 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
-            # Ignore credentials if a channel was passed.
-            credentials = False
-            # If a channel was explicitly provided, set it.
-            self._grpc_channel = channel
-            self._ssl_channel_credentials = None
-        else:
-            if api_mtls_endpoint:
-                host = api_mtls_endpoint
+        if api_mtls_endpoint:
+            host = api_mtls_endpoint
 
-                # Create SSL credentials with client_cert_source or application
-                # default SSL credentials.
-                if client_cert_source:
-                    cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
-                else:
-                    self._ssl_channel_credentials = SslCredentials().ssl_credentials
-
+            # Create SSL credentials with client_cert_source or application
+            # default SSL credentials.
+            if client_cert_source:
+                cert, key = client_cert_source()
+                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
             else:
-                if client_cert_source_for_mtls and not ssl_channel_credentials:
-                    cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                self._ssl_channel_credentials = SslCredentials().ssl_credentials
+
+        else:
+            if client_cert_source_for_mtls and not ssl_channel_credentials:
+                cert, key = client_cert_source_for_mtls()
+                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -207,9 +203,9 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             always_use_jwt_access=always_use_jwt_access,
             api_audience=api_audience,
         )
-
-        if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+        self._channel_pool = []
+        for i in range(pool_size):
+            new_channel = type(self).create_channel(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -224,19 +220,20 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                     ("grpc.max_receive_message_length", -1),
                 ],
             )
+            self._channel_pool.append(new_channel)
 
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
-    def grpc_channel(self) -> aio.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
+    def next_channel(self) -> aio.Channel:
+        """Returns the next channel in the round robin pool.
         """
         # Return the channel from cache.
-        return self._grpc_channel
+        channel = self._channel_pool[self._next_idx]
+        self._next_idx = (self._next_idx + 1) % len(self._channel_pool)
+        return chanel
+
     {% if service.has_lro %}
 
     @property
@@ -278,13 +275,15 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '{{ method.transport_safe_name|snake_case }}' not in self._stubs:
-            self._stubs['{{ method.transport_safe_name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
+        next_channel = self.next_channel()
+        stub_key = (next_channel, '{{ method.transport_safe_name|snake_case }}')
+        if stub_key not in self._stubs:
+            self._stubs[stub_key] = next_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
                 request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
                 response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
             )
-        return self._stubs['{{ method.transport_safe_name|snake_case }}']
+        return self._stubs[stub_key]
     {% endfor %}
 
     {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
@@ -306,13 +305,15 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+        next_channel = self.next_channel()
+        stub_key = (next_channel, "set_iam_policy")
+        if stub_key not in self._stubs:
+            self._stubs[stub_key] = next_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
             )
-        return self._stubs["set_iam_policy"]
+        return self._stubs[stub_key]
 
     @property
     def get_iam_policy(
@@ -332,13 +333,15 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+        next_channel = self.next_channel()
+        stub_key = (next_channel, "get_iam_policy")
+        if stub_key not in self._stubs:
+            self._stubs[stub_key] = next_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
             )
-        return self._stubs["get_iam_policy"]
+        return self._stubs[stub_key]
 
     @property
     def test_iam_permissions(
@@ -361,22 +364,25 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+        next_channel = self.next_channel()
+        stub_key = (next_channel, "test_iam_permissions")
+        if stub_key not in self._stubs:
+            self._stubs[stub_key] = next_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
-        return self._stubs["test_iam_permissions"]
+        return self._stubs[stub_key]
     {% endif %}
 
     def close(self):
-        return self.grpc_channel.close()
+        for channel in self._channel_pool:
+            channel.close()
 
     {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 
 
 __all__ = (
-    '{{ service.name }}GrpcAsyncIOTransport',
+    'Pooled{{ service.name }}GrpcAsyncIOTransport',
 )
 {% endblock %}
