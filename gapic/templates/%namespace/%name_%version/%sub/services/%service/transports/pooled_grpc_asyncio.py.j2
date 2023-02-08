@@ -3,7 +3,7 @@
 {% block content %}
 
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union, List
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
@@ -98,7 +98,7 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         )
 
     def __init__(self, *,
-            pool_size: [Int] = 3,
+            pool_size: int = 3,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: Optional[ga_credentials.Credentials] = None,
             credentials_file: Optional[str] = None,
@@ -225,14 +225,13 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         # Wrap messages. This must be done after self._channel_pool is populated
         self._prep_wrapped_messages(client_info)
 
-    @property
     def next_channel(self) -> aio.Channel:
         """Returns the next channel in the round robin pool.
         """
         # Return the channel from cache.
         channel = self._channel_pool[self._next_idx]
         self._next_idx = (self._next_idx + 1) % len(self._channel_pool)
-        return chanel
+        return channel
 
     {% if service.has_lro %}
 
@@ -276,6 +275,7 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         next_channel = self.next_channel()
+        print(f"USING CHANNEL: {self._next_idx}")
         stub_key = (next_channel, '{{ method.transport_safe_name|snake_case }}')
         if stub_key not in self._stubs:
             self._stubs[stub_key] = next_channel.{{ method.grpc_stub_type }}(
