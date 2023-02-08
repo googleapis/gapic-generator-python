@@ -377,6 +377,6 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
 
 __all__ = (
-    '{{ service.name }}GrpcAsyncIOTransport',
+    '{{ service.grpc_asyncio_transport_name  }}',
 )
 {% endblock %}

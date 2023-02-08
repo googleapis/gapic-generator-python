@@ -222,7 +222,7 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
             )
             self._channel_pool.append(new_channel)
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        # Wrap messages. This must be done after self._channel_pool is populated
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -383,6 +383,6 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
 
 
 __all__ = (
-    'Pooled{{ service.name }}GrpcAsyncIOTransport',
+    'Pooled{{ service.grpc_asyncio_transport_name  }}',
 )
 {% endblock %}
