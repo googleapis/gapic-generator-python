@@ -1,7 +1,28 @@
+.. include:: README.rst
+
+.. include:: multiprocessing.rst
+
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
-    
+
     {{ api.naming.versioned_module_name }}/services
     {{ api.naming.versioned_module_name }}/types
+    {% for dep in api.naming.proto_plus_deps %}
+    {% if dep %}
+    {{ dep.split('.')|last }}/services
+    {{ dep.split('.')|last }}/types
+    {% endif %}
+    {% endfor %}
+
+
+Changelog
+---------
+
+For a list of all ``{{ api.naming.warehouse_package_name }}`` releases:
+
+.. toctree::
+    :maxdepth: 2
+
+    CHANGELOG

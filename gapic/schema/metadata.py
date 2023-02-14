@@ -27,6 +27,7 @@ with the things they describe for easy access in templates.
 """
 
 import dataclasses
+import re
 from typing import FrozenSet, Tuple, Optional
 
 from google.protobuf import descriptor_pb2
@@ -81,6 +82,7 @@ class Address(BaseAddress):
         members from modules, this is consistently `module.Name`.
         """
         # Most (but not all) types are in a module.
+        # Most (but not all) types are in a module.
         if self.module:
             module_name = self.module
 
@@ -92,7 +94,7 @@ class Address(BaseAddress):
             # This module is from a different proto package
             # Most commonly happens for a common proto
             # https://pypi.org/project/googleapis-common-protos/
-            if self.is_external_type:
+            if self.is_external_type and not self.is_proto_plus_dependency:
                 module_name = f'{self.module}_pb2'
 
             # Return the dot-separated Python identifier.
@@ -105,6 +107,12 @@ class Address(BaseAddress):
     @property
     def is_external_type(self):
         return not self.proto_package.startswith(self.api_naming.proto_package)
+
+    @property
+    def is_proto_plus_dependency(self):
+        if self.proto_package in self.api_naming.proto_plus_deps:
+            return True
+        return False
 
     @cached_property
     def __cached_string_repr(self):
@@ -171,28 +179,49 @@ class Address(BaseAddress):
         # less than ideal; the condition works, but it is a weak correlation
         # that may not hold up over time.
         if not self.api_naming:
-            return imp.Import(
+            python_import_result = imp.Import(
                 package=self.package,
                 module=self.module,
                 alias=self.module_alias,
             )
-
         # If this is part of the proto package that we are generating,
         # rewrite the package to our structure.
-        if self.proto_package.startswith(self.api_naming.proto_package):
-            return imp.Import(
+        elif self.proto_package.startswith(self.api_naming.proto_package):
+            python_import_result = imp.Import(
                 package=self.api_naming.module_namespace + (
                     self.api_naming.versioned_module_name,
                 ) + self.subpackage + ('types',),
                 module=self.module,
                 alias=self.module_alias,
             )
+        elif self.is_proto_plus_dependency:
+            # We need to change the import statement to use an
+            # underscore between the module and the version. For example,
+            # change google.cloud.documentai.v1 to google.cloud.documentai_v1.
+            # Check if the package name contains a version.
+            version_regex = "^v\d(alpha|beta)?\d?"
+            regex_match = re.match(version_regex, self.package[-1])
+            
+            if regex_match:
+                versioned_module = f"{self.package[-2]}_{regex_match[0]}"
+                python_import_result = imp.Import(
+                    package=self.package[:-2] + 
+                    (versioned_module, 'types'),
+                    module=self.module,
+                    alias=self.module_alias,
+                )
+            else:
+                python_import_result = imp.Import(
+                    package=self.package + ('types',),
+                    module=self.module,
+                )
+        else:
+            python_import_result = imp.Import(
+                package=self.package,
+                module=f'{self.module}_pb2',
+            )
 
-        # Return the standard import.
-        return imp.Import(
-            package=self.package,
-            module=f'{self.module}_pb2',
-        )
+        return python_import_result
 
     @property
     def sphinx(self) -> str:

@@ -5,9 +5,6 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}} import gapic_version as package_version
-
 import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
@@ -40,6 +37,9 @@ from google.longrunning import operations_pb2
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services import {{ operations_service.name|snake_case }}
 {% endfor %}
 {% endfilter %}
+
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from {{package_path}} import gapic_version as package_version
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 

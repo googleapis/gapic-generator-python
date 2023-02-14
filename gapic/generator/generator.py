@@ -117,6 +117,10 @@ class Generator:
             if filename.startswith("_") and filename != "__init__.py.j2":
                 continue
 
+            # if not opts.default_version:
+            #     if template_name == ".coveragerc":
+            #         continue
+
             # Append to the output files dictionary.
             output_files.update(
                 self._render_template(

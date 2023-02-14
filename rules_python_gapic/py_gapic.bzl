@@ -34,6 +34,12 @@ gapic_test_file = rule(
     },
 )
 
+def py_test(name, **kwargs):
+    native.py_test(
+        name = name,
+        **kwargs
+    )
+
 def py_gapic_library(
         name,
         srcs,
@@ -44,6 +50,8 @@ def py_gapic_library(
         service_yaml = None,
         transport = None,
         rest_numeric_enums = False,
+        default_version = False,
+        inports = [],
         deps = [],
         **kwargs):
     srcjar_target_name = "%s_srcjar" % name
@@ -66,6 +74,9 @@ def py_gapic_library(
 
     if rest_numeric_enums:
         opt_args = opt_args + ["rest-numeric-enums"]
+
+    if default_version:
+        opt_args = opt_args + ["default-version"]
 
     proto_custom_library(
         name = srcjar_target_name,
@@ -115,3 +126,4 @@ def py_gapic_library(
         name = test_runner_file_target_name,
         template = Label("//rules_python_gapic:pytest.py"),
     )
+

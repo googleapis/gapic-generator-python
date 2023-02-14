@@ -196,6 +196,7 @@ def test_options_bool_flags():
          "metadata",
          "warehouse-package-name",
          "rest-numeric-enums",
+         "default-version",
          ]}
 
     for opt, attr in opt_str_to_attr_name.items():

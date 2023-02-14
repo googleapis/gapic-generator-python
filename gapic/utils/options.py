@@ -49,6 +49,8 @@ class Options:
     service_yaml_config: Dict[str, Any] = dataclasses.field(
         default_factory=dict)
     rest_numeric_enums: bool = False
+    proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=())
+    default_version: bool = False
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
@@ -66,6 +68,9 @@ class Options:
         'warehouse-package-name',  # change the package name on PyPI
         # when transport includes "rest", request that response enums be JSON-encoded as numbers
         'rest-numeric-enums',
+        # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
+        'proto-plus-deps',
+        'default-version'
     ))
 
     @classmethod
@@ -161,6 +166,9 @@ class Options:
         if old_naming:
             autogen_snippets = False
 
+        proto_plus_deps = opts.get('proto-plus-deps', [])
+        if len(proto_plus_deps):
+            proto_plus_deps = tuple(proto_plus_deps[0].split('+'))
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
@@ -182,6 +190,8 @@ class Options:
             transport=opts.pop('transport', ['grpc'])[0].split('+'),
             service_yaml_config=service_yaml_config,
             rest_numeric_enums=bool(opts.pop('rest-numeric-enums', False)),
+            proto_plus_deps=proto_plus_deps,
+            default_version=bool(opts.pop('default-version', False)),
         )
 
         # Note: if we ever need to recursively check directories for sample

@@ -183,7 +183,7 @@ class Proto:
         # Return the set of collision names.
         return frozenset(answer)
 
-    @cached_property
+    @property
     def python_modules(self) -> Sequence[Tuple[str, str]]:
         """Return a sequence of Python modules, for import.
 
@@ -485,6 +485,9 @@ class API:
         return MessageToJson(self.gapic_metadata(options), sort_keys=True)
 
     def requires_package(self, pkg: Tuple[str, ...]) -> bool:
+        if self.naming.proto_package.startswith(pkg):
+            return False
+
         return any(
             message.ident.package == pkg
             for proto in self.all_protos.values()

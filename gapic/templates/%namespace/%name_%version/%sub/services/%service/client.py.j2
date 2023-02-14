@@ -14,9 +14,6 @@ from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, {% 
 import warnings
 {% endif %}
 
-{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}} import gapic_version as package_version
-
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 {% if service.any_extended_operations_methods %}
@@ -61,6 +58,9 @@ from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 {% if 'rest' in opts.transport %}
 from .transports.rest import {{ service.name }}RestTransport
 {% endif %}
+
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from {{package_path}} import gapic_version as package_version
 
 
 class {{ service.client_name }}Meta(type):
