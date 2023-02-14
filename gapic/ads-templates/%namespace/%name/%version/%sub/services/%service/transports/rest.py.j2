@@ -322,7 +322,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% endfor %}{# rule in method.http_options #}
             ]
             request, metadata = self._interceptor.pre_{{ method.name|snake_case }}(request, metadata)
-            {% if method.input.ident.is_external_type %}
+            {% if not method.input.ident.is_proto_plus_type %}
             pb_request = request
             {% else %}
             pb_request = {{method.input.ident}}.pb(request)
@@ -384,7 +384,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             resp = rest_streaming.ResponseIterator(response, {{method.output.ident}})
             {% else %}
             resp = {{method.output.ident}}()
-            {% if method.output.ident.is_external_type %}
+            {% if not method.output.ident.is_proto_plus_type %}
             pb_resp = resp
             {% else %}
             pb_resp = {{method.output.ident}}.pb(resp)
