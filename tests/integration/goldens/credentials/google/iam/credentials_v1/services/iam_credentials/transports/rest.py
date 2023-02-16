@@ -281,7 +281,7 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):
             return hash("GenerateAccessToken")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
         }
 
         @classmethod
@@ -366,7 +366,7 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):
             return hash("GenerateIdToken")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
         }
 
         @classmethod
@@ -451,7 +451,7 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):
             return hash("SignBlob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
         }
 
         @classmethod
@@ -536,7 +536,7 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):
             return hash("SignJwt")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Union[str, Dict]] =  {
         }
 
         @classmethod
