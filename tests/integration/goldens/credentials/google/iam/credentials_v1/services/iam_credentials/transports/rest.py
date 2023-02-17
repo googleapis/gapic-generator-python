@@ -30,7 +30,7 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -281,7 +281,7 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):
             return hash("GenerateAccessToken")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict = {
         }
 
         @classmethod
@@ -366,7 +366,7 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):
             return hash("GenerateIdToken")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict = {
         }
 
         @classmethod
@@ -451,7 +451,7 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):
             return hash("SignBlob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict = {
         }
 
         @classmethod
@@ -536,7 +536,7 @@ class IAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):
             return hash("SignJwt")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict = {
         }
 
         @classmethod
