@@ -17,11 +17,16 @@ syntax = "proto3";
 package google.fragment;
 
 import "google/api/client.proto";
+import "google/api/annotations.proto";
 
 service MyService {
   option (google.api.default_host) = "my.example.com";
 
   rpc MyMethod(MethodRequest) returns (stream MethodResponse) {
+    option (google.api.http) = {
+      post: "/v2/some/path/{import}/mymethod"
+      body: "license"
+    };
     option (google.api.method_signature) = "from,class,import,any,license,type";
   }
 }
