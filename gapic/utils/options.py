@@ -49,7 +49,7 @@ class Options:
     service_yaml_config: Dict[str, Any] = dataclasses.field(
         default_factory=dict)
     rest_numeric_enums: bool = False
-    proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=())
+    proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=('',))
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
@@ -165,7 +165,7 @@ class Options:
         if old_naming:
             autogen_snippets = False
 
-        proto_plus_deps = opts.pop('proto-plus-deps', [])
+        proto_plus_deps = tuple(opts.pop('proto-plus-deps', ''))
         if len(proto_plus_deps):
             proto_plus_deps = tuple(proto_plus_deps[0].split('+'))
 
