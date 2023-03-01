@@ -814,7 +814,7 @@ def test_python_modules_nested():
 
     assert api_schema.protos['foo.proto'].python_modules == (
         imp.Import(package=('google', 'bar'), module='bar_pb2'),
-        imp.Import(package=('google', 'baz', 'v2'), module='baz_pb2'),
+        imp.Import(package=('google', 'baz', 'v2'), module='baz_v2_pb2'),
         imp.Import(package=('google', 'dep'), module='dep_pb2'),
     )
 
@@ -822,14 +822,14 @@ def test_python_modules_nested():
     # dependency that uses proto-plus types.
     # For example,
     # `from google.bar import bar_pb2` becomes `from google.bar.types import bar``
-    # `from google.baz.v2 import baz_pb2` becomes `from google.baz_v2.types improt baz`
+    # `from google.baz.v2 import baz_pb2` becomes `from google.baz_v2.types improt baz_v2`
     api_schema = api.API.build(fd, package='google.example.v1', opts=Options(
         proto_plus_deps=('google.bar+google.baz.v2'))
     )
 
     assert api_schema.protos['foo.proto'].python_modules == (
         imp.Import(package=('google', 'bar', 'types'), module='bar'),
-        imp.Import(package=('google', 'baz_v2', 'types'), module='baz'),
+        imp.Import(package=('google', 'baz_v2', 'types'), module='baz_v2'),
         imp.Import(package=('google', 'dep'), module='dep_pb2'),
     )
 
