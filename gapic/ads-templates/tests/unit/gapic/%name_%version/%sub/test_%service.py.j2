@@ -1212,10 +1212,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             json_return_value = json_format.MessageToJson(return_value)
             {% else %}
 
-            {% if not method.output.ident.is_proto_plus_type %}
-            pb_return_value = return_value
-            {% else %}
+            {% if method.output.ident.is_proto_plus_type %}
             pb_return_value = {{ method.output.ident }}.pb(return_value)
+            {% else %}
+            pb_return_value = return_value
             {% endif %}
             json_return_value = json_format.MessageToJson(pb_return_value)
             {% endif %}
