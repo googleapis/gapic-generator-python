@@ -356,10 +356,10 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% endfor %}{# rule in method.http_options #}
             ]
             request, metadata = self._interceptor.pre_{{ method.name|snake_case }}(request, metadata)
-            {% if not method.input.ident.is_proto_plus_type %}
-            pb_request = request
-            {% else %}
+            {% if method.input.ident.is_proto_plus_type %}
             pb_request = {{method.input.ident}}.pb(request)
+            {% else %}
+            pb_request = request
             {% endif %}
             transcoded_request = path_template.transcode(http_options, pb_request)
 

@@ -1009,10 +1009,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% endif %}{# default is str #}
     {% endfor %}
     request = request_type(**request_init)
-    {% if not method.input.ident.is_proto_plus_type %}
-    pb_request = request
-    {% else %}
+    {% if method.input.ident.is_proto_plus_type %}
     pb_request = request_type.pb(request)
+    {% else %}
+    pb_request = request
     {% endif %}
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
@@ -1080,10 +1080,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         with mock.patch.object(path_template, 'transcode') as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
-            {% if not method.input.ident.is_proto_plus_type %}
-            pb_request = request
-            {% else %}
+            {% if method.input.ident.is_proto_plus_type %}
             pb_request = request_type.pb(request)
+            {% else %}
+            pb_request = request
             {% endif %}
             transcode_result = {
                 'uri': 'v1/sample_method',
@@ -1178,10 +1178,10 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         {% if not method.void %}
         post.assert_not_called()
         {% endif %}
-        {% if not method.input.ident.is_proto_plus_type %}
-        pb_message = {{ method.input.ident }}()
-        {% else %}
+        {% if method.input.ident.is_proto_plus_type %}
         pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
+        {% else %}
+        pb_message = {{ method.input.ident }}()
         {% endif %}
         transcode.return_value = {
             "method": "post",
