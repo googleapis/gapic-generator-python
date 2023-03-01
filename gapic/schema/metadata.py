@@ -199,11 +199,11 @@ class Address(BaseAddress):
             # Check if the package name contains a version.
             version_regex = "^v\d(alpha|beta)?\d?"
             regex_match = re.match(version_regex, self.package[-1])
-            
+
             if regex_match:
                 versioned_module = f"{self.package[-2]}_{regex_match[0]}"
                 return imp.Import(
-                    package=self.package[:-2] + 
+                    package=self.package[:-2] +
                     (versioned_module, 'types'),
                     module=self.module,
                     alias=self.module_alias,

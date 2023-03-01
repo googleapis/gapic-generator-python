@@ -727,12 +727,14 @@ def test_python_modules_nested():
         make_file_pb2(
             name='bar.proto',
             package='google.bar',
-            messages=(make_message_pb2(name='AnotherImportedMessage', fields=()),),
+            messages=(make_message_pb2(
+                name='AnotherImportedMessage', fields=()),),
         ),
         make_file_pb2(
             name='baz.v2.proto',
             package='google.baz.v2',
-            messages=(make_message_pb2(name='YetAnotherImportedMessage', fields=()),),
+            messages=(make_message_pb2(
+                name='YetAnotherImportedMessage', fields=()),),
         ),
         make_file_pb2(
             name='common.proto',
@@ -812,16 +814,22 @@ def test_python_modules_nested():
 
     assert api_schema.protos['foo.proto'].python_modules == (
         imp.Import(package=('google', 'bar'), module='bar_pb2'),
-        imp.Import(package=('google', 'baz', 'v2'), module='baz_v2_pb2'),
+        imp.Import(package=('google', 'baz', 'v2'), module='baz_pb2'),
         imp.Import(package=('google', 'dep'), module='dep_pb2'),
     )
-    # Ensure that we can change the import statements in case the dependency
-    # uses proto-plus types
-    api_schema = api.API.build(fd, package='google.example.v1', opts=Options(proto_plus_deps=('google.bar+google.baz.v2')))
+
+    # Ensure that we can change the import statements to cater for a
+    # dependency that uses proto-plus types.
+    # For example,
+    # `from google.bar import bar_pb2` becomes `from google.bar.types import bar``
+    # `from google.baz.v2 import baz_pb2` becomes `from google.baz_v2.types improt baz`
+    api_schema = api.API.build(fd, package='google.example.v1', opts=Options(
+        proto_plus_deps=('google.bar+google.baz.v2'))
+    )
 
     assert api_schema.protos['foo.proto'].python_modules == (
         imp.Import(package=('google', 'bar', 'types'), module='bar'),
-        imp.Import(package=('google', 'baz_v2', 'types'), module='baz_v2'),
+        imp.Import(package=('google', 'baz_v2', 'types'), module='baz'),
         imp.Import(package=('google', 'dep'), module='dep_pb2'),
     )
 

@@ -224,6 +224,7 @@ def test_options_autogen_snippets_false_for_old_naming():
     options = Options.build("old-naming,autogen-snippets=True")
     assert not options.autogen_snippets
 
+
 def test_options_proto_plus_deps():
     opts = Options.build("proto-plus-deps=")
     assert opts.proto_plus_deps == ('',)
