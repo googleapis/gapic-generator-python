@@ -485,11 +485,6 @@ class API:
         return MessageToJson(self.gapic_metadata(options), sort_keys=True)
 
     def requires_package(self, pkg: Tuple[str, ...]) -> bool:
-        # Quick check to make sure the package checked is different
-        # from this proto package
-        if self.naming.proto_package.startswith(pkg):
-            return False
-
         return any(
             message.ident.package == pkg
             for proto in self.all_protos.values()

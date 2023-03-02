@@ -108,8 +108,7 @@ def test_api_build():
         imp.Import(package=('google', 'dep'), module='dep_pb2'),
     )
 
-    # The package should not require itself
-    assert not api_schema.requires_package(('google', 'example', 'v1'))
+    assert api_schema.requires_package(('google', 'example', 'v1'))
 
     assert not api_schema.requires_package(('elgoog', 'example', 'v1'))
 

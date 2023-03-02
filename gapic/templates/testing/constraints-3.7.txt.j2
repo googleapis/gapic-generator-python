@@ -13,3 +13,6 @@ grpc-google-iam-v1==0.12.4
 {% if api.requires_package(('google', 'cloud', 'documentai', 'v1')) %}
 google-cloud-documentai==1.2.1
 {% endif %}
+{% if api.requires_package(('google', 'cloud', 'kms', 'v1')) %}
+google-cloud-kms==2.3.0
+{% endif %}
