@@ -203,6 +203,7 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
             api_audience=api_audience,
         )
         self._quota_project_id = quota_project_id
+        self.pool_size = pool_size
         self._channel_pool = []
         for i in range(pool_size):
             new_channel = type(self).create_channel(
@@ -251,7 +252,7 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
           grace(Optional[float]): The time to wait until all active RPCs are 
             finished. If a grace period is not specified (by passing None for
             grace), all existing RPCs are cancelled immediately.
-          new_channel(asyncio.Channel): a new channel to insert into the pool
+          new_channel(grpc.aio.Channel): a new channel to insert into the pool
             at `channel_idx`. If `None`, a new channel will be created.
         """
         if new_channel is None:
