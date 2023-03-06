@@ -1,11 +1,13 @@
+{% from '_pypi_packages.j2' import pypi_packages %}
 # This constraints file is required for unit tests.
 # List all library dependencies and extras in this file.
 google-api-core
 proto-plus
 protobuf
-{% if api.requires_package(('google', 'iam', 'v1')) or opts.add_iam_methods or api.has_iam_mixin %}
-grpc-google-iam-v1
+{% for package in pypi_packages %}
+{% if not api.naming.warehouse_package_name in pypi_packages[package] %}
+{% if api.requires_package(package) %}
+{{ pypi_packages[package][0] }}
 {% endif %}
-{% if api.requires_package(('google', 'cloud', 'documentai', 'v1')) %}
-google-cloud-documentai
 {% endif %}
+{% endfor %}
