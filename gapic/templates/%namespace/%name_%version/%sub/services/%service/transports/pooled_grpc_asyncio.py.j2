@@ -52,9 +52,6 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
     when making requests. Channels are rotated in a round-robin fashion.
     """
 
-    _channel_pool: List[aio.Channel] = []
-    _stubs: Dict[Tuple[aio.Channel,str], Callable] = {}
-    _next_idx:int = 0
 
     @classmethod
     def create_channel(cls,
@@ -161,7 +158,8 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
               and ``credentials_file`` are passed.
         """
         self._ssl_channel_credentials = ssl_channel_credentials
-        self._stubs: Dict[str, Callable] = {}
+        self._stubs: Dict[Tuple[aio.Channel,str], Callable] = {}
+        self._next_idx = 0
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
         {% endif %}
@@ -203,8 +201,7 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
             api_audience=api_audience,
         )
         self._quota_project_id = quota_project_id
-        self.pool_size = pool_size
-        self._channel_pool = []
+        self.channel_pool: List[aio.Channel] = []
         for i in range(pool_size):
             new_channel = type(self).create_channel(
                 self._host,
@@ -221,31 +218,24 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
                     ("grpc.max_receive_message_length", -1),
                 ],
             )
-            self._channel_pool.append(new_channel)
+            self.channel_pool.append(new_channel)
 
-        # Wrap messages. This must be done after self._channel_pool is populated
+        # Wrap messages. This must be done after self.channel_pool is populated
         self._prep_wrapped_messages(client_info)
 
     def next_channel(self) -> aio.Channel:
         """Returns the next channel in the round robin pool."""
         # Return the channel from cache.
-        channel = self._channel_pool[self._next_idx]
-        self._next_idx = (self._next_idx + 1) % len(self._channel_pool)
+        channel = self.channel_pool[self._next_idx]
+        self._next_idx = (self._next_idx + 1) % len(self.channel_pool)
         return channel
-
-    def get_channel(self, channel_idx) -> aio.Channel:
-        """Returns the a specified channel from the pool.
-
-           Args:
-             channel_idx(int): the requested channel index
-        """
-        # Return the channel from cache.
-        return self._channel_pool[self._next_idx]
 
     async def replace_channel(self, channel_idx, grace=None, new_channel=None) -> aio.Channel:
         """
-        Immediately closes a channel in the pool, and replaces it with a new one.
-        Returns the newly created channel
+        Replaces a channel in the pool with a fresh one.
+
+        The `new_channel` will start processing new requests immidiately,
+        but the old channel will continue serving existing clients for `grace` seconds
 
         Args:
           channel_idx(int): the channel index in the pool to replace
@@ -268,8 +258,8 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
                     ("grpc.max_receive_message_length", -1),
                 ],
             )
-        old_channel = self._channel_pool[channel_idx]
-        self._channel_pool[channel_idx] = new_channel
+        old_channel = self.channel_pool[channel_idx]
+        self.channel_pool[channel_idx] = new_channel
         await old_channel.close(grace=grace)
         # invalidate stubs
         for stub_channel, stub_func in self._stubs.keys():
