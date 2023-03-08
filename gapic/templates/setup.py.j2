@@ -31,11 +31,11 @@ dependencies = [
     "proto-plus >= 1.22.0, <2.0.0dev",
     "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
     "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
-    {% for package in pypi_packages %}
+    {% for package_tuple, package_info in pypi_packages.items() %}
     {# Quick check to make sure the package is different from this setup.py #}
-    {% if not api.naming.warehouse_package_name in pypi_packages[package] %}
-    {% if api.requires_package(package) %}
-    "{{ pypi_packages[package][0] }} >= {{ pypi_packages[package][1] }}, <{{ pypi_packages[package][2] }}",
+    {% if api.naming.warehouse_package_name != package_info.package_name %}
+    {% if api.requires_package(package_tuple) %}
+    "{{ package_info.package_name }} >= {{ package_info.lower_bound }}, <{{ package_info.upper_bound }}",
     {% endif %}
     {% endif %}
     {% endfor %}
