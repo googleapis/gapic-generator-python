@@ -15,8 +15,8 @@ def gapic_generator_python():
         requirements = "@gapic_generator_python//:requirements.txt",
     )
 
-    _protobuf_version = "3.21.12"
-    _protobuf_sha256 = "930c2c3b5ecc6c9c12615cf5ad93f1cd6e12d0aba862b572e076259970ac3a53"
+    _protobuf_version = "22.1"
+    _protobuf_sha256 = "0b6494b6e1a8d197f6626ca0c5aa9ab35fc1e5aa3f724787133ce4fa4aa78499"
     _protobuf_version_in_link = "v{}".format(_protobuf_version)
     _maybe(
         http_archive,
@@ -26,11 +26,15 @@ def gapic_generator_python():
         strip_prefix = "protobuf-{}".format(_protobuf_version),
     )
 
+    _bazel_skylib_version = "1.4.0"
+
+    _bazel_skylib_sha256 = "f24ab666394232f834f74d19e2ff142b0af17466ea0c69a3f4c276ee75f6efce"
+
     _maybe(
         http_archive,
         name = "bazel_skylib",
-        strip_prefix = "bazel-skylib-2169ae1c374aab4a09aa90e65efe1a3aad4e279b",
-        urls = ["https://github.com/bazelbuild/bazel-skylib/archive/2169ae1c374aab4a09aa90e65efe1a3aad4e279b.tar.gz"],
+        sha256 = _bazel_skylib_sha256,
+        urls = ["https://github.com/bazelbuild/bazel-skylib/releases/download/{0}/bazel_skylib-{0}.tar.gz".format(_bazel_skylib_version)],
     )
 
     _grpc_version = "1.47.0"
