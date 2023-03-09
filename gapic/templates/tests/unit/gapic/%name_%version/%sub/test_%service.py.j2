@@ -106,7 +106,7 @@ def test__get_default_mtls_endpoint():
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, "grpc"),
     ({{ service.async_client_name }}, "grpc_asyncio"),
-    (Pooled{{ service.async_client_name }}, "pooled_grpc_asyncio"),
+    ({{ service.async_client_name }}, "pooled_grpc_asyncio"),
     {% endif %}
     {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, "rest"),
@@ -137,7 +137,7 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info(client_c
     {% if 'grpc' in opts.transport %}
     (transports.{{ service.grpc_transport_name }}, "grpc"),
     (transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    (Pooled{{ service.async_client_name }}, "pooled_grpc_asyncio"),
+    (transports.Pooled{{ service.grpc_asyncio_transport_name }}, "pooled_grpc_asyncio"),
     {% endif %}
     {% if 'rest' in opts.transport %}
     (transports.{{ service.rest_transport_name }}, "rest"),
@@ -159,7 +159,7 @@ def test_{{ service.client_name|snake_case }}_service_account_always_use_jwt(tra
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, "grpc"),
     ({{ service.async_client_name }}, "grpc_asyncio"),
-    (Pooled{{ service.async_client_name }}, "pooled_grpc_asyncio"),
+    ({{ service.async_client_name }}, "pooled_grpc_asyncio"),
     {% endif %}
     {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, "rest"),
@@ -206,7 +206,7 @@ def test_{{ service.client_name|snake_case }}_get_transport_class():
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    (Pooled{{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "pooled_grpc_asyncio"),
+    ({{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "pooled_grpc_asyncio"),
     {% endif %}
     {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
@@ -331,10 +331,10 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc", "true"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", "true"),
-    (Pooled{{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "pooled_grpc_asyncio", "true"),
+    ({{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "pooled_grpc_asyncio", "true"),
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc", "false"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", "false"),
-    (Pooled{{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "pooled_grpc_asyncio", "false"),
+    ({{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "pooled_grpc_asyncio", "false"),
     {% endif %}
     {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest", "true"),
@@ -425,7 +425,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
 
 @pytest.mark.parametrize("client_class", [
     {% if 'grpc' in opts.transport %}
-    {{ service.client_name }}, {{ service.async_client_name }}, Pooled{{ service.async_client_name }}
+    {{ service.client_name }}, {{ service.async_client_name }}
     {% elif 'rest' in opts.transport %}
     {{ service.client_name }}
     {% endif %}
@@ -486,7 +486,7 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    (Pooled{{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "pooled_grpc_asyncio"),
+    ({{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "pooled_grpc_asyncio"),
     {% endif %}
     {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
@@ -516,7 +516,7 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc", grpc_helpers),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", grpc_helpers_async),
-    (Pooled{{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", grpc_helpers_async),
+    ({{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", grpc_helpers_async),
     {% endif %}
     {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest", None),
@@ -1448,7 +1448,6 @@ def test_client_ctx():
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}),
-    (Pooled{{ service.async_client_name }}, transports.Pooled{{ service.grpc_asyncio_transport_name }}),
     {% elif 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}),
     {% endif %}
