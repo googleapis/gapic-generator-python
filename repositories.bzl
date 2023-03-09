@@ -26,15 +26,15 @@ def gapic_generator_python():
         strip_prefix = "protobuf-{}".format(_protobuf_version),
     )
 
-    _bazel_skylib_version = "1.4.0"
+    _bazel_skylib_version = "1.4.1"
 
-    _bazel_skylib_sha256 = "f24ab666394232f834f74d19e2ff142b0af17466ea0c69a3f4c276ee75f6efce"
+    _bazel_skylib_sha256 = "b8a1527901774180afc798aeb28c4634bdccf19c4d98e7bdd1ce79d1fe9aaad7"
 
     _maybe(
         http_archive,
         name = "bazel_skylib",
         sha256 = _bazel_skylib_sha256,
-        urls = ["https://github.com/bazelbuild/bazel-skylib/releases/download/{0}/bazel_skylib-{0}.tar.gz".format(_bazel_skylib_version)],
+        urls = ["https://github.com/bazelbuild/bazel-skylib/releases/download/{0}/bazel-skylib-{0}.tar.gz".format(_bazel_skylib_version)],
     )
 
     _grpc_version = "1.47.0"
