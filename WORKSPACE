@@ -2,16 +2,6 @@ workspace(name = "gapic_generator_python")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-_bazel_skylib_version = "0.9.0"
-
-_bazel_skylib_sha256 = "1dde365491125a3db70731e25658dfdd3bc5dbdfd11b840b3e987ecf043c7ca0"
-
-http_archive(
-    name = "bazel_skylib",
-    sha256 = _bazel_skylib_sha256,
-    url = "https://github.com/bazelbuild/bazel-skylib/releases/download/{0}/bazel_skylib-{0}.tar.gz".format(_bazel_skylib_version),
-)
-
 _io_bazel_rules_go_version = "0.33.0"
 http_archive(
     name = "io_bazel_rules_go",
