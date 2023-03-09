@@ -154,9 +154,12 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
-          google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
+            ValueError: if ``pool_size`` <= 0
         """
+        if pool_size <= 0:
+            raise ValueError(f"invalid pool_size: {pool_size}")
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[Tuple[aio.Channel,str], Callable] = {}
         self._next_idx = 0
