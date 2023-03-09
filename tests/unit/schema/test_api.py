@@ -764,6 +764,16 @@ def test_python_modules_nested():
             messages=(make_message_pb2(name="ImportedMessageBah", fields=()),),
         ),
         make_file_pb2(
+            name="bah.v20p1.bai.proto",
+            package="google.bah.v20p1.bai",
+            messages=(make_message_pb2(name="ImportedMessageBai", fields=()),),
+        ),
+        make_file_pb2(
+            name="bah.v20p1.baj.v3.proto",
+            package="google.bah.v20p1.baj.v3",
+            messages=(make_message_pb2(name="ImportedMessageBaj", fields=()),),
+        ),
+        make_file_pb2(
             name="common.proto",
             package="google.example.v1.common",
             messages=(make_message_pb2(name="Bar"),),
@@ -874,6 +884,26 @@ def test_python_modules_nested():
                                 ),
                             ),
                         ),
+                        make_message_pb2(
+                            name="Bai",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_bai",
+                                    number=1,
+                                    type_name=".google.bah.v20p1.bai.ImportedMessageBai",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Baj",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_baj",
+                                    number=1,
+                                    type_name=".google.bah.v20p1.baj.v3.ImportedMessageBaj",
+                                ),
+                            ),
+                        ),
                     ),
                 ),
                 make_message_pb2(
@@ -908,13 +938,17 @@ def test_python_modules_nested():
         imp.Import(package=("google", "baa"), module="baa_pb2"),
         imp.Import(package=("google", "bab", "v1"), module="bab_v1_pb2"),
         imp.Import(package=("google", "bac", "v10"), module="bac_v10_pb2"),
-        imp.Import(package=("google", "bad", "v2beta"),
-                   module="bad_v2beta_pb2"),
-        imp.Import(package=("google", "bae", "v2beta20"),
-                   module="bae_v2beta20_pb2"),
-        imp.Import(package=("google", "baf", "v20beta"),
-                   module="baf_v20beta_pb2"),
+        imp.Import(package=("google", "bad", "v2beta"), module="bad_v2beta_pb2"),
+        imp.Import(package=("google", "bae", "v2beta20"), module="bae_v2beta20_pb2"),
+        imp.Import(package=("google", "baf", "v20beta"), module="baf_v20beta_pb2"),
         imp.Import(package=("google", "bag", "v20p1"), module="bag_v20p1_pb2"),
+        imp.Import(
+            package=("google", "bah", "v20p1", "bai"), module="bah_v20p1_bai_pb2"
+        ),
+        imp.Import(
+            package=("google", "bah", "v20p1", "baj", "v3"),
+            module="bah_v20p1_baj_v3_pb2",
+        ),
         imp.Import(
             package=("google", "bah", "v20p1alpha3p5"), module="bah_v20p1alpha3p5_pb2"
         ),
@@ -940,23 +974,27 @@ def test_python_modules_nested():
                     "google.baf.v20beta",
                     "google.bag.v20p1",
                     "google.bah.v20p1alpha3p5",
+                    "google.bah.v20p1.bai",
+                    "google.bah.v20p1.baj.v3",
                 )
             )
         ),
     )
-
     assert api_schema.protos["foo.proto"].python_modules == (
         imp.Import(package=("google", "baa", "types"), module="baa"),
         imp.Import(package=("google", "bab_v1", "types"), module="bab_v1"),
         imp.Import(package=("google", "bac_v10", "types"), module="bac_v10"),
-        imp.Import(package=("google", "bad_v2beta",
-                            "types"), module="bad_v2beta"),
-        imp.Import(package=("google", "bae_v2beta20",
-                            "types"), module="bae_v2beta20"),
-        imp.Import(package=("google", "baf_v20beta",
-                            "types"), module="baf_v20beta"),
-        imp.Import(package=("google", "bag_v20p1",
-                            "types"), module="bag_v20p1"),
+        imp.Import(package=("google", "bad_v2beta", "types"), module="bad_v2beta"),
+        imp.Import(package=("google", "bae_v2beta20", "types"), module="bae_v2beta20"),
+        imp.Import(package=("google", "baf_v20beta", "types"), module="baf_v20beta"),
+        imp.Import(package=("google", "bag_v20p1", "types"), module="bag_v20p1"),
+        imp.Import(
+            package=("google", "bah", "v20p1", "bai", "types"), module="bah_v20p1_bai"
+        ),
+        imp.Import(
+            package=("google", "bah", "v20p1", "baj_v3", "types"),
+            module="bah_v20p1_baj_v3",
+        ),
         imp.Import(
             package=("google", "bah_v20p1alpha3p5", "types"), module="bah_v20p1alpha3p5"
         ),
