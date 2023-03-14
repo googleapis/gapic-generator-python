@@ -212,6 +212,7 @@ class Address(BaseAddress):
                 return imp.Import(
                     package=self.package + ('types',),
                     module=self.module,
+                    alias=self.module_alias,
                 )
 
         # Return the standard import.
