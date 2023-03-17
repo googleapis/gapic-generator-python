@@ -105,11 +105,11 @@ class Address(BaseAddress):
     def is_proto_plus_type(self) -> bool:
         """This function is used to determine whether a given package `self.proto_package`
         is using proto-plus types or protobuf types. There are 2 scenarios where the package
-        is expected to use proto-plus types.
-            1) When `self.proto_package` starts with `self.api_naming.proto_package`, then 
+        is expected to use proto-plus types:
+        1) When `self.proto_package` starts with `self.api_naming.proto_package`, then
         the given package has the same namespace as the one that is being generated. It is assumed
         that the gapic generator always generates packages with proto-plus types.
-            2) When `self.proto_package` is explicitly in `self.api_naming.proto_plus_deps` which is
+        2) When `self.proto_package` is explicitly in `self.api_naming.proto_plus_deps` which is
         populated via the generator option `proto-plus-deps`.
 
         Returns:
