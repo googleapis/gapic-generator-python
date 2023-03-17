@@ -210,7 +210,7 @@ class Address(BaseAddress):
             version_regex = "^v\d[^/]*$"
             regex_match = re.match(version_regex, self.package[-1])
 
-            if regex_match:
+            if regex_match and len(self.package) > 1:
                 versioned_module = f"{self.package[-2]}_{regex_match[0]}"
                 return imp.Import(
                     package=self.package[:-2] +
