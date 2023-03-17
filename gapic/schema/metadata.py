@@ -103,12 +103,10 @@ class Address(BaseAddress):
 
     @property
     def is_proto_plus_type(self):
-        if self.proto_package.startswith(self.api_naming.proto_package) or (
+        return self.proto_package.startswith(self.api_naming.proto_package) or (
             hasattr(self.api_naming, "proto_plus_deps")
             and self.proto_package in self.api_naming.proto_plus_deps
-        ):
-            return True
-        return False
+        )
 
     @cached_property
     def __cached_string_repr(self):
