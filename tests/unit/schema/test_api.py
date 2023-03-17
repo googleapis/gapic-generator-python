@@ -958,6 +958,13 @@ def test_python_modules_nested():
         ),
         imp.Import(package=("google", "dep"), module="dep_pb2"),
     )
+    assert (
+        api_schema.protos["foo.proto"]
+        .all_messages["google.example.v1.GetFooRequest.Baf"]
+        .fields["imported_message_baf"]
+        .ident.sphinx
+        == "google.baf.v20beta.baf_v20beta_pb2.ImportedMessageBaf"
+    )
 
     # Ensure that we can change the import statements to cater for a
     # dependency that uses proto-plus types.
@@ -1009,6 +1016,13 @@ def test_python_modules_nested():
         imp.Import(package=("google", "dep"), module="dep_pb2"),
     )
 
+    assert (
+        api_schema.protos["foo.proto"]
+        .all_messages["google.example.v1.GetFooRequest.Baf"]
+        .fields["imported_message_baf"]
+        .ident.sphinx
+        == "google.baf_v20beta.types.ImportedMessageBaf"
+    )
 
 def test_services():
     L = descriptor_pb2.SourceCodeInfo.Location
