@@ -173,7 +173,7 @@ class Address(BaseAddress):
         """Return the proto package for this type."""
         return '.'.join(self.package)
 
-    def convert_to_versioned_package(self) -> Tuple[str]:
+    def convert_to_versioned_package(self) -> Tuple[str, ...]:
         # We need to change the import statement to use an
         # underscore between the module and the version. For example,
         # change google.cloud.documentai.v1 to google.cloud.documentai_v1.
