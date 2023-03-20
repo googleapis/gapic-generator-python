@@ -1024,6 +1024,7 @@ def test_python_modules_nested():
         == "google.baf_v20beta.types.ImportedMessageBaf"
     )
 
+
 def test_services():
     L = descriptor_pb2.SourceCodeInfo.Location
 
