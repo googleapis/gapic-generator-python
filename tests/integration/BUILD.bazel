@@ -91,6 +91,7 @@ py_gapic_library(
         "python-gapic-name=eventarc",
         "autogen-snippets",
     ],
+    service_yaml = "eventarc_v1.yaml",
     transport = "grpc+rest",
 )
 
