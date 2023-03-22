@@ -489,7 +489,8 @@ class API:
         return MessageToJson(self.gapic_metadata(options), sort_keys=True)
 
     def requires_package(self, pkg: Tuple[str, ...]) -> bool:
-        pkg_has_iam_mixin = self.has_iam_mixin and pkg == ('google', 'iam', 'v1')
+        pkg_has_iam_mixin = self.has_iam_mixin and pkg == (
+            'google', 'iam', 'v1')
         return pkg_has_iam_mixin or any(
             message.ident.package == pkg
             for proto in self.all_protos.values()
