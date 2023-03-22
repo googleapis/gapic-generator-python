@@ -2601,4 +2601,4 @@ def test_has_iam_mixin():
         ],
     })
     api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
-    assert api_schema.has_iam_mixin == True
+    assert api_schema.has_iam_mixin
