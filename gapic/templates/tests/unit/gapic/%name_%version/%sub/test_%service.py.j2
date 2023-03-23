@@ -1155,7 +1155,7 @@ def test_{{ service.name|snake_case }}_rest_lro_client():
     {% if 'grpc' in opts.transport %}
     "grpc",
     "grpc_asyncio",
-    "pooled_grpc_asyncio"
+    "pooled_grpc_asyncio",
     {% endif %}
     {% if 'rest' in opts.transport %}
     "rest",
