@@ -125,7 +125,7 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info(client_c
         assert client.transport._host == (
             '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
             {% if 'rest' in opts.transport %}
-            if transport_name in ['grpc', 'grpc_asyncio']
+            if transport_name in ['grpc', 'grpc_asyncio', 'pooled_grpc_asyncio']
             else
             'https://{{ service.host }}'
             {% endif %}
@@ -181,7 +181,7 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file(client_c
         assert client.transport._host == (
             '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
             {% if 'rest' in opts.transport %}
-            if transport_name in ['grpc', 'grpc_asyncio']
+            if transport_name in ['grpc', 'grpc_asyncio', 'pooled_grpc_asyncio']
             else
             'https://{{ service.host }}'
             {% endif %}
@@ -1171,7 +1171,7 @@ def test_{{ service.name|snake_case }}_host_no_port(transport_name):
     assert client.transport._host == (
         '{{ host }}:443'
         {% if 'rest' in opts.transport %}
-        if transport_name in ['grpc', 'grpc_asyncio']
+        if transport_name in ['grpc', 'grpc_asyncio', 'pooled_grpc_asyncio']
         else 'https://{{ host }}'
         {% endif %}
     )
@@ -1197,7 +1197,7 @@ def test_{{ service.name|snake_case }}_host_with_port(transport_name):
     assert client.transport._host == (
         '{{ host }}:8000'
         {% if 'rest' in opts.transport %}
-        if transport_name in ['grpc', 'grpc_asyncio']
+        if transport_name in ['grpc', 'grpc_asyncio', 'pooled_grpc_asyncio']
         else 'https://{{ host }}:8000'
         {% endif %}
     )
