@@ -2,6 +2,7 @@
 
 {% block content %}
 
+import asyncio
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union, List
 
@@ -413,8 +414,8 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
     {% endif %}
 
     def close(self):
-        for channel in self._channel_pool:
-            channel.close()
+        close_fns = [channel.close() for channel in self.channel_pool]
+        return asyncio.gather(*close_fns)
 
     {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 
