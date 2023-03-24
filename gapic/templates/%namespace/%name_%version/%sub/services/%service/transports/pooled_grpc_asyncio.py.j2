@@ -249,6 +249,10 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
           new_channel(grpc.aio.Channel): a new channel to insert into the pool
             at `channel_idx`. If `None`, a new channel will be created.
         """
+        if channel_idx >= len(self.channel_pool) or channel_idx < 0:
+            raise ValueError(
+                f"invalid channel_idx {channel_idx} for pool size {len(self.channel_pool)}"
+            )
         if new_channel is None:
             new_channel = self.create_channel(
                 self._host,
@@ -266,7 +270,8 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         self.channel_pool[channel_idx] = new_channel
         await old_channel.close(grace=grace)
         # invalidate stubs
-        for stub_channel, stub_func in self._stubs.keys():
+        stub_keys = list(self._stubs.keys())
+        for stub_channel, stub_func in stub_keys:
             if stub_channel == old_channel:
                 del self._stubs[(stub_channel, stub_func)]
         return new_channel
