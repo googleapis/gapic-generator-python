@@ -296,11 +296,8 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
     {% endif %}
     {% for method in service.methods.values() %}
 
-    @property
-    def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
-            [{{ method.input.ident }}],
-            Awaitable[{{ method.output.ident }}]]:
-        r"""Return a callable for the{{ ' ' }}
+    def {{ method.transport_safe_name|snake_case }}(self, *args, **kwargs) -> Awaitable[{{ method.output.ident }}]:
+        r"""Function for calling the{{ ' ' }}
         {{- (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) -}}
         {{ ' ' }}method over gRPC.
@@ -318,15 +315,17 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         next_channel = self.next_channel()
-        print(f"USING CHANNEL: {self._next_idx}")
         stub_key = (next_channel, '{{ method.transport_safe_name|snake_case }}')
-        if stub_key not in self._stubs:
-            self._stubs[stub_key] = next_channel.{{ method.grpc_stub_type }}(
+        stub_func = self._stubs.get(stub_key, None)
+        if stub_func is None:
+            stub_func = next_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
                 request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
                 response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
             )
-        return self._stubs[stub_key]
+            self._stubs[stub_key] = stub_func
+        # call stub
+        return stub_func(*args, **kwargs)
     {% endfor %}
 
     {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}

@@ -96,6 +96,35 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endif %}
 
 
+def test_{{ method_name }}_pooled_rotation(transport: str = 'pooled_grpc_asyncio'):
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = {}
+    {% if method.client_streaming %}
+    requests = [request]
+    {% endif %}
+
+    with mock.patch.object(type(client.transport), "next_channel") as next_channel:
+        next_channel.return_value = client.transport.channel_pool[client.transport._next_idx]
+
+        {% if method.client_streaming %}
+        response = client.{{ method.safe_name|snake_case }}(iter(requests))
+        {% else %}
+        response = client.{{ method_name }}(request)
+        {% endif %}
+
+        # Establish that next_channel was called
+        next_channel.assert_called_once()
+        # Establish that stubs has been populated for the channel
+        stub_key = (next_channel.return_value, '{{ method.safe_name|snake_case }}' )
+        assert client.transport._stubs[stub_key] is not None
+
+
 {% if not method.client_streaming %}
 def test_{{ method_name }}_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
