@@ -110,7 +110,8 @@ def test_{{ method_name }}_pooled_rotation(transport: str = 'pooled_grpc_asyncio
     {% endif %}
 
     with mock.patch.object(type(client.transport), "next_channel") as next_channel:
-        next_channel.return_value = client.transport.channel_pool[client.transport._next_idx]
+        channel = client.transport.channel_pool[client.transport._next_idx]
+        next_channel.return_value = channel
 
         {% if method.client_streaming %}
         response = client.{{ method.safe_name|snake_case }}(iter(requests))
@@ -121,8 +122,17 @@ def test_{{ method_name }}_pooled_rotation(transport: str = 'pooled_grpc_asyncio
         # Establish that next_channel was called
         next_channel.assert_called_once()
         # Establish that stubs has been populated for the channel
-        stub_key = (next_channel.return_value, '{{ method.safe_name|snake_case }}' )
+        stub_key = (channel, '{{ method.safe_name|snake_case }}' )
         assert client.transport._stubs[stub_key] is not None
+        # Establish that subsequent calls all call next_channel
+        starting_idx = client.transport._next_idx
+        for i in range(2,10):
+            {% if method.client_streaming %}
+            response = client.{{ method.safe_name|snake_case }}(iter(requests))
+            {% else %}
+            response = client.{{ method_name }}(request)
+            {% endif %}
+            assert next_channel.call_count == i
 
 
 {% if not method.client_streaming %}
