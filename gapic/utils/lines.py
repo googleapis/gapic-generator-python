@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 import textwrap
 from typing import Iterable, Optional
 
@@ -73,7 +74,8 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     # Protocol buffers preserves single initial spaces after line breaks
     # when parsing comments (such as the space before the "w" in "when" here).
     # Re-wrapping causes these to be two spaces; correct for this.
-    text = text.replace('\n ', '\n')
+    # Also remove any leading spaces, excluding new line characters.
+    text = re.sub("\n[^\S\n]+", "\n", text)
 
     # Break off the first line of the string to address non-zero offsets.
     first = text.split('\n')[0] + '\n'

@@ -25,6 +25,29 @@ def test_rst_unformatted():
         assert convert_text.call_count == 0
 
 
+def test_rst_newline():
+    with mock.patch.object(pypandoc, 'convert_text') as convert_text:
+        s = 'The hail in Wales\n falls mainly on the snails.'
+        expected_result = 'The hail in Wales\nfalls mainly on the snails.\n'
+        assert utils.rst(s) == expected_result
+
+        s = 'The hail in Wales\n    falls mainly on the snails.'
+        expected_result = 'The hail in Wales\nfalls mainly on the snails.\n'
+        assert utils.rst(s) == expected_result
+
+        s = 'The hail in Wales\n    \n     falls mainly on the snails.'
+        expected_result = 'The hail in Wales\nfalls mainly on the snails.\n'
+        assert utils.rst(s) == expected_result
+
+        s = 'The hail in Wales\n falls mainly\n    on the snails.'
+        expected_result = 'The hail in Wales\nfalls mainly\non the snails.\n'
+        assert utils.rst(s) == expected_result
+
+        s = 'The hail in Wales\n falls mainly\n\n on the snails.'
+        expected_result = 'The hail in Wales\nfalls mainly\n\non the snails.\n'
+        assert utils.rst(s) == expected_result
+        assert convert_text.call_count == 0
+
 def test_rst_formatted():
     with mock.patch.object(pypandoc, 'convert_text') as convert_text:
         convert_text.side_effect = lambda *a, **kw: a[0].replace('`', '``')
