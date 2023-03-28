@@ -587,7 +587,16 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% for field in method.output.fields.values() | rejectattr('message') %}
     {% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
+    {% if field.repeated %}
+    for index in range(len(response.{{ field.name }})):
+        assert math.isclose(
+            response.{{ field.name }}[index],
+            {{ field.mock_value }}[index],
+            rel_tol=1e-6,
+        )
+    {% else %}{# field.repeated #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% endif %}{# field.repeated #}
     {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
@@ -1076,7 +1085,16 @@ def test_{{ method.name|snake_case }}_rest(request_type):
     {% for field in method.output.fields.values() | rejectattr('message') %}
     {% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
+    {% if field.repeated %}
+    for index in range(len(response.{{ field.name }})):
+        assert math.isclose(
+            response.{{ field.name }}[index],
+            {{ field.mock_value }}[index],
+            rel_tol=1e-6,
+        )
+    {% else %}{# field.repeated #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% endif %}
     {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
@@ -1100,10 +1118,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% endif %}{# default is str #}
     {% endfor %}
     request = request_type(**request_init)
-    {% if method.input.ident.is_external_type %}
-    pb_request = request
-    {% else %}
+    {% if method.input.ident.is_proto_plus_type %}
     pb_request = request_type.pb(request)
+    {% else %}
+    pb_request = request
     {% endif %}
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
@@ -1171,10 +1189,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         with mock.patch.object(path_template, 'transcode') as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
-            {% if method.input.ident.is_external_type %}
-            pb_request = request
-            {% else %}
+            {% if method.input.ident.is_proto_plus_type %}
             pb_request = request_type.pb(request)
+            {% else %}
+            pb_request = request
             {% endif %}
             transcode_result = {
                 'uri': 'v1/sample_method',
@@ -1194,10 +1212,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             json_return_value = json_format.MessageToJson(return_value)
             {% else %}
 
-            {% if method.output.ident.is_external_type %}
-            pb_return_value = return_value
-            {% else %}
+            {% if method.output.ident.is_proto_plus_type %}
             pb_return_value = {{ method.output.ident }}.pb(return_value)
+            {% else %}
+            pb_return_value = return_value
             {% endif %}
             json_return_value = json_format.MessageToJson(pb_return_value)
             {% endif %}
@@ -1269,10 +1287,10 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         {% if not method.void %}
         post.assert_not_called()
         {% endif %}
-        {% if method.input.ident.is_external_type %}
-        pb_message = {{ method.input.ident }}()
-        {% else %}
+        {% if method.input.ident.is_proto_plus_type %}
         pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
+        {% else %}
+        pb_message = {{ method.input.ident }}()
         {% endif %}
         transcode.return_value = {
             "method": "post",
@@ -1558,12 +1576,14 @@ def test_{{ method_name }}_rest_error():
     {%- if not method.http_options %}
     # Since a `google.api.http` annotation is required for using a rest transport
     # method, this should error.
-    with pytest.raises(RuntimeError) as runtime_error:
+    with pytest.raises(NotImplementedError) as not_implemented_error:
         client.{{ method_name }}({})
-    assert ('Cannot define a method without a valid `google.api.http` annotation.'
-        in str(runtime_error.value))
+    assert (
+        "Method {{ method.name }} is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
 
-    {%- endif %}
+    {%- endif %}{# not method.http_options #}
 {% endif %}{# flattened_fields #}
 
 {% else %}{# this is an lro or streaming method #}
@@ -1608,10 +1628,12 @@ def test_{{ method_name }}_rest_error():
     )
     # Since a `google.api.http` annotation is required for using a rest transport
     # method, this should error.
-    with pytest.raises(RuntimeError) as runtime_error:
+    with pytest.raises(NotImplementedError) as not_implemented_error:
         client.{{ method_name }}({})
-    assert ("Cannot define a method without a valid 'google.api.http' annotation."
-        in str(runtime_error.value))
+    assert (
+        "Method {{ method.name }} is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
 
 
 {% endwith %}{# method_name #}

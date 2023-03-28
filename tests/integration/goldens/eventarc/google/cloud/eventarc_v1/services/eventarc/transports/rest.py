@@ -28,10 +28,13 @@ from google.api_core import gapic_v1
 
 from google.protobuf import json_format
 from google.api_core import operations_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.cloud.location import locations_pb2 # type: ignore
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -327,7 +330,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("CreateTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "triggerId" : "",            "validateOnly" : False,        }
 
         @classmethod
@@ -346,7 +349,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.CreateTriggerRequest):
                     The request object. The request message for the
                 CreateTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -415,7 +417,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("DeleteTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "validateOnly" : False,        }
 
         @classmethod
@@ -434,7 +436,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.DeleteTriggerRequest):
                     The request object. The request message for the
                 DeleteTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -494,7 +495,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("GetTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -513,7 +514,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.GetTriggerRequest):
                     The request object. The request message for the
                 GetTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -574,7 +574,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("ListTriggers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -593,7 +593,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.ListTriggersRequest):
                     The request object. The request message for the
                 ListTriggers method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -654,7 +653,7 @@ class EventarcRestTransport(EventarcTransport):
         def __hash__(self):
             return hash("UpdateTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "validateOnly" : False,        }
 
         @classmethod
@@ -673,7 +672,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.UpdateTriggerRequest):
                     The request object. The request message for the
                 UpdateTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

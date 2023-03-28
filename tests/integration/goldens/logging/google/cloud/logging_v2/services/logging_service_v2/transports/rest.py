@@ -30,7 +30,7 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -285,7 +285,7 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
         def __hash__(self):
             return hash("DeleteLog")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -365,7 +365,7 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
         def __hash__(self):
             return hash("ListLogEntries")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -450,7 +450,7 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
         def __hash__(self):
             return hash("ListLogs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -555,7 +555,6 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
                 request (~.logging.ListMonitoredResourceDescriptorsRequest):
                     The request object. The parameters to
                 ListMonitoredResourceDescriptors
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -622,13 +621,13 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> rest_streaming.ResponseIterator:
             raise NotImplementedError(
-                "Client streaming over REST is not yet defined for python client")
-
+                "Method TailLogEntries is not available over REST transport"
+            )
     class _WriteLogEntries(LoggingServiceV2RestStub):
         def __hash__(self):
             return hash("WriteLogEntries")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod

@@ -31,7 +31,7 @@ from google.api_core import operations_v1
 from requests import __version__ as requests_version
 import dataclasses
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -440,7 +440,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):
             return hash("CreateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "instanceId" : "",        }
 
         @classmethod
@@ -459,7 +459,6 @@ class CloudRedisRestTransport(CloudRedisTransport):
                 request (~.cloud_redis.CreateInstanceRequest):
                     The request object. Request for
                 [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -528,7 +527,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):
             return hash("DeleteInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -547,7 +546,6 @@ class CloudRedisRestTransport(CloudRedisTransport):
                 request (~.cloud_redis.DeleteInstanceRequest):
                     The request object. Request for
                 [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -607,7 +605,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):
             return hash("ExportInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -626,7 +624,6 @@ class CloudRedisRestTransport(CloudRedisTransport):
                 request (~.cloud_redis.ExportInstanceRequest):
                     The request object. Request for
                 [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -695,7 +692,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):
             return hash("FailoverInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -714,7 +711,6 @@ class CloudRedisRestTransport(CloudRedisTransport):
                 request (~.cloud_redis.FailoverInstanceRequest):
                     The request object. Request for
                 [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -783,7 +779,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):
             return hash("GetInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -802,7 +798,6 @@ class CloudRedisRestTransport(CloudRedisTransport):
                 request (~.cloud_redis.GetInstanceRequest):
                     The request object. Request for
                 [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -861,7 +856,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):
             return hash("ImportInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -880,7 +875,6 @@ class CloudRedisRestTransport(CloudRedisTransport):
                 request (~.cloud_redis.ImportInstanceRequest):
                     The request object. Request for
                 [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -949,7 +943,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):
             return hash("ListInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -968,7 +962,6 @@ class CloudRedisRestTransport(CloudRedisTransport):
                 request (~.cloud_redis.ListInstancesRequest):
                     The request object. Request for
                 [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1029,7 +1022,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):
             return hash("UpdateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "updateMask" : {},        }
 
         @classmethod
@@ -1048,7 +1041,6 @@ class CloudRedisRestTransport(CloudRedisTransport):
                 request (~.cloud_redis.UpdateInstanceRequest):
                     The request object. Request for
                 [UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1117,7 +1109,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):
             return hash("UpgradeInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
 
         @classmethod
@@ -1136,7 +1128,6 @@ class CloudRedisRestTransport(CloudRedisTransport):
                 request (~.cloud_redis.UpgradeInstanceRequest):
                     The request object. Request for
                 [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
