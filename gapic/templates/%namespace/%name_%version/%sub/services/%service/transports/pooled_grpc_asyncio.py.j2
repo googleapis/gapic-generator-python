@@ -5,7 +5,7 @@
 import asyncio
 import warnings
 from functools import partialmethod
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union, List
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union, List, Type
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
@@ -55,7 +55,7 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
     """
 
     @classmethod
-    def with_fixed_size(cls, pool_size) -> "Pooled{{ service.grpc_asyncio_transport_name }}":
+    def with_fixed_size(cls, pool_size) -> Type["Pooled{{ service.grpc_asyncio_transport_name }}"]:
         """
         Creates a new class with a fixed channel pool size.
 
