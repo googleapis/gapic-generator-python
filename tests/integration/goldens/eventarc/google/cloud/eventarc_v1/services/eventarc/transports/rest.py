@@ -28,6 +28,9 @@ from google.api_core import gapic_v1
 
 from google.protobuf import json_format
 from google.api_core import operations_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.cloud.location import locations_pb2 # type: ignore
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -346,7 +349,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.CreateTriggerRequest):
                     The request object. The request message for the
                 CreateTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -434,7 +436,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.DeleteTriggerRequest):
                     The request object. The request message for the
                 DeleteTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -513,7 +514,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.GetTriggerRequest):
                     The request object. The request message for the
                 GetTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -593,7 +593,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.ListTriggersRequest):
                     The request object. The request message for the
                 ListTriggers method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -673,7 +672,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.UpdateTriggerRequest):
                     The request object. The request message for the
                 UpdateTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
