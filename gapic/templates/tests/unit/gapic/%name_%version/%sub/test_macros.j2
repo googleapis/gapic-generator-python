@@ -97,20 +97,20 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
 
 
 def test_{{ method_name }}_pooled_rotation(transport: str = 'pooled_grpc_asyncio'):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
+    with mock.patch.object(transports.pooled_grpc_asyncio.PooledChannel, "next_channel") as next_channel:
+        client = {{ service.client_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = {}
-    {% if method.client_streaming %}
-    requests = [request]
-    {% endif %}
+        # Everything is optional in proto3 as far as the runtime is concerned,
+        # and we are mocking out the actual API, so just send an empty request.
+        request = {}
+        {% if method.client_streaming %}
+        requests = [request]
+        {% endif %}
 
-    with mock.patch.object(type(client.transport), "next_channel") as next_channel:
-        channel = client.transport.channel_pool[client.transport._next_idx]
+        channel = client.transport._grpc_channel._pool[client.transport._grpc_channel._next_idx]
         next_channel.return_value = channel
 
         {% if method.client_streaming %}
@@ -121,11 +121,8 @@ def test_{{ method_name }}_pooled_rotation(transport: str = 'pooled_grpc_asyncio
 
         # Establish that next_channel was called
         next_channel.assert_called_once()
-        # Establish that stubs has been populated for the channel
-        stub_key = (channel, '{{ method.safe_name|snake_case }}' )
-        assert client.transport._stubs[stub_key] is not None
         # Establish that subsequent calls all call next_channel
-        starting_idx = client.transport._next_idx
+        starting_idx = client.transport._grpc_channel._next_idx
         for i in range(2,10):
             {% if method.client_streaming %}
             response = client.{{ method.safe_name|snake_case }}(iter(requests))

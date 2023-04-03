@@ -144,10 +144,6 @@ class PooledChannel(aio.Channel):
         await old_channel.close(grace=grace)
         return new_channel
 
-
-
-
-
 class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
     """Pooled gRPC AsyncIO backend transport for {{ service.name }}.
 
@@ -289,8 +285,7 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         if pool_size <= 0:
             raise ValueError(f"invalid pool_size: {pool_size}")
         self._ssl_channel_credentials = ssl_channel_credentials
-        self._stubs: Dict[Tuple[aio.Channel,str], Callable] = {}
-        self._next_idx = 0
+        self._stubs: Dict[str, Callable] = {}
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
         {% endif %}
@@ -361,6 +356,27 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         """
         # Return the channel from cache.
         return self._grpc_channel
+
+
+    async def replace_channel(
+        self, channel_idx, grace=None, new_channel=None
+    ) -> aio.Channel:
+        """
+        Replaces a channel in the pool with a fresh one.
+
+        The `new_channel` will start processing new requests immidiately,
+        but the old channel will continue serving existing clients for `grace` seconds
+
+        Args:
+          channel_idx(int): the channel index in the pool to replace
+          grace(Optional[float]): The time to wait until all active RPCs are
+            finished. If a grace period is not specified (by passing None for
+            grace), all existing RPCs are cancelled immediately.
+          new_channel(grpc.aio.Channel): a new channel to insert into the pool
+            at `channel_idx`. If `None`, a new channel will be created.
+        """
+        return await self._grpc_channel.replace_channel(channel_idx, grace, new_channel)
+
 
     {% if service.has_lro %}
 
