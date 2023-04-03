@@ -5,6 +5,7 @@
 import asyncio
 import warnings
 from functools import partialmethod
+from functools import partial
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union, List, Type
 
 from google.api_core import gapic_v1
@@ -36,6 +37,115 @@ from google.longrunning import operations_pb2
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .grpc import {{ service.name }}GrpcTransport
+
+class PooledMultiCallable():
+
+    def __init__(self, channel_pool:"PooledChannel", *args, **kwargs):
+        self._init_args = args
+        self._init_kwargs = kwargs
+        self.next_channel_fn = channel_pool.next_channel
+
+class PooledUnaryUnaryMultiCallable(PooledMultiCallable, aio.UnaryUnaryMultiCallable):
+    def __call__(self, *args, **kwargs) -> aio.UnaryUnaryCall:
+        return self.next_channel_fn().unary_unary(*self._init_args, **self._init_kwargs)(*args, **kwargs)
+
+class PooledUnaryStreamMultiCallable(PooledMultiCallable, aio.UnaryStreamMultiCallable):
+    def __call__(self, *args, **kwargs) -> aio.UnaryStreamCall:
+        return self.next_channel_fn().unary_stream(*self._init_args, **self._init_kwargs)(*args, **kwargs)
+
+class PooledStreamUnaryMultiCallable(PooledMultiCallable, aio.StreamUnaryMultiCallable):
+    def __call__(self, *args, **kwargs) -> aio.StreamUnaryCall:
+        return self.next_channel_fn().stream_unary(*self._init_args, **self._init_kwargs)(*args, **kwargs)
+
+class PooledStreamStreamMultiCallable(PooledMultiCallable, aio.StreamStreamMultiCallable):
+    def __call__(self, *args, **kwargs) -> aio.StreamStreamCall:
+        return self.next_channel_fn().stream_stream(*self._init_args, **self._init_kwargs)(*args, **kwargs)
+
+class PooledChannel(aio.Channel):
+
+    def __init__(
+        self,
+        pool_size: int = 3,
+        host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ):
+        self._pool : List[aio.Channel] = []
+        self._next_idx = 0
+        self._create_channel = partial(grpc_helpers_async.create_channel, target=host, credentials=credentials, credentials_file=credentials_file, scopes=scopes, quota_project_id=quota_project_id, **kwargs)
+        for i in range(pool_size):
+            self._pool.append(self._create_channel())
+
+    def next_channel(self) -> aio.Channel:
+        channel = self._pool[self._next_idx]
+        self._next_idx = (self._next_idx + 1) % len(self._pool)
+        return channel
+
+    def unary_unary(self, *args, **kwargs) -> grpc.aio.UnaryUnaryMultiCallable:
+        return PooledUnaryUnaryMultiCallable(self, *args, **kwargs)
+
+    def unary_stream(self, *args, **kwargs) -> grpc.aio.UnaryStreamMultiCallable:
+        return PooledUnaryStreamMultiCallable(self, *args, **kwargs)
+
+    def stream_unary(self, *args, **kwargs) -> grpc.aio.StreamUnaryMultiCallable:
+        return PooledStreamUnaryMultiCallable(self, *args, **kwargs)
+
+    def stream_stream(self, *args, **kwargs) -> grpc.aio.StreamStreamMultiCallable:
+        return PooledStreamStreamMultiCallable(self, *args, **kwargs)
+
+    async def close(self, grace=None):
+        close_fns = [channel.close(grace=grace) for channel in self._pool]
+        return await asyncio.gather(*close_fns)
+
+    async def channel_ready(self):
+        ready_fns = [channel.channel_ready() for channel in self._pool]
+        return asyncio.gather(*ready_fns)
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
+
+    def get_state(self, try_to_connect: bool = False) -> grpc.ChannelConnectivity:
+        raise NotImplementedError()
+
+    async def wait_for_state_change(self, last_observed_state):
+        raise NotImplementedError()
+
+    async def replace_channel(
+        self, channel_idx, grace=None, new_channel=None
+    ) -> aio.Channel:
+        """
+        Replaces a channel in the pool with a fresh one.
+
+        The `new_channel` will start processing new requests immidiately,
+        but the old channel will continue serving existing clients for `grace` seconds
+
+        Args:
+          channel_idx(int): the channel index in the pool to replace
+          grace(Optional[float]): The time to wait until all active RPCs are
+            finished. If a grace period is not specified (by passing None for
+            grace), all existing RPCs are cancelled immediately.
+          new_channel(grpc.aio.Channel): a new channel to insert into the pool
+            at `channel_idx`. If `None`, a new channel will be created.
+        """
+        if channel_idx >= len(self._pool) or channel_idx < 0:
+            raise ValueError(
+                f"invalid channel_idx {channel_idx} for pool size {len(self._pool)}"
+            )
+        if new_channel is None:
+            new_channel = self._create_channel()
+        old_channel = self._pool[channel_idx]
+        self._pool[channel_idx] = new_channel
+        await old_channel.close(grace=grace)
+        return new_channel
+
+
+
 
 
 class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
@@ -71,14 +181,16 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
 
     @classmethod
     def create_channel(cls,
+                       pool_size: int = 3,
                        host: str{% if service.host %} = '{{ service.host }}'{% endif %},
                        credentials: Optional[ga_credentials.Credentials] = None,
                        credentials_file: Optional[str] = None,
                        scopes: Optional[Sequence[str]] = None,
                        quota_project_id: Optional[str] = None,
                        **kwargs) -> aio.Channel:
-        """Create and return a gRPC AsyncIO channel object.
+        """Create and return a PooledChannel object, representing a pool of gRPC AsyncIO channels
         Args:
+            pool_size (int): the number of channels in the pool
             host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
@@ -96,19 +208,19 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
             kwargs (Optional[dict]): Keyword arguments, which are passed to the
                 channel creation.
         Returns:
-            aio.Channel: A gRPC AsyncIO channel object.
+            PooledChannel: a channel pool object
         """
 
-        return grpc_helpers_async.create_channel(
+        return PooledChannel(
+            pool_size,
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs
+            quota_project_id=quota_project_id,
+            **kwargs,
         )
+
 
     def __init__(self, *,
             pool_size: int = 3,
@@ -220,76 +332,35 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
             api_audience=api_audience,
         )
         self._quota_project_id = quota_project_id
-        self.channel_pool: List[aio.Channel] = []
-        for i in range(pool_size):
-            new_channel = type(self).create_channel(
-                self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                # Set ``credentials_file`` to ``None`` here as
-                # the credentials that we saved earlier should be used.
-                credentials_file=None,
-                scopes=self._scopes,
-                ssl_credentials=self._ssl_channel_credentials,
-                quota_project_id=self._quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-            self.channel_pool.append(new_channel)
+        self._grpc_channel = type(self).create_channel(
+            pool_size,
+            self._host,
+            # use the credentials which are saved
+            credentials=self._credentials,
+            # Set ``credentials_file`` to ``None`` here as
+            # the credentials that we saved earlier should be used.
+            credentials_file=None,
+            scopes=self._scopes,
+            ssl_credentials=self._ssl_channel_credentials,
+            quota_project_id=self._quota_project_id,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
 
-        # Wrap messages. This must be done after self.channel_pool is populated
+        # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    def next_channel(self) -> aio.Channel:
-        """Returns the next channel in the round robin pool."""
+    @property
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
         # Return the channel from cache.
-        channel = self.channel_pool[self._next_idx]
-        self._next_idx = (self._next_idx + 1) % len(self.channel_pool)
-        return channel
-
-    async def replace_channel(self, channel_idx, grace=None, new_channel=None) -> aio.Channel:
-        """
-        Replaces a channel in the pool with a fresh one.
-
-        The `new_channel` will start processing new requests immidiately,
-        but the old channel will continue serving existing clients for `grace` seconds
-
-        Args:
-          channel_idx(int): the channel index in the pool to replace
-          grace(Optional[float]): The time to wait until all active RPCs are 
-            finished. If a grace period is not specified (by passing None for
-            grace), all existing RPCs are cancelled immediately.
-          new_channel(grpc.aio.Channel): a new channel to insert into the pool
-            at `channel_idx`. If `None`, a new channel will be created.
-        """
-        if channel_idx >= len(self.channel_pool) or channel_idx < 0:
-            raise ValueError(
-                f"invalid channel_idx {channel_idx} for pool size {len(self.channel_pool)}"
-            )
-        if new_channel is None:
-            new_channel = self.create_channel(
-                self._host,
-                credentials=self._credentials,
-                credentials_file=None,
-                scopes=self._scopes,
-                ssl_credentials=self._ssl_channel_credentials,
-                quota_project_id=self._quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-        old_channel = self.channel_pool[channel_idx]
-        self.channel_pool[channel_idx] = new_channel
-        await old_channel.close(grace=grace)
-        # invalidate stubs
-        stub_keys = list(self._stubs.keys())
-        for stub_channel, stub_func in stub_keys:
-            if stub_channel == old_channel:
-                del self._stubs[(stub_channel, stub_func)]
-        return new_channel
+        return self._grpc_channel
 
     {% if service.has_lro %}
 
@@ -311,8 +382,11 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
     {% endif %}
     {% for method in service.methods.values() %}
 
-    def {{ method.transport_safe_name|snake_case }}(self, *args, **kwargs) -> Awaitable[{{ method.output.ident }}]:
-        r"""Function for calling the{{ ' ' }}
+    @property
+    def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
+            [{{ method.input.ident }}],
+            Awaitable[{{ method.output.ident }}]]:
+        r"""Return a callable for the{{ ' ' }}
         {{- (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) -}}
         {{ ' ' }}method over gRPC.
@@ -329,18 +403,13 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        next_channel = self.next_channel()
-        stub_key = (next_channel, '{{ method.transport_safe_name|snake_case }}')
-        stub_func = self._stubs.get(stub_key, None)
-        if stub_func is None:
-            stub_func = next_channel.{{ method.grpc_stub_type }}(
+        if '{{ method.transport_safe_name|snake_case }}' not in self._stubs:
+            self._stubs['{{ method.transport_safe_name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
                 request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
                 response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
             )
-            self._stubs[stub_key] = stub_func
-        # call stub
-        return stub_func(*args, **kwargs)
+        return self._stubs['{{ method.transport_safe_name|snake_case }}']
     {% endfor %}
 
     {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
@@ -362,15 +431,13 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        next_channel = self.next_channel()
-        stub_key = (next_channel, "set_iam_policy")
-        if stub_key not in self._stubs:
-            self._stubs[stub_key] = next_channel.unary_unary(
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
             )
-        return self._stubs[stub_key]
+        return self._stubs["set_iam_policy"]
 
     @property
     def get_iam_policy(
@@ -390,15 +457,13 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        next_channel = self.next_channel()
-        stub_key = (next_channel, "get_iam_policy")
-        if stub_key not in self._stubs:
-            self._stubs[stub_key] = next_channel.unary_unary(
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
             )
-        return self._stubs[stub_key]
+        return self._stubs["get_iam_policy"]
 
     @property
     def test_iam_permissions(
@@ -421,23 +486,19 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        next_channel = self.next_channel()
-        stub_key = (next_channel, "test_iam_permissions")
-        if stub_key not in self._stubs:
-            self._stubs[stub_key] = next_channel.unary_unary(
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
-        return self._stubs[stub_key]
+        return self._stubs["test_iam_permissions"]
     {% endif %}
 
     def close(self):
-        close_fns = [channel.close() for channel in self.channel_pool]
-        return asyncio.gather(*close_fns)
+        return self.grpc_channel.close()
 
     {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
-
 
 __all__ = (
     'Pooled{{ service.grpc_asyncio_transport_name  }}',
