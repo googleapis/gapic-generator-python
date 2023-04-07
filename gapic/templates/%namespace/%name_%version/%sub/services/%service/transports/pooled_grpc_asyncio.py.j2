@@ -71,11 +71,15 @@ class PooledChannel(aio.Channel):
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
+        insecure: bool = False,
         **kwargs,
     ):
         self._pool : List[aio.Channel] = []
         self._next_idx = 0
-        self._create_channel = partial(grpc_helpers_async.create_channel, target=host, credentials=credentials, credentials_file=credentials_file, scopes=scopes, quota_project_id=quota_project_id, **kwargs)
+        if insecure:
+            self.create_channel = partial(aio.insecure_channel, host)
+        else:
+            self._create_channel = partial(grpc_helpers_async.create_channel, target=host, credentials=credentials, credentials_file=credentials_file, scopes=scopes, quota_project_id=quota_project_id, **kwargs)
         for i in range(pool_size):
             self._pool.append(self._create_channel())
 
