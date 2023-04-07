@@ -189,7 +189,7 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
                        **kwargs) -> aio.Channel:
         """Create and return a PooledChannel object, representing a pool of gRPC AsyncIO channels
         Args:
-            pool_size (int): the number of channels in the pool
+            pool_size (int): The number of channels in the pool.
             host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
