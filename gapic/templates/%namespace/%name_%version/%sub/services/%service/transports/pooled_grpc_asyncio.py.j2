@@ -36,7 +36,7 @@ from google.longrunning import operations_pb2
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
-from .grpc import {{ service.name }}GrpcTransport
+from .grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 
 class PooledMultiCallable():
 
@@ -147,7 +147,7 @@ class PooledChannel(aio.Channel):
         await old_channel.close(grace=grace)
         return new_channel
 
-class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
+class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.grpc_asyncio_transport_name }}):
     """Pooled gRPC AsyncIO backend transport for {{ service.name }}.
 
     {{ service.meta.doc|rst(width=72, indent=4) }}
@@ -319,7 +319,8 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
                 )
 
         # The base transport sets the host, credentials and scopes
-        super().__init__(
+        {{ service.name }}Transport.__init__(
+            self,
             host=host,
             credentials=credentials,
             credentials_file=credentials_file,
@@ -350,17 +351,6 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def grpc_channel(self) -> aio.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
-        """
-        # Return the channel from cache.
-        return self._grpc_channel
-
-
     async def replace_channel(
         self, channel_idx, grace=None, swap_sleep=1, new_channel=None
     ) -> aio.Channel:
@@ -381,145 +371,6 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.name }}Transpor
             at `channel_idx`. If `None`, a new channel will be created.
         """
         return await self._grpc_channel.replace_channel(channel_idx, grace, swap_sleep, new_channel)
-
-
-    {% if service.has_lro %}
-
-    @property
-    def operations_client(self) -> operations_v1.OperationsAsyncClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Quick check: Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-    {% endif %}
-    {% for method in service.methods.values() %}
-
-    @property
-    def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
-            [{{ method.input.ident }}],
-            Awaitable[{{ method.output.ident }}]]:
-        r"""Return a callable for the{{ ' ' }}
-        {{- (method.name|snake_case).replace('_',' ')|wrap(
-                width=70, offset=40, indent=8) -}}
-        {{ ' ' }}method over gRPC.
-
-        {{ method.meta.doc|rst(width=72, indent=8) }}
-
-        Returns:
-            Callable[[~.{{ method.input.name }}],
-                    Awaitable[~.{{ method.output.name }}]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if '{{ method.transport_safe_name|snake_case }}' not in self._stubs:
-            self._stubs['{{ method.transport_safe_name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
-                '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
-                request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
-                response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
-            )
-        return self._stubs['{{ method.transport_safe_name|snake_case }}']
-    {% endfor %}
-
-    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
-    {% if opts.add_iam_methods %}
-    @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
-        r"""Return a callable for the set iam policy method over gRPC.
-        Sets the IAM access control policy on the specified
-        function. Replaces any existing policy.
-        Returns:
-            Callable[[~.SetIamPolicyRequest],
-                    Awaitable[~.Policy]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
-                "/google.iam.v1.IAMPolicy/SetIamPolicy",
-                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy_pb2.Policy.FromString,
-            )
-        return self._stubs["set_iam_policy"]
-
-    @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
-        r"""Return a callable for the get iam policy method over gRPC.
-        Gets the IAM access control policy for a function.
-        Returns an empty policy if the function exists and does
-        not have a policy set.
-        Returns:
-            Callable[[~.GetIamPolicyRequest],
-                    Awaitable[~.Policy]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
-                "/google.iam.v1.IAMPolicy/GetIamPolicy",
-                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy_pb2.Policy.FromString,
-            )
-        return self._stubs["get_iam_policy"]
-
-    @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
-        r"""Return a callable for the test iam permissions method over gRPC.
-        Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this will
-        return an empty set of permissions, not a NOT_FOUND error.
-        Returns:
-            Callable[[~.TestIamPermissionsRequest],
-                    Awaitable[~.TestIamPermissionsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
-                "/google.iam.v1.IAMPolicy/TestIamPermissions",
-                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
-            )
-        return self._stubs["test_iam_permissions"]
-    {% endif %}
-
-    def close(self):
-        return self.grpc_channel.close()
-
-    {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 
 __all__ = (
     'Pooled{{ service.grpc_asyncio_transport_name  }}',
