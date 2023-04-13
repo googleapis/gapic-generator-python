@@ -15,8 +15,8 @@ def gapic_generator_python():
         requirements = "@gapic_generator_python//:requirements.txt",
     )
 
-    _protobuf_version = "22.1"
-    _protobuf_sha256 = "0b6494b6e1a8d197f6626ca0c5aa9ab35fc1e5aa3f724787133ce4fa4aa78499"
+    _protobuf_version = "22.3"
+    _protobuf_sha256 = "786bf22c8fd3f20b7242df3b9649900714b0ba77b24a4971573088f41dfe9f8a"
     _protobuf_version_in_link = "v{}".format(_protobuf_version)
     _maybe(
         http_archive,
