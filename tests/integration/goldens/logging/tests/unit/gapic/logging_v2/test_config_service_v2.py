@@ -959,8 +959,11 @@ async def test_list_buckets_async_pages():
             RuntimeError,
         )
         pages = []
+        # Turn off code formatting as `# pragma: no branch` does not work on multilines
+        # fmt: off
         async for page_ in (await client.list_buckets(request={})).pages: # pragma: no branch
             pages.append(page_)
+        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
@@ -2165,8 +2168,11 @@ async def test_list_views_async_pages():
             RuntimeError,
         )
         pages = []
+        # Turn off code formatting as `# pragma: no branch` does not work on multilines
+        # fmt: off
         async for page_ in (await client.list_views(request={})).pages: # pragma: no branch
             pages.append(page_)
+        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
@@ -3203,8 +3209,11 @@ async def test_list_sinks_async_pages():
             RuntimeError,
         )
         pages = []
+        # Turn off code formatting as `# pragma: no branch` does not work on multilines
+        # fmt: off
         async for page_ in (await client.list_sinks(request={})).pages: # pragma: no branch
             pages.append(page_)
+        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
@@ -4662,8 +4671,11 @@ async def test_list_exclusions_async_pages():
             RuntimeError,
         )
         pages = []
+        # Turn off code formatting as `# pragma: no branch` does not work on multilines
+        # fmt: off
         async for page_ in (await client.list_exclusions(request={})).pages: # pragma: no branch
             pages.append(page_)
+        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 

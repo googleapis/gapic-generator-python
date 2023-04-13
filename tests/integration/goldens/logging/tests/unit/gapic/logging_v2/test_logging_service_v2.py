@@ -1339,8 +1339,11 @@ async def test_list_log_entries_async_pages():
             RuntimeError,
         )
         pages = []
+        # Turn off code formatting as `# pragma: no branch` does not work on multilines
+        # fmt: off
         async for page_ in (await client.list_log_entries(request={})).pages: # pragma: no branch
             pages.append(page_)
+        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
@@ -1609,8 +1612,11 @@ async def test_list_monitored_resource_descriptors_async_pages():
             RuntimeError,
         )
         pages = []
+        # Turn off code formatting as `# pragma: no branch` does not work on multilines
+        # fmt: off
         async for page_ in (await client.list_monitored_resource_descriptors(request={})).pages: # pragma: no branch
             pages.append(page_)
+        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
@@ -2033,8 +2039,11 @@ async def test_list_logs_async_pages():
             RuntimeError,
         )
         pages = []
+        # Turn off code formatting as `# pragma: no branch` does not work on multilines
+        # fmt: off
         async for page_ in (await client.list_logs(request={})).pages: # pragma: no branch
             pages.append(page_)
+        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 

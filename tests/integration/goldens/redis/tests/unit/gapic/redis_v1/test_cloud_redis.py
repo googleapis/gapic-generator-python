@@ -966,8 +966,11 @@ async def test_list_instances_async_pages():
             RuntimeError,
         )
         pages = []
+        # Turn off code formatting as `# pragma: no branch` does not work on multilines
+        # fmt: off
         async for page_ in (await client.list_instances(request={})).pages: # pragma: no branch
             pages.append(page_)
+        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
