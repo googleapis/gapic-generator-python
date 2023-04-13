@@ -848,8 +848,11 @@ async def test_{{ method_name }}_async_pages():
         {% endif %}
         )
         pages = []
+        # Turn off code formatting as `# pragma: no branch` does not work on multilines
+        # fmt: off
         async for page_ in (await client.{{ method_name }}(request={})).pages: # pragma: no branch
             pages.append(page_)
+        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 {% elif method.lro and "next_page_token" in method.lro.response_type.fields.keys() %}
