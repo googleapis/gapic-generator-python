@@ -1110,6 +1110,8 @@ async def test_list_assets_async_pages():
             RuntimeError,
         )
         pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
         # Turn off code formatting as `# pragma: no branch` does not work on multilines
         # fmt: off
         async for page_ in (await client.list_assets(request={})).pages: # pragma: no branch
@@ -2885,6 +2887,8 @@ async def test_search_all_resources_async_pages():
             RuntimeError,
         )
         pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
         # Turn off code formatting as `# pragma: no branch` does not work on multilines
         # fmt: off
         async for page_ in (await client.search_all_resources(request={})).pages: # pragma: no branch
@@ -3318,6 +3322,8 @@ async def test_search_all_iam_policies_async_pages():
             RuntimeError,
         )
         pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
         # Turn off code formatting as `# pragma: no branch` does not work on multilines
         # fmt: off
         async for page_ in (await client.search_all_iam_policies(request={})).pages: # pragma: no branch

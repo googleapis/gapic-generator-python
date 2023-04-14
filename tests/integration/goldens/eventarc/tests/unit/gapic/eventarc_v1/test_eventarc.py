@@ -1215,6 +1215,8 @@ async def test_list_triggers_async_pages():
             RuntimeError,
         )
         pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
         # Turn off code formatting as `# pragma: no branch` does not work on multilines
         # fmt: off
         async for page_ in (await client.list_triggers(request={})).pages: # pragma: no branch
