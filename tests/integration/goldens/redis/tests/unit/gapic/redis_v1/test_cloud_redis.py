@@ -968,11 +968,10 @@ async def test_list_instances_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        # Turn off code formatting as `# pragma: no branch` does not work on multilines
-        # fmt: off
-        async for page_ in (await client.list_instances(request={})).pages: # pragma: no branch
+        async for page_ in ( # pragma: no branch
+            await client.list_instances(request={})
+        ).pages:
             pages.append(page_)
-        # fmt: on
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
