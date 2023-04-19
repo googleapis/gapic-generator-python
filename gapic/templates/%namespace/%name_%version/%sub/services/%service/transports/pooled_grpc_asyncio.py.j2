@@ -355,6 +355,16 @@ class Pooled{{ service.grpc_asyncio_transport_name }}({{ service.grpc_asyncio_tr
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
+    @propery
+    def pool_size(self) -> int:
+        """The number of grpc channels in the pool."""
+        return len(self._grpc_channel._pool)
+
+    @property
+    def channels(self) -> List[grpc.Channel]:
+        """Acccess the internal list of grpc channels."""
+        return self._grpc_channel._pool
+
     async def replace_channel(
         self, channel_idx, grace=None, swap_sleep=1, new_channel=None
     ) -> aio.Channel:
