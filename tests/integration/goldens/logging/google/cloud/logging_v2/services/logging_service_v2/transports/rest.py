@@ -499,6 +499,22 @@ class LoggingServiceV2RestTransport(LoggingServiceV2Transport):
                 'method': 'get',
                 'uri': '/v2/{parent=billingAccounts/*}/logs',
             },
+{
+                'method': 'get',
+                'uri': '/v2/{parent=projects/*/locations/*/buckets/*/views/*}/logs',
+            },
+{
+                'method': 'get',
+                'uri': '/v2/{parent=organizations/*/locations/*/buckets/*/views/*}/logs',
+            },
+{
+                'method': 'get',
+                'uri': '/v2/{parent=folders/*/locations/*/buckets/*/views/*}/logs',
+            },
+{
+                'method': 'get',
+                'uri': '/v2/{parent=billingAccounts/*/locations/*/buckets/*/views/*}/logs',
+            },
             ]
             request, metadata = self._interceptor.pre_list_logs(request, metadata)
             pb_request = logging.ListLogsRequest.pb(request)
