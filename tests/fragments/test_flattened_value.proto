@@ -18,6 +18,7 @@ package google.fragment;
 
 import "google/protobuf/struct.proto";
 import "google/api/client.proto";
+import "google/api/annotations.proto";
 
 service MyService {
   option (google.api.default_host) = "my.example.com";
@@ -25,11 +26,19 @@ service MyService {
   rpc MyMethod(MethodRequest) returns (MethodResponse) {
     option (google.api.method_signature) = "parameter,items";
   }
+
+  rpc MyMethodWithPatch(MethodRequest) returns (MethodResponse) {
+    option (google.api.http) = {
+      patch: "/v2/{name=*/*}"
+    };
+    option (google.api.method_signature) = "parameter";
+  }
 }
 
 message MethodRequest {
   google.protobuf.Value parameter = 1;
   repeated google.protobuf.Value items = 2;
+  string name = 3;
 }
 
 message MethodResponse {
