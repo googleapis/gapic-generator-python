@@ -39,9 +39,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
             {# Take the first non-message oneof field. In the corner case when all the fields of a oneof are messages, the oneof will not be populated #}
             {# Use an outer if-statement here because `first` raises an error if called on an empty sequence #}
             {% if (oneof_fields | rejectattr('message') | list) %}
-            {% for field in oneof_fields | rejectattr('message') | first %}
+            {% with field = (oneof_fields | rejectattr('message') | first) %}
             {{ field.name }}={{ field.mock_value }},
-            {% endfor %}
+            {% endwith %}
             {% endif %}
             {% endfor %}
         )

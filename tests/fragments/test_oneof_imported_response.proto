@@ -35,5 +35,6 @@ message Container {
 message MethodResponse {
   oneof format {
     Container container = 1;
+    string name = 2;
   }
 }
