@@ -907,11 +907,13 @@ def test_{{ method_name }}_rest(request_type):
             {% if not field.oneof or field.proto3_optional %}
               {{ field.name }}={{ field.mock_value }},
             {% endif %}{% endfor %}
-              {# This is a hack to only pick one field  #}
-            {% for oneof_fields in method.extended_lro.operation_type.oneof_fields().values() %}
-              {% with field = oneof_fields[0] %}
-              {{ field.name }}={{ field.mock_value }},
-              {% endwith %}
+            {# This is a hack to only pick one field  #}
+            {% for oneof_fields in method.output.oneof_fields().values() %}
+            {% if (oneof_fields | rejectattr('message') | list) %}
+            {% with field = (oneof_fields | rejectattr('message') | first) %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endwith %}
+            {% endif %}
             {% endfor %}
         )
         {% else %}
@@ -920,12 +922,14 @@ def test_{{ method_name }}_rest(request_type):
             {% if not field.oneof or field.proto3_optional %}
               {{ field.name }}={{ field.mock_value }},
               {% endif %}{% endfor %}
-              {# This is a hack to only pick one field  #}
-              {% for oneof_fields in method.output.oneof_fields().values() %}
-              {% with field = oneof_fields[0] %}
-              {{ field.name }}={{ field.mock_value }},
-              {% endwith %}
-              {% endfor %}
+            {# This is a hack to only pick one field  #}
+            {% for oneof_fields in method.output.oneof_fields().values() %}
+            {% if (oneof_fields | rejectattr('message') | list) %}
+            {% with field = (oneof_fields | rejectattr('message') | first) %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endwith %}
+            {% endif %}
+            {% endfor %}
         )
         {% endif %}
 

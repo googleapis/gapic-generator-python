@@ -965,9 +965,11 @@ def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
               {% endif %}{% endfor %}
               {# This is a hack to only pick one field  #}
               {% for oneof_fields in method.output.oneof_fields().values() %}
-              {% with field = oneof_fields[0] %}
+              {% if (oneof_fields | rejectattr('message') | list) %}
+              {% with field = (oneof_fields | rejectattr('message') | first) %}
               {{ field.name }}={{ field.mock_value }},
               {% endwith %}
+              {% endif %}
               {% endfor %}
         )
         {% endif %}
@@ -1035,9 +1037,11 @@ def test_{{ method.name|snake_case }}_rest(request_type):
               {% endif %}{% endfor %}
               {# This is a hack to only pick one field  #}
               {% for oneof_fields in method.output.oneof_fields().values() %}
-              {% with field = oneof_fields[0] %}
+              {% if (oneof_fields | rejectattr('message') | list) %}
+              {% with field = (oneof_fields | rejectattr('message') | first) %}
               {{ field.name }}={{ field.mock_value }},
               {% endwith %}
+              {% endif %}
               {% endfor %}
         )
         {% endif %}

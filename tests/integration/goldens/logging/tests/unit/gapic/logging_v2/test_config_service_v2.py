@@ -8543,7 +8543,6 @@ def test_get_sink_rest(request_type):
               output_version_format=logging_config.LogSink.VersionFormat.V2,
               writer_identity='writer_identity_value',
               include_children=True,
-              bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
 
         # Wrap the value into a proper Response obj
@@ -8791,7 +8790,6 @@ def test_create_sink_rest(request_type):
               output_version_format=logging_config.LogSink.VersionFormat.V2,
               writer_identity='writer_identity_value',
               include_children=True,
-              bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
 
         # Wrap the value into a proper Response obj
@@ -9045,7 +9043,6 @@ def test_update_sink_rest(request_type):
               output_version_format=logging_config.LogSink.VersionFormat.V2,
               writer_identity='writer_identity_value',
               include_children=True,
-              bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
 
         # Wrap the value into a proper Response obj
