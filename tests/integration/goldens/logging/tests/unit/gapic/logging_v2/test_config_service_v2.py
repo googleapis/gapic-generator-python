@@ -3248,7 +3248,6 @@ def test_get_sink(request_type, transport: str = 'grpc'):
             output_version_format=logging_config.LogSink.VersionFormat.V2,
             writer_identity='writer_identity_value',
             include_children=True,
-            bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
         response = client.get_sink(request)
 
@@ -3509,7 +3508,6 @@ def test_create_sink(request_type, transport: str = 'grpc'):
             output_version_format=logging_config.LogSink.VersionFormat.V2,
             writer_identity='writer_identity_value',
             include_children=True,
-            bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
         response = client.create_sink(request)
 
@@ -3780,7 +3778,6 @@ def test_update_sink(request_type, transport: str = 'grpc'):
             output_version_format=logging_config.LogSink.VersionFormat.V2,
             writer_identity='writer_identity_value',
             include_children=True,
-            bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
         response = client.update_sink(request)
 
