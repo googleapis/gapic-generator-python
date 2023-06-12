@@ -133,7 +133,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]): 
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
                 A ``Channel`` instance through which to make calls, or a callable
                 that generates one with the set of initialization arguments.
                 If set to None, a channel is created automatically.

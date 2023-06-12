@@ -62,7 +62,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
             credentials: Optional[ga_credentials.Credentials] = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
-            channel: Optional[Union[Channel, Callable[..., Channel]]] = None,
+            channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
             api_mtls_endpoint: Optional[str] = None,
             client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
             ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -88,7 +88,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 This argument is ignored if ``channel`` is provided.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
                 ignored if ``channel`` is provided.
-            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]): 
+            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
                 A ``Channel`` instance through which to make calls, or a callable
                 that generates one with the set of initialization arguments.
                 If set to None, a channel is created automatically.
