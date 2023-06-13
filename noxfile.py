@@ -157,8 +157,11 @@ def fragment(session, use_ads_templates=False):
         for frag in frag_files:
             session.log(tester(frag))
 
-
-@nox.session(python=ALL_PYTHON)
+# Removing Python 3.7 from the list of test versions because Ads has
+# deprecated support for it.
+# TODO: once 3.7 is remove from the ALL_PYTHON tuple the below line should be
+# updated.
+@nox.session(python=ALL_PYTHON[1:])
 def fragment_alternative_templates(session):
     fragment(session, use_ads_templates=True)
 
