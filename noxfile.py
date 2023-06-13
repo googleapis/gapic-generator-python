@@ -337,7 +337,11 @@ def showcase_unit(
         run_showcase_unit_tests(session)
 
 
-@nox.session(python=ALL_PYTHON)
+# Removing Python 3.7 from the list of test versions because Ads has
+# deprecated support for it.
+# TODO: once 3.7 is remove from the ALL_PYTHON tuple the below line should be
+# updated.
+@nox.session(python=ALL_PYTHON[1:])
 def showcase_unit_alternative_templates(session):
     with showcase_library(
         session, templates=ADS_TEMPLATES, other_opts=("old-naming",)
@@ -360,7 +364,11 @@ def showcase_unit_mixins(session):
         run_showcase_unit_tests(session)
 
 
-@nox.session(python=ALL_PYTHON)
+# Removing Python 3.7 from the list of test versions because Ads has
+# deprecated support for it.
+# TODO: once 3.7 is remove from the ALL_PYTHON tuple the below line should be
+# updated.
+@nox.session(python=ALL_PYTHON[1:])
 def showcase_unit_alternative_templates_mixins(session):
     with showcase_library(
         session, templates=ADS_TEMPLATES, other_opts=("old-naming",),
