@@ -1,6 +1,37 @@
 # Changelog
 
 
+## [1.11.1](https://github.com/googleapis/gapic-generator-python/compare/v1.11.0...v1.11.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add `help` as a reserved word ([#1682](https://github.com/googleapis/gapic-generator-python/issues/1682)) ([23fe890](https://github.com/googleapis/gapic-generator-python/commit/23fe890136144567e153d257faa31086f18544df))
+* Fix issue with reserved names and http body. ([#1657](https://github.com/googleapis/gapic-generator-python/issues/1657)) ([e51109d](https://github.com/googleapis/gapic-generator-python/commit/e51109da85bbd53e5b2af90fbce031b0dd7e2be5))
+
+## [1.11.0](https://github.com/googleapis/gapic-generator-python/compare/v1.10.0...v1.11.0) (2023-06-27)
+
+
+### Features
+
+* Support snippet generation for services that only support REST transport ([#1656](https://github.com/googleapis/gapic-generator-python/issues/1656)) ([bb60a3d](https://github.com/googleapis/gapic-generator-python/commit/bb60a3d87b252f276f07f9ab21a17cd279b702c1))
+
+
+### Bug Fixes
+
+* Add `exec` as a reserved word ([#1673](https://github.com/googleapis/gapic-generator-python/issues/1673)) ([90af1e6](https://github.com/googleapis/gapic-generator-python/commit/90af1e6a97297c8bfbf8951e09922f3727b7074f))
+* Add async context manager return types ([#1660](https://github.com/googleapis/gapic-generator-python/issues/1660)) ([7f58100](https://github.com/googleapis/gapic-generator-python/commit/7f58100e645d9f868953deeac50992a44f6048e2))
+* Fix bug with quote replacement. ([#1613](https://github.com/googleapis/gapic-generator-python/issues/1613)) ([5268045](https://github.com/googleapis/gapic-generator-python/commit/5268045c34b36f4a89e00559bedde04d2a35bdd7))
+* Fix code coverage in async test ([#1646](https://github.com/googleapis/gapic-generator-python/issues/1646)) ([ccada98](https://github.com/googleapis/gapic-generator-python/commit/ccada9880890d6fb10ee02dad14b960d77335b82))
+* Mock return_value should not populate oneof message fields ([#1668](https://github.com/googleapis/gapic-generator-python/issues/1668)) ([34d1a5d](https://github.com/googleapis/gapic-generator-python/commit/34d1a5d6455af7ee5bd57743e55e1ada16985372))
+
+## [1.10.0](https://github.com/googleapis/gapic-generator-python/compare/v1.9.1...v1.10.0) (2023-03-28)
+
+
+### Features
+
+* Freezes reserved names list. ([#1575](https://github.com/googleapis/gapic-generator-python/issues/1575)) ([b1b56ab](https://github.com/googleapis/gapic-generator-python/commit/b1b56ab22442d6d00ad2381ea14ce46aeda96e6e))
+
 ## [1.9.1](https://github.com/googleapis/gapic-generator-python/compare/v1.9.0...v1.9.1) (2023-03-22)
 
 

@@ -959,7 +959,11 @@ async def test_list_buckets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_buckets(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_buckets(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -2165,7 +2169,11 @@ async def test_list_views_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_views(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_views(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -3203,7 +3211,11 @@ async def test_list_sinks_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_sinks(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_sinks(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -3236,7 +3248,6 @@ def test_get_sink(request_type, transport: str = 'grpc'):
             output_version_format=logging_config.LogSink.VersionFormat.V2,
             writer_identity='writer_identity_value',
             include_children=True,
-            bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
         response = client.get_sink(request)
 
@@ -3497,7 +3508,6 @@ def test_create_sink(request_type, transport: str = 'grpc'):
             output_version_format=logging_config.LogSink.VersionFormat.V2,
             writer_identity='writer_identity_value',
             include_children=True,
-            bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
         response = client.create_sink(request)
 
@@ -3768,7 +3778,6 @@ def test_update_sink(request_type, transport: str = 'grpc'):
             output_version_format=logging_config.LogSink.VersionFormat.V2,
             writer_identity='writer_identity_value',
             include_children=True,
-            bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
         response = client.update_sink(request)
 
@@ -4662,7 +4671,11 @@ async def test_list_exclusions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_exclusions(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_exclusions(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -8530,7 +8543,6 @@ def test_get_sink_rest(request_type):
               output_version_format=logging_config.LogSink.VersionFormat.V2,
               writer_identity='writer_identity_value',
               include_children=True,
-              bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
 
         # Wrap the value into a proper Response obj
@@ -8778,7 +8790,6 @@ def test_create_sink_rest(request_type):
               output_version_format=logging_config.LogSink.VersionFormat.V2,
               writer_identity='writer_identity_value',
               include_children=True,
-              bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
 
         # Wrap the value into a proper Response obj
@@ -9032,7 +9043,6 @@ def test_update_sink_rest(request_type):
               output_version_format=logging_config.LogSink.VersionFormat.V2,
               writer_identity='writer_identity_value',
               include_children=True,
-              bigquery_options=logging_config.BigQueryOptions(use_partitioned_tables=True),
         )
 
         # Wrap the value into a proper Response obj
