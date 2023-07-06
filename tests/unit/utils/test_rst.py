@@ -48,6 +48,19 @@ def test_rst_force_add_newline():
         assert convert_text.call_count == 0
 
 
+def test_rst_add_newline_list():
+    with mock.patch.object(pypandoc, "convert_text") as convert_text:
+        s = """Type of weather:
+- Hail
+- Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
+- Snow
+"""
+        print(s)
+        print(utils.rst(s))
+        assert utils.rst(s) == s
+        assert convert_text.call_count == 0
+
+
 def test_rst_disable_add_newline():
     with mock.patch.object(pypandoc, 'convert_text') as convert_text:
         s = 'The hail in Wales\nfalls mainly on the snails.'
