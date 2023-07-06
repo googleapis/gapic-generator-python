@@ -100,6 +100,10 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     tokens = []
     token = ''
     for line in text.split('\n'):
+        # Ensure that lines that start with a hyphen are always on a new line
+        if line.strip().startswith("-") and token:
+            tokens.append(token)
+            token = ""
         token += line + '\n'
         if len(line) < width * 0.75:
             tokens.append(token)
