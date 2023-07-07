@@ -94,9 +94,11 @@ def test_wrap_does_not_break_hyphenated_word():
 
 
 def test_wrap_with_short_lines():
-        s = """The hail in Wales falls mainly on the snails. The hail in Wales falls mainly
+        input = """The hail in Wales falls mainly on the snails. The hail in Wales falls mainly
 on the snails."""
-        assert lines.wrap(s, width=80) == s
+        expected = """The hail in Wales falls mainly on the snails. The hail in
+Wales falls mainly on the snails."""
+        assert lines.wrap(input, width=60) == expected
 
 
 def test_list_each_item_in_list_has_new_line():
@@ -137,6 +139,4 @@ def test_list_new_line_preserved_after_colon():
                   clouds, then finally clear sky
                 - Rain
                 - Snow"""
-    print(input)
-    print(lines.wrap(input, width=60, indent=16))
     assert lines.wrap(input, width=60, indent=16) == expected
