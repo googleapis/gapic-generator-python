@@ -94,36 +94,36 @@ def test_wrap_does_not_break_hyphenated_word():
 
 
 def test_wrap_with_short_lines():
-        input = """The hail in Wales falls mainly on the snails. The hail in Wales falls mainly
+    input = """The hail in Wales falls mainly on the snails. The hail in Wales falls mainly
 on the snails."""
-        expected = """The hail in Wales falls mainly on the snails. The hail in
+    expected = """The hail in Wales falls mainly on the snails. The hail in
 Wales falls mainly on the snails."""
-        assert lines.wrap(input, width=60) == expected
+    assert lines.wrap(input, width=60) == expected
 
 
 def test_list_each_item_in_list_has_new_line():
-        s = """Type of weather:
+    s = """Type of weather:
 - Hail
 - Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
 - Snow"""
-        assert lines.wrap(s, width=80) == s
+    assert lines.wrap(s, width=80) == s
 
 
 def test_list_items_are_indented():
-        input = """Type of weather.
+    input = """Type of weather.
 Some types of weather:
 
 - A mix of hail and snow, followed by rain clouds, then finally clear sky
 - Rain
 - Snow"""
-        expected = """Type of weather.
+    expected = """Type of weather.
 Some types of weather:
 
 - A mix of hail and snow, followed by rain clouds, then
   finally clear sky
 - Rain
 - Snow"""
-        assert lines.wrap(input, width=60) == expected
+    assert lines.wrap(input, width=60) == expected
 
 
 def test_list_new_line_preserved_after_colon():
