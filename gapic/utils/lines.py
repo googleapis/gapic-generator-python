@@ -124,7 +124,8 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
             break_long_words=False,
             initial_indent=' ' * indent,
             # ensure that subsequent lines for lists are indented 2 spaces
-            subsequent_indent=' ' * indent + ('  ' if token.strip().startswith('-') else ''),
+            subsequent_indent=' ' * indent + \
+                ('  ' if token.strip().startswith('-') else ''),
             text=token,
             width=width,
             break_on_hyphens=False,

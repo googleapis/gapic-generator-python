@@ -58,6 +58,7 @@ def test_rst_each_item_in_list_has_new_line():
         assert utils.rst(s) == s
         assert convert_text.call_count == 0
 
+
 def test_rst_long_list_items_are_indented():
     with mock.patch.object(pypandoc, "convert_text") as convert_text:
         input = """Type of weather.
