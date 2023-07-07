@@ -48,16 +48,56 @@ def test_rst_force_add_newline():
         assert convert_text.call_count == 0
 
 
-def test_rst_add_newline_list():
+def test_rst_each_item_in_list_has_new_line():
     with mock.patch.object(pypandoc, "convert_text") as convert_text:
         s = """Type of weather:
 - Hail
 - Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
 - Snow
 """
-        print(s)
-        print(utils.rst(s))
         assert utils.rst(s) == s
+        assert convert_text.call_count == 0
+
+def test_rst_long_list_items_are_indented():
+    with mock.patch.object(pypandoc, "convert_text") as convert_text:
+        input = """Type of weather.
+Some types of weather:
+
+- A mix of hail and snow, followed by rain clouds, then finally clear sky
+- Rain
+- Snow
+"""
+        expected = """Type of weather.
+Some types of weather:
+
+- A mix of hail and snow, followed by rain clouds, then finally clear
+  sky
+- Rain
+- Snow
+"""
+        assert utils.rst(input) == expected
+        assert convert_text.call_count == 0
+
+
+def test_rst_ensure_new_line_after_colon_for_lists_with_indent():
+    with mock.patch.object(pypandoc, "convert_text") as convert_text:
+        input = """Today's forecast will have different types of weather:
+
+- A mix of hail and snow, followed by rain clouds, then finally clear sky
+- Rain
+- Snow
+"""
+        expected = """Today's forecast will have different
+                types of weather:
+
+                - A mix of hail and snow, followed by
+                  rain clouds, then finally clear sky
+                - Rain
+                - Snow
+                """
+        print(input)
+        print(utils.rst(input, indent=16))
+        assert utils.rst(input, indent=16) == expected
         assert convert_text.call_count == 0
 
 
