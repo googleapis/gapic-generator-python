@@ -48,6 +48,17 @@ def test_rst_force_add_newline():
         assert convert_text.call_count == 0
 
 
+
+def test_rst_wrapping_with_short_lines():
+    with mock.patch.object(pypandoc, 'convert_text') as convert_text:
+        input = """The hail in Wales falls mainly on the snails. The hail in Wales falls mainly
+on the snails."""
+        expected = """The hail in Wales falls mainly on the snails. The hail in Wales falls
+mainly on the snails.\n"""
+        assert utils.rst(input) == expected
+        assert convert_text.call_count == 0
+
+
 def test_rst_each_item_in_list_has_new_line():
     with mock.patch.object(pypandoc, "convert_text") as convert_text:
         s = """Type of weather:
