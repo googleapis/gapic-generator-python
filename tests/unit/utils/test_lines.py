@@ -140,3 +140,22 @@ def test_list_new_line_preserved_after_colon():
                 - Rain
                 - Snow"""
     assert lines.wrap(input, width=60, indent=16) == expected
+
+
+def test_list_items_longer_text_before_list():
+    input = """Weather Weather Weather Weather Weather Weather Weather
+Weather Weather Weather Weather Weather Weather Weather
+Type of weather:
+
+- Hail
+- Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
+- Snow"""
+    expected = """Weather Weather Weather Weather Weather Weather Weather
+Weather Weather Weather Weather Weather Weather Weather Type
+of weather:
+
+- Hail
+- Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
+  Rain
+- Snow"""
+    assert lines.wrap(input, width=60) == expected
