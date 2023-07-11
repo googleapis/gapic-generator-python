@@ -78,6 +78,12 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
 
     # Break off the first line of the string to address non-zero offsets.
     first = text.split('\n')[0] + '\n'
+
+    # Ensure that there are 2 new lines after a colon, otherwise
+    # the sphinx docs build will fail.
+    if first.endswith(":\n"):
+        first += "\n"
+
     if len(first) > width - offset:
         # Ensure `break_on_hyphens` is set to `False` when using
         # `textwrap.wrap` to avoid breaking hyperlinks with hyphens.
@@ -100,6 +106,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     # Ensure that there are 2 new lines after a colon, otherwise
     # the sphinx docs build will fail.
     text = re.sub(r':\n([^\n])', r':\n\n\1', text)
+
     text = text[len(first):].strip()
     if not text:
         return first.strip()
