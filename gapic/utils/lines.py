@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 import textwrap
 from typing import Iterable, Optional
 
@@ -95,6 +96,8 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
 
         # Save the new `first` line.
         first = f'{initial[0]}\n'
+
+    text = re.sub(r':\n([^\n])', r':\n\n\1', text)
     text = text[len(first):].strip()
     if not text:
         return first.strip()
