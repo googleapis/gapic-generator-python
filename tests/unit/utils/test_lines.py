@@ -162,8 +162,6 @@ weather:
 - Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
   Rain
 - Snow"""
-    print(input)
-    print(lines.wrap(input, width=60))
     assert lines.wrap(input, width=60) == expected
 
 
