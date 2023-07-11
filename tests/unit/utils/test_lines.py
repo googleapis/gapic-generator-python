@@ -178,6 +178,7 @@ def test_new_line_added_short_text_before_list():
 - Snow"""
     assert lines.wrap(input, width=60) == expected
 
+
 def test_new_line_preserved_short_text_before_list_without_colon():
     input = """Today's forecast will have different weather.
 
