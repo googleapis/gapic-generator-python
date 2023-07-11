@@ -149,20 +149,21 @@ def test_list_items_short_text_before_list_with_new_line_preserved():
 
 def test_list_items_long_text_before_list_with_new_line_preserved():
     input = """Weather Weather Weather Weather Weather Weather Weather
-Weather Weather Weather Weather Weather Weather Weather
-Type of weather:
+Weather Weather Weather Weather Weather Weather Type of weather:
 
 - Hail
 - Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
 - Snow"""
     expected = """Weather Weather Weather Weather Weather Weather Weather
-Weather Weather Weather Weather Weather Weather Weather Type
-of weather:
+Weather Weather Weather Weather Weather Weather Type of
+weather:
 
 - Hail
 - Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
   Rain
 - Snow"""
+    print(input)
+    print(lines.wrap(input, width=60))
     assert lines.wrap(input, width=60) == expected
 
 
@@ -177,6 +178,4 @@ def test_new_line_added_short_text_before_list():
   finally clear sky
 - Rain
 - Snow"""
-    print(input)
-    print(lines.wrap(input, width=60))
     assert lines.wrap(input, width=60) == expected

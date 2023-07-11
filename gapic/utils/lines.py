@@ -121,7 +121,9 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
             tokens.append(token)
             token = ''
         token += line + '\n'
-        if len(line) < width * 0.75:
+
+        # Preserve line breaks for lines that are short or end with colon.
+        if len(line) < width * 0.75 or line.endswith(':'):
             tokens.append(token)
             token = ''
     if token:
