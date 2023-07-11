@@ -94,13 +94,11 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
                                 )
         # Strip the first \n from the text so it is not misidentified as an
         # intentionally short line below, except when the text contains a list
-        # as the new line is required for lists. Look for either `:` in the
-        # initial text or `-` in the remaining text which indicates that a list
-        # is present.
+        # as the new line is required for lists. Look for `-` in the remaining
+        # text which indicates that a list is present.
         if '\n' in text:
-            initial_text = text.split('\n')[0]
             reamining_text = "".join(text.split('\n')[1:])
-            if ":" not in initial_text and not reamining_text.strip().startswith('-'):
+            if not reamining_text.strip().startswith('-'):
                 text = text.replace('\n', ' ', 1)
 
         # Save the new `first` line.
