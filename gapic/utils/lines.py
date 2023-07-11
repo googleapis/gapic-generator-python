@@ -97,6 +97,8 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
         # Save the new `first` line.
         first = f'{initial[0]}\n'
 
+    # Ensure that there are 2 new lines after a colon, otherwise
+    # the sphinx docs build will fail.
     text = re.sub(r':\n([^\n])', r':\n\n\1', text)
     text = text[len(first):].strip()
     if not text:
