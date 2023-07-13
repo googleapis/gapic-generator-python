@@ -59,6 +59,14 @@ def gapic_generator_python():
         url = "https://github.com/jgm/pandoc/releases/download/2.2.1/pandoc-2.2.1-macOS.zip",
     )
 
+    _sphinx_version = "4.5.0"
+    _maybe(
+        http_archive,
+        name = "com_github_sphinx_doc_sphinx",
+        strip_prefix = "sphinx-{}".format(_grpc_version),
+        url = "https://github.com/sphinx-doc/sphinx/archive/v{}.zip".format(_sphinx_version),
+    )
+
     _rules_gapic_version = "0.5.4"
     _maybe(
         http_archive,
