@@ -94,7 +94,6 @@ def py_gapic_library(
         requirement("google-api-core"),
         requirement("googleapis-common-protos"),
         requirement("pytest-asyncio"),
-        requirement("sphinx"),
     ]
 
     py_library(
