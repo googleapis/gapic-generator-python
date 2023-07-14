@@ -298,8 +298,8 @@ jobs:
           echo "The old one will disappear after 7 days."
       - name: Install sphinx
         run: |
-          sudo apt-get update
-          sudo apt-get python3-sphinx
+          apt-get update
+          apt-get python3-sphinx
       - name: Integration Tests
         run: bazel test //tests/integration/... --test_output=errors
 
