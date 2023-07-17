@@ -57,10 +57,10 @@ protobuf_deps()
 # by gRPC. Remove this import once gRPC depends on a newer version.
 http_archive(
     name = "boringssl",
-    sha256 = "45fa38b7cabb7e68ab55d2cd5bb6f54748d0c7e5b1d68ee1c988e7b4d32a68f3",
-    strip_prefix = "boringssl-d43fef7cd52fc6c689ee919b2e97fff920a4c18c",
+    sha256 = "b460f8673f3393e58ce506e9cdde7f2c3b2575b075f214cb819fb57d809f052b",
+    strip_prefix = "boringssl-bb41bc007079982da419c0ec3186e510cbcf09d0",
     urls = [
-        "https://github.com/google/boringssl/archive/d43fef7cd52fc6c689ee919b2e97fff920a4c18c.zip",
+        "https://github.com/google/boringssl/archive/bb41bc007079982da419c0ec3186e510cbcf09d0.zip",
     ],
 )
 
