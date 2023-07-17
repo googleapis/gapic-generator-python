@@ -115,3 +115,17 @@ def py_gapic_library(
         name = test_runner_file_target_name,
         template = Label("//rules_python_gapic:pytest.py"),
     )
+
+    test_file_target_name = "%s_docstest.py" % name
+
+    gapic_test_file(
+        name = test_file_target_name,
+        template = Label("//rules_python_gapic:docstest.py"),
+    )
+
+    test_runner_file_target_name = "%s_pydocstest.py" % name
+
+    gapic_test_file(
+        name = test_runner_file_target_name,
+        template = Label("//rules_python_gapic:pydocstest.py"),
+    )
