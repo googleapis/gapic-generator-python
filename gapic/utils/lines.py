@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 import textwrap
 from typing import Iterable, Optional
 
@@ -77,6 +78,12 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
 
     # Break off the first line of the string to address non-zero offsets.
     first = text.split('\n')[0] + '\n'
+
+    # Ensure that there are 2 new lines after a colon, otherwise
+    # the sphinx docs build will fail.
+    if first.endswith(":\n"):
+        first += "\n"
+
     if len(first) > width - offset:
         # Ensure `break_on_hyphens` is set to `False` when using
         # `textwrap.wrap` to avoid breaking hyperlinks with hyphens.
@@ -86,11 +93,20 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
                                 break_on_hyphens=False,
                                 )
         # Strip the first \n from the text so it is not misidentified as an
-        # intentionally short line below.
-        text = text.replace('\n', ' ', 1)
+        # intentionally short line below, except when the text contains `:`
+        # as the new line is required for lists.
+        if '\n' in text:
+            initial_text = text.split('\n')[0]
+            if ":" not in initial_text:
+                text = text.replace('\n', ' ', 1)
 
         # Save the new `first` line.
         first = f'{initial[0]}\n'
+
+    # Ensure that there are 2 new lines after a colon, otherwise
+    # the sphinx docs build will fail.
+    text = re.sub(r':\n([^\n])', r':\n\n\1', text)
+
     text = text[len(first):].strip()
     if not text:
         return first.strip()
@@ -100,8 +116,14 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     tokens = []
     token = ''
     for line in text.split('\n'):
+        # Ensure that lines that start with a hyphen are always on a new line
+        if line.strip().startswith('-') and token:
+            tokens.append(token)
+            token = ''
         token += line + '\n'
-        if len(line) < width * 0.75:
+
+        # Preserve line breaks for lines that are short or end with colon.
+        if len(line) < width * 0.75 or line.endswith(':'):
             tokens.append(token)
             token = ''
     if token:
@@ -115,7 +137,9 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
         text='\n'.join([textwrap.fill(
             break_long_words=False,
             initial_indent=' ' * indent,
-            subsequent_indent=' ' * indent,
+            # ensure that subsequent lines for lists are indented 2 spaces
+            subsequent_indent=' ' * indent + \
+            ('  ' if token.strip().startswith('-') else ''),
             text=token,
             width=width,
             break_on_hyphens=False,
