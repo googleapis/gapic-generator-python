@@ -21,7 +21,9 @@ if __name__ == '__main__':
 
     result = subprocess.run(
         [
-            "sphinx-build",
+            "python3",
+            "-m",
+            "sphinx.cmd.build",
             "-W",  # warnings as errors
             "-T",  # show full traceback on exception
             "-N",  # no colors
