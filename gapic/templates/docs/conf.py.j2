@@ -85,7 +85,7 @@ version = ".".join(release.split(".")[0:2])
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -338,17 +338,17 @@ texinfo_documents = [
 # texinfo_no_detailmenu = False
 
 
+# Attempt to use the cached version of intersphinx inventories 
+# in /tmp/intersphinx_inventories, if it exists. 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    "python": ("http://python.readthedocs.org/en/latest/", None),
-    "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
-    "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
-    "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
-    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None),
-    "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("http://requests.kennethreitz.org/en/stable/", None),
-    "proto": ("https://proto-plus-python.readthedocs.io/en/stable", None),
-    "protobuf": ("https://googleapis.dev/python/protobuf/latest/", None),
+    "python": ("https://python.readthedocs.io/en/latest/", (None, "/tmp/intersphinx_inventories/python/objects.inv")),
+    "google-auth": ("https://googleapis.dev/python/google-auth/latest/", (None, "/tmp/intersphinx_inventories/google-auth/objects.inv")),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", (None, "/tmp/intersphinx_inventories/google.api_core/objects.inv")),
+    "grpc": ("https://grpc.github.io/grpc/python/", (None, "/tmp/intersphinx_inventories/grpc/objects.inv")),
+    "requests": ("https://requests.kennethreitz.org/en/stable/", (None, "/tmp/intersphinx_inventories/requests/objects.inv")),
+    "proto": ("https://googleapis.dev/python/proto-plus/latest/", (None, "/tmp/intersphinx_inventories/proto/objects.inv")),
+    "protobuf": ("https://googleapis.dev/python/protobuf/latest/", (None, "/tmp/intersphinx_inventories/protobuf/objects.inv")),
 }
 
 
