@@ -192,3 +192,104 @@ def test_new_line_preserved_short_text_before_list_without_colon():
 - Rain
 - Snow"""
     assert lines.wrap(input, width=60) == expected
+
+def test_new_line_preserved_short_text_before_list_without_colon():
+    input = """Google Cloud Datastore Admin API
+
+The Datastore Admin API provides several admin services for
+Cloud Datastore.
+Concepts: Project, namespace, kind, and entity as defined in the
+Google Cloud  Datastore API.
+
+Operation: An Operation represents work being performed in the
+background.
+EntityFilter: Allows specifying a subset of entities in a
+project. This is specified as a combination of kinds and
+namespaces (either or both of which may be all).
+
+Export/Import Serice:
+
+- The Export/Import service provides the ability to copy all or
+a subset of entities to/from Google Cloud Storage.
+- Exported data may be imported into Cloud Datastore for any
+Google Cloud Platform project. It is not restricted to the
+export source project. It is possible to export from one
+project and then import into another.
+- Exported data can also be loaded into Google BigQuery for
+analysis.
+- Exports and imports are performed asynchronously. An Operation
+resource is created for each export/import. The state
+(including any errors encountered) of the export/import may be
+queried via the Operation resource.
+
+Index Service:
+
+- The index service manages Cloud Datastore composite indexes.
+- Index creation and deletion are performed asynchronously.
+An Operation resource is created for each such asynchronous operation.
+The state of the operation (including any errors encountered)
+may be queried via the Operation resource."""
+    expected = """Google Cloud Datastore Admin API
+
+The Datastore Admin API provides several admin services for
+Cloud Datastore.
+Concepts: Project, namespace, kind, and entity as defined in
+the Google Cloud  Datastore API.
+
+Operation: An Operation represents work being performed in
+the background.
+EntityFilter: Allows specifying a subset of entities in a
+project. This is specified as a combination of kinds and
+namespaces (either or both of which may be all).
+
+Export/Import Serice:
+
+- The Export/Import service provides the ability to copy all
+  or a subset of entities to/from Google Cloud Storage.
+- Exported data may be imported into Cloud Datastore for any
+  Google Cloud Platform project. It is not restricted to the
+  export source project. It is possible to export from one
+  project and then import into another.
+- Exported data can also be loaded into Google BigQuery for
+  analysis.
+- Exports and imports are performed asynchronously. An
+  Operation resource is created for each export/import. The
+  state (including any errors encountered) of the
+  export/import may be queried via the Operation resource.
+
+Index Service:
+
+- The index service manages Cloud Datastore composite
+  indexes.
+- Index creation and deletion are performed asynchronously.
+  An Operation resource is created for each such
+  asynchronous operation. The state of the operation
+  (including any errors encountered) may be queried via the
+  Operation resource."""
+    print(input)
+    print(lines.wrap(input, width=60))
+    assert lines.wrap(input, width=60) == expected
+
+
+def test_new_line_preserved_short_text_before_list_without_colon():
+    input = """Lists the indexes that match the specified filters.  Datastore uses an
+eventually consistent query to fetch the list of indexes and may
+occasionally return stale results."""
+    expected = """Lists the indexes that match the specified filters.
+Datastore uses an eventually consistent query to fetch the
+list of indexes and may occasionally return stale results."""
+    print(input)
+    print(lines.wrap(input, width=60))
+    assert lines.wrap(input, width=60) == expected
+
+def test_add_line_colon():
+    input = """If true, separate clusters by their geographic region (from geocoding).
+Uses the following entity features:
+
+- schema.org/addressLocality
+- schema.org/addressRegion
+- schema.org/addressCountry
+Warning: processing will no longer be regionalized!"""
+    print(input)
+    print(lines.wrap(input, width=60))
+    assert lines.wrap(input, width=60) == expected
