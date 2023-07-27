@@ -193,6 +193,7 @@ def test_new_line_preserved_short_text_before_list_without_colon():
 - Snow"""
     assert lines.wrap(input, width=60) == expected
 
+
 def test_list_with_multiple_paragraphs():
     input = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta euismod est a viverra. Integer vulputate ipsum id lacus tincidunt, id tincidunt tortor ullamcorper. Vestibulum facilisis at nulla nec lobortis. Nunc consectetur suscipit lacus id aliquam.
 
