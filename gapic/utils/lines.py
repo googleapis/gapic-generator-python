@@ -98,7 +98,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
         # text which indicates that a list is present.
         if '\n' in text:
             remaining_text = "".join(text.split('\n')[1:])
-            if not reamining_text.strip().startswith('-'):
+            if not remaining_text.strip().startswith('-'):
                 text = text.replace('\n', ' ', 1)
 
         # Save the new `first` line.
