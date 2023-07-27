@@ -192,3 +192,39 @@ def test_new_line_preserved_short_text_before_list_without_colon():
 - Rain
 - Snow"""
     assert lines.wrap(input, width=60) == expected
+
+
+def test_list_with_multiple_paragraphs():
+    input = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta euismod est a viverra. Integer vulputate ipsum id lacus tincidunt, id tincidunt tortor ullamcorper. Vestibulum facilisis at nulla nec lobortis. Nunc consectetur suscipit lacus id aliquam. 
+
+Donec et urna aliquam, efficitur mauris et, consectetur enim. Aliquam aliquet turpis eget erat gravida condimentum. Sed vel feugiat risus. 
+
+Sed interdum.
+
+Convallis turpis nec congue. Integer vulputate sed urna eu mollis. Mauris in congue nisi, sed pellentesque ex.
+
+- Ut vestibulum 
+- consequat imperdiet
+- Integer rhoncus varius 
+  Ante, ac tempus augue finibus sit amet. Integer ac fermentum neque, a sodales nibh. Mauris et dictum ipsum. Integer sit amet posuere urna. Nullam cursus molestie posuere. Praesent imperdiet cursus purus, in posuere odio. 
+- Orci varius natoque penatibus et 
+
+Aagnis dis parturient montes, nascetur ridiculus mus. Mauris mattis turpis quis hendrerit gravida. Curabitur nec diam erat. In nec est nisl. Quisque ut orci efficitur, vestibulum ante non, vestibulum erat. Donec mollis ultricies nisl."""
+    expected = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta euismod est a viverra. Integer vulputate ipsum id lacus tincidunt, id tincidunt tortor ullamcorper. Vestibulum facilisis at nulla nec lobortis. Nunc consectetur suscipit lacus id aliquam. 
+
+Donec et urna aliquam, efficitur mauris et, consectetur enim. Aliquam aliquet turpis eget erat gravida condimentum. Sed vel feugiat risus. 
+
+Sed interdum.
+
+Convallis turpis nec congue. Integer vulputate sed urna eu mollis. Mauris in congue nisi, sed pellentesque ex.
+
+- Ut vestibulum 
+- consequat imperdiet
+- Integer rhoncus varius 
+  Ante, ac tempus augue finibus sit amet. Integer ac fermentum neque, a sodales nibh. Mauris et dictum ipsum. Integer sit amet posuere urna. Nullam cursus molestie posuere. Praesent imperdiet cursus purus, in posuere odio. 
+- Orci varius natoque penatibus et 
+
+Aagnis dis parturient montes, nascetur ridiculus mus. Mauris mattis turpis quis hendrerit gravida. Curabitur nec diam erat. In nec est nisl. Quisque ut orci efficitur, vestibulum ante non, vestibulum erat. Donec mollis ultricies nisl."""
+    print(input)
+    print(lines.wrap(input, width=60))
+    assert lines.wrap(input, width=60) == expected
