@@ -98,7 +98,8 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
         # text which indicates that a list is present.
         if '\n' in text:
             reamining_text = "".join(text.split('\n')[1:])
-            if not reamining_text.strip().startswith('-'):
+            if not reamining_text.strip().startswith('-') \
+                and not reamining_text.strip().startswith('+'):
                 text = text.replace('\n', ' ', 1)
 
         # Save the new `first` line.
@@ -107,8 +108,11 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     # Ensure that there are 2 new lines after a colon, otherwise
     # the sphinx docs build will fail.
     text = re.sub(r':\n([^\n])', r':\n\n\1', text)
+    
+    # Remove the leading spaces from the beginning for the remaining text
+    text = text[len(first):].lstrip()
 
-    text = text[len(first):]
+    text=text
     if not text:
         return first.strip()
 
@@ -118,7 +122,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     token = ''
     for line in text.split('\n'):
         # Ensure that lines that start with a hyphen are always on a new line
-        if line.strip().startswith('-') and token:
+        if (line.strip().startswith('-') or line.strip().startswith('+') or not(len(line))) and token:
             tokens.append(token)
             token = ''
         token += line + '\n'
@@ -140,7 +144,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
             initial_indent=' ' * indent,
             # ensure that subsequent lines for lists are indented 2 spaces
             subsequent_indent=' ' * indent + \
-            ('  ' if token.strip().startswith('-') else ''),
+            ('  ' if token.strip().startswith('-') or token.strip().startswith('+')  else ''),
             text=token,
             width=width,
             break_on_hyphens=False,
