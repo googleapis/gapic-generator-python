@@ -559,6 +559,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 value of the metric is the number of log
                 entries that match a logs filter in a
                 given time interval.
+
                 Logs-based metrics can also be used to
                 extract values from logs and create a
                 distribution of the values. The
@@ -688,6 +689,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 value of the metric is the number of log
                 entries that match a logs filter in a
                 given time interval.
+
                 Logs-based metrics can also be used to
                 extract values from logs and create a
                 distribution of the values. The
@@ -818,6 +820,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 value of the metric is the number of log
                 entries that match a logs filter in a
                 given time interval.
+
                 Logs-based metrics can also be used to
                 extract values from logs and create a
                 distribution of the values. The
