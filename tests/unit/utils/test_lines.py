@@ -235,5 +235,4 @@ Aagnis dis parturient montes, nascetur ridiculus mus. Mauris
 mattis turpis quis hendrerit gravida. Curabitur nec diam
 erat. In nec est nisl. Quisque ut orci efficitur, vestibulum
 ante non, vestibulum erat. Donec mollis ultricies nisl."""
-    print(lines.wrap(input, width=60))
     assert lines.wrap(input, width=60) == expected
