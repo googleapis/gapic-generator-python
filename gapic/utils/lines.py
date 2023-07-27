@@ -93,7 +93,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
                                 break_on_hyphens=False,
                                 )
         # Strip the first \n from the text so it is not misidentified as an
-        # intentionally short line below, except when the text contains a list
+        # intentionally short line below, except when the text contains a list,
         # as the new line is required for lists. Look for `-` in the remaining
         # text which indicates that a list is present.
         if '\n' in text:
