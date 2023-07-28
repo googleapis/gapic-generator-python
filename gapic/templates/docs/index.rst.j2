@@ -2,6 +2,16 @@ API Reference
 -------------
 .. toctree::
     :maxdepth: 2
-    
+
+    {% set index_ns = namespace(has_services_api=false) %}    
+    {% for service in api.services.values() | selectattr('name') %}
+    {% if service.name == "Services" %}
+    {% set index_ns.has_services_api = True %}
+    {% endif %}
+    {% endfor %}
+    {% if index_ns.has_services_api %}
+    {{ api.naming.versioned_module_name }}/services_
+    {% else %}
     {{ api.naming.versioned_module_name }}/services
+    {% endif %}
     {{ api.naming.versioned_module_name }}/types

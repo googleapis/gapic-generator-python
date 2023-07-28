@@ -357,6 +357,55 @@ def test_get_filename_with_service():
     )
 
 
+# See https://github.com/googleapis/gapic-generator-python/issues/825
+def test_get_filename_with_service_named_services():
+    g = make_generator()
+    template_name = "docs/%name_%version/services.rst.j2"
+    assert (
+        g._get_filename(
+            template_name,
+            api_schema=api.API.build(
+                [
+                    descriptor_pb2.FileDescriptorProto(
+                        name="services.proto",
+                        package="foo.v1",
+                        service=[
+                            descriptor_pb2.ServiceDescriptorProto(
+                                name="Services"
+                            )
+                        ],
+                    )
+                ]
+            )
+        )
+        == "docs/foo_v1/services_.rst"
+    )
+
+
+def test_get_filename_with_service_not_named_services():
+    g = make_generator()
+    template_name = "docs/%name_%version/services.rst.j2"
+    assert (
+        g._get_filename(
+            template_name,
+            api_schema=api.API.build(
+                [
+                    descriptor_pb2.FileDescriptorProto(
+                        name="some_service.proto",
+                        package="foo.v1",
+                        service=[
+                            descriptor_pb2.ServiceDescriptorProto(
+                                name="SomeService"
+                            )
+                        ],
+                    )
+                ]
+            )
+        )
+        == "docs/foo_v1/services.rst"
+    )
+
+
 def test_get_filename_with_proto():
     file_pb2 = descriptor_pb2.FileDescriptorProto(
         name="bacon.proto", package="foo.bar.v1",

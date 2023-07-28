@@ -410,6 +410,18 @@ class Generator:
         # (e.g. no %version); handle this.
         filename = re.sub(r"/+", "/", filename)
 
+        # Check if the API contains a service called "Services" so we can avoid a
+        # conflict with the templated RST file which lives at
+        # `gapic/templates/docs/%name_%version/services.rst.j2`.
+        # Use `services_.rst.j2` instead of `services.rst.j2` when there is a service
+        # called `services`.
+        # See https://github.com/googleapis/gapic-generator-python/issues/825
+        if template_name.endswith("services.rst.j2"):
+            if any(
+                [service.name == "Services" for service in api_schema.services.values()]
+            ):
+                filename = filename.replace("services.rst", "services_.rst")
+
         # Done, return the filename.
         return filename
 
