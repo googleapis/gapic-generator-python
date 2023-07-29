@@ -237,3 +237,16 @@ mattis turpis quis hendrerit gravida. Curabitur nec diam
 erat. In nec est nisl. Quisque ut orci efficitur, vestibulum
 ante non, vestibulum erat. Donec mollis ultricies nisl."""
     assert lines.wrap(input, width=60) == expected
+
+def test_negative_number_not_treated_as_list():
+    input = """One day of the month. 1-31 indicates the 1st to the 31st day.
+-1 indicates the last day of the month. Months without the target day
+will be skipped. For example, a schedule to run "every month on the 31st"
+will not run in February, April, June, etc."""
+    expected = """One day of the month. 1-31 indicates the 1st to the 31st
+day. -1 indicates the last day of the month. Months without
+the target day will be skipped. For example, a schedule to
+run "every month on the 31st" will not run in February,
+April, June, etc."""
+    print(lines.wrap(input, width=60))
+    assert lines.wrap(input, width=60) == expected
