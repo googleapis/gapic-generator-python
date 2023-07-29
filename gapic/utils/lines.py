@@ -94,11 +94,11 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
                                 )
         # Strip the first \n from the text so it is not misidentified as an
         # intentionally short line below, except when the text contains a list,
-        # as the new line is required for lists. Look for `-` in the remaining
+        # as the new line is required for lists. Look for `- ` in the remaining
         # text which indicates that a list is present.
         if '\n' in text:
             remaining_text = "".join(text.split('\n')[1:])
-            if not remaining_text.strip().startswith('-'):
+            if not remaining_text.strip().startswith('- '):
                 text = text.replace('\n', ' ', 1)
 
         # Save the new `first` line.
@@ -119,7 +119,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     for line in text.split('\n'):
         # Ensure that lines that start with a hyphen are always on a new line
         # Ensure that blank lines are preserved
-        if (line.strip().startswith('-') or not len(line)) and token:
+        if (line.strip().startswith('- ') or not len(line)) and token:
             tokens.append(token)
             token = ''
         token += line + '\n'
@@ -141,7 +141,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
             initial_indent=' ' * indent,
             # ensure that subsequent lines for lists are indented 2 spaces
             subsequent_indent=' ' * indent + \
-            ('  ' if token.strip().startswith('-') else ''),
+            ('  ' if token.strip().startswith('- ') else ''),
             text=token,
             width=width,
             break_on_hyphens=False,
