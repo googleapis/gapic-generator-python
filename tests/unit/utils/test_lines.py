@@ -100,6 +100,15 @@ on the snails."""
 Wales falls mainly on the snails."""
     assert lines.wrap(input, width=60) == expected
 
+def test_lines_which_have_2_spaces_following_period():
+    input = """Information related to the a standard versioned package.  This includes
+package info for APT, Yum, Zypper, and Googet package managers."""
+    expected = """Information related to the a standard versioned package.
+This includes package info for APT, Yum, Zypper, and Googet
+package managers."""
+    print(lines.wrap(input, width=60))
+    assert lines.wrap(input, width=60) == expected
+
 
 def test_list_each_item_in_list_has_new_line():
     input = """Type of weather:
