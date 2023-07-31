@@ -39,6 +39,14 @@ def sort_lines(text: str, dedupe: bool = True) -> str:
     answer = '\n'.join(sorted(lines))
     return f'{leading}{answer}{trailing}'
 
+def get_list_indentation_level(list_item : str):
+    if len(list_item) >= 2 and list_item[0:2] in ['- ', '+ ']:
+        indentation_level = 2
+    elif len(list_item) >= 3 and list_item[0].isdigit() and list_item[1:3] == '. ':
+        indentation_level = 3
+    else:
+        indentation_level = 0
+    return indentation_level
 
 def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0) -> str:
     """Wrap the given string to the given width.
@@ -99,7 +107,8 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
         if '\n' in text:
             remaining_text = "".join(text.split('\n')[1:])
             if not remaining_text.strip().startswith('- ') \
-                and not remaining_text.strip().startswith('+ '):
+                and not remaining_text.strip().startswith('+ ') \
+                and not (remaining_text.strip() and remaining_text.strip()[0].isdigit() and remaining_text[1:].strip().startswith('. ')):
                 text = text.replace('\n', ' ', 1)
 
         # Save the new `first` line.
@@ -126,7 +135,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     for line in text.split('\n'):
         # Ensure that lines that start with a hyphen are always on a new line
         # Ensure that blank lines are preserved
-        if (line.strip().startswith('- ') or line.strip().startswith('+ ') or not len(line)) and token:
+        if (line.strip().startswith('- ') or line.strip().startswith('+ ') or (line.strip() and line.strip()[0].isdigit() and line[1:].strip().startswith('. ')) or not len(line)) and token:
             tokens.append(token)
             token = ''
         token += line + '\n'
@@ -146,9 +155,9 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
         text='\n'.join([textwrap.fill(
             break_long_words=False,
             initial_indent=' ' * indent,
-            # ensure that subsequent lines for lists are indented 2 spaces
+            # ensure that subsequent lines for lists are indented appropriately
             subsequent_indent=' ' * indent + \
-            ('  ' if token.strip().startswith('- ') or token.strip().startswith('+ ') else ''),
+            ' ' * get_list_indentation_level(token.strip()),
             text=token,
             width=width,
             break_on_hyphens=False,

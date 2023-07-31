@@ -260,3 +260,21 @@ the target day will be skipped. For example, a schedule to
 run "every month on the 31st" will not run in February,
 April, June, etc."""
     assert lines.wrap(input, width=60) == expected
+
+
+def test_list_with_numbered_list():
+    input = """Config for video classification human labeling task.
+Currently two types of video classification are supported:
+1. Assign labels on the entire video.
+2. Split the video into multiple video clips based on camera shot, and
+assign labels on each video clip."""
+    expected = """Config for video classification human labeling task.
+Currently two types of video classification are supported:
+
+1. Assign labels on the entire video.
+2. Split the video into multiple video clips based on camera
+   shot, and assign labels on each video clip."""
+    print(input)
+    print(lines.wrap(input, width=60))
+    assert lines.wrap(input, width=60) == expected
+
