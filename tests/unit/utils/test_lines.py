@@ -293,6 +293,4 @@ Caveats:
   table references are not yet counted in usage computation
 
 https://cloud.google.com/bigquery/docs/querying-wildcard-tables"""
-    print(input)
-    print(lines.wrap(input, width=60))
     assert lines.wrap(input, width=60) == expected
