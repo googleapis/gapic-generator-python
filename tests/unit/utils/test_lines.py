@@ -274,7 +274,25 @@ Currently two types of video classification are supported:
 1. Assign labels on the entire video.
 2. Split the video into multiple video clips based on camera
    shot, and assign labels on each video clip."""
+    assert lines.wrap(input, width=60) == expected
+
+def test_list_with_link():
+    input = """Detailed counts on the entry's usage.
+Caveats:
+- Only BigQuery tables have usage stats
+- The usage stats only include BigQuery query jobs
+- The usage stats might be underestimated, e.g. wildcard table references
+are not yet counted in usage computation
+https://cloud.google.com/bigquery/docs/querying-wildcard-tables"""
+    expected = """Detailed counts on the entry's usage.
+Caveats:
+
+- Only BigQuery tables have usage stats
+- The usage stats only include BigQuery query jobs
+- The usage stats might be underestimated, e.g. wildcard
+  table references are not yet counted in usage computation
+
+https://cloud.google.com/bigquery/docs/querying-wildcard-tables"""
     print(input)
     print(lines.wrap(input, width=60))
     assert lines.wrap(input, width=60) == expected
-

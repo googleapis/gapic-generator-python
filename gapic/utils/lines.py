@@ -132,12 +132,23 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     # that semantically matter.
     tokens = []
     token = ''
+    in_list = False
     for line in text.split('\n'):
+        if not len(line):
+            in_list = False
+
         # Ensure that lines that start with a hyphen are always on a new line
         # Ensure that blank lines are preserved
-        if (line.strip().startswith('- ') or line.strip().startswith('+ ') or (line.strip() and line.strip()[0].isdigit() and line[1:].strip().startswith('. ')) or not len(line)) and token:
-            tokens.append(token)
-            token = ''
+        if (line.strip().startswith('- ') or line.strip().startswith('+ ') or (line.strip() and line.strip()[0].isdigit() and line[1:].strip().startswith('. ')) or not len(line)):
+            if line.strip().startswith('- ') or line.strip().startswith('+ ') or (line.strip() and line.strip()[0].isdigit() and line[1:].strip().startswith('. ')):
+                in_list = True
+            if token:
+                tokens.append(token)
+                token = ''     
+        else:
+            # add a new line of text is found after a list
+            if in_list and not token and len(line):
+                tokens.append("\n")
         token += line + '\n'
 
         # Preserve line breaks for lines that are short or end with colon.
