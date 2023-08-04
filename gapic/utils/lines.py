@@ -123,7 +123,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     for line in text.split('\n'):
         # Ensure that lines that start with a hyphen are always on a new line
         # Ensure that new lines are preserved
-        if (line.strip().startswith('-') or not len(line))and token:
+        if (line.strip().startswith('-') or not len(line)) and token:
             tokens.append(token)
             token = ''
         token += line + '\n'
