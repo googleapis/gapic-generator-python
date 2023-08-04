@@ -373,6 +373,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 value of the metric is the number of log
                 entries that match a logs filter in a
                 given time interval.
+
                 Logs-based metrics can also be used to
                 extract values from logs and create a
                 distribution of the values. The
@@ -510,6 +511,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 value of the metric is the number of log
                 entries that match a logs filter in a
                 given time interval.
+
                 Logs-based metrics can also be used to
                 extract values from logs and create a
                 distribution of the values. The
@@ -640,6 +642,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 value of the metric is the number of log
                 entries that match a logs filter in a
                 given time interval.
+
                 Logs-based metrics can also be used to
                 extract values from logs and create a
                 distribution of the values. The
