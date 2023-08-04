@@ -247,6 +247,7 @@ class MetricsServiceV2AsyncClient:
         Returns:
             google.cloud.logging_v2.services.metrics_service_v2.pagers.ListLogMetricsAsyncPager:
                 Result returned from ListLogMetrics.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
