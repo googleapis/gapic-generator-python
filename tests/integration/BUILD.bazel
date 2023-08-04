@@ -63,6 +63,21 @@ py_gapic_library(
     transport = "grpc+rest",
 )
 
+# Docs build fails with `ModuleNotFoundError: No module named 'google.cloud.orgpolicy'`
+# The client for asset has a dependency on orgpolicy which is not caputred in bazel rules
+# https://github.com/googleapis/python-asset/blob/main/setup.py#L42
+#py_test(
+#    name = "asset_py_gapic_docstest",
+#    srcs = [
+#        "asset_py_gapic_pydocstest.py",
+#        "asset_py_gapic_docstest.py",
+#    ],
+#    legacy_create_init = False,
+#    deps = [
+#        ":asset_py_gapic",
+#    ],
+#)
+
 # Credentials.
 py_gapic_library(
     name = "credentials_py_gapic",
@@ -79,6 +94,18 @@ py_test(
     srcs = [
         "credentials_py_gapic_pytest.py",
         "credentials_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":credentials_py_gapic",
+    ],
+)
+
+py_test(
+    name = "credentials_py_gapic_docstest",
+    srcs = [
+        "credentials_py_gapic_pydocstest.py",
+        "credentials_py_gapic_docstest.py",
     ],
     legacy_create_init = False,
     deps = [
@@ -118,6 +145,18 @@ py_test(
     ],
 )
 
+py_test(
+    name = "eventarc_py_gapic_docstest",
+    srcs = [
+        "eventarc_py_gapic_pydocstest.py",
+        "eventarc_py_gapic_docstest.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":eventarc_py_gapic",
+    ],
+)
+
 # Logging.
 py_gapic_library(
     name = "logging_py_gapic",
@@ -143,6 +182,18 @@ py_test(
     ],
 )
 
+py_test(
+    name = "logging_py_gapic_docstest",
+    srcs = [
+        "logging_py_gapic_pydocstest.py",
+        "logging_py_gapic_docstest.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":logging_py_gapic",
+    ],
+)
+
 py_gapic_library(
     name = "redis_py_gapic",
     srcs = ["@com_google_googleapis//google/cloud/redis/v1:redis_proto"],
@@ -158,6 +209,18 @@ py_test(
     srcs = [
         "redis_py_gapic_pytest.py",
         "redis_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":redis_py_gapic",
+    ],
+)
+
+py_test(
+    name = "redis_py_gapic_docstest",
+    srcs = [
+        "redis_py_gapic_pydocstest.py",
+        "redis_py_gapic_docstest.py",
     ],
     legacy_create_init = False,
     deps = [
