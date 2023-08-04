@@ -107,9 +107,14 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     # the sphinx docs build will fail.
     text = re.sub(r':\n([^\n])', r':\n\n\1', text)
 
-    text = text[len(first):].strip()
+    text = text[len(first):]
     if not text:
         return first.strip()
+
+    # Strip leading and ending whitespace.
+    # Preserve new line at the beginning.
+    new_line = '\n' if text[0] == '\n' else ''
+    text = new_line + text.strip()
 
     # Tokenize the rest of the text to try to preserve line breaks
     # that semantically matter.
