@@ -43,7 +43,6 @@ from google.longrunning import operations_pb2
 from .transports.base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc import LoggingServiceV2GrpcTransport
 from .transports.grpc_asyncio import LoggingServiceV2GrpcAsyncIOTransport
-from .transports.rest import LoggingServiceV2RestTransport
 
 
 class LoggingServiceV2ClientMeta(type):
@@ -56,7 +55,6 @@ class LoggingServiceV2ClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[LoggingServiceV2Transport]]
     _transport_registry["grpc"] = LoggingServiceV2GrpcTransport
     _transport_registry["grpc_asyncio"] = LoggingServiceV2GrpcAsyncIOTransport
-    _transport_registry["rest"] = LoggingServiceV2RestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,
@@ -307,9 +305,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             transport (Union[str, LoggingServiceV2Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

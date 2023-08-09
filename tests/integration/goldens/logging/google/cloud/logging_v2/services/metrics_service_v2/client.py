@@ -44,7 +44,6 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc import MetricsServiceV2GrpcTransport
 from .transports.grpc_asyncio import MetricsServiceV2GrpcAsyncIOTransport
-from .transports.rest import MetricsServiceV2RestTransport
 
 
 class MetricsServiceV2ClientMeta(type):
@@ -57,7 +56,6 @@ class MetricsServiceV2ClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[MetricsServiceV2Transport]]
     _transport_registry["grpc"] = MetricsServiceV2GrpcTransport
     _transport_registry["grpc_asyncio"] = MetricsServiceV2GrpcAsyncIOTransport
-    _transport_registry["rest"] = MetricsServiceV2RestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,
@@ -308,9 +306,6 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             transport (Union[str, MetricsServiceV2Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the

@@ -130,7 +130,7 @@ py_gapic_library(
         "python-gapic-name=logging",
         "autogen-snippets",
     ],
-    transport = "grpc+rest",
+    transport = "grpc",
     service_yaml = "logging_v2.yaml",
 )
 
