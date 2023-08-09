@@ -49,7 +49,6 @@ from google.api_core import path_template
 {% if service.has_lro or service.has_extended_lro %}
 from google.api_core import future
 {% endif %}
-
 {% if service.has_lro %}
 from google.api_core import operation
 from google.api_core import operations_v1
