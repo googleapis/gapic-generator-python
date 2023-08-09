@@ -975,8 +975,6 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
             name='name_value',
             description='description_value',
             filter='filter_value',
-            bucket_name='bucket_name_value',
-            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -992,8 +990,6 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
-    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1035,8 +1031,6 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
             name='name_value',
             description='description_value',
             filter='filter_value',
-            bucket_name='bucket_name_value',
-            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
@@ -1052,8 +1046,6 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
-    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1231,8 +1223,6 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
             name='name_value',
             description='description_value',
             filter='filter_value',
-            bucket_name='bucket_name_value',
-            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1248,8 +1238,6 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
-    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1291,8 +1279,6 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
             name='name_value',
             description='description_value',
             filter='filter_value',
-            bucket_name='bucket_name_value',
-            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
@@ -1308,8 +1294,6 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
-    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1497,8 +1481,6 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
             name='name_value',
             description='description_value',
             filter='filter_value',
-            bucket_name='bucket_name_value',
-            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1514,8 +1496,6 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
-    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1557,8 +1537,6 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
             name='name_value',
             description='description_value',
             filter='filter_value',
-            bucket_name='bucket_name_value',
-            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
@@ -1574,8 +1552,6 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
-    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 

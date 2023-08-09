@@ -126,11 +126,6 @@ class CloudRedisTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_instance_auth_string: gapic_v1.method.wrap_method(
-                self.get_instance_auth_string,
-                default_timeout=600.0,
-                client_info=client_info,
-            ),
             self.create_instance: gapic_v1.method.wrap_method(
                 self.create_instance,
                 default_timeout=600.0,
@@ -166,11 +161,6 @@ class CloudRedisTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.reschedule_maintenance: gapic_v1.method.wrap_method(
-                self.reschedule_maintenance,
-                default_timeout=None,
-                client_info=client_info,
-            ),
          }
 
     def close(self):
@@ -202,15 +192,6 @@ class CloudRedisTransport(abc.ABC):
             Union[
                 cloud_redis.Instance,
                 Awaitable[cloud_redis.Instance]
-            ]]:
-        raise NotImplementedError()
-
-    @property
-    def get_instance_auth_string(self) -> Callable[
-            [cloud_redis.GetInstanceAuthStringRequest],
-            Union[
-                cloud_redis.InstanceAuthString,
-                Awaitable[cloud_redis.InstanceAuthString]
             ]]:
         raise NotImplementedError()
 
@@ -271,15 +252,6 @@ class CloudRedisTransport(abc.ABC):
     @property
     def delete_instance(self) -> Callable[
             [cloud_redis.DeleteInstanceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
-        raise NotImplementedError()
-
-    @property
-    def reschedule_maintenance(self) -> Callable[
-            [cloud_redis.RescheduleMaintenanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]

@@ -20,34 +20,9 @@
                 "analyze_iam_policy_longrunning"
               ]
             },
-            "AnalyzeMove": {
-              "methods": [
-                "analyze_move"
-              ]
-            },
-            "AnalyzeOrgPolicies": {
-              "methods": [
-                "analyze_org_policies"
-              ]
-            },
-            "AnalyzeOrgPolicyGovernedAssets": {
-              "methods": [
-                "analyze_org_policy_governed_assets"
-              ]
-            },
-            "AnalyzeOrgPolicyGovernedContainers": {
-              "methods": [
-                "analyze_org_policy_governed_containers"
-              ]
-            },
             "BatchGetAssetsHistory": {
               "methods": [
                 "batch_get_assets_history"
-              ]
-            },
-            "BatchGetEffectiveIamPolicies": {
-              "methods": [
-                "batch_get_effective_iam_policies"
               ]
             },
             "CreateFeed": {
@@ -55,19 +30,9 @@
                 "create_feed"
               ]
             },
-            "CreateSavedQuery": {
-              "methods": [
-                "create_saved_query"
-              ]
-            },
             "DeleteFeed": {
               "methods": [
                 "delete_feed"
-              ]
-            },
-            "DeleteSavedQuery": {
-              "methods": [
-                "delete_saved_query"
               ]
             },
             "ExportAssets": {
@@ -80,11 +45,6 @@
                 "get_feed"
               ]
             },
-            "GetSavedQuery": {
-              "methods": [
-                "get_saved_query"
-              ]
-            },
             "ListAssets": {
               "methods": [
                 "list_assets"
@@ -93,16 +53,6 @@
             "ListFeeds": {
               "methods": [
                 "list_feeds"
-              ]
-            },
-            "ListSavedQueries": {
-              "methods": [
-                "list_saved_queries"
-              ]
-            },
-            "QueryAssets": {
-              "methods": [
-                "query_assets"
               ]
             },
             "SearchAllIamPolicies": {
@@ -118,11 +68,6 @@
             "UpdateFeed": {
               "methods": [
                 "update_feed"
-              ]
-            },
-            "UpdateSavedQuery": {
-              "methods": [
-                "update_saved_query"
               ]
             }
           }
@@ -140,34 +85,9 @@
                 "analyze_iam_policy_longrunning"
               ]
             },
-            "AnalyzeMove": {
-              "methods": [
-                "analyze_move"
-              ]
-            },
-            "AnalyzeOrgPolicies": {
-              "methods": [
-                "analyze_org_policies"
-              ]
-            },
-            "AnalyzeOrgPolicyGovernedAssets": {
-              "methods": [
-                "analyze_org_policy_governed_assets"
-              ]
-            },
-            "AnalyzeOrgPolicyGovernedContainers": {
-              "methods": [
-                "analyze_org_policy_governed_containers"
-              ]
-            },
             "BatchGetAssetsHistory": {
               "methods": [
                 "batch_get_assets_history"
-              ]
-            },
-            "BatchGetEffectiveIamPolicies": {
-              "methods": [
-                "batch_get_effective_iam_policies"
               ]
             },
             "CreateFeed": {
@@ -175,19 +95,9 @@
                 "create_feed"
               ]
             },
-            "CreateSavedQuery": {
-              "methods": [
-                "create_saved_query"
-              ]
-            },
             "DeleteFeed": {
               "methods": [
                 "delete_feed"
-              ]
-            },
-            "DeleteSavedQuery": {
-              "methods": [
-                "delete_saved_query"
               ]
             },
             "ExportAssets": {
@@ -200,11 +110,6 @@
                 "get_feed"
               ]
             },
-            "GetSavedQuery": {
-              "methods": [
-                "get_saved_query"
-              ]
-            },
             "ListAssets": {
               "methods": [
                 "list_assets"
@@ -213,16 +118,6 @@
             "ListFeeds": {
               "methods": [
                 "list_feeds"
-              ]
-            },
-            "ListSavedQueries": {
-              "methods": [
-                "list_saved_queries"
-              ]
-            },
-            "QueryAssets": {
-              "methods": [
-                "query_assets"
               ]
             },
             "SearchAllIamPolicies": {
@@ -238,11 +133,6 @@
             "UpdateFeed": {
               "methods": [
                 "update_feed"
-              ]
-            },
-            "UpdateSavedQuery": {
-              "methods": [
-                "update_saved_query"
               ]
             }
           }
@@ -260,34 +150,9 @@
                 "analyze_iam_policy_longrunning"
               ]
             },
-            "AnalyzeMove": {
-              "methods": [
-                "analyze_move"
-              ]
-            },
-            "AnalyzeOrgPolicies": {
-              "methods": [
-                "analyze_org_policies"
-              ]
-            },
-            "AnalyzeOrgPolicyGovernedAssets": {
-              "methods": [
-                "analyze_org_policy_governed_assets"
-              ]
-            },
-            "AnalyzeOrgPolicyGovernedContainers": {
-              "methods": [
-                "analyze_org_policy_governed_containers"
-              ]
-            },
             "BatchGetAssetsHistory": {
               "methods": [
                 "batch_get_assets_history"
-              ]
-            },
-            "BatchGetEffectiveIamPolicies": {
-              "methods": [
-                "batch_get_effective_iam_policies"
               ]
             },
             "CreateFeed": {
@@ -295,19 +160,9 @@
                 "create_feed"
               ]
             },
-            "CreateSavedQuery": {
-              "methods": [
-                "create_saved_query"
-              ]
-            },
             "DeleteFeed": {
               "methods": [
                 "delete_feed"
-              ]
-            },
-            "DeleteSavedQuery": {
-              "methods": [
-                "delete_saved_query"
               ]
             },
             "ExportAssets": {
@@ -320,11 +175,6 @@
                 "get_feed"
               ]
             },
-            "GetSavedQuery": {
-              "methods": [
-                "get_saved_query"
-              ]
-            },
             "ListAssets": {
               "methods": [
                 "list_assets"
@@ -333,16 +183,6 @@
             "ListFeeds": {
               "methods": [
                 "list_feeds"
-              ]
-            },
-            "ListSavedQueries": {
-              "methods": [
-                "list_saved_queries"
-              ]
-            },
-            "QueryAssets": {
-              "methods": [
-                "query_assets"
               ]
             },
             "SearchAllIamPolicies": {
@@ -358,11 +198,6 @@
             "UpdateFeed": {
               "methods": [
                 "update_feed"
-              ]
-            },
-            "UpdateSavedQuery": {
-              "methods": [
-                "update_saved_query"
               ]
             }
           }

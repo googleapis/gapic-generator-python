@@ -35,11 +35,6 @@
                 "get_instance"
               ]
             },
-            "GetInstanceAuthString": {
-              "methods": [
-                "get_instance_auth_string"
-              ]
-            },
             "ImportInstance": {
               "methods": [
                 "import_instance"
@@ -48,11 +43,6 @@
             "ListInstances": {
               "methods": [
                 "list_instances"
-              ]
-            },
-            "RescheduleMaintenance": {
-              "methods": [
-                "reschedule_maintenance"
               ]
             },
             "UpdateInstance": {
@@ -95,11 +85,6 @@
                 "get_instance"
               ]
             },
-            "GetInstanceAuthString": {
-              "methods": [
-                "get_instance_auth_string"
-              ]
-            },
             "ImportInstance": {
               "methods": [
                 "import_instance"
@@ -108,11 +93,6 @@
             "ListInstances": {
               "methods": [
                 "list_instances"
-              ]
-            },
-            "RescheduleMaintenance": {
-              "methods": [
-                "reschedule_maintenance"
               ]
             },
             "UpdateInstance": {
@@ -155,11 +135,6 @@
                 "get_instance"
               ]
             },
-            "GetInstanceAuthString": {
-              "methods": [
-                "get_instance_auth_string"
-              ]
-            },
             "ImportInstance": {
               "methods": [
                 "import_instance"
@@ -168,11 +143,6 @@
             "ListInstances": {
               "methods": [
                 "list_instances"
-              ]
-            },
-            "RescheduleMaintenance": {
-              "methods": [
-                "reschedule_maintenance"
               ]
             },
             "UpdateInstance": {

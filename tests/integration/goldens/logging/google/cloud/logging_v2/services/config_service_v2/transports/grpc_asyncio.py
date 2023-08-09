@@ -18,7 +18,6 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
-from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -156,7 +155,6 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -233,28 +231,12 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsAsyncClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Quick check: Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-
-    @property
     def list_buckets(self) -> Callable[
             [logging_config.ListBucketsRequest],
             Awaitable[logging_config.ListBucketsResponse]]:
         r"""Return a callable for the list buckets method over gRPC.
 
-        Lists log buckets.
+        Lists buckets.
 
         Returns:
             Callable[[~.ListBucketsRequest],
@@ -280,7 +262,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogBucket]]:
         r"""Return a callable for the get bucket method over gRPC.
 
-        Gets a log bucket.
+        Gets a bucket.
 
         Returns:
             Callable[[~.GetBucketRequest],
@@ -301,75 +283,14 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         return self._stubs['get_bucket']
 
     @property
-    def create_bucket_async(self) -> Callable[
-            [logging_config.CreateBucketRequest],
-            Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the create bucket async method over gRPC.
-
-        Creates a log bucket asynchronously that can be used
-        to store log entries.
-        After a bucket has been created, the bucket's location
-        cannot be changed.
-
-        Returns:
-            Callable[[~.CreateBucketRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if 'create_bucket_async' not in self._stubs:
-            self._stubs['create_bucket_async'] = self.grpc_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/CreateBucketAsync',
-                request_serializer=logging_config.CreateBucketRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs['create_bucket_async']
-
-    @property
-    def update_bucket_async(self) -> Callable[
-            [logging_config.UpdateBucketRequest],
-            Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the update bucket async method over gRPC.
-
-        Updates a log bucket asynchronously.
-
-        If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
-        then ``FAILED_PRECONDITION`` will be returned.
-
-        After a bucket has been created, the bucket's location cannot be
-        changed.
-
-        Returns:
-            Callable[[~.UpdateBucketRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if 'update_bucket_async' not in self._stubs:
-            self._stubs['update_bucket_async'] = self.grpc_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/UpdateBucketAsync',
-                request_serializer=logging_config.UpdateBucketRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs['update_bucket_async']
-
-    @property
     def create_bucket(self) -> Callable[
             [logging_config.CreateBucketRequest],
             Awaitable[logging_config.LogBucket]]:
         r"""Return a callable for the create bucket method over gRPC.
 
-        Creates a log bucket that can be used to store log
-        entries. After a bucket has been created, the bucket's
-        location cannot be changed.
+        Creates a bucket that can be used to store log
+        entries. Once a bucket has been created, the region
+        cannot be changed.
 
         Returns:
             Callable[[~.CreateBucketRequest],
@@ -395,13 +316,17 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogBucket]]:
         r"""Return a callable for the update bucket method over gRPC.
 
-        Updates a log bucket.
+        Updates a bucket. This method replaces the following fields in
+        the existing bucket with values from the new bucket:
+        ``retention_period``
 
-        If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
-        then ``FAILED_PRECONDITION`` will be returned.
+        If the retention period is decreased and the bucket is locked,
+        FAILED_PRECONDITION will be returned.
 
-        After a bucket has been created, the bucket's location cannot be
-        changed.
+        If the bucket has a LifecycleState of DELETE_REQUESTED,
+        FAILED_PRECONDITION will be returned.
+
+        A buckets region may not be modified after it is created.
 
         Returns:
             Callable[[~.UpdateBucketRequest],
@@ -427,12 +352,9 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete bucket method over gRPC.
 
-        Deletes a log bucket.
-
-        Changes the bucket's ``lifecycle_state`` to the
-        ``DELETE_REQUESTED`` state. After 7 days, the bucket will be
-        purged and all log entries in the bucket will be permanently
-        deleted.
+        Deletes a bucket. Moves the bucket to the DELETE_REQUESTED
+        state. After 7 days, the bucket will be purged and all logs in
+        the bucket will be permanently deleted.
 
         Returns:
             Callable[[~.DeleteBucketRequest],
@@ -458,9 +380,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the undelete bucket method over gRPC.
 
-        Undeletes a log bucket. A bucket that has been
-        deleted can be undeleted within the grace period of 7
-        days.
+        Undeletes a bucket. A bucket that has been deleted
+        may be undeleted within the grace period of 7 days.
 
         Returns:
             Callable[[~.UndeleteBucketRequest],
@@ -486,7 +407,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.ListViewsResponse]]:
         r"""Return a callable for the list views method over gRPC.
 
-        Lists views on a log bucket.
+        Lists views on a bucket.
 
         Returns:
             Callable[[~.ListViewsRequest],
@@ -512,7 +433,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogView]]:
         r"""Return a callable for the get view method over gRPC.
 
-        Gets a view on a log bucket..
+        Gets a view.
 
         Returns:
             Callable[[~.GetViewRequest],
@@ -538,8 +459,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogView]]:
         r"""Return a callable for the create view method over gRPC.
 
-        Creates a view over log entries in a log bucket. A
-        bucket may contain a maximum of 30 views.
+        Creates a view over logs in a bucket. A bucket may
+        contain a maximum of 50 views.
 
         Returns:
             Callable[[~.CreateViewRequest],
@@ -565,11 +486,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogView]]:
         r"""Return a callable for the update view method over gRPC.
 
-        Updates a view on a log bucket. This method replaces the
-        following fields in the existing view with values from the new
-        view: ``filter``. If an ``UNAVAILABLE`` error is returned, this
-        indicates that system is not in a state where it can update the
-        view. If this occurs, please try again in a few minutes.
+        Updates a view. This method replaces the following fields in the
+        existing view with values from the new view: ``filter``.
 
         Returns:
             Callable[[~.UpdateViewRequest],
@@ -595,10 +513,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete view method over gRPC.
 
-        Deletes a view on a log bucket. If an ``UNAVAILABLE`` error is
-        returned, this indicates that system is not in a state where it
-        can delete the view. If this occurs, please try again in a few
-        minutes.
+        Deletes a view from a bucket.
 
         Returns:
             Callable[[~.DeleteViewRequest],
@@ -759,121 +674,12 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         return self._stubs['delete_sink']
 
     @property
-    def create_link(self) -> Callable[
-            [logging_config.CreateLinkRequest],
-            Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the create link method over gRPC.
-
-        Asynchronously creates a linked dataset in BigQuery
-        which makes it possible to use BigQuery to read the logs
-        stored in the log bucket. A log bucket may currently
-        only contain one link.
-
-        Returns:
-            Callable[[~.CreateLinkRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if 'create_link' not in self._stubs:
-            self._stubs['create_link'] = self.grpc_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/CreateLink',
-                request_serializer=logging_config.CreateLinkRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs['create_link']
-
-    @property
-    def delete_link(self) -> Callable[
-            [logging_config.DeleteLinkRequest],
-            Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the delete link method over gRPC.
-
-        Deletes a link. This will also delete the
-        corresponding BigQuery linked dataset.
-
-        Returns:
-            Callable[[~.DeleteLinkRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if 'delete_link' not in self._stubs:
-            self._stubs['delete_link'] = self.grpc_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/DeleteLink',
-                request_serializer=logging_config.DeleteLinkRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs['delete_link']
-
-    @property
-    def list_links(self) -> Callable[
-            [logging_config.ListLinksRequest],
-            Awaitable[logging_config.ListLinksResponse]]:
-        r"""Return a callable for the list links method over gRPC.
-
-        Lists links.
-
-        Returns:
-            Callable[[~.ListLinksRequest],
-                    Awaitable[~.ListLinksResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if 'list_links' not in self._stubs:
-            self._stubs['list_links'] = self.grpc_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/ListLinks',
-                request_serializer=logging_config.ListLinksRequest.serialize,
-                response_deserializer=logging_config.ListLinksResponse.deserialize,
-            )
-        return self._stubs['list_links']
-
-    @property
-    def get_link(self) -> Callable[
-            [logging_config.GetLinkRequest],
-            Awaitable[logging_config.Link]]:
-        r"""Return a callable for the get link method over gRPC.
-
-        Gets a link.
-
-        Returns:
-            Callable[[~.GetLinkRequest],
-                    Awaitable[~.Link]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if 'get_link' not in self._stubs:
-            self._stubs['get_link'] = self.grpc_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/GetLink',
-                request_serializer=logging_config.GetLinkRequest.serialize,
-                response_deserializer=logging_config.Link.deserialize,
-            )
-        return self._stubs['get_link']
-
-    @property
     def list_exclusions(self) -> Callable[
             [logging_config.ListExclusionsRequest],
             Awaitable[logging_config.ListExclusionsResponse]]:
         r"""Return a callable for the list exclusions method over gRPC.
 
-        Lists all the exclusions on the \_Default sink in a parent
-        resource.
+        Lists all the exclusions in a parent resource.
 
         Returns:
             Callable[[~.ListExclusionsRequest],
@@ -899,7 +705,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogExclusion]]:
         r"""Return a callable for the get exclusion method over gRPC.
 
-        Gets the description of an exclusion in the \_Default sink.
+        Gets the description of an exclusion.
 
         Returns:
             Callable[[~.GetExclusionRequest],
@@ -925,9 +731,10 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogExclusion]]:
         r"""Return a callable for the create exclusion method over gRPC.
 
-        Creates a new exclusion in the \_Default sink in a specified
-        parent resource. Only log entries belonging to that resource can
-        be excluded. You can have up to 10 exclusions in a resource.
+        Creates a new exclusion in a specified parent
+        resource. Only log entries belonging to that resource
+        can be excluded. You can have up to 10 exclusions in a
+        resource.
 
         Returns:
             Callable[[~.CreateExclusionRequest],
@@ -953,8 +760,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogExclusion]]:
         r"""Return a callable for the update exclusion method over gRPC.
 
-        Changes one or more properties of an existing exclusion in the
-        \_Default sink.
+        Changes one or more properties of an existing
+        exclusion.
 
         Returns:
             Callable[[~.UpdateExclusionRequest],
@@ -980,7 +787,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete exclusion method over gRPC.
 
-        Deletes an exclusion in the \_Default sink.
+        Deletes an exclusion.
 
         Returns:
             Callable[[~.DeleteExclusionRequest],
@@ -1006,14 +813,13 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.CmekSettings]]:
         r"""Return a callable for the get cmek settings method over gRPC.
 
-        Gets the Logging CMEK settings for the given resource.
+        Gets the Logs Router CMEK settings for the given resource.
 
-        Note: CMEK for the Log Router can be configured for Google Cloud
-        projects, folders, organizations and billing accounts. Once
-        configured for an organization, it applies to all projects and
-        folders in the Google Cloud organization.
+        Note: CMEK for the Logs Router can currently only be configured
+        for GCP organizations. Once configured, it applies to all
+        projects and folders in the GCP organization.
 
-        See `Enabling CMEK for Log
+        See `Enabling CMEK for Logs
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
 
@@ -1041,11 +847,11 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.CmekSettings]]:
         r"""Return a callable for the update cmek settings method over gRPC.
 
-        Updates the Log Router CMEK settings for the given resource.
+        Updates the Logs Router CMEK settings for the given resource.
 
-        Note: CMEK for the Log Router can currently only be configured
-        for Google Cloud organizations. Once configured, it applies to
-        all projects and folders in the Google Cloud organization.
+        Note: CMEK for the Logs Router can currently only be configured
+        for GCP organizations. Once configured, it applies to all
+        projects and folders in the GCP organization.
 
         [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings]
         will fail if 1) ``kms_key_name`` is invalid, or 2) the
@@ -1053,7 +859,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` role assigned for
         the key, or 3) access to the key is disabled.
 
-        See `Enabling CMEK for Log
+        See `Enabling CMEK for Logs
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
 
@@ -1074,112 +880,6 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 response_deserializer=logging_config.CmekSettings.deserialize,
             )
         return self._stubs['update_cmek_settings']
-
-    @property
-    def get_settings(self) -> Callable[
-            [logging_config.GetSettingsRequest],
-            Awaitable[logging_config.Settings]]:
-        r"""Return a callable for the get settings method over gRPC.
-
-        Gets the Log Router settings for the given resource.
-
-        Note: Settings for the Log Router can be get for Google Cloud
-        projects, folders, organizations and billing accounts. Currently
-        it can only be configured for organizations. Once configured for
-        an organization, it applies to all projects and folders in the
-        Google Cloud organization.
-
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
-        for more information.
-
-        Returns:
-            Callable[[~.GetSettingsRequest],
-                    Awaitable[~.Settings]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if 'get_settings' not in self._stubs:
-            self._stubs['get_settings'] = self.grpc_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/GetSettings',
-                request_serializer=logging_config.GetSettingsRequest.serialize,
-                response_deserializer=logging_config.Settings.deserialize,
-            )
-        return self._stubs['get_settings']
-
-    @property
-    def update_settings(self) -> Callable[
-            [logging_config.UpdateSettingsRequest],
-            Awaitable[logging_config.Settings]]:
-        r"""Return a callable for the update settings method over gRPC.
-
-        Updates the Log Router settings for the given resource.
-
-        Note: Settings for the Log Router can currently only be
-        configured for Google Cloud organizations. Once configured, it
-        applies to all projects and folders in the Google Cloud
-        organization.
-
-        [UpdateSettings][google.logging.v2.ConfigServiceV2.UpdateSettings]
-        will fail if 1) ``kms_key_name`` is invalid, or 2) the
-        associated service account does not have the required
-        ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` role assigned for
-        the key, or 3) access to the key is disabled. 4) ``location_id``
-        is not supported by Logging. 5) ``location_id`` violate
-        OrgPolicy.
-
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
-        for more information.
-
-        Returns:
-            Callable[[~.UpdateSettingsRequest],
-                    Awaitable[~.Settings]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if 'update_settings' not in self._stubs:
-            self._stubs['update_settings'] = self.grpc_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/UpdateSettings',
-                request_serializer=logging_config.UpdateSettingsRequest.serialize,
-                response_deserializer=logging_config.Settings.deserialize,
-            )
-        return self._stubs['update_settings']
-
-    @property
-    def copy_log_entries(self) -> Callable[
-            [logging_config.CopyLogEntriesRequest],
-            Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the copy log entries method over gRPC.
-
-        Copies a set of log entries from a log bucket to a
-        Cloud Storage bucket.
-
-        Returns:
-            Callable[[~.CopyLogEntriesRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if 'copy_log_entries' not in self._stubs:
-            self._stubs['copy_log_entries'] = self.grpc_channel.unary_unary(
-                '/google.logging.v2.ConfigServiceV2/CopyLogEntries',
-                request_serializer=logging_config.CopyLogEntriesRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs['copy_log_entries']
 
     def close(self):
         return self.grpc_channel.close()
