@@ -25,7 +25,6 @@ import grpc                        # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.logging_v2.types import logging_metrics
-from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 from .base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .grpc import MetricsServiceV2GrpcTransport
