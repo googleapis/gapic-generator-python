@@ -17,9 +17,14 @@ import grpc                        # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 {% filter sort_lines %}
+{% set import_ns = namespace(has_operations=false) %}
 {% for method in service.methods.values() %}
 {{ method.input.ident.python_import }}
+{% if method.output.ident|string() == "operations_pb2.Operation" %}
+{% set import_ns.has_operations = True %}
+{% else %}
 {{ method.output.ident.python_import }}
+{% endif %}
 {% endfor %}
 {% if opts.add_iam_methods or api.has_iam_mixin %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
@@ -27,6 +32,12 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2 # type: ignore
+{% endif %}
+{% if api.has_operations_mixin %}
+{% set import_ns.has_operations = True %}
+{% endif %}
+{% if import_ns.has_operations %}
+from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
