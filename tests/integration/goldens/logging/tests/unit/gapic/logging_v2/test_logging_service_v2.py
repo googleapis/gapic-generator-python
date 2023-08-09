@@ -45,7 +45,7 @@ from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
 from google.logging.type import http_request_pb2  # type: ignore
 from google.logging.type import log_severity_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore

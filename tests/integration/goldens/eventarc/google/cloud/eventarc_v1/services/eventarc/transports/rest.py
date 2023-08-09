@@ -31,7 +31,6 @@ from google.api_core import operations_v1
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
-from google.longrunning import operations_pb2
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -51,7 +50,7 @@ from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import google_channel_config
 from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
 from google.cloud.eventarc_v1.types import trigger
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 
 from .base import EventarcTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
