@@ -42,7 +42,7 @@ except AttributeError:  # pragma: NO COVER
 
 
 from google.cloud.redis_v1.types import cloud_redis
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 

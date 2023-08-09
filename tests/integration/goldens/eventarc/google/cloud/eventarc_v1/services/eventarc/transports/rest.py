@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .base import EventarcTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
