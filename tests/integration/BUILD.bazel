@@ -61,6 +61,7 @@ py_gapic_library(
         "autogen-snippets",
     ],
     transport = "grpc+rest",
+    service_yaml = "cloudasset_v1.yaml",
 )
 
 # Credentials.
@@ -72,6 +73,7 @@ py_gapic_library(
         "autogen-snippets",
     ],
     transport = "grpc+rest",
+    service_yaml = "iamcredentials_v1.yaml",
 )
 
 py_test(
@@ -128,7 +130,8 @@ py_gapic_library(
         "python-gapic-name=logging",
         "autogen-snippets",
     ],
-    transport = "grpc",
+    transport = "grpc+rest",
+    service_yaml = "logging_v2.yaml",
 )
 
 py_test(
@@ -151,6 +154,7 @@ py_gapic_library(
         "autogen-snippets",
     ],
     transport = "grpc+rest",
+    service_yaml = "redis_v1.yaml",
 )
 
 py_test(
