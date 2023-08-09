@@ -70,8 +70,8 @@ def gapic_generator_python():
     _maybe(
         http_archive,
         name = "com_google_googleapis",
-        strip_prefix = "googleapis-ffc531383747ebb702dad3db237ef5fdea796363",
-        urls = ["https://github.com/googleapis/googleapis/archive/ffc531383747ebb702dad3db237ef5fdea796363.zip"],
+        strip_prefix = "googleapis-2c28ce13ade62398e152ff3eb840f4f934812597",
+        urls = ["https://github.com/googleapis/googleapis/archive/2c28ce13ade62398e152ff3eb840f4f934812597.zip"],
     )
 
 def gapic_generator_register_toolchains():

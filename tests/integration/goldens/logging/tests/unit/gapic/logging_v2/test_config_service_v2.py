@@ -37,9 +37,13 @@ from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
+from google.api_core import operation
+from google.api_core import operation_async  # type: ignore
+from google.api_core import operations_v1
 from google.api_core import path_template
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -48,7 +52,9 @@ from google.cloud.logging_v2.services.config_service_v2 import ConfigServiceV2Cl
 from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.services.config_service_v2 import transports
 from google.cloud.logging_v2.types import logging_config
+from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
@@ -993,6 +999,8 @@ def test_get_bucket(request_type, transport: str = 'grpc'):
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            analytics_enabled=True,
+            restricted_fields=['restricted_fields_value'],
         )
         response = client.get_bucket(request)
 
@@ -1008,6 +1016,8 @@ def test_get_bucket(request_type, transport: str = 'grpc'):
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.analytics_enabled is True
+    assert response.restricted_fields == ['restricted_fields_value']
 
 
 def test_get_bucket_empty_call():
@@ -1049,6 +1059,8 @@ async def test_get_bucket_async(transport: str = 'grpc_asyncio', request_type=lo
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            analytics_enabled=True,
+            restricted_fields=['restricted_fields_value'],
         ))
         response = await client.get_bucket(request)
 
@@ -1064,6 +1076,8 @@ async def test_get_bucket_async(transport: str = 'grpc_asyncio', request_type=lo
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.analytics_enabled is True
+    assert response.restricted_fields == ['restricted_fields_value']
 
 
 @pytest.mark.asyncio
@@ -1138,6 +1152,298 @@ async def test_get_bucket_field_headers_async():
   logging_config.CreateBucketRequest,
   dict,
 ])
+def test_create_bucket_async(request_type, transport: str = 'grpc'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_bucket_async),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/spam')
+        response = client.create_bucket_async(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CreateBucketRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_bucket_async_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_bucket_async),
+            '__call__') as call:
+        client.create_bucket_async()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CreateBucketRequest()
+
+@pytest.mark.asyncio
+async def test_create_bucket_async_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateBucketRequest):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_bucket_async),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.create_bucket_async(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CreateBucketRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_bucket_async_async_from_dict():
+    await test_create_bucket_async_async(request_type=dict)
+
+
+def test_create_bucket_async_field_headers():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateBucketRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_bucket_async),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.create_bucket_async(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_create_bucket_async_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateBucketRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_bucket_async),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        await client.create_bucket_async(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.parametrize("request_type", [
+  logging_config.UpdateBucketRequest,
+  dict,
+])
+def test_update_bucket_async(request_type, transport: str = 'grpc'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_bucket_async),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/spam')
+        response = client.update_bucket_async(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.UpdateBucketRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_bucket_async_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_bucket_async),
+            '__call__') as call:
+        client.update_bucket_async()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.UpdateBucketRequest()
+
+@pytest.mark.asyncio
+async def test_update_bucket_async_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateBucketRequest):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_bucket_async),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.update_bucket_async(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.UpdateBucketRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_bucket_async_async_from_dict():
+    await test_update_bucket_async_async(request_type=dict)
+
+
+def test_update_bucket_async_field_headers():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateBucketRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_bucket_async),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.update_bucket_async(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_update_bucket_async_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateBucketRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_bucket_async),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        await client.update_bucket_async(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.parametrize("request_type", [
+  logging_config.CreateBucketRequest,
+  dict,
+])
 def test_create_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1159,6 +1465,8 @@ def test_create_bucket(request_type, transport: str = 'grpc'):
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            analytics_enabled=True,
+            restricted_fields=['restricted_fields_value'],
         )
         response = client.create_bucket(request)
 
@@ -1174,6 +1482,8 @@ def test_create_bucket(request_type, transport: str = 'grpc'):
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.analytics_enabled is True
+    assert response.restricted_fields == ['restricted_fields_value']
 
 
 def test_create_bucket_empty_call():
@@ -1215,6 +1525,8 @@ async def test_create_bucket_async(transport: str = 'grpc_asyncio', request_type
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            analytics_enabled=True,
+            restricted_fields=['restricted_fields_value'],
         ))
         response = await client.create_bucket(request)
 
@@ -1230,6 +1542,8 @@ async def test_create_bucket_async(transport: str = 'grpc_asyncio', request_type
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.analytics_enabled is True
+    assert response.restricted_fields == ['restricted_fields_value']
 
 
 @pytest.mark.asyncio
@@ -1325,6 +1639,8 @@ def test_update_bucket(request_type, transport: str = 'grpc'):
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            analytics_enabled=True,
+            restricted_fields=['restricted_fields_value'],
         )
         response = client.update_bucket(request)
 
@@ -1340,6 +1656,8 @@ def test_update_bucket(request_type, transport: str = 'grpc'):
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.analytics_enabled is True
+    assert response.restricted_fields == ['restricted_fields_value']
 
 
 def test_update_bucket_empty_call():
@@ -1381,6 +1699,8 @@ async def test_update_bucket_async(transport: str = 'grpc_asyncio', request_type
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            analytics_enabled=True,
+            restricted_fields=['restricted_fields_value'],
         ))
         response = await client.update_bucket(request)
 
@@ -1396,6 +1716,8 @@ async def test_update_bucket_async(transport: str = 'grpc_asyncio', request_type
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.analytics_enabled is True
+    assert response.restricted_fields == ['restricted_fields_value']
 
 
 @pytest.mark.asyncio
@@ -4257,6 +4579,1150 @@ async def test_delete_sink_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
+  logging_config.CreateLinkRequest,
+  dict,
+])
+def test_create_link(request_type, transport: str = 'grpc'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/spam')
+        response = client.create_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CreateLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_link),
+            '__call__') as call:
+        client.create_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CreateLinkRequest()
+
+@pytest.mark.asyncio
+async def test_create_link_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateLinkRequest):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.create_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CreateLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_link_async_from_dict():
+    await test_create_link_async(request_type=dict)
+
+
+def test_create_link_field_headers():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateLinkRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_link),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.create_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_create_link_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateLinkRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_link),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        await client.create_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+def test_create_link_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_link(
+            parent='parent_value',
+            link=logging_config.Link(name='name_value'),
+            link_id='link_id_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].link
+        mock_val = logging_config.Link(name='name_value')
+        assert arg == mock_val
+        arg = args[0].link_id
+        mock_val = 'link_id_value'
+        assert arg == mock_val
+
+
+def test_create_link_flattened_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_link(
+            logging_config.CreateLinkRequest(),
+            parent='parent_value',
+            link=logging_config.Link(name='name_value'),
+            link_id='link_id_value',
+        )
+
+@pytest.mark.asyncio
+async def test_create_link_flattened_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/op')
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_link(
+            parent='parent_value',
+            link=logging_config.Link(name='name_value'),
+            link_id='link_id_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].link
+        mock_val = logging_config.Link(name='name_value')
+        assert arg == mock_val
+        arg = args[0].link_id
+        mock_val = 'link_id_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_create_link_flattened_error_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_link(
+            logging_config.CreateLinkRequest(),
+            parent='parent_value',
+            link=logging_config.Link(name='name_value'),
+            link_id='link_id_value',
+        )
+
+
+@pytest.mark.parametrize("request_type", [
+  logging_config.DeleteLinkRequest,
+  dict,
+])
+def test_delete_link(request_type, transport: str = 'grpc'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/spam')
+        response = client.delete_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.DeleteLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_link),
+            '__call__') as call:
+        client.delete_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.DeleteLinkRequest()
+
+@pytest.mark.asyncio
+async def test_delete_link_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteLinkRequest):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.delete_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.DeleteLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_link_async_from_dict():
+    await test_delete_link_async(request_type=dict)
+
+
+def test_delete_link_field_headers():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteLinkRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_link),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.delete_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_delete_link_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteLinkRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_link),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        await client.delete_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+def test_delete_link_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_link(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+
+def test_delete_link_flattened_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_link(
+            logging_config.DeleteLinkRequest(),
+            name='name_value',
+        )
+
+@pytest.mark.asyncio
+async def test_delete_link_flattened_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/op')
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_link(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_delete_link_flattened_error_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_link(
+            logging_config.DeleteLinkRequest(),
+            name='name_value',
+        )
+
+
+@pytest.mark.parametrize("request_type", [
+  logging_config.ListLinksRequest,
+  dict,
+])
+def test_list_links(request_type, transport: str = 'grpc'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.ListLinksResponse(
+            next_page_token='next_page_token_value',
+        )
+        response = client.list_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.ListLinksRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListLinksPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_list_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        client.list_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.ListLinksRequest()
+
+@pytest.mark.asyncio
+async def test_list_links_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListLinksRequest):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse(
+            next_page_token='next_page_token_value',
+        ))
+        response = await client.list_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.ListLinksRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListLinksAsyncPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_list_links_async_from_dict():
+    await test_list_links_async(request_type=dict)
+
+
+def test_list_links_field_headers():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.ListLinksRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        call.return_value = logging_config.ListLinksResponse()
+        client.list_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_list_links_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.ListLinksRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse())
+        await client.list_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+def test_list_links_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.ListLinksResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_links(
+            parent='parent_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+
+
+def test_list_links_flattened_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_links(
+            logging_config.ListLinksRequest(),
+            parent='parent_value',
+        )
+
+@pytest.mark.asyncio
+async def test_list_links_flattened_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.ListLinksResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_links(
+            parent='parent_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_list_links_flattened_error_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_links(
+            logging_config.ListLinksRequest(),
+            parent='parent_value',
+        )
+
+
+def test_list_links_pager(transport_name: str = "grpc"):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+                next_page_token='abc',
+            ),
+            logging_config.ListLinksResponse(
+                links=[],
+                next_page_token='def',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                ],
+                next_page_token='ghi',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', ''),
+            )),
+        )
+        pager = client.list_links(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, logging_config.Link)
+                   for i in results)
+def test_list_links_pages(transport_name: str = "grpc"):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+                next_page_token='abc',
+            ),
+            logging_config.ListLinksResponse(
+                links=[],
+                next_page_token='def',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                ],
+                next_page_token='ghi',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_links(request={}).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+@pytest.mark.asyncio
+async def test_list_links_async_pager():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+                next_page_token='abc',
+            ),
+            logging_config.ListLinksResponse(
+                links=[],
+                next_page_token='def',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                ],
+                next_page_token='ghi',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_links(request={},)
+        assert async_pager.next_page_token == 'abc'
+        responses = []
+        async for response in async_pager: # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, logging_config.Link)
+                for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_links_async_pages():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+                next_page_token='abc',
+            ),
+            logging_config.ListLinksResponse(
+                links=[],
+                next_page_token='def',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                ],
+                next_page_token='ghi',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_links(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+@pytest.mark.parametrize("request_type", [
+  logging_config.GetLinkRequest,
+  dict,
+])
+def test_get_link(request_type, transport: str = 'grpc'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Link(
+            name='name_value',
+            description='description_value',
+            lifecycle_state=logging_config.LifecycleState.ACTIVE,
+        )
+        response = client.get_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.GetLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Link)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+
+
+def test_get_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_link),
+            '__call__') as call:
+        client.get_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.GetLinkRequest()
+
+@pytest.mark.asyncio
+async def test_get_link_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetLinkRequest):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link(
+            name='name_value',
+            description='description_value',
+            lifecycle_state=logging_config.LifecycleState.ACTIVE,
+        ))
+        response = await client.get_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.GetLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Link)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+
+
+@pytest.mark.asyncio
+async def test_get_link_async_from_dict():
+    await test_get_link_async(request_type=dict)
+
+
+def test_get_link_field_headers():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetLinkRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_link),
+            '__call__') as call:
+        call.return_value = logging_config.Link()
+        client.get_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_get_link_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetLinkRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_link),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link())
+        await client.get_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+def test_get_link_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Link()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_link(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+
+def test_get_link_flattened_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_link(
+            logging_config.GetLinkRequest(),
+            name='name_value',
+        )
+
+@pytest.mark.asyncio
+async def test_get_link_flattened_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_link),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Link()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_link(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_get_link_flattened_error_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_link(
+            logging_config.GetLinkRequest(),
+            name='name_value',
+        )
+
+
+@pytest.mark.parametrize("request_type", [
   logging_config.ListExclusionsRequest,
   dict,
 ])
@@ -5690,6 +7156,7 @@ def test_get_cmek_settings(request_type, transport: str = 'grpc'):
         call.return_value = logging_config.CmekSettings(
             name='name_value',
             kms_key_name='kms_key_name_value',
+            kms_key_version_name='kms_key_version_name_value',
             service_account_id='service_account_id_value',
         )
         response = client.get_cmek_settings(request)
@@ -5703,6 +7170,7 @@ def test_get_cmek_settings(request_type, transport: str = 'grpc'):
     assert isinstance(response, logging_config.CmekSettings)
     assert response.name == 'name_value'
     assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
 
 
@@ -5742,6 +7210,7 @@ async def test_get_cmek_settings_async(transport: str = 'grpc_asyncio', request_
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
             name='name_value',
             kms_key_name='kms_key_name_value',
+            kms_key_version_name='kms_key_version_name_value',
             service_account_id='service_account_id_value',
         ))
         response = await client.get_cmek_settings(request)
@@ -5755,6 +7224,7 @@ async def test_get_cmek_settings_async(transport: str = 'grpc_asyncio', request_
     assert isinstance(response, logging_config.CmekSettings)
     assert response.name == 'name_value'
     assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
 
 
@@ -5848,6 +7318,7 @@ def test_update_cmek_settings(request_type, transport: str = 'grpc'):
         call.return_value = logging_config.CmekSettings(
             name='name_value',
             kms_key_name='kms_key_name_value',
+            kms_key_version_name='kms_key_version_name_value',
             service_account_id='service_account_id_value',
         )
         response = client.update_cmek_settings(request)
@@ -5861,6 +7332,7 @@ def test_update_cmek_settings(request_type, transport: str = 'grpc'):
     assert isinstance(response, logging_config.CmekSettings)
     assert response.name == 'name_value'
     assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
 
 
@@ -5900,6 +7372,7 @@ async def test_update_cmek_settings_async(transport: str = 'grpc_asyncio', reque
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
             name='name_value',
             kms_key_name='kms_key_name_value',
+            kms_key_version_name='kms_key_version_name_value',
             service_account_id='service_account_id_value',
         ))
         response = await client.update_cmek_settings(request)
@@ -5913,6 +7386,7 @@ async def test_update_cmek_settings_async(transport: str = 'grpc_asyncio', reque
     assert isinstance(response, logging_config.CmekSettings)
     assert response.name == 'name_value'
     assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
 
 
@@ -5982,6 +7456,595 @@ async def test_update_cmek_settings_field_headers_async():
         'x-goog-request-params',
         'name=name_value',
     ) in kw['metadata']
+
+
+@pytest.mark.parametrize("request_type", [
+  logging_config.GetSettingsRequest,
+  dict,
+])
+def test_get_settings(request_type, transport: str = 'grpc'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_settings),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings(
+            name='name_value',
+            kms_key_name='kms_key_name_value',
+            kms_service_account_id='kms_service_account_id_value',
+            storage_location='storage_location_value',
+            disable_default_sink=True,
+        )
+        response = client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.GetSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == 'name_value'
+    assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_service_account_id == 'kms_service_account_id_value'
+    assert response.storage_location == 'storage_location_value'
+    assert response.disable_default_sink is True
+
+
+def test_get_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_settings),
+            '__call__') as call:
+        client.get_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.GetSettingsRequest()
+
+@pytest.mark.asyncio
+async def test_get_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetSettingsRequest):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_settings),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
+            name='name_value',
+            kms_key_name='kms_key_name_value',
+            kms_service_account_id='kms_service_account_id_value',
+            storage_location='storage_location_value',
+            disable_default_sink=True,
+        ))
+        response = await client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.GetSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == 'name_value'
+    assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_service_account_id == 'kms_service_account_id_value'
+    assert response.storage_location == 'storage_location_value'
+    assert response.disable_default_sink is True
+
+
+@pytest.mark.asyncio
+async def test_get_settings_async_from_dict():
+    await test_get_settings_async(request_type=dict)
+
+
+def test_get_settings_field_headers():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetSettingsRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_settings),
+            '__call__') as call:
+        call.return_value = logging_config.Settings()
+        client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_get_settings_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetSettingsRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_settings),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings())
+        await client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+def test_get_settings_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_settings),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_settings(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+
+def test_get_settings_flattened_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_settings(
+            logging_config.GetSettingsRequest(),
+            name='name_value',
+        )
+
+@pytest.mark.asyncio
+async def test_get_settings_flattened_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_settings),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_settings(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_get_settings_flattened_error_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_settings(
+            logging_config.GetSettingsRequest(),
+            name='name_value',
+        )
+
+
+@pytest.mark.parametrize("request_type", [
+  logging_config.UpdateSettingsRequest,
+  dict,
+])
+def test_update_settings(request_type, transport: str = 'grpc'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_settings),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings(
+            name='name_value',
+            kms_key_name='kms_key_name_value',
+            kms_service_account_id='kms_service_account_id_value',
+            storage_location='storage_location_value',
+            disable_default_sink=True,
+        )
+        response = client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.UpdateSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == 'name_value'
+    assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_service_account_id == 'kms_service_account_id_value'
+    assert response.storage_location == 'storage_location_value'
+    assert response.disable_default_sink is True
+
+
+def test_update_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_settings),
+            '__call__') as call:
+        client.update_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.UpdateSettingsRequest()
+
+@pytest.mark.asyncio
+async def test_update_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateSettingsRequest):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_settings),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
+            name='name_value',
+            kms_key_name='kms_key_name_value',
+            kms_service_account_id='kms_service_account_id_value',
+            storage_location='storage_location_value',
+            disable_default_sink=True,
+        ))
+        response = await client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.UpdateSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == 'name_value'
+    assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_service_account_id == 'kms_service_account_id_value'
+    assert response.storage_location == 'storage_location_value'
+    assert response.disable_default_sink is True
+
+
+@pytest.mark.asyncio
+async def test_update_settings_async_from_dict():
+    await test_update_settings_async(request_type=dict)
+
+
+def test_update_settings_field_headers():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateSettingsRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_settings),
+            '__call__') as call:
+        call.return_value = logging_config.Settings()
+        client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_update_settings_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateSettingsRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_settings),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings())
+        await client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+def test_update_settings_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_settings),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_settings(
+            settings=logging_config.Settings(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].settings
+        mock_val = logging_config.Settings(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
+
+
+def test_update_settings_flattened_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_settings(
+            logging_config.UpdateSettingsRequest(),
+            settings=logging_config.Settings(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+@pytest.mark.asyncio
+async def test_update_settings_flattened_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_settings),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_settings(
+            settings=logging_config.Settings(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].settings
+        mock_val = logging_config.Settings(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_update_settings_flattened_error_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_settings(
+            logging_config.UpdateSettingsRequest(),
+            settings=logging_config.Settings(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+
+@pytest.mark.parametrize("request_type", [
+  logging_config.CopyLogEntriesRequest,
+  dict,
+])
+def test_copy_log_entries(request_type, transport: str = 'grpc'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.copy_log_entries),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/spam')
+        response = client.copy_log_entries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CopyLogEntriesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_copy_log_entries_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.copy_log_entries),
+            '__call__') as call:
+        client.copy_log_entries()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CopyLogEntriesRequest()
+
+@pytest.mark.asyncio
+async def test_copy_log_entries_async(transport: str = 'grpc_asyncio', request_type=logging_config.CopyLogEntriesRequest):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.copy_log_entries),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.copy_log_entries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CopyLogEntriesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_copy_log_entries_async_from_dict():
+    await test_copy_log_entries_async(request_type=dict)
 
 
 @pytest.mark.parametrize("request_type", [
@@ -6296,6 +8359,8 @@ def test_get_bucket_rest(request_type):
               retention_days=1512,
               locked=True,
               lifecycle_state=logging_config.LifecycleState.ACTIVE,
+              analytics_enabled=True,
+              restricted_fields=['restricted_fields_value'],
         )
 
         # Wrap the value into a proper Response obj
@@ -6315,6 +8380,8 @@ def test_get_bucket_rest(request_type):
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.analytics_enabled is True
+    assert response.restricted_fields == ['restricted_fields_value']
 
 
 def test_get_bucket_rest_required_fields(request_type=logging_config.GetBucketRequest):
@@ -6465,6 +8532,377 @@ def test_get_bucket_rest_error():
     logging_config.CreateBucketRequest,
     dict,
 ])
+def test_create_bucket_async_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3'}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1, 'analytics_enabled': True, 'restricted_fields': ['restricted_fields_value1', 'restricted_fields_value2'], 'index_configs': [{'field_path': 'field_path_value', 'type_': 1, 'create_time': {}}], 'cmek_settings': {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_bucket_async(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_bucket_async_rest_required_fields(request_type=logging_config.CreateBucketRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["bucket_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "bucketId" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_bucket_async._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "bucketId" in jsonified_request
+    assert jsonified_request["bucketId"] == request_init["bucket_id"]
+
+    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["bucketId"] = 'bucket_id_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_bucket_async._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("bucket_id", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+    assert "bucketId" in jsonified_request
+    assert jsonified_request["bucketId"] == 'bucket_id_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name='operations/spam')
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.create_bucket_async(request)
+
+            expected_params = [
+                (
+                    "bucketId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_create_bucket_async_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.create_bucket_async._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("bucketId", )) & set(("parent", "bucketId", "bucket", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_bucket_async_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_create_bucket_async") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_create_bucket_async") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.CreateBucketRequest.pb(logging_config.CreateBucketRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
+
+        request = logging_config.CreateBucketRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_bucket_async(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_bucket_async_rest_bad_request(transport: str = 'rest', request_type=logging_config.CreateBucketRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3'}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1, 'analytics_enabled': True, 'restricted_fields': ['restricted_fields_value1', 'restricted_fields_value2'], 'index_configs': [{'field_path': 'field_path_value', 'type_': 1, 'create_time': {}}], 'cmek_settings': {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_bucket_async(request)
+
+
+def test_create_bucket_async_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.UpdateBucketRequest,
+    dict,
+])
+def test_update_bucket_async_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1, 'analytics_enabled': True, 'restricted_fields': ['restricted_fields_value1', 'restricted_fields_value2'], 'index_configs': [{'field_path': 'field_path_value', 'type_': 1, 'create_time': {}}], 'cmek_settings': {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_bucket_async(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_bucket_async_rest_required_fields(request_type=logging_config.UpdateBucketRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_bucket_async._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_bucket_async._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name='operations/spam')
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.update_bucket_async(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_update_bucket_async_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.update_bucket_async._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask", )) & set(("name", "bucket", "updateMask", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_bucket_async_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_update_bucket_async") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_update_bucket_async") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.UpdateBucketRequest.pb(logging_config.UpdateBucketRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
+
+        request = logging_config.UpdateBucketRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_bucket_async(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_bucket_async_rest_bad_request(transport: str = 'rest', request_type=logging_config.UpdateBucketRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1, 'analytics_enabled': True, 'restricted_fields': ['restricted_fields_value1', 'restricted_fields_value2'], 'index_configs': [{'field_path': 'field_path_value', 'type_': 1, 'create_time': {}}], 'cmek_settings': {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_bucket_async(request)
+
+
+def test_update_bucket_async_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.CreateBucketRequest,
+    dict,
+])
 def test_create_bucket_rest(request_type):
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6473,7 +8911,7 @@ def test_create_bucket_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'sample1/sample2/locations/sample3'}
-    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1, 'analytics_enabled': True, 'restricted_fields': ['restricted_fields_value1', 'restricted_fields_value2'], 'index_configs': [{'field_path': 'field_path_value', 'type_': 1, 'create_time': {}}], 'cmek_settings': {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6485,6 +8923,8 @@ def test_create_bucket_rest(request_type):
               retention_days=1512,
               locked=True,
               lifecycle_state=logging_config.LifecycleState.ACTIVE,
+              analytics_enabled=True,
+              restricted_fields=['restricted_fields_value'],
         )
 
         # Wrap the value into a proper Response obj
@@ -6504,6 +8944,8 @@ def test_create_bucket_rest(request_type):
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.analytics_enabled is True
+    assert response.restricted_fields == ['restricted_fields_value']
 
 
 def test_create_bucket_rest_required_fields(request_type=logging_config.CreateBucketRequest):
@@ -6645,7 +9087,7 @@ def test_create_bucket_rest_bad_request(transport: str = 'rest', request_type=lo
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'sample1/sample2/locations/sample3'}
-    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1, 'analytics_enabled': True, 'restricted_fields': ['restricted_fields_value1', 'restricted_fields_value2'], 'index_configs': [{'field_path': 'field_path_value', 'type_': 1, 'create_time': {}}], 'cmek_settings': {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6677,7 +9119,7 @@ def test_update_bucket_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
-    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1, 'analytics_enabled': True, 'restricted_fields': ['restricted_fields_value1', 'restricted_fields_value2'], 'index_configs': [{'field_path': 'field_path_value', 'type_': 1, 'create_time': {}}], 'cmek_settings': {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6689,6 +9131,8 @@ def test_update_bucket_rest(request_type):
               retention_days=1512,
               locked=True,
               lifecycle_state=logging_config.LifecycleState.ACTIVE,
+              analytics_enabled=True,
+              restricted_fields=['restricted_fields_value'],
         )
 
         # Wrap the value into a proper Response obj
@@ -6708,6 +9152,8 @@ def test_update_bucket_rest(request_type):
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.analytics_enabled is True
+    assert response.restricted_fields == ['restricted_fields_value']
 
 
 def test_update_bucket_rest_required_fields(request_type=logging_config.UpdateBucketRequest):
@@ -6838,7 +9284,7 @@ def test_update_bucket_rest_bad_request(transport: str = 'rest', request_type=lo
 
     # send a request that will satisfy transcoding
     request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4'}
-    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1}
+    request_init["bucket"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'retention_days': 1512, 'locked': True, 'lifecycle_state': 1, 'analytics_enabled': True, 'restricted_fields': ['restricted_fields_value1', 'restricted_fields_value2'], 'index_configs': [{'field_path': 'field_path_value', 'type_': 1, 'create_time': {}}], 'cmek_settings': {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9492,6 +11938,1003 @@ def test_delete_sink_rest_error():
 
 
 @pytest.mark.parametrize("request_type", [
+    logging_config.CreateLinkRequest,
+    dict,
+])
+def test_create_link_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request_init["link"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'lifecycle_state': 1, 'bigquery_dataset': {'dataset_id': 'dataset_id_value'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_link_rest_required_fields(request_type=logging_config.CreateLinkRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["link_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "linkId" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "linkId" in jsonified_request
+    assert jsonified_request["linkId"] == request_init["link_id"]
+
+    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["linkId"] = 'link_id_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_link._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("link_id", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+    assert "linkId" in jsonified_request
+    assert jsonified_request["linkId"] == 'link_id_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name='operations/spam')
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.create_link(request)
+
+            expected_params = [
+                (
+                    "linkId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_create_link_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.create_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("linkId", )) & set(("parent", "link", "linkId", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_link_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_create_link") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_create_link") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.CreateLinkRequest.pb(logging_config.CreateLinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
+
+        request = logging_config.CreateLinkRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_link(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_link_rest_bad_request(transport: str = 'rest', request_type=logging_config.CreateLinkRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request_init["link"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'lifecycle_state': 1, 'bigquery_dataset': {'dataset_id': 'dataset_id_value'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_link(request)
+
+
+def test_create_link_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+            link=logging_config.Link(name='name_value'),
+            link_id='link_id_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.create_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{parent=*/*/locations/*/buckets/*}/links" % client.transport._host, args[1])
+
+
+def test_create_link_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_link(
+            logging_config.CreateLinkRequest(),
+            parent='parent_value',
+            link=logging_config.Link(name='name_value'),
+            link_id='link_id_value',
+        )
+
+
+def test_create_link_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.DeleteLinkRequest,
+    dict,
+])
+def test_delete_link_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/links/sample5'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_link_rest_required_fields(request_type=logging_config.DeleteLinkRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name='operations/spam')
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "delete",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.delete_link(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_delete_link_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.delete_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_link_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_delete_link") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_delete_link") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.DeleteLinkRequest.pb(logging_config.DeleteLinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
+
+        request = logging_config.DeleteLinkRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_link(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_link_rest_bad_request(transport: str = 'rest', request_type=logging_config.DeleteLinkRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/links/sample5'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_link(request)
+
+
+def test_delete_link_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/links/sample5'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.delete_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{name=*/*/locations/*/buckets/*/links/*}" % client.transport._host, args[1])
+
+
+def test_delete_link_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_link(
+            logging_config.DeleteLinkRequest(),
+            name='name_value',
+        )
+
+
+def test_delete_link_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.ListLinksRequest,
+    dict,
+])
+def test_list_links_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListLinksResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListLinksPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_list_links_rest_required_fields(request_type=logging_config.ListLinksRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = 'parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_links._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("page_size", "page_token", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.ListLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.ListLinksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.list_links(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_list_links_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.list_links._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_links_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_list_links") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_list_links") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.ListLinksRequest.pb(logging_config.ListLinksRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.ListLinksResponse.to_json(logging_config.ListLinksResponse())
+
+        request = logging_config.ListLinksRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.ListLinksResponse()
+
+        client.list_links(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_links_rest_bad_request(transport: str = 'rest', request_type=logging_config.ListLinksRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_links(request)
+
+
+def test_list_links_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.ListLinksResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.ListLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.list_links(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{parent=*/*/locations/*/buckets/*}/links" % client.transport._host, args[1])
+
+
+def test_list_links_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_links(
+            logging_config.ListLinksRequest(),
+            parent='parent_value',
+        )
+
+
+def test_list_links_rest_pager(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        #with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+                next_page_token='abc',
+            ),
+            logging_config.ListLinksResponse(
+                links=[],
+                next_page_token='def',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                ],
+                next_page_token='ghi',
+            ),
+            logging_config.ListLinksResponse(
+                links=[
+                    logging_config.Link(),
+                    logging_config.Link(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(logging_config.ListLinksResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {'parent': 'sample1/sample2/locations/sample3/buckets/sample4'}
+
+        pager = client.list_links(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, logging_config.Link)
+                for i in results)
+
+        pages = list(client.list_links(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.GetLinkRequest,
+    dict,
+])
+def test_get_link_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/links/sample5'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.Link(
+              name='name_value',
+              description='description_value',
+              lifecycle_state=logging_config.LifecycleState.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.Link.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Link)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+
+
+def test_get_link_rest_required_fields(request_type=logging_config.GetLinkRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.Link()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.Link.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.get_link(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_get_link_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.get_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_link_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_get_link") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_get_link") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.GetLinkRequest.pb(logging_config.GetLinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.Link.to_json(logging_config.Link())
+
+        request = logging_config.GetLinkRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.Link()
+
+        client.get_link(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_link_rest_bad_request(transport: str = 'rest', request_type=logging_config.GetLinkRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/links/sample5'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_link(request)
+
+
+def test_get_link_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.Link()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'sample1/sample2/locations/sample3/buckets/sample4/links/sample5'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.Link.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.get_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{name=*/*/locations/*/buckets/*/links/*}" % client.transport._host, args[1])
+
+
+def test_get_link_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_link(
+            logging_config.GetLinkRequest(),
+            name='name_value',
+        )
+
+
+def test_get_link_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
     logging_config.ListExclusionsRequest,
     dict,
 ])
@@ -10748,6 +14191,7 @@ def test_get_cmek_settings_rest(request_type):
         return_value = logging_config.CmekSettings(
               name='name_value',
               kms_key_name='kms_key_name_value',
+              kms_key_version_name='kms_key_version_name_value',
               service_account_id='service_account_id_value',
         )
 
@@ -10765,6 +14209,7 @@ def test_get_cmek_settings_rest(request_type):
     assert isinstance(response, logging_config.CmekSettings)
     assert response.name == 'name_value'
     assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
 
 
@@ -10924,7 +14369,7 @@ def test_update_cmek_settings_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'name': 'sample1/sample2'}
-    request_init["cmek_settings"] = {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'service_account_id': 'service_account_id_value'}
+    request_init["cmek_settings"] = {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10933,6 +14378,7 @@ def test_update_cmek_settings_rest(request_type):
         return_value = logging_config.CmekSettings(
               name='name_value',
               kms_key_name='kms_key_name_value',
+              kms_key_version_name='kms_key_version_name_value',
               service_account_id='service_account_id_value',
         )
 
@@ -10950,6 +14396,7 @@ def test_update_cmek_settings_rest(request_type):
     assert isinstance(response, logging_config.CmekSettings)
     assert response.name == 'name_value'
     assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
 
 
@@ -11081,7 +14528,7 @@ def test_update_cmek_settings_rest_bad_request(transport: str = 'rest', request_
 
     # send a request that will satisfy transcoding
     request_init = {'name': 'sample1/sample2'}
-    request_init["cmek_settings"] = {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'service_account_id': 'service_account_id_value'}
+    request_init["cmek_settings"] = {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_key_version_name': 'kms_key_version_name_value', 'service_account_id': 'service_account_id_value'}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -11095,6 +14542,673 @@ def test_update_cmek_settings_rest_bad_request(transport: str = 'rest', request_
 
 
 def test_update_cmek_settings_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.GetSettingsRequest,
+    dict,
+])
+def test_get_settings_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.Settings(
+              name='name_value',
+              kms_key_name='kms_key_name_value',
+              kms_service_account_id='kms_service_account_id_value',
+              storage_location='storage_location_value',
+              disable_default_sink=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == 'name_value'
+    assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_service_account_id == 'kms_service_account_id_value'
+    assert response.storage_location == 'storage_location_value'
+    assert response.disable_default_sink is True
+
+
+def test_get_settings_rest_required_fields(request_type=logging_config.GetSettingsRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.Settings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.Settings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.get_settings(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_get_settings_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.get_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_settings_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_get_settings") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_get_settings") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.GetSettingsRequest.pb(logging_config.GetSettingsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.Settings.to_json(logging_config.Settings())
+
+        request = logging_config.GetSettingsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.Settings()
+
+        client.get_settings(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_settings_rest_bad_request(transport: str = 'rest', request_type=logging_config.GetSettingsRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_settings(request)
+
+
+def test_get_settings_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.Settings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.get_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{name=*/*}/settings" % client.transport._host, args[1])
+
+
+def test_get_settings_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_settings(
+            logging_config.GetSettingsRequest(),
+            name='name_value',
+        )
+
+
+def test_get_settings_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.UpdateSettingsRequest,
+    dict,
+])
+def test_update_settings_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2'}
+    request_init["settings"] = {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_service_account_id': 'kms_service_account_id_value', 'storage_location': 'storage_location_value', 'disable_default_sink': True}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.Settings(
+              name='name_value',
+              kms_key_name='kms_key_name_value',
+              kms_service_account_id='kms_service_account_id_value',
+              storage_location='storage_location_value',
+              disable_default_sink=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == 'name_value'
+    assert response.kms_key_name == 'kms_key_name_value'
+    assert response.kms_service_account_id == 'kms_service_account_id_value'
+    assert response.storage_location == 'storage_location_value'
+    assert response.disable_default_sink is True
+
+
+def test_update_settings_rest_required_fields(request_type=logging_config.UpdateSettingsRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_settings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = logging_config.Settings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "patch",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = logging_config.Settings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.update_settings(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_update_settings_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.update_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask", )) & set(("name", "settings", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_settings_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_update_settings") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_update_settings") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.UpdateSettingsRequest.pb(logging_config.UpdateSettingsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = logging_config.Settings.to_json(logging_config.Settings())
+
+        request = logging_config.UpdateSettingsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = logging_config.Settings()
+
+        client.update_settings(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_settings_rest_bad_request(transport: str = 'rest', request_type=logging_config.UpdateSettingsRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2'}
+    request_init["settings"] = {'name': 'name_value', 'kms_key_name': 'kms_key_name_value', 'kms_service_account_id': 'kms_service_account_id_value', 'storage_location': 'storage_location_value', 'disable_default_sink': True}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_settings(request)
+
+
+def test_update_settings_rest_flattened():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = logging_config.Settings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            settings=logging_config.Settings(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = logging_config.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.update_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v2/{name=*/*}/settings" % client.transport._host, args[1])
+
+
+def test_update_settings_rest_flattened_error(transport: str = 'rest'):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_settings(
+            logging_config.UpdateSettingsRequest(),
+            settings=logging_config.Settings(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+
+def test_update_settings_rest_error():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    logging_config.CopyLogEntriesRequest,
+    dict,
+])
+def test_copy_log_entries_rest(request_type):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.copy_log_entries(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_copy_log_entries_rest_required_fields(request_type=logging_config.CopyLogEntriesRequest):
+    transport_class = transports.ConfigServiceV2RestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["destination"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).copy_log_entries._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+    jsonified_request["destination"] = 'destination_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).copy_log_entries._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+    assert "destination" in jsonified_request
+    assert jsonified_request["destination"] == 'destination_value'
+
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name='operations/spam')
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.copy_log_entries(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_copy_log_entries_rest_unset_required_fields():
+    transport = transports.ConfigServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.copy_log_entries._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", "destination", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_copy_log_entries_rest_interceptors(null_interceptor):
+    transport = transports.ConfigServiceV2RestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigServiceV2RestInterceptor(),
+        )
+    client = ConfigServiceV2Client(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "post_copy_log_entries") as post, \
+         mock.patch.object(transports.ConfigServiceV2RestInterceptor, "pre_copy_log_entries") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = logging_config.CopyLogEntriesRequest.pb(logging_config.CopyLogEntriesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
+
+        request = logging_config.CopyLogEntriesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.copy_log_entries(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_copy_log_entries_rest_bad_request(transport: str = 'rest', request_type=logging_config.CopyLogEntriesRequest):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.copy_log_entries(request)
+
+
+def test_copy_log_entries_rest_error():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='rest'
@@ -11230,6 +15344,8 @@ def test_config_service_v2_base_transport():
     methods = (
         'list_buckets',
         'get_bucket',
+        'create_bucket_async',
+        'update_bucket_async',
         'create_bucket',
         'update_bucket',
         'delete_bucket',
@@ -11244,6 +15360,10 @@ def test_config_service_v2_base_transport():
         'create_sink',
         'update_sink',
         'delete_sink',
+        'create_link',
+        'delete_link',
+        'list_links',
+        'get_link',
         'list_exclusions',
         'get_exclusion',
         'create_exclusion',
@@ -11251,6 +15371,9 @@ def test_config_service_v2_base_transport():
         'delete_exclusion',
         'get_cmek_settings',
         'update_cmek_settings',
+        'get_settings',
+        'update_settings',
+        'copy_log_entries',
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -11258,6 +15381,11 @@ def test_config_service_v2_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
 
     # Catch all for all remaining methods and properties
     remainder = [
@@ -11450,6 +15578,23 @@ def test_config_service_v2_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
+def test_config_service_v2_rest_lro_client():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 @pytest.mark.parametrize("transport_name", [
     "grpc",
     "grpc_asyncio",
@@ -11504,6 +15649,12 @@ def test_config_service_v2_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_bucket._session
     session2 = client2.transport.get_bucket._session
     assert session1 != session2
+    session1 = client1.transport.create_bucket_async._session
+    session2 = client2.transport.create_bucket_async._session
+    assert session1 != session2
+    session1 = client1.transport.update_bucket_async._session
+    session2 = client2.transport.update_bucket_async._session
+    assert session1 != session2
     session1 = client1.transport.create_bucket._session
     session2 = client2.transport.create_bucket._session
     assert session1 != session2
@@ -11546,6 +15697,18 @@ def test_config_service_v2_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_sink._session
     session2 = client2.transport.delete_sink._session
     assert session1 != session2
+    session1 = client1.transport.create_link._session
+    session2 = client2.transport.create_link._session
+    assert session1 != session2
+    session1 = client1.transport.delete_link._session
+    session2 = client2.transport.delete_link._session
+    assert session1 != session2
+    session1 = client1.transport.list_links._session
+    session2 = client2.transport.list_links._session
+    assert session1 != session2
+    session1 = client1.transport.get_link._session
+    session2 = client2.transport.get_link._session
+    assert session1 != session2
     session1 = client1.transport.list_exclusions._session
     session2 = client2.transport.list_exclusions._session
     assert session1 != session2
@@ -11566,6 +15729,15 @@ def test_config_service_v2_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.update_cmek_settings._session
     session2 = client2.transport.update_cmek_settings._session
+    assert session1 != session2
+    session1 = client1.transport.get_settings._session
+    session2 = client2.transport.get_settings._session
+    assert session1 != session2
+    session1 = client1.transport.update_settings._session
+    session2 = client2.transport.update_settings._session
+    assert session1 != session2
+    session1 = client1.transport.copy_log_entries._session
+    session2 = client2.transport.copy_log_entries._session
     assert session1 != session2
 def test_config_service_v2_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
@@ -11677,6 +15849,40 @@ def test_config_service_v2_transport_channel_mtls_with_adc(
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_config_service_v2_grpc_lro_client():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_config_service_v2_grpc_lro_async_client():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 def test_cmek_settings_path():
     project = "squid"
     expected = "projects/{project}/cmekSettings".format(project=project, )
@@ -11694,10 +15900,33 @@ def test_parse_cmek_settings_path():
     actual = ConfigServiceV2Client.parse_cmek_settings_path(path)
     assert expected == actual
 
-def test_log_bucket_path():
+def test_link_path():
     project = "whelk"
     location = "octopus"
     bucket = "oyster"
+    link = "nudibranch"
+    expected = "projects/{project}/locations/{location}/buckets/{bucket}/links/{link}".format(project=project, location=location, bucket=bucket, link=link, )
+    actual = ConfigServiceV2Client.link_path(project, location, bucket, link)
+    assert expected == actual
+
+
+def test_parse_link_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "bucket": "winkle",
+        "link": "nautilus",
+    }
+    path = ConfigServiceV2Client.link_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConfigServiceV2Client.parse_link_path(path)
+    assert expected == actual
+
+def test_log_bucket_path():
+    project = "scallop"
+    location = "abalone"
+    bucket = "squid"
     expected = "projects/{project}/locations/{location}/buckets/{bucket}".format(project=project, location=location, bucket=bucket, )
     actual = ConfigServiceV2Client.log_bucket_path(project, location, bucket)
     assert expected == actual
@@ -11705,9 +15934,9 @@ def test_log_bucket_path():
 
 def test_parse_log_bucket_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "bucket": "mussel",
+        "project": "clam",
+        "location": "whelk",
+        "bucket": "octopus",
     }
     path = ConfigServiceV2Client.log_bucket_path(**expected)
 
@@ -11716,8 +15945,8 @@ def test_parse_log_bucket_path():
     assert expected == actual
 
 def test_log_exclusion_path():
-    project = "winkle"
-    exclusion = "nautilus"
+    project = "oyster"
+    exclusion = "nudibranch"
     expected = "projects/{project}/exclusions/{exclusion}".format(project=project, exclusion=exclusion, )
     actual = ConfigServiceV2Client.log_exclusion_path(project, exclusion)
     assert expected == actual
@@ -11725,8 +15954,8 @@ def test_log_exclusion_path():
 
 def test_parse_log_exclusion_path():
     expected = {
-        "project": "scallop",
-        "exclusion": "abalone",
+        "project": "cuttlefish",
+        "exclusion": "mussel",
     }
     path = ConfigServiceV2Client.log_exclusion_path(**expected)
 
@@ -11735,8 +15964,8 @@ def test_parse_log_exclusion_path():
     assert expected == actual
 
 def test_log_sink_path():
-    project = "squid"
-    sink = "clam"
+    project = "winkle"
+    sink = "nautilus"
     expected = "projects/{project}/sinks/{sink}".format(project=project, sink=sink, )
     actual = ConfigServiceV2Client.log_sink_path(project, sink)
     assert expected == actual
@@ -11744,8 +15973,8 @@ def test_log_sink_path():
 
 def test_parse_log_sink_path():
     expected = {
-        "project": "whelk",
-        "sink": "octopus",
+        "project": "scallop",
+        "sink": "abalone",
     }
     path = ConfigServiceV2Client.log_sink_path(**expected)
 
@@ -11754,10 +15983,10 @@ def test_parse_log_sink_path():
     assert expected == actual
 
 def test_log_view_path():
-    project = "oyster"
-    location = "nudibranch"
-    bucket = "cuttlefish"
-    view = "mussel"
+    project = "squid"
+    location = "clam"
+    bucket = "whelk"
+    view = "octopus"
     expected = "projects/{project}/locations/{location}/buckets/{bucket}/views/{view}".format(project=project, location=location, bucket=bucket, view=view, )
     actual = ConfigServiceV2Client.log_view_path(project, location, bucket, view)
     assert expected == actual
@@ -11765,10 +15994,10 @@ def test_log_view_path():
 
 def test_parse_log_view_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "bucket": "scallop",
-        "view": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
+        "bucket": "cuttlefish",
+        "view": "mussel",
     }
     path = ConfigServiceV2Client.log_view_path(**expected)
 
@@ -11776,8 +16005,25 @@ def test_parse_log_view_path():
     actual = ConfigServiceV2Client.parse_log_view_path(path)
     assert expected == actual
 
+def test_settings_path():
+    project = "winkle"
+    expected = "projects/{project}/settings".format(project=project, )
+    actual = ConfigServiceV2Client.settings_path(project)
+    assert expected == actual
+
+
+def test_parse_settings_path():
+    expected = {
+        "project": "nautilus",
+    }
+    path = ConfigServiceV2Client.settings_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConfigServiceV2Client.parse_settings_path(path)
+    assert expected == actual
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(billing_account=billing_account, )
     actual = ConfigServiceV2Client.common_billing_account_path(billing_account)
     assert expected == actual
@@ -11785,7 +16031,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "abalone",
     }
     path = ConfigServiceV2Client.common_billing_account_path(**expected)
 
@@ -11794,7 +16040,7 @@ def test_parse_common_billing_account_path():
     assert expected == actual
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "squid"
     expected = "folders/{folder}".format(folder=folder, )
     actual = ConfigServiceV2Client.common_folder_path(folder)
     assert expected == actual
@@ -11802,7 +16048,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "clam",
     }
     path = ConfigServiceV2Client.common_folder_path(**expected)
 
@@ -11811,7 +16057,7 @@ def test_parse_common_folder_path():
     assert expected == actual
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "whelk"
     expected = "organizations/{organization}".format(organization=organization, )
     actual = ConfigServiceV2Client.common_organization_path(organization)
     assert expected == actual
@@ -11819,7 +16065,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "octopus",
     }
     path = ConfigServiceV2Client.common_organization_path(**expected)
 
@@ -11828,7 +16074,7 @@ def test_parse_common_organization_path():
     assert expected == actual
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "oyster"
     expected = "projects/{project}".format(project=project, )
     actual = ConfigServiceV2Client.common_project_path(project)
     assert expected == actual
@@ -11836,7 +16082,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nudibranch",
     }
     path = ConfigServiceV2Client.common_project_path(**expected)
 
@@ -11845,8 +16091,8 @@ def test_parse_common_project_path():
     assert expected == actual
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(project=project, location=location, )
     actual = ConfigServiceV2Client.common_location_path(project, location)
     assert expected == actual
@@ -11854,8 +16100,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = ConfigServiceV2Client.common_location_path(**expected)
 

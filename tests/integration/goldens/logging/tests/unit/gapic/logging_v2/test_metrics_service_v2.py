@@ -996,6 +996,8 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1011,6 +1013,8 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1052,6 +1056,8 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
@@ -1067,6 +1073,8 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1244,6 +1252,8 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1259,6 +1269,8 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1300,6 +1312,8 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
@@ -1315,6 +1329,8 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1502,6 +1518,8 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1517,6 +1535,8 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1558,6 +1578,8 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
@@ -1573,6 +1595,8 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -2273,6 +2297,8 @@ def test_get_log_metric_rest(request_type):
               name='name_value',
               description='description_value',
               filter='filter_value',
+              bucket_name='bucket_name_value',
+              disabled=True,
               value_extractor='value_extractor_value',
               version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -2292,6 +2318,8 @@ def test_get_log_metric_rest(request_type):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -2504,7 +2532,7 @@ def test_create_log_metric_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1'}
-    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
+    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'bucket_name': 'bucket_name_value', 'disabled': True, 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2514,6 +2542,8 @@ def test_create_log_metric_rest(request_type):
               name='name_value',
               description='description_value',
               filter='filter_value',
+              bucket_name='bucket_name_value',
+              disabled=True,
               value_extractor='value_extractor_value',
               version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -2533,6 +2563,8 @@ def test_create_log_metric_rest(request_type):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -2663,7 +2695,7 @@ def test_create_log_metric_rest_bad_request(transport: str = 'rest', request_typ
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1'}
-    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
+    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'bucket_name': 'bucket_name_value', 'disabled': True, 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2749,7 +2781,7 @@ def test_update_log_metric_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'metric_name': 'projects/sample1/metrics/sample2'}
-    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
+    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'bucket_name': 'bucket_name_value', 'disabled': True, 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2759,6 +2791,8 @@ def test_update_log_metric_rest(request_type):
               name='name_value',
               description='description_value',
               filter='filter_value',
+              bucket_name='bucket_name_value',
+              disabled=True,
               value_extractor='value_extractor_value',
               version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -2778,6 +2812,8 @@ def test_update_log_metric_rest(request_type):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -2908,7 +2944,7 @@ def test_update_log_metric_rest_bad_request(transport: str = 'rest', request_typ
 
     # send a request that will satisfy transcoding
     request_init = {'metric_name': 'projects/sample1/metrics/sample2'}
-    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
+    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'bucket_name': 'bucket_name_value', 'disabled': True, 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
