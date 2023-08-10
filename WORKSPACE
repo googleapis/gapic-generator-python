@@ -1,6 +1,8 @@
 workspace(name = "gapic_generator_python")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@rules_python//python:repositories.bzl", "py_repositories", "python_register_toolchains", "pip_parse")
+load("@python39//:defs.bzl", "interpreter")
 
 _bazel_skylib_version = "0.9.0"
 
@@ -33,6 +35,22 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_python/archive/{}.tar.gz".format(_rules_python_version),
 )
 
+
+py_repositories()
+
+python_register_toolchains(
+    name = "python39",
+    python_version = "3.9",
+)
+
+pip_parse(
+    name = "gapic_generator_python_pip_deps",
+    python_interpreter_target = interpreter,
+	requirements_lock = "//:requirements.txt",
+)
+load("@gapic_generator_python_pip_deps//:requirements.bzl", "install_deps")
+
+install_deps()
 #
 # Import gapic-generator-python specific dependencies
 #
