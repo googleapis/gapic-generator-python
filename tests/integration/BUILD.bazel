@@ -118,6 +118,7 @@ py_test(
     ],
 )
 
+# Logging.
 py_gapic_library(
     name = "logging_py_gapic",
     srcs = ["@com_google_googleapis//google/logging/v2:logging_proto"],
