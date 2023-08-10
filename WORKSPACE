@@ -22,9 +22,9 @@ http_archive(
     ],
 )
 
-_rules_python_version = "0.9.0"
+_rules_python_version = "0.24.0"
 
-_rules_python_sha256 = "5fa3c738d33acca3b97622a13a741129f67ef43f5fdfcec63b29374cc0574c29"
+_rules_python_sha256 = "0a8003b044294d7840ac7d9d73eef05d6ceb682d7516781a4ec62eeb34702578"
 
 http_archive(
     name = "rules_python",
