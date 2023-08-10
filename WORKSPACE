@@ -39,7 +39,6 @@ load("@rules_python//python:pip.bzl", "pip_parse")
 
 py_repositories()
 
-
 pip_parse(
     name = "gapic_generator_python_pip_deps",
 	requirements_lock = "//:requirements.txt",
