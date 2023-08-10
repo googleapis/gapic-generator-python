@@ -27,10 +27,6 @@ from google.api_core import path_template
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
-from google.api_core import operations_v1
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.cloud.location import locations_pb2 # type: ignore
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -43,11 +39,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 
-from google.cloud.eventarc_v1.types import eventarc
-from google.cloud.eventarc_v1.types import trigger
-from google.longrunning import operations_pb2  # type: ignore
+from google.cloud.logging_v2.types import logging_metrics
+from google.protobuf import empty_pb2  # type: ignore
 
-from .base import EventarcTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -57,8 +52,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class EventarcRestInterceptor:
-    """Interceptor for Eventarc.
+class MetricsServiceV2RestInterceptor:
+    """Interceptor for MetricsServiceV2.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -68,150 +63,136 @@ class EventarcRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the EventarcRestTransport.
+    instance of a custom subclass when constructing the MetricsServiceV2RestTransport.
 
     .. code-block:: python
-        class MyCustomEventarcInterceptor(EventarcRestInterceptor):
-            def pre_create_trigger(self, request, metadata):
+        class MyCustomMetricsServiceV2Interceptor(MetricsServiceV2RestInterceptor):
+            def pre_create_log_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_trigger(self, response):
+            def post_create_log_metric(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_delete_trigger(self, request, metadata):
+            def pre_delete_log_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_trigger(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_trigger(self, request, metadata):
+            def pre_get_log_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_trigger(self, response):
+            def post_get_log_metric(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_triggers(self, request, metadata):
+            def pre_list_log_metrics(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_triggers(self, response):
+            def post_list_log_metrics(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_update_trigger(self, request, metadata):
+            def pre_update_log_metric(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_trigger(self, response):
+            def post_update_log_metric(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-        transport = EventarcRestTransport(interceptor=MyCustomEventarcInterceptor())
-        client = EventarcClient(transport=transport)
+        transport = MetricsServiceV2RestTransport(interceptor=MyCustomMetricsServiceV2Interceptor())
+        client = MetricsServiceV2Client(transport=transport)
 
 
     """
-    def pre_create_trigger(self, request: eventarc.CreateTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.CreateTriggerRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for create_trigger
+    def pre_create_log_metric(self, request: logging_metrics.CreateLogMetricRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[logging_metrics.CreateLogMetricRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_log_metric
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Eventarc server.
+        before they are sent to the MetricsServiceV2 server.
         """
         return request, metadata
 
-    def post_create_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for create_trigger
+    def post_create_log_metric(self, response: logging_metrics.LogMetric) -> logging_metrics.LogMetric:
+        """Post-rpc interceptor for create_log_metric
 
         Override in a subclass to manipulate the response
-        after it is returned by the Eventarc server but before
+        after it is returned by the MetricsServiceV2 server but before
         it is returned to user code.
         """
         return response
-    def pre_delete_trigger(self, request: eventarc.DeleteTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.DeleteTriggerRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for delete_trigger
+    def pre_delete_log_metric(self, request: logging_metrics.DeleteLogMetricRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[logging_metrics.DeleteLogMetricRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_log_metric
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Eventarc server.
+        before they are sent to the MetricsServiceV2 server.
         """
         return request, metadata
 
-    def post_delete_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for delete_trigger
+    def pre_get_log_metric(self, request: logging_metrics.GetLogMetricRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[logging_metrics.GetLogMetricRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_log_metric
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the MetricsServiceV2 server.
+        """
+        return request, metadata
+
+    def post_get_log_metric(self, response: logging_metrics.LogMetric) -> logging_metrics.LogMetric:
+        """Post-rpc interceptor for get_log_metric
 
         Override in a subclass to manipulate the response
-        after it is returned by the Eventarc server but before
+        after it is returned by the MetricsServiceV2 server but before
         it is returned to user code.
         """
         return response
-    def pre_get_trigger(self, request: eventarc.GetTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetTriggerRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_trigger
+    def pre_list_log_metrics(self, request: logging_metrics.ListLogMetricsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[logging_metrics.ListLogMetricsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_log_metrics
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Eventarc server.
+        before they are sent to the MetricsServiceV2 server.
         """
         return request, metadata
 
-    def post_get_trigger(self, response: trigger.Trigger) -> trigger.Trigger:
-        """Post-rpc interceptor for get_trigger
+    def post_list_log_metrics(self, response: logging_metrics.ListLogMetricsResponse) -> logging_metrics.ListLogMetricsResponse:
+        """Post-rpc interceptor for list_log_metrics
 
         Override in a subclass to manipulate the response
-        after it is returned by the Eventarc server but before
+        after it is returned by the MetricsServiceV2 server but before
         it is returned to user code.
         """
         return response
-    def pre_list_triggers(self, request: eventarc.ListTriggersRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.ListTriggersRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for list_triggers
+    def pre_update_log_metric(self, request: logging_metrics.UpdateLogMetricRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[logging_metrics.UpdateLogMetricRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_log_metric
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Eventarc server.
+        before they are sent to the MetricsServiceV2 server.
         """
         return request, metadata
 
-    def post_list_triggers(self, response: eventarc.ListTriggersResponse) -> eventarc.ListTriggersResponse:
-        """Post-rpc interceptor for list_triggers
+    def post_update_log_metric(self, response: logging_metrics.LogMetric) -> logging_metrics.LogMetric:
+        """Post-rpc interceptor for update_log_metric
 
         Override in a subclass to manipulate the response
-        after it is returned by the Eventarc server but before
-        it is returned to user code.
-        """
-        return response
-    def pre_update_trigger(self, request: eventarc.UpdateTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.UpdateTriggerRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for update_trigger
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the Eventarc server.
-        """
-        return request, metadata
-
-    def post_update_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for update_trigger
-
-        Override in a subclass to manipulate the response
-        after it is returned by the Eventarc server but before
+        after it is returned by the MetricsServiceV2 server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class EventarcRestStub:
+class MetricsServiceV2RestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: EventarcRestInterceptor
+    _interceptor: MetricsServiceV2RestInterceptor
 
 
-class EventarcRestTransport(EventarcTransport):
-    """REST backend transport for Eventarc.
+class MetricsServiceV2RestTransport(MetricsServiceV2Transport):
+    """REST backend transport for MetricsServiceV2.
 
-    Eventarc allows users to subscribe to various events that are
-    provided by Google Cloud services and forward them to supported
-    destinations.
+    Service for configuring logs-based metrics.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -225,7 +206,7 @@ class EventarcRestTransport(EventarcTransport):
     """
 
     def __init__(self, *,
-            host: str = 'eventarc.googleapis.com',
+            host: str = 'logging.googleapis.com',
             credentials: Optional[ga_credentials.Credentials] = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
@@ -235,7 +216,7 @@ class EventarcRestTransport(EventarcTransport):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             url_scheme: str = 'https',
-            interceptor: Optional[EventarcRestInterceptor] = None,
+            interceptor: Optional[MetricsServiceV2RestInterceptor] = None,
             api_audience: Optional[str] = None,
             ) -> None:
         """Instantiate the transport.
@@ -295,60 +276,33 @@ class EventarcRestTransport(EventarcTransport):
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST)
-        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or EventarcRestInterceptor()
+        self._interceptor = interceptor or MetricsServiceV2RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def operations_client(self) -> operations_v1.AbstractOperationsClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            http_options: Dict[str, List[Dict[str, str]]] = {
-            }
-
-            rest_transport = operations_v1.OperationsRestTransport(
-                    host=self._host,
-                    # use the credentials which are saved
-                    credentials=self._credentials,
-                    scopes=self._scopes,
-                    http_options=http_options,
-                    path_prefix="v1")
-
-            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
-
-        # Return the client from cache.
-        return self._operations_client
-
-    class _CreateTrigger(EventarcRestStub):
+    class _CreateLogMetric(MetricsServiceV2RestStub):
         def __hash__(self):
-            return hash("CreateTrigger")
+            return hash("CreateLogMetric")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "triggerId" : "",            "validateOnly" : False,        }
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         def __call__(self,
-                request: eventarc.CreateTriggerRequest, *,
+                request: logging_metrics.CreateLogMetricRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
-            r"""Call the create trigger method over HTTP.
+                ) -> logging_metrics.LogMetric:
+            r"""Call the create log metric method over HTTP.
 
             Args:
-                request (~.eventarc.CreateTriggerRequest):
-                    The request object. The request message for the
-                CreateTrigger method.
+                request (~.logging_metrics.CreateLogMetricRequest):
+                    The request object. The parameters to CreateLogMetric.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -356,21 +310,30 @@ class EventarcRestTransport(EventarcTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
+                ~.logging_metrics.LogMetric:
+                    Describes a logs-based metric. The
+                value of the metric is the number of log
+                entries that match a logs filter in a
+                given time interval.
+
+                Logs-based metrics can also be used to
+                extract values from logs and create a
+                distribution of the values. The
+                distribution records the statistics of
+                the extracted values along with an
+                optional histogram of the values as
+                specified by the bucket options.
 
             """
 
             http_options: List[Dict[str, str]] = [{
                 'method': 'post',
-                'uri': '/v1/{parent=projects/*/locations/*}/triggers',
-                'body': 'trigger',
+                'uri': '/v2/{parent=projects/*}/metrics',
+                'body': 'metric',
             },
             ]
-            request, metadata = self._interceptor.pre_create_trigger(request, metadata)
-            pb_request = eventarc.CreateTriggerRequest.pb(request)
+            request, metadata = self._interceptor.pre_create_log_metric(request, metadata)
+            pb_request = logging_metrics.CreateLogMetricRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -408,55 +371,49 @@ class EventarcRestTransport(EventarcTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_create_trigger(resp)
+            resp = logging_metrics.LogMetric()
+            pb_resp = logging_metrics.LogMetric.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_log_metric(resp)
             return resp
 
-    class _DeleteTrigger(EventarcRestStub):
+    class _DeleteLogMetric(MetricsServiceV2RestStub):
         def __hash__(self):
-            return hash("DeleteTrigger")
+            return hash("DeleteLogMetric")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "validateOnly" : False,        }
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         def __call__(self,
-                request: eventarc.DeleteTriggerRequest, *,
+                request: logging_metrics.DeleteLogMetricRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
-            r"""Call the delete trigger method over HTTP.
+                ):
+            r"""Call the delete log metric method over HTTP.
 
             Args:
-                request (~.eventarc.DeleteTriggerRequest):
-                    The request object. The request message for the
-                DeleteTrigger method.
+                request (~.logging_metrics.DeleteLogMetricRequest):
+                    The request object. The parameters to DeleteLogMetric.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, str]]): Strings which should be
                     sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
             """
 
             http_options: List[Dict[str, str]] = [{
                 'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/triggers/*}',
+                'uri': '/v2/{metric_name=projects/*/metrics/*}',
             },
             ]
-            request, metadata = self._interceptor.pre_delete_trigger(request, metadata)
-            pb_request = eventarc.DeleteTriggerRequest.pb(request)
+            request, metadata = self._interceptor.pre_delete_log_metric(request, metadata)
+            pb_request = logging_metrics.DeleteLogMetricRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request['uri']
@@ -485,15 +442,9 @@ class EventarcRestTransport(EventarcTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_delete_trigger(resp)
-            return resp
-
-    class _GetTrigger(EventarcRestStub):
+    class _GetLogMetric(MetricsServiceV2RestStub):
         def __hash__(self):
-            return hash("GetTrigger")
+            return hash("GetLogMetric")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -503,17 +454,16 @@ class EventarcRestTransport(EventarcTransport):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         def __call__(self,
-                request: eventarc.GetTriggerRequest, *,
+                request: logging_metrics.GetLogMetricRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
-                ) -> trigger.Trigger:
-            r"""Call the get trigger method over HTTP.
+                ) -> logging_metrics.LogMetric:
+            r"""Call the get log metric method over HTTP.
 
             Args:
-                request (~.eventarc.GetTriggerRequest):
-                    The request object. The request message for the
-                GetTrigger method.
+                request (~.logging_metrics.GetLogMetricRequest):
+                    The request object. The parameters to GetLogMetric.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -521,19 +471,29 @@ class EventarcRestTransport(EventarcTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.trigger.Trigger:
-                    A representation of the trigger
-                resource.
+                ~.logging_metrics.LogMetric:
+                    Describes a logs-based metric. The
+                value of the metric is the number of log
+                entries that match a logs filter in a
+                given time interval.
+
+                Logs-based metrics can also be used to
+                extract values from logs and create a
+                distribution of the values. The
+                distribution records the statistics of
+                the extracted values along with an
+                optional histogram of the values as
+                specified by the bucket options.
 
             """
 
             http_options: List[Dict[str, str]] = [{
                 'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/triggers/*}',
+                'uri': '/v2/{metric_name=projects/*/metrics/*}',
             },
             ]
-            request, metadata = self._interceptor.pre_get_trigger(request, metadata)
-            pb_request = eventarc.GetTriggerRequest.pb(request)
+            request, metadata = self._interceptor.pre_get_log_metric(request, metadata)
+            pb_request = logging_metrics.GetLogMetricRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request['uri']
@@ -563,16 +523,16 @@ class EventarcRestTransport(EventarcTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = trigger.Trigger()
-            pb_resp = trigger.Trigger.pb(resp)
+            resp = logging_metrics.LogMetric()
+            pb_resp = logging_metrics.LogMetric.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_trigger(resp)
+            resp = self._interceptor.post_get_log_metric(resp)
             return resp
 
-    class _ListTriggers(EventarcRestStub):
+    class _ListLogMetrics(MetricsServiceV2RestStub):
         def __hash__(self):
-            return hash("ListTriggers")
+            return hash("ListLogMetrics")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -582,17 +542,16 @@ class EventarcRestTransport(EventarcTransport):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         def __call__(self,
-                request: eventarc.ListTriggersRequest, *,
+                request: logging_metrics.ListLogMetricsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
-                ) -> eventarc.ListTriggersResponse:
-            r"""Call the list triggers method over HTTP.
+                ) -> logging_metrics.ListLogMetricsResponse:
+            r"""Call the list log metrics method over HTTP.
 
             Args:
-                request (~.eventarc.ListTriggersRequest):
-                    The request object. The request message for the
-                ListTriggers method.
+                request (~.logging_metrics.ListLogMetricsRequest):
+                    The request object. The parameters to ListLogMetrics.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -600,19 +559,17 @@ class EventarcRestTransport(EventarcTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.eventarc.ListTriggersResponse:
-                    The response message for the
-                ListTriggers method.
-
+                ~.logging_metrics.ListLogMetricsResponse:
+                    Result returned from ListLogMetrics.
             """
 
             http_options: List[Dict[str, str]] = [{
                 'method': 'get',
-                'uri': '/v1/{parent=projects/*/locations/*}/triggers',
+                'uri': '/v2/{parent=projects/*}/metrics',
             },
             ]
-            request, metadata = self._interceptor.pre_list_triggers(request, metadata)
-            pb_request = eventarc.ListTriggersRequest.pb(request)
+            request, metadata = self._interceptor.pre_list_log_metrics(request, metadata)
+            pb_request = logging_metrics.ListLogMetricsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request['uri']
@@ -642,36 +599,35 @@ class EventarcRestTransport(EventarcTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = eventarc.ListTriggersResponse()
-            pb_resp = eventarc.ListTriggersResponse.pb(resp)
+            resp = logging_metrics.ListLogMetricsResponse()
+            pb_resp = logging_metrics.ListLogMetricsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_triggers(resp)
+            resp = self._interceptor.post_list_log_metrics(resp)
             return resp
 
-    class _UpdateTrigger(EventarcRestStub):
+    class _UpdateLogMetric(MetricsServiceV2RestStub):
         def __hash__(self):
-            return hash("UpdateTrigger")
+            return hash("UpdateLogMetric")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "validateOnly" : False,        }
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         def __call__(self,
-                request: eventarc.UpdateTriggerRequest, *,
+                request: logging_metrics.UpdateLogMetricRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
-                ) -> operations_pb2.Operation:
-            r"""Call the update trigger method over HTTP.
+                ) -> logging_metrics.LogMetric:
+            r"""Call the update log metric method over HTTP.
 
             Args:
-                request (~.eventarc.UpdateTriggerRequest):
-                    The request object. The request message for the
-                UpdateTrigger method.
+                request (~.logging_metrics.UpdateLogMetricRequest):
+                    The request object. The parameters to UpdateLogMetric.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -679,21 +635,30 @@ class EventarcRestTransport(EventarcTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
+                ~.logging_metrics.LogMetric:
+                    Describes a logs-based metric. The
+                value of the metric is the number of log
+                entries that match a logs filter in a
+                given time interval.
+
+                Logs-based metrics can also be used to
+                extract values from logs and create a
+                distribution of the values. The
+                distribution records the statistics of
+                the extracted values along with an
+                optional histogram of the values as
+                specified by the bucket options.
 
             """
 
             http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{trigger.name=projects/*/locations/*/triggers/*}',
-                'body': 'trigger',
+                'method': 'put',
+                'uri': '/v2/{metric_name=projects/*/metrics/*}',
+                'body': 'metric',
             },
             ]
-            request, metadata = self._interceptor.pre_update_trigger(request, metadata)
-            pb_request = eventarc.UpdateTriggerRequest.pb(request)
+            request, metadata = self._interceptor.pre_update_log_metric(request, metadata)
+            pb_request = logging_metrics.UpdateLogMetricRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -731,50 +696,52 @@ class EventarcRestTransport(EventarcTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_update_trigger(resp)
+            resp = logging_metrics.LogMetric()
+            pb_resp = logging_metrics.LogMetric.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_log_metric(resp)
             return resp
 
     @property
-    def create_trigger(self) -> Callable[
-            [eventarc.CreateTriggerRequest],
-            operations_pb2.Operation]:
+    def create_log_metric(self) -> Callable[
+            [logging_metrics.CreateLogMetricRequest],
+            logging_metrics.LogMetric]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateTrigger(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateLogMetric(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def delete_trigger(self) -> Callable[
-            [eventarc.DeleteTriggerRequest],
-            operations_pb2.Operation]:
+    def delete_log_metric(self) -> Callable[
+            [logging_metrics.DeleteLogMetricRequest],
+            empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteTrigger(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteLogMetric(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def get_trigger(self) -> Callable[
-            [eventarc.GetTriggerRequest],
-            trigger.Trigger]:
+    def get_log_metric(self) -> Callable[
+            [logging_metrics.GetLogMetricRequest],
+            logging_metrics.LogMetric]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetTrigger(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetLogMetric(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def list_triggers(self) -> Callable[
-            [eventarc.ListTriggersRequest],
-            eventarc.ListTriggersResponse]:
+    def list_log_metrics(self) -> Callable[
+            [logging_metrics.ListLogMetricsRequest],
+            logging_metrics.ListLogMetricsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListTriggers(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListLogMetrics(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def update_trigger(self) -> Callable[
-            [eventarc.UpdateTriggerRequest],
-            operations_pb2.Operation]:
+    def update_log_metric(self) -> Callable[
+            [logging_metrics.UpdateLogMetricRequest],
+            logging_metrics.LogMetric]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateTrigger(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpdateLogMetric(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def kind(self) -> str:
@@ -785,5 +752,5 @@ class EventarcRestTransport(EventarcTransport):
 
 
 __all__=(
-    'EventarcRestTransport',
+    'MetricsServiceV2RestTransport',
 )

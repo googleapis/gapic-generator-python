@@ -61,7 +61,6 @@ py_gapic_library(
         "autogen-snippets",
     ],
     transport = "grpc+rest",
-    service_yaml = "cloudasset_v1.yaml",
 )
 
 # Credentials.
@@ -73,7 +72,6 @@ py_gapic_library(
         "autogen-snippets",
     ],
     transport = "grpc+rest",
-    service_yaml = "iamcredentials_v1.yaml",
 )
 
 py_test(
@@ -120,9 +118,6 @@ py_test(
     ],
 )
 
-# Logging.
-# TODO: Re-enable grpc+rest transport
-# Once https://github.com/googleapis/gapic-generator-python/issues/1728 is fixed
 py_gapic_library(
     name = "logging_py_gapic",
     srcs = ["@com_google_googleapis//google/logging/v2:logging_proto"],
@@ -132,8 +127,7 @@ py_gapic_library(
         "python-gapic-name=logging",
         "autogen-snippets",
     ],
-    transport = "grpc",
-    service_yaml = "logging_v2.yaml",
+    transport = "grpc+rest",
 )
 
 py_test(
@@ -156,7 +150,6 @@ py_gapic_library(
         "autogen-snippets",
     ],
     transport = "grpc+rest",
-    service_yaml = "redis_v1.yaml",
 )
 
 py_test(
