@@ -33,22 +33,15 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_python/archive/{}.tar.gz".format(_rules_python_version),
 )
 
-load("@rules_python//python:repositories.bzl", "py_repositories", "python_register_toolchains")
+load("@rules_python//python:repositories.bzl", "py_repositories")
 
 load("@rules_python//python:pip.bzl", "pip_parse")
 
 py_repositories()
 
-python_register_toolchains(
-    name = "python39",
-    python_version = "3.9",
-)
-
-load("@python39//:defs.bzl", "interpreter")
 
 pip_parse(
     name = "gapic_generator_python_pip_deps",
-    python_interpreter_target = interpreter,
 	requirements_lock = "//:requirements.txt",
 )
 load("@gapic_generator_python_pip_deps//:requirements.bzl", "install_deps")
