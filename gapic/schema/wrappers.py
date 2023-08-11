@@ -79,6 +79,11 @@ class Field:
         name = self.field_pb.name
         return name + "_" if name in utils.RESERVED_NAMES and self.meta.address.is_proto_plus_type else name
 
+    @property
+    def is_deprecated(self) -> bool:
+        """Returns true if the field is deprecated, false otherwise."""
+        return descriptor_pb2.MethodOptions.HasField(self.options, 'deprecated')
+
     @utils.cached_property
     def ident(self) -> metadata.FieldIdentifier:
         """Return the identifier to be used in templates."""
@@ -748,6 +753,11 @@ class EnumValueType:
     def __getattr__(self, name):
         return getattr(self.enum_value_pb, name)
 
+    @property
+    def is_deprecated(self) -> bool:
+        """Returns true if the enum value protobuf is deprecated, false otherwise."""
+        return self.enum_value_pb.options.deprecated
+
 
 @dataclasses.dataclass(frozen=True)
 class EnumType:
@@ -764,6 +774,11 @@ class EnumType:
 
     def __getattr__(self, name):
         return getattr(self.enum_pb, name)
+
+    @property
+    def is_deprecated(self) -> bool:
+        """Returns true if the enum is deprecated, false otherwise."""
+        return descriptor_pb2.MethodOptions.HasField(self.options, 'deprecated')
 
     @property
     def resource_path(self) -> Optional[str]:

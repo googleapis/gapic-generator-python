@@ -4,6 +4,9 @@ class {{ enum.name }}({{ p }}.Enum):
     Values:
     {% for enum_value in enum.values %}
         {{ enum_value.name }} ({{ enum_value.number }}):
+        {% if enum_value.is_deprecated and 'deprecated' not in enum_value.meta.doc|lower %}
+            Deprecated.
+        {% endif %}
         {% if enum_value.meta.doc|length > 0 %}
             {{ enum_value.meta.doc|rst(width=72, indent=12, nl=False) }}
         {% else %}
