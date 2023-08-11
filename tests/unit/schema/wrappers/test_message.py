@@ -39,6 +39,14 @@ def test_message_properties():
     assert message.name == 'MyMessage'
 
 
+def test_message_deprecated():
+    message = make_field('DeprecatedMessage', is_deprecated=True)
+    assert message.is_deprecated
+
+    message = make_field('DeprecatedMessage', is_deprecated=False)
+    assert not message.is_deprecated
+
+
 def test_message_docstring():
     L = descriptor_pb2.SourceCodeInfo.Location
 

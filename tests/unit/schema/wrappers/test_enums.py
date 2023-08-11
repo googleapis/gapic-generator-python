@@ -27,6 +27,26 @@ def test_enum_properties():
     assert enum_type.name == 'Color'
 
 
+def test_enum_deprecated():
+    enum = make_enum('DeprecatedField', is_deprecated=True)
+    assert enum.is_deprecated
+
+    enum = make_enum('DeprecatedField', is_deprecated=False)
+    assert not enum.is_deprecated
+
+
+def test_enum_values_deprecated():
+    enum_type = make_enum(name='Irrelevant', values=(
+        ('RED', 1, True), ('GREEN', 2, False), ('BLUE', 3, False),
+    ))
+    for enum_value in enum_type.values:
+        if enum_value.name == 'RED':
+            assert enum_value.is_deprecated
+        else:
+            assert not enum_value.is_deprecated
+    assert not enum_type.is_deprecated
+
+
 def test_enum_value_properties():
     enum_type = make_enum(name='Irrelevant', values=(
         ('RED', 1), ('GREEN', 2), ('BLUE', 3),

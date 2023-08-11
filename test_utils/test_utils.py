@@ -220,6 +220,7 @@ def make_field(
     enum: wrappers.EnumType = None,
     meta: metadata.Metadata = None,
     oneof: str = None,
+    is_deprecated: bool = False,
     **kwargs
 ) -> wrappers.Field:
     T = desc.FieldDescriptorProto.Type
@@ -243,6 +244,9 @@ def make_field(
         number=number,
         **kwargs
     )
+
+    if is_deprecated:
+        field_pb.options.deprecated = True
 
     return wrappers.Field(
         field_pb=field_pb,
@@ -297,19 +301,31 @@ def make_enum(
     name: str,
     package: str = 'foo.bar.v1',
     module: str = 'baz',
-    values: typing.Sequence[typing.Tuple[str, int]] = (),
+    values: typing.Sequence[typing.Tuple[str, int, bool]] = (),
     meta: metadata.Metadata = None,
     options: desc.EnumOptions = None,
+    is_deprecated: bool = False,
 ) -> wrappers.EnumType:
     enum_value_pbs = [
         desc.EnumValueDescriptorProto(name=i[0], number=i[1])
         for i in values
     ]
+
+    enum_index = 0
+    for enum_value in enum_value_pbs:
+        if len(values[enum_index]) > 2:
+            enum_value.options.deprecated = values[enum_index][2]
+        enum_index = enum_index + 1
+
     enum_pb = desc.EnumDescriptorProto(
         name=name,
         value=enum_value_pbs,
         options=options,
     )
+
+    if is_deprecated:
+        enum_pb.options.deprecated = True
+
     return wrappers.EnumType(
         enum_pb=enum_pb,
         values=[wrappers.EnumValueType(enum_value_pb=evpb)

@@ -61,6 +61,9 @@ def test_method_deprecated():
     method = make_method('DeprecatedMethod', is_deprecated=True)
     assert method.is_deprecated
 
+    method = make_method('DeprecatedMethod', is_deprecated=False)
+    assert not method.is_deprecated
+
 
 def test_method_client_output():
     output = make_message(name='Input', module='baz')
