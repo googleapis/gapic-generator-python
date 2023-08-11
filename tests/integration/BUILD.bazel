@@ -122,9 +122,10 @@ py_gapic_library(
         "python-gapic-name=logging",
         "autogen-snippets",
     ],
-    # rest is not generated because of the following isssue:
-    # REST unit test test_update_settings_rest_flattened in logging_v2 fails #1728
-    # google/logging/v2https://github.com/googleapis/googleapis/blob/e85662e798a0a9495a035839f66d0c037c481e2c/google/logging/v2/BUILD.bazel#L201
+    # REST is not generated because of the following issues:
+    # - REST unit test `test_update_settings_rest_flattened` in logging_v2 fails. See #1728
+    # - REST is not generated in the public `BUILD.bazel`     
+    # https://github.com/googleapis/googleapis/blob/e85662e798a0a9495a035839f66d0c037c481e2c/google/logging/v2/BUILD.bazel#L201
     transport = "grpc",
 )
 
