@@ -19,8 +19,9 @@ class {{ message.name }}({{ p }}.Message):
     Attributes:
     {% for field in message.fields.values() %}
         {{ field.name }} ({{ field.ident.sphinx }}):
+            {# Add `Deprecated:` if it doesn't exist. See https://google.aip.dev/192#deprecations #}
             {% if field.is_deprecated and 'deprecated' not in field.meta.doc|lower %}
-            Deprecated.
+            Deprecated:
             {% endif %}
             {{ field.meta.doc|rst(indent=12, nl=False) }}
             {% if field.oneof %}

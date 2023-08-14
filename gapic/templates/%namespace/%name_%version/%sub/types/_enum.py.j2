@@ -4,8 +4,9 @@ class {{ enum.name }}({{ p }}.Enum):
     Values:
     {% for enum_value in enum.values %}
         {{ enum_value.name }} ({{ enum_value.number }}):
+        {# Add `Deprecated:` if it doesn't exist. See https://google.aip.dev/192#deprecations #}
         {% if enum_value.is_deprecated and 'deprecated' not in enum_value.meta.doc|lower %}
-            Deprecated.
+            Deprecated:
         {% endif %}
         {% if enum_value.meta.doc|length > 0 %}
             {{ enum_value.meta.doc|rst(width=72, indent=12, nl=False) }}
