@@ -40,7 +40,7 @@ def sort_lines(text: str, dedupe: bool = True) -> str:
     return f'{leading}{answer}{trailing}'
 
 
-def get_subsequent_line_indentation_level(list_item : str) -> int:
+def get_subsequent_line_indentation_level(list_item: str) -> int:
     """
     Given a list item return the indentation level for subsequent lines.
     For example, if it is a numbered list, the indentation level should be 3
@@ -76,7 +76,7 @@ def is_list_item(list_item: str) -> bool:
     if len(list_item) < 3:
         return False
     return list_item.startswith('- ') or list_item.startswith('+ ') or (list_item[0].isdigit() and list_item[1:].startswith('. '))
-                                                                    
+
 
 def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0) -> str:
     """Wrap the given string to the given width.
