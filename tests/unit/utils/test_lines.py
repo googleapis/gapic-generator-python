@@ -263,7 +263,7 @@ Currently two types of video classification are supported:
     assert lines.wrap(input, width=60) == expected
 
 
-def test_list_with_numbered_list():
+def test_list_with_plus_list_item_marker():
     input = """User-assigned name of the trigger. Must be unique within the project.
 Trigger names must meet the following requirements:
 + They must contain only alphanumeric characters and dashes.
