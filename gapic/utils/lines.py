@@ -47,14 +47,17 @@ def get_subsequent_line_indentation_level(list_item: str) -> int:
     as shown below.
 
     Here subsequent lines should be indented by 2
+
     - The quick brown fox jumps over the lazy dog. The quick brown fox jumps
       over the lazy dog
 
     Here subsequent lines should be indented by 2
+
     + The quick brown fox jumps over the lazy dog. The quick brown fox jumps
       over the lazy dog
 
     Here subsequent lines should be indented by 3
+
     1. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
        over the lazy dog
 
