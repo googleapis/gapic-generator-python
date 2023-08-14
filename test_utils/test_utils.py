@@ -301,20 +301,20 @@ def make_enum(
     name: str,
     package: str = 'foo.bar.v1',
     module: str = 'baz',
-    values: typing.Sequence[typing.Tuple[str, int, bool]] = (),
+    values: typing.Sequence[typing.Dict] = (), # dict contains fields "name", "value" and "is_deprecated"
     meta: metadata.Metadata = None,
     options: desc.EnumOptions = None,
     is_deprecated: bool = False,
 ) -> wrappers.EnumType:
     enum_value_pbs = [
-        desc.EnumValueDescriptorProto(name=i[0], number=i[1])
-        for i in values
+        desc.EnumValueDescriptorProto(name=enum_value.get("name"), number=enum_value.get("value"))
+        for enum_value in values
     ]
 
     enum_index = 0
     for enum_value in enum_value_pbs:
-        if len(values[enum_index]) > 2:
-            enum_value.options.deprecated = values[enum_index][2]
+        if values[enum_index].get("is_deprecated"):
+            enum_value.options.deprecated = values[enum_index].get("is_deprecated")
         enum_index = enum_index + 1
 
     enum_pb = desc.EnumDescriptorProto(
