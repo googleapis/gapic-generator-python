@@ -45,10 +45,10 @@ def test_field_is_primitive():
 
 
 def test_field_deprecated():
-    field = make_field('DeprecatedField', is_deprecated=True)
+    field = make_field('SomeField', is_deprecated=True)
     assert field.is_deprecated
 
-    field = make_field('DeprecatedField', is_deprecated=False)
+    field = make_field('SomeField', is_deprecated=False)
     assert not field.is_deprecated
 
 

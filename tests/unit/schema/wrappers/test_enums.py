@@ -28,10 +28,10 @@ def test_enum_properties():
 
 
 def test_enum_deprecated():
-    enum = make_enum('DeprecatedField', is_deprecated=True)
+    enum = make_enum('SomeEnum', is_deprecated=True)
     assert enum.is_deprecated
 
-    enum = make_enum('DeprecatedField', is_deprecated=False)
+    enum = make_enum('SomeEnum', is_deprecated=False)
     assert not enum.is_deprecated
 
 

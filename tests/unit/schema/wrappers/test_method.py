@@ -58,10 +58,10 @@ def test_method_not_void():
 
 
 def test_method_deprecated():
-    method = make_method('DeprecatedMethod', is_deprecated=True)
+    method = make_method('SomeMethod', is_deprecated=True)
     assert method.is_deprecated
 
-    method = make_method('DeprecatedMethod', is_deprecated=False)
+    method = make_method('SomeMethod', is_deprecated=False)
     assert not method.is_deprecated
 
 

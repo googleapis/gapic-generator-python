@@ -40,10 +40,10 @@ def test_message_properties():
 
 
 def test_message_deprecated():
-    message = make_field('DeprecatedMessage', is_deprecated=True)
+    message = make_field('SomeMessage', is_deprecated=True)
     assert message.is_deprecated
 
-    message = make_field('DeprecatedMessage', is_deprecated=False)
+    message = make_field('SomeMessage', is_deprecated=False)
     assert not message.is_deprecated
 
 
