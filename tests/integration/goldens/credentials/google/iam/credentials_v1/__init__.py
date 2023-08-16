@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import sys
+import warnings
+
 from google.iam.credentials_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
@@ -29,6 +32,26 @@ from .types.common import SignBlobRequest
 from .types.common import SignBlobResponse
 from .types.common import SignJwtRequest
 from .types.common import SignJwtResponse
+
+
+class Python37DeprecationWarning(DeprecationWarning):
+    """
+    Deprecation warning raised when Python 3.7 runtime is detected.
+    Python 3.7 support will be dropped after January 1, 2024. See
+    https://cloud.google.com/python/docs/python37-sunset/ for more information.
+    """
+    pass
+
+# Checks if the current runtime is Python 3.7.
+if sys.version_info.major == 3 and sys.version_info.minor == 7:
+    message = (
+        "After January 1, 2024, new releases of this client library will drop support "
+        "for Python 3.7. More details about Python 3.7 support for Client Libraries "
+        "can be found at https://cloud.google.com/python/docs/python37-sunset/"
+    )
+    # print only the first occurrence of Python37DeprecationWarning, regardless of location
+    warnings.simplefilter('once', Python37DeprecationWarning)
+    warnings.warn(message, Python37DeprecationWarning)
 
 __all__ = (
     'IAMCredentialsAsyncClient',

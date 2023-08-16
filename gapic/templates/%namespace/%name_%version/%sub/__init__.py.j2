@@ -2,6 +2,9 @@
 
 {% block content %}
 
+import sys
+import warnings
+
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}} import gapic_version as package_version
 
@@ -35,6 +38,26 @@ from .types.{{ proto.module_name }} import {{ message.name }}
 from .types.{{ proto.module_name }} import {{ enum.name }}
 {% endfor %}
 {% endfor %}
+
+
+class Python37DeprecationWarning(DeprecationWarning):
+    """
+    Deprecation warning raised when Python 3.7 runtime is detected.
+    Python 3.7 support will be dropped after January 1, 2024. See
+    https://cloud.google.com/python/docs/python37-sunset/ for more information.
+    """
+    pass
+
+# Checks if the current runtime is Python 3.7.
+if sys.version_info.major == 3 and sys.version_info.minor == 7:
+    message = (
+        "After January 1, 2024, new releases of this client library will drop support "
+        "for Python 3.7. More details about Python 3.7 support for Client Libraries "
+        "can be found at https://cloud.google.com/python/docs/python37-sunset/"
+    )
+    # print only the first occurrence of Python37DeprecationWarning, regardless of location
+    warnings.simplefilter('once', Python37DeprecationWarning)
+    warnings.warn(message, Python37DeprecationWarning)
 
 {#  Define __all__.
     This requires the full set of imported names, so we iterate over
