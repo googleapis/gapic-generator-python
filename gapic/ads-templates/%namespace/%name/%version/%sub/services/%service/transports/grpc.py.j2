@@ -37,7 +37,7 @@ from google.cloud.location import locations_pb2 # type: ignore
 {% set import_ns.has_operations_mixin = True %}
 {% endif %}
 {% if import_ns.has_operations_mixin %}
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO

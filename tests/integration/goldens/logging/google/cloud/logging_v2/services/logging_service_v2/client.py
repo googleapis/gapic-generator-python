@@ -39,10 +39,10 @@ from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
+from google.longrunning import operations_pb2 # type: ignore
 from .transports.base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc import LoggingServiceV2GrpcTransport
 from .transports.grpc_asyncio import LoggingServiceV2GrpcAsyncIOTransport
-from .transports.rest import LoggingServiceV2RestTransport
 
 
 class LoggingServiceV2ClientMeta(type):
@@ -55,7 +55,6 @@ class LoggingServiceV2ClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[LoggingServiceV2Transport]]
     _transport_registry["grpc"] = LoggingServiceV2GrpcTransport
     _transport_registry["grpc_asyncio"] = LoggingServiceV2GrpcAsyncIOTransport
-    _transport_registry["rest"] = LoggingServiceV2RestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,
@@ -306,9 +305,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             transport (Union[str, LoggingServiceV2Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
@@ -388,11 +384,11 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
-        r"""Deletes all the log entries in a log. The log
-        reappears if it receives new entries. Log entries
-        written shortly before the delete operation might not be
-        deleted. Entries received after the delete operation
-        with a timestamp before the operation will be deleted.
+        r"""Deletes all the log entries in a log for the \_Default Log
+        Bucket. The log reappears if it receives new entries. Log
+        entries written shortly before the delete operation might not be
+        deleted. Entries received after the delete operation with a
+        timestamp before the operation will be deleted.
 
         .. code-block:: python
 
@@ -423,16 +419,15 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             log_name (str):
                 Required. The resource name of the log to delete:
 
-                ::
-
-                    "projects/[PROJECT_ID]/logs/[LOG_ID]"
-                    "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
-                    "folders/[FOLDER_ID]/logs/[LOG_ID]"
+                -  ``projects/[PROJECT_ID]/logs/[LOG_ID]``
+                -  ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
+                -  ``folders/[FOLDER_ID]/logs/[LOG_ID]``
 
                 ``[LOG_ID]`` must be URL-encoded. For example,
                 ``"projects/my-project-id/logs/syslog"``,
-                ``"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"``.
+                ``"organizations/123/logs/cloudaudit.googleapis.com%2Factivity"``.
+
                 For more information about log names, see
                 [LogEntry][google.logging.v2.LogEntry].
 
@@ -540,19 +535,17 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 to all log entries in ``entries`` that do not specify a
                 value for ``log_name``:
 
-                ::
-
-                    "projects/[PROJECT_ID]/logs/[LOG_ID]"
-                    "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
-                    "folders/[FOLDER_ID]/logs/[LOG_ID]"
+                -  ``projects/[PROJECT_ID]/logs/[LOG_ID]``
+                -  ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
+                -  ``folders/[FOLDER_ID]/logs/[LOG_ID]``
 
                 ``[LOG_ID]`` must be URL-encoded. For example:
 
                 ::
 
                     "projects/my-project-id/logs/syslog"
-                    "organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"
+                    "organizations/123/logs/cloudaudit.googleapis.com%2Factivity"
 
                 The permission ``logging.logEntries.create`` is needed
                 on each project, organization, billing account, or
@@ -608,17 +601,17 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 Log entries with timestamps that are more than the `logs
                 retention
-                period <https://cloud.google.com/logging/quota-policy>`__
-                in the past or more than 24 hours in the future will not
-                be available when calling ``entries.list``. However,
-                those log entries can still be `exported with
+                period <https://cloud.google.com/logging/quotas>`__ in
+                the past or more than 24 hours in the future will not be
+                available when calling ``entries.list``. However, those
+                log entries can still be `exported with
                 LogSinks <https://cloud.google.com/logging/docs/api/tasks/exporting-logs>`__.
 
                 To improve throughput and to avoid exceeding the `quota
-                limit <https://cloud.google.com/logging/quota-policy>`__
-                for calls to ``entries.write``, you should try to
-                include several log entries in this list, rather than
-                calling this method for each individual log entry.
+                limit <https://cloud.google.com/logging/quotas>`__ for
+                calls to ``entries.write``, you should try to include
+                several log entries in this list, rather than calling
+                this method for each individual log entry.
 
                 This corresponds to the ``entries`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -722,35 +715,32 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 Required. Names of one or more parent resources from
                 which to retrieve log entries:
 
-                ::
+                -  ``projects/[PROJECT_ID]``
+                -  ``organizations/[ORGANIZATION_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
+                -  ``folders/[FOLDER_ID]``
 
-                    "projects/[PROJECT_ID]"
-                    "organizations/[ORGANIZATION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]"
+                May alternatively be one or more views:
 
-                May alternatively be one or more views
-                projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-                organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-                billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-                folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+                -  ``projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                -  ``folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
 
                 Projects listed in the ``project_ids`` field are added
-                to this list.
+                to this list. A maximum of 100 resources may be
+                specified in a single request.
 
                 This corresponds to the ``resource_names`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (str):
-                Optional. A filter that chooses which log entries to
-                return. See `Advanced Logs
-                Queries <https://cloud.google.com/logging/docs/view/advanced-queries>`__.
-                Only log entries that match the filter are returned. An
-                empty filter matches all log entries in the resources
-                listed in ``resource_names``. Referencing a parent
-                resource that is not listed in ``resource_names`` will
-                cause the filter to return no results. The maximum
-                length of the filter is 20000 characters.
+                Optional. Only log entries that match the filter are
+                returned. An empty filter matches all log entries in the
+                resources listed in ``resource_names``. Referencing a
+                parent resource that is not listed in ``resource_names``
+                will cause the filter to return no results. The maximum
+                length of a filter is 20,000 characters.
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -959,14 +949,12 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.ListLogsRequest, dict]):
                 The request object. The parameters to ListLogs.
             parent (str):
-                Required. The resource name that owns the logs:
+                Required. The resource name to list logs for:
 
-                ::
-
-                    "projects/[PROJECT_ID]"
-                    "organizations/[ORGANIZATION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]"
+                -  ``projects/[PROJECT_ID]``
+                -  ``organizations/[ORGANIZATION_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
+                -  ``folders/[FOLDER_ID]``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1126,6 +1114,158 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def list_operations(
+        self,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
 
 

@@ -28,6 +28,8 @@ from google.api_core import gapic_v1
 
 from google.protobuf import json_format
 from google.api_core import operations_v1
+from google.cloud.location import locations_pb2 # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -108,6 +110,14 @@ class CloudRedisRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_instance_auth_string(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_instance_auth_string(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_import_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -121,6 +131,14 @@ class CloudRedisRestInterceptor:
                 return request, metadata
 
             def post_list_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_reschedule_maintenance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_reschedule_maintenance(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -225,6 +243,22 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+    def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_instance_auth_string
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_get_instance_auth_string(self, response: cloud_redis.InstanceAuthString) -> cloud_redis.InstanceAuthString:
+        """Post-rpc interceptor for get_instance_auth_string
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
     def pre_import_instance(self, request: cloud_redis.ImportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for import_instance
 
@@ -257,6 +291,22 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+    def pre_reschedule_maintenance(self, request: cloud_redis.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.RescheduleMaintenanceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for reschedule_maintenance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_reschedule_maintenance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+        """Post-rpc interceptor for reschedule_maintenance
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
     def pre_update_instance(self, request: cloud_redis.UpdateInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_instance
 
@@ -283,6 +333,127 @@ class CloudRedisRestInterceptor:
 
     def post_upgrade_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_instance
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_location(
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_get_location(
+        self, response: locations_pb2.Location
+    ) -> locations_pb2.Location:
+        """Post-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+    def pre_list_locations(
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_list_locations(
+        self, response: locations_pb2.ListLocationsResponse
+    ) -> locations_pb2.ListLocationsResponse:
+        """Post-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+    def pre_cancel_operation(
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_cancel_operation(
+        self, response: None
+    ) -> None:
+        """Post-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+    def pre_delete_operation(
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_delete_operation(
+        self, response: None
+    ) -> None:
+        """Post-rpc interceptor for delete_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+    def pre_get_operation(
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_get_operation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+    def pre_list_operations(
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_operations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_list_operations(
+        self, response: operations_pb2.ListOperationsResponse
+    ) -> operations_pb2.ListOperationsResponse:
+        """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudRedis server but before
@@ -421,6 +592,30 @@ class CloudRedisRestTransport(CloudRedisTransport):
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
+                'google.longrunning.Operations.CancelOperation': [
+                    {
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
+                    },
+                ],
+                'google.longrunning.Operations.DeleteOperation': [
+                    {
+                        'method': 'delete',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                    },
+                ],
+                'google.longrunning.Operations.GetOperation': [
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                    },
+                ],
+                'google.longrunning.Operations.ListOperations': [
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*}/operations',
+                    },
+                ],
             }
 
             rest_transport = operations_v1.OperationsRestTransport(
@@ -806,7 +1001,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
 
             Returns:
                 ~.cloud_redis.Instance:
-                    A Google Cloud Redis instance.
+                    A Memorystore for Redis instance.
             """
 
             http_options: List[Dict[str, str]] = [{
@@ -850,6 +1045,83 @@ class CloudRedisRestTransport(CloudRedisTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_instance(resp)
+            return resp
+
+    class _GetInstanceAuthString(CloudRedisRestStub):
+        def __hash__(self):
+            return hash("GetInstanceAuthString")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
+        def __call__(self,
+                request: cloud_redis.GetInstanceAuthStringRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
+                ) -> cloud_redis.InstanceAuthString:
+            r"""Call the get instance auth string method over HTTP.
+
+            Args:
+                request (~.cloud_redis.GetInstanceAuthStringRequest):
+                    The request object. Request for
+                [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_redis.InstanceAuthString:
+                    Instance AUTH string details.
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}/authString',
+            },
+            ]
+            request, metadata = self._interceptor.pre_get_instance_auth_string(request, metadata)
+            pb_request = cloud_redis.GetInstanceAuthStringRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            ))
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis.InstanceAuthString()
+            pb_resp = cloud_redis.InstanceAuthString.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_instance_auth_string(resp)
             return resp
 
     class _ImportInstance(CloudRedisRestStub):
@@ -1016,6 +1288,93 @@ class CloudRedisRestTransport(CloudRedisTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_instances(resp)
+            return resp
+
+    class _RescheduleMaintenance(CloudRedisRestStub):
+        def __hash__(self):
+            return hash("RescheduleMaintenance")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
+        def __call__(self,
+                request: cloud_redis.RescheduleMaintenanceRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
+                ) -> operations_pb2.Operation:
+            r"""Call the reschedule maintenance method over HTTP.
+
+            Args:
+                request (~.cloud_redis.RescheduleMaintenanceRequest):
+                    The request object. Request for
+                [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}:rescheduleMaintenance',
+                'body': '*',
+            },
+            ]
+            request, metadata = self._interceptor.pre_reschedule_maintenance(request, metadata)
+            pb_request = cloud_redis.RescheduleMaintenanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request['body'],
+                including_default_value_fields=False,
+                use_integers_for_enums=False
+            )
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            ))
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_reschedule_maintenance(resp)
             return resp
 
     class _UpdateInstance(CloudRedisRestStub):
@@ -1233,6 +1592,14 @@ class CloudRedisRestTransport(CloudRedisTransport):
         return self._GetInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
+    def get_instance_auth_string(self) -> Callable[
+            [cloud_redis.GetInstanceAuthStringRequest],
+            cloud_redis.InstanceAuthString]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetInstanceAuthString(self._session, self._host, self._interceptor) # type: ignore
+
+    @property
     def import_instance(self) -> Callable[
             [cloud_redis.ImportInstanceRequest],
             operations_pb2.Operation]:
@@ -1249,6 +1616,14 @@ class CloudRedisRestTransport(CloudRedisTransport):
         return self._ListInstances(self._session, self._host, self._interceptor) # type: ignore
 
     @property
+    def reschedule_maintenance(self) -> Callable[
+            [cloud_redis.RescheduleMaintenanceRequest],
+            operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RescheduleMaintenance(self._session, self._host, self._interceptor) # type: ignore
+
+    @property
     def update_instance(self) -> Callable[
             [cloud_redis.UpdateInstanceRequest],
             operations_pb2.Operation]:
@@ -1263,6 +1638,384 @@ class CloudRedisRestTransport(CloudRedisTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpgradeInstance(self._session, self._host, self._interceptor) # type: ignore
+
+    @property
+    def get_location(self):
+        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
+
+    class _GetLocation(CloudRedisRestStub):
+        def __call__(self,
+            request: locations_pb2.GetLocationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, str]]=(),
+            ) -> locations_pb2.Location:
+
+            r"""Call the get location method over HTTP.
+
+            Args:
+                request (locations_pb2.GetLocationRequest):
+                    The request object for GetLocation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                locations_pb2.Location: Response from GetLocation method.
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*}',
+            },
+            ]
+
+            request, metadata = self._interceptor.pre_get_location(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = locations_pb2.Location()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_location(resp)
+            return resp
+
+    @property
+    def list_locations(self):
+        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
+
+    class _ListLocations(CloudRedisRestStub):
+        def __call__(self,
+            request: locations_pb2.ListLocationsRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, str]]=(),
+            ) -> locations_pb2.ListLocationsResponse:
+
+            r"""Call the list locations method over HTTP.
+
+            Args:
+                request (locations_pb2.ListLocationsRequest):
+                    The request object for ListLocations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                locations_pb2.ListLocationsResponse: Response from ListLocations method.
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*}/locations',
+            },
+            ]
+
+            request, metadata = self._interceptor.pre_list_locations(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = locations_pb2.ListLocationsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_list_locations(resp)
+            return resp
+
+    @property
+    def cancel_operation(self):
+        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
+
+    class _CancelOperation(CloudRedisRestStub):
+        def __call__(self,
+            request: operations_pb2.CancelOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, str]]=(),
+            ) -> None:
+
+            r"""Call the cancel operation method over HTTP.
+
+            Args:
+                request (operations_pb2.CancelOperationRequest):
+                    The request object for CancelOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
+            },
+            ]
+
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_cancel_operation(None)
+
+    @property
+    def delete_operation(self):
+        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
+
+    class _DeleteOperation(CloudRedisRestStub):
+        def __call__(self,
+            request: operations_pb2.DeleteOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, str]]=(),
+            ) -> None:
+
+            r"""Call the delete operation method over HTTP.
+
+            Args:
+                request (operations_pb2.DeleteOperationRequest):
+                    The request object for DeleteOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+            },
+            ]
+
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_delete_operation(None)
+
+    @property
+    def get_operation(self):
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
+
+    class _GetOperation(CloudRedisRestStub):
+        def __call__(self,
+            request: operations_pb2.GetOperationRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, str]]=(),
+            ) -> operations_pb2.Operation:
+
+            r"""Call the get operation method over HTTP.
+
+            Args:
+                request (operations_pb2.GetOperationRequest):
+                    The request object for GetOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                operations_pb2.Operation: Response from GetOperation method.
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+            },
+            ]
+
+            request, metadata = self._interceptor.pre_get_operation(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = operations_pb2.Operation()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_operation(resp)
+            return resp
+
+    @property
+    def list_operations(self):
+        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
+
+    class _ListOperations(CloudRedisRestStub):
+        def __call__(self,
+            request: operations_pb2.ListOperationsRequest, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, str]]=(),
+            ) -> operations_pb2.ListOperationsResponse:
+
+            r"""Call the list operations method over HTTP.
+
+            Args:
+                request (operations_pb2.ListOperationsRequest):
+                    The request object for ListOperations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                operations_pb2.ListOperationsResponse: Response from ListOperations method.
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*}/operations',
+            },
+            ]
+
+            request, metadata = self._interceptor.pre_list_operations(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = operations_pb2.ListOperationsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_list_operations(resp)
+            return resp
 
     @property
     def kind(self) -> str:
