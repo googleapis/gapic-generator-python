@@ -37,6 +37,7 @@ branchProtectionRules:
     - 'showcase-unit (3.10, _mixins)'
     - 'showcase-unit (3.11, _mixins)'
     - 'showcase-unit-add-iam-methods'
+    - 'showcase-cover'
     - 'integration'
     - 'goldens-lint'
     - 'style-check'
@@ -46,6 +47,7 @@ branchProtectionRules:
     - 'unit (3.9)'
     - 'unit (3.10)'
     - 'unit (3.11)'
+    - 'unit-cover'
     - 'fragment (3.7)'
     - 'fragment (3.8)'
     - 'fragment (3.9)'
@@ -56,6 +58,7 @@ branchProtectionRules:
     - 'fragment (3.9, _alternative_templates)'
     - 'fragment (3.10, _alternative_templates)'
     - 'fragment (3.11, _alternative_templates)'
+    - 'fragment-cover'
     - 'OwlBot Post Processor'
   requiredApprovingReviewCount: 1
   requiresCodeOwnerReviews: true

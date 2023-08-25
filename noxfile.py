@@ -317,6 +317,7 @@ def run_showcase_unit_tests(session, fail_under=100):
                 "--quiet",
                 "--cov=google",
                 "--cov-append",
+                "--cov-config=.coveragerc",
                 f"--cov-fail-under={str(fail_under)}",
                 path.join("tests", "unit"),
             ]
@@ -407,9 +408,14 @@ def snippetgen(session):
     # Install gapic-generator-python
     session.install("-e", ".")
 
-    session.install("grpcio-tools", "pytest", "pytest-asyncio")
+    session.install("grpcio-tools", "pytest", "pytest-asyncio", "pytest-cov")
 
-    session.run("py.test", "-vv", "tests/snippetgen")
+    session.run(
+        "py.test",
+        "--cov=gapic/samplegen",
+        path.join("tests", "snippetgen"),
+        "-vv",
+    )
 
 
 @nox.session(python="3.9")
