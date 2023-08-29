@@ -112,7 +112,10 @@ class FragTester:
             # Install the generated fragment library.
             # Note: install into the tempdir to prevent issues
             # with running pip concurrently.
-            self.session.install(tmp_dir, "-e", ".", "-t", tmp_dir, "-qqq")
+            constraints_path = str(
+               f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
+            )
+            self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
             # the fragments, and there usually aren't too many tests per fragment.
