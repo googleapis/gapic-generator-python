@@ -1048,15 +1048,23 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-    {% if method.void %}
+        {% if method.void %}
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
-    {% elif method.server_streaming %}
-        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
-    {% else %}
-        json_return_value = {{ method.output.ident }}.to_json(return_value)
-    {% endif %}
+        {% else %}
+
+        {% if method.output.ident.is_proto_plus_type %}
+        pb_return_value = {{ method.output.ident }}.pb(return_value)
+        {% else %}
+        pb_return_value = return_value
+        {% endif %}
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        {% endif %}
+        {% if method.server_streaming %}
+        json_return_value = "[{}]".format(json_return_value)
+        {% endif %}
+
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         {% if method.client_streaming %}
@@ -1391,16 +1399,22 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-    {% if method.void %}
+        {% if method.void %}
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
-    {% elif method.server_streaming %}
-        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
-    {% else %}
-        json_return_value = {{ method.output.ident }}.to_json(return_value)
-    {% endif %}
+        {% else %}
 
+        {% if method.output.ident.is_proto_plus_type %}
+        pb_return_value = {{ method.output.ident }}.pb(return_value)
+        {% else %}
+        pb_return_value = return_value
+        {% endif %}
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        {% endif %}
+        {% if method.server_streaming %}
+        json_return_value = "[{}]".format(json_return_value)
+        {% endif %}
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
