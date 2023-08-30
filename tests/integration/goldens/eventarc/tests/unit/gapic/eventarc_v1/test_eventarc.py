@@ -6219,6 +6219,26 @@ def test_create_trigger_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["trigger"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["trigger"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["trigger"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["trigger"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["trigger"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6389,6 +6409,26 @@ def test_create_trigger_rest_bad_request(transport: str = 'rest', request_type=e
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["trigger"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["trigger"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["trigger"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["trigger"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["trigger"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6476,6 +6516,26 @@ def test_update_trigger_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'trigger': {'name': 'projects/sample1/locations/sample2/triggers/sample3'}}
     request_init["trigger"] = {'name': 'projects/sample1/locations/sample2/triggers/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["trigger"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["trigger"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["trigger"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["trigger"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6631,6 +6691,26 @@ def test_update_trigger_rest_bad_request(transport: str = 'rest', request_type=e
     # send a request that will satisfy transcoding
     request_init = {'trigger': {'name': 'projects/sample1/locations/sample2/triggers/sample3'}}
     request_init["trigger"] = {'name': 'projects/sample1/locations/sample2/triggers/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["trigger"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["trigger"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["trigger"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["trigger"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7493,6 +7573,26 @@ def test_create_channel_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["channel"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["channel"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["channel"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["channel"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7663,6 +7763,26 @@ def test_create_channel_rest_bad_request(transport: str = 'rest', request_type=e
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["channel"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["channel"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["channel"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["channel"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7750,6 +7870,26 @@ def test_update_channel_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'channel': {'name': 'projects/sample1/locations/sample2/channels/sample3'}}
     request_init["channel"] = {'name': 'projects/sample1/locations/sample2/channels/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["channel"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["channel"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["channel"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["channel"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7905,6 +8045,26 @@ def test_update_channel_rest_bad_request(transport: str = 'rest', request_type=e
     # send a request that will satisfy transcoding
     request_init = {'channel': {'name': 'projects/sample1/locations/sample2/channels/sample3'}}
     request_init["channel"] = {'name': 'projects/sample1/locations/sample2/channels/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["channel"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["channel"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["channel"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["channel"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9283,6 +9443,26 @@ def test_create_channel_connection_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel_connection"] = {'name': 'name_value', 'uid': 'uid_value', 'channel': 'channel_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'activation_token': 'activation_token_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["channel_connection"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["channel_connection"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["channel_connection"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["channel_connection"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9442,6 +9622,26 @@ def test_create_channel_connection_rest_bad_request(transport: str = 'rest', req
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel_connection"] = {'name': 'name_value', 'uid': 'uid_value', 'channel': 'channel_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'activation_token': 'activation_token_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["channel_connection"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["channel_connection"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["channel_connection"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["channel_connection"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9989,6 +10189,26 @@ def test_update_google_channel_config_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
     request_init["google_channel_config"] = {'name': 'projects/sample1/locations/sample2/googleChannelConfig', 'update_time': {'seconds': 751, 'nanos': 543}, 'crypto_key_name': 'crypto_key_name_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["google_channel_config"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["google_channel_config"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["google_channel_config"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["google_channel_config"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10139,6 +10359,26 @@ def test_update_google_channel_config_rest_bad_request(transport: str = 'rest', 
     # send a request that will satisfy transcoding
     request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
     request_init["google_channel_config"] = {'name': 'projects/sample1/locations/sample2/googleChannelConfig', 'update_time': {'seconds': 751, 'nanos': 543}, 'crypto_key_name': 'crypto_key_name_value'}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["google_channel_config"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["google_channel_config"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["google_channel_config"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["google_channel_config"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.

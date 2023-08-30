@@ -892,6 +892,7 @@ def test_{{ method_name }}_rest(request_type):
     # Older versions of protobuf do not have the editions field in
     # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
     # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
         subfields = ['types', 'enums']
         for subfield in subfields:
@@ -1270,6 +1271,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
     # Older versions of protobuf do not have the editions field in
     # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
     # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
         subfields = ['types', 'enums']
         for subfield in subfields:

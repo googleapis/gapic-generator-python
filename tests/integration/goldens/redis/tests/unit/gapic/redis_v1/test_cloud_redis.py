@@ -4293,6 +4293,26 @@ def test_create_instance_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["instance"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["instance"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["instance"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["instance"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4452,6 +4472,26 @@ def test_create_instance_rest_bad_request(transport: str = 'rest', request_type=
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["instance"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["instance"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["instance"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["instance"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4539,6 +4579,26 @@ def test_update_instance_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
     request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["instance"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["instance"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["instance"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["instance"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4682,6 +4742,26 @@ def test_update_instance_rest_bad_request(transport: str = 'rest', request_type=
     # send a request that will satisfy transcoding
     request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
     request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+
+    # The version of protobuf at time of generation may differ at runtime.
+    # Older versions of protobuf do not have the editions field in
+    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
+    # Remove 'edition' from the sample request if it exists.
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
+        subfields = ['types', 'enums']
+        for subfield in subfields:
+            # Check if the sample request has the enums or types field
+            if request_init["instance"].get(subfield, ''):
+                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
+                # and google.protobuf.type_pb2.Enum
+                if 'source_context' in request_init["instance"][subfield][0]:
+                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
+                    if 'edition' in request_init["instance"][subfield][0]:
+                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
+                        if not hasattr(field_type, 'edition'):
+                            del request_init["instance"][subfield][0]['edition']
+
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
