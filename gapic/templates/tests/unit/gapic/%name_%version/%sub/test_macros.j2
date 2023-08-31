@@ -887,7 +887,6 @@ def test_{{ method_name }}_rest(request_type):
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
     request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
-
     # The version of protobuf at time of generation may differ at runtime.
     # Older versions of protobuf do not have the `edition` field in
     # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
