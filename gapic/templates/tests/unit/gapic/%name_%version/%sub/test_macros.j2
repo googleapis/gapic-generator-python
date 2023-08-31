@@ -889,24 +889,17 @@ def test_{{ method_name }}_rest(request_type):
     request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
 
     # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the editions field in
+    # Older versions of protobuf do not have the `edition` field in
     # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
     # Remove 'edition' from the sample request if it exists.
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
     if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        subfields = ['types', 'enums']
-        for subfield in subfields:
-            # Check if the sample request has the enums or types field
-            if request_init["{{ field.name }}"].get(subfield, ''):
-                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
-                # and google.protobuf.type_pb2.Enum
-                if 'source_context' in request_init["{{ field.name }}"][subfield][0]:
-                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
-                    if 'edition' in request_init["{{ field.name }}"][subfield][0]:
-                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
-                        if not hasattr(field_type, 'edition'):
-                            del request_init["{{ field.name }}"][subfield][0]['edition']
-
+        try:
+            del request_init["{{ field.name }}"]["types"][0]['edition']
+            del request_init["{{ field.name }}"]["enums"][0]['edition']
+        except:
+            pass
     {% endif %}
     {% endfor %}
     request = request_type(**request_init)
@@ -1266,26 +1259,18 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
     request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
-
     # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the editions field in
+    # Older versions of protobuf do not have the `edition` field in
     # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
     # Remove 'edition' from the sample request if it exists.
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
     if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        subfields = ['types', 'enums']
-        for subfield in subfields:
-            # Check if the sample request has the enums or types field
-            if request_init["{{ field.name }}"].get(subfield, ''):
-                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
-                # and google.protobuf.type_pb2.Enum
-                if 'source_context' in request_init["{{ field.name }}"][subfield][0]:
-                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
-                    if 'edition' in request_init["{{ field.name }}"][subfield][0]:
-                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
-                        if not hasattr(field_type, 'edition'):
-                            del request_init["{{ field.name }}"][subfield][0]['edition']
-
+        try:
+            del request_init["{{ field.name }}"]["types"][0]['edition']
+            del request_init["{{ field.name }}"]["enums"][0]['edition']
+        except:
+            pass
     {% endif %}
     {% endfor %}
     request = request_type(**request_init)

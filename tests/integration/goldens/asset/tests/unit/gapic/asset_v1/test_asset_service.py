@@ -9966,24 +9966,17 @@ def test_create_saved_query_rest(request_type):
     request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
 
     # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the editions field in
+    # Older versions of protobuf do not have the `edition` field in
     # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
     # Remove 'edition' from the sample request if it exists.
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
     if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        subfields = ['types', 'enums']
-        for subfield in subfields:
-            # Check if the sample request has the enums or types field
-            if request_init["saved_query"].get(subfield, ''):
-                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
-                # and google.protobuf.type_pb2.Enum
-                if 'source_context' in request_init["saved_query"][subfield][0]:
-                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
-                    if 'edition' in request_init["saved_query"][subfield][0]:
-                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
-                        if not hasattr(field_type, 'edition'):
-                            del request_init["saved_query"][subfield][0]['edition']
-
+        try:
+            del request_init["saved_query"]["types"][0]['edition']
+            del request_init["saved_query"]["enums"][0]['edition']
+        except:
+            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10154,26 +10147,18 @@ def test_create_saved_query_rest_bad_request(transport: str = 'rest', request_ty
     # send a request that will satisfy transcoding
     request_init = {'parent': 'sample1/sample2'}
     request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
-
     # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the editions field in
+    # Older versions of protobuf do not have the `edition` field in
     # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
     # Remove 'edition' from the sample request if it exists.
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
     if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        subfields = ['types', 'enums']
-        for subfield in subfields:
-            # Check if the sample request has the enums or types field
-            if request_init["saved_query"].get(subfield, ''):
-                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
-                # and google.protobuf.type_pb2.Enum
-                if 'source_context' in request_init["saved_query"][subfield][0]:
-                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
-                    if 'edition' in request_init["saved_query"][subfield][0]:
-                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
-                        if not hasattr(field_type, 'edition'):
-                            del request_init["saved_query"][subfield][0]['edition']
-
+        try:
+            del request_init["saved_query"]["types"][0]['edition']
+            del request_init["saved_query"]["enums"][0]['edition']
+        except:
+            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10791,24 +10776,17 @@ def test_update_saved_query_rest(request_type):
     request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
 
     # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the editions field in
+    # Older versions of protobuf do not have the `edition` field in
     # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
     # Remove 'edition' from the sample request if it exists.
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
     if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        subfields = ['types', 'enums']
-        for subfield in subfields:
-            # Check if the sample request has the enums or types field
-            if request_init["saved_query"].get(subfield, ''):
-                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
-                # and google.protobuf.type_pb2.Enum
-                if 'source_context' in request_init["saved_query"][subfield][0]:
-                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
-                    if 'edition' in request_init["saved_query"][subfield][0]:
-                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
-                        if not hasattr(field_type, 'edition'):
-                            del request_init["saved_query"][subfield][0]['edition']
-
+        try:
+            del request_init["saved_query"]["types"][0]['edition']
+            del request_init["saved_query"]["enums"][0]['edition']
+        except:
+            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10963,26 +10941,18 @@ def test_update_saved_query_rest_bad_request(transport: str = 'rest', request_ty
     # send a request that will satisfy transcoding
     request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
     request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
-
     # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the editions field in
+    # Older versions of protobuf do not have the `edition` field in
     # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
     # Remove 'edition' from the sample request if it exists.
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
+    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
     if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        subfields = ['types', 'enums']
-        for subfield in subfields:
-            # Check if the sample request has the enums or types field
-            if request_init["saved_query"].get(subfield, ''):
-                # Look for the `source_context` field which is present in google.protobuf.type_pb2.Type
-                # and google.protobuf.type_pb2.Enum
-                if 'source_context' in request_init["saved_query"][subfield][0]:
-                    # Look for the edition field, and delete it if it is not present in the installed protobuf version
-                    if 'edition' in request_init["saved_query"][subfield][0]:
-                        field_type = type_pb2.Type if subfield =='type' else type_pb2.Enum
-                        if not hasattr(field_type, 'edition'):
-                            del request_init["saved_query"][subfield][0]['edition']
-
+        try:
+            del request_init["saved_query"]["types"][0]['edition']
+            del request_init["saved_query"]["enums"][0]['edition']
+        except:
+            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
