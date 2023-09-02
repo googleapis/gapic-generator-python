@@ -64,7 +64,7 @@ def get_subsequent_line_indentation_level(list_item: str) -> int:
     """
     if len(list_item) >= 2 and list_item[0:2] in ['- ', '+ ']:
         indentation_level = 2
-    elif len(list_item) >= 3 and list_item[0].isdigit() and list_item[1:3] == '. ':
+    elif re.match("^\d+\. ", list_item):
         indentation_level = 3
     else:
         # Don't use any intentation level if the list item marker is not known
