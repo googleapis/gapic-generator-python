@@ -78,7 +78,7 @@ def is_list_item(list_item: str) -> bool:
     """
     if len(list_item) < 3:
         return False
-    return list_item.startswith('- ') or list_item.startswith('+ ') or (list_item[0].isdigit() and list_item[1:].startswith('. '))
+    return list_item.startswith('- ') or list_item.startswith('+ ') or re.match("^\d+\. ", list_item)
 
 
 def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0) -> str:
