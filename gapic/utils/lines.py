@@ -60,6 +60,7 @@ def get_subsequent_line_indentation_level(list_item: str) -> int:
 
     1.  The quick brown fox jumps over the lazy dog. The quick brown fox jumps
         over the lazy dog
+
     22. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
         over the lazy dog
     """
@@ -79,7 +80,7 @@ def is_list_item(list_item: str) -> bool:
     """
     if len(list_item) < 3:
         return False
-    return list_item.startswith('- ') or list_item.startswith('+ ') or re.match("^\d+\. ", list_item)
+    return list_item.startswith('- ') or list_item.startswith('+ ') or bool(re.match("^\d+\. ", list_item))
 
 
 def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0) -> str:
