@@ -20,7 +20,7 @@ from google.rpc import code_pb2
 
 
 def test_retry_bubble(echo):
-    # Note: InvalidArgument is from gRPC, GatewayTimeout from http
+    # Note: DeadlineExceeded is from gRPC, GatewayTimeout from http
     with pytest.raises((exceptions.DeadlineExceeded, exceptions.GatewayTimeout)):
         echo.echo({
             'error': {
