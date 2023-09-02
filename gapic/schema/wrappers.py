@@ -357,7 +357,7 @@ class Field:
             self,
             *,
             collisions: Set[str],
-            visited_messages: Set["MessageType"] = None,
+            visited_messages: Optional[Set["MessageType"]] = None,
     ) -> 'Field':
         """Return a derivative of this field with the provided context.
 
@@ -369,7 +369,7 @@ class Field:
             self,
             message=self.message.with_context(
                 collisions=collisions,
-                skip_fields=self.message in visited_messages,
+                skip_fields=self.message in visited_messages if visited_messages else False,
                 visited_messages=visited_messages,
             ) if self.message else None,
             enum=self.enum.with_context(collisions=collisions)
@@ -632,7 +632,7 @@ class MessageType:
         return parsing_regex_str
 
     def get_field(self, *field_path: str,
-                  collisions: Set[str] = None) -> Field:
+                  collisions: Optional[Set[str]] = None) -> Field:
         """Return a field arbitrarily deep in this message's structure.
 
         This method recursively traverses the message tree to return the
@@ -701,7 +701,7 @@ class MessageType:
     def with_context(self, *,
                      collisions: Set[str],
                      skip_fields: bool = False,
-                     visited_messages: Set["MessageType"] = None,
+                     visited_messages: Optional[Set["MessageType"]] = None,
                      ) -> 'MessageType':
         """Return a derivative of this message with the provided context.
 
@@ -875,7 +875,7 @@ class ExtendedOperationInfo:
 
     def with_context(self, *,
                      collisions: Set[str],
-                     visited_messages: Set["MessageType"] = None,
+                     visited_messages: Optional[Set["MessageType"]] = None,
                      ) -> 'ExtendedOperationInfo':
         """Return a derivative of this OperationInfo with the provided context.
 
@@ -904,7 +904,7 @@ class OperationInfo:
 
     def with_context(self, *,
                      collisions: Set[str],
-                     visited_messages: Set["MessageType"] = None,
+                     visited_messages: Optional[Set["MessageType"]] = None,
                      ) -> 'OperationInfo':
         """Return a derivative of this OperationInfo with the provided context.
 
@@ -1547,7 +1547,7 @@ class Method:
 
     def with_context(self, *,
                      collisions: Set[str],
-                     visited_messages: Set["MessageType"] = None,
+                     visited_messages: Optional[Set["MessageType"]] = None,
                      ) -> 'Method':
         """Return a derivative of this method with the provided context.
 
@@ -1867,7 +1867,7 @@ class Service:
 
     def with_context(self, *,
                      collisions: Set[str],
-                     visited_messages: Set["MessageType"] = None,
+                     visited_messages: Optional[Set["MessageType"]] = None,
                      ) -> 'Service':
         """Return a derivative of this service with the provided context.
 

@@ -746,7 +746,7 @@ class _ProtoBuilder:
         if not self.file_to_generate:
             return naive
 
-        visited_messages: Set[str] = set()
+        visited_messages: Set[wrappers.MessageType] = set()
         # Return a context-aware proto object.
         return dataclasses.replace(
             naive,
