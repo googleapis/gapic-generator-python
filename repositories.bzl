@@ -1,5 +1,4 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@rules_python//python:pip.bzl", "pip_install")
 
 _PANDOC_BUILD_FILE = """
 filegroup(
@@ -9,20 +8,15 @@ filegroup(
 )"""
 
 def gapic_generator_python():
-    _maybe(
-        pip_install,
-        name = "gapic_generator_python_pip_deps",
-        requirements = "@gapic_generator_python//:requirements.txt",
-    )
 
-    _protobuf_version = "3.19.2"
-    _protobuf_sha256 = "9ceef0daf7e8be16cd99ac759271eb08021b53b1c7b6edd399953a76390234cd"
+    _protobuf_version = "3.21.12"
+    _protobuf_sha256 = "930c2c3b5ecc6c9c12615cf5ad93f1cd6e12d0aba862b572e076259970ac3a53"
     _protobuf_version_in_link = "v{}".format(_protobuf_version)
     _maybe(
         http_archive,
         name = "com_google_protobuf",
         sha256 = _protobuf_sha256,
-        url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/{}.zip".format(_protobuf_version_in_link),
+        url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/{}.tar.gz".format(_protobuf_version_in_link),
         strip_prefix = "protobuf-{}".format(_protobuf_version),
     )
 
@@ -66,12 +60,12 @@ def gapic_generator_python():
         strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )
-
+    _commit_sha = "fae3e6e091418d6343902debaf545cfc8f32c3ff"
     _maybe(
         http_archive,
         name = "com_google_googleapis",
-        strip_prefix = "googleapis-ffc531383747ebb702dad3db237ef5fdea796363",
-        urls = ["https://github.com/googleapis/googleapis/archive/ffc531383747ebb702dad3db237ef5fdea796363.zip"],
+        strip_prefix = "googleapis-{}".format(_commit_sha),
+        urls = ["https://github.com/googleapis/googleapis/archive/{}.zip".format(_commit_sha)],
     )
 
 def gapic_generator_register_toolchains():

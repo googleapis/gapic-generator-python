@@ -4,7 +4,9 @@
 
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
+
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from {{package_path}} import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
@@ -18,9 +20,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
 {% filter sort_lines %}
+{% set import_ns = namespace(has_operations_mixin=false) %}
 {% for method in service.methods.values() %}
 {{ method.input.ident.python_import }}
+{% if method.output.ident|string() == "operations_pb2.Operation" %}
+{% set import_ns.has_operations_mixin = True %}
+{% else %}
 {{ method.output.ident.python_import }}
+{% endif %}
 {% endfor %}
 {% if opts.add_iam_methods or api.has_iam_mixin %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
@@ -30,7 +37,10 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 {% if api.has_operations_mixin %}
-from google.longrunning import operations_pb2
+{% set import_ns.has_operations_mixin = True %}
+{% endif %}
+{% if import_ns.has_operations_mixin %}
+from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 {% filter sort_lines %}
@@ -39,14 +49,7 @@ from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + ser
 {% endfor %}
 {% endfilter %}
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            '{{ api.naming.warehouse_package_name }}',
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 class {{ service.name }}Transport(abc.ABC):
@@ -63,7 +66,7 @@ class {{ service.name }}Transport(abc.ABC):
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,
-            credentials: ga_credentials.Credentials = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
             quota_project_id: Optional[str] = None,

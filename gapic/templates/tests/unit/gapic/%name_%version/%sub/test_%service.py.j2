@@ -7,24 +7,26 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 {% endif %}
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+from proto.marshal.rules import wrappers
 {% if 'rest' in opts.transport %}
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 {% endif %}
 
 {# Import the service itself as well as every proto module that it imports. #}
@@ -50,22 +52,17 @@ from google.api_core import future
 {% if service.has_lro %}
 from google.api_core import operation
 from google.api_core import operations_v1
-from google.longrunning import operations_pb2
-{% if "rest" in opts.transport %}
-from google.protobuf import json_format
-{% endif %}{# rest transport #}
 {% endif %}{# lro #}
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2
 {% endif %}
-{% if api.has_operations_mixin %}
-from google.longrunning import operations_pb2
+{% if api.has_operations_mixin or service.has_lro %}
+from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
 {% for ref_type in method.ref_types
-   if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
-           or ref_type.ident.python_import.package == ('google', 'protobuf') and ref_type.ident.python_import.module == 'empty_pb2') %}
+   if not (ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation') %}
 {{ ref_type.ident.python_import }}
 {% endfor %}
 {% endfor %}
@@ -644,10 +641,12 @@ def test_{{ method_name }}_rest_error():
     )
     # Since a `google.api.http` annotation is required for using a rest transport
     # method, this should error.
-    with pytest.raises(RuntimeError) as runtime_error:
+    with pytest.raises(NotImplementedError) as not_implemented_error:
         client.{{ method_name }}({})
-    assert ("Cannot define a method without a valid 'google.api.http' annotation."
-        in str(runtime_error.value))
+    assert (
+        "Method {{ method.name }} is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
 
 
 {% endwith %}{# method_name #}

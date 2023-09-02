@@ -29,16 +29,16 @@ import shutil
 nox.options.error_on_missing_interpreters = True
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.22.0")
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.25.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
 ALL_PYTHON = (
-    "3.6",
     "3.7",
     "3.8",
     "3.9",
     "3.10",
+    "3.11",
 )
 
 NEWEST_PYTHON = ALL_PYTHON[-1]
@@ -158,7 +158,7 @@ def fragment(session, use_ads_templates=False):
             session.log(tester(frag))
 
 
-@nox.session(python=ALL_PYTHON[1:])
+@nox.session(python=ALL_PYTHON)
 def fragment_alternative_templates(session):
     fragment(session, use_ads_templates=True)
 
@@ -334,7 +334,7 @@ def showcase_unit(
         run_showcase_unit_tests(session)
 
 
-@nox.session(python=ALL_PYTHON[1:])  # Do not test 3.6
+@nox.session(python=ALL_PYTHON)
 def showcase_unit_alternative_templates(session):
     with showcase_library(
         session, templates=ADS_TEMPLATES, other_opts=("old-naming",)
@@ -357,7 +357,7 @@ def showcase_unit_mixins(session):
         run_showcase_unit_tests(session)
 
 
-@nox.session(python=ALL_PYTHON[1:])  # Do not test 3.6
+@nox.session(python=ALL_PYTHON)
 def showcase_unit_alternative_templates_mixins(session):
     with showcase_library(
         session, templates=ADS_TEMPLATES, other_opts=("old-naming",),
@@ -412,7 +412,7 @@ def snippetgen(session):
     session.run("py.test", "-vv", "tests/snippetgen")
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs."""
 
@@ -436,7 +436,13 @@ def docs(session):
 @nox.session(python=NEWEST_PYTHON)
 def mypy(session):
     """Perform typecheck analysis."""
-
-    session.install("mypy", "types-protobuf<=3.19.7", "types-PyYAML", "types-dataclasses")
+    # Pin to click==8.1.3 to workaround https://github.com/pallets/click/issues/2558
+    session.install(
+        "mypy",
+        "types-protobuf<=3.19.7",
+        "types-PyYAML",
+        "types-dataclasses",
+        "click==8.1.3",
+    )
     session.install(".")
     session.run("mypy", "gapic")

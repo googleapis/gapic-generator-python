@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
+
+from google.cloud.logging_v2 import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
@@ -26,16 +27,10 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
 from google.cloud.logging_v2.types import logging
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            'google-cloud-logging',
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 class LoggingServiceV2Transport(abc.ABC):
@@ -53,7 +48,7 @@ class LoggingServiceV2Transport(abc.ABC):
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,
-            credentials: ga_credentials.Credentials = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
             quota_project_id: Optional[str] = None,
@@ -265,6 +260,33 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 logging.TailLogEntriesResponse,
                 Awaitable[logging.TailLogEntriesResponse]
             ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property

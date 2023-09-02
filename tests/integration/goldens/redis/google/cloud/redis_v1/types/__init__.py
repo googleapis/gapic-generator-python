@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,17 +20,26 @@ from .cloud_redis import (
     FailoverInstanceRequest,
     GcsDestination,
     GcsSource,
+    GetInstanceAuthStringRequest,
     GetInstanceRequest,
     ImportInstanceRequest,
     InputConfig,
     Instance,
+    InstanceAuthString,
     ListInstancesRequest,
     ListInstancesResponse,
     LocationMetadata,
+    MaintenancePolicy,
+    MaintenanceSchedule,
+    NodeInfo,
     OperationMetadata,
     OutputConfig,
+    PersistenceConfig,
+    RescheduleMaintenanceRequest,
+    TlsCertificate,
     UpdateInstanceRequest,
     UpgradeInstanceRequest,
+    WeeklyMaintenanceWindow,
     ZoneMetadata,
 )
 
@@ -41,16 +50,25 @@ __all__ = (
     'FailoverInstanceRequest',
     'GcsDestination',
     'GcsSource',
+    'GetInstanceAuthStringRequest',
     'GetInstanceRequest',
     'ImportInstanceRequest',
     'InputConfig',
     'Instance',
+    'InstanceAuthString',
     'ListInstancesRequest',
     'ListInstancesResponse',
     'LocationMetadata',
+    'MaintenancePolicy',
+    'MaintenanceSchedule',
+    'NodeInfo',
     'OperationMetadata',
     'OutputConfig',
+    'PersistenceConfig',
+    'RescheduleMaintenanceRequest',
+    'TlsCertificate',
     'UpdateInstanceRequest',
     'UpgradeInstanceRequest',
+    'WeeklyMaintenanceWindow',
     'ZoneMetadata',
 )

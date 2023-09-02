@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
+
+from google.cloud.asset_v1 import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
@@ -27,17 +28,10 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
 from google.cloud.asset_v1.types import asset_service
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            'google-cloud-asset',
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 class AssetServiceTransport(abc.ABC):
@@ -51,7 +45,7 @@ class AssetServiceTransport(abc.ABC):
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,
-            credentials: ga_credentials.Credentials = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
             quota_project_id: Optional[str] = None,
@@ -230,6 +224,61 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.analyze_move: gapic_v1.method.wrap_method(
+                self.analyze_move,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_assets: gapic_v1.method.wrap_method(
+                self.query_assets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_saved_query: gapic_v1.method.wrap_method(
+                self.create_saved_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_saved_query: gapic_v1.method.wrap_method(
+                self.get_saved_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_saved_queries: gapic_v1.method.wrap_method(
+                self.list_saved_queries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_saved_query: gapic_v1.method.wrap_method(
+                self.update_saved_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_saved_query: gapic_v1.method.wrap_method(
+                self.delete_saved_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_get_effective_iam_policies: gapic_v1.method.wrap_method(
+                self.batch_get_effective_iam_policies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.analyze_org_policies: gapic_v1.method.wrap_method(
+                self.analyze_org_policies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.analyze_org_policy_governed_containers: gapic_v1.method.wrap_method(
+                self.analyze_org_policy_governed_containers,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.analyze_org_policy_governed_assets: gapic_v1.method.wrap_method(
+                self.analyze_org_policy_governed_assets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
          }
 
     def close(self):
@@ -352,6 +401,114 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]
             ]]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_move(self) -> Callable[
+            [asset_service.AnalyzeMoveRequest],
+            Union[
+                asset_service.AnalyzeMoveResponse,
+                Awaitable[asset_service.AnalyzeMoveResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def query_assets(self) -> Callable[
+            [asset_service.QueryAssetsRequest],
+            Union[
+                asset_service.QueryAssetsResponse,
+                Awaitable[asset_service.QueryAssetsResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def create_saved_query(self) -> Callable[
+            [asset_service.CreateSavedQueryRequest],
+            Union[
+                asset_service.SavedQuery,
+                Awaitable[asset_service.SavedQuery]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_saved_query(self) -> Callable[
+            [asset_service.GetSavedQueryRequest],
+            Union[
+                asset_service.SavedQuery,
+                Awaitable[asset_service.SavedQuery]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_saved_queries(self) -> Callable[
+            [asset_service.ListSavedQueriesRequest],
+            Union[
+                asset_service.ListSavedQueriesResponse,
+                Awaitable[asset_service.ListSavedQueriesResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def update_saved_query(self) -> Callable[
+            [asset_service.UpdateSavedQueryRequest],
+            Union[
+                asset_service.SavedQuery,
+                Awaitable[asset_service.SavedQuery]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_saved_query(self) -> Callable[
+            [asset_service.DeleteSavedQueryRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def batch_get_effective_iam_policies(self) -> Callable[
+            [asset_service.BatchGetEffectiveIamPoliciesRequest],
+            Union[
+                asset_service.BatchGetEffectiveIamPoliciesResponse,
+                Awaitable[asset_service.BatchGetEffectiveIamPoliciesResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_org_policies(self) -> Callable[
+            [asset_service.AnalyzeOrgPoliciesRequest],
+            Union[
+                asset_service.AnalyzeOrgPoliciesResponse,
+                Awaitable[asset_service.AnalyzeOrgPoliciesResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_org_policy_governed_containers(self) -> Callable[
+            [asset_service.AnalyzeOrgPolicyGovernedContainersRequest],
+            Union[
+                asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
+                Awaitable[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_org_policy_governed_assets(self) -> Callable[
+            [asset_service.AnalyzeOrgPolicyGovernedAssetsRequest],
+            Union[
+                asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
+                Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property

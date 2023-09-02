@@ -49,6 +49,19 @@ def test_unary_error(echo):
         assert exc.value.code == 400
         assert exc.value.message == message
 
+    if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
+        # Under gRPC, we raise exceptions.InvalidArgument, which is a
+        # sub-class of exceptions.BadRequest.
+        with pytest.raises(exceptions.InvalidArgument) as exc:
+            echo.echo({
+                'error': {
+                    'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
+                    'message': message,
+                },
+            })
+            assert exc.value.code == 400
+            assert exc.value.message == message
+
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio

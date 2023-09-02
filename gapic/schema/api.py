@@ -43,6 +43,7 @@ import grpc  # type: ignore
 from google.protobuf.descriptor_pb2 import MethodDescriptorProto
 from google.api import annotations_pb2  # type: ignore
 from gapic.schema import metadata
+from gapic.schema import mixins
 from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
 from gapic.utils import cached_property
@@ -80,7 +81,7 @@ class Proto:
             file_to_generate: bool,
             naming: api_naming.Naming,
             opts: Options = Options(),
-            prior_protos: Mapping[str, 'Proto'] = None,
+            prior_protos: Optional[Mapping[str, 'Proto']] = None,
             load_services: bool = True,
             all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ) -> 'Proto':
@@ -242,7 +243,7 @@ class API:
         file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
         package: str = '',
         opts: Options = Options(),
-        prior_protos: Mapping[str, 'Proto'] = None,
+        prior_protos: Optional[Mapping[str, 'Proto']] = None,
     ) -> 'API':
         """Build the internal API schema based on the request.
 
@@ -340,7 +341,11 @@ class API:
 
         # Parse the google.api.Service proto from the service_yaml data.
         service_yaml_config = service_pb2.Service()
-        ParseDict(opts.service_yaml_config, service_yaml_config)
+        ParseDict(
+            opts.service_yaml_config,
+            service_yaml_config,
+            ignore_unknown_fields=True
+        )
 
         # Done; return the API.
         return cls(naming=naming,
@@ -484,7 +489,9 @@ class API:
         return MessageToJson(self.gapic_metadata(options), sort_keys=True)
 
     def requires_package(self, pkg: Tuple[str, ...]) -> bool:
-        return any(
+        pkg_has_iam_mixin = self.has_iam_mixin and \
+            pkg == ('google', 'iam', 'v1')
+        return pkg_has_iam_mixin or any(
             message.ident.package == pkg
             for proto in self.all_protos.values()
             for message in proto.all_messages.values()
@@ -516,6 +523,16 @@ class API:
         return op_serv
 
     @cached_property
+    def mixin_api_signatures(self):
+        """Compile useful info about MixIn API signatures.
+
+        Returns:
+            Mapping[str, wrappers.MixinMethod]: Useful info
+                about MixIn methods present for the main API.
+        """
+        return {name: mixins.MIXINS_MAP[name] for name in self.mixin_api_methods}
+
+    @cached_property
     def mixin_api_methods(self) -> Dict[str, MethodDescriptorProto]:
         methods: Dict[str, MethodDescriptorProto] = {}
         if self.has_location_mixin:
@@ -528,6 +545,20 @@ class API:
             methods = {**methods, **
                 self._get_methods_from_service(operations_pb2)}
         return methods
+
+    @cached_property
+    def mixin_http_options(self):
+        """Gather HTTP options for the MixIn methods."""
+        api_methods = self.mixin_api_methods
+        res = {}
+        for s in api_methods:
+            m = api_methods[s]
+            http = m.options.Extensions[annotations_pb2.http]
+            http_options = [http] + list(http.additional_bindings)
+            opt_gen = (wrappers.MixinHttpRule.try_parse_http_rule(http_rule)
+                   for http_rule in http_options)
+            res[s] = [rule for rule in opt_gen if rule]
+        return res
 
     @cached_property
     def has_location_mixin(self) -> bool:
@@ -606,7 +637,7 @@ class _ProtoBuilder:
         file_to_generate: bool,
         naming: api_naming.Naming,
         opts: Options = Options(),
-        prior_protos: Mapping[str, Proto] = None,
+        prior_protos: Optional[Mapping[str, Proto]] = None,
         load_services: bool = True,
         all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ):

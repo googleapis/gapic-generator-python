@@ -32,6 +32,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 from gapic.schema import api
 from gapic.schema import imp
+from gapic.schema import mixins
 from gapic.schema import naming
 from gapic.schema import wrappers
 from gapic.utils import Options
@@ -108,6 +109,7 @@ def test_api_build():
     )
 
     assert api_schema.requires_package(('google', 'example', 'v1'))
+
     assert not api_schema.requires_package(('elgoog', 'example', 'v1'))
 
     # Establish that the subpackages work.
@@ -717,70 +719,143 @@ def test_undefined_type():
 def test_python_modules_nested():
     fd = (
         make_file_pb2(
-            name='dep.proto',
-            package='google.dep',
-            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+            name="dep.proto",
+            package="google.dep",
+            messages=(make_message_pb2(name="ImportedMessage", fields=()),),
         ),
         make_file_pb2(
-            name='common.proto',
-            package='google.example.v1.common',
-            messages=(make_message_pb2(name='Bar'),),
+            name="baa.proto",
+            package="google.baa",
+            messages=(make_message_pb2(name="ImportedMessageBaa", fields=()),),
         ),
         make_file_pb2(
-            name='foo.proto',
-            package='google.example.v1',
+            name="bab.v1.proto",
+            package="google.bab.v1",
+            messages=(make_message_pb2(name="ImportedMessageBab", fields=()),),
+        ),
+        make_file_pb2(
+            name="common.proto",
+            package="google.example.v1.common",
+            messages=(make_message_pb2(name="Bar"),),
+        ),
+        make_file_pb2(
+            name="foo.proto",
+            package="google.example.v1",
             messages=(
                 make_message_pb2(
-                    name='GetFooRequest',
+                    name="GetFooRequest",
                     fields=(
-                        make_field_pb2(name='primitive', number=2, type=1),
+                        make_field_pb2(name="primitive", number=2, type=1),
                         make_field_pb2(
-                            name='foo',
+                            name="foo",
                             number=3,
                             type=1,
-                            type_name='.google.example.v1.GetFooRequest.Foo',
+                            type_name=".google.example.v1.GetFooRequest.Foo",
                         ),
                     ),
                     nested_type=(
                         make_message_pb2(
-                            name='Foo',
+                            name="Foo",
                             fields=(
                                 make_field_pb2(
-                                    name='imported_message',
+                                    name="imported_message",
                                     number=1,
-                                    type_name='.google.dep.ImportedMessage'),
+                                    type_name=".google.dep.ImportedMessage",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Baa",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_baa",
+                                    number=1,
+                                    type_name=".google.baa.ImportedMessageBaa",
+                                ),
+                            ),
+                        ),
+                        make_message_pb2(
+                            name="Bab",
+                            fields=(
+                                make_field_pb2(
+                                    name="imported_message_bab",
+                                    number=1,
+                                    type_name=".google.bab.v1.ImportedMessageBab",
+                                ),
                             ),
                         ),
                     ),
                 ),
                 make_message_pb2(
-                    name='GetFooResponse',
+                    name="GetFooResponse",
                     fields=(
                         make_field_pb2(
-                            name='foo',
+                            name="foo",
                             number=1,
-                            type_name='.google.example.v1.GetFooRequest.Foo',
+                            type_name=".google.example.v1.GetFooRequest.Foo",
                         ),
                     ),
                 ),
             ),
-            services=(descriptor_pb2.ServiceDescriptorProto(
-                name='FooService',
-                method=(
-                    descriptor_pb2.MethodDescriptorProto(
-                        name='GetFoo',
-                        input_type='google.example.v1.GetFooRequest',
-                        output_type='google.example.v1.GetFooResponse',
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="FooService",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="GetFoo",
+                            input_type="google.example.v1.GetFooRequest",
+                            output_type="google.example.v1.GetFooResponse",
+                        ),
                     ),
                 ),
-            ),),
+            ),
         ),
     )
 
-    api_schema = api.API.build(fd, package='google.example.v1')
+    api_schema = api.API.build(fd, package="google.example.v1")
 
-    assert api_schema.protos['foo.proto'].python_modules == (
-        imp.Import(package=('google', 'dep'), module='dep_pb2'),
+    assert api_schema.protos["foo.proto"].python_modules == (
+        imp.Import(package=("google", "baa"), module="baa_pb2"),
+        imp.Import(package=("google", "bab", "v1"), module="bab_v1_pb2"),
+        imp.Import(package=("google", "dep"), module="dep_pb2"),
+    )
+    assert (
+        api_schema.protos["foo.proto"]
+        .all_messages["google.example.v1.GetFooRequest.Bab"]
+        .fields["imported_message_bab"]
+        .ident.sphinx
+        == "google.bab.v1.bab_v1_pb2.ImportedMessageBab"
+    )
+
+    # Ensure that we can change the import statements to cater for a
+    # dependency that uses proto-plus types.
+    # For example,
+    # `from google.bar import bar_pb2` becomes `from google.bar.types import bar``
+    # `from google.baz.v2 import baz_pb2` becomes `from google.baz_v2.types improt baz_v2`
+    api_schema = api.API.build(
+        fd,
+        package="google.example.v1",
+        opts=Options(
+            proto_plus_deps="+".join(
+                (
+                    "google.baa",
+                    "google.bab.v1",
+                )
+            )
+        ),
+    )
+    assert api_schema.protos["foo.proto"].python_modules == (
+        imp.Import(package=("google", "baa", "types"), module="baa"),
+        imp.Import(package=("google", "bab_v1", "types"), module="bab_v1"),
+        imp.Import(package=("google", "dep"), module="dep_pb2"),
+    )
+
+    assert (
+        api_schema.protos["foo.proto"]
+        .all_messages["google.example.v1.GetFooRequest.Bab"]
+        .fields["imported_message_bab"]
+        .ident.sphinx
+        == "google.bab_v1.types.ImportedMessageBab"
     )
 
 
@@ -2277,6 +2352,157 @@ def test_mixin_api_methods_iam_overrides():
     assert api_schema.mixin_api_methods == {}
 
 
+def create_service_config_with_all_mixins(http_opt_uri='/v1/{name=examples/*}/*'):
+    service_yaml_config = {
+        'apis': [
+            {
+                'name': 'google.cloud.location.Locations',
+            },
+            {
+                'name': 'google.longrunning.Operations',
+            },
+            {
+                'name': 'google.iam.v1.IAMPolicy',
+            },
+        ],
+        'http': {
+            'rules': [
+                # Locations
+                {
+                    'selector': 'google.cloud.location.Locations.ListLocations',
+                    'get': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.cloud.location.Locations.GetLocation',
+                    'get': http_opt_uri,
+                    'body': '*'
+                },
+                # LRO
+                {
+                    'selector': 'google.longrunning.Operations.CancelOperation',
+                    'post': http_opt_uri,
+                    'body': '*',
+                },
+                {
+                    'selector': 'google.longrunning.Operations.DeleteOperation',
+                    'get': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.WaitOperation',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.GetOperation',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.ListOperations',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                # IAM
+                {
+                    'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
+                    'get': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.iam.v1.IAMPolicy.TestIamPermissions',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.example.v1.Example',
+                }
+            ]
+        }
+    }
+    return service_yaml_config
+
+
+def test_mixin_api_signatures():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+        ),)
+    opts = Options(service_yaml_config=create_service_config_with_all_mixins())
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    res = api_schema.mixin_api_signatures
+    assert res == mixins.MIXINS_MAP
+
+
+def test_mixin_http_options():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+            ),)
+    opts = Options(service_yaml_config={
+        'apis': [
+            {
+                'name': 'google.cloud.location.Locations',
+            },
+            {
+                'name': 'google.longrunning.Operations',
+            },
+            {
+                'name': 'google.iam.v1.IAMPolicy',
+            },
+        ],
+        'http': {
+            'rules': [
+                # LRO
+                {
+                    'selector': 'google.longrunning.Operations.CancelOperation',
+                    'post': '/v1/{name=examples/*}/*',
+                    'body': '*',
+                },
+                {
+                    'selector': 'google.longrunning.Operations.DeleteOperation',
+                    'get': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.WaitOperation',
+                    'post': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.GetOperation',
+                    'post': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.ListOperations',
+                    'post': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+            ]
+        }
+    })
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    res = api_schema.mixin_http_options
+    assert res == {
+        'ListOperations': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
+        'GetOperation': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
+        'DeleteOperation': [wrappers.MixinHttpRule('get', '/v1/{name=examples/*}/*', '*')],
+        'CancelOperation': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
+        'WaitOperation': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
+    }
+
+
 def test_mixin_api_methods_lro():
     fd = (
         make_file_pb2(
@@ -2356,3 +2582,23 @@ def test_mixin_api_methods_lro():
     assert api_schema.mixin_api_methods == {
         'CancelOperation': m1, 'DeleteOperation': m2, 'WaitOperation': m3,
         'GetOperation': m4}
+
+
+def test_has_iam_mixin():
+    # Check that has_iam_mixin() property of API returns True when the
+    # service YAML contains `google.iam.v1.IAMPolicy`.
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+        ),)
+    opts = Options(service_yaml_config={
+        'apis': [
+            {
+                'name': 'google.iam.v1.IAMPolicy'
+            }
+        ],
+    })
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    assert api_schema.has_iam_mixin

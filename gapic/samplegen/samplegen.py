@@ -364,7 +364,8 @@ class Validator:
             elif attr.enum:
                 # A little bit hacky, but 'values' is a list, and this is the easiest
                 # way to verify that the value is a valid enum variant.
-                witness = any(e.name == val for e in attr.enum.values)
+                # Here val could be a list of a single enum value name.
+                witness = any(e.name in val for e in attr.enum.values)
                 if not witness:
                     raise types.InvalidEnumVariant(
                         "Invalid variant for enum {}: '{}'".format(attr, val)
@@ -974,8 +975,14 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
                 {"field": field_name, "value": field.mock_value_original_type})
         elif field.enum:
             # Choose the last enum value in the list since index 0 is often "unspecified"
+            enum_value = field.enum.values[-1].name
+            if field.repeated:
+                field_value = [enum_value]
+            else:
+                field_value = enum_value
+
             request.append(
-                {"field": field_name, "value": field.enum.values[-1].name})
+                {"field": field_name, "value": field_value})
         else:
             # This is a message type, recurse
             # TODO(busunkim):  Some real world APIs have
@@ -990,8 +997,23 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
     return request
 
 
+def _sync_or_async_from_transport(transport: str) -> str:
+    if transport in (api.TRANSPORT_GRPC, api.TRANSPORT_REST):
+        return "sync"
+    else:  # transport is api.TRANSPORT_GRPC_ASYNC
+        # Currently the REST transport does not support async.
+        return "async"
+
+
+def _supports_grpc(service) -> bool:
+    return api.TRANSPORT_GRPC in service.clients.keys()
+
+
 def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, Any], None, None]:
     """Given an API, generate basic sample specs for each method.
+
+    If a service supports gRPC transport, we do not generate
+    spec for REST even if it also supports REST transport.
 
     Args:
         api_schema (api.API): The schema that defines the API.
@@ -1005,16 +1027,19 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
     for service_name, service in gapic_metadata.services.items():
         api_short_name = api_schema.services[f"{api_schema.naming.proto_package}.{service_name}"].shortname
         api_version = api_schema.naming.version
+        supports_grpc = _supports_grpc(service)
         for transport, client in service.clients.items():
-            transport_type = "async" if transport == api.TRANSPORT_GRPC_ASYNC else "sync"
+            if supports_grpc and transport == api.TRANSPORT_REST:
+                continue
+            sync_or_async = _sync_or_async_from_transport(transport)
             for rpc_name, method_list in client.rpcs.items():
                 # Region Tag Format:
-                # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async}]
-                region_tag = f"{api_short_name}_{api_version}_generated_{service_name}_{rpc_name}_{transport_type}"
+                # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async|rest}]
+                region_tag = f"{api_short_name}_{api_version}_generated_{service_name}_{rpc_name}_{sync_or_async}"
                 spec = {
                     "rpc": rpc_name,
                     "transport": transport,
-                    # `request` and `response` is populated in `preprocess_sample`
+                    # `request` and `response` are populated in `preprocess_sample`
                     "service": f"{api_schema.naming.proto_package}.{service_name}",
                     "region_tag": region_tag,
                     "description": f"Snippet for {utils.to_snake_case(rpc_name)}"

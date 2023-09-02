@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ import sys
 import nox  # type: ignore
 
 ALL_PYTHON = [
-    "3.6",
     "3.7",
     "3.8",
     "3.9",
     "3.10",
+    "3.11",
 ]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -37,7 +37,7 @@ PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], e
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
-DEFAULT_PYTHON_VERSION = "3.10"
+DEFAULT_PYTHON_VERSION = "3.11"
 
 nox.sessions = [
     "unit",
@@ -85,7 +85,11 @@ def cover(session):
 @nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
-    session.install('mypy', 'types-pkg_resources')
+    session.install(
+        'mypy',
+        'types-requests',
+        'types-protobuf'
+    )
     session.install('.')
     session.run(
         'mypy',
@@ -130,7 +134,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
+    session.install("sphinx==7.0.1", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(

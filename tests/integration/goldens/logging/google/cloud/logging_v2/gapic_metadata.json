@@ -10,14 +10,29 @@
         "grpc": {
           "libraryClient": "ConfigServiceV2Client",
           "rpcs": {
+            "CopyLogEntries": {
+              "methods": [
+                "copy_log_entries"
+              ]
+            },
             "CreateBucket": {
               "methods": [
                 "create_bucket"
               ]
             },
+            "CreateBucketAsync": {
+              "methods": [
+                "create_bucket_async"
+              ]
+            },
             "CreateExclusion": {
               "methods": [
                 "create_exclusion"
+              ]
+            },
+            "CreateLink": {
+              "methods": [
+                "create_link"
               ]
             },
             "CreateSink": {
@@ -38,6 +53,11 @@
             "DeleteExclusion": {
               "methods": [
                 "delete_exclusion"
+              ]
+            },
+            "DeleteLink": {
+              "methods": [
+                "delete_link"
               ]
             },
             "DeleteSink": {
@@ -65,6 +85,16 @@
                 "get_exclusion"
               ]
             },
+            "GetLink": {
+              "methods": [
+                "get_link"
+              ]
+            },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
             "GetSink": {
               "methods": [
                 "get_sink"
@@ -83,6 +113,11 @@
             "ListExclusions": {
               "methods": [
                 "list_exclusions"
+              ]
+            },
+            "ListLinks": {
+              "methods": [
+                "list_links"
               ]
             },
             "ListSinks": {
@@ -105,6 +140,11 @@
                 "update_bucket"
               ]
             },
+            "UpdateBucketAsync": {
+              "methods": [
+                "update_bucket_async"
+              ]
+            },
             "UpdateCmekSettings": {
               "methods": [
                 "update_cmek_settings"
@@ -113,6 +153,11 @@
             "UpdateExclusion": {
               "methods": [
                 "update_exclusion"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
               ]
             },
             "UpdateSink": {
@@ -130,14 +175,29 @@
         "grpc-async": {
           "libraryClient": "ConfigServiceV2AsyncClient",
           "rpcs": {
+            "CopyLogEntries": {
+              "methods": [
+                "copy_log_entries"
+              ]
+            },
             "CreateBucket": {
               "methods": [
                 "create_bucket"
               ]
             },
+            "CreateBucketAsync": {
+              "methods": [
+                "create_bucket_async"
+              ]
+            },
             "CreateExclusion": {
               "methods": [
                 "create_exclusion"
+              ]
+            },
+            "CreateLink": {
+              "methods": [
+                "create_link"
               ]
             },
             "CreateSink": {
@@ -158,6 +218,11 @@
             "DeleteExclusion": {
               "methods": [
                 "delete_exclusion"
+              ]
+            },
+            "DeleteLink": {
+              "methods": [
+                "delete_link"
               ]
             },
             "DeleteSink": {
@@ -185,6 +250,16 @@
                 "get_exclusion"
               ]
             },
+            "GetLink": {
+              "methods": [
+                "get_link"
+              ]
+            },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
             "GetSink": {
               "methods": [
                 "get_sink"
@@ -203,6 +278,11 @@
             "ListExclusions": {
               "methods": [
                 "list_exclusions"
+              ]
+            },
+            "ListLinks": {
+              "methods": [
+                "list_links"
               ]
             },
             "ListSinks": {
@@ -225,6 +305,11 @@
                 "update_bucket"
               ]
             },
+            "UpdateBucketAsync": {
+              "methods": [
+                "update_bucket_async"
+              ]
+            },
             "UpdateCmekSettings": {
               "methods": [
                 "update_cmek_settings"
@@ -233,6 +318,11 @@
             "UpdateExclusion": {
               "methods": [
                 "update_exclusion"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
               ]
             },
             "UpdateSink": {

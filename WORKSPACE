@@ -22,9 +22,9 @@ http_archive(
     ],
 )
 
-_rules_python_version = "0.9.0"
+_rules_python_version = "0.24.0"
 
-_rules_python_sha256 = "5fa3c738d33acca3b97622a13a741129f67ef43f5fdfcec63b29374cc0574c29"
+_rules_python_sha256 = "0a8003b044294d7840ac7d9d73eef05d6ceb682d7516781a4ec62eeb34702578"
 
 http_archive(
     name = "rules_python",
@@ -33,6 +33,19 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_python/archive/{}.tar.gz".format(_rules_python_version),
 )
 
+load("@rules_python//python:repositories.bzl", "py_repositories")
+
+load("@rules_python//python:pip.bzl", "pip_parse")
+
+py_repositories()
+
+pip_parse(
+    name = "gapic_generator_python_pip_deps",
+	requirements_lock = "//:requirements.txt",
+)
+load("@gapic_generator_python_pip_deps//:requirements.bzl", "install_deps")
+
+install_deps()
 #
 # Import gapic-generator-python specific dependencies
 #
@@ -49,6 +62,20 @@ gapic_generator_register_toolchains()
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
+
+# Import boringssl explicitly to override what gRPC imports as its dependency.
+# Boringssl build fails on gcc12 without this fix:
+# https://github.com/google/boringssl/commit/8462a367bb57e9524c3d8eca9c62733c63a63cf4,
+# which is present only in the newest version of boringssl, not the one imported
+# by gRPC. Remove this import once gRPC depends on a newer version.
+http_archive(
+    name = "boringssl",
+    sha256 = "b460f8673f3393e58ce506e9cdde7f2c3b2575b075f214cb819fb57d809f052b",
+    strip_prefix = "boringssl-bb41bc007079982da419c0ec3186e510cbcf09d0",
+    urls = [
+        "https://github.com/google/boringssl/archive/bb41bc007079982da419c0ec3186e510cbcf09d0.zip",
+    ],
+)
 
 #
 # Import grpc as a native bazel dependency. This avoids duplication and also

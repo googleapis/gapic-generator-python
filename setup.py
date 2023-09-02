@@ -22,7 +22,7 @@ import setuptools
 name = "gapic-generator"
 description = "Google API Client Generator for Python"
 url = "https://github.com/googleapis/gapic-generator-python"
-version = "1.2.0"
+version = "1.11.4"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "click >= 6.7",
@@ -30,11 +30,12 @@ dependencies = [
     "googleapis-common-protos >= 1.55.0",
     "grpcio >= 1.24.3",
     "jinja2 >= 2.10",
-    "protobuf >= 3.18.0, <4.0.0dev",
+    "protobuf >= 3.18.0, < 5.0.0dev",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
-    "dataclasses < 0.8; python_version < '3.7'",
     "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
+    "libcst >= 0.4.9, < 2.0.0dev",
+    "inflection >= 0.5.1, < 1.0.0dev",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
@@ -64,17 +65,17 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Operating System :: OS Independent",
         "Topic :: Software Development :: Code Generators",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     platforms="Posix; MacOS X",
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     install_requires=dependencies,
     include_package_data=True,
     zip_safe=False,

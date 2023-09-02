@@ -34,11 +34,15 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
           {% if not field.oneof or field.proto3_optional %}
             {{ field.name }}={{ field.mock_value }},
             {% endif %}{% endfor %}
-            {# This is a hack to only pick one field  #}
+            {# This is a hack to only pick one field #}
             {% for oneof_fields in method.output.oneof_fields().values() %}
-            {% with field = oneof_fields[0] %}
+            {# Take the first non-message oneof field. In the corner case when all the fields of a oneof are messages, the oneof will not be populated #}
+            {# Use an outer if-statement here because `first` raises an error if called on an empty sequence #}
+            {% if (oneof_fields | rejectattr('message') | list) %}
+            {% with field = (oneof_fields | rejectattr('message') | first) %}
             {{ field.name }}={{ field.mock_value }},
             {% endwith %}
+            {% endif %}
             {% endfor %}
         )
         {% endif %}
@@ -76,7 +80,16 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% for field in method_output.fields.values() | rejectattr('message') %}
     {% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
+    {% if field.repeated %}
+    for index in range(len(response.{{ field.name }})):
+        assert math.isclose(
+            response.{{ field.name }}[index],
+            {{ field.mock_value }}[index],
+            rel_tol=1e-6,
+        )
+    {% else %}{# field.repeated #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% endif %}{# field.repeated #}
     {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
@@ -187,7 +200,16 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     {% for field in method_output.fields.values() | rejectattr('message') %}
     {% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
+    {% if field.repeated %}
+    for index in range(len(response.{{ field.name }})):
+        assert math.isclose(
+            response.{{ field.name }}[index],
+            {{ field.mock_value }}[index],
+            rel_tol=1e-6,
+        )
+    {% else %}{# field.repeated #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% endif %}{# field.repeated #}
     {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
@@ -212,7 +234,7 @@ def test_{{ method.name|snake_case }}_routing_parameters():
     {% for routing_param in method.routing_rule.routing_parameters %}
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = {{ method.input.ident }}({{ routing_param.sample_request }})
+    request = {{ method.input.ident }}(**{{ routing_param.sample_request }})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -363,7 +385,7 @@ def test_{{ method_name }}_from_dict_foreign():
 
 {% endif %}
 
-{% if method.flattened_fields %}
+{% if method.flattened_fields and not method.client_streaming %}
 def test_{{ method_name }}_flattened():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -400,6 +422,10 @@ def test_{{ method_name }}_flattened():
         assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif (field.ident|string()).startswith('wrappers_pb2.') %}
+        assert wrappers.{{ (field.ident|string())[13:] }}Rule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif field.field_pb.type == 2 %}{# Use approx eq for floats #}
+        assert math.isclose(args[0].{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
         {% else %}
         arg = args[0].{{ key }}
         mock_val = {{ field.mock_value }}
@@ -493,6 +519,10 @@ async def test_{{ method_name }}_flattened_async():
         assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif (field.ident|string()).startswith('wrappers_pb2.') %}
+        assert wrappers.{{ (field.ident|string())[13:] }}Rule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif field.field_pb.type == 2 %}{# Use approx eq for floats #}
+        assert math.isclose(args[0].{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
         {% else %}
         arg = args[0].{{ key }}
         mock_val = {{ field.mock_value }}
@@ -822,7 +852,11 @@ async def test_{{ method_name }}_async_pages():
         {% endif %}
         )
         pages = []
-        async for page_ in (await client.{{ method_name }}(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.{{ method_name }}(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -855,7 +889,7 @@ def test_{{ method_name }}_rest(request_type):
     request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
     {% endif %}
     {% endfor %}
-    request = request_type(request_init)
+    request = request_type(**request_init)
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -873,11 +907,13 @@ def test_{{ method_name }}_rest(request_type):
             {% if not field.oneof or field.proto3_optional %}
               {{ field.name }}={{ field.mock_value }},
             {% endif %}{% endfor %}
-              {# This is a hack to only pick one field  #}
-            {% for oneof_fields in method.extended_lro.operation_type.oneof_fields().values() %}
-              {% with field = oneof_fields[0] %}
-              {{ field.name }}={{ field.mock_value }},
-              {% endwith %}
+            {# This is a hack to only pick one field #}
+            {% for oneof_fields in method.output.oneof_fields().values() %}
+            {% if (oneof_fields | rejectattr('message') | list) %}
+            {% with field = (oneof_fields | rejectattr('message') | first) %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endwith %}
+            {% endif %}
             {% endfor %}
         )
         {% else %}
@@ -886,12 +922,14 @@ def test_{{ method_name }}_rest(request_type):
             {% if not field.oneof or field.proto3_optional %}
               {{ field.name }}={{ field.mock_value }},
               {% endif %}{% endfor %}
-              {# This is a hack to only pick one field  #}
-              {% for oneof_fields in method.output.oneof_fields().values() %}
-              {% with field = oneof_fields[0] %}
-              {{ field.name }}={{ field.mock_value }},
-              {% endwith %}
-              {% endfor %}
+            {# This is a hack to only pick one field #}
+            {% for oneof_fields in method.output.oneof_fields().values() %}
+            {% if (oneof_fields | rejectattr('message') | list) %}
+            {% with field = (oneof_fields | rejectattr('message') | first) %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endwith %}
+            {% endif %}
+            {% endfor %}
         )
         {% endif %}
 
@@ -902,11 +940,19 @@ def test_{{ method_name }}_rest(request_type):
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
-        {% elif method.server_streaming %}
-        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
         {% else %}
-        json_return_value = {{ method.output.ident }}.to_json(return_value)
+        {% if method.output.ident.is_proto_plus_type %}
+        pb_return_value = {{ method.output.ident }}.pb(return_value)
+        {% else %}
+        pb_return_value = return_value
         {% endif %}
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        {% endif %}
+
+        {% if method.server_streaming %}
+        json_return_value = "[{}]".format(json_return_value)
+        {% endif %}
+
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         {% if method.client_streaming %}
@@ -942,7 +988,16 @@ def test_{{ method_name }}_rest(request_type):
     {% for field in method_output.fields.values() | rejectattr('message') %}
     {% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
+    {% if field.repeated %}
+    for index in range(len(response.{{ field.name }})):
+        assert math.isclose(
+            response.{{ field.name }}[index],
+            {{ field.mock_value }}[index],
+            rel_tol=1e-6,
+        )
+    {% else %}{# field.repeated #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% endif %}{# field.repeated #}
     {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
     {% else %}
@@ -965,12 +1020,17 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     request_init["{{ req_field.name }}"] = {{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}
     {% endif %}{# default is str #}
     {% endfor %}
-    request = request_type(request_init)
-    jsonified_request = json.loads(request_type.to_json(
-        request,
+    request = request_type(**request_init)
+    {% if method.input.ident.is_proto_plus_type %}
+    pb_request = request_type.pb(request)
+    {% else %}
+    pb_request = request
+    {% endif %}
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
         including_default_value_fields=False,
         use_integers_for_enums=False
-        ))
+    ))
 
     # verify fields with default values are dropped
     {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
@@ -978,7 +1038,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -994,7 +1054,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
@@ -1014,7 +1074,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         credentials=ga_credentials.AnonymousCredentials(),
         transport='rest',
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     {% if method.void %}
@@ -1032,13 +1092,18 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         with mock.patch.object(path_template, 'transcode') as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            {% if method.input.ident.is_proto_plus_type %}
+            pb_request = request_type.pb(request)
+            {% else %}
+            pb_request = request
+            {% endif %}
             transcode_result = {
                 'uri': 'v1/sample_method',
                 'method': "{{ method.http_options[0].method }}",
-                'query_params': request_init,
+                'query_params': pb_request,
             }
             {% if method.http_options[0].body %}
-            transcode_result['body'] = {}
+            transcode_result['body'] = pb_request
             {% endif %}
             transcode.return_value = transcode_result
 
@@ -1048,11 +1113,19 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             json_return_value = ''
             {% elif method.lro %}
             json_return_value = json_format.MessageToJson(return_value)
-            {% elif method.server_streaming %}
-            json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
             {% else %}
-            json_return_value = {{ method.output.ident }}.to_json(return_value)
+
+            {% if method.output.ident.is_proto_plus_type %}
+            pb_return_value = {{ method.output.ident }}.pb(return_value)
+            {% else %}
+            pb_return_value = return_value
             {% endif %}
+            json_return_value = json_format.MessageToJson(pb_return_value)
+            {% endif %}
+            {% if method.server_streaming %}
+            json_return_value = "[{}]".format(json_return_value)
+            {% endif %}
+
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
 
@@ -1072,8 +1145,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
                     "{{ req_field.name | camel_case }}",
                     {% if req_field.field_pb.type == 9 %}
                     "{{ req_field.field_pb.default_value }}",
+                    {% elif req_field.field_pb.type == 8 %}
+                    str({{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}).lower(),
                     {% else %}
-                    {{ req_field.type.python_type(req_field.field_pb.default_value or 0) }},
+                    str({{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}),
                     {% endif %}{# default is str #}
                 ),
               {% endfor %}
@@ -1115,14 +1190,23 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         {% if not method.void %}
         post.assert_not_called()
         {% endif %}
-
-        transcode.return_value = {"method": "post", "uri": "my_uri", "body": None, "query_params": {},}
+        {% if method.input.ident.is_proto_plus_type %}
+        pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
+        {% else %}
+        pb_message = {{ method.input.ident }}()
+        {% endif %}
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
 
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
         {% if not method.void %}
-        req.return_value._content = {% if method.output.ident.package == method.ident.package %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
+        req.return_value._content = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
 
         {% if method.server_streaming %}
         req.return_value._content = "[{}]".format(req.return_value._content)
@@ -1137,7 +1221,7 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         {% if not method.void %}
-        post.return_value = {{ method.output.ident }}
+        post.return_value = {{ method.output.ident }}()
         {% endif %}
 
         client.{{ method_name }}(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
@@ -1164,7 +1248,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
     request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
     {% endif %}
     {% endfor %}
-    request = request_type(request_init)
+    request = request_type(**request_init)
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -1183,7 +1267,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
         {% endif %}
 
 
-{% if method.flattened_fields %}
+{% if method.flattened_fields and not method.client_streaming %}
 def test_{{ method_name }}_rest_flattened():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1222,12 +1306,17 @@ def test_{{ method_name }}_rest_flattened():
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
-        {% elif method.server_streaming %}
-        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
         {% else %}
-        json_return_value = {{ method.output.ident }}.to_json(return_value)
+        {% if method.output.ident.is_proto_plus_type %}
+        pb_return_value = {{ method.output.ident }}.pb(return_value)
+        {% else %}
+        pb_return_value = return_value
         {% endif %}
-
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        {% endif %}
+        {% if method.server_streaming %}
+        json_return_value = "[{}]".format(json_return_value)
+        {% endif %}
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -1342,7 +1431,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             {% if method.server_streaming %}
-            response_val = "[{}]".format({{ method.output.ident }}.to_json(response_val))
+            response_val = "[{}]".format(response_val)
             {% endif %}
             return_val._content = response_val.encode('UTF-8')
             return_val.status_code = 200
@@ -1396,12 +1485,14 @@ def test_{{ method_name }}_rest_error():
     {%- if not method.http_options %}
     # Since a `google.api.http` annotation is required for using a rest transport
     # method, this should error.
-    with pytest.raises(RuntimeError) as runtime_error:
+    with pytest.raises(NotImplementedError) as not_implemented_error:
         client.{{ method_name }}({})
-    assert ('Cannot define a method without a valid `google.api.http` annotation.'
-        in str(runtime_error.value))
+    assert (
+        "Method {{ method.name }} is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
 
-    {%- endif %}
+    {%- endif %}{# not method.http_options #}
 {% endif %}{# flattened_fields #}
 
 {% else %}{# this is an lro or streaming method #}

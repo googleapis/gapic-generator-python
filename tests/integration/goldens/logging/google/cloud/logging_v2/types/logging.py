@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -47,21 +51,20 @@ class DeleteLogRequest(proto.Message):
         log_name (str):
             Required. The resource name of the log to delete:
 
-            ::
-
-                "projects/[PROJECT_ID]/logs/[LOG_ID]"
-                "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
-                "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
-                "folders/[FOLDER_ID]/logs/[LOG_ID]"
+            -  ``projects/[PROJECT_ID]/logs/[LOG_ID]``
+            -  ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
+            -  ``folders/[FOLDER_ID]/logs/[LOG_ID]``
 
             ``[LOG_ID]`` must be URL-encoded. For example,
             ``"projects/my-project-id/logs/syslog"``,
-            ``"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"``.
+            ``"organizations/123/logs/cloudaudit.googleapis.com%2Factivity"``.
+
             For more information about log names, see
             [LogEntry][google.logging.v2.LogEntry].
     """
 
-    log_name = proto.Field(
+    log_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -76,19 +79,17 @@ class WriteLogEntriesRequest(proto.Message):
             all log entries in ``entries`` that do not specify a value
             for ``log_name``:
 
-            ::
-
-                "projects/[PROJECT_ID]/logs/[LOG_ID]"
-                "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
-                "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
-                "folders/[FOLDER_ID]/logs/[LOG_ID]"
+            -  ``projects/[PROJECT_ID]/logs/[LOG_ID]``
+            -  ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
+            -  ``folders/[FOLDER_ID]/logs/[LOG_ID]``
 
             ``[LOG_ID]`` must be URL-encoded. For example:
 
             ::
 
                 "projects/my-project-id/logs/syslog"
-                "organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"
+                "organizations/123/logs/cloudaudit.googleapis.com%2Factivity"
 
             The permission ``logging.logEntries.create`` is needed on
             each project, organization, billing account, or folder that
@@ -106,13 +107,13 @@ class WriteLogEntriesRequest(proto.Message):
                     "zone": "us-central1-a", "instance_id": "00000000000000000000" }}
 
             See [LogEntry][google.logging.v2.LogEntry].
-        labels (Mapping[str, str]):
+        labels (MutableMapping[str, str]):
             Optional. Default labels that are added to the ``labels``
             field of all log entries in ``entries``. If a log entry
             already has a label with the same key as a label in this
             parameter, then the log entry's label is not changed. See
             [LogEntry][google.logging.v2.LogEntry].
-        entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
+        entries (MutableSequence[google.cloud.logging_v2.types.LogEntry]):
             Required. The log entries to send to Logging. The order of
             log entries in this list does not matter. Values supplied in
             this method's ``log_name``, ``resource``, and ``labels``
@@ -131,25 +132,27 @@ class WriteLogEntriesRequest(proto.Message):
 
             Log entries with timestamps that are more than the `logs
             retention
-            period <https://cloud.google.com/logging/quota-policy>`__ in
-            the past or more than 24 hours in the future will not be
+            period <https://cloud.google.com/logging/quotas>`__ in the
+            past or more than 24 hours in the future will not be
             available when calling ``entries.list``. However, those log
             entries can still be `exported with
             LogSinks <https://cloud.google.com/logging/docs/api/tasks/exporting-logs>`__.
 
             To improve throughput and to avoid exceeding the `quota
-            limit <https://cloud.google.com/logging/quota-policy>`__ for
-            calls to ``entries.write``, you should try to include
-            several log entries in this list, rather than calling this
-            method for each individual log entry.
+            limit <https://cloud.google.com/logging/quotas>`__ for calls
+            to ``entries.write``, you should try to include several log
+            entries in this list, rather than calling this method for
+            each individual log entry.
         partial_success (bool):
-            Optional. Whether valid entries should be written even if
-            some other entries fail due to INVALID_ARGUMENT or
-            PERMISSION_DENIED errors. If any entry is not written, then
-            the response status is the error associated with one of the
-            failed entries and the response includes error details keyed
-            by the entries' zero-based index in the ``entries.write``
-            method.
+            Optional. Whether a batch's valid entries should be written
+            even if some other entry failed due to a permanent error
+            such as INVALID_ARGUMENT or PERMISSION_DENIED. If any entry
+            failed, then the response status is the response status of
+            one of the failed entries. The response will include error
+            details in ``WriteLogEntriesPartialErrors.log_entry_errors``
+            keyed by the entries' zero-based index in the ``entries``.
+            Failed requests for which no entries are written will not
+            include per-entry errors.
         dry_run (bool):
             Optional. If true, the request should expect
             normal response, but the entries won't be
@@ -158,30 +161,30 @@ class WriteLogEntriesRequest(proto.Message):
             properly before sending valuable data.
     """
 
-    log_name = proto.Field(
+    log_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    resource = proto.Field(
+    resource: monitored_resource_pb2.MonitoredResource = proto.Field(
         proto.MESSAGE,
         number=2,
         message=monitored_resource_pb2.MonitoredResource,
     )
-    labels = proto.MapField(
+    labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=3,
     )
-    entries = proto.RepeatedField(
+    entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=log_entry.LogEntry,
     )
-    partial_success = proto.Field(
+    partial_success: bool = proto.Field(
         proto.BOOL,
         number=5,
     )
-    dry_run = proto.Field(
+    dry_run: bool = proto.Field(
         proto.BOOL,
         number=6,
     )
@@ -196,7 +199,7 @@ class WriteLogEntriesPartialErrors(proto.Message):
     r"""Error details for WriteLogEntries with partial success.
 
     Attributes:
-        log_entry_errors (Mapping[int, google.rpc.status_pb2.Status]):
+        log_entry_errors (MutableMapping[int, google.rpc.status_pb2.Status]):
             When ``WriteLogEntriesRequest.partial_success`` is true,
             records the error status for entries that were not written
             due to a permanent error, keyed by the entry's zero-based
@@ -206,7 +209,7 @@ class WriteLogEntriesPartialErrors(proto.Message):
             include per-entry errors.
     """
 
-    log_entry_errors = proto.MapField(
+    log_entry_errors: MutableMapping[int, status_pb2.Status] = proto.MapField(
         proto.INT32,
         proto.MESSAGE,
         number=1,
@@ -218,35 +221,32 @@ class ListLogEntriesRequest(proto.Message):
     r"""The parameters to ``ListLogEntries``.
 
     Attributes:
-        resource_names (Sequence[str]):
+        resource_names (MutableSequence[str]):
             Required. Names of one or more parent resources from which
             to retrieve log entries:
 
-            ::
+            -  ``projects/[PROJECT_ID]``
+            -  ``organizations/[ORGANIZATION_ID]``
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
+            -  ``folders/[FOLDER_ID]``
 
-                "projects/[PROJECT_ID]"
-                "organizations/[ORGANIZATION_ID]"
-                "billingAccounts/[BILLING_ACCOUNT_ID]"
-                "folders/[FOLDER_ID]"
+            May alternatively be one or more views:
 
-            May alternatively be one or more views
-            projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-            organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-            billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-            folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+            -  ``projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+            -  ``folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
 
             Projects listed in the ``project_ids`` field are added to
-            this list.
+            this list. A maximum of 100 resources may be specified in a
+            single request.
         filter (str):
-            Optional. A filter that chooses which log entries to return.
-            See `Advanced Logs
-            Queries <https://cloud.google.com/logging/docs/view/advanced-queries>`__.
-            Only log entries that match the filter are returned. An
-            empty filter matches all log entries in the resources listed
-            in ``resource_names``. Referencing a parent resource that is
-            not listed in ``resource_names`` will cause the filter to
-            return no results. The maximum length of the filter is 20000
-            characters.
+            Optional. Only log entries that match the filter are
+            returned. An empty filter matches all log entries in the
+            resources listed in ``resource_names``. Referencing a parent
+            resource that is not listed in ``resource_names`` will cause
+            the filter to return no results. The maximum length of a
+            filter is 20,000 characters.
         order_by (str):
             Optional. How the results should be sorted. Presently, the
             only permitted values are ``"timestamp asc"`` (default) and
@@ -270,23 +270,23 @@ class ListLogEntriesRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    resource_names = proto.RepeatedField(
+    resource_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    order_by = proto.Field(
+    order_by: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=4,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=5,
     )
@@ -296,7 +296,7 @@ class ListLogEntriesResponse(proto.Message):
     r"""Result returned from ``ListLogEntries``.
 
     Attributes:
-        entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
+        entries (MutableSequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. If ``entries`` is empty,
             ``nextPageToken`` may still be returned, indicating that
             more entries may exist. See ``nextPageToken`` for more
@@ -321,12 +321,12 @@ class ListLogEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entries = proto.RepeatedField(
+    entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=log_entry.LogEntry,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -349,11 +349,11 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -363,7 +363,7 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     r"""Result returned from ListMonitoredResourceDescriptors.
 
     Attributes:
-        resource_descriptors (Sequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
+        resource_descriptors (MutableSequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
             A list of resource descriptors.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -376,12 +376,12 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_descriptors = proto.RepeatedField(
+    resource_descriptors: MutableSequence[monitored_resource_pb2.MonitoredResourceDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -392,14 +392,29 @@ class ListLogsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name that owns the logs:
+            Required. The resource name to list logs for:
 
-            ::
+            -  ``projects/[PROJECT_ID]``
+            -  ``organizations/[ORGANIZATION_ID]``
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
+            -  ``folders/[FOLDER_ID]``
+        resource_names (MutableSequence[str]):
+            Optional. List of resource names to list logs for:
 
-                "projects/[PROJECT_ID]"
-                "organizations/[ORGANIZATION_ID]"
-                "billingAccounts/[BILLING_ACCOUNT_ID]"
-                "folders/[FOLDER_ID]".
+            -  ``projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+            -  ``folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+
+            To support legacy queries, it could also be:
+
+            -  ``projects/[PROJECT_ID]``
+            -  ``organizations/[ORGANIZATION_ID]``
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
+            -  ``folders/[FOLDER_ID]``
+
+            The resource name in the ``parent`` field is added to this
+            list.
         page_size (int):
             Optional. The maximum number of results to return from this
             request. Non-positive values are ignored. The presence of
@@ -411,33 +426,23 @@ class ListLogsRequest(proto.Message):
             ``pageToken`` must be the value of ``nextPageToken`` from
             the previous response. The values of other method parameters
             should be identical to those in the previous call.
-        resource_names (Sequence[str]):
-            Optional. The resource name that owns the logs:
-            projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-            organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-            billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-            folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-
-            To support legacy queries, it could also be:
-            "projects/[PROJECT_ID]" "organizations/[ORGANIZATION_ID]"
-            "billingAccounts/[BILLING_ACCOUNT_ID]" "folders/[FOLDER_ID]".
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    resource_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
-    )
-    resource_names = proto.RepeatedField(
-        proto.STRING,
-        number=8,
     )
 
 
@@ -445,7 +450,7 @@ class ListLogsResponse(proto.Message):
     r"""Result returned from ListLogs.
 
     Attributes:
-        log_names (Sequence[str]):
+        log_names (MutableSequence[str]):
             A list of log names. For example,
             ``"projects/my-project/logs/syslog"`` or
             ``"organizations/123/logs/cloudresourcemanager.googleapis.com%2Factivity"``.
@@ -460,11 +465,11 @@ class ListLogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    log_names = proto.RepeatedField(
+    log_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -474,32 +479,28 @@ class TailLogEntriesRequest(proto.Message):
     r"""The parameters to ``TailLogEntries``.
 
     Attributes:
-        resource_names (Sequence[str]):
+        resource_names (MutableSequence[str]):
             Required. Name of a parent resource from which to retrieve
             log entries:
 
-            ::
-
-                "projects/[PROJECT_ID]"
-                "organizations/[ORGANIZATION_ID]"
-                "billingAccounts/[BILLING_ACCOUNT_ID]"
-                "folders/[FOLDER_ID]"
+            -  ``projects/[PROJECT_ID]``
+            -  ``organizations/[ORGANIZATION_ID]``
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
+            -  ``folders/[FOLDER_ID]``
 
             May alternatively be one or more views:
-            "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
-            "organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
-            "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
-            "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]".
+
+            -  ``projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+            -  ``folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
         filter (str):
-            Optional. A filter that chooses which log entries to return.
-            See `Advanced Logs
-            Filters <https://cloud.google.com/logging/docs/view/advanced_filters>`__.
-            Only log entries that match the filter are returned. An
-            empty filter matches all log entries in the resources listed
-            in ``resource_names``. Referencing a parent resource that is
-            not in ``resource_names`` will cause the filter to return no
-            results. The maximum length of the filter is 20000
-            characters.
+            Optional. Only log entries that match the filter are
+            returned. An empty filter matches all log entries in the
+            resources listed in ``resource_names``. Referencing a parent
+            resource that is not listed in ``resource_names`` will cause
+            the filter to return no results. The maximum length of a
+            filter is 20,000 characters.
         buffer_window (google.protobuf.duration_pb2.Duration):
             Optional. The amount of time to buffer log
             entries at the server before being returned to
@@ -509,15 +510,15 @@ class TailLogEntriesRequest(proto.Message):
             milliseconds.
     """
 
-    resource_names = proto.RepeatedField(
+    resource_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    buffer_window = proto.Field(
+    buffer_window: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=3,
         message=duration_pb2.Duration,
@@ -528,12 +529,12 @@ class TailLogEntriesResponse(proto.Message):
     r"""Result returned from ``TailLogEntries``.
 
     Attributes:
-        entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
+        entries (MutableSequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. Each response in the stream will
             order entries with increasing values of
             ``LogEntry.timestamp``. Ordering is not guaranteed between
             separate responses.
-        suppression_info (Sequence[google.cloud.logging_v2.types.TailLogEntriesResponse.SuppressionInfo]):
+        suppression_info (MutableSequence[google.cloud.logging_v2.types.TailLogEntriesResponse.SuppressionInfo]):
             If entries that otherwise would have been
             included in the session were not sent back to
             the client, counts of relevant entries omitted
@@ -556,27 +557,40 @@ class TailLogEntriesResponse(proto.Message):
                 ``reason``.
         """
         class Reason(proto.Enum):
-            r"""An indicator of why entries were omitted."""
+            r"""An indicator of why entries were omitted.
+
+            Values:
+                REASON_UNSPECIFIED (0):
+                    Unexpected default.
+                RATE_LIMIT (1):
+                    Indicates suppression occurred due to relevant entries being
+                    received in excess of rate limits. For quotas and limits,
+                    see `Logging API quotas and
+                    limits <https://cloud.google.com/logging/quotas#api-limits>`__.
+                NOT_CONSUMED (2):
+                    Indicates suppression occurred due to the
+                    client not consuming responses quickly enough.
+            """
             REASON_UNSPECIFIED = 0
             RATE_LIMIT = 1
             NOT_CONSUMED = 2
 
-        reason = proto.Field(
+        reason: 'TailLogEntriesResponse.SuppressionInfo.Reason' = proto.Field(
             proto.ENUM,
             number=1,
             enum='TailLogEntriesResponse.SuppressionInfo.Reason',
         )
-        suppressed_count = proto.Field(
+        suppressed_count: int = proto.Field(
             proto.INT32,
             number=2,
         )
 
-    entries = proto.RepeatedField(
+    entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=log_entry.LogEntry,
     )
-    suppression_info = proto.RepeatedField(
+    suppression_info: MutableSequence[SuppressionInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=SuppressionInfo,

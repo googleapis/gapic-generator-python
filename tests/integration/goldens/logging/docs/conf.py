@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ root_doc = "index"
 
 # General information about the project.
 project = u"google-cloud-logging"
-copyright = u"2022, Google, LLC"
+copyright = u"2023, Google, LLC"
 author = u"Google APIs"         # TODO: autogenerate this bit
 
 # The version info for the project you're documenting, acts as replacement for
@@ -96,7 +96,7 @@ version = ".".join(release.split(".")[0:2])
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:

@@ -77,12 +77,12 @@ class Field:
     def name(self) -> str:
         """Used to prevent collisions with python keywords"""
         name = self.field_pb.name
-        return name + "_" if name in utils.RESERVED_NAMES else name
+        return name + "_" if name in utils.RESERVED_NAMES and self.meta.address.is_proto_plus_type else name
 
     @utils.cached_property
     def ident(self) -> metadata.FieldIdentifier:
         """Return the identifier to be used in templates."""
-        mapping: Union[None, Tuple[Field, Field]] = None
+        mapping: Optional[Tuple[Field, Field]] = None
         if self.map:
             mapping = (self.type.fields["key"], self.type.fields["value"])
         return metadata.FieldIdentifier(
@@ -128,10 +128,19 @@ class Field:
                     # Not worth the hassle, just return an empty map.
                     return {}
 
-                msg_dict = {
-                    f.name: recursive_mock_original_type(f)
-                    for f in field.message.fields.values()
-                }
+                adr = field.type.meta.address
+                if adr.name == "Any" and adr.package == ("google", "protobuf"):
+                    # If it is Any type pack a random but validly encoded type,
+                    # Duration in this specific case.
+                    msg_dict = {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b'\x08\x0c\x10\xdb\x07',
+                    }
+                else:
+                    msg_dict = {
+                        f.name: recursive_mock_original_type(f)
+                        for f in field.message.fields.values()
+                    }
 
                 return [msg_dict] if field.repeated else msg_dict
 
@@ -237,9 +246,16 @@ class Field:
             if self.type.python_type == bool:
                 answer = True
             elif self.type.python_type == str:
-                answer = f"{self.name}_value_{suffix}" if suffix else f"{self.name}_value"
+                if self.name == "type_url":
+                    # It is most likely a mock for Any type. We don't really care
+                    # which mock value to put, so lets put a value which makes
+                    # Any deserializer happy, which will wtill work even if it
+                    # is not Any.
+                    answer = "type.googleapis.com/google.protobuf.Empty"
+                else:
+                    answer = f"{self.name}_value{suffix}" if suffix else f"{self.name}_value"
             elif self.type.python_type == bytes:
-                answer_str = f"{self.name}_blob_{suffix}" if suffix else f"{self.name}_blob"
+                answer_str = f"{self.name}_blob{suffix}" if suffix else f"{self.name}_blob"
                 answer = bytes(answer_str, encoding="utf-8")
             elif self.type.python_type == int:
                 answer = sum([ord(i) for i in self.name]) + suffix
@@ -1075,7 +1091,36 @@ class HttpRule:
         uri = utils.convert_uri_fieldnames(uri)
 
         body = http_rule.body or None
+        # Ensure body doesn't conflict with reserved names.
+        if body in utils.RESERVED_NAMES and not body.endswith("_"):
+            body += "_"
         return cls(method, uri, body)
+
+
+@dataclasses.dataclass(frozen=True)
+class MixinMethod:
+    name: str
+    request_type: str
+    response_type: str
+
+
+@dataclasses.dataclass(frozen=True)
+class MixinHttpRule(HttpRule):
+    def path_fields(self, uri):
+        """return list of (name, template) tuples extracted from uri."""
+        return [
+            (match.group("name"), match.group("template"))
+            for match in path_template._VARIABLE_RE.finditer(uri)
+            if match.group("name")
+        ]
+
+    @property
+    def sample_request(self):
+        req = uri_sample.sample_from_path_fields(self.path_fields(self.uri))
+        if not self.body or self.body == "" or self.body == "*":
+            return req
+        req[self.body] = {}  # just an empty json.
+        return req
 
 
 @dataclasses.dataclass(frozen=True)
@@ -1594,6 +1639,10 @@ class Service:
     def client_name(self) -> str:
         """Returns the name of the generated client class"""
         return self.name + "Client"
+
+    @property
+    def client_package_version(self) -> str:
+        return self.meta.address.package[-1] if self.meta.address.package else ""
 
     @property
     def async_client_name(self) -> str:

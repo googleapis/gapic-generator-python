@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,15 +19,20 @@ from typing import Dict, Type
 from .base import EventarcTransport
 from .grpc import EventarcGrpcTransport
 from .grpc_asyncio import EventarcGrpcAsyncIOTransport
+from .rest import EventarcRestTransport
+from .rest import EventarcRestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[EventarcTransport]]
 _transport_registry['grpc'] = EventarcGrpcTransport
 _transport_registry['grpc_asyncio'] = EventarcGrpcAsyncIOTransport
+_transport_registry['rest'] = EventarcRestTransport
 
 __all__ = (
     'EventarcTransport',
     'EventarcGrpcTransport',
     'EventarcGrpcAsyncIOTransport',
+    'EventarcRestTransport',
+    'EventarcRestInterceptor',
 )

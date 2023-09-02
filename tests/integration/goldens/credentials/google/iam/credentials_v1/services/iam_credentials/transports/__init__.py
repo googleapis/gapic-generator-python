@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,15 +19,20 @@ from typing import Dict, Type
 from .base import IAMCredentialsTransport
 from .grpc import IAMCredentialsGrpcTransport
 from .grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
+from .rest import IAMCredentialsRestTransport
+from .rest import IAMCredentialsRestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[IAMCredentialsTransport]]
 _transport_registry['grpc'] = IAMCredentialsGrpcTransport
 _transport_registry['grpc_asyncio'] = IAMCredentialsGrpcAsyncIOTransport
+_transport_registry['rest'] = IAMCredentialsRestTransport
 
 __all__ = (
     'IAMCredentialsTransport',
     'IAMCredentialsGrpcTransport',
     'IAMCredentialsGrpcAsyncIOTransport',
+    'IAMCredentialsRestTransport',
+    'IAMCredentialsRestInterceptor',
 )

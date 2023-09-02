@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,9 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+
+from google.iam.credentials_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -117,7 +118,7 @@ class IAMCredentialsAsyncClient:
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
-        default mTLS endpoint; if the environment variabel is "never", use the default API
+        default mTLS endpoint; if the environment variable is "never", use the default API
         endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
         use the default API endpoint.
 
@@ -149,9 +150,9 @@ class IAMCredentialsAsyncClient:
     get_transport_class = functools.partial(type(IAMCredentialsClient).get_transport_class, type(IAMCredentialsClient))
 
     def __init__(self, *,
-            credentials: ga_credentials.Credentials = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, IAMCredentialsTransport] = "grpc_asyncio",
-            client_options: ClientOptions = None,
+            client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiates the iam credentials client.
@@ -195,14 +196,14 @@ class IAMCredentialsAsyncClient:
         )
 
     async def generate_access_token(self,
-            request: Union[common.GenerateAccessTokenRequest, dict] = None,
+            request: Optional[Union[common.GenerateAccessTokenRequest, dict]] = None,
             *,
-            name: str = None,
-            delegates: Sequence[str] = None,
-            scope: Sequence[str] = None,
-            lifetime: duration_pb2.Duration = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            scope: Optional[MutableSequence[str]] = None,
+            lifetime: Optional[duration_pb2.Duration] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateAccessTokenResponse:
         r"""Generates an OAuth 2.0 access token for a service
@@ -210,6 +211,13 @@ class IAMCredentialsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.iam import credentials_v1
 
             async def sample_generate_access_token():
@@ -219,7 +227,7 @@ class IAMCredentialsAsyncClient:
                 # Initialize request argument(s)
                 request = credentials_v1.GenerateAccessTokenRequest(
                     name="name_value",
-                    scope=['scope_value_1', 'scope_value_2'],
+                    scope=['scope_value1', 'scope_value2'],
                 )
 
                 # Make the request
@@ -229,7 +237,7 @@ class IAMCredentialsAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.GenerateAccessTokenRequest, dict]):
+            request (Optional[Union[google.iam.credentials_v1.types.GenerateAccessTokenRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -242,7 +250,7 @@ class IAMCredentialsAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (:class:`MutableSequence[str]`):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -260,7 +268,7 @@ class IAMCredentialsAsyncClient:
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            scope (:class:`Sequence[str]`):
+            scope (:class:`MutableSequence[str]`):
                 Required. Code to identify the scopes
                 to be included in the OAuth 2.0 access
                 token. See
@@ -348,14 +356,14 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def generate_id_token(self,
-            request: Union[common.GenerateIdTokenRequest, dict] = None,
+            request: Optional[Union[common.GenerateIdTokenRequest, dict]] = None,
             *,
-            name: str = None,
-            delegates: Sequence[str] = None,
-            audience: str = None,
-            include_email: bool = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            audience: Optional[str] = None,
+            include_email: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateIdTokenResponse:
         r"""Generates an OpenID Connect ID token for a service
@@ -363,6 +371,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.iam import credentials_v1
 
             async def sample_generate_id_token():
@@ -382,7 +397,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.GenerateIdTokenRequest, dict]):
+            request (Optional[Union[google.iam.credentials_v1.types.GenerateIdTokenRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -395,7 +410,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (:class:`MutableSequence[str]`):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -495,13 +510,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def sign_blob(self,
-            request: Union[common.SignBlobRequest, dict] = None,
+            request: Optional[Union[common.SignBlobRequest, dict]] = None,
             *,
-            name: str = None,
-            delegates: Sequence[str] = None,
-            payload: bytes = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            payload: Optional[bytes] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignBlobResponse:
         r"""Signs a blob using a service account's system-managed
@@ -509,6 +524,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.iam import credentials_v1
 
             async def sample_sign_blob():
@@ -528,7 +550,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.SignBlobRequest, dict]):
+            request (Optional[Union[google.iam.credentials_v1.types.SignBlobRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -541,7 +563,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (:class:`MutableSequence[str]`):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -628,13 +650,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         return response
 
     async def sign_jwt(self,
-            request: Union[common.SignJwtRequest, dict] = None,
+            request: Optional[Union[common.SignJwtRequest, dict]] = None,
             *,
-            name: str = None,
-            delegates: Sequence[str] = None,
-            payload: str = None,
+            name: Optional[str] = None,
+            delegates: Optional[MutableSequence[str]] = None,
+            payload: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
@@ -642,6 +664,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.iam import credentials_v1
 
             async def sample_sign_jwt():
@@ -661,7 +690,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print(response)
 
         Args:
-            request (Union[google.iam.credentials_v1.types.SignJwtRequest, dict]):
+            request (Optional[Union[google.iam.credentials_v1.types.SignJwtRequest, dict]]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -674,7 +703,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (:class:`MutableSequence[str]`):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -763,20 +792,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         # Done; return the response.
         return response
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "IAMCredentialsAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-iam-credentials",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 __all__ = (

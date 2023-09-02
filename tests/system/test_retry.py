@@ -29,6 +29,17 @@ def test_retry_bubble(echo):
             },
         })
 
+    if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
+        # Under gRPC, we raise exceptions.DeadlineExceeded, which is a
+        # sub-class of exceptions.GatewayTimeout.
+        with pytest.raises(exceptions.DeadlineExceeded):
+            echo.echo({
+                'error': {
+                    'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
+                    'message': 'This took longer than you said it should.',
+                },
+            })
+
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 

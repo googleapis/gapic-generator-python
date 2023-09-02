@@ -511,6 +511,19 @@ def test_method_http_options_reserved_name_in_url():
     }]
 
 
+def test_method_http_options_reserved_name_in_body():
+    http_rule = http_pb2.HttpRule(
+        post='/v1/license/{license=lic/*}',
+        body='breakpoint'
+    )
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert [dataclasses.asdict(http) for http in method.http_options] == [{
+        'method': 'post',
+        'uri': '/v1/license/{license_=lic/*}',
+        'body': 'breakpoint_'
+    }]
+
+
 def test_method_http_options_generate_sample():
     http_rule = http_pb2.HttpRule(
         get='/v1/{resource.id=projects/*/regions/*/id/**}/stuff',
@@ -987,3 +1000,20 @@ def test_safe_name():
 
     for name, method in unsafe_methods.items():
         assert method.safe_name == f"{name}_"
+
+
+def test_mixin_rule():
+    m = wrappers.MixinHttpRule(
+        'get', '/v1beta1/{name=projects/*}/locations', None)
+    e = {
+        'name': 'projects/sample1'
+    }
+    assert e == m.sample_request
+
+    m = wrappers.MixinHttpRule(
+        'get', '/v1beta1/{name=projects/*}/locations', 'city')
+    e = {
+        'name': 'projects/sample1',
+        'city': {},
+    }
+    assert e == m.sample_request

@@ -1,8 +1,7 @@
 class {{ message.name }}({{ p }}.Message):
     r"""{{ message.meta.doc|rst(indent=4) }}
     {% if message.fields|length %}
-
-    {# Only include note if a oneof has more than one member field. #}
+    {# Only include note if a oneof has more than one member field. #} 
     {% if message.oneof_fields() %}
     {% if message.oneof_fields().values() | map('length') | max > 1 %}
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -11,6 +10,9 @@ class {{ message.name }}({{ p }}.Message):
     members.
 
     {% endif %}
+    {% endif %}
+    {# Use select filter to capture nested values. See https://github.com/googleapis/gapic-generator-python/issues/1083 #} 
+    {%- if message.fields.values() | map(attribute="oneof") | select | list %}
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     {% endif %}
@@ -51,7 +53,7 @@ class {{ message.name }}({{ p }}.Message):
     {% for field in message.fields.values() %}
     {% if field.map %}
     {% with key_field = field.message.fields['key'], value_field = field.message.fields['value'] %}
-    {{ field.name }} = {{ p }}.MapField(
+    {{ field.name }}: MutableMapping[{{ key_field.type.ident.rel(message.ident) }}, {{ value_field.type.ident.rel(message.ident) }}] = {{ p }}.MapField(
         {{ p }}.{{ key_field.proto_type }},
         {{ p }}.{{ value_field.proto_type }},
         number={{ field.number }},
@@ -61,7 +63,7 @@ class {{ message.name }}({{ p }}.Message):
     )
     {% endwith %}
     {% else %}{# field.map #}
-    {{ field.name }} = {{ p }}.{% if field.repeated %}Repeated{% endif %}Field(
+    {{ field.name }}: {% if field.is_primitive %}{{ field.ident }}{% else %}{% if field.repeated %}MutableSequence[{% endif %}{{ field.type.ident.rel(message.ident) }}{% if field.repeated %}]{% endif %}{% endif %} = {{ p }}.{% if field.repeated %}Repeated{% endif %}Field(
         {{ p }}.{{ field.proto_type }},
         number={{ field.number }},
     {% if field.proto3_optional %}

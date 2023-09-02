@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.api import distribution_pb2  # type: ignore
@@ -38,6 +42,7 @@ class LogMetric(proto.Message):
     r"""Describes a logs-based metric. The value of the metric is the
     number of log entries that match a logs filter in a given time
     interval.
+
     Logs-based metrics can also be used to extract values from logs
     and create a distribution of the values. The distribution
     records the statistics of the extracted values along with an
@@ -55,12 +60,12 @@ class LogMetric(proto.Message):
             forward-slash character (``/``) denotes a hierarchy of name
             pieces, and it cannot be the first character of the name.
 
-            The metric identifier in this field must not be
-            `URL-encoded <https://en.wikipedia.org/wiki/Percent-encoding>`__.
-            However, when the metric identifier appears as the
-            ``[METRIC_ID]`` part of a ``metric_name`` API parameter,
-            then the metric identifier must be URL-encoded. Example:
-            ``"projects/my-project/metrics/nginx%2Frequests"``.
+            This field is the ``[METRIC_ID]`` part of a metric resource
+            name in the format
+            "projects/[PROJECT_ID]/metrics/[METRIC_ID]". Example: If the
+            resource name of a metric is
+            ``"projects/my-project/metrics/nginx%2Frequests"``, this
+            field's value is ``"nginx/requests"``.
         description (str):
             Optional. A description of this metric, which
             is used in documentation. The maximum length of
@@ -75,6 +80,20 @@ class LogMetric(proto.Message):
                 "resource.type=gae_app AND severity>=ERROR"
 
             The maximum length of the filter is 20000 characters.
+        bucket_name (str):
+            Optional. The resource name of the Log Bucket that owns the
+            Log Metric. Only Log Buckets in projects are supported. The
+            bucket has to be in the same project as the metric.
+
+            For example:
+
+            ``projects/my-project/locations/global/buckets/my-bucket``
+
+            If empty, then the Log Metric is considered a non-Bucket Log
+            Metric.
+        disabled (bool):
+            Optional. If set to True, then this metric is
+            disabled and it does not generate any points.
         metric_descriptor (google.api.metric_pb2.MetricDescriptor):
             Optional. The metric descriptor associated with the
             logs-based metric. If unspecified, it uses a default metric
@@ -106,7 +125,7 @@ class LogMetric(proto.Message):
             distribution logs-based metric to extract the values to
             record from a log entry. Two functions are supported for
             value extraction: ``EXTRACT(field)`` or
-            ``REGEXP_EXTRACT(field, regex)``. The argument are:
+            ``REGEXP_EXTRACT(field, regex)``. The arguments are:
 
             1. field: The name of the log entry field from which the
                value is to be extracted.
@@ -125,7 +144,7 @@ class LogMetric(proto.Message):
 
             Example:
             ``REGEXP_EXTRACT(jsonPayload.request, ".*quantity=(\d+).*")``
-        label_extractors (Mapping[str, str]):
+        label_extractors (MutableMapping[str, str]):
             Optional. A map from a label key string to an extractor
             expression which is used to extract data from a log entry
             field and assign as the label value. Each label key
@@ -135,7 +154,7 @@ class LogMetric(proto.Message):
             ``value_extractor`` field.
 
             The extracted value is converted to the type defined in the
-            label descriptor. If the either the extraction or the type
+            label descriptor. If either the extraction or the type
             conversion fails, the label will have a default value. The
             default value for a string label is an empty string, for an
             integer label its 0, and for a boolean label its ``false``.
@@ -162,52 +181,67 @@ class LogMetric(proto.Message):
             default and cannot be changed.
     """
     class ApiVersion(proto.Enum):
-        r"""Logging API version."""
+        r"""Logging API version.
+
+        Values:
+            V2 (0):
+                Logging API v2.
+            V1 (1):
+                Logging API v1.
+        """
         V2 = 0
         V1 = 1
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    description = proto.Field(
+    description: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    metric_descriptor = proto.Field(
+    bucket_name: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    disabled: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    metric_descriptor: metric_pb2.MetricDescriptor = proto.Field(
         proto.MESSAGE,
         number=5,
         message=metric_pb2.MetricDescriptor,
     )
-    value_extractor = proto.Field(
+    value_extractor: str = proto.Field(
         proto.STRING,
         number=6,
     )
-    label_extractors = proto.MapField(
+    label_extractors: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=7,
     )
-    bucket_options = proto.Field(
+    bucket_options: distribution_pb2.Distribution.BucketOptions = proto.Field(
         proto.MESSAGE,
         number=8,
         message=distribution_pb2.Distribution.BucketOptions,
     )
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
     )
-    update_time = proto.Field(
+    update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10,
         message=timestamp_pb2.Timestamp,
     )
-    version = proto.Field(
+    version: ApiVersion = proto.Field(
         proto.ENUM,
         number=4,
         enum=ApiVersion,
@@ -237,15 +271,15 @@ class ListLogMetricsRequest(proto.Message):
             results might be available.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=3,
     )
@@ -255,7 +289,7 @@ class ListLogMetricsResponse(proto.Message):
     r"""Result returned from ListLogMetrics.
 
     Attributes:
-        metrics (Sequence[google.cloud.logging_v2.types.LogMetric]):
+        metrics (MutableSequence[google.cloud.logging_v2.types.LogMetric]):
             A list of logs-based metrics.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -268,12 +302,12 @@ class ListLogMetricsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metrics = proto.RepeatedField(
+    metrics: MutableSequence['LogMetric'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message='LogMetric',
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -291,7 +325,7 @@ class GetLogMetricRequest(proto.Message):
                 "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
     """
 
-    metric_name = proto.Field(
+    metric_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -315,11 +349,11 @@ class CreateLogMetricRequest(proto.Message):
             must not have an identifier that already exists.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    metric = proto.Field(
+    metric: 'LogMetric' = proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogMetric',
@@ -345,11 +379,11 @@ class UpdateLogMetricRequest(proto.Message):
             Required. The updated metric.
     """
 
-    metric_name = proto.Field(
+    metric_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    metric = proto.Field(
+    metric: 'LogMetric' = proto.Field(
         proto.MESSAGE,
         number=2,
         message='LogMetric',
@@ -368,7 +402,7 @@ class DeleteLogMetricRequest(proto.Message):
                 "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
     """
 
-    metric_name = proto.Field(
+    metric_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
