@@ -56,16 +56,17 @@ def get_subsequent_line_indentation_level(list_item: str) -> int:
     + The quick brown fox jumps over the lazy dog. The quick brown fox jumps
       over the lazy dog
 
-    Here subsequent lines should be indented by 3
+    Here subsequent lines should be indented by 4 to cater for double digits
 
-    1. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
-       over the lazy dog
-
+    1.  The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+        over the lazy dog
+    22. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+        over the lazy dog
     """
     if len(list_item) >= 2 and list_item[0:2] in ['- ', '+ ']:
         indentation_level = 2
-    elif re.match("^\d+\. ", list_item):
-        indentation_level = 3
+    elif len(list_item) >= 4 and re.match("^\d+\. ", list_item):
+        indentation_level = 4
     else:
         # Don't use any intentation level if the list item marker is not known
         indentation_level = 0

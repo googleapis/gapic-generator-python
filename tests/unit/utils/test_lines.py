@@ -251,15 +251,16 @@ ante non, vestibulum erat. Donec mollis ultricies nisl."""
 def test_list_with_numbered_list():
     input = """Config for video classification human labeling task.
 Currently two types of video classification are supported:
-1. Assign labels on the entire video.
-2. Split the video into multiple video clips based on camera shot, and
+1. Assign labels on the entire video. Assign labels on the entire video.
+22. Split the video into multiple video clips based on camera shot, and
 assign labels on each video clip."""
     expected = """Config for video classification human labeling task.
 Currently two types of video classification are supported:
 
-1. Assign labels on the entire video.
-2. Split the video into multiple video clips based on camera
-   shot, and assign labels on each video clip."""
+1. Assign labels on the entire video. Assign labels on the
+    entire video.
+22. Split the video into multiple video clips based on
+    camera shot, and assign labels on each video clip."""
     assert lines.wrap(input, width=60) == expected
 
 
