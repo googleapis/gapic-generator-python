@@ -17,6 +17,9 @@ import textwrap
 from typing import Iterable, Optional
 
 
+NUMBERED_LIST_REGEX = r"^\d+\. "
+
+
 def sort_lines(text: str, dedupe: bool = True) -> str:
     """Sort the individual lines of a block of text.
 
@@ -66,7 +69,7 @@ def get_subsequent_line_indentation_level(list_item: str) -> int:
     """
     if len(list_item) >= 2 and list_item[0:2] in ['- ', '+ ']:
         indentation_level = 2
-    elif len(list_item) >= 4 and re.match("^\d+\. ", list_item):
+    elif len(list_item) >= 4 and re.match(NUMBERED_LIST_REGEX, list_item):
         indentation_level = 4
     else:
         # Don't use any intentation level if the list item marker is not known
@@ -80,7 +83,7 @@ def is_list_item(list_item: str) -> bool:
     """
     if len(list_item) < 3:
         return False
-    return list_item.startswith('- ') or list_item.startswith('+ ') or bool(re.match("^\d+\. ", list_item))
+    return list_item.startswith('- ') or list_item.startswith('+ ') or bool(re.match(NUMBERED_LIST_REGEX, list_item))
 
 
 def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0) -> str:
