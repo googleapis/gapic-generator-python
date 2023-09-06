@@ -149,9 +149,9 @@
         {% if not method.client_streaming %}
         {% for routing_param in method.routing_rule.routing_parameters %}
         {% if routing_param.path_template %} {# Need to match. #}
-
-        routing_param_regex = {{ routing_param.to_regex() }}
-        regex_match = routing_param_regex.match(request.{{ routing_param.field }})
+        if getattr( {{ name }}, 'routing_param_regex', None) is None:
+            {{ name }}.routing_param_regex = {{ routing_param.to_regex() }}
+        regex_match = {{name}}.routing_param_regex.match(request.{{ routing_param.field }})
         if regex_match and regex_match.group("{{ routing_param.key }}"):
             header_params["{{ routing_param.key }}"] = regex_match.group("{{ routing_param.key }}")
 
