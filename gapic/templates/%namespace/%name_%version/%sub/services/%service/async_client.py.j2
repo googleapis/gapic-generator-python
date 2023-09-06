@@ -283,7 +283,12 @@ class {{ service.async_client_name }}:
             request = {{ method.input.ident }}({% if method.input.ident.package != method.ident.package %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}, {% endfor %}{% endif %})
         {% endif %}{# Cross-package req and flattened fields #}
         {% else %}
-        request = {{ method.input.ident }}(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a {{ method.input.ident }}.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, {{ method.input.ident }}):
+            request = {{ method.input.ident }}(request)
         {% endif %} {# different request package #}
 
         {# Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
