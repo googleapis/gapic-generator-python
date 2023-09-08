@@ -104,7 +104,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
             credentials: Optional[ga_credentials.Credentials] = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
-            channel: Optional[aio.Channel] = None,
+            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
             api_mtls_endpoint: Optional[str] = None,
             client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
             ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -131,8 +131,10 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a callable
+                that generates one with the set of initialization arguments.
+                If set to None, a channel is created automatically.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -173,7 +175,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -213,7 +215,8 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 
 from google.cloud.redis_v1 import gapic_version as package_version
 
@@ -317,7 +317,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, CloudRedisTransport]] = None,
+            transport: Optional[Union[str, CloudRedisTransport, Callable[..., CloudRedisTransport]]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -329,9 +329,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CloudRedisTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudRedisTransport,Callable[..., CloudRedisTransport]]]):
+                The transport to use, or a callable that generates one with the
+                set of initialization arguments.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -393,8 +394,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
                 credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            Transport = type(self).get_transport_class(transport)
-            self._transport = Transport(
+            transport_init: Union[Type[CloudRedisTransport], Callable[..., CloudRedisTransport]] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else transport
+            )
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
