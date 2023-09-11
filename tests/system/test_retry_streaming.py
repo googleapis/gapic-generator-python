@@ -70,7 +70,7 @@ def test_streaming_non_retryable_error(sequence):
     assert len(report.attempts) == 1
     assert report.attempts[0].status == error
 
-def test_streaming_retryable_eventual_success(sequence):
+def test_streaming_transient_retryable(sequence):
     """
     Server returns a retryable error a number of times before success.
     Retryable errors should not be presented to the end user.
@@ -102,4 +102,39 @@ def test_streaming_retryable_eventual_success(sequence):
     assert report.attempts[1].status == error
     assert report.attempts[2].status == error
     assert report.attempts[3].status == Status(code=0)
+
+
+def test_streaming_transient_retryable_partial_data(sequence):
+    """
+    Server stream yields some data before failing with a retryable error a number of times before success.
+    Wrapped stream should contain data from all attempts
+    """
+    retry = retries.Retry(
+        predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
+        initial=0,
+        maximum=0,
+        is_stream=True
+    )
+    content = ['hello', 'world']
+    error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='transient error')
+    transient_error_list = [{'status': error, 'response_index': 1}] * 3
+    responses = transient_error_list + [{'status': Status(code=0), 'response_index': len(content)}]
+    seq = sequence.create_streaming_sequence(
+        streaming_sequence={
+            'name': 'test_streaming_retry_success',
+            'content': ' '.join(content),
+            'responses': responses,
+        }
+    )
+    it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+    results = [pb.content for pb in it]
+    assert results == ['hello'] * len(transient_error_list) + ['hello', 'world']
+    # verify streaming report
+    report = sequence.get_streaming_sequence_report(name=f'{seq.name}/streamingSequenceReport')
+    assert len(report.attempts) == 4
+    assert report.attempts[0].status == error
+    assert report.attempts[1].status == error
+    assert report.attempts[2].status == error
+    assert report.attempts[3].status == Status(code=0)
+
 
