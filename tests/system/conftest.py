@@ -21,6 +21,7 @@ import pytest
 from google.api_core.client_options import ClientOptions  # type: ignore
 from google.auth import credentials
 from google.showcase import EchoClient
+from google.showcase import SequenceServiceClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
 
@@ -133,6 +134,9 @@ def use_mtls(request):
 def echo(use_mtls, request):
     return construct_client(EchoClient, use_mtls, transport_name=request.param)
 
+@pytest.fixture(params=["grpc", "rest"])
+def sequence(use_mtls, request):
+    return construct_client(SequenceServiceClient, use_mtls, transport_name=request.param)
 
 @pytest.fixture(params=["grpc", "rest"])
 def identity(use_mtls, request):

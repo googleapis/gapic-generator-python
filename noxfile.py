@@ -29,7 +29,7 @@ import shutil
 nox.options.error_on_missing_interpreters = True
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.25.0")
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.28.4")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
@@ -225,6 +225,7 @@ def showcase_library(
             f"google/showcase/v1beta1/echo.proto",
             f"google/showcase/v1beta1/identity.proto",
             f"google/showcase/v1beta1/messaging.proto",
+            f"google/showcase/v1beta1/sequence.proto",
         )
         session.run(
             *cmd_tup, external=True,
