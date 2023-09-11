@@ -12,11 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 from google.rpc.status_pb2 import Status
 from datetime import timedelta
+from google.api_core import retry as retries
+from google.api_core import exceptions as core_exceptions
 
 
-def test_streaiming_retry_success(sequence):
+def _code_from_exc(exc):
+    """
+    return the grpc code from an exception
+    """
+    return exc.grpc_status_code.value[0]
+
+
+def test_streaming_retry_success(sequence):
     """
     Test a stream with a sigle success response
     """
@@ -36,4 +46,27 @@ def test_streaiming_retry_success(sequence):
     report = sequence.get_streaming_sequence_report(name=f'{seq.name}/streamingSequenceReport')
     assert len(report.attempts) == 1
     assert report.attempts[0].status == Status(code=0)
+
+
+def test_streaming_non_retryable_error(sequence):
+    """
+    Test a retryable stream failing with non-retryable error
+    """
+    retry = retries.Retry(predicate=retries.if_exception_type(), is_stream=True)
+    content = ['hello', 'world']
+    error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='expected error')
+    seq = sequence.create_streaming_sequence(
+        streaming_sequence={
+            'name': 'test_streaming_retry_success',
+            'content': ' '.join(content),
+            'responses': [{'status': error, 'response_index': 0}],
+        }
+    )
+    with pytest.raises(core_exceptions.ServiceUnavailable):
+        it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+        next(it)
+    # verify streaming report
+    report = sequence.get_streaming_sequence_report(name=f'{seq.name}/streamingSequenceReport')
+    assert len(report.attempts) == 1
+    assert report.attempts[0].status == error
 
