@@ -41,7 +41,7 @@ async def test_async_streaming_retry_success(async_sequence):
             "responses": [{"status": Status(code=0), "response_index": len(content)}],
         }
     )
-    it = async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+    it = await async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
     results = [pb.content async for pb in it]
     assert results == content
     # verify streaming report
@@ -73,7 +73,7 @@ async def test_async_streaming_non_retryable_error(async_sequence):
         }
     )
     with pytest.raises(core_exceptions.ServiceUnavailable):
-        it = async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+        it = await async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
         await it.__anext__()
     # verify streaming report
     report = await async_sequence.get_streaming_sequence_report(
@@ -111,7 +111,7 @@ async def test_async_streaming_transient_retryable(async_sequence):
             "responses": responses,
         }
     )
-    it = async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+    it = await async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
     results = [pb.content async for pb in it]
     assert results == content
     # verify streaming report
@@ -153,7 +153,7 @@ async def test_async_streaming_transient_retryable_partial_data(async_sequence):
             "responses": responses,
         }
     )
-    it = async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+    it = await async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
     results = [pb.content async for pb in it]
     assert results == ["hello"] * len(transient_error_list) + ["hello", "world"]
     # verify streaming report
@@ -199,7 +199,7 @@ async def test_async_streaming_retryable_eventual_timeout(async_sequence):
         }
     )
     with pytest.raises(core_exceptions.RetryError) as exc_info:
-        it = async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+        it = await async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
         [pb.content async for pb in it]
     cause = exc_info.value.__cause__
     assert isinstance(cause, core_exceptions.ServiceUnavailable)
@@ -247,7 +247,7 @@ async def test_async_streaming_retry_on_error(async_sequence):
         }
     )
     with pytest.raises(core_exceptions.NotFound):
-        it = async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+        it = await async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
         [pb.content async for pb in it]
     # on_error should have been called on the first two errors, but not the terminal one
     assert len(encountered_excs) == 2
@@ -302,7 +302,7 @@ async def test_async_streaming_retry_sleep_generator(
         # make sleep generator deterministic
         mock_uniform.side_effect = lambda a, b: b
         with mock.patch("asyncio.sleep") as mock_sleep:
-            it = async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+            it = await async_sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
             [pb.content async for pb in it]
             assert mock_sleep.call_count == len(expected)
     # ensure that sleep times match expected
