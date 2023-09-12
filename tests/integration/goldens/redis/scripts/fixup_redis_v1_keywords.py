@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,8 +44,10 @@ class redisCallTransformer(cst.CSTTransformer):
         'export_instance': ('name', 'output_config', ),
         'failover_instance': ('name', 'data_protection_mode', ),
         'get_instance': ('name', ),
+        'get_instance_auth_string': ('name', ),
         'import_instance': ('name', 'input_config', ),
         'list_instances': ('parent', 'page_size', 'page_token', ),
+        'reschedule_maintenance': ('name', 'reschedule_type', 'schedule_time', ),
         'update_instance': ('update_mask', 'instance', ),
         'upgrade_instance': ('name', 'redis_version', ),
     }

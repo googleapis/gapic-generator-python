@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,17 +23,10 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
-from google.protobuf import json_format
-import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
 from google.api import monitored_resource_pb2  # type: ignore
 from google.api_core import client_options
@@ -52,6 +45,7 @@ from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
 from google.logging.type import http_request_pb2  # type: ignore
 from google.logging.type import log_severity_pb2  # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
@@ -89,7 +83,6 @@ def test__get_default_mtls_endpoint():
 @pytest.mark.parametrize("client_class,transport_name", [
     (LoggingServiceV2Client, "grpc"),
     (LoggingServiceV2AsyncClient, "grpc_asyncio"),
-    (LoggingServiceV2Client, "rest"),
 ])
 def test_logging_service_v2_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -102,16 +95,12 @@ def test_logging_service_v2_client_from_service_account_info(client_class, trans
 
         assert client.transport._host == (
             'logging.googleapis.com:443'
-            if transport_name in ['grpc', 'grpc_asyncio']
-            else
-            'https://logging.googleapis.com'
         )
 
 
 @pytest.mark.parametrize("transport_class,transport_name", [
     (transports.LoggingServiceV2GrpcTransport, "grpc"),
     (transports.LoggingServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
-    (transports.LoggingServiceV2RestTransport, "rest"),
 ])
 def test_logging_service_v2_client_service_account_always_use_jwt(transport_class, transport_name):
     with mock.patch.object(service_account.Credentials, 'with_always_use_jwt_access', create=True) as use_jwt:
@@ -128,7 +117,6 @@ def test_logging_service_v2_client_service_account_always_use_jwt(transport_clas
 @pytest.mark.parametrize("client_class,transport_name", [
     (LoggingServiceV2Client, "grpc"),
     (LoggingServiceV2AsyncClient, "grpc_asyncio"),
-    (LoggingServiceV2Client, "rest"),
 ])
 def test_logging_service_v2_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -144,9 +132,6 @@ def test_logging_service_v2_client_from_service_account_file(client_class, trans
 
         assert client.transport._host == (
             'logging.googleapis.com:443'
-            if transport_name in ['grpc', 'grpc_asyncio']
-            else
-            'https://logging.googleapis.com'
         )
 
 
@@ -154,7 +139,6 @@ def test_logging_service_v2_client_get_transport_class():
     transport = LoggingServiceV2Client.get_transport_class()
     available_transports = [
         transports.LoggingServiceV2GrpcTransport,
-        transports.LoggingServiceV2RestTransport,
     ]
     assert transport in available_transports
 
@@ -165,7 +149,6 @@ def test_logging_service_v2_client_get_transport_class():
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (LoggingServiceV2Client, transports.LoggingServiceV2GrpcTransport, "grpc"),
     (LoggingServiceV2AsyncClient, transports.LoggingServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
-    (LoggingServiceV2Client, transports.LoggingServiceV2RestTransport, "rest"),
 ])
 @mock.patch.object(LoggingServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(LoggingServiceV2Client))
 @mock.patch.object(LoggingServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(LoggingServiceV2AsyncClient))
@@ -285,8 +268,6 @@ def test_logging_service_v2_client_client_options(client_class, transport_class,
     (LoggingServiceV2AsyncClient, transports.LoggingServiceV2GrpcAsyncIOTransport, "grpc_asyncio", "true"),
     (LoggingServiceV2Client, transports.LoggingServiceV2GrpcTransport, "grpc", "false"),
     (LoggingServiceV2AsyncClient, transports.LoggingServiceV2GrpcAsyncIOTransport, "grpc_asyncio", "false"),
-    (LoggingServiceV2Client, transports.LoggingServiceV2RestTransport, "rest", "true"),
-    (LoggingServiceV2Client, transports.LoggingServiceV2RestTransport, "rest", "false"),
 ])
 @mock.patch.object(LoggingServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(LoggingServiceV2Client))
 @mock.patch.object(LoggingServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(LoggingServiceV2AsyncClient))
@@ -424,7 +405,6 @@ def test_logging_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (LoggingServiceV2Client, transports.LoggingServiceV2GrpcTransport, "grpc"),
     (LoggingServiceV2AsyncClient, transports.LoggingServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
-    (LoggingServiceV2Client, transports.LoggingServiceV2RestTransport, "rest"),
 ])
 def test_logging_service_v2_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
@@ -449,7 +429,6 @@ def test_logging_service_v2_client_client_options_scopes(client_class, transport
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
     (LoggingServiceV2Client, transports.LoggingServiceV2GrpcTransport, "grpc", grpc_helpers),
     (LoggingServiceV2AsyncClient, transports.LoggingServiceV2GrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
-    (LoggingServiceV2Client, transports.LoggingServiceV2RestTransport, "rest", None),
 ])
 def test_logging_service_v2_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
@@ -1339,7 +1318,11 @@ async def test_list_log_entries_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_log_entries(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_log_entries(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -1609,7 +1592,11 @@ async def test_list_monitored_resource_descriptors_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_monitored_resource_descriptors(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_monitored_resource_descriptors(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -2033,7 +2020,11 @@ async def test_list_logs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_logs(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_logs(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -2105,1210 +2096,6 @@ async def test_tail_log_entries_async(transport: str = 'grpc_asyncio', request_t
 @pytest.mark.asyncio
 async def test_tail_log_entries_async_from_dict():
     await test_tail_log_entries_async(request_type=dict)
-
-
-@pytest.mark.parametrize("request_type", [
-    logging.DeleteLogRequest,
-    dict,
-])
-def test_delete_log_rest(request_type):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'log_name': 'projects/sample1/logs/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ''
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.delete_log(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_log_rest_required_fields(request_type=logging.DeleteLogRequest):
-    transport_class = transports.LoggingServiceV2RestTransport
-
-    request_init = {}
-    request_init["log_name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(json_format.MessageToJson(
-        pb_request,
-        including_default_value_fields=False,
-        use_integers_for_enums=False
-    ))
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_log._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["logName"] = 'log_name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_log._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "logName" in jsonified_request
-    assert jsonified_request["logName"] == 'log_name_value'
-
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = None
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, 'transcode') as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                'uri': 'v1/sample_method',
-                'method': "delete",
-                'query_params': pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = ''
-
-            response_value._content = json_return_value.encode('UTF-8')
-            req.return_value = response_value
-
-            response = client.delete_log(request)
-
-            expected_params = [
-            ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
-
-
-def test_delete_log_rest_unset_required_fields():
-    transport = transports.LoggingServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_log._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("logName", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_log_rest_interceptors(null_interceptor):
-    transport = transports.LoggingServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LoggingServiceV2RestInterceptor(),
-        )
-    client = LoggingServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.LoggingServiceV2RestInterceptor, "pre_delete_log") as pre:
-        pre.assert_not_called()
-        pb_message = logging.DeleteLogRequest.pb(logging.DeleteLogRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = logging.DeleteLogRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_log(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-
-
-def test_delete_log_rest_bad_request(transport: str = 'rest', request_type=logging.DeleteLogRequest):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'log_name': 'projects/sample1/logs/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_log(request)
-
-
-def test_delete_log_rest_flattened():
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {'log_name': 'projects/sample1/logs/sample2'}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            log_name='log_name_value',
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ''
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        client.delete_log(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate("%s/v2/{log_name=projects/*/logs/*}" % client.transport._host, args[1])
-
-
-def test_delete_log_rest_flattened_error(transport: str = 'rest'):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_log(
-            logging.DeleteLogRequest(),
-            log_name='log_name_value',
-        )
-
-
-def test_delete_log_rest_error():
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    logging.WriteLogEntriesRequest,
-    dict,
-])
-def test_write_log_entries_rest(request_type):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging.WriteLogEntriesResponse(
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging.WriteLogEntriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.write_log_entries(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, logging.WriteLogEntriesResponse)
-
-
-def test_write_log_entries_rest_required_fields(request_type=logging.WriteLogEntriesRequest):
-    transport_class = transports.LoggingServiceV2RestTransport
-
-    request_init = {}
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(json_format.MessageToJson(
-        pb_request,
-        including_default_value_fields=False,
-        use_integers_for_enums=False
-    ))
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).write_log_entries._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).write_log_entries._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = logging.WriteLogEntriesResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, 'transcode') as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                'uri': 'v1/sample_method',
-                'method': "post",
-                'query_params': pb_request,
-            }
-            transcode_result['body'] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = logging.WriteLogEntriesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode('UTF-8')
-            req.return_value = response_value
-
-            response = client.write_log_entries(request)
-
-            expected_params = [
-            ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
-
-
-def test_write_log_entries_rest_unset_required_fields():
-    transport = transports.LoggingServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.write_log_entries._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("entries", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_write_log_entries_rest_interceptors(null_interceptor):
-    transport = transports.LoggingServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LoggingServiceV2RestInterceptor(),
-        )
-    client = LoggingServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.LoggingServiceV2RestInterceptor, "post_write_log_entries") as post, \
-         mock.patch.object(transports.LoggingServiceV2RestInterceptor, "pre_write_log_entries") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = logging.WriteLogEntriesRequest.pb(logging.WriteLogEntriesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = logging.WriteLogEntriesResponse.to_json(logging.WriteLogEntriesResponse())
-
-        request = logging.WriteLogEntriesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = logging.WriteLogEntriesResponse()
-
-        client.write_log_entries(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_write_log_entries_rest_bad_request(transport: str = 'rest', request_type=logging.WriteLogEntriesRequest):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.write_log_entries(request)
-
-
-def test_write_log_entries_rest_flattened():
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging.WriteLogEntriesResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            log_name='log_name_value',
-            resource=monitored_resource_pb2.MonitoredResource(type='type_value'),
-            labels={'key_value': 'value_value'},
-            entries=[log_entry.LogEntry(log_name='log_name_value')],
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging.WriteLogEntriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        client.write_log_entries(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate("%s/v2/entries:write" % client.transport._host, args[1])
-
-
-def test_write_log_entries_rest_flattened_error(transport: str = 'rest'):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.write_log_entries(
-            logging.WriteLogEntriesRequest(),
-            log_name='log_name_value',
-            resource=monitored_resource_pb2.MonitoredResource(type='type_value'),
-            labels={'key_value': 'value_value'},
-            entries=[log_entry.LogEntry(log_name='log_name_value')],
-        )
-
-
-def test_write_log_entries_rest_error():
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    logging.ListLogEntriesRequest,
-    dict,
-])
-def test_list_log_entries_rest(request_type):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging.ListLogEntriesResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging.ListLogEntriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_log_entries(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListLogEntriesPager)
-    assert response.next_page_token == 'next_page_token_value'
-
-
-def test_list_log_entries_rest_required_fields(request_type=logging.ListLogEntriesRequest):
-    transport_class = transports.LoggingServiceV2RestTransport
-
-    request_init = {}
-    request_init["resource_names"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(json_format.MessageToJson(
-        pb_request,
-        including_default_value_fields=False,
-        use_integers_for_enums=False
-    ))
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_log_entries._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["resourceNames"] = 'resource_names_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_log_entries._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "resourceNames" in jsonified_request
-    assert jsonified_request["resourceNames"] == 'resource_names_value'
-
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = logging.ListLogEntriesResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, 'transcode') as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                'uri': 'v1/sample_method',
-                'method': "post",
-                'query_params': pb_request,
-            }
-            transcode_result['body'] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = logging.ListLogEntriesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode('UTF-8')
-            req.return_value = response_value
-
-            response = client.list_log_entries(request)
-
-            expected_params = [
-            ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
-
-
-def test_list_log_entries_rest_unset_required_fields():
-    transport = transports.LoggingServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_log_entries._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("resourceNames", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_log_entries_rest_interceptors(null_interceptor):
-    transport = transports.LoggingServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LoggingServiceV2RestInterceptor(),
-        )
-    client = LoggingServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.LoggingServiceV2RestInterceptor, "post_list_log_entries") as post, \
-         mock.patch.object(transports.LoggingServiceV2RestInterceptor, "pre_list_log_entries") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = logging.ListLogEntriesRequest.pb(logging.ListLogEntriesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = logging.ListLogEntriesResponse.to_json(logging.ListLogEntriesResponse())
-
-        request = logging.ListLogEntriesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = logging.ListLogEntriesResponse()
-
-        client.list_log_entries(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_log_entries_rest_bad_request(transport: str = 'rest', request_type=logging.ListLogEntriesRequest):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_log_entries(request)
-
-
-def test_list_log_entries_rest_flattened():
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging.ListLogEntriesResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            resource_names=['resource_names_value'],
-            filter='filter_value',
-            order_by='order_by_value',
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging.ListLogEntriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        client.list_log_entries(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate("%s/v2/entries:list" % client.transport._host, args[1])
-
-
-def test_list_log_entries_rest_flattened_error(transport: str = 'rest'):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_log_entries(
-            logging.ListLogEntriesRequest(),
-            resource_names=['resource_names_value'],
-            filter='filter_value',
-            order_by='order_by_value',
-        )
-
-
-def test_list_log_entries_rest_pager(transport: str = 'rest'):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        #with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            logging.ListLogEntriesResponse(
-                entries=[
-                    log_entry.LogEntry(),
-                    log_entry.LogEntry(),
-                    log_entry.LogEntry(),
-                ],
-                next_page_token='abc',
-            ),
-            logging.ListLogEntriesResponse(
-                entries=[],
-                next_page_token='def',
-            ),
-            logging.ListLogEntriesResponse(
-                entries=[
-                    log_entry.LogEntry(),
-                ],
-                next_page_token='ghi',
-            ),
-            logging.ListLogEntriesResponse(
-                entries=[
-                    log_entry.LogEntry(),
-                    log_entry.LogEntry(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(logging.ListLogEntriesResponse.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode('UTF-8')
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {}
-
-        pager = client.list_log_entries(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, log_entry.LogEntry)
-                for i in results)
-
-        pages = list(client.list_log_entries(request=sample_request).pages)
-        for page_, token in zip(pages, ['abc','def','ghi', '']):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize("request_type", [
-    logging.ListMonitoredResourceDescriptorsRequest,
-    dict,
-])
-def test_list_monitored_resource_descriptors_rest(request_type):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging.ListMonitoredResourceDescriptorsResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging.ListMonitoredResourceDescriptorsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_monitored_resource_descriptors(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListMonitoredResourceDescriptorsPager)
-    assert response.next_page_token == 'next_page_token_value'
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_monitored_resource_descriptors_rest_interceptors(null_interceptor):
-    transport = transports.LoggingServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LoggingServiceV2RestInterceptor(),
-        )
-    client = LoggingServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.LoggingServiceV2RestInterceptor, "post_list_monitored_resource_descriptors") as post, \
-         mock.patch.object(transports.LoggingServiceV2RestInterceptor, "pre_list_monitored_resource_descriptors") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = logging.ListMonitoredResourceDescriptorsRequest.pb(logging.ListMonitoredResourceDescriptorsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = logging.ListMonitoredResourceDescriptorsResponse.to_json(logging.ListMonitoredResourceDescriptorsResponse())
-
-        request = logging.ListMonitoredResourceDescriptorsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = logging.ListMonitoredResourceDescriptorsResponse()
-
-        client.list_monitored_resource_descriptors(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_monitored_resource_descriptors_rest_bad_request(transport: str = 'rest', request_type=logging.ListMonitoredResourceDescriptorsRequest):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_monitored_resource_descriptors(request)
-
-
-def test_list_monitored_resource_descriptors_rest_pager(transport: str = 'rest'):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        #with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            logging.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[
-                    monitored_resource_pb2.MonitoredResourceDescriptor(),
-                    monitored_resource_pb2.MonitoredResourceDescriptor(),
-                    monitored_resource_pb2.MonitoredResourceDescriptor(),
-                ],
-                next_page_token='abc',
-            ),
-            logging.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[],
-                next_page_token='def',
-            ),
-            logging.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[
-                    monitored_resource_pb2.MonitoredResourceDescriptor(),
-                ],
-                next_page_token='ghi',
-            ),
-            logging.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[
-                    monitored_resource_pb2.MonitoredResourceDescriptor(),
-                    monitored_resource_pb2.MonitoredResourceDescriptor(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(logging.ListMonitoredResourceDescriptorsResponse.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode('UTF-8')
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {}
-
-        pager = client.list_monitored_resource_descriptors(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, monitored_resource_pb2.MonitoredResourceDescriptor)
-                for i in results)
-
-        pages = list(client.list_monitored_resource_descriptors(request=sample_request).pages)
-        for page_, token in zip(pages, ['abc','def','ghi', '']):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize("request_type", [
-    logging.ListLogsRequest,
-    dict,
-])
-def test_list_logs_rest(request_type):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging.ListLogsResponse(
-              log_names=['log_names_value'],
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging.ListLogsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_logs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListLogsPager)
-    assert response.log_names == ['log_names_value']
-    assert response.next_page_token == 'next_page_token_value'
-
-
-def test_list_logs_rest_required_fields(request_type=logging.ListLogsRequest):
-    transport_class = transports.LoggingServiceV2RestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(json_format.MessageToJson(
-        pb_request,
-        including_default_value_fields=False,
-        use_integers_for_enums=False
-    ))
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_logs._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = 'parent_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_logs._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("page_size", "page_token", "resource_names", ))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
-
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = logging.ListLogsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, 'transcode') as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                'uri': 'v1/sample_method',
-                'method': "get",
-                'query_params': pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = logging.ListLogsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode('UTF-8')
-            req.return_value = response_value
-
-            response = client.list_logs(request)
-
-            expected_params = [
-            ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
-
-
-def test_list_logs_rest_unset_required_fields():
-    transport = transports.LoggingServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_logs._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("pageSize", "pageToken", "resourceNames", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_logs_rest_interceptors(null_interceptor):
-    transport = transports.LoggingServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LoggingServiceV2RestInterceptor(),
-        )
-    client = LoggingServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.LoggingServiceV2RestInterceptor, "post_list_logs") as post, \
-         mock.patch.object(transports.LoggingServiceV2RestInterceptor, "pre_list_logs") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = logging.ListLogsRequest.pb(logging.ListLogsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = logging.ListLogsResponse.to_json(logging.ListLogsResponse())
-
-        request = logging.ListLogsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = logging.ListLogsResponse()
-
-        client.list_logs(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_logs_rest_bad_request(transport: str = 'rest', request_type=logging.ListLogsRequest):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_logs(request)
-
-
-def test_list_logs_rest_flattened():
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging.ListLogsResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {'parent': 'sample1/sample2'}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent='parent_value',
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging.ListLogsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        client.list_logs(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate("%s/v2/{parent=*/*}/logs" % client.transport._host, args[1])
-
-
-def test_list_logs_rest_flattened_error(transport: str = 'rest'):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_logs(
-            logging.ListLogsRequest(),
-            parent='parent_value',
-        )
-
-
-def test_list_logs_rest_pager(transport: str = 'rest'):
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        #with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            logging.ListLogsResponse(
-                log_names=[
-                    str(),
-                    str(),
-                    str(),
-                ],
-                next_page_token='abc',
-            ),
-            logging.ListLogsResponse(
-                log_names=[],
-                next_page_token='def',
-            ),
-            logging.ListLogsResponse(
-                log_names=[
-                    str(),
-                ],
-                next_page_token='ghi',
-            ),
-            logging.ListLogsResponse(
-                log_names=[
-                    str(),
-                    str(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(logging.ListLogsResponse.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode('UTF-8')
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {'parent': 'sample1/sample2'}
-
-        pager = client.list_logs(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, str)
-                for i in results)
-
-        pages = list(client.list_logs(request=sample_request).pages)
-        for page_, token in zip(pages, ['abc','def','ghi', '']):
-            assert page_.raw_page.next_page_token == token
-
-
-def test_tail_log_entries_rest_unimplemented():
-    client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = logging.TailLogEntriesRequest()
-    requests = [request]
-    with pytest.raises(NotImplementedError):
-        client.tail_log_entries(requests)
 
 
 def test_credentials_transport_error():
@@ -3389,7 +2176,6 @@ def test_transport_get_channel():
 @pytest.mark.parametrize("transport_class", [
     transports.LoggingServiceV2GrpcTransport,
     transports.LoggingServiceV2GrpcAsyncIOTransport,
-    transports.LoggingServiceV2RestTransport,
 ])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -3400,7 +2186,6 @@ def test_transport_adc(transport_class):
 
 @pytest.mark.parametrize("transport_name", [
     "grpc",
-    "rest",
 ])
 def test_transport_kind(transport_name):
     transport = LoggingServiceV2Client.get_transport_class(transport_name)(
@@ -3444,6 +2229,9 @@ def test_logging_service_v2_base_transport():
         'list_monitored_resource_descriptors',
         'list_logs',
         'tail_log_entries',
+        'get_operation',
+        'cancel_operation',
+        'list_operations',
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3535,7 +2323,6 @@ def test_logging_service_v2_transport_auth_adc(transport_class):
     [
         transports.LoggingServiceV2GrpcTransport,
         transports.LoggingServiceV2GrpcAsyncIOTransport,
-        transports.LoggingServiceV2RestTransport,
     ],
 )
 def test_logging_service_v2_transport_auth_gdch_credentials(transport_class):
@@ -3636,20 +2423,10 @@ def test_logging_service_v2_grpc_transport_client_cert_source_for_mtls(
                 private_key=expected_key
             )
 
-def test_logging_service_v2_http_transport_client_cert_source_for_mtls():
-    cred = ga_credentials.AnonymousCredentials()
-    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
-        transports.LoggingServiceV2RestTransport (
-            credentials=cred,
-            client_cert_source_for_mtls=client_cert_source_callback
-        )
-        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
 
 @pytest.mark.parametrize("transport_name", [
     "grpc",
     "grpc_asyncio",
-    "rest",
 ])
 def test_logging_service_v2_host_no_port(transport_name):
     client = LoggingServiceV2Client(
@@ -3659,14 +2436,11 @@ def test_logging_service_v2_host_no_port(transport_name):
     )
     assert client.transport._host == (
         'logging.googleapis.com:443'
-        if transport_name in ['grpc', 'grpc_asyncio']
-        else 'https://logging.googleapis.com'
     )
 
 @pytest.mark.parametrize("transport_name", [
     "grpc",
     "grpc_asyncio",
-    "rest",
 ])
 def test_logging_service_v2_host_with_port(transport_name):
     client = LoggingServiceV2Client(
@@ -3676,42 +2450,8 @@ def test_logging_service_v2_host_with_port(transport_name):
     )
     assert client.transport._host == (
         'logging.googleapis.com:8000'
-        if transport_name in ['grpc', 'grpc_asyncio']
-        else 'https://logging.googleapis.com:8000'
     )
 
-@pytest.mark.parametrize("transport_name", [
-    "rest",
-])
-def test_logging_service_v2_client_transport_session_collision(transport_name):
-    creds1 = ga_credentials.AnonymousCredentials()
-    creds2 = ga_credentials.AnonymousCredentials()
-    client1 = LoggingServiceV2Client(
-        credentials=creds1,
-        transport=transport_name,
-    )
-    client2 = LoggingServiceV2Client(
-        credentials=creds2,
-        transport=transport_name,
-    )
-    session1 = client1.transport.delete_log._session
-    session2 = client2.transport.delete_log._session
-    assert session1 != session2
-    session1 = client1.transport.write_log_entries._session
-    session2 = client2.transport.write_log_entries._session
-    assert session1 != session2
-    session1 = client1.transport.list_log_entries._session
-    session2 = client2.transport.list_log_entries._session
-    assert session1 != session2
-    session1 = client1.transport.list_monitored_resource_descriptors._session
-    session2 = client2.transport.list_monitored_resource_descriptors._session
-    assert session1 != session2
-    session1 = client1.transport.list_logs._session
-    session2 = client2.transport.list_logs._session
-    assert session1 != session2
-    session1 = client1.transport.tail_log_entries._session
-    session2 = client2.transport.tail_log_entries._session
-    assert session1 != session2
 def test_logging_service_v2_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
 
@@ -3959,9 +2699,395 @@ async def test_transport_close_async():
         close.assert_called_once()
 
 
+def test_cancel_operation(transport: str = "grpc"):
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+@pytest.mark.asyncio
+async def test_cancel_operation_async(transport: str = "grpc"):
+    client = LoggingServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.CancelOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            None
+        )
+        response = await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+def test_cancel_operation_field_headers():
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value =  None
+
+        client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+@pytest.mark.asyncio
+async def test_cancel_operation_field_headers_async():
+    client = LoggingServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.CancelOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            None
+        )
+        await client.cancel_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
+def test_cancel_operation_from_dict():
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+@pytest.mark.asyncio
+async def test_cancel_operation_from_dict_async():
+    client = LoggingServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            None
+        )
+        response = await client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_get_operation(transport: str = "grpc"):
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+@pytest.mark.asyncio
+async def test_get_operation_async(transport: str = "grpc"):
+    client = LoggingServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+def test_get_operation_field_headers():
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+@pytest.mark.asyncio
+async def test_get_operation_field_headers_async():
+    client = LoggingServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
+def test_get_operation_from_dict():
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+@pytest.mark.asyncio
+async def test_get_operation_from_dict_async():
+    client = LoggingServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_list_operations(transport: str = "grpc"):
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.ListOperationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+        response = client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+@pytest.mark.asyncio
+async def test_list_operations_async(transport: str = "grpc"):
+    client = LoggingServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.ListOperationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        response = await client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+def test_list_operations_field_headers():
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.ListOperationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+@pytest.mark.asyncio
+async def test_list_operations_field_headers_async():
+    client = LoggingServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.ListOperationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
+def test_list_operations_from_dict():
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        response = client.list_operations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+@pytest.mark.asyncio
+async def test_list_operations_from_dict_async():
+    client = LoggingServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        response = await client.list_operations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
 def test_transport_close():
     transports = {
-        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3977,7 +3103,6 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
-        'rest',
         'grpc',
     ]
     for transport in transports:

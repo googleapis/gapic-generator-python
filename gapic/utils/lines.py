@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 import textwrap
 from typing import Iterable, Optional
+
+
+NUMBERED_LIST_REGEX = r"^\d+\. "
 
 
 def sort_lines(text: str, dedupe: bool = True) -> str:
@@ -37,6 +41,49 @@ def sort_lines(text: str, dedupe: bool = True) -> str:
     # Return the final string.
     answer = '\n'.join(sorted(lines))
     return f'{leading}{answer}{trailing}'
+
+
+def get_subsequent_line_indentation_level(list_item: str) -> int:
+    """
+    Given a list item return the indentation level for subsequent lines.
+    For example, if it is a numbered list, the indentation level should be 3
+    as shown below.
+
+    Here subsequent lines should be indented by 2
+
+    - The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+      over the lazy dog
+
+    Here subsequent lines should be indented by 2
+
+    + The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+      over the lazy dog
+
+    Here subsequent lines should be indented by 4 to cater for double digits
+
+    1.  The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+        over the lazy dog
+
+    22. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+        over the lazy dog
+    """
+    if len(list_item) >= 2 and list_item[0:2] in ['- ', '+ ']:
+        indentation_level = 2
+    elif len(list_item) >= 4 and re.match(NUMBERED_LIST_REGEX, list_item):
+        indentation_level = 4
+    else:
+        # Don't use any intentation level if the list item marker is not known
+        indentation_level = 0
+    return indentation_level
+
+
+def is_list_item(list_item: str) -> bool:
+    """
+    Given a string return a boolean indicating whether a list is identified.
+    """
+    if len(list_item) < 3:
+        return False
+    return list_item.startswith('- ') or list_item.startswith('+ ') or bool(re.match(NUMBERED_LIST_REGEX, list_item))
 
 
 def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0) -> str:
@@ -77,6 +124,12 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
 
     # Break off the first line of the string to address non-zero offsets.
     first = text.split('\n')[0] + '\n'
+
+    # Ensure that there are 2 new lines after a colon, otherwise
+    # the sphinx docs build will fail.
+    if first.endswith(":\n"):
+        first += "\n"
+
     if len(first) > width - offset:
         # Ensure `break_on_hyphens` is set to `False` when using
         # `textwrap.wrap` to avoid breaking hyperlinks with hyphens.
@@ -86,22 +139,44 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
                                 break_on_hyphens=False,
                                 )
         # Strip the first \n from the text so it is not misidentified as an
-        # intentionally short line below.
-        text = text.replace('\n', ' ', 1)
+        # intentionally short line below, except when the text contains a list,
+        # as the new line is required for lists. Look for a list item marker in
+        # the remaining text which indicates that a list is present.
+        if '\n' in text:
+            remaining_text = "".join(text.split('\n')[1:])
+            if not is_list_item(remaining_text.strip()):
+                text = text.replace('\n', ' ', 1)
 
         # Save the new `first` line.
         first = f'{initial[0]}\n'
-    text = text[len(first):].strip()
+
+    # Ensure that there are 2 new lines after a colon, otherwise
+    # the sphinx docs build will fail.
+    text = re.sub(r':\n([^\n])', r':\n\n\1', text)
+
+    text = text[len(first):]
     if not text:
         return first.strip()
+
+    # Strip leading and ending whitespace.
+    # Preserve new line at the beginning.
+    new_line = '\n' if text[0] == '\n' else ''
+    text = new_line + text.strip()
 
     # Tokenize the rest of the text to try to preserve line breaks
     # that semantically matter.
     tokens = []
     token = ''
     for line in text.split('\n'):
+        # Ensure that lines that start with a list item marker are always on a new line
+        # Ensure that blank lines are preserved
+        if (is_list_item(line.strip()) or not len(line)) and token:
+            tokens.append(token)
+            token = ''
         token += line + '\n'
-        if len(line) < width * 0.75:
+
+        # Preserve line breaks for lines that are short or end with colon.
+        if len(line) < width * 0.75 or line.endswith(':'):
             tokens.append(token)
             token = ''
     if token:
@@ -115,7 +190,9 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
         text='\n'.join([textwrap.fill(
             break_long_words=False,
             initial_indent=' ' * indent,
-            subsequent_indent=' ' * indent,
+            # ensure that subsequent lines for lists are indented 2 spaces
+            subsequent_indent=' ' * indent + \
+            ' ' * get_subsequent_line_indentation_level(token.strip()),
             text=token,
             width=width,
             break_on_hyphens=False,

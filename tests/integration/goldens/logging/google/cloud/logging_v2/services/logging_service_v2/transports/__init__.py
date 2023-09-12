@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,20 +19,15 @@ from typing import Dict, Type
 from .base import LoggingServiceV2Transport
 from .grpc import LoggingServiceV2GrpcTransport
 from .grpc_asyncio import LoggingServiceV2GrpcAsyncIOTransport
-from .rest import LoggingServiceV2RestTransport
-from .rest import LoggingServiceV2RestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[LoggingServiceV2Transport]]
 _transport_registry['grpc'] = LoggingServiceV2GrpcTransport
 _transport_registry['grpc_asyncio'] = LoggingServiceV2GrpcAsyncIOTransport
-_transport_registry['rest'] = LoggingServiceV2RestTransport
 
 __all__ = (
     'LoggingServiceV2Transport',
     'LoggingServiceV2GrpcTransport',
     'LoggingServiceV2GrpcAsyncIOTransport',
-    'LoggingServiceV2RestTransport',
-    'LoggingServiceV2RestInterceptor',
 )
