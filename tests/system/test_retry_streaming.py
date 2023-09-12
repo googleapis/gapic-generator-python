@@ -31,6 +31,7 @@ def test_streaming_retry_success(sequence):
     """
     Test a stream with a sigle success response
     """
+    retry = retries.Retry(predicate=retries.if_exception_type(), is_stream=True)
     content = ['hello', 'world']
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
@@ -40,7 +41,7 @@ def test_streaming_retry_success(sequence):
             'responses': [{'status': Status(code=0), 'response_index': len(content)}],
         }
     )
-    it = sequence.attempt_streaming_sequence(name=seq.name)
+    it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
     results = [pb.content for pb in it]
     assert results == content
     # verify streaming report
