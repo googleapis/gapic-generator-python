@@ -138,3 +138,37 @@ def test_streaming_transient_retryable_partial_data(sequence):
     assert report.attempts[3].status == Status(code=0)
 
 
+def test_streaming_retryable_eventual_timeout(sequence):
+    """
+    Server returns a retryable error a number of times before reaching timeout.
+    Should raise a retry error.
+    """
+    retry = retries.Retry(
+        predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
+        initial=0,
+        maximum=0,
+        timeout=0.35,
+        is_stream=True
+    )
+    content = ['hello', 'world']
+    error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='transient error')
+    transient_error_list = [{'status': error, 'response_index': 1, 'delay': timedelta(seconds=0.15)}] * 3
+    responses = transient_error_list + [{'status': Status(code=0), 'response_index': len(content)}]
+    seq = sequence.create_streaming_sequence(
+        streaming_sequence={
+            'name': 'test_streaming_retry_success',
+            'content': ' '.join(content),
+            'responses': responses,
+        }
+    )
+    with pytest.raises(core_exceptions.RetryError) as exc_info:
+        it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+        [pb.content for pb in it]
+    cause = exc_info.value.__cause__
+    assert isinstance(cause, core_exceptions.ServiceUnavailable)
+    # verify streaming report
+    report = sequence.get_streaming_sequence_report(name=f'{seq.name}/streamingSequenceReport')
+    assert len(report.attempts) == 3
+    assert report.attempts[0].status == error
+    assert report.attempts[1].status == error
+    assert report.attempts[2].status == error
