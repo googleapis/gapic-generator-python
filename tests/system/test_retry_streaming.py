@@ -31,7 +31,8 @@ def test_streaming_retry_success(sequence):
     """
     Test a stream with a sigle success response
     """
-    retry = retries.Retry(predicate=retries.if_exception_type(), is_stream=True)
+    retry = retries.Retry(
+        predicate=retries.if_exception_type(), is_stream=True)
     content = ["hello", "world"]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
@@ -56,7 +57,8 @@ def test_streaming_non_retryable_error(sequence):
     """
     Test a retryable stream failing with non-retryable error
     """
-    retry = retries.Retry(predicate=retries.if_exception_type(), is_stream=True)
+    retry = retries.Retry(
+        predicate=retries.if_exception_type(), is_stream=True)
     content = ["hello", "world"]
     error = Status(
         code=_code_from_exc(core_exceptions.ServiceUnavailable),
@@ -86,7 +88,8 @@ def test_streaming_transient_retryable(sequence):
     Retryable errors should not be presented to the end user.
     """
     retry = retries.Retry(
-        predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
+        predicate=retries.if_exception_type(
+            core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
         timeout=1,
@@ -127,7 +130,8 @@ def test_streaming_transient_retryable_partial_data(sequence):
     Wrapped stream should contain data from all attempts
     """
     retry = retries.Retry(
-        predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
+        predicate=retries.if_exception_type(
+            core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
         is_stream=True,
@@ -150,7 +154,8 @@ def test_streaming_transient_retryable_partial_data(sequence):
     )
     it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
     results = [pb.content for pb in it]
-    assert results == ["hello"] * len(transient_error_list) + ["hello", "world"]
+    assert results == ["hello"] * \
+        len(transient_error_list) + ["hello", "world"]
     # verify streaming report
     report = sequence.get_streaming_sequence_report(
         name=f"{seq.name}/streamingSequenceReport"
@@ -168,7 +173,8 @@ def test_streaming_retryable_eventual_timeout(sequence):
     Should raise a retry error.
     """
     retry = retries.Retry(
-        predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
+        predicate=retries.if_exception_type(
+            core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
         timeout=0.35,
@@ -180,7 +186,8 @@ def test_streaming_retryable_eventual_timeout(sequence):
         message="transient error",
     )
     transient_error_list = [
-        {"status": error, "response_index": 1, "delay": timedelta(seconds=0.15)}
+        {"status": error, "response_index": 1,
+            "delay": timedelta(seconds=0.15)}
     ] * 10
     responses = transient_error_list + [
         {"status": Status(code=0), "response_index": len(content)}
@@ -231,7 +238,8 @@ def test_streaming_retry_on_error(sequence):
         core_exceptions.DeadlineExceeded,
         core_exceptions.NotFound,
     ]
-    responses = [{"status": Status(code=_code_from_exc(exc))} for exc in errors]
+    responses = [{"status": Status(code=_code_from_exc(exc))}
+                 for exc in errors]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
             "name": __name__,
@@ -268,7 +276,8 @@ def test_streaming_retry_sleep_generator(
     should be able to pass in sleep generator to control backoff
     """
     retry = retries.Retry(
-        predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
+        predicate=retries.if_exception_type(
+            core_exceptions.ServiceUnavailable),
         initial=initial,
         maximum=maximum,
         multiplier=multiplier,
@@ -294,7 +303,8 @@ def test_streaming_retry_sleep_generator(
         # make sleep generator deterministic
         mock_uniform.side_effect = lambda a, b: b
         with mock.patch("time.sleep") as mock_sleep:
-            it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+            it = sequence.attempt_streaming_sequence(
+                name=seq.name, retry=retry)
             [pb.content for pb in it]
             assert mock_sleep.call_count == len(expected)
     # ensure that sleep times match expected
