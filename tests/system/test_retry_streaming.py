@@ -32,20 +32,22 @@ def test_streaming_retry_success(sequence):
     Test a stream with a sigle success response
     """
     retry = retries.Retry(predicate=retries.if_exception_type(), is_stream=True)
-    content = ['hello', 'world']
+    content = ["hello", "world"]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': __name__,
-            'content': ' '.join(content),
+            "name": __name__,
+            "content": " ".join(content),
             # single response with entire stream content
-            'responses': [{'status': Status(code=0), 'response_index': len(content)}],
+            "responses": [{"status": Status(code=0), "response_index": len(content)}],
         }
     )
     it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
     results = [pb.content for pb in it]
     assert results == content
     # verify streaming report
-    report = sequence.get_streaming_sequence_report(name=f'{seq.name}/streamingSequenceReport')
+    report = sequence.get_streaming_sequence_report(
+        name=f"{seq.name}/streamingSequenceReport"
+    )
     assert len(report.attempts) == 1
     assert report.attempts[0].status == Status(code=0)
 
@@ -55,22 +57,28 @@ def test_streaming_non_retryable_error(sequence):
     Test a retryable stream failing with non-retryable error
     """
     retry = retries.Retry(predicate=retries.if_exception_type(), is_stream=True)
-    content = ['hello', 'world']
-    error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='expected error')
+    content = ["hello", "world"]
+    error = Status(
+        code=_code_from_exc(core_exceptions.ServiceUnavailable),
+        message="expected error",
+    )
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': __name__,
-            'content': ' '.join(content),
-            'responses': [{'status': error, 'response_index': 0}],
+            "name": __name__,
+            "content": " ".join(content),
+            "responses": [{"status": error, "response_index": 0}],
         }
     )
     with pytest.raises(core_exceptions.ServiceUnavailable):
         it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
         next(it)
     # verify streaming report
-    report = sequence.get_streaming_sequence_report(name=f'{seq.name}/streamingSequenceReport')
+    report = sequence.get_streaming_sequence_report(
+        name=f"{seq.name}/streamingSequenceReport"
+    )
     assert len(report.attempts) == 1
     assert report.attempts[0].status == error
+
 
 def test_streaming_transient_retryable(sequence):
     """
@@ -82,23 +90,30 @@ def test_streaming_transient_retryable(sequence):
         initial=0,
         maximum=0,
         timeout=1,
-        is_stream=True
+        is_stream=True,
     )
-    content = ['hello', 'world']
-    error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='transient error')
-    responses =  [{'status': error, 'response_index': 0} for _ in range(3)] + [{'status': Status(code=0), 'response_index': len(content)}]
+    content = ["hello", "world"]
+    error = Status(
+        code=_code_from_exc(core_exceptions.ServiceUnavailable),
+        message="transient error",
+    )
+    responses = [{"status": error, "response_index": 0} for _ in range(3)] + [
+        {"status": Status(code=0), "response_index": len(content)}
+    ]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': __name__,
-            'content': ' '.join(content),
-            'responses': responses,
+            "name": __name__,
+            "content": " ".join(content),
+            "responses": responses,
         }
     )
     it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
     results = [pb.content for pb in it]
     assert results == content
     # verify streaming report
-    report = sequence.get_streaming_sequence_report(name=f'{seq.name}/streamingSequenceReport')
+    report = sequence.get_streaming_sequence_report(
+        name=f"{seq.name}/streamingSequenceReport"
+    )
     assert len(report.attempts) == 4
     assert report.attempts[0].status == error
     assert report.attempts[1].status == error
@@ -115,24 +130,31 @@ def test_streaming_transient_retryable_partial_data(sequence):
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
-        is_stream=True
+        is_stream=True,
     )
-    content = ['hello', 'world']
-    error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='transient error')
-    transient_error_list = [{'status': error, 'response_index': 1}] * 3
-    responses = transient_error_list + [{'status': Status(code=0), 'response_index': len(content)}]
+    content = ["hello", "world"]
+    error = Status(
+        code=_code_from_exc(core_exceptions.ServiceUnavailable),
+        message="transient error",
+    )
+    transient_error_list = [{"status": error, "response_index": 1}] * 3
+    responses = transient_error_list + [
+        {"status": Status(code=0), "response_index": len(content)}
+    ]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': __name__,
-            'content': ' '.join(content),
-            'responses': responses,
+            "name": __name__,
+            "content": " ".join(content),
+            "responses": responses,
         }
     )
     it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
     results = [pb.content for pb in it]
-    assert results == ['hello'] * len(transient_error_list) + ['hello', 'world']
+    assert results == ["hello"] * len(transient_error_list) + ["hello", "world"]
     # verify streaming report
-    report = sequence.get_streaming_sequence_report(name=f'{seq.name}/streamingSequenceReport')
+    report = sequence.get_streaming_sequence_report(
+        name=f"{seq.name}/streamingSequenceReport"
+    )
     assert len(report.attempts) == 4
     assert report.attempts[0].status == error
     assert report.attempts[1].status == error
@@ -150,17 +172,24 @@ def test_streaming_retryable_eventual_timeout(sequence):
         initial=0,
         maximum=0,
         timeout=0.35,
-        is_stream=True
+        is_stream=True,
     )
-    content = ['hello', 'world']
-    error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='transient error')
-    transient_error_list = [{'status': error, 'response_index': 1, 'delay': timedelta(seconds=0.15)}] * 10
-    responses = transient_error_list + [{'status': Status(code=0), 'response_index': len(content)}]
+    content = ["hello", "world"]
+    error = Status(
+        code=_code_from_exc(core_exceptions.ServiceUnavailable),
+        message="transient error",
+    )
+    transient_error_list = [
+        {"status": error, "response_index": 1, "delay": timedelta(seconds=0.15)}
+    ] * 10
+    responses = transient_error_list + [
+        {"status": Status(code=0), "response_index": len(content)}
+    ]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': __name__,
-            'content': ' '.join(content),
-            'responses': responses,
+            "name": __name__,
+            "content": " ".join(content),
+            "responses": responses,
         }
     )
     with pytest.raises(core_exceptions.RetryError) as exc_info:
@@ -169,35 +198,45 @@ def test_streaming_retryable_eventual_timeout(sequence):
     cause = exc_info.value.__cause__
     assert isinstance(cause, core_exceptions.ServiceUnavailable)
     # verify streaming report
-    report = sequence.get_streaming_sequence_report(name=f'{seq.name}/streamingSequenceReport')
+    report = sequence.get_streaming_sequence_report(
+        name=f"{seq.name}/streamingSequenceReport"
+    )
     assert len(report.attempts) == 3
     assert report.attempts[0].status == error
     assert report.attempts[1].status == error
     assert report.attempts[2].status == error
+
 
 def test_streaming_retry_on_error(sequence):
     """
     on_error should be called for all retryable errors as they are encountered
     """
     encountered_excs = []
+
     def on_error(exc):
         encountered_excs.append(exc)
 
     retry = retries.Retry(
-        predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable, core_exceptions.GatewayTimeout),
+        predicate=retries.if_exception_type(
+            core_exceptions.ServiceUnavailable, core_exceptions.GatewayTimeout
+        ),
         initial=0,
         maximum=0,
         on_error=on_error,
-        is_stream=True
+        is_stream=True,
     )
-    content = ['hello', 'world']
-    errors = [core_exceptions.ServiceUnavailable, core_exceptions.DeadlineExceeded, core_exceptions.NotFound]
-    responses = [{'status': Status(code=_code_from_exc(exc))} for exc in errors]
+    content = ["hello", "world"]
+    errors = [
+        core_exceptions.ServiceUnavailable,
+        core_exceptions.DeadlineExceeded,
+        core_exceptions.NotFound,
+    ]
+    responses = [{"status": Status(code=_code_from_exc(exc))} for exc in errors]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': __name__,
-            'content': ' '.join(content),
-            'responses': responses,
+            "name": __name__,
+            "content": " ".join(content),
+            "responses": responses,
         }
     )
     with pytest.raises(core_exceptions.NotFound):
@@ -207,16 +246,24 @@ def test_streaming_retry_on_error(sequence):
     assert len(encountered_excs) == 2
     assert isinstance(encountered_excs[0], core_exceptions.ServiceUnavailable)
     # rest raises superclass GatewayTimeout in place of DeadlineExceeded
-    assert isinstance(encountered_excs[1], (core_exceptions.DeadlineExceeded, core_exceptions.GatewayTimeout))
+    assert isinstance(
+        encountered_excs[1],
+        (core_exceptions.DeadlineExceeded, core_exceptions.GatewayTimeout),
+    )
 
 
-@pytest.mark.parametrize('initial,multiplier,maximum,expected', [
-    (0.1, 1.0, 0.5, [0.1, 0.1, 0.1]),
-    (0, 2.0, 0.5, [0, 0]),
-    (0.1, 2.0, 0.5, [0.1, 0.2, 0.4, 0.5, 0.5]),
-    (1, 1.5, 5, [1, 1.5, 2.25, 3.375, 5, 5]),
-])
-def test_streaming_retry_sleep_generator(sequence, initial, multiplier, maximum, expected):
+@pytest.mark.parametrize(
+    "initial,multiplier,maximum,expected",
+    [
+        (0.1, 1.0, 0.5, [0.1, 0.1, 0.1]),
+        (0, 2.0, 0.5, [0, 0]),
+        (0.1, 2.0, 0.5, [0.1, 0.2, 0.4, 0.5, 0.5]),
+        (1, 1.5, 5, [1, 1.5, 2.25, 3.375, 5, 5]),
+    ],
+)
+def test_streaming_retry_sleep_generator(
+    sequence, initial, multiplier, maximum, expected
+):
     """
     should be able to pass in sleep generator to control backoff
     """
@@ -225,17 +272,22 @@ def test_streaming_retry_sleep_generator(sequence, initial, multiplier, maximum,
         initial=initial,
         maximum=maximum,
         multiplier=multiplier,
-        is_stream=True
+        is_stream=True,
     )
-    content = ['hello', 'world']
-    error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='transient error')
-    transient_error_list = [{'status': error}] * len(expected)
-    responses = transient_error_list + [{'status': Status(code=0), 'response_index': len(content)}]
+    content = ["hello", "world"]
+    error = Status(
+        code=_code_from_exc(core_exceptions.ServiceUnavailable),
+        message="transient error",
+    )
+    transient_error_list = [{"status": error}] * len(expected)
+    responses = transient_error_list + [
+        {"status": Status(code=0), "response_index": len(content)}
+    ]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': __name__,
-            'content': ' '.join(content),
-            'responses': responses,
+            "name": __name__,
+            "content": " ".join(content),
+            "responses": responses,
         }
     )
     with mock.patch("random.uniform") as mock_uniform:
@@ -246,4 +298,6 @@ def test_streaming_retry_sleep_generator(sequence, initial, multiplier, maximum,
             [pb.content for pb in it]
             assert mock_sleep.call_count == len(expected)
     # ensure that sleep times match expected
-    assert mock_sleep.call_args_list == [mock.call(sleep_time) for sleep_time in expected]
+    assert mock_sleep.call_args_list == [
+        mock.call(sleep_time) for sleep_time in expected
+    ]
