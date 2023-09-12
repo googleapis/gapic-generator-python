@@ -72,7 +72,6 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         )
 
 
-
 dir = os.path.dirname(__file__)
 with open(os.path.join(dir, "../cert/mtls.crt"), "rb") as fh:
     cert = fh.read()
@@ -145,9 +144,11 @@ def use_mtls(request):
 def echo(use_mtls, request):
     return construct_client(EchoClient, use_mtls, transport_name=request.param)
 
+
 @pytest.fixture(params=["grpc", "rest"])
 def sequence(use_mtls, request):
     return construct_client(SequenceServiceClient, use_mtls, transport_name=request.param)
+
 
 @pytest.fixture(params=["grpc", "rest"])
 def identity(use_mtls, request):
