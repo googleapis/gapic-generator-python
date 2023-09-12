@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pytest
+import mock
 from google.rpc.status_pb2 import Status
 from datetime import timedelta
 from google.api_core import retry as retries
@@ -33,7 +34,7 @@ def test_streaming_retry_success(sequence):
     content = ['hello', 'world']
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': 'test_streaming_retry_success',
+            'name': __name__,
             'content': ' '.join(content),
             # single response with entire stream content
             'responses': [{'status': Status(code=0), 'response_index': len(content)}],
@@ -57,7 +58,7 @@ def test_streaming_non_retryable_error(sequence):
     error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='expected error')
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': 'test_streaming_retry_success',
+            'name': __name__,
             'content': ' '.join(content),
             'responses': [{'status': error, 'response_index': 0}],
         }
@@ -87,7 +88,7 @@ def test_streaming_transient_retryable(sequence):
     responses =  [{'status': error, 'response_index': 0} for _ in range(3)] + [{'status': Status(code=0), 'response_index': len(content)}]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': 'test_streaming_retry_success',
+            'name': __name__,
             'content': ' '.join(content),
             'responses': responses,
         }
@@ -121,7 +122,7 @@ def test_streaming_transient_retryable_partial_data(sequence):
     responses = transient_error_list + [{'status': Status(code=0), 'response_index': len(content)}]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': 'test_streaming_retry_success',
+            'name': __name__,
             'content': ' '.join(content),
             'responses': responses,
         }
@@ -152,11 +153,11 @@ def test_streaming_retryable_eventual_timeout(sequence):
     )
     content = ['hello', 'world']
     error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='transient error')
-    transient_error_list = [{'status': error, 'response_index': 1, 'delay': timedelta(seconds=0.15)}] * 3
+    transient_error_list = [{'status': error, 'response_index': 1, 'delay': timedelta(seconds=0.15)}] * 10
     responses = transient_error_list + [{'status': Status(code=0), 'response_index': len(content)}]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
-            'name': 'test_streaming_retry_success',
+            'name': __name__,
             'content': ' '.join(content),
             'responses': responses,
         }
@@ -172,3 +173,76 @@ def test_streaming_retryable_eventual_timeout(sequence):
     assert report.attempts[0].status == error
     assert report.attempts[1].status == error
     assert report.attempts[2].status == error
+
+def test_streaming_retry_on_error(sequence):
+    """
+    on_error should be called for all retryable errors as they are encountered
+    """
+    encountered_excs = []
+    def on_error(exc):
+        encountered_excs.append(exc)
+
+    retry = retries.Retry(
+        predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable, core_exceptions.GatewayTimeout),
+        initial=0,
+        maximum=0,
+        on_error=on_error,
+        is_stream=True
+    )
+    content = ['hello', 'world']
+    errors = [core_exceptions.ServiceUnavailable, core_exceptions.DeadlineExceeded, core_exceptions.NotFound]
+    responses = [{'status': Status(code=_code_from_exc(exc))} for exc in errors]
+    seq = sequence.create_streaming_sequence(
+        streaming_sequence={
+            'name': __name__,
+            'content': ' '.join(content),
+            'responses': responses,
+        }
+    )
+    with pytest.raises(core_exceptions.NotFound):
+        it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+        [pb.content for pb in it]
+    # on_error should have been called on the first two errors, but not the terminal one
+    assert len(encountered_excs) == 2
+    assert isinstance(encountered_excs[0], core_exceptions.ServiceUnavailable)
+    # rest raises superclass GatewayTimeout in place of DeadlineExceeded
+    assert isinstance(encountered_excs[1], (core_exceptions.DeadlineExceeded, core_exceptions.GatewayTimeout))
+
+
+@pytest.mark.parametrize('initial,multiplier,maximum,expected', [
+    (0.1, 1.0, 0.5, [0.1, 0.1, 0.1]),
+    (0, 2.0, 0.5, [0, 0]),
+    (0.1, 2.0, 0.5, [0.1, 0.2, 0.4, 0.5, 0.5]),
+    (1, 1.5, 5, [1, 1.5, 2.25, 3.375, 5, 5]),
+])
+def test_streaming_retry_sleep_generator(sequence, initial, multiplier, maximum, expected):
+    """
+    should be able to pass in sleep generator to control backoff
+    """
+    retry = retries.Retry(
+        predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
+        initial=initial,
+        maximum=maximum,
+        multiplier=multiplier,
+        is_stream=True
+    )
+    content = ['hello', 'world']
+    error = Status(code=_code_from_exc(core_exceptions.ServiceUnavailable), message='transient error')
+    transient_error_list = [{'status': error}] * len(expected)
+    responses = transient_error_list + [{'status': Status(code=0), 'response_index': len(content)}]
+    seq = sequence.create_streaming_sequence(
+        streaming_sequence={
+            'name': __name__,
+            'content': ' '.join(content),
+            'responses': responses,
+        }
+    )
+    with mock.patch("random.uniform") as mock_uniform:
+        # make sleep generator deterministic
+        mock_uniform.side_effect = lambda a, b: b
+        with mock.patch("time.sleep") as mock_sleep:
+            it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
+            [pb.content for pb in it]
+            assert mock_sleep.call_count == len(expected)
+    # ensure that sleep times match expected
+    assert mock_sleep.call_args_list == [mock.call(sleep_time) for sleep_time in expected]
