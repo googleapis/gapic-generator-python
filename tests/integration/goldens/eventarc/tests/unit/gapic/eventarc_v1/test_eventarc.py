@@ -6219,18 +6219,50 @@ def test_create_trigger_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["trigger"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
+    # The version of a generated dependency at runtime may differ compared to the one at the time that of generation
+    # Delete any keys which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["trigger"]["types"][0]['edition']
-            del request_init["trigger"]["enums"][0]['edition']
-        except:
-            pass
+    if hasattr(eventarc.CreateTriggerRequest.meta.fields["trigger"].message, "DESCRIPTOR"):
+        keys_to_delete = []
+
+        # Get all subfields for the message
+        subfield_names = [
+            (field.name, subfield.name)
+            for field in eventarc.CreateTriggerRequest.meta.fields["trigger"].message.DESCRIPTOR.fields
+            if field.message_type
+            for subfield in field.message_type.fields
+        ]
+
+        # For each item in the sample request, create a list of sub fields which are not present at runtime
+        for key, value in request_init["trigger"].items():
+            result = None
+            is_repeated = False
+            # For repeated fields
+            if isinstance(value, list) and len(value):
+                is_repeated = True
+                result = value[0]
+            # For fields where the type is another message
+            if isinstance(value, dict):
+                result = value
+
+            if result:
+                for nested_key in result.keys():
+                    if (key, nested_key) not in subfield_names:
+                        keys_to_delete.append(
+                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                        )
+
+        # Remove fields from the sample request which are not present in the runtime version of the dependency
+        for key_to_delete in keys_to_delete:
+            if key_to_delete.get("nested_key"):
+                if key_to_delete.get("is_repeated"):
+                    del request_init["trigger"][key_to_delete.get("key")][0][
+                        key_to_delete.get("nested_key")
+                    ]
+                else:
+                    del request_init["trigger"][key_to_delete.get("key")][
+                        key_to_delete.get("nested_key")
+                    ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6400,19 +6432,6 @@ def test_create_trigger_rest_bad_request(transport: str = 'rest', request_type=e
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request_init["trigger"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["trigger"]["types"][0]['edition']
-            del request_init["trigger"]["enums"][0]['edition']
-        except:
-            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6500,18 +6519,50 @@ def test_update_trigger_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'trigger': {'name': 'projects/sample1/locations/sample2/triggers/sample3'}}
     request_init["trigger"] = {'name': 'projects/sample1/locations/sample2/triggers/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
+    # The version of a generated dependency at runtime may differ compared to the one at the time that of generation
+    # Delete any keys which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["trigger"]["types"][0]['edition']
-            del request_init["trigger"]["enums"][0]['edition']
-        except:
-            pass
+    if hasattr(eventarc.UpdateTriggerRequest.meta.fields["trigger"].message, "DESCRIPTOR"):
+        keys_to_delete = []
+
+        # Get all subfields for the message
+        subfield_names = [
+            (field.name, subfield.name)
+            for field in eventarc.UpdateTriggerRequest.meta.fields["trigger"].message.DESCRIPTOR.fields
+            if field.message_type
+            for subfield in field.message_type.fields
+        ]
+
+        # For each item in the sample request, create a list of sub fields which are not present at runtime
+        for key, value in request_init["trigger"].items():
+            result = None
+            is_repeated = False
+            # For repeated fields
+            if isinstance(value, list) and len(value):
+                is_repeated = True
+                result = value[0]
+            # For fields where the type is another message
+            if isinstance(value, dict):
+                result = value
+
+            if result:
+                for nested_key in result.keys():
+                    if (key, nested_key) not in subfield_names:
+                        keys_to_delete.append(
+                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                        )
+
+        # Remove fields from the sample request which are not present in the runtime version of the dependency
+        for key_to_delete in keys_to_delete:
+            if key_to_delete.get("nested_key"):
+                if key_to_delete.get("is_repeated"):
+                    del request_init["trigger"][key_to_delete.get("key")][0][
+                        key_to_delete.get("nested_key")
+                    ]
+                else:
+                    del request_init["trigger"][key_to_delete.get("key")][
+                        key_to_delete.get("nested_key")
+                    ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6666,19 +6717,6 @@ def test_update_trigger_rest_bad_request(transport: str = 'rest', request_type=e
 
     # send a request that will satisfy transcoding
     request_init = {'trigger': {'name': 'projects/sample1/locations/sample2/triggers/sample3'}}
-    request_init["trigger"] = {'name': 'projects/sample1/locations/sample2/triggers/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["trigger"]["types"][0]['edition']
-            del request_init["trigger"]["enums"][0]['edition']
-        except:
-            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7541,18 +7579,50 @@ def test_create_channel_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
+    # The version of a generated dependency at runtime may differ compared to the one at the time that of generation
+    # Delete any keys which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["channel"]["types"][0]['edition']
-            del request_init["channel"]["enums"][0]['edition']
-        except:
-            pass
+    if hasattr(eventarc.CreateChannelRequest.meta.fields["channel"].message, "DESCRIPTOR"):
+        keys_to_delete = []
+
+        # Get all subfields for the message
+        subfield_names = [
+            (field.name, subfield.name)
+            for field in eventarc.CreateChannelRequest.meta.fields["channel"].message.DESCRIPTOR.fields
+            if field.message_type
+            for subfield in field.message_type.fields
+        ]
+
+        # For each item in the sample request, create a list of sub fields which are not present at runtime
+        for key, value in request_init["channel"].items():
+            result = None
+            is_repeated = False
+            # For repeated fields
+            if isinstance(value, list) and len(value):
+                is_repeated = True
+                result = value[0]
+            # For fields where the type is another message
+            if isinstance(value, dict):
+                result = value
+
+            if result:
+                for nested_key in result.keys():
+                    if (key, nested_key) not in subfield_names:
+                        keys_to_delete.append(
+                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                        )
+
+        # Remove fields from the sample request which are not present in the runtime version of the dependency
+        for key_to_delete in keys_to_delete:
+            if key_to_delete.get("nested_key"):
+                if key_to_delete.get("is_repeated"):
+                    del request_init["channel"][key_to_delete.get("key")][0][
+                        key_to_delete.get("nested_key")
+                    ]
+                else:
+                    del request_init["channel"][key_to_delete.get("key")][
+                        key_to_delete.get("nested_key")
+                    ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7722,19 +7792,6 @@ def test_create_channel_rest_bad_request(transport: str = 'rest', request_type=e
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request_init["channel"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["channel"]["types"][0]['edition']
-            del request_init["channel"]["enums"][0]['edition']
-        except:
-            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7822,18 +7879,50 @@ def test_update_channel_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'channel': {'name': 'projects/sample1/locations/sample2/channels/sample3'}}
     request_init["channel"] = {'name': 'projects/sample1/locations/sample2/channels/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
+    # The version of a generated dependency at runtime may differ compared to the one at the time that of generation
+    # Delete any keys which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["channel"]["types"][0]['edition']
-            del request_init["channel"]["enums"][0]['edition']
-        except:
-            pass
+    if hasattr(eventarc.UpdateChannelRequest.meta.fields["channel"].message, "DESCRIPTOR"):
+        keys_to_delete = []
+
+        # Get all subfields for the message
+        subfield_names = [
+            (field.name, subfield.name)
+            for field in eventarc.UpdateChannelRequest.meta.fields["channel"].message.DESCRIPTOR.fields
+            if field.message_type
+            for subfield in field.message_type.fields
+        ]
+
+        # For each item in the sample request, create a list of sub fields which are not present at runtime
+        for key, value in request_init["channel"].items():
+            result = None
+            is_repeated = False
+            # For repeated fields
+            if isinstance(value, list) and len(value):
+                is_repeated = True
+                result = value[0]
+            # For fields where the type is another message
+            if isinstance(value, dict):
+                result = value
+
+            if result:
+                for nested_key in result.keys():
+                    if (key, nested_key) not in subfield_names:
+                        keys_to_delete.append(
+                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                        )
+
+        # Remove fields from the sample request which are not present in the runtime version of the dependency
+        for key_to_delete in keys_to_delete:
+            if key_to_delete.get("nested_key"):
+                if key_to_delete.get("is_repeated"):
+                    del request_init["channel"][key_to_delete.get("key")][0][
+                        key_to_delete.get("nested_key")
+                    ]
+                else:
+                    del request_init["channel"][key_to_delete.get("key")][
+                        key_to_delete.get("nested_key")
+                    ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7988,19 +8077,6 @@ def test_update_channel_rest_bad_request(transport: str = 'rest', request_type=e
 
     # send a request that will satisfy transcoding
     request_init = {'channel': {'name': 'projects/sample1/locations/sample2/channels/sample3'}}
-    request_init["channel"] = {'name': 'projects/sample1/locations/sample2/channels/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["channel"]["types"][0]['edition']
-            del request_init["channel"]["enums"][0]['edition']
-        except:
-            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9379,18 +9455,50 @@ def test_create_channel_connection_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel_connection"] = {'name': 'name_value', 'uid': 'uid_value', 'channel': 'channel_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'activation_token': 'activation_token_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
+    # The version of a generated dependency at runtime may differ compared to the one at the time that of generation
+    # Delete any keys which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["channel_connection"]["types"][0]['edition']
-            del request_init["channel_connection"]["enums"][0]['edition']
-        except:
-            pass
+    if hasattr(eventarc.CreateChannelConnectionRequest.meta.fields["channel_connection"].message, "DESCRIPTOR"):
+        keys_to_delete = []
+
+        # Get all subfields for the message
+        subfield_names = [
+            (field.name, subfield.name)
+            for field in eventarc.CreateChannelConnectionRequest.meta.fields["channel_connection"].message.DESCRIPTOR.fields
+            if field.message_type
+            for subfield in field.message_type.fields
+        ]
+
+        # For each item in the sample request, create a list of sub fields which are not present at runtime
+        for key, value in request_init["channel_connection"].items():
+            result = None
+            is_repeated = False
+            # For repeated fields
+            if isinstance(value, list) and len(value):
+                is_repeated = True
+                result = value[0]
+            # For fields where the type is another message
+            if isinstance(value, dict):
+                result = value
+
+            if result:
+                for nested_key in result.keys():
+                    if (key, nested_key) not in subfield_names:
+                        keys_to_delete.append(
+                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                        )
+
+        # Remove fields from the sample request which are not present in the runtime version of the dependency
+        for key_to_delete in keys_to_delete:
+            if key_to_delete.get("nested_key"):
+                if key_to_delete.get("is_repeated"):
+                    del request_init["channel_connection"][key_to_delete.get("key")][0][
+                        key_to_delete.get("nested_key")
+                    ]
+                else:
+                    del request_init["channel_connection"][key_to_delete.get("key")][
+                        key_to_delete.get("nested_key")
+                    ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9549,19 +9657,6 @@ def test_create_channel_connection_rest_bad_request(transport: str = 'rest', req
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request_init["channel_connection"] = {'name': 'name_value', 'uid': 'uid_value', 'channel': 'channel_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'activation_token': 'activation_token_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["channel_connection"]["types"][0]['edition']
-            del request_init["channel_connection"]["enums"][0]['edition']
-        except:
-            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10109,18 +10204,50 @@ def test_update_google_channel_config_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
     request_init["google_channel_config"] = {'name': 'projects/sample1/locations/sample2/googleChannelConfig', 'update_time': {'seconds': 751, 'nanos': 543}, 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
+    # The version of a generated dependency at runtime may differ compared to the one at the time that of generation
+    # Delete any keys which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["google_channel_config"]["types"][0]['edition']
-            del request_init["google_channel_config"]["enums"][0]['edition']
-        except:
-            pass
+    if hasattr(eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"].message, "DESCRIPTOR"):
+        keys_to_delete = []
+
+        # Get all subfields for the message
+        subfield_names = [
+            (field.name, subfield.name)
+            for field in eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"].message.DESCRIPTOR.fields
+            if field.message_type
+            for subfield in field.message_type.fields
+        ]
+
+        # For each item in the sample request, create a list of sub fields which are not present at runtime
+        for key, value in request_init["google_channel_config"].items():
+            result = None
+            is_repeated = False
+            # For repeated fields
+            if isinstance(value, list) and len(value):
+                is_repeated = True
+                result = value[0]
+            # For fields where the type is another message
+            if isinstance(value, dict):
+                result = value
+
+            if result:
+                for nested_key in result.keys():
+                    if (key, nested_key) not in subfield_names:
+                        keys_to_delete.append(
+                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                        )
+
+        # Remove fields from the sample request which are not present in the runtime version of the dependency
+        for key_to_delete in keys_to_delete:
+            if key_to_delete.get("nested_key"):
+                if key_to_delete.get("is_repeated"):
+                    del request_init["google_channel_config"][key_to_delete.get("key")][0][
+                        key_to_delete.get("nested_key")
+                    ]
+                else:
+                    del request_init["google_channel_config"][key_to_delete.get("key")][
+                        key_to_delete.get("nested_key")
+                    ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10270,19 +10397,6 @@ def test_update_google_channel_config_rest_bad_request(transport: str = 'rest', 
 
     # send a request that will satisfy transcoding
     request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
-    request_init["google_channel_config"] = {'name': 'projects/sample1/locations/sample2/googleChannelConfig', 'update_time': {'seconds': 751, 'nanos': 543}, 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["google_channel_config"]["types"][0]['edition']
-            del request_init["google_channel_config"]["enums"][0]['edition']
-        except:
-            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.

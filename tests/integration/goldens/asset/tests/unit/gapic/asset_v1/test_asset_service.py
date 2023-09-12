@@ -9964,18 +9964,50 @@ def test_create_saved_query_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'sample1/sample2'}
     request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
+    # The version of a generated dependency at runtime may differ compared to the one at the time that of generation
+    # Delete any keys which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["saved_query"]["types"][0]['edition']
-            del request_init["saved_query"]["enums"][0]['edition']
-        except:
-            pass
+    if hasattr(asset_service.CreateSavedQueryRequest.meta.fields["saved_query"].message, "DESCRIPTOR"):
+        keys_to_delete = []
+
+        # Get all subfields for the message
+        subfield_names = [
+            (field.name, subfield.name)
+            for field in asset_service.CreateSavedQueryRequest.meta.fields["saved_query"].message.DESCRIPTOR.fields
+            if field.message_type
+            for subfield in field.message_type.fields
+        ]
+
+        # For each item in the sample request, create a list of sub fields which are not present at runtime
+        for key, value in request_init["saved_query"].items():
+            result = None
+            is_repeated = False
+            # For repeated fields
+            if isinstance(value, list) and len(value):
+                is_repeated = True
+                result = value[0]
+            # For fields where the type is another message
+            if isinstance(value, dict):
+                result = value
+
+            if result:
+                for nested_key in result.keys():
+                    if (key, nested_key) not in subfield_names:
+                        keys_to_delete.append(
+                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                        )
+
+        # Remove fields from the sample request which are not present in the runtime version of the dependency
+        for key_to_delete in keys_to_delete:
+            if key_to_delete.get("nested_key"):
+                if key_to_delete.get("is_repeated"):
+                    del request_init["saved_query"][key_to_delete.get("key")][0][
+                        key_to_delete.get("nested_key")
+                    ]
+                else:
+                    del request_init["saved_query"][key_to_delete.get("key")][
+                        key_to_delete.get("nested_key")
+                    ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10145,19 +10177,6 @@ def test_create_saved_query_rest_bad_request(transport: str = 'rest', request_ty
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'sample1/sample2'}
-    request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["saved_query"]["types"][0]['edition']
-            del request_init["saved_query"]["enums"][0]['edition']
-        except:
-            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10773,18 +10792,50 @@ def test_update_saved_query_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
     request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
+    # The version of a generated dependency at runtime may differ compared to the one at the time that of generation
+    # Delete any keys which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["saved_query"]["types"][0]['edition']
-            del request_init["saved_query"]["enums"][0]['edition']
-        except:
-            pass
+    if hasattr(asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"].message, "DESCRIPTOR"):
+        keys_to_delete = []
+
+        # Get all subfields for the message
+        subfield_names = [
+            (field.name, subfield.name)
+            for field in asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"].message.DESCRIPTOR.fields
+            if field.message_type
+            for subfield in field.message_type.fields
+        ]
+
+        # For each item in the sample request, create a list of sub fields which are not present at runtime
+        for key, value in request_init["saved_query"].items():
+            result = None
+            is_repeated = False
+            # For repeated fields
+            if isinstance(value, list) and len(value):
+                is_repeated = True
+                result = value[0]
+            # For fields where the type is another message
+            if isinstance(value, dict):
+                result = value
+
+            if result:
+                for nested_key in result.keys():
+                    if (key, nested_key) not in subfield_names:
+                        keys_to_delete.append(
+                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                        )
+
+        # Remove fields from the sample request which are not present in the runtime version of the dependency
+        for key_to_delete in keys_to_delete:
+            if key_to_delete.get("nested_key"):
+                if key_to_delete.get("is_repeated"):
+                    del request_init["saved_query"][key_to_delete.get("key")][0][
+                        key_to_delete.get("nested_key")
+                    ]
+                else:
+                    del request_init["saved_query"][key_to_delete.get("key")][
+                        key_to_delete.get("nested_key")
+                    ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10938,19 +10989,6 @@ def test_update_saved_query_rest_bad_request(transport: str = 'rest', request_ty
 
     # send a request that will satisfy transcoding
     request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
-    request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
-    # The version of protobuf at time of generation may differ at runtime.
-    # Older versions of protobuf do not have the `edition` field in
-    # google.protobuf.type_pb2.Type and google.protobuf.type_pb2.Enum.
-    # Remove 'edition' from the sample request if it exists.
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    # and https://github.com/googleapis/googleapis/blob/520a4281eb499265ed962912ea395d221411deca/google/api/service.proto#L115
-    if google.protobuf.__version__[0:4] in ('3.19', '3.20', '4.21', '4.22'):
-        try:
-            del request_init["saved_query"]["types"][0]['edition']
-            del request_init["saved_query"]["enums"][0]['edition']
-        except:
-            pass
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
