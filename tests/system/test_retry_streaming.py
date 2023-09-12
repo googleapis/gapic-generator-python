@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import pytest
-import mock
+from unittest import mock
 from google.rpc.status_pb2 import Status
 from datetime import timedelta
 from google.api_core import retry as retries

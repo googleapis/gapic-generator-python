@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import asyncio
 import pytest
-import mock
+from unittest import mock
 from google.rpc.status_pb2 import Status
 from datetime import timedelta
 from google.api_core import retry as retries
