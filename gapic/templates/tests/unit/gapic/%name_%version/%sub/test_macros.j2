@@ -887,7 +887,7 @@ def test_{{ method_name }}_rest(request_type):
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
     request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
-    # The version of a generated dependency at runtime may differ compared to the one at time of generation
+    # The version of a generated dependency at test runtime may differ from the version used during generation
     # Delete any keys which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr({{ method.input.ident }}.meta.fields["{{ field.name }}"].message, "DESCRIPTOR"):
