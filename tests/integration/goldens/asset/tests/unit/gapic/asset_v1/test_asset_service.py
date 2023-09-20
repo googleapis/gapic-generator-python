@@ -9965,13 +9965,13 @@ def test_create_saved_query_rest(request_type):
     request_init = {'parent': 'sample1/sample2'}
     request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
     # The version of a generated dependency at test runtime may differ from the version used during generation
-    # Delete any keys which are not present in the current runtime dependency
+    # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(asset_service.CreateSavedQueryRequest.meta.fields["saved_query"].message, "DESCRIPTOR"):
-        keys_to_delete = []
+        subfields_to_delete = []
 
         # Get all subfields for the message
-        subfield_names = [
+        nested_fields = [
             (field.name, subfield.name)
             for field in asset_service.CreateSavedQueryRequest.meta.fields["saved_query"].message.DESCRIPTOR.fields
             if field.message_type
@@ -9979,7 +9979,7 @@ def test_create_saved_query_rest(request_type):
         ]
 
         # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for key, value in request_init["saved_query"].items():
+        for field, value in request_init["saved_query"].items():
             result = None
             is_repeated = False
             # For repeated fields
@@ -9991,22 +9991,22 @@ def test_create_saved_query_rest(request_type):
                 result = value
 
             if result:
-                for nested_key in result.keys():
-                    if (key, nested_key) not in subfield_names:
-                        keys_to_delete.append(
-                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                for subfield in result.keys():
+                    if (field, subfield) not in nested_fields:
+                        subfields_to_delete.append(
+                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for key_to_delete in keys_to_delete:
-            if key_to_delete.get("nested_key"):
-                if key_to_delete.get("is_repeated"):
-                    del request_init["saved_query"][key_to_delete.get("key")][0][
-                        key_to_delete.get("nested_key")
+        for subfield_to_delete in subfields_to_delete:
+            if subfield_to_delete.get("subfield"):
+                if subfield_to_delete.get("is_repeated"):
+                    del request_init["saved_query"][subfield_to_delete.get("field")][0][
+                        subfield_to_delete.get("subfield")
                     ]
                 else:
-                    del request_init["saved_query"][key_to_delete.get("key")][
-                        key_to_delete.get("nested_key")
+                    del request_init["saved_query"][subfield_to_delete.get("field")][
+                        subfield_to_delete.get("subfield")
                     ]
     request = request_type(**request_init)
 
@@ -10793,13 +10793,13 @@ def test_update_saved_query_rest(request_type):
     request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
     request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
     # The version of a generated dependency at test runtime may differ from the version used during generation
-    # Delete any keys which are not present in the current runtime dependency
+    # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"].message, "DESCRIPTOR"):
-        keys_to_delete = []
+        subfields_to_delete = []
 
         # Get all subfields for the message
-        subfield_names = [
+        nested_fields = [
             (field.name, subfield.name)
             for field in asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"].message.DESCRIPTOR.fields
             if field.message_type
@@ -10807,7 +10807,7 @@ def test_update_saved_query_rest(request_type):
         ]
 
         # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for key, value in request_init["saved_query"].items():
+        for field, value in request_init["saved_query"].items():
             result = None
             is_repeated = False
             # For repeated fields
@@ -10819,22 +10819,22 @@ def test_update_saved_query_rest(request_type):
                 result = value
 
             if result:
-                for nested_key in result.keys():
-                    if (key, nested_key) not in subfield_names:
-                        keys_to_delete.append(
-                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                for subfield in result.keys():
+                    if (field, subfield) not in nested_fields:
+                        subfields_to_delete.append(
+                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for key_to_delete in keys_to_delete:
-            if key_to_delete.get("nested_key"):
-                if key_to_delete.get("is_repeated"):
-                    del request_init["saved_query"][key_to_delete.get("key")][0][
-                        key_to_delete.get("nested_key")
+        for subfield_to_delete in subfields_to_delete:
+            if subfield_to_delete.get("subfield"):
+                if subfield_to_delete.get("is_repeated"):
+                    del request_init["saved_query"][subfield_to_delete.get("field")][0][
+                        subfield_to_delete.get("subfield")
                     ]
                 else:
-                    del request_init["saved_query"][key_to_delete.get("key")][
-                        key_to_delete.get("nested_key")
+                    del request_init["saved_query"][subfield_to_delete.get("field")][
+                        subfield_to_delete.get("subfield")
                     ]
     request = request_type(**request_init)
 

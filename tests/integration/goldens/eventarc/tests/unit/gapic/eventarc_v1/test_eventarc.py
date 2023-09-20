@@ -6220,13 +6220,13 @@ def test_create_trigger_rest(request_type):
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["trigger"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation
-    # Delete any keys which are not present in the current runtime dependency
+    # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(eventarc.CreateTriggerRequest.meta.fields["trigger"].message, "DESCRIPTOR"):
-        keys_to_delete = []
+        subfields_to_delete = []
 
         # Get all subfields for the message
-        subfield_names = [
+        nested_fields = [
             (field.name, subfield.name)
             for field in eventarc.CreateTriggerRequest.meta.fields["trigger"].message.DESCRIPTOR.fields
             if field.message_type
@@ -6234,7 +6234,7 @@ def test_create_trigger_rest(request_type):
         ]
 
         # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for key, value in request_init["trigger"].items():
+        for field, value in request_init["trigger"].items():
             result = None
             is_repeated = False
             # For repeated fields
@@ -6246,22 +6246,22 @@ def test_create_trigger_rest(request_type):
                 result = value
 
             if result:
-                for nested_key in result.keys():
-                    if (key, nested_key) not in subfield_names:
-                        keys_to_delete.append(
-                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                for subfield in result.keys():
+                    if (field, subfield) not in nested_fields:
+                        subfields_to_delete.append(
+                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for key_to_delete in keys_to_delete:
-            if key_to_delete.get("nested_key"):
-                if key_to_delete.get("is_repeated"):
-                    del request_init["trigger"][key_to_delete.get("key")][0][
-                        key_to_delete.get("nested_key")
+        for subfield_to_delete in subfields_to_delete:
+            if subfield_to_delete.get("subfield"):
+                if subfield_to_delete.get("is_repeated"):
+                    del request_init["trigger"][subfield_to_delete.get("field")][0][
+                        subfield_to_delete.get("subfield")
                     ]
                 else:
-                    del request_init["trigger"][key_to_delete.get("key")][
-                        key_to_delete.get("nested_key")
+                    del request_init["trigger"][subfield_to_delete.get("field")][
+                        subfield_to_delete.get("subfield")
                     ]
     request = request_type(**request_init)
 
@@ -6520,13 +6520,13 @@ def test_update_trigger_rest(request_type):
     request_init = {'trigger': {'name': 'projects/sample1/locations/sample2/triggers/sample3'}}
     request_init["trigger"] = {'name': 'projects/sample1/locations/sample2/triggers/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation
-    # Delete any keys which are not present in the current runtime dependency
+    # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(eventarc.UpdateTriggerRequest.meta.fields["trigger"].message, "DESCRIPTOR"):
-        keys_to_delete = []
+        subfields_to_delete = []
 
         # Get all subfields for the message
-        subfield_names = [
+        nested_fields = [
             (field.name, subfield.name)
             for field in eventarc.UpdateTriggerRequest.meta.fields["trigger"].message.DESCRIPTOR.fields
             if field.message_type
@@ -6534,7 +6534,7 @@ def test_update_trigger_rest(request_type):
         ]
 
         # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for key, value in request_init["trigger"].items():
+        for field, value in request_init["trigger"].items():
             result = None
             is_repeated = False
             # For repeated fields
@@ -6546,22 +6546,22 @@ def test_update_trigger_rest(request_type):
                 result = value
 
             if result:
-                for nested_key in result.keys():
-                    if (key, nested_key) not in subfield_names:
-                        keys_to_delete.append(
-                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                for subfield in result.keys():
+                    if (field, subfield) not in nested_fields:
+                        subfields_to_delete.append(
+                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for key_to_delete in keys_to_delete:
-            if key_to_delete.get("nested_key"):
-                if key_to_delete.get("is_repeated"):
-                    del request_init["trigger"][key_to_delete.get("key")][0][
-                        key_to_delete.get("nested_key")
+        for subfield_to_delete in subfields_to_delete:
+            if subfield_to_delete.get("subfield"):
+                if subfield_to_delete.get("is_repeated"):
+                    del request_init["trigger"][subfield_to_delete.get("field")][0][
+                        subfield_to_delete.get("subfield")
                     ]
                 else:
-                    del request_init["trigger"][key_to_delete.get("key")][
-                        key_to_delete.get("nested_key")
+                    del request_init["trigger"][subfield_to_delete.get("field")][
+                        subfield_to_delete.get("subfield")
                     ]
     request = request_type(**request_init)
 
@@ -7580,13 +7580,13 @@ def test_create_channel_rest(request_type):
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation
-    # Delete any keys which are not present in the current runtime dependency
+    # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(eventarc.CreateChannelRequest.meta.fields["channel"].message, "DESCRIPTOR"):
-        keys_to_delete = []
+        subfields_to_delete = []
 
         # Get all subfields for the message
-        subfield_names = [
+        nested_fields = [
             (field.name, subfield.name)
             for field in eventarc.CreateChannelRequest.meta.fields["channel"].message.DESCRIPTOR.fields
             if field.message_type
@@ -7594,7 +7594,7 @@ def test_create_channel_rest(request_type):
         ]
 
         # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for key, value in request_init["channel"].items():
+        for field, value in request_init["channel"].items():
             result = None
             is_repeated = False
             # For repeated fields
@@ -7606,22 +7606,22 @@ def test_create_channel_rest(request_type):
                 result = value
 
             if result:
-                for nested_key in result.keys():
-                    if (key, nested_key) not in subfield_names:
-                        keys_to_delete.append(
-                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                for subfield in result.keys():
+                    if (field, subfield) not in nested_fields:
+                        subfields_to_delete.append(
+                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for key_to_delete in keys_to_delete:
-            if key_to_delete.get("nested_key"):
-                if key_to_delete.get("is_repeated"):
-                    del request_init["channel"][key_to_delete.get("key")][0][
-                        key_to_delete.get("nested_key")
+        for subfield_to_delete in subfields_to_delete:
+            if subfield_to_delete.get("subfield"):
+                if subfield_to_delete.get("is_repeated"):
+                    del request_init["channel"][subfield_to_delete.get("field")][0][
+                        subfield_to_delete.get("subfield")
                     ]
                 else:
-                    del request_init["channel"][key_to_delete.get("key")][
-                        key_to_delete.get("nested_key")
+                    del request_init["channel"][subfield_to_delete.get("field")][
+                        subfield_to_delete.get("subfield")
                     ]
     request = request_type(**request_init)
 
@@ -7880,13 +7880,13 @@ def test_update_channel_rest(request_type):
     request_init = {'channel': {'name': 'projects/sample1/locations/sample2/channels/sample3'}}
     request_init["channel"] = {'name': 'projects/sample1/locations/sample2/channels/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation
-    # Delete any keys which are not present in the current runtime dependency
+    # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(eventarc.UpdateChannelRequest.meta.fields["channel"].message, "DESCRIPTOR"):
-        keys_to_delete = []
+        subfields_to_delete = []
 
         # Get all subfields for the message
-        subfield_names = [
+        nested_fields = [
             (field.name, subfield.name)
             for field in eventarc.UpdateChannelRequest.meta.fields["channel"].message.DESCRIPTOR.fields
             if field.message_type
@@ -7894,7 +7894,7 @@ def test_update_channel_rest(request_type):
         ]
 
         # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for key, value in request_init["channel"].items():
+        for field, value in request_init["channel"].items():
             result = None
             is_repeated = False
             # For repeated fields
@@ -7906,22 +7906,22 @@ def test_update_channel_rest(request_type):
                 result = value
 
             if result:
-                for nested_key in result.keys():
-                    if (key, nested_key) not in subfield_names:
-                        keys_to_delete.append(
-                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                for subfield in result.keys():
+                    if (field, subfield) not in nested_fields:
+                        subfields_to_delete.append(
+                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for key_to_delete in keys_to_delete:
-            if key_to_delete.get("nested_key"):
-                if key_to_delete.get("is_repeated"):
-                    del request_init["channel"][key_to_delete.get("key")][0][
-                        key_to_delete.get("nested_key")
+        for subfield_to_delete in subfields_to_delete:
+            if subfield_to_delete.get("subfield"):
+                if subfield_to_delete.get("is_repeated"):
+                    del request_init["channel"][subfield_to_delete.get("field")][0][
+                        subfield_to_delete.get("subfield")
                     ]
                 else:
-                    del request_init["channel"][key_to_delete.get("key")][
-                        key_to_delete.get("nested_key")
+                    del request_init["channel"][subfield_to_delete.get("field")][
+                        subfield_to_delete.get("subfield")
                     ]
     request = request_type(**request_init)
 
@@ -9456,13 +9456,13 @@ def test_create_channel_connection_rest(request_type):
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel_connection"] = {'name': 'name_value', 'uid': 'uid_value', 'channel': 'channel_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'activation_token': 'activation_token_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation
-    # Delete any keys which are not present in the current runtime dependency
+    # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(eventarc.CreateChannelConnectionRequest.meta.fields["channel_connection"].message, "DESCRIPTOR"):
-        keys_to_delete = []
+        subfields_to_delete = []
 
         # Get all subfields for the message
-        subfield_names = [
+        nested_fields = [
             (field.name, subfield.name)
             for field in eventarc.CreateChannelConnectionRequest.meta.fields["channel_connection"].message.DESCRIPTOR.fields
             if field.message_type
@@ -9470,7 +9470,7 @@ def test_create_channel_connection_rest(request_type):
         ]
 
         # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for key, value in request_init["channel_connection"].items():
+        for field, value in request_init["channel_connection"].items():
             result = None
             is_repeated = False
             # For repeated fields
@@ -9482,22 +9482,22 @@ def test_create_channel_connection_rest(request_type):
                 result = value
 
             if result:
-                for nested_key in result.keys():
-                    if (key, nested_key) not in subfield_names:
-                        keys_to_delete.append(
-                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                for subfield in result.keys():
+                    if (field, subfield) not in nested_fields:
+                        subfields_to_delete.append(
+                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for key_to_delete in keys_to_delete:
-            if key_to_delete.get("nested_key"):
-                if key_to_delete.get("is_repeated"):
-                    del request_init["channel_connection"][key_to_delete.get("key")][0][
-                        key_to_delete.get("nested_key")
+        for subfield_to_delete in subfields_to_delete:
+            if subfield_to_delete.get("subfield"):
+                if subfield_to_delete.get("is_repeated"):
+                    del request_init["channel_connection"][subfield_to_delete.get("field")][0][
+                        subfield_to_delete.get("subfield")
                     ]
                 else:
-                    del request_init["channel_connection"][key_to_delete.get("key")][
-                        key_to_delete.get("nested_key")
+                    del request_init["channel_connection"][subfield_to_delete.get("field")][
+                        subfield_to_delete.get("subfield")
                     ]
     request = request_type(**request_init)
 
@@ -10205,13 +10205,13 @@ def test_update_google_channel_config_rest(request_type):
     request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
     request_init["google_channel_config"] = {'name': 'projects/sample1/locations/sample2/googleChannelConfig', 'update_time': {'seconds': 751, 'nanos': 543}, 'crypto_key_name': 'crypto_key_name_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation
-    # Delete any keys which are not present in the current runtime dependency
+    # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"].message, "DESCRIPTOR"):
-        keys_to_delete = []
+        subfields_to_delete = []
 
         # Get all subfields for the message
-        subfield_names = [
+        nested_fields = [
             (field.name, subfield.name)
             for field in eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"].message.DESCRIPTOR.fields
             if field.message_type
@@ -10219,7 +10219,7 @@ def test_update_google_channel_config_rest(request_type):
         ]
 
         # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for key, value in request_init["google_channel_config"].items():
+        for field, value in request_init["google_channel_config"].items():
             result = None
             is_repeated = False
             # For repeated fields
@@ -10231,22 +10231,22 @@ def test_update_google_channel_config_rest(request_type):
                 result = value
 
             if result:
-                for nested_key in result.keys():
-                    if (key, nested_key) not in subfield_names:
-                        keys_to_delete.append(
-                            {"key": key, "nested_key": nested_key, "is_repeated": is_repeated}
+                for subfield in result.keys():
+                    if (field, subfield) not in nested_fields:
+                        subfields_to_delete.append(
+                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for key_to_delete in keys_to_delete:
-            if key_to_delete.get("nested_key"):
-                if key_to_delete.get("is_repeated"):
-                    del request_init["google_channel_config"][key_to_delete.get("key")][0][
-                        key_to_delete.get("nested_key")
+        for subfield_to_delete in subfields_to_delete:
+            if subfield_to_delete.get("subfield"):
+                if subfield_to_delete.get("is_repeated"):
+                    del request_init["google_channel_config"][subfield_to_delete.get("field")][0][
+                        subfield_to_delete.get("subfield")
                     ]
                 else:
-                    del request_init["google_channel_config"][key_to_delete.get("key")][
-                        key_to_delete.get("nested_key")
+                    del request_init["google_channel_config"][subfield_to_delete.get("field")][
+                        subfield_to_delete.get("subfield")
                     ]
     request = request_type(**request_init)
 
