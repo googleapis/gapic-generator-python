@@ -26,7 +26,7 @@ version = "1.11.5"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
-    # templated setup.py.j2 here https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
+    # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
     "click >= 6.7",
     "google-api-core[grpc] >= 1.34.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
     "googleapis-common-protos >= 1.55.0",
