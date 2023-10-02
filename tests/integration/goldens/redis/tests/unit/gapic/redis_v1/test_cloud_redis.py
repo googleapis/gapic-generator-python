@@ -4297,7 +4297,7 @@ def test_create_instance_rest(request_type):
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(cloud_redis.CreateInstanceRequest.meta.fields["instance"].message, "DESCRIPTOR"):
-        subfields_to_delete = []
+        subfields_not_in_runtime = []
 
         # Get all subfields for the message
         nested_fields = [
@@ -4322,12 +4322,12 @@ def test_create_instance_rest(request_type):
             if result:
                 for subfield in result.keys():
                     if (field, subfield) not in nested_fields:
-                        subfields_to_delete.append(
+                        subfields_not_in_runtime.append(
                             {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for subfield_to_delete in subfields_to_delete:
+        for subfield_to_delete in subfields_not_in_runtime:
             if subfield_to_delete.get("subfield"):
                 if subfield_to_delete.get("is_repeated"):
                     del request_init["instance"][subfield_to_delete.get("field")][0][
@@ -4586,7 +4586,7 @@ def test_update_instance_rest(request_type):
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
     if hasattr(cloud_redis.UpdateInstanceRequest.meta.fields["instance"].message, "DESCRIPTOR"):
-        subfields_to_delete = []
+        subfields_not_in_runtime = []
 
         # Get all subfields for the message
         nested_fields = [
@@ -4611,12 +4611,12 @@ def test_update_instance_rest(request_type):
             if result:
                 for subfield in result.keys():
                     if (field, subfield) not in nested_fields:
-                        subfields_to_delete.append(
+                        subfields_not_in_runtime.append(
                             {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                         )
 
         # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for subfield_to_delete in subfields_to_delete:
+        for subfield_to_delete in subfields_not_in_runtime:
             if subfield_to_delete.get("subfield"):
                 if subfield_to_delete.get("is_repeated"):
                     del request_init["instance"][subfield_to_delete.get("field")][0][
