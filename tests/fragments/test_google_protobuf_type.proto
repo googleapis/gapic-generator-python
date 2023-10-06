@@ -42,7 +42,6 @@ message MethodRequestWithProtobufType {
 
 message TestMessage {
   repeated google.protobuf.Type types = 2 [(google.api.field_behavior) = REQUIRED];
-
 }
 
 message MethodResponseWithProtobufType {
