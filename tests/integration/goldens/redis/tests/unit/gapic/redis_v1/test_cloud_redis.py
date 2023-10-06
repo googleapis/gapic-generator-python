@@ -4327,7 +4327,7 @@ def test_create_instance_rest(request_type):
         if isinstance(value, dict):
             result = value
 
-        if result:
+        if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in nested_fields:
                     subfields_not_in_runtime.append(
@@ -4338,9 +4338,10 @@ def test_create_instance_rest(request_type):
     for subfield_to_delete in subfields_not_in_runtime:
         if subfield_to_delete.get("subfield"):
             if subfield_to_delete.get("is_repeated"):
-                del request_init["instance"][subfield_to_delete.get("field")][0][
-                    subfield_to_delete.get("subfield")
-                ]
+                for i in range(0, len(request_init["instance"][subfield_to_delete.get("field")])):
+                    del request_init["instance"][subfield_to_delete.get("field")][i][
+                        subfield_to_delete.get("subfield")
+                    ]
             else:
                 del request_init["instance"][subfield_to_delete.get("field")][
                     subfield_to_delete.get("subfield")
@@ -4624,7 +4625,7 @@ def test_update_instance_rest(request_type):
         if isinstance(value, dict):
             result = value
 
-        if result:
+        if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in nested_fields:
                     subfields_not_in_runtime.append(
@@ -4635,9 +4636,10 @@ def test_update_instance_rest(request_type):
     for subfield_to_delete in subfields_not_in_runtime:
         if subfield_to_delete.get("subfield"):
             if subfield_to_delete.get("is_repeated"):
-                del request_init["instance"][subfield_to_delete.get("field")][0][
-                    subfield_to_delete.get("subfield")
-                ]
+                for i in range(0, len(request_init["instance"][subfield_to_delete.get("field")])):
+                    del request_init["instance"][subfield_to_delete.get("field")][i][
+                        subfield_to_delete.get("subfield")
+                    ]
             else:
                 del request_init["instance"][subfield_to_delete.get("field")][
                     subfield_to_delete.get("subfield")
