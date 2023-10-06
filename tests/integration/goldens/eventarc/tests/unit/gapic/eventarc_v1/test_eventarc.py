@@ -6262,16 +6262,15 @@ def test_create_trigger_rest(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     for subfield_to_delete in subfields_not_in_runtime:
-        if subfield_to_delete.get("subfield"):
-            if subfield_to_delete.get("is_repeated"):
-                for i in range(0, len(request_init["trigger"][subfield_to_delete.get("field")])):
-                    del request_init["trigger"][subfield_to_delete.get("field")][i][
-                        subfield_to_delete.get("subfield")
-                    ]
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["trigger"][field])):
+                    del request_init["trigger"][field][i][subfield]
             else:
-                del request_init["trigger"][subfield_to_delete.get("field")][
-                    subfield_to_delete.get("subfield")
-                ]
+                del request_init["trigger"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6571,16 +6570,15 @@ def test_update_trigger_rest(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     for subfield_to_delete in subfields_not_in_runtime:
-        if subfield_to_delete.get("subfield"):
-            if subfield_to_delete.get("is_repeated"):
-                for i in range(0, len(request_init["trigger"][subfield_to_delete.get("field")])):
-                    del request_init["trigger"][subfield_to_delete.get("field")][i][
-                        subfield_to_delete.get("subfield")
-                    ]
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["trigger"][field])):
+                    del request_init["trigger"][field][i][subfield]
             else:
-                del request_init["trigger"][subfield_to_delete.get("field")][
-                    subfield_to_delete.get("subfield")
-                ]
+                del request_init["trigger"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7640,16 +7638,15 @@ def test_create_channel_rest(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     for subfield_to_delete in subfields_not_in_runtime:
-        if subfield_to_delete.get("subfield"):
-            if subfield_to_delete.get("is_repeated"):
-                for i in range(0, len(request_init["channel"][subfield_to_delete.get("field")])):
-                    del request_init["channel"][subfield_to_delete.get("field")][i][
-                        subfield_to_delete.get("subfield")
-                    ]
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["channel"][field])):
+                    del request_init["channel"][field][i][subfield]
             else:
-                del request_init["channel"][subfield_to_delete.get("field")][
-                    subfield_to_delete.get("subfield")
-                ]
+                del request_init["channel"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7949,16 +7946,15 @@ def test_update_channel_rest(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     for subfield_to_delete in subfields_not_in_runtime:
-        if subfield_to_delete.get("subfield"):
-            if subfield_to_delete.get("is_repeated"):
-                for i in range(0, len(request_init["channel"][subfield_to_delete.get("field")])):
-                    del request_init["channel"][subfield_to_delete.get("field")][i][
-                        subfield_to_delete.get("subfield")
-                    ]
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["channel"][field])):
+                    del request_init["channel"][field][i][subfield]
             else:
-                del request_init["channel"][subfield_to_delete.get("field")][
-                    subfield_to_delete.get("subfield")
-                ]
+                del request_init["channel"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9534,16 +9530,15 @@ def test_create_channel_connection_rest(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     for subfield_to_delete in subfields_not_in_runtime:
-        if subfield_to_delete.get("subfield"):
-            if subfield_to_delete.get("is_repeated"):
-                for i in range(0, len(request_init["channel_connection"][subfield_to_delete.get("field")])):
-                    del request_init["channel_connection"][subfield_to_delete.get("field")][i][
-                        subfield_to_delete.get("subfield")
-                    ]
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["channel_connection"][field])):
+                    del request_init["channel_connection"][field][i][subfield]
             else:
-                del request_init["channel_connection"][subfield_to_delete.get("field")][
-                    subfield_to_delete.get("subfield")
-                ]
+                del request_init["channel_connection"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10292,16 +10287,15 @@ def test_update_google_channel_config_rest(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     for subfield_to_delete in subfields_not_in_runtime:
-        if subfield_to_delete.get("subfield"):
-            if subfield_to_delete.get("is_repeated"):
-                for i in range(0, len(request_init["google_channel_config"][subfield_to_delete.get("field")])):
-                    del request_init["google_channel_config"][subfield_to_delete.get("field")][i][
-                        subfield_to_delete.get("subfield")
-                    ]
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["google_channel_config"][field])):
+                    del request_init["google_channel_config"][field][i][subfield]
             else:
-                del request_init["google_channel_config"][subfield_to_delete.get("field")][
-                    subfield_to_delete.get("subfield")
-                ]
+                del request_init["google_channel_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.

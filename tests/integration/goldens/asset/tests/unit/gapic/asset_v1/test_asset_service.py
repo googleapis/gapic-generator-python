@@ -10007,16 +10007,15 @@ def test_create_saved_query_rest(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     for subfield_to_delete in subfields_not_in_runtime:
-        if subfield_to_delete.get("subfield"):
-            if subfield_to_delete.get("is_repeated"):
-                for i in range(0, len(request_init["saved_query"][subfield_to_delete.get("field")])):
-                    del request_init["saved_query"][subfield_to_delete.get("field")][i][
-                        subfield_to_delete.get("subfield")
-                    ]
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["saved_query"][field])):
+                    del request_init["saved_query"][field][i][subfield]
             else:
-                del request_init["saved_query"][subfield_to_delete.get("field")][
-                    subfield_to_delete.get("subfield")
-                ]
+                del request_init["saved_query"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10844,16 +10843,15 @@ def test_update_saved_query_rest(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     for subfield_to_delete in subfields_not_in_runtime:
-        if subfield_to_delete.get("subfield"):
-            if subfield_to_delete.get("is_repeated"):
-                for i in range(0, len(request_init["saved_query"][subfield_to_delete.get("field")])):
-                    del request_init["saved_query"][subfield_to_delete.get("field")][i][
-                        subfield_to_delete.get("subfield")
-                    ]
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["saved_query"][field])):
+                    del request_init["saved_query"][field][i][subfield]
             else:
-                del request_init["saved_query"][subfield_to_delete.get("field")][
-                    subfield_to_delete.get("subfield")
-                ]
+                del request_init["saved_query"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
