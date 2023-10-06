@@ -4605,7 +4605,7 @@ def test_update_instance_rest(request_type):
 
     subfields_not_in_runtime = []
 
-    # Get all subfields for the message
+    # Get all subfields in the run-time message type
     nested_fields = [
         (field.name, subfield.name)
         for field in message_fields
