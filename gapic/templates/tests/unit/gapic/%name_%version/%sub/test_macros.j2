@@ -902,7 +902,7 @@ def test_{{ method_name }}_rest(request_type):
     subfields_not_in_runtime = []
 
     # Get all subfields for the message
-    nested_fields = [
+    runtime_nested_fields = [
         (field.name, subfield.name)
         for field in message_fields
         if hasattr(field, "message_type") and field.message_type
@@ -923,7 +923,7 @@ def test_{{ method_name }}_rest(request_type):
 
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
-                if (field, subfield) not in nested_fields:
+                if (field, subfield) not in runtime_nested_fields:
                     subfields_not_in_runtime.append(
                         {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                     )

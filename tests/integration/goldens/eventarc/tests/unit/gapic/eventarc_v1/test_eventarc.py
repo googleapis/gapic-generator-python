@@ -6219,7 +6219,7 @@ def test_create_trigger_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["trigger"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
-    # The version of a generated dependency at test runtime may differ from the version used during generation
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
@@ -6234,7 +6234,7 @@ def test_create_trigger_rest(request_type):
     subfields_not_in_runtime = []
 
     # Get all subfields for the message
-    nested_fields = [
+    runtime_nested_fields = [
         (field.name, subfield.name)
         for field in message_fields
         if hasattr(field, "message_type") and field.message_type
@@ -6255,7 +6255,7 @@ def test_create_trigger_rest(request_type):
 
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
-                if (field, subfield) not in nested_fields:
+                if (field, subfield) not in runtime_nested_fields:
                     subfields_not_in_runtime.append(
                         {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                     )
@@ -6528,7 +6528,7 @@ def test_update_trigger_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'trigger': {'name': 'projects/sample1/locations/sample2/triggers/sample3'}}
     request_init["trigger"] = {'name': 'projects/sample1/locations/sample2/triggers/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'event_filters': [{'attribute': 'attribute_value', 'value': 'value_value', 'operator': 'operator_value'}], 'service_account': 'service_account_value', 'destination': {'cloud_run': {'service': 'service_value', 'path': 'path_value', 'region': 'region_value'}, 'cloud_function': 'cloud_function_value', 'gke': {'cluster': 'cluster_value', 'location': 'location_value', 'namespace': 'namespace_value', 'service': 'service_value', 'path': 'path_value'}, 'workflow': 'workflow_value'}, 'transport': {'pubsub': {'topic': 'topic_value', 'subscription': 'subscription_value'}}, 'labels': {}, 'channel': 'channel_value', 'conditions': {}, 'etag': 'etag_value'}
-    # The version of a generated dependency at test runtime may differ from the version used during generation
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
@@ -6543,7 +6543,7 @@ def test_update_trigger_rest(request_type):
     subfields_not_in_runtime = []
 
     # Get all subfields for the message
-    nested_fields = [
+    runtime_nested_fields = [
         (field.name, subfield.name)
         for field in message_fields
         if hasattr(field, "message_type") and field.message_type
@@ -6564,7 +6564,7 @@ def test_update_trigger_rest(request_type):
 
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
-                if (field, subfield) not in nested_fields:
+                if (field, subfield) not in runtime_nested_fields:
                     subfields_not_in_runtime.append(
                         {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                     )
@@ -7597,7 +7597,7 @@ def test_create_channel_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel"] = {'name': 'name_value', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of a generated dependency at test runtime may differ from the version used during generation
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
@@ -7612,7 +7612,7 @@ def test_create_channel_rest(request_type):
     subfields_not_in_runtime = []
 
     # Get all subfields for the message
-    nested_fields = [
+    runtime_nested_fields = [
         (field.name, subfield.name)
         for field in message_fields
         if hasattr(field, "message_type") and field.message_type
@@ -7633,7 +7633,7 @@ def test_create_channel_rest(request_type):
 
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
-                if (field, subfield) not in nested_fields:
+                if (field, subfield) not in runtime_nested_fields:
                     subfields_not_in_runtime.append(
                         {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                     )
@@ -7906,7 +7906,7 @@ def test_update_channel_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'channel': {'name': 'projects/sample1/locations/sample2/channels/sample3'}}
     request_init["channel"] = {'name': 'projects/sample1/locations/sample2/channels/sample3', 'uid': 'uid_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'provider': 'provider_value', 'pubsub_topic': 'pubsub_topic_value', 'state': 1, 'activation_token': 'activation_token_value', 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of a generated dependency at test runtime may differ from the version used during generation
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
@@ -7921,7 +7921,7 @@ def test_update_channel_rest(request_type):
     subfields_not_in_runtime = []
 
     # Get all subfields for the message
-    nested_fields = [
+    runtime_nested_fields = [
         (field.name, subfield.name)
         for field in message_fields
         if hasattr(field, "message_type") and field.message_type
@@ -7942,7 +7942,7 @@ def test_update_channel_rest(request_type):
 
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
-                if (field, subfield) not in nested_fields:
+                if (field, subfield) not in runtime_nested_fields:
                     subfields_not_in_runtime.append(
                         {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                     )
@@ -9491,7 +9491,7 @@ def test_create_channel_connection_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["channel_connection"] = {'name': 'name_value', 'uid': 'uid_value', 'channel': 'channel_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'activation_token': 'activation_token_value'}
-    # The version of a generated dependency at test runtime may differ from the version used during generation
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
@@ -9506,7 +9506,7 @@ def test_create_channel_connection_rest(request_type):
     subfields_not_in_runtime = []
 
     # Get all subfields for the message
-    nested_fields = [
+    runtime_nested_fields = [
         (field.name, subfield.name)
         for field in message_fields
         if hasattr(field, "message_type") and field.message_type
@@ -9527,7 +9527,7 @@ def test_create_channel_connection_rest(request_type):
 
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
-                if (field, subfield) not in nested_fields:
+                if (field, subfield) not in runtime_nested_fields:
                     subfields_not_in_runtime.append(
                         {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                     )
@@ -10249,7 +10249,7 @@ def test_update_google_channel_config_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
     request_init["google_channel_config"] = {'name': 'projects/sample1/locations/sample2/googleChannelConfig', 'update_time': {'seconds': 751, 'nanos': 543}, 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of a generated dependency at test runtime may differ from the version used during generation
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
@@ -10264,7 +10264,7 @@ def test_update_google_channel_config_rest(request_type):
     subfields_not_in_runtime = []
 
     # Get all subfields for the message
-    nested_fields = [
+    runtime_nested_fields = [
         (field.name, subfield.name)
         for field in message_fields
         if hasattr(field, "message_type") and field.message_type
@@ -10285,7 +10285,7 @@ def test_update_google_channel_config_rest(request_type):
 
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
-                if (field, subfield) not in nested_fields:
+                if (field, subfield) not in runtime_nested_fields:
                     subfields_not_in_runtime.append(
                         {"field": field, "subfield": subfield, "is_repeated": is_repeated}
                     )
