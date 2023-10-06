@@ -129,6 +129,7 @@ def test_streaming_transient_retryable_partial_data(sequence):
     Server stream yields some data before failing with a retryable error a number of times before success.
     Wrapped stream should contain data from all attempts
     """
+    from google.protobuf.duration_pb2 import Duration
     retry = retries.Retry(
         predicate=retries.if_exception_type(
             core_exceptions.ServiceUnavailable),
@@ -136,26 +137,26 @@ def test_streaming_transient_retryable_partial_data(sequence):
         maximum=0,
         is_stream=True,
     )
-    content = ["hello", "world"]
+    content = ["hello", ",", "world"]
     error = Status(
         code=_code_from_exc(core_exceptions.ServiceUnavailable),
         message="transient error",
     )
-    transient_error_list = [{"status": error, "response_index": 1}] * 3
+    transient_error_list = [{"status": error, "response_index": 3, "delay":Duration(seconds=30)}] * 3
+
     responses = transient_error_list + [
         {"status": Status(code=0), "response_index": len(content)}
     ]
     seq = sequence.create_streaming_sequence(
-        streaming_sequence={
-            "name": __name__,
-            "content": " ".join(content),
-            "responses": responses,
+            streaming_sequence={
+                "name": __name__,
+                "content": " ".join(content),
+                "responses": responses,
         }
     )
     it = sequence.attempt_streaming_sequence(name=seq.name, retry=retry)
     results = [pb.content for pb in it]
-    assert results == ["hello"] * \
-        len(transient_error_list) + ["hello", "world"]
+    assert results == ["hello", "hello", "hello", "hello", "world"]
     # verify streaming report
     report = sequence.get_streaming_sequence_report(
         name=f"{seq.name}/streamingSequenceReport"
