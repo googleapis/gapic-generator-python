@@ -219,6 +219,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         )
 
         if not self._grpc_channel:
+            # initialize with the provided callable or the default channel
             channel_init = channel or type(self).create_channel
             self._grpc_channel = channel_init(
                 self._host,

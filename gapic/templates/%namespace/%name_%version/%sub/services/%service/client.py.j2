@@ -361,6 +361,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 if isinstance(transport, str) or transport is None
                 else transport
             )
+            # initialize with the provided callable or the passed in class
             self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=client_options.credentials_file,
