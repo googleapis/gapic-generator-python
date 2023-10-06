@@ -160,8 +160,9 @@ class {{ service.async_client_name }}:
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
             transport (Optional[Union[str,{{ service.name }}Transport,Callable[..., {{ service.name }}Transport]]]):
-                The transport to use, or a callable that generates one with the
-                set of initialization arguments.
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the {{ service.name }}Transport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[ClientOptions]): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
