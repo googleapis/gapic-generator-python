@@ -4296,47 +4296,55 @@ def test_create_instance_rest(request_type):
     # The version of a generated dependency at test runtime may differ from the version used during generation
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    if hasattr(cloud_redis.CreateInstanceRequest.meta.fields["instance"].message, "DESCRIPTOR"):
-        subfields_not_in_runtime = []
 
-        # Get all subfields for the message
-        nested_fields = [
-            (field.name, subfield.name)
-            for field in cloud_redis.CreateInstanceRequest.meta.fields["instance"].message.DESCRIPTOR.fields
-            if field.message_type
-            for subfield in field.message_type.fields
-        ]
+    # Determine if the message type is proto-plus or protobuf
+    is_message_proto_plus_type = not hasattr(cloud_redis.CreateInstanceRequest.meta.fields["instance"].message, "DESCRIPTOR")
 
-        # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for field, value in request_init["instance"].items():
-            result = None
-            is_repeated = False
-            # For repeated fields
-            if isinstance(value, list) and len(value):
-                is_repeated = True
-                result = value[0]
-            # For fields where the type is another message
-            if isinstance(value, dict):
-                result = value
+    if is_message_proto_plus_type:
+        message_fields = cloud_redis.CreateInstanceRequest.meta.fields["instance"].message.meta.fields
+    else:
+        message_fields = cloud_redis.CreateInstanceRequest.meta.fields["instance"].message.DESCRIPTOR.fields
 
-            if result:
-                for subfield in result.keys():
-                    if (field, subfield) not in nested_fields:
-                        subfields_not_in_runtime.append(
-                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
-                        )
+    subfields_not_in_runtime = []
 
-        # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for subfield_to_delete in subfields_not_in_runtime:
-            if subfield_to_delete.get("subfield"):
-                if subfield_to_delete.get("is_repeated"):
-                    del request_init["instance"][subfield_to_delete.get("field")][0][
-                        subfield_to_delete.get("subfield")
-                    ]
-                else:
-                    del request_init["instance"][subfield_to_delete.get("field")][
-                        subfield_to_delete.get("subfield")
-                    ]
+    # Get all subfields for the message
+    nested_fields = [
+        (field.name, subfield.name)
+        for field in message_fields
+        if hasattr(field, "message_type") and field.message_type
+        for subfield in field.message_type.fields
+    ]
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["instance"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result:
+            for subfield in result.keys():
+                if (field, subfield) not in nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        if subfield_to_delete.get("subfield"):
+            if subfield_to_delete.get("is_repeated"):
+                del request_init["instance"][subfield_to_delete.get("field")][0][
+                    subfield_to_delete.get("subfield")
+                ]
+            else:
+                del request_init["instance"][subfield_to_delete.get("field")][
+                    subfield_to_delete.get("subfield")
+                ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4585,47 +4593,55 @@ def test_update_instance_rest(request_type):
     # The version of a generated dependency at test runtime may differ from the version used during generation
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
-    if hasattr(cloud_redis.UpdateInstanceRequest.meta.fields["instance"].message, "DESCRIPTOR"):
-        subfields_not_in_runtime = []
 
-        # Get all subfields for the message
-        nested_fields = [
-            (field.name, subfield.name)
-            for field in cloud_redis.UpdateInstanceRequest.meta.fields["instance"].message.DESCRIPTOR.fields
-            if field.message_type
-            for subfield in field.message_type.fields
-        ]
+    # Determine if the message type is proto-plus or protobuf
+    is_message_proto_plus_type = not hasattr(cloud_redis.UpdateInstanceRequest.meta.fields["instance"].message, "DESCRIPTOR")
 
-        # For each item in the sample request, create a list of sub fields which are not present at runtime
-        for field, value in request_init["instance"].items():
-            result = None
-            is_repeated = False
-            # For repeated fields
-            if isinstance(value, list) and len(value):
-                is_repeated = True
-                result = value[0]
-            # For fields where the type is another message
-            if isinstance(value, dict):
-                result = value
+    if is_message_proto_plus_type:
+        message_fields = cloud_redis.UpdateInstanceRequest.meta.fields["instance"].message.meta.fields
+    else:
+        message_fields = cloud_redis.UpdateInstanceRequest.meta.fields["instance"].message.DESCRIPTOR.fields
 
-            if result:
-                for subfield in result.keys():
-                    if (field, subfield) not in nested_fields:
-                        subfields_not_in_runtime.append(
-                            {"field": field, "subfield": subfield, "is_repeated": is_repeated}
-                        )
+    subfields_not_in_runtime = []
 
-        # Remove fields from the sample request which are not present in the runtime version of the dependency
-        for subfield_to_delete in subfields_not_in_runtime:
-            if subfield_to_delete.get("subfield"):
-                if subfield_to_delete.get("is_repeated"):
-                    del request_init["instance"][subfield_to_delete.get("field")][0][
-                        subfield_to_delete.get("subfield")
-                    ]
-                else:
-                    del request_init["instance"][subfield_to_delete.get("field")][
-                        subfield_to_delete.get("subfield")
-                    ]
+    # Get all subfields for the message
+    nested_fields = [
+        (field.name, subfield.name)
+        for field in message_fields
+        if hasattr(field, "message_type") and field.message_type
+        for subfield in field.message_type.fields
+    ]
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["instance"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result:
+            for subfield in result.keys():
+                if (field, subfield) not in nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        if subfield_to_delete.get("subfield"):
+            if subfield_to_delete.get("is_repeated"):
+                del request_init["instance"][subfield_to_delete.get("field")][0][
+                    subfield_to_delete.get("subfield")
+                ]
+            else:
+                del request_init["instance"][subfield_to_delete.get("field")][
+                    subfield_to_delete.get("subfield")
+                ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
