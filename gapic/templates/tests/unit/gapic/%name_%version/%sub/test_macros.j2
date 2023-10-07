@@ -994,11 +994,10 @@ def test_{{ method_name }}_rest(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         {% else %}
         {% if method.output.ident.is_proto_plus_type %}
-        pb_return_value = {{ method.output.ident }}.pb(return_value)
-        {% else %}
-        pb_return_value = return_value
+        # Convert return value to protobuf type
+        return_value = {{ method.output.ident }}.pb(return_value)
         {% endif %}
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         {% endif %}
 
         {% if method.server_streaming %}
@@ -1168,11 +1167,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             {% else %}
 
             {% if method.output.ident.is_proto_plus_type %}
-            pb_return_value = {{ method.output.ident }}.pb(return_value)
-            {% else %}
-            pb_return_value = return_value
+            # Convert return value to protobuf type
+            return_value = {{ method.output.ident }}.pb(return_value)
             {% endif %}
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             {% endif %}
             {% if method.server_streaming %}
             json_return_value = "[{}]".format(json_return_value)
@@ -1354,11 +1352,10 @@ def test_{{ method_name }}_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         {% else %}
         {% if method.output.ident.is_proto_plus_type %}
-        pb_return_value = {{ method.output.ident }}.pb(return_value)
-        {% else %}
-        pb_return_value = return_value
+        # Convert return value to protobuf type
+        return_value = {{ method.output.ident }}.pb(return_value)
         {% endif %}
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         {% endif %}
         {% if method.server_streaming %}
         json_return_value = "[{}]".format(json_return_value)

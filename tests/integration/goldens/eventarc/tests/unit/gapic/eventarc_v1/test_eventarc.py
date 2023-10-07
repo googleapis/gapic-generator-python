@@ -5703,8 +5703,9 @@ def test_get_trigger_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = trigger.Trigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = trigger.Trigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -5775,8 +5776,9 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = trigger.Trigger.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = trigger.Trigger.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -5879,8 +5881,9 @@ def test_get_trigger_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = trigger.Trigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = trigger.Trigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -5940,8 +5943,9 @@ def test_list_triggers_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = eventarc.ListTriggersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = eventarc.ListTriggersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -6011,8 +6015,9 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = eventarc.ListTriggersResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = eventarc.ListTriggersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -6115,8 +6120,9 @@ def test_list_triggers_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = eventarc.ListTriggersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = eventarc.ListTriggersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -7078,8 +7084,9 @@ def test_get_channel_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = channel.Channel.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = channel.Channel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7151,8 +7158,9 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = channel.Channel.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = channel.Channel.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -7255,8 +7263,9 @@ def test_get_channel_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = channel.Channel.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = channel.Channel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -7316,8 +7325,9 @@ def test_list_channels_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = eventarc.ListChannelsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = eventarc.ListChannelsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7387,8 +7397,9 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = eventarc.ListChannelsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = eventarc.ListChannelsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -7491,8 +7502,9 @@ def test_list_channels_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = eventarc.ListChannelsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = eventarc.ListChannelsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -8445,8 +8457,9 @@ def test_get_provider_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = discovery.Provider.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = discovery.Provider.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8514,8 +8527,9 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = discovery.Provider.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = discovery.Provider.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -8618,8 +8632,9 @@ def test_get_provider_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = discovery.Provider.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = discovery.Provider.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -8679,8 +8694,9 @@ def test_list_providers_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = eventarc.ListProvidersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = eventarc.ListProvidersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8750,8 +8766,9 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = eventarc.ListProvidersResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = eventarc.ListProvidersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -8854,8 +8871,9 @@ def test_list_providers_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = eventarc.ListProvidersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = eventarc.ListProvidersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -8972,8 +8990,9 @@ def test_get_channel_connection_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = channel_connection.ChannelConnection.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = channel_connection.ChannelConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -9043,8 +9062,9 @@ def test_get_channel_connection_rest_required_fields(request_type=eventarc.GetCh
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = channel_connection.ChannelConnection.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = channel_connection.ChannelConnection.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -9147,8 +9167,9 @@ def test_get_channel_connection_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = channel_connection.ChannelConnection.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = channel_connection.ChannelConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -9208,8 +9229,9 @@ def test_list_channel_connections_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -9279,8 +9301,9 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -9383,8 +9406,9 @@ def test_list_channel_connections_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -10022,8 +10046,9 @@ def test_get_google_channel_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -10091,8 +10116,9 @@ def test_get_google_channel_config_rest_required_fields(request_type=eventarc.Ge
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -10195,8 +10221,9 @@ def test_get_google_channel_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -10309,8 +10336,9 @@ def test_update_google_channel_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -10376,8 +10404,9 @@ def test_update_google_channel_config_rest_required_fields(request_type=eventarc
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -10481,8 +10510,9 @@ def test_update_google_channel_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
