@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
+// The purpose of this fragment test is to test for an issue found in the generated
+// client for `google/api/servicemanagement/v1` where the version of a generated
+// dependency (google.protobuf.type) at runtime differs from the version used during
+// generation. See https://github.com/googleapis/gapic-generator-python/issues/1748.
+
 syntax = "proto3";
 
 package google.fragment;
