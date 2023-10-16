@@ -1,6 +1,23 @@
 # Changelog
 
 
+## [1.11.7](https://github.com/googleapis/gapic-generator-python/compare/v1.11.6...v1.11.7) (2023-10-12)
+
+
+### Bug Fixes
+
+* Add google-cloud-iam to dependencies ([#1792](https://github.com/googleapis/gapic-generator-python/issues/1792)) ([c5ed152](https://github.com/googleapis/gapic-generator-python/commit/c5ed1529f1d61ea3d0990b662a3d979d05192ab5))
+* Fix regression in REST unit test ([#1798](https://github.com/googleapis/gapic-generator-python/issues/1798)) ([0cee3c2](https://github.com/googleapis/gapic-generator-python/commit/0cee3c26bcd428ce6eec57c3616423905ec21781))
+* **revert:** Partial revert of [#1125](https://github.com/googleapis/gapic-generator-python/issues/1125) ([#1799](https://github.com/googleapis/gapic-generator-python/issues/1799)) ([14eec93](https://github.com/googleapis/gapic-generator-python/commit/14eec937fc4eddf3d6bd32f7ae35969bdc6f8bb5))
+
+## [1.11.6](https://github.com/googleapis/gapic-generator-python/compare/v1.11.5...v1.11.6) (2023-10-09)
+
+
+### Bug Fixes
+
+* Change to Set vs FrozenSet and thread the same set through ([#1125](https://github.com/googleapis/gapic-generator-python/issues/1125)) ([723efca](https://github.com/googleapis/gapic-generator-python/commit/723efca3f909527c48e8070eff61511293888626))
+* Resolve unit test failure caused by differences in protobuf runtimes ([#1749](https://github.com/googleapis/gapic-generator-python/issues/1749)) ([812abce](https://github.com/googleapis/gapic-generator-python/commit/812abceeb68d86f3902974aaeef8a58cfd6e7515))
+
 ## [1.11.5](https://github.com/googleapis/gapic-generator-python/compare/v1.11.4...v1.11.5) (2023-09-06)
 
 
