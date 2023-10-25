@@ -30,6 +30,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import copy
 import dataclasses
+import grpc
 import json
 import keyword
 import re
@@ -1145,6 +1146,7 @@ class Method:
         default=None)
     retry: Optional[RetryInfo] = dataclasses.field(default=None)
     timeout: Optional[float] = None
+    compression: Optional[grpc.Compression] = None
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )

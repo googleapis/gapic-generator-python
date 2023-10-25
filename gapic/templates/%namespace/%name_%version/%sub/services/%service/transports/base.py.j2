@@ -158,6 +158,7 @@ class {{ service.name }}Transport(abc.ABC):
                 ),
                 {% endif %}
                 default_timeout={{ method.timeout }},
+                default_compression={{ method.compression }},
                 client_info=client_info,
             ),
             {% endfor %} {# precomputed wrappers loop #}
