@@ -141,7 +141,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
-
+    DEFAULT_ENDPOINT_TEMPLATE = "redis.{UNIVERSE_DOMAIN}"
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
@@ -308,6 +308,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
+        elif client_options.universe_domain is not None:
+            api_endpoint = cls.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client_options.universe_domain)
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
