@@ -1,6 +1,41 @@
 # Changelog
 
 
+## [1.12.0](https://github.com/googleapis/gapic-generator-python/compare/v1.11.11...v1.12.0) (2023-11-09)
+
+
+### Features
+
+* Introduce compatibility with native namespace packages ([#1852](https://github.com/googleapis/gapic-generator-python/issues/1852)) ([ef2094a](https://github.com/googleapis/gapic-generator-python/commit/ef2094ae15cd8b4be5e18f1c6b4d62a6b8f0d416))
+
+
+### Bug Fixes
+
+* Allow pb2 files to be included in the output of py_gapic_assembly_pkg ([#1855](https://github.com/googleapis/gapic-generator-python/issues/1855)) ([e374734](https://github.com/googleapis/gapic-generator-python/commit/e37473494002de855d63498f731c26cec5c49b9c))
+* Implement Async Client to use Async Retry to work as expected ([#1823](https://github.com/googleapis/gapic-generator-python/issues/1823)) ([8ede788](https://github.com/googleapis/gapic-generator-python/commit/8ede788616b5b73f52bc7a8aca831c37b054b81f))
+* Wrap method in async client ([#1834](https://github.com/googleapis/gapic-generator-python/issues/1834)) ([8e1b5e0](https://github.com/googleapis/gapic-generator-python/commit/8e1b5e077a78904710d350b7dc97cdd2d6034fa9))
+
+## [1.11.11](https://github.com/googleapis/gapic-generator-python/compare/v1.11.10...v1.11.11) (2023-11-02)
+
+
+### Bug Fixes
+
+* Add missing dependency google-shopping-type ([#1842](https://github.com/googleapis/gapic-generator-python/issues/1842)) ([b1eabd7](https://github.com/googleapis/gapic-generator-python/commit/b1eabd7f439d032edd3fb6d0b65415a2c6b737ab))
+
+## [1.11.10](https://github.com/googleapis/gapic-generator-python/compare/v1.11.9...v1.11.10) (2023-10-26)
+
+
+### Bug Fixes
+
+* Upgrade rules_python to 0.26.0 ([#1825](https://github.com/googleapis/gapic-generator-python/issues/1825)) ([5d66387](https://github.com/googleapis/gapic-generator-python/commit/5d66387cd42a38d54dde5e8f0153446fee194b27))
+
+## [1.11.9](https://github.com/googleapis/gapic-generator-python/compare/v1.11.8...v1.11.9) (2023-10-18)
+
+
+### Bug Fixes
+
+* Rename rst files to avoid conflict with service names ([#1706](https://github.com/googleapis/gapic-generator-python/issues/1706)) ([70c3db5](https://github.com/googleapis/gapic-generator-python/commit/70c3db5ae1bac69e8ade13e4608af60c824e7870))
+
 ## [1.11.8](https://github.com/googleapis/gapic-generator-python/compare/v1.11.7...v1.11.8) (2023-10-16)
 
 
