@@ -24,7 +24,7 @@ def _py_gapic_src_pkg_impl(ctx):
                 dir_srcs.append(f)
             elif f.extension in ("srcjar", "jar", "zip"):
                 srcjar_srcs.append(f)
-            elif f.extension in ("py") and not f.is_source and 'external' not in f.path:
+            elif f.extension in ("py") and 'external' not in f.path:
                 py_srcs.append(f)
 
     paths = construct_package_dir_paths(ctx.attr.package_dir, ctx.outputs.pkg, ctx.label.name)
