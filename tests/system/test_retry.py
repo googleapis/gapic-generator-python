@@ -45,10 +45,21 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_retry_bubble_async(async_echo):
-        with pytest.raises(exceptions.DeadlineExceeded):
+        with pytest.raises(exceptions.RetryError):
             await async_echo.echo({
                 'error': {
-                    'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
-                    'message': 'This took longer than you said it should.',
+                    'code': code_pb2.Code.Value('UNAVAILABLE'),
+                    'message': 'This service is not available.',
                 },
+            })
+
+    # Note: This test verifies that:
+    # Using gapic_v1.method.wrap_method in *AsyncClient raises a RPCError (Incorrect behaviour).
+    # Using gapic_v1.method_async.wrap_method in *AsyncClient raises a google.api_core.exceptions.GoogleAPIError.
+
+    @pytest.mark.asyncio
+    async def test_method_async_wrapper_for_async_client(async_echo):
+        with pytest.raises(exceptions.NotFound):
+            await async_echo.get_operation({
+                'name': "operations/echo"
             })
