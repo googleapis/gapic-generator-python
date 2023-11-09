@@ -24,6 +24,7 @@ def _py_gapic_src_pkg_impl(ctx):
                 dir_srcs.append(f)
             elif f.extension in ("srcjar", "jar", "zip"):
                 srcjar_srcs.append(f)
+            # Exclude *.py files for external packages
             elif f.extension in ("py") and 'external' not in f.path:
                 py_srcs.append(f)
 
