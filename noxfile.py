@@ -300,7 +300,7 @@ def showcase_mtls(
         )
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def showcase_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
     showcase(
