@@ -458,7 +458,7 @@ def docs(session):
     )
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Perform typecheck analysis."""
     # Pin to click==8.1.3 to workaround https://github.com/pallets/click/issues/2558

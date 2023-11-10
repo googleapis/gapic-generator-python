@@ -7,7 +7,11 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'cla/google'
     - 'docs'
-    - 'mypy'
+    - 'mypy (3.8)'
+    - 'mypy (3.9)'
+    - 'mypy (3.10)'
+    - 'mypy (3.11)'
+    - 'mypy (3.12)'
     - 'showcase (showcase)'
     - 'showcase (showcase_alternative_templates)'
     # TODO(dovs): reenable these when the mtls tests have been debugged and fixed
