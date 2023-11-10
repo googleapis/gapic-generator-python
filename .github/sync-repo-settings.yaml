@@ -27,6 +27,7 @@ branchProtectionRules:
     - 'showcase-unit (3.9, _alternative_templates)'
     - 'showcase-unit (3.10, _alternative_templates)'
     - 'showcase-unit (3.11, _alternative_templates)'
+    - 'showcase-unit (3.12, _alternative_templates)'
     - 'showcase-unit (3.7, _alternative_templates_mixins)'
     - 'showcase-unit (3.8, _alternative_templates_mixins)'
     - 'showcase-unit (3.9, _alternative_templates_mixins)'
