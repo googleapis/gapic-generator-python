@@ -89,7 +89,7 @@ jobs:
             unzip protoc-${PROTOC_VERSION}.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run showcase tests.
-        run: nox -s ${{ matrix.variant }}-${{ matrix.python }}
+        run: nox -s ${{ matrix.target }}-${{ matrix.python }}
   showcase-mtls:
     if: ${{ false }}            # TODO(dovs): reenable when #1218 is fixed
     strategy:
