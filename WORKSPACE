@@ -71,10 +71,10 @@ gapic_generator_register_toolchains()
 # one imported by gRPC.
 http_archive(
     name = "boringssl",
-    sha256 = "b18e14a2674b99505e9c46458dce2aa7f7a363e825125c4d0114ee5fa932f266",
-    strip_prefix = "boringssl-ad57528d2c978543106f9b115bd0eb658f3ebdd2",
+    sha256 = "b460f8673f3393e58ce506e9cdde7f2c3b2575b075f214cb819fb57d809f052b",
+    strip_prefix = "boringssl-bb41bc007079982da419c0ec3186e510cbcf09d0",
     urls = [
-        "https://github.com/google/boringssl/archive/ad57528d2c978543106f9b115bd0eb658f3ebdd2.zip",
+        "https://github.com/google/boringssl/archive/bb41bc007079982da419c0ec3186e510cbcf09d0.zip",
     ],
 )
 
