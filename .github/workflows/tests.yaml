@@ -313,11 +313,11 @@ jobs:
             python -m pip install nox
       - name: Run blacken and lint on the generated output.
         run: |
-          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-3.12 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-3.12 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-3.12 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-3.12 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-3.12 blacken lint_setup_py lint
+          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-3.12 blacken lint
   style-check:
     runs-on: ubuntu-latest
     steps:
@@ -325,7 +325,9 @@ jobs:
       - name: Set up Python "3.12"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          # Do not upgrade this check to python 3.12 until
+          # https://github.com/hhatto/autopep8/issues/712 is fixed
+          python-version: "3.11"
           cache: 'pip'
       - name: Install autopep8
         run: |
