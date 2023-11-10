@@ -49,7 +49,6 @@ nox.sessions = [
     "docs",
     "blacken",
     "lint",
-    "lint_setup_py",
 ]
 
 @nox.session(python=ALL_PYTHON)
@@ -176,10 +175,3 @@ def blacken(session):
         "black",
         *BLACK_PATHS,
     )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def lint_setup_py(session):
-    """Verify that setup.py is valid (including RST check)."""
-    session.install("docutils", "pygments")
-    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
