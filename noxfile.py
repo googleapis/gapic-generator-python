@@ -405,7 +405,7 @@ def showcase_mypy(
         session.chdir(lib)
 
         # Run the tests.
-        session.run("mypy", "--explicit-package-bases", "google")
+        session.run("mypy", "-p", "google")
 
 
 @nox.session(python=NEWEST_PYTHON)
@@ -470,4 +470,4 @@ def mypy(session):
         "click==8.1.3",
     )
     session.install(".")
-    session.run("mypy", "gapic")
+    session.run("mypy", "-p", "gapic")

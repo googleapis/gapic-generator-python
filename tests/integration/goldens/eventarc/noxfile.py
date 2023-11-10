@@ -93,7 +93,7 @@ def mypy(session):
     session.install('.')
     session.run(
         'mypy',
-        '--explicit-package-bases',
+        '-p',
         'google',
     )
 
