@@ -53,15 +53,17 @@ jobs:
         run: nox -s mypy-${{ matrix.python }}
   showcase:
     strategy:
+      # Run showcase tests on the lowest and highest supported runtimes
       matrix:
+        python: ["3.7", "3.12"]
         target: [showcase, showcase_alternative_templates]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.12"
+      - name: Set up Python "${{ matrix.python }}"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          python-version: "${{ matrix.python }}"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -87,7 +89,7 @@ jobs:
             unzip protoc-${PROTOC_VERSION}.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run showcase tests.
-        run: nox -s ${{ matrix.target }}
+        run: nox -s ${{ matrix.variant }}-${{ matrix.python }}
   showcase-mtls:
     if: ${{ false }}            # TODO(dovs): reenable when #1218 is fixed
     strategy:

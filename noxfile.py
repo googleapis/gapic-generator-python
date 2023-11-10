@@ -261,7 +261,7 @@ def showcase_library(
         yield tmp_dir
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def showcase(
     session,
     templates="DEFAULT",
