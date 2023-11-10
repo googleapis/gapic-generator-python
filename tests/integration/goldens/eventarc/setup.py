@@ -56,8 +56,6 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ["google", "google.cloud"]
-
 setuptools.setup(
     name=name,
     version=version,

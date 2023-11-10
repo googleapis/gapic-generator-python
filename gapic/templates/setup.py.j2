@@ -55,8 +55,6 @@ packages = [
     if package.startswith("{{ api.naming.namespace_packages|first }}")
 ]
 
-namespaces = [{% for namespace_packages in api.naming.namespace_packages %}"{{ namespace_packages }}"{% if not loop.last %}, {% endif %}{% endfor %}]
-
 setuptools.setup(
     name=name,
     version=version,
