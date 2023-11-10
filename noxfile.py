@@ -437,11 +437,11 @@ def snippetgen(session):
     session.run("py.test", "-vv", "tests/snippetgen")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs."""
 
-    session.install("sphinx==4.0.1", "sphinx_rtd_theme")
+    session.install("sphinx==4.5.0", "sphinx_rtd_theme")
     session.install(".")
 
     # Build the docs!
