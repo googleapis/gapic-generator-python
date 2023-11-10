@@ -34,7 +34,7 @@ ALL_PYTHON = [
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
-PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
+PACKAGE_NAME = 'google-cloud-eventarc'
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
