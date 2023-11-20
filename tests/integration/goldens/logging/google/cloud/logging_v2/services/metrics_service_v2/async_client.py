@@ -48,8 +48,11 @@ class MetricsServiceV2AsyncClient:
 
     _client: MetricsServiceV2Client
 
+    # Note: DEFAULT_ENDPOINT will be deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = MetricsServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT_TEMPLATE = MetricsServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE
+    GOOGLE_DEFAULT_UNIVERSE = MetricsServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
 
     log_metric_path = staticmethod(MetricsServiceV2Client.log_metric_path)
     parse_log_metric_path = staticmethod(MetricsServiceV2Client.parse_log_metric_path)

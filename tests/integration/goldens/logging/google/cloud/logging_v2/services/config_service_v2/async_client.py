@@ -50,8 +50,11 @@ class ConfigServiceV2AsyncClient:
 
     _client: ConfigServiceV2Client
 
+    # Note: DEFAULT_ENDPOINT will be deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = ConfigServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT_TEMPLATE = ConfigServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE
+    GOOGLE_DEFAULT_UNIVERSE = ConfigServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
 
     cmek_settings_path = staticmethod(ConfigServiceV2Client.cmek_settings_path)
     parse_cmek_settings_path = staticmethod(ConfigServiceV2Client.parse_cmek_settings_path)

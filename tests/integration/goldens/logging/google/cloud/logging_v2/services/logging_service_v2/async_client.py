@@ -47,8 +47,11 @@ class LoggingServiceV2AsyncClient:
 
     _client: LoggingServiceV2Client
 
+    # Note: DEFAULT_ENDPOINT will be deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = LoggingServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT_TEMPLATE = LoggingServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE
+    GOOGLE_DEFAULT_UNIVERSE = LoggingServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
 
     log_path = staticmethod(LoggingServiceV2Client.log_path)
     parse_log_path = staticmethod(LoggingServiceV2Client.parse_log_path)
