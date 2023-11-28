@@ -178,6 +178,25 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     from_service_account_json = from_service_account_file
 
     @property
+    def api_endpoint(self) -> str:
+        """Returns the API endpoint used by the client instance.
+        
+        Returns:
+            str: The API endpoint used by the client instance.
+        """
+        return self._api_endpoint
+
+    @property
+    def client_cert_source(self):
+        """Returns the client cert source used by the client instance.
+        
+        Returns:
+            Callable[[], Tuple[bytes, bytes]]: The client cert source
+                used by the client instance.
+        """
+        return self._client_cert_source
+    
+    @property
     def transport(self) -> {{ service.name }}Transport:
         """Returns the transport used by the client instance.
 
@@ -215,36 +234,6 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         return m.groupdict() if m else {}
 
     {% endfor %}{# common resources #}
-
-    
-    @staticmethod
-    def validate_environment_variables(use_client_cert, use_mtls_endpoint):
-        if use_client_cert not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-
-    @staticmethod
-    def get_client_cert_source(client_options, use_client_cert):
-        client_cert_source = None
-        if use_client_cert == "true":
-            if client_options.client_cert_source:
-                client_cert_source = client_options.client_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-        return client_cert_source
-    
-    @classmethod
-    def get_api_endpoint(cls, client_options, use_mtls_endpoint, client_cert_source):
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = cls.DEFAULT_ENDPOINT
-
-        return api_endpoint
     
     @classmethod
     def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
@@ -278,21 +267,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        
-        # validate the environment variables
-        cls.validate_environment_variables(use_client_cert, use_mtls_endpoint)
+        client_instance = cls(client_options=client_options)
 
-        # Figure out the client cert source to use.
-        client_cert_source = cls.get_client_cert_source(client_options, use_client_cert)
-
-        # Figure out which api endpoint to use.
-        api_endpoint = cls.get_api_endpoint(client_options, use_mtls_endpoint, client_cert_source)
-
-        return api_endpoint, client_cert_source
+        return client_instance.api_endpoint, client_instance.client_cert_source
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
@@ -342,15 +319,53 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        if isinstance(client_options, dict):
-            client_options = client_options_lib.from_dict(client_options)
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-        client_options = cast(client_options_lib.ClientOptions, client_options)
+        self.client_options = client_options
+        if isinstance(self.client_options, dict):
+            self.client_options = client_options_lib.from_dict(self.client_options)
+        if self.client_options is None:
+            self.client_options = client_options_lib.ClientOptions()
+        self.client_options = cast(client_options_lib.ClientOptions, self.client_options)
 
-        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
+        # validate the environment variables
+        def validate_environment_variables():
+            use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+            use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+            if use_client_cert not in ("true", "false"):
+                raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
+            if use_mtls_endpoint not in ("auto", "never", "always"):
+                raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+            
+            return use_client_cert, use_mtls_endpoint
 
-        api_key_value = getattr(client_options, "api_key", None)
+        self._use_client_cert, self._use_mtls_endpoint = validate_environment_variables()
+        
+        # Figure out the client cert source to use.
+        def get_client_cert_source():
+            client_cert_source = None
+            if self._use_client_cert == "true":
+                if self.client_options.client_cert_source:
+                    client_cert_source = self.client_options.client_cert_source
+                elif mtls.has_default_client_cert_source():
+                    client_cert_source = mtls.default_client_cert_source()
+            return client_cert_source
+        
+        self._client_cert_source = get_client_cert_source()
+
+
+        # Figure out which api endpoint to use.
+        def get_api_endpoint():
+            if self.client_options.api_endpoint is not None:
+                api_endpoint = self.client_options.api_endpoint
+            elif self._use_mtls_endpoint == "always" or (self._use_mtls_endpoint == "auto" and self._client_cert_source):
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            else:
+                api_endpoint = self.DEFAULT_ENDPOINT
+
+            return api_endpoint
+
+        self._api_endpoint = get_api_endpoint()
+
+        api_key_value = getattr(self.client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
@@ -359,10 +374,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, {{ service.name }}Transport):
             # transport is a {{ service.name }}Transport instance.
-            if credentials or client_options.credentials_file or api_key_value:
+            if credentials or self.client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
                                  "provide its credentials directly.")
-            if client_options.scopes:
+            if self.client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, provide its scopes "
                     "directly."
@@ -377,14 +392,14 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
-                credentials_file=client_options.credentials_file,
-                host=api_endpoint,
-                scopes=client_options.scopes,
-                client_cert_source_for_mtls=client_cert_source_func,
-                quota_project_id=client_options.quota_project_id,
+                credentials_file=self.client_options.credentials_file,
+                host=self._api_endpoint,
+                scopes=self.client_options.scopes,
+                client_cert_source_for_mtls=self._client_cert_source,
+                quota_project_id=self.client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
-                api_audience=client_options.api_audience,
+                api_audience=self.client_options.api_audience,
             )
 
 

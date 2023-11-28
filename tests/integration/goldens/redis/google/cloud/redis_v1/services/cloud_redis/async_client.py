@@ -156,6 +156,25 @@ class CloudRedisAsyncClient:
         return CloudRedisClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
+    def api_endpoint(self) -> str:
+        """Returns the API endpoint used by the client instance.
+
+        Returns:
+            str: The API endpoint used by the client instance.
+        """
+        return self._client._api_endpoint
+
+    @property
+    def client_cert_source(self):
+        """Returns the client cert source used by the client instance.
+
+        Returns:
+            Callable[[], Tuple[bytes, bytes]]: The client cert source
+                used by the client instance.
+        """
+        return self._client._client_cert_source
+
+    @property
     def transport(self) -> CloudRedisTransport:
         """Returns the transport used by the client instance.
 
