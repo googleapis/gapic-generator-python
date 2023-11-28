@@ -365,15 +365,16 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
     IAMCredentialsClient, IAMCredentialsAsyncClient
 ])
 @mock.patch.object(IAMCredentialsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsClient))
+@mock.patch.object(IAMCredentialsClient, "credentials", ga_credentials.AnonymousCredentials())
 @mock.patch.object(IAMCredentialsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsAsyncClient))
+@mock.patch.object(IAMCredentialsAsyncClient, "credentials", ga_credentials.AnonymousCredentials())
 def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = client_cert_source_callback
-    creds = ga_credentials.AnonymousCredentials()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint, credentials_file="credentials.json")
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
@@ -381,7 +382,7 @@ def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint, credentials_file="credentials.json")
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
