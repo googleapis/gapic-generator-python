@@ -354,11 +354,12 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
 @mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
 def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = client_cert_source_callback
+    creds = ga_credentials.AnonymousCredentials()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint, credentials=creds)
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
@@ -366,7 +367,7 @@ def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint, credentials=creds)
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
