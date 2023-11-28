@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 
 from google.cloud.eventarc_v1 import gapic_version as package_version
 
@@ -182,7 +182,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return self._api_endpoint
 
     @property
-    def client_cert_source(self):
+    def client_cert_source(self) -> Callable[[], Tuple[bytes, bytes]]:
         """Returns the client cert source used by the client instance.
 
         Returns:
@@ -457,6 +457,18 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # validate the environment variables
         def validate_environment_variables():
+            """Returns the environment variables used by the client.
+
+            Returns:
+                Tuple[str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE
+                    and the GOOGLE_API_USE_MTLS_ENDPOINT environment variables.
+
+            Raises:
+                ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+                    any of ["true", "false"].
+                google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
+                    is not any of ["auto", "never", "always"].
+            """
             use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
             use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
             if use_client_cert not in ("true", "false"):
@@ -470,6 +482,19 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Figure out the client cert source to use.
         def get_client_cert_source():
+            """Return the client cert source used by the client.
+
+            The client cert source is determined in the following order:
+            (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+            client cert source is None.
+            (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+            default client cert source exists, use the default one; otherwise the client cert
+            source is None.
+
+            Returns:
+                Tuple[bytes, bytes]]: The client cert source to be used
+                    by the client.
+            """
             client_cert_source = None
             if self._use_client_cert == "true":
                 if self.client_options.client_cert_source:
@@ -482,6 +507,22 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Figure out which api endpoint to use.
         def get_api_endpoint():
+            """Return the API endpoint used by the client.
+
+            The API endpoint is determined in the following order:
+            (1) if `client_options.api_endpoint` if provided, use the provided one.
+            (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+            default mTLS endpoint; if the environment variable is "never", use the default API
+            endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+            use the default API endpoint.
+
+            More details can be found at https://google.aip.dev/auth/4114.
+
+            Returns:
+                str: The API endpoint to be used
+                    by the client.
+            """
+
             if self.client_options.api_endpoint is not None:
                 api_endpoint = self.client_options.api_endpoint
             elif self._use_mtls_endpoint == "always" or (self._use_mtls_endpoint == "auto" and self._client_cert_source):

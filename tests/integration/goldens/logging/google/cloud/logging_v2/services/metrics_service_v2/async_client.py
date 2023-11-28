@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
@@ -141,7 +141,7 @@ class MetricsServiceV2AsyncClient:
         return self._client._api_endpoint
 
     @property
-    def client_cert_source(self):
+    def client_cert_source(self) -> Callable[[], Tuple[bytes, bytes]]:
         """Returns the client cert source used by the client instance.
 
         Returns:
