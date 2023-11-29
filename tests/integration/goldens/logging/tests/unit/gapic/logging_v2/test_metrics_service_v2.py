@@ -406,7 +406,7 @@ def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
 @mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
 @mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
 def test_metrics_service_v2_client_client_api_endpoint_and_cert_source(client_class):
-    mock_client_cert_source = mock.Mock()
+    mock_client_cert_source = client_cert_source_callback
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):

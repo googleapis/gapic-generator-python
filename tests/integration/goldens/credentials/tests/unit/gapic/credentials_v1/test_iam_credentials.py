@@ -420,7 +420,7 @@ def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
 @mock.patch.object(IAMCredentialsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsClient))
 @mock.patch.object(IAMCredentialsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsAsyncClient))
 def test_iam_credentials_client_client_api_endpoint_and_cert_source(client_class):
-    mock_client_cert_source = mock.Mock()
+    mock_client_cert_source = client_cert_source_callback
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
