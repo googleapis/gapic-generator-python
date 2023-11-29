@@ -452,12 +452,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self.client_options = client_options
-        if isinstance(self.client_options, dict):
-            self.client_options = client_options_lib.from_dict(self.client_options)
-        if self.client_options is None:
-            self.client_options = client_options_lib.ClientOptions()
-        self.client_options = cast(client_options_lib.ClientOptions, self.client_options)
+        self._client_options = client_options
+        if isinstance(self._client_options, dict):
+            self._client_options = client_options_lib.from_dict(self._client_options)
+        if self._client_options is None:
+            self._client_options = client_options_lib.ClientOptions()
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
         # validate the environment variables
         def validate_environment_variables():
@@ -501,8 +501,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
             """
             client_cert_source = None
             if self._use_client_cert == "true":
-                if self.client_options.client_cert_source:
-                    client_cert_source = self.client_options.client_cert_source
+                if self._client_options.client_cert_source:
+                    client_cert_source = self._client_options.client_cert_source
                 elif mtls.has_default_client_cert_source():
                     client_cert_source = mtls.default_client_cert_source()
             return client_cert_source
@@ -527,8 +527,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
                     by the client.
             """
 
-            if self.client_options.api_endpoint is not None:
-                api_endpoint = self.client_options.api_endpoint
+            if self._client_options.api_endpoint is not None:
+                api_endpoint = self._client_options.api_endpoint
             elif self._use_mtls_endpoint == "always" or (self._use_mtls_endpoint == "auto" and self._client_cert_source):
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             else:
@@ -538,7 +538,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         self._api_endpoint = get_api_endpoint()
 
-        api_key_value = getattr(self.client_options, "api_key", None)
+        api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
@@ -547,10 +547,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, EventarcTransport):
             # transport is a EventarcTransport instance.
-            if credentials or self.client_options.credentials_file or api_key_value:
+            if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
                                  "provide its credentials directly.")
-            if self.client_options.scopes:
+            if self._client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, provide its scopes "
                     "directly."
@@ -565,14 +565,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
-                credentials_file=self.client_options.credentials_file,
+                credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
-                scopes=self.client_options.scopes,
+                scopes=self._client_options.scopes,
                 client_cert_source_for_mtls=self._client_cert_source,
-                quota_project_id=self.client_options.quota_project_id,
+                quota_project_id=self._client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
-                api_audience=self.client_options.api_audience,
+                api_audience=self._client_options.api_audience,
             )
 
     def get_trigger(self,
