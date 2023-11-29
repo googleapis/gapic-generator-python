@@ -430,6 +430,11 @@ def test_cloud_redis_client_get_mtls_endpoint_and_cert_source(client_class):
         with pytest.raises(MutualTLSChannelError):
             client_class.get_mtls_endpoint_and_cert_source()
 
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError):
+            client_class.get_mtls_endpoint_and_cert_source()
+
 @pytest.mark.parametrize("client_class", [
     CloudRedisClient, CloudRedisAsyncClient
 ])
