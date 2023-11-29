@@ -423,7 +423,7 @@ def test_logging_service_v2_client_client_api_endpoint_and_cert_source(client_cl
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
-        client = client_class(client_options=option, credentials=ga_credentials.AnonymousCredentials())
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client._api_endpoint == mock_api_endpoint
         assert client._client_cert_source is None
 
