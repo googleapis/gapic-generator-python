@@ -400,6 +400,11 @@ def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError):
+            client_class.get_mtls_endpoint_and_cert_source()
 
 @pytest.mark.parametrize("client_class", [
     ConfigServiceV2Client, ConfigServiceV2AsyncClient
