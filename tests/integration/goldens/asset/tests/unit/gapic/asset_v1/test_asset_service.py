@@ -375,15 +375,12 @@ def test_asset_service_client_mtls_env_auto(client_class, transport_class, trans
     AssetServiceClient, AssetServiceAsyncClient
 ])
 @mock.patch.object(AssetServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceClient))
-@mock.patch.object(AssetServiceClient, "credentials", ga_credentials.AnonymousCredentials())
 @mock.patch.object(AssetServiceAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceAsyncClient))
-@mock.patch.object(AssetServiceAsyncClient, "credentials", ga_credentials.AnonymousCredentials())
 def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
@@ -392,6 +389,7 @@ def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)

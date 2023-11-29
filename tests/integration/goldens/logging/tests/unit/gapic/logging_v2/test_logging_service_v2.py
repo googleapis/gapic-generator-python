@@ -353,15 +353,12 @@ def test_logging_service_v2_client_mtls_env_auto(client_class, transport_class, 
     LoggingServiceV2Client, LoggingServiceV2AsyncClient
 ])
 @mock.patch.object(LoggingServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(LoggingServiceV2Client))
-@mock.patch.object(LoggingServiceV2Client, "credentials", ga_credentials.AnonymousCredentials())
 @mock.patch.object(LoggingServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(LoggingServiceV2AsyncClient))
-@mock.patch.object(LoggingServiceV2AsyncClient, "credentials", ga_credentials.AnonymousCredentials())
 def test_logging_service_v2_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
@@ -370,6 +367,7 @@ def test_logging_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
