@@ -443,7 +443,6 @@ def test_cloud_redis_client_client_api_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
