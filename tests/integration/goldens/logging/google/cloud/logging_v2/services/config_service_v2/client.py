@@ -157,25 +157,6 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def api_endpoint(self) -> str:
-        """Returns the API endpoint used by the client instance.
-
-        Returns:
-            str: The API endpoint used by the client instance.
-        """
-        return self._api_endpoint
-
-    @property
-    def client_cert_source(self) -> Callable[[], Tuple[bytes, bytes]]:
-        """Returns the client cert source used by the client instance.
-
-        Returns:
-            Callable[[], Tuple[bytes, bytes]]: The client cert source
-                used by the client instance.
-        """
-        return self._client_cert_source
-
-    @property
     def transport(self) -> ConfigServiceV2Transport:
         """Returns the transport used by the client instance.
 
@@ -351,7 +332,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         """
         client_instance = cls(client_options=client_options)
 
-        return client_instance.api_endpoint, client_instance.client_cert_source
+        return client_instance._api_endpoint, client_instance._client_cert_source
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
