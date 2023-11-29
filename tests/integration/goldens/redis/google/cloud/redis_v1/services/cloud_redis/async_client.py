@@ -211,6 +211,7 @@ class CloudRedisAsyncClient:
             client_info=client_info,
 
         )
+        self._api_endpoint = self._client._api_endpoint
 
     async def list_instances(self,
             request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,

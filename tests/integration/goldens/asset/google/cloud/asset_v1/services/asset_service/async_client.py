@@ -203,6 +203,7 @@ class AssetServiceAsyncClient:
             client_info=client_info,
 
         )
+        self._api_endpoint = self._client._api_endpoint
 
     async def export_assets(self,
             request: Optional[Union[asset_service.ExportAssetsRequest, dict]] = None,

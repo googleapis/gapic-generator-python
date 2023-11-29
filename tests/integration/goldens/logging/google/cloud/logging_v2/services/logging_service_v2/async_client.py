@@ -186,6 +186,7 @@ class LoggingServiceV2AsyncClient:
             client_info=client_info,
 
         )
+        self._api_endpoint = self._client._api_endpoint
 
     async def delete_log(self,
             request: Optional[Union[logging.DeleteLogRequest, dict]] = None,

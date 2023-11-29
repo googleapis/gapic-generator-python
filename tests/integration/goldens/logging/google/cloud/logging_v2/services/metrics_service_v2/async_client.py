@@ -187,6 +187,7 @@ class MetricsServiceV2AsyncClient:
             client_info=client_info,
 
         )
+        self._api_endpoint = self._client._api_endpoint
 
     async def list_log_metrics(self,
             request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,

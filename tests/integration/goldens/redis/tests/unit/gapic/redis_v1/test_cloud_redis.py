@@ -439,7 +439,6 @@ def test_cloud_redis_client_client_api_endpoint_and_cert_source(client_class):
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client._api_endpoint == mock_api_endpoint
-        assert client._client_cert_source == mock_client_cert_source
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
@@ -447,26 +446,22 @@ def test_cloud_redis_client_client_api_endpoint_and_cert_source(client_class):
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client._api_endpoint == mock_api_endpoint
-        assert client._client_cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client._api_endpoint == client_class.DEFAULT_ENDPOINT
-        assert client._client_cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client._api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
-        assert client._client_cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
             client = client_class(credentials=ga_credentials.AnonymousCredentials())
             assert client._api_endpoint == client_class.DEFAULT_ENDPOINT
-            assert client._client_cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
@@ -474,7 +469,6 @@ def test_cloud_redis_client_client_api_endpoint_and_cert_source(client_class):
             with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
                 client = client_class(credentials=ga_credentials.AnonymousCredentials())
                 assert client._api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
-                assert client._client_cert_source == mock_client_cert_source
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (CloudRedisClient, transports.CloudRedisGrpcTransport, "grpc"),

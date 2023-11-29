@@ -201,6 +201,7 @@ class ConfigServiceV2AsyncClient:
             client_info=client_info,
 
         )
+        self._api_endpoint = self._client._api_endpoint
 
     async def list_buckets(self,
             request: Optional[Union[logging_config.ListBucketsRequest, dict]] = None,
