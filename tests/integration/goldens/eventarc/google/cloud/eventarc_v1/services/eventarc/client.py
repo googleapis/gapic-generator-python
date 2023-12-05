@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 
 from google.cloud.eventarc_v1 import gapic_version as package_version
 
