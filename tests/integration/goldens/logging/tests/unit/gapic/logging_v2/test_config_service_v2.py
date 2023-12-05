@@ -221,14 +221,14 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
 
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
 
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
