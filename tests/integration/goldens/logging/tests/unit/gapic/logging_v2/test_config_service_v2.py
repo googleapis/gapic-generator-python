@@ -224,10 +224,14 @@ def test_config_service_v2_client_client_options(client_class, transport_class, 
         with pytest.raises(MutualTLSChannelError):
             client = client_class(transport=transport_name)
 
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError):
             client = client_class(transport=transport_name)
+
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -403,13 +407,17 @@ def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
 @pytest.mark.parametrize("client_class", [
     ConfigServiceV2Client, ConfigServiceV2AsyncClient
@@ -419,37 +427,43 @@ def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class
 def test_config_service_v2_client_client_api_endpoint_and_cert_source(client_class):
     mock_client_cert_source = client_cert_source_callback
 
-    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+    # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client._api_endpoint == mock_api_endpoint
 
-    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="false",
+    # use ClientOptions.api_endpoint as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client._api_endpoint == mock_api_endpoint
 
-    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the DEFAULT_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client._api_endpoint == client_class.DEFAULT_ENDPOINT
 
-    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client._api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
-    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="auto" and default cert source doesn't exist,
+    # use the DEFAULT_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
             client = client_class(credentials=ga_credentials.AnonymousCredentials())
             assert client._api_endpoint == client_class.DEFAULT_ENDPOINT
 
-    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="auto" and default cert source exists,
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
             with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
