@@ -510,13 +510,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 str: The API endpoint to be used
                     by the client.
             """
-
+            use_mtls_endpoint = use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source)
             if self._client_options.api_endpoint is not None:
                 api_endpoint = self._client_options.api_endpoint
-            elif self._use_mtls_endpoint == "always" or (self._use_mtls_endpoint == "auto" and self._client_cert_source):
+            elif use_mtls_endpoint:
+                if self._universe_domain != self.GOOGLE_DEFAULT_UNIVERSE:
+                    raise MutualTLSChannelError("MTLS is not supported in any universe other than googleapis.com.")
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif self._universe_domain == "":
+                raise ValueError("Universe Domain cannot be an empty string.")
             else:
-                api_endpoint = self.DEFAULT_ENDPOINT
+                api_endpoint = self.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=self._universe_domain)
 
             return api_endpoint
 
