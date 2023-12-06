@@ -394,6 +394,29 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         self._client_cert_source = get_client_cert_source()
 
+        # Figure out which universe domain to use.
+        def get_universe_domain():
+            """Returns the universe domain used by the client to determine the api endpoint.
+
+            The universe domain is determined in the following order:
+            (1) if `client_options.universe_domain` is provided, use the provided one.
+            (2) if `GOOGLE_CLOUD_UNIVERSE_DOMAIN` environment variable is provided, use It
+                as the universe domain.
+            (3) if none of the above are provided, use "googleapis.com" as the default universe domain.
+
+            Returns:
+                str: The universe domain to be used
+                    by the client to determine the api endpoint.
+            """
+            universe_domain = self.GOOGLE_DEFAULT_UNIVERSE
+            if self.client_options.universe_domain is not None:
+                universe_domain = self.client_options.universe_domain
+            elif self._universe_domain_env is not None:
+                universe_domain = self._universe_domain_env
+            return universe_domain
+
+        self._universe_domain = get_universe_domain()
+
         # Figure out which api endpoint to use.
         def get_api_endpoint():
             """Return the API endpoint used by the client.
