@@ -485,8 +485,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                     by the client to determine the api endpoint.
             """
             universe_domain = self.GOOGLE_DEFAULT_UNIVERSE
-            if self.client_options.universe_domain is not None:
-                universe_domain = self.client_options.universe_domain
+            if self._client_options.universe_domain is not None:
+                universe_domain = self._client_options.universe_domain
             elif self._universe_domain_env is not None:
                 universe_domain = self._universe_domain_env
             return universe_domain
@@ -510,7 +510,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 str: The API endpoint to be used
                     by the client.
             """
-            use_mtls_endpoint = use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source)
+            use_mtls_endpoint = self._use_mtls_endpoint == "always" or (self._use_mtls_endpoint == "auto" and self._client_cert_source)
             if self._client_options.api_endpoint is not None:
                 api_endpoint = self._client_options.api_endpoint
             elif use_mtls_endpoint:
