@@ -423,8 +423,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             """Returns the environment variables used by the client.
 
             Returns:
-                Tuple[str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE
-                    and the GOOGLE_API_USE_MTLS_ENDPOINT environment variables.
+                Tuple[str, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
+                the GOOGLE_API_USE_MTLS_ENDPOINT, and the GOOGLE_CLOUD_UNIVERSE_DOMAIN
+                environment variables.
 
             Raises:
                 ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
@@ -434,14 +435,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             """
             use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
             use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+            universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
             if use_client_cert not in ("true", "false"):
                 raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
             if use_mtls_endpoint not in ("auto", "never", "always"):
                 raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
-            return use_client_cert, use_mtls_endpoint
+            return use_client_cert, use_mtls_endpoint, universe_domain_env
 
-        self._use_client_cert, self._use_mtls_endpoint = validate_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = validate_environment_variables()
 
         # Figure out the client cert source to use.
         def get_client_cert_source():
