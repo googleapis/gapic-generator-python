@@ -71,10 +71,10 @@ gapic_generator_register_toolchains()
 # one imported by gRPC.
 http_archive(
     name = "boringssl",
-    sha256 = "b460f8673f3393e58ce506e9cdde7f2c3b2575b075f214cb819fb57d809f052b",
-    strip_prefix = "boringssl-bb41bc007079982da419c0ec3186e510cbcf09d0",
+    sha256 = "504299ca372298e26cffff1bc7a874893870c7c89f52fbd2486faa347d202794",
+    strip_prefix = "boringssl-64a9fb1ec7ab07133f8a27f95ec654d49fc0c942",
     urls = [
-        "https://github.com/google/boringssl/archive/bb41bc007079982da419c0ec3186e510cbcf09d0.zip",
+        "https://github.com/google/boringssl/archive/64a9fb1ec7ab07133f8a27f95ec654d49fc0c942.zip",
     ],
 )
 
@@ -91,9 +91,9 @@ http_archive(
 # instantiated in grpc_deps().
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "0b0395d34e000f1229679e10d984ed7913078f3dd7f26cf0476467f5e65716f4",
-    strip_prefix = "protobuf-23.2",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v23.2.tar.gz"],
+    sha256 = "9bd87b8280ef720d3240514f884e56a712f2218f0d693b48050c836028940a42",
+    strip_prefix = "protobuf-25.1",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v25.1.tar.gz"],
 )
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
