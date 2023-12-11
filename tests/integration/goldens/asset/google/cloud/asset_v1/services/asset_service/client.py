@@ -361,7 +361,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         return api_endpoint, client_cert_source
 
-    def _read_environment_variables():
+    def _read_environment_variables(self):
         """Returns the environment variables used by the client.
 
         Returns:
@@ -480,7 +480,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             self._client_options = client_options_lib.ClientOptions()
         self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        self._use_client_cert, self._use_mtls_endpoint = _read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint = self._read_environment_variables()
         self._client_cert_source = self._get_client_cert_source()
         self._api_endpoint = self._get_api_endpoint()
 
