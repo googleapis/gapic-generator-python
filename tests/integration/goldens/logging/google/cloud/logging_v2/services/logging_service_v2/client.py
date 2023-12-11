@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union, cast
+import warnings
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
