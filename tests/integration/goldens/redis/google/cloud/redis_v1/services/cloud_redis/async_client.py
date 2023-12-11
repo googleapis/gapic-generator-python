@@ -164,6 +164,16 @@ class CloudRedisAsyncClient:
         """
         return self._client.transport
 
+    @property
+    def api_endpoint(self):
+        """Return the API endpoint used by the client instance.
+
+        Returns:
+            str: The API endpoint used
+                by the client instance.
+        """
+        return self._client._api_endpoint
+
     get_transport_class = functools.partial(type(CloudRedisClient).get_transport_class, type(CloudRedisClient))
 
     def __init__(self, *,
@@ -211,7 +221,6 @@ class CloudRedisAsyncClient:
             client_info=client_info,
 
         )
-        self._api_endpoint = self._client._api_endpoint
 
     async def list_instances(self,
             request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,

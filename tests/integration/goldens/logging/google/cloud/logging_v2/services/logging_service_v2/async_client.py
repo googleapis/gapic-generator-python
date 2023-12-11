@@ -139,6 +139,16 @@ class LoggingServiceV2AsyncClient:
         """
         return self._client.transport
 
+    @property
+    def api_endpoint(self):
+        """Return the API endpoint used by the client instance.
+
+        Returns:
+            str: The API endpoint used
+                by the client instance.
+        """
+        return self._client._api_endpoint
+
     get_transport_class = functools.partial(type(LoggingServiceV2Client).get_transport_class, type(LoggingServiceV2Client))
 
     def __init__(self, *,
@@ -186,7 +196,6 @@ class LoggingServiceV2AsyncClient:
             client_info=client_info,
 
         )
-        self._api_endpoint = self._client._api_endpoint
 
     async def delete_log(self,
             request: Optional[Union[logging.DeleteLogRequest, dict]] = None,

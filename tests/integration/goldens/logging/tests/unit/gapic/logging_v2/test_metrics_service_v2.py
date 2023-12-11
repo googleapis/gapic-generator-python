@@ -423,7 +423,7 @@ def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
 ])
 @mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
 @mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
-def test_metrics_service_v2_client_client_api_endpoint_and_cert_source(client_class):
+def test_metrics_service_v2_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
@@ -432,7 +432,7 @@ def test_metrics_service_v2_client_client_api_endpoint_and_cert_source(client_cl
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
-        assert client._api_endpoint == mock_api_endpoint
+        assert client.api_endpoint == mock_api_endpoint
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="false",
     # use ClientOptions.api_endpoint as the api endpoint.
@@ -440,19 +440,19 @@ def test_metrics_service_v2_client_client_api_endpoint_and_cert_source(client_cl
         mock_api_endpoint = "foo"
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
-        assert client._api_endpoint == mock_api_endpoint
+        assert client.api_endpoint == mock_api_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the DEFAULT_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(credentials=ga_credentials.AnonymousCredentials())
-        assert client._api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert client.api_endpoint == client_class.DEFAULT_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         client = client_class(credentials=ga_credentials.AnonymousCredentials())
-        assert client._api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (by default),
     # GOOGLE_API_USE_CLIENT_CERTIFICATE="true" and default cert source doesn't exist,
@@ -460,7 +460,7 @@ def test_metrics_service_v2_client_client_api_endpoint_and_cert_source(client_cl
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
             client = client_class(credentials=ga_credentials.AnonymousCredentials())
-            assert client._api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert client.api_endpoint == client_class.DEFAULT_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (by default),
     # GOOGLE_API_USE_CLIENT_CERTIFICATE="true" and default cert source exists,
@@ -469,7 +469,7 @@ def test_metrics_service_v2_client_client_api_endpoint_and_cert_source(client_cl
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
             with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
                 client = client_class(credentials=ga_credentials.AnonymousCredentials())
-                assert client._api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),

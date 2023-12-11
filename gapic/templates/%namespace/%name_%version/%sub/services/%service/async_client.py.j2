@@ -141,6 +141,16 @@ class {{ service.async_client_name }}:
             {{ service.name }}Transport: The transport used by the client instance.
         """
         return self._client.transport
+    
+    @property
+    def api_endpoint(self):
+        """Return the API endpoint used by the client instance.
+        
+        Returns:
+            str: The API endpoint used 
+                by the client instance.
+        """
+        return self._client._api_endpoint  
 
 
     get_transport_class = functools.partial(type({{ service.client_name }}).get_transport_class, type({{ service.client_name }}))
@@ -191,7 +201,6 @@ class {{ service.async_client_name }}:
             client_info=client_info,
 
         )
-        self._api_endpoint = self._client._api_endpoint
 
     {% for method in service.methods.values() %}
       {% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}

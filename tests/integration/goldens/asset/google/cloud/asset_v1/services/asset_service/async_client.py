@@ -156,6 +156,16 @@ class AssetServiceAsyncClient:
         """
         return self._client.transport
 
+    @property
+    def api_endpoint(self):
+        """Return the API endpoint used by the client instance.
+
+        Returns:
+            str: The API endpoint used
+                by the client instance.
+        """
+        return self._client._api_endpoint
+
     get_transport_class = functools.partial(type(AssetServiceClient).get_transport_class, type(AssetServiceClient))
 
     def __init__(self, *,
@@ -203,7 +213,6 @@ class AssetServiceAsyncClient:
             client_info=client_info,
 
         )
-        self._api_endpoint = self._client._api_endpoint
 
     async def export_assets(self,
             request: Optional[Union[asset_service.ExportAssetsRequest, dict]] = None,

@@ -361,6 +361,72 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         return api_endpoint, client_cert_source
 
+    def _read_environment_variables():
+        """Returns the environment variables used by the client.
+
+        Returns:
+            Tuple[str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE
+                and the GOOGLE_API_USE_MTLS_ENDPOINT environment variables.
+
+        Raises:
+            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+                any of ["true", "false"].
+            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
+                is not any of ["auto", "never", "always"].
+        """
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+        if use_client_cert not in ("true", "false"):
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+
+        return use_client_cert, use_mtls_endpoint
+
+    def _get_client_cert_source(self):
+        """Return the client cert source used by the client.
+
+        Returns:
+            Tuple[bytes, bytes]]: The client cert source to be used
+                by the client.
+        """
+        client_cert_source = None
+        if self._use_client_cert == "true":
+            if self._client_options.client_cert_source:
+                client_cert_source = self._client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+        return client_cert_source
+
+    def _get_api_endpoint(self):
+        """Return the API endpoint used by the client.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Returns:
+            str: The API endpoint to be used
+                by the client.
+        """
+
+        if self._client_options.api_endpoint is not None:
+            api_endpoint = self._client_options.api_endpoint
+        elif self._use_mtls_endpoint == "always" or (self._use_mtls_endpoint == "auto" and self._client_cert_source):
+            api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = self.DEFAULT_ENDPOINT
+
+        return api_endpoint
+
+    @property
+    def api_endpoint(self):
+        """Return the API endpoint used by the client instance.
+
+        Returns:
+            str: The API endpoint used
+                by the client instance.
+        """
+        return self._api_endpoint
+
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
             transport: Optional[Union[str, AssetServiceTransport]] = None,
@@ -414,67 +480,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             self._client_options = client_options_lib.ClientOptions()
         self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        def read_environment_variables():
-            """Returns the environment variables used by the client.
-
-            Returns:
-                Tuple[str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE
-                    and the GOOGLE_API_USE_MTLS_ENDPOINT environment variables.
-
-            Raises:
-                ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                    any of ["true", "false"].
-                google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                    is not any of ["auto", "never", "always"].
-            """
-            use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
-            use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-            if use_client_cert not in ("true", "false"):
-                raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
-            if use_mtls_endpoint not in ("auto", "never", "always"):
-                raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-
-            return use_client_cert, use_mtls_endpoint
-
-        # Figure out the client cert source to use.
-        def get_client_cert_source():
-            """Return the client cert source used by the client.
-
-            Returns:
-                Tuple[bytes, bytes]]: The client cert source to be used
-                    by the client.
-            """
-            client_cert_source = None
-            if self._use_client_cert == "true":
-                if self._client_options.client_cert_source:
-                    client_cert_source = self._client_options.client_cert_source
-                elif mtls.has_default_client_cert_source():
-                    client_cert_source = mtls.default_client_cert_source()
-            return client_cert_source
-
-        # Figure out which api endpoint to use.
-        def get_api_endpoint():
-            """Return the API endpoint used by the client.
-
-            More details can be found at https://google.aip.dev/auth/4114.
-
-            Returns:
-                str: The API endpoint to be used
-                    by the client.
-            """
-
-            if self._client_options.api_endpoint is not None:
-                api_endpoint = self._client_options.api_endpoint
-            elif self._use_mtls_endpoint == "always" or (self._use_mtls_endpoint == "auto" and self._client_cert_source):
-                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            else:
-                api_endpoint = self.DEFAULT_ENDPOINT
-
-            return api_endpoint
-
-        self._use_client_cert, self._use_mtls_endpoint = read_environment_variables()
-        self._client_cert_source = get_client_cert_source()
-        self._api_endpoint = get_api_endpoint()
+        self._use_client_cert, self._use_mtls_endpoint = self._read_environment_variables()
+        self._client_cert_source = self._get_client_cert_source()
+        self._api_endpoint = self._get_api_endpoint()
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
