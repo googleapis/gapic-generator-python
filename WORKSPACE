@@ -60,27 +60,9 @@ gapic_generator_python()
 
 gapic_generator_register_toolchains()
 
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/1781):
-# Remove this import once gRPC depends on a newer version.
-#
-# Background: Import boringssl explicitly to override what gRPC
-# imports as its dependency.  Boringssl build fails on gcc12 without
-# this fix:
-# https://github.com/google/boringssl/commit/8462a367bb57e9524c3d8eca9c62733c63a63cf4,
-# which is present only in the newest version of boringssl, not the
-# one imported by gRPC.
-http_archive(
-    name = "boringssl",
-    sha256 = "504299ca372298e26cffff1bc7a874893870c7c89f52fbd2486faa347d202794",
-    strip_prefix = "boringssl-64a9fb1ec7ab07133f8a27f95ec654d49fc0c942",
-    urls = [
-        "https://github.com/google/boringssl/archive/64a9fb1ec7ab07133f8a27f95ec654d49fc0c942.zip",
-    ],
-)
+_grpc_version = "1.60.0"
 
-_grpc_version = "1.55.1"
-
-_grpc_sha256 = "17c0685da231917a7b3be2671a7b13b550a85fdda5e475313264c5f51c4da3f8"
+_grpc_sha256 = "09640607a340ff0d97407ed22fe4adb177e5bb85329821122084359cd57c3dea"
 
 http_archive(
     name = "com_github_grpc_grpc",
