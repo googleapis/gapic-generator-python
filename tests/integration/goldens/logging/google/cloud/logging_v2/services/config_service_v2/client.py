@@ -409,7 +409,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             api_override (str): The API endpoint specified as an override via client options.
             client_cert_source (bytes): The client certificate source used by the client.
             use_mtls_endpoint (str): The GOOGLE_API_USE_MTLS_ENDPOINT environment variable value,
-                which can be "always", "auto", or None.
+                which can be "always", "auto", or "never".
 
         Returns:
             str: The API endpoint to be used by the client.

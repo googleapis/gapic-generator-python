@@ -88,6 +88,52 @@ def test__get_default_mtls_endpoint():
     assert AssetServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
+def test__read_environment_variables():
+
+    assert AssetServiceClient._read_environment_variables() is None
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert AssetServiceClient._read_environment_variables() is None
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            AssetServiceClient._read_environment_variables()
+
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert AssetServiceClient._read_environment_variables() is None
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert AssetServiceClient._read_environment_variables() is None
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            AssetServiceClient._read_environment_variables()
+
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+def test__get_client_cert_source():
+    mock_client_cert_source = mock.Mock()
+
+    assert AssetServiceClient._get_client_cert_source(None, "false") is None
+    assert AssetServiceClient._get_client_cert_source(mock_client_cert_source, "false") is None
+    assert AssetServiceClient._get_client_cert_source(mock_client_cert_source, "true") == mock_client_cert_source
+
+    with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+        assert AssetServiceClient._get_client_cert_source(None, "true") is mock_client_cert_source
+
+@mock.patch.object(AssetServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceClient))
+@mock.patch.object(AssetServiceAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceAsyncClient))
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+
+    assert AssetServiceClient._get_api_endpoint(api_override, mock_client_cert_source, "always") == api_override
+    assert AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, "auto") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
+    assert AssetServiceClient._get_api_endpoint(None, None, "always") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
+    assert AssetServiceClient._get_api_endpoint(None, None, "never") == AssetServiceClient.DEFAULT_ENDPOINT
+
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (AssetServiceClient, "grpc"),

@@ -98,6 +98,52 @@ def test__get_default_mtls_endpoint():
     assert EventarcClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert EventarcClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
+def test__read_environment_variables():
+
+    assert EventarcClient._read_environment_variables() is None
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert EventarcClient._read_environment_variables() is None
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            EventarcClient._read_environment_variables()
+
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert EventarcClient._read_environment_variables() is None
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert EventarcClient._read_environment_variables() is None
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            EventarcClient._read_environment_variables()
+
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+def test__get_client_cert_source():
+    mock_client_cert_source = mock.Mock()
+
+    assert EventarcClient._get_client_cert_source(None, "false") is None
+    assert EventarcClient._get_client_cert_source(mock_client_cert_source, "false") is None
+    assert EventarcClient._get_client_cert_source(mock_client_cert_source, "true") == mock_client_cert_source
+
+    with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+        assert EventarcClient._get_client_cert_source(None, "true") is mock_client_cert_source
+
+@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcClient))
+@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcAsyncClient))
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+
+    assert EventarcClient._get_api_endpoint(api_override, mock_client_cert_source, "always") == api_override
+    assert EventarcClient._get_api_endpoint(None, mock_client_cert_source, "auto") == EventarcClient.DEFAULT_MTLS_ENDPOINT
+    assert EventarcClient._get_api_endpoint(None, None, "always") == EventarcClient.DEFAULT_MTLS_ENDPOINT
+    assert EventarcClient._get_api_endpoint(None, None, "never") == EventarcClient.DEFAULT_ENDPOINT
+
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (EventarcClient, "grpc"),
