@@ -410,7 +410,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         return api_endpoint, client_cert_source
 
-    def _read_environment_variables(self):
+    def _read_environment_variables():
         """Returns the environment variables used by the client.
 
         Returns:
@@ -432,37 +432,43 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         return use_client_cert, use_mtls_endpoint
 
-    def _get_client_cert_source(self):
+    def _get_client_cert_source(provided_cert_source, use_cert_flag):
         """Return the client cert source used by the client.
 
+        Args:
+            provided_cert_source (bytes): The client certificate source provided.
+            use_cert_flag (str): A flag indicating whether to use the client certificate.
+
         Returns:
-            Tuple[bytes, bytes]]: The client cert source to be used
-                by the client.
+            bytes or None: The client cert source to be used by the client.
         """
         client_cert_source = None
-        if self._use_client_cert == "true":
-            if self._client_options.client_cert_source:
-                client_cert_source = self._client_options.client_cert_source
+        if use_cert_flag == "true":
+            if provided_cert_source:
+                client_cert_source = provided_cert_source
             elif mtls.has_default_client_cert_source():
                 client_cert_source = mtls.default_client_cert_source()
         return client_cert_source
 
-    def _get_api_endpoint(self):
+    def _get_api_endpoint(api_override, client_cert_source, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
-        More details can be found at https://google.aip.dev/auth/4114.
+        Args:
+            api_override (str): The API endpoint specified as an override via client options.
+            client_cert_source (bytes): The client certificate source used by the client.
+            use_mtls_endpoint (str): The GOOGLE_API_USE_MTLS_ENDPOINT environment variable value,
+                which can be "always", "auto", or None.
 
         Returns:
-            str: The API endpoint to be used
-                by the client.
+            str: The API endpoint to be used by the client.
         """
 
-        if self._client_options.api_endpoint is not None:
-            api_endpoint = self._client_options.api_endpoint
-        elif self._use_mtls_endpoint == "always" or (self._use_mtls_endpoint == "auto" and self._client_cert_source):
-            api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+        if api_override is not None:
+            api_endpoint = api_override
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+            api_endpoint = EventarcClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = self.DEFAULT_ENDPOINT
+            api_endpoint = EventarcClient.DEFAULT_ENDPOINT
 
         return api_endpoint
 
@@ -529,9 +535,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
             self._client_options = client_options_lib.ClientOptions()
         self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        self._use_client_cert, self._use_mtls_endpoint = self._read_environment_variables()
-        self._client_cert_source = self._get_client_cert_source()
-        self._api_endpoint = self._get_api_endpoint()
+        self._use_client_cert, self._use_mtls_endpoint = EventarcClient._read_environment_variables()
+        self._client_cert_source = EventarcClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._api_endpoint = EventarcClient._get_api_endpoint(self._client_options.api_endpoint, self._client_cert_source, self._use_mtls_endpoint)
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
