@@ -39,6 +39,7 @@ ALL_PYTHON = (
     "3.9",
     "3.10",
     "3.11",
+    "3.12",
 )
 
 NEWEST_PYTHON = ALL_PYTHON[-1]
@@ -110,9 +111,20 @@ class FragTester:
             )
 
             # Install the generated fragment library.
-            # Note: install into the tempdir to prevent issues
-            # with running pip concurrently.
-            self.session.install(tmp_dir, "-e", ".", "-t", tmp_dir, "-qqq")
+            if self.use_ads_templates:
+                self.session.install(tmp_dir, "-e", ".", "-qqq")
+            else:
+                # Use the constraints file for the specific python runtime version.
+                # We do this to make sure that we're testing against the lowest
+                # supported version of a dependency.
+                # This is needed to recreate the issue reported in
+                # https://github.com/googleapis/gapic-generator-python/issues/1748
+                # The ads templates do not have constraints files.
+                constraints_path = str(
+                f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
+                )
+                self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
+
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
             # the fragments, and there usually aren't too many tests per fragment.
@@ -166,7 +178,8 @@ def fragment_alternative_templates(session):
 @contextmanager
 def showcase_library(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
-    include_service_yaml=False,
+    include_service_yaml=True,
+    retry_config=True,
 ):
     """Install the generated library into the session for showcase tests."""
 
@@ -207,11 +220,23 @@ def showcase_library(
                 external=True,
                 silent=True,
             )
+        if retry_config:
+            session.run(
+                "curl",
+                "https://github.com/googleapis/gapic-showcase/releases/"
+                f"download/v{showcase_version}/"
+                f"showcase_grpc_service_config.json",
+                "-L",
+                "--output",
+                path.join(tmp_dir, "showcase_grpc_service_config.json"),
+                external=True,
+                silent=True,
+            )
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="
-        if include_service_yaml:
-            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/showcase_v1beta1.yaml"))
+        if include_service_yaml and retry_config:
+            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/showcase_v1beta1.yaml", f"retry-config={tmp_dir}/showcase_grpc_service_config.json"))
         else:
             opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest",))            
         cmd_tup = (
@@ -236,7 +261,7 @@ def showcase_library(
         yield tmp_dir
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def showcase(
     session,
     templates="DEFAULT",
@@ -275,7 +300,7 @@ def showcase_mtls(
         )
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def showcase_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
     showcase(
@@ -380,7 +405,7 @@ def showcase_mypy(
         session.chdir(lib)
 
         # Run the tests.
-        session.run("mypy", "--explicit-package-bases", "google")
+        session.run("mypy", "-p", "google")
 
 
 @nox.session(python=NEWEST_PYTHON)
@@ -412,11 +437,11 @@ def snippetgen(session):
     session.run("py.test", "-vv", "tests/snippetgen")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs."""
 
-    session.install("sphinx==4.0.1", "sphinx_rtd_theme")
+    session.install("sphinx==4.5.0", "sphinx_rtd_theme")
     session.install(".")
 
     # Build the docs!
@@ -433,7 +458,7 @@ def docs(session):
     )
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Perform typecheck analysis."""
     # Pin to click==8.1.3 to workaround https://github.com/pallets/click/issues/2558
@@ -445,4 +470,4 @@ def mypy(session):
         "click==8.1.3",
     )
     session.install(".")
-    session.run("mypy", "gapic")
+    session.run("mypy", "-p", "gapic")
