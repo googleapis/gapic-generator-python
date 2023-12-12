@@ -302,8 +302,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         return api_endpoint, client_cert_source
 
-    @staticmethod
-    def _read_environment_variables():
+    def _read_environment_variables(self):
         """Returns the environment variables used by the client.
 
         Returns:
@@ -325,7 +324,6 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         return use_client_cert, use_mtls_endpoint
 
-    @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
         """Return the client cert source used by the client.
 
@@ -344,7 +342,6 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 client_cert_source = mtls.default_client_cert_source()
         return client_cert_source
 
-    @classmethod
     def _get_api_endpoint(api_override, client_cert_source, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
