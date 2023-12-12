@@ -91,10 +91,10 @@ def test__get_default_mtls_endpoint():
 
 def test__read_environment_variables():
 
-    assert CloudRedisClient._read_environment_variables() == "false", "auto"
+    assert CloudRedisClient._read_environment_variables() == ("false", "auto")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert CloudRedisClient._read_environment_variables() == "true", "auto"
+        assert CloudRedisClient._read_environment_variables() == ("true", "auto")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
@@ -103,10 +103,10 @@ def test__read_environment_variables():
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert CloudRedisClient._read_environment_variables() == "false", "never"
+        assert CloudRedisClient._read_environment_variables() == ("false", "never")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert CloudRedisClient._read_environment_variables() == "false", "always"
+        assert CloudRedisClient._read_environment_variables() == ("false", "always")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
