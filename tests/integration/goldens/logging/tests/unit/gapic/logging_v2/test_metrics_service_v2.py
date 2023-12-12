@@ -109,8 +109,9 @@ def test__get_client_cert_source():
     assert MetricsServiceV2Client._get_client_cert_source(mock_client_cert_source, "false") is None
     assert MetricsServiceV2Client._get_client_cert_source(mock_client_cert_source, "true") == mock_client_cert_source
 
-    with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
-        assert MetricsServiceV2Client._get_client_cert_source(None, "true") is mock_client_cert_source
+    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+            assert MetricsServiceV2Client._get_client_cert_source(None, "true") is mock_client_cert_source
 
 @mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
 @mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))

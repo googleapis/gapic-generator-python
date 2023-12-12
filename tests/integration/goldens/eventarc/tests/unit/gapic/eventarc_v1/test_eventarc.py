@@ -130,8 +130,9 @@ def test__get_client_cert_source():
     assert EventarcClient._get_client_cert_source(mock_client_cert_source, "false") is None
     assert EventarcClient._get_client_cert_source(mock_client_cert_source, "true") == mock_client_cert_source
 
-    with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
-        assert EventarcClient._get_client_cert_source(None, "true") is mock_client_cert_source
+    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+            assert EventarcClient._get_client_cert_source(None, "true") is mock_client_cert_source
 
 @mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcClient))
 @mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcAsyncClient))

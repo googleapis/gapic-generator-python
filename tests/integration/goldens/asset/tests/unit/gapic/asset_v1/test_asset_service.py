@@ -120,8 +120,9 @@ def test__get_client_cert_source():
     assert AssetServiceClient._get_client_cert_source(mock_client_cert_source, "false") is None
     assert AssetServiceClient._get_client_cert_source(mock_client_cert_source, "true") == mock_client_cert_source
 
-    with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
-        assert AssetServiceClient._get_client_cert_source(None, "true") is mock_client_cert_source
+    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+            assert AssetServiceClient._get_client_cert_source(None, "true") is mock_client_cert_source
 
 @mock.patch.object(AssetServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceClient))
 @mock.patch.object(AssetServiceAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceAsyncClient))

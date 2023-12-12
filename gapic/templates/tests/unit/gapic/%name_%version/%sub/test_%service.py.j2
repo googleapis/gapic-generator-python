@@ -132,8 +132,9 @@ def test__get_client_cert_source():
     assert {{ service.client_name }}._get_client_cert_source(mock_client_cert_source, "false") is None
     assert {{ service.client_name }}._get_client_cert_source(mock_client_cert_source, "true") == mock_client_cert_source
 
-    with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
-        assert {{ service.client_name }}._get_client_cert_source(None, "true") is mock_client_cert_source
+    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+            assert {{ service.client_name }}._get_client_cert_source(None, "true") is mock_client_cert_source
 
 @mock.patch.object({{ service.client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.client_name }}))
 {% if 'grpc' in opts.transport %}

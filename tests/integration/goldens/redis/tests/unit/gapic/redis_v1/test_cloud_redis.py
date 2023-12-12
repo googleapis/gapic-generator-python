@@ -121,8 +121,9 @@ def test__get_client_cert_source():
     assert CloudRedisClient._get_client_cert_source(mock_client_cert_source, "false") is None
     assert CloudRedisClient._get_client_cert_source(mock_client_cert_source, "true") == mock_client_cert_source
 
-    with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
-        assert CloudRedisClient._get_client_cert_source(None, "true") is mock_client_cert_source
+    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
+            assert CloudRedisClient._get_client_cert_source(None, "true") is mock_client_cert_source
 
 @mock.patch.object(CloudRedisClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisClient))
 @mock.patch.object(CloudRedisAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisAsyncClient))
