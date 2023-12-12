@@ -293,7 +293,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         return api_endpoint, client_cert_source
 
-    def _read_environment_variables(self):
+    @staticmethod
+    def _read_environment_variables():
         """Returns the environment variables used by the client.
 
         Returns:
