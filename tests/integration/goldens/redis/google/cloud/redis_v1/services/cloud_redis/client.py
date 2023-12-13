@@ -365,7 +365,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         Args:
             api_override (str): The API endpoint override. If specified, this is always the return value of this function.
             client_cert_source (bytes): The client certificate source used by the client.
-            use_mtls_endpoint (str): How to use the MTLS endpoint, which depends also on the other parameters..
+            use_mtls_endpoint (str): How to use the MTLS endpoint, which depends also on the other parameters.
                 Possible values are "always", "auto", or "never".
 
         Returns:
