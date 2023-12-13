@@ -370,7 +370,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         """Returns the environment variables used by the client.
 
         Returns:
-            Tuple[str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE
+            Tuple[bool, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE
                 and the GOOGLE_API_USE_MTLS_ENDPOINT environment variables.
 
         Raises:
@@ -385,21 +385,20 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-
-        return use_client_cert, use_mtls_endpoint
+        return use_client_cert == "true", use_mtls_endpoint
 
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
-        """Return the client cert source used by the client.
+        """Return the client cert source to be used by the client.
 
         Args:
             provided_cert_source (bytes): The client certificate source provided.
-            use_cert_flag (str): A flag indicating whether to use the client certificate.
+            use_cert_flag (bool): A flag indicating whether to use the client certificate.
 
         Returns:
             bytes or None: The client cert source to be used by the client.
         """
         client_cert_source = None
-        if use_cert_flag == "true":
+        if use_cert_flag:
             if provided_cert_source:
                 client_cert_source = provided_cert_source
             elif mtls.has_default_client_cert_source():
@@ -410,10 +409,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         """Return the API endpoint used by the client.
 
         Args:
-            api_override (str): The API endpoint specified as an override via client options.
+            api_override (str): The API endpoint override. If specified, this is always the return value of this function.
             client_cert_source (bytes): The client certificate source used by the client.
-            use_mtls_endpoint (str): The GOOGLE_API_USE_MTLS_ENDPOINT environment variable value,
-                which can be "always", "auto", or "never".
+            use_mtls_endpoint (str): How to use the MTLS endpoint, which depends also on the other parameters..
+                Possible values are "always", "auto", or "never".
 
         Returns:
             str: The API endpoint to be used by the client.
@@ -425,7 +424,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             api_endpoint = AssetServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = AssetServiceClient.DEFAULT_ENDPOINT
-
         return api_endpoint
 
     @property

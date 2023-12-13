@@ -79,10 +79,10 @@ def test__get_default_mtls_endpoint():
 
 def test__read_environment_variables():
 
-    assert MetricsServiceV2Client._read_environment_variables() == ("false", "auto")
+    assert MetricsServiceV2Client._read_environment_variables() == (False, "auto")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert MetricsServiceV2Client._read_environment_variables() == ("true", "auto")
+        assert MetricsServiceV2Client._read_environment_variables() == (True, "auto")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
@@ -91,10 +91,10 @@ def test__read_environment_variables():
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert MetricsServiceV2Client._read_environment_variables() == ("false", "never")
+        assert MetricsServiceV2Client._read_environment_variables() == (False, "never")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert MetricsServiceV2Client._read_environment_variables() == ("false", "always")
+        assert MetricsServiceV2Client._read_environment_variables() == (False, "always")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
@@ -105,13 +105,13 @@ def test__read_environment_variables():
 def test__get_client_cert_source():
     mock_client_cert_source = mock.Mock()
 
-    assert MetricsServiceV2Client._get_client_cert_source(None, "false") is None
-    assert MetricsServiceV2Client._get_client_cert_source(mock_client_cert_source, "false") is None
-    assert MetricsServiceV2Client._get_client_cert_source(mock_client_cert_source, "true") == mock_client_cert_source
+    assert MetricsServiceV2Client._get_client_cert_source(None, False) is None
+    assert MetricsServiceV2Client._get_client_cert_source(mock_client_cert_source, False) is None
+    assert MetricsServiceV2Client._get_client_cert_source(mock_client_cert_source, True) == mock_client_cert_source
 
     with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
         with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
-            assert MetricsServiceV2Client._get_client_cert_source(None, "true") is mock_client_cert_source
+            assert MetricsServiceV2Client._get_client_cert_source(None, True) is mock_client_cert_source
 
 @mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
 @mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
