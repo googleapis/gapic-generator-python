@@ -99,7 +99,6 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
             CloudRedisClient._read_environment_variables()
-
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -111,19 +110,20 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             CloudRedisClient._read_environment_variables()
-
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 def test__get_client_cert_source():
-    mock_client_cert_source = mock.Mock()
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
 
     assert CloudRedisClient._get_client_cert_source(None, False) is None
-    assert CloudRedisClient._get_client_cert_source(mock_client_cert_source, False) is None
-    assert CloudRedisClient._get_client_cert_source(mock_client_cert_source, True) == mock_client_cert_source
+    assert CloudRedisClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert CloudRedisClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
     with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
-        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
-            assert CloudRedisClient._get_client_cert_source(None, True) is mock_client_cert_source
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_default_cert_source):
+            assert CloudRedisClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert CloudRedisClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 @mock.patch.object(CloudRedisClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisClient))
 @mock.patch.object(CloudRedisAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisAsyncClient))
@@ -133,7 +133,9 @@ def test__get_api_endpoint():
 
     assert CloudRedisClient._get_api_endpoint(api_override, mock_client_cert_source, "always") == api_override
     assert CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, "auto") == CloudRedisClient.DEFAULT_MTLS_ENDPOINT
+    assert CloudRedisClient._get_api_endpoint(None, None, "auto") == CloudRedisClient.DEFAULT_ENDPOINT
     assert CloudRedisClient._get_api_endpoint(None, None, "always") == CloudRedisClient.DEFAULT_MTLS_ENDPOINT
+    assert CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, "always") == CloudRedisClient.DEFAULT_MTLS_ENDPOINT
     assert CloudRedisClient._get_api_endpoint(None, None, "never") == CloudRedisClient.DEFAULT_ENDPOINT
 
 
@@ -292,14 +294,12 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
-
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     # Check the case quota_project_id is provided

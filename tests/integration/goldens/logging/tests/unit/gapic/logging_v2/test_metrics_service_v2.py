@@ -87,7 +87,6 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
             MetricsServiceV2Client._read_environment_variables()
-
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -99,19 +98,20 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             MetricsServiceV2Client._read_environment_variables()
-
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 def test__get_client_cert_source():
-    mock_client_cert_source = mock.Mock()
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
 
     assert MetricsServiceV2Client._get_client_cert_source(None, False) is None
-    assert MetricsServiceV2Client._get_client_cert_source(mock_client_cert_source, False) is None
-    assert MetricsServiceV2Client._get_client_cert_source(mock_client_cert_source, True) == mock_client_cert_source
+    assert MetricsServiceV2Client._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert MetricsServiceV2Client._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
     with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
-        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
-            assert MetricsServiceV2Client._get_client_cert_source(None, True) is mock_client_cert_source
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_default_cert_source):
+            assert MetricsServiceV2Client._get_client_cert_source(None, True) is mock_default_cert_source
+            assert MetricsServiceV2Client._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 @mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
 @mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
@@ -121,7 +121,9 @@ def test__get_api_endpoint():
 
     assert MetricsServiceV2Client._get_api_endpoint(api_override, mock_client_cert_source, "always") == api_override
     assert MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, "auto") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert MetricsServiceV2Client._get_api_endpoint(None, None, "auto") == MetricsServiceV2Client.DEFAULT_ENDPOINT
     assert MetricsServiceV2Client._get_api_endpoint(None, None, "always") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, "always") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
     assert MetricsServiceV2Client._get_api_endpoint(None, None, "never") == MetricsServiceV2Client.DEFAULT_ENDPOINT
 
 
@@ -269,14 +271,12 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
-
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     # Check the case quota_project_id is provided
