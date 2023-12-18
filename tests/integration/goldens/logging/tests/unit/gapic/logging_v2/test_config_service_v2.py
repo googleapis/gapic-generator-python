@@ -85,6 +85,9 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         assert ConfigServiceV2Client._read_environment_variables() == (True, "auto")
 
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert ConfigServiceV2Client._read_environment_variables() == (False, "auto")
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
             ConfigServiceV2Client._read_environment_variables()
@@ -95,6 +98,9 @@ def test__read_environment_variables():
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         assert ConfigServiceV2Client._read_environment_variables() == (False, "always")
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert ConfigServiceV2Client._read_environment_variables() == (False, "auto")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:

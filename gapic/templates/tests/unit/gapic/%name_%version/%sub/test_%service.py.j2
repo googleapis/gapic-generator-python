@@ -107,6 +107,9 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         assert {{ service.client_name }}._read_environment_variables() == (True, "auto")
     
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert {{ service.client_name }}._read_environment_variables() == (False, "auto")
+    
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
             {{ service.client_name }}._read_environment_variables()
@@ -117,6 +120,9 @@ def test__read_environment_variables():
     
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "always")
+    
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert {{ service.client_name }}._read_environment_variables() == (False, "auto")
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
@@ -555,6 +561,7 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
 @mock.patch.object({{ service.async_client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.async_client_name }}))
 {% endif %}
 def test_{{ service.client_name|snake_case }}_client_api_endpoint(client_class):
+    {# TODO(clean-up): remove redundant tests that are already covered by the smaller functions tests #}
     mock_client_cert_source = client_cert_source_callback
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
