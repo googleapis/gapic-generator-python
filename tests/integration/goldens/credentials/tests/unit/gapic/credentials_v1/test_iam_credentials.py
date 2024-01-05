@@ -63,6 +63,12 @@ def client_cert_source_callback():
 def modify_default_endpoint(client):
     return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client.DEFAULT_ENDPOINT_TEMPLATE) else client.DEFAULT_ENDPOINT_TEMPLATE
+
 
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
@@ -120,18 +126,39 @@ def test__get_client_cert_source():
             assert IAMCredentialsClient._get_client_cert_source(None, True) is mock_default_cert_source
             assert IAMCredentialsClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(IAMCredentialsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsClient))
-@mock.patch.object(IAMCredentialsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsAsyncClient))
+@mock.patch.object(IAMCredentialsClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsClient))
+@mock.patch.object(IAMCredentialsAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
+    universe_domain = "bar.com"
     mock_client_cert_source = mock.Mock()
+    default_endpoint = IAMCredentialsClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=IAMCredentialsClient.GOOGLE_DEFAULT_UNIVERSE)
+    mock_endpoint = IAMCredentialsClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
 
-    assert IAMCredentialsClient._get_api_endpoint(api_override, mock_client_cert_source, "always") == api_override
-    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, "auto") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, None, "auto") == IAMCredentialsClient.DEFAULT_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, None, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, None, "never") == IAMCredentialsClient.DEFAULT_ENDPOINT
+    assert IAMCredentialsClient._get_api_endpoint(api_override, mock_client_cert_source, None, "always") == api_override
+    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, None, "auto") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
+    assert IAMCredentialsClient._get_api_endpoint(None, None, None, "auto") == default_endpoint
+    assert IAMCredentialsClient._get_api_endpoint(None, None, None, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
+    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, None, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
+    assert IAMCredentialsClient._get_api_endpoint(None, None, universe_domain, "never") == mock_endpoint
+    assert IAMCredentialsClient._get_api_endpoint(None, None, None, "never") == default_endpoint
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, universe_domain, "auto")
+    assert str(excinfo.value) == "MTLS is not supported in any universe other than googleapis.com."
+
+    with pytest.raises(ValueError) as excinfo:
+        IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, "", "auto")
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+def test__get_universe_domain():
+
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert IAMCredentialsClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert IAMCredentialsClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert IAMCredentialsClient._get_universe_domain(None, None) == IAMCredentialsClient.GOOGLE_DEFAULT_UNIVERSE
 
 
 @pytest.mark.parametrize("client_class,transport_name", [

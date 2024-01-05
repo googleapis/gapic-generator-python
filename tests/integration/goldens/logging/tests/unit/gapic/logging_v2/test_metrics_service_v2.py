@@ -62,6 +62,12 @@ def client_cert_source_callback():
 def modify_default_endpoint(client):
     return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client.DEFAULT_ENDPOINT_TEMPLATE) else client.DEFAULT_ENDPOINT_TEMPLATE
+
 
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
@@ -119,18 +125,39 @@ def test__get_client_cert_source():
             assert MetricsServiceV2Client._get_client_cert_source(None, True) is mock_default_cert_source
             assert MetricsServiceV2Client._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
-@mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
+@mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2Client))
+@mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2AsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
+    universe_domain = "bar.com"
     mock_client_cert_source = mock.Mock()
+    default_endpoint = MetricsServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=MetricsServiceV2Client.GOOGLE_DEFAULT_UNIVERSE)
+    mock_endpoint = MetricsServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
 
-    assert MetricsServiceV2Client._get_api_endpoint(api_override, mock_client_cert_source, "always") == api_override
-    assert MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, "auto") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    assert MetricsServiceV2Client._get_api_endpoint(None, None, "auto") == MetricsServiceV2Client.DEFAULT_ENDPOINT
-    assert MetricsServiceV2Client._get_api_endpoint(None, None, "always") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    assert MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, "always") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    assert MetricsServiceV2Client._get_api_endpoint(None, None, "never") == MetricsServiceV2Client.DEFAULT_ENDPOINT
+    assert MetricsServiceV2Client._get_api_endpoint(api_override, mock_client_cert_source, None, "always") == api_override
+    assert MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, None, "auto") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert MetricsServiceV2Client._get_api_endpoint(None, None, None, "auto") == default_endpoint
+    assert MetricsServiceV2Client._get_api_endpoint(None, None, None, "always") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, None, "always") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert MetricsServiceV2Client._get_api_endpoint(None, None, universe_domain, "never") == mock_endpoint
+    assert MetricsServiceV2Client._get_api_endpoint(None, None, None, "never") == default_endpoint
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, universe_domain, "auto")
+    assert str(excinfo.value) == "MTLS is not supported in any universe other than googleapis.com."
+
+    with pytest.raises(ValueError) as excinfo:
+        MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, "", "auto")
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+def test__get_universe_domain():
+
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert MetricsServiceV2Client._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert MetricsServiceV2Client._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert MetricsServiceV2Client._get_universe_domain(None, None) == MetricsServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
 
 
 @pytest.mark.parametrize("client_class,transport_name", [
