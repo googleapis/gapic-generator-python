@@ -86,13 +86,13 @@ def test__get_default_mtls_endpoint():
 
 def test__read_environment_variables():
 
-    assert IAMCredentialsClient._read_environment_variables() == (False, "auto")
+    assert IAMCredentialsClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert IAMCredentialsClient._read_environment_variables() == (True, "auto")
+        assert IAMCredentialsClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert IAMCredentialsClient._read_environment_variables() == (False, "auto")
+        assert IAMCredentialsClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
@@ -100,18 +100,21 @@ def test__read_environment_variables():
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert IAMCredentialsClient._read_environment_variables() == (False, "never")
+        assert IAMCredentialsClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert IAMCredentialsClient._read_environment_variables() == (False, "always")
+        assert IAMCredentialsClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert IAMCredentialsClient._read_environment_variables() == (False, "auto")
+        assert IAMCredentialsClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             IAMCredentialsClient._read_environment_variables()
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        assert IAMCredentialsClient._read_environment_variables() == (False, "auto", "foo.com")
 
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
