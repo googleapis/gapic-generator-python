@@ -50,8 +50,11 @@ class ConfigServiceV2AsyncClient:
 
     _client: ConfigServiceV2Client
 
+    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = ConfigServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT_TEMPLATE = ConfigServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE
+    GOOGLE_DEFAULT_UNIVERSE = ConfigServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
 
     cmek_settings_path = staticmethod(ConfigServiceV2Client.cmek_settings_path)
     parse_cmek_settings_path = staticmethod(ConfigServiceV2Client.parse_cmek_settings_path)
@@ -163,6 +166,16 @@ class ConfigServiceV2AsyncClient:
                 by the client instance.
         """
         return self._client._api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used
+                by the client instance.
+        """
+        return self._universe_domain
 
     get_transport_class = functools.partial(type(ConfigServiceV2Client).get_transport_class, type(ConfigServiceV2Client))
 

@@ -55,8 +55,11 @@ class IAMCredentialsAsyncClient:
 
     _client: IAMCredentialsClient
 
+    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = IAMCredentialsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT_TEMPLATE = IAMCredentialsClient.DEFAULT_ENDPOINT_TEMPLATE
+    GOOGLE_DEFAULT_UNIVERSE = IAMCredentialsClient.GOOGLE_DEFAULT_UNIVERSE
 
     service_account_path = staticmethod(IAMCredentialsClient.service_account_path)
     parse_service_account_path = staticmethod(IAMCredentialsClient.parse_service_account_path)
@@ -156,6 +159,16 @@ class IAMCredentialsAsyncClient:
                 by the client instance.
         """
         return self._client._api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used
+                by the client instance.
+        """
+        return self._universe_domain
 
     get_transport_class = functools.partial(type(IAMCredentialsClient).get_transport_class, type(IAMCredentialsClient))
 

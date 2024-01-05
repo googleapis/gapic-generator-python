@@ -111,10 +111,14 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
+    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "logging.googleapis.com"
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
+
+    DEFAULT_ENDPOINT_TEMPLATE = "logging.{UNIVERSE_DOMAIN}"
+    GOOGLE_DEFAULT_UNIVERSE = "googleapis.com"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -297,8 +301,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         """Returns the environment variables used by the client.
 
         Returns:
-            Tuple[bool, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE
-                and the GOOGLE_API_USE_MTLS_ENDPOINT environment variables.
+            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
 
         Raises:
             ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
@@ -308,11 +312,12 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         """
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
         if use_client_cert not in ("true", "false"):
             raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert == "true", use_mtls_endpoint
+        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
 
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
         """Return the client cert source to be used by the client.
@@ -332,26 +337,48 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 client_cert_source = mtls.default_client_cert_source()
         return client_cert_source
 
-    def _get_api_endpoint(api_override, client_cert_source, use_mtls_endpoint):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
         Args:
             api_override (str): The API endpoint override. If specified, this is always the return value of this function.
             client_cert_source (bytes): The client certificate source used by the client.
+            universe_domain (str): The universe domain used by the client.
             use_mtls_endpoint (str): How to use the MTLS endpoint, which depends also on the other parameters.
                 Possible values are "always", "auto", or "never".
 
         Returns:
             str: The API endpoint to be used by the client.
         """
-
+        use_mtls_endpoint = use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source)
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+        elif use_mtls_endpoint:
+            if universe_domain != LoggingServiceV2Client.GOOGLE_DEFAULT_UNIVERSE:
+                raise MutualTLSChannelError("MTLS is not supported in any universe other than googleapis.com.")
             api_endpoint = LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
+        elif universe_domain == "":
+            raise ValueError("Universe Domain cannot be an empty string.")
         else:
-            api_endpoint = LoggingServiceV2Client.DEFAULT_ENDPOINT
+            api_endpoint = LoggingServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
+
+    def _get_universe_domain(client_universe_domain, universe_domain_env):
+        """Return the universe domain used by the client.
+
+        Args:
+            client_universe_domain (str): The universe domain configured via the client options.
+            universe_domain_env (str): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
+
+        Returns:
+            str: The universe domain to be used by the client.
+        """
+        universe_domain = LoggingServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
+        if client_universe_domain is not None:
+            universe_domain = client_universe_domain
+        elif universe_domain_env is not None:
+            universe_domain = universe_domain_env
+        return universe_domain
 
     @property
     def api_endpoint(self):
@@ -362,6 +389,16 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 by the client instance.
         """
         return self._api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used
+                by the client instance.
+        """
+        return self._universe_domain
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
@@ -413,9 +450,10 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             self._client_options = client_options_lib.ClientOptions()
         self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        self._use_client_cert, self._use_mtls_endpoint = LoggingServiceV2Client._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = LoggingServiceV2Client._read_environment_variables()
         self._client_cert_source = LoggingServiceV2Client._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
-        self._api_endpoint = LoggingServiceV2Client._get_api_endpoint(self._client_options.api_endpoint, self._client_cert_source, self._use_mtls_endpoint)
+        self._universe_domain = LoggingServiceV2Client._get_universe_domain(self._client_options.universe_domain, self._universe_domain_env)
+        self._api_endpoint = LoggingServiceV2Client._get_api_endpoint(self._client_options.api_endpoint, self._client_cert_source, self._universe_domain, self._use_mtls_endpoint)
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:

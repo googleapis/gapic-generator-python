@@ -47,8 +47,11 @@ class LoggingServiceV2AsyncClient:
 
     _client: LoggingServiceV2Client
 
+    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = LoggingServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT_TEMPLATE = LoggingServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE
+    GOOGLE_DEFAULT_UNIVERSE = LoggingServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
 
     log_path = staticmethod(LoggingServiceV2Client.log_path)
     parse_log_path = staticmethod(LoggingServiceV2Client.parse_log_path)
@@ -148,6 +151,16 @@ class LoggingServiceV2AsyncClient:
                 by the client instance.
         """
         return self._client._api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used
+                by the client instance.
+        """
+        return self._universe_domain
 
     get_transport_class = functools.partial(type(LoggingServiceV2Client).get_transport_class, type(LoggingServiceV2Client))
 

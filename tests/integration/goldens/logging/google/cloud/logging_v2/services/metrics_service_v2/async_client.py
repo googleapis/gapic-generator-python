@@ -48,8 +48,11 @@ class MetricsServiceV2AsyncClient:
 
     _client: MetricsServiceV2Client
 
+    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = MetricsServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT_TEMPLATE = MetricsServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE
+    GOOGLE_DEFAULT_UNIVERSE = MetricsServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
 
     log_metric_path = staticmethod(MetricsServiceV2Client.log_metric_path)
     parse_log_metric_path = staticmethod(MetricsServiceV2Client.parse_log_metric_path)
@@ -149,6 +152,16 @@ class MetricsServiceV2AsyncClient:
                 by the client instance.
         """
         return self._client._api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used
+                by the client instance.
+        """
+        return self._universe_domain
 
     get_transport_class = functools.partial(type(MetricsServiceV2Client).get_transport_class, type(MetricsServiceV2Client))
 

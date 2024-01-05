@@ -52,8 +52,11 @@ class AssetServiceAsyncClient:
 
     _client: AssetServiceClient
 
+    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = AssetServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AssetServiceClient.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT_TEMPLATE = AssetServiceClient.DEFAULT_ENDPOINT_TEMPLATE
+    GOOGLE_DEFAULT_UNIVERSE = AssetServiceClient.GOOGLE_DEFAULT_UNIVERSE
 
     access_level_path = staticmethod(AssetServiceClient.access_level_path)
     parse_access_level_path = staticmethod(AssetServiceClient.parse_access_level_path)
@@ -165,6 +168,16 @@ class AssetServiceAsyncClient:
                 by the client instance.
         """
         return self._client._api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used
+                by the client instance.
+        """
+        return self._universe_domain
 
     get_transport_class = functools.partial(type(AssetServiceClient).get_transport_class, type(AssetServiceClient))
 
