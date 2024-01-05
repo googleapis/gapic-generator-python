@@ -153,21 +153,22 @@ def test__get_client_cert_source():
 @mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
-    universe_domain = "bar.com"
     mock_client_cert_source = mock.Mock()
-    default_endpoint = EventarcClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=EventarcClient.GOOGLE_DEFAULT_UNIVERSE)
+    default_universe = EventarcClient.GOOGLE_DEFAULT_UNIVERSE
+    default_endpoint = EventarcClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
     mock_endpoint = EventarcClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
 
-    assert EventarcClient._get_api_endpoint(api_override, mock_client_cert_source, None, "always") == api_override
-    assert EventarcClient._get_api_endpoint(None, mock_client_cert_source, None, "auto") == EventarcClient.DEFAULT_MTLS_ENDPOINT
-    assert EventarcClient._get_api_endpoint(None, None, None, "auto") == default_endpoint
-    assert EventarcClient._get_api_endpoint(None, None, None, "always") == EventarcClient.DEFAULT_MTLS_ENDPOINT
-    assert EventarcClient._get_api_endpoint(None, mock_client_cert_source, None, "always") == EventarcClient.DEFAULT_MTLS_ENDPOINT
-    assert EventarcClient._get_api_endpoint(None, None, universe_domain, "never") == mock_endpoint
-    assert EventarcClient._get_api_endpoint(None, None, None, "never") == default_endpoint
+    assert EventarcClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert EventarcClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == EventarcClient.DEFAULT_MTLS_ENDPOINT
+    assert EventarcClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert EventarcClient._get_api_endpoint(None, None, default_universe, "always") == EventarcClient.DEFAULT_MTLS_ENDPOINT
+    assert EventarcClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == EventarcClient.DEFAULT_MTLS_ENDPOINT
+    assert EventarcClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert EventarcClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        EventarcClient._get_api_endpoint(None, mock_client_cert_source, universe_domain, "auto")
+        EventarcClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "MTLS is not supported in any universe other than googleapis.com."
 
     with pytest.raises(ValueError) as excinfo:
