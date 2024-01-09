@@ -162,10 +162,6 @@ def test__get_api_endpoint():
         CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "MTLS is not supported in any universe other than googleapis.com."
 
-    with pytest.raises(ValueError) as excinfo:
-        CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, "", "auto")
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
-
 def test__get_universe_domain():
 
     client_universe_domain = "foo.com"
@@ -175,6 +171,9 @@ def test__get_universe_domain():
     assert CloudRedisClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
     assert CloudRedisClient._get_universe_domain(None, None) == CloudRedisClient.GOOGLE_DEFAULT_UNIVERSE
 
+    with pytest.raises(ValueError) as excinfo:
+        CloudRedisClient._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (CloudRedisClient, "grpc"),
@@ -579,6 +578,16 @@ def test_cloud_redis_client_client_api_endpoint(client_class):
             with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
                 client = client_class(credentials=ga_credentials.AnonymousCredentials())
                 assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
+    # and ClientOptions.universe_domain="bar.com",
+    # use the DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+    mock_universe = "bar.com"
+    options = client_options.ClientOptions(universe_domain=mock_universe)
+    client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == client_class.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (CloudRedisClient, transports.CloudRedisGrpcTransport, "grpc"),

@@ -358,8 +358,6 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             if universe_domain != MetricsServiceV2Client.GOOGLE_DEFAULT_UNIVERSE:
                 raise MutualTLSChannelError("MTLS is not supported in any universe other than googleapis.com.")
             api_endpoint = MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
-        elif universe_domain == "":
-            raise ValueError("Universe Domain cannot be an empty string.")
         else:
             api_endpoint = MetricsServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
@@ -379,6 +377,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
             universe_domain = universe_domain_env
+        if universe_domain == "":
+            raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
     @property
