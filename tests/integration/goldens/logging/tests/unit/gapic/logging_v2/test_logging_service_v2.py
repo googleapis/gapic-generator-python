@@ -138,7 +138,7 @@ def test__get_api_endpoint():
     default_universe = LoggingServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
     default_endpoint = LoggingServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = LoggingServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
+    mock_endpoint = LoggingServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     assert LoggingServiceV2Client._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
     assert LoggingServiceV2Client._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
