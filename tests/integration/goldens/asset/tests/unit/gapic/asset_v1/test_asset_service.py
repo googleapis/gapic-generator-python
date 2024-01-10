@@ -60,6 +60,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
+from test_utils.test_utils import AnonymousCredentialsWithUniverseDomain
 import google.auth
 
 
@@ -180,7 +181,7 @@ def test__get_universe_domain():
     (AssetServiceClient, "rest"),
 ])
 def test_asset_service_client_from_service_account_info(client_class, transport_name):
-    creds = ga_credentials.AnonymousCredentials()
+    creds = AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
         info = {"valid": True}
@@ -219,7 +220,7 @@ def test_asset_service_client_service_account_always_use_jwt(transport_class, tr
     (AssetServiceClient, "rest"),
 ])
 def test_asset_service_client_from_service_account_file(client_class, transport_name):
-    creds = ga_credentials.AnonymousCredentials()
+    creds = AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
@@ -261,7 +262,7 @@ def test_asset_service_client_client_options(client_class, transport_class, tran
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(AssetServiceClient, 'get_transport_class') as gtc:
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials()
+            credentials=AnonymousCredentialsWithUniverseDomain()
         )
         client = client_class(transport=transport)
         gtc.assert_not_called()
@@ -542,19 +543,19 @@ def test_asset_service_client_client_api_endpoint(client_class):
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
-        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+        client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
         assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        client = client_class(credentials=AnonymousCredentialsWithUniverseDomain())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        client = client_class(credentials=AnonymousCredentialsWithUniverseDomain())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -562,7 +563,7 @@ def test_asset_service_client_client_api_endpoint(client_class):
     # and ClientOptions.universe_domain="bar.com",
     # use the DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
     options = client_options.ClientOptions(universe_domain=mock_universe)
-    client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
     assert client.api_endpoint == mock_endpoint
     assert client.universe_domain == mock_universe
 
@@ -670,8 +671,8 @@ def test_asset_service_client_create_channel_credentials_file(client_class, tran
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
-        file_creds = ga_credentials.AnonymousCredentials()
+        creds = AnonymousCredentialsWithUniverseDomain()
+        file_creds = AnonymousCredentialsWithUniverseDomain()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -699,7 +700,7 @@ def test_asset_service_client_create_channel_credentials_file(client_class, tran
 ])
 def test_export_assets(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -728,7 +729,7 @@ def test_export_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -744,7 +745,7 @@ def test_export_assets_empty_call():
 @pytest.mark.asyncio
 async def test_export_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.ExportAssetsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -778,7 +779,7 @@ async def test_export_assets_async_from_dict():
 
 def test_export_assets_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -810,7 +811,7 @@ def test_export_assets_field_headers():
 @pytest.mark.asyncio
 async def test_export_assets_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -845,7 +846,7 @@ async def test_export_assets_field_headers_async():
 ])
 def test_list_assets(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -877,7 +878,7 @@ def test_list_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -893,7 +894,7 @@ def test_list_assets_empty_call():
 @pytest.mark.asyncio
 async def test_list_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListAssetsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -928,7 +929,7 @@ async def test_list_assets_async_from_dict():
 
 def test_list_assets_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -960,7 +961,7 @@ def test_list_assets_field_headers():
 @pytest.mark.asyncio
 async def test_list_assets_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -991,7 +992,7 @@ async def test_list_assets_field_headers_async():
 
 def test_list_assets_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1017,7 +1018,7 @@ def test_list_assets_flattened():
 
 def test_list_assets_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1031,7 +1032,7 @@ def test_list_assets_flattened_error():
 @pytest.mark.asyncio
 async def test_list_assets_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1059,7 +1060,7 @@ async def test_list_assets_flattened_async():
 @pytest.mark.asyncio
 async def test_list_assets_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1073,7 +1074,7 @@ async def test_list_assets_flattened_error_async():
 
 def test_list_assets_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -1126,7 +1127,7 @@ def test_list_assets_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_assets_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -1169,7 +1170,7 @@ def test_list_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_assets_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1218,7 +1219,7 @@ async def test_list_assets_async_pager():
 @pytest.mark.asyncio
 async def test_list_assets_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1269,7 +1270,7 @@ async def test_list_assets_async_pages():
 ])
 def test_batch_get_assets_history(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1299,7 +1300,7 @@ def test_batch_get_assets_history_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -1315,7 +1316,7 @@ def test_batch_get_assets_history_empty_call():
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_async(transport: str = 'grpc_asyncio', request_type=asset_service.BatchGetAssetsHistoryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1348,7 +1349,7 @@ async def test_batch_get_assets_history_async_from_dict():
 
 def test_batch_get_assets_history_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1380,7 +1381,7 @@ def test_batch_get_assets_history_field_headers():
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1415,7 +1416,7 @@ async def test_batch_get_assets_history_field_headers_async():
 ])
 def test_create_feed(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1455,7 +1456,7 @@ def test_create_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -1471,7 +1472,7 @@ def test_create_feed_empty_call():
 @pytest.mark.asyncio
 async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.CreateFeedRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1514,7 +1515,7 @@ async def test_create_feed_async_from_dict():
 
 def test_create_feed_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1546,7 +1547,7 @@ def test_create_feed_field_headers():
 @pytest.mark.asyncio
 async def test_create_feed_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1577,7 +1578,7 @@ async def test_create_feed_field_headers_async():
 
 def test_create_feed_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1603,7 +1604,7 @@ def test_create_feed_flattened():
 
 def test_create_feed_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1617,7 +1618,7 @@ def test_create_feed_flattened_error():
 @pytest.mark.asyncio
 async def test_create_feed_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1645,7 +1646,7 @@ async def test_create_feed_flattened_async():
 @pytest.mark.asyncio
 async def test_create_feed_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1663,7 +1664,7 @@ async def test_create_feed_flattened_error_async():
 ])
 def test_get_feed(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1703,7 +1704,7 @@ def test_get_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -1719,7 +1720,7 @@ def test_get_feed_empty_call():
 @pytest.mark.asyncio
 async def test_get_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.GetFeedRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1762,7 +1763,7 @@ async def test_get_feed_async_from_dict():
 
 def test_get_feed_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1794,7 +1795,7 @@ def test_get_feed_field_headers():
 @pytest.mark.asyncio
 async def test_get_feed_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1825,7 +1826,7 @@ async def test_get_feed_field_headers_async():
 
 def test_get_feed_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1851,7 +1852,7 @@ def test_get_feed_flattened():
 
 def test_get_feed_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1865,7 +1866,7 @@ def test_get_feed_flattened_error():
 @pytest.mark.asyncio
 async def test_get_feed_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1893,7 +1894,7 @@ async def test_get_feed_flattened_async():
 @pytest.mark.asyncio
 async def test_get_feed_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1911,7 +1912,7 @@ async def test_get_feed_flattened_error_async():
 ])
 def test_list_feeds(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1941,7 +1942,7 @@ def test_list_feeds_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -1957,7 +1958,7 @@ def test_list_feeds_empty_call():
 @pytest.mark.asyncio
 async def test_list_feeds_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListFeedsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1990,7 +1991,7 @@ async def test_list_feeds_async_from_dict():
 
 def test_list_feeds_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2022,7 +2023,7 @@ def test_list_feeds_field_headers():
 @pytest.mark.asyncio
 async def test_list_feeds_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2053,7 +2054,7 @@ async def test_list_feeds_field_headers_async():
 
 def test_list_feeds_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2079,7 +2080,7 @@ def test_list_feeds_flattened():
 
 def test_list_feeds_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2093,7 +2094,7 @@ def test_list_feeds_flattened_error():
 @pytest.mark.asyncio
 async def test_list_feeds_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2121,7 +2122,7 @@ async def test_list_feeds_flattened_async():
 @pytest.mark.asyncio
 async def test_list_feeds_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2139,7 +2140,7 @@ async def test_list_feeds_flattened_error_async():
 ])
 def test_update_feed(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2179,7 +2180,7 @@ def test_update_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -2195,7 +2196,7 @@ def test_update_feed_empty_call():
 @pytest.mark.asyncio
 async def test_update_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.UpdateFeedRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2238,7 +2239,7 @@ async def test_update_feed_async_from_dict():
 
 def test_update_feed_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2270,7 +2271,7 @@ def test_update_feed_field_headers():
 @pytest.mark.asyncio
 async def test_update_feed_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2301,7 +2302,7 @@ async def test_update_feed_field_headers_async():
 
 def test_update_feed_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2327,7 +2328,7 @@ def test_update_feed_flattened():
 
 def test_update_feed_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2341,7 +2342,7 @@ def test_update_feed_flattened_error():
 @pytest.mark.asyncio
 async def test_update_feed_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2369,7 +2370,7 @@ async def test_update_feed_flattened_async():
 @pytest.mark.asyncio
 async def test_update_feed_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2387,7 +2388,7 @@ async def test_update_feed_flattened_error_async():
 ])
 def test_delete_feed(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2416,7 +2417,7 @@ def test_delete_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -2432,7 +2433,7 @@ def test_delete_feed_empty_call():
 @pytest.mark.asyncio
 async def test_delete_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.DeleteFeedRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2464,7 +2465,7 @@ async def test_delete_feed_async_from_dict():
 
 def test_delete_feed_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2496,7 +2497,7 @@ def test_delete_feed_field_headers():
 @pytest.mark.asyncio
 async def test_delete_feed_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2527,7 +2528,7 @@ async def test_delete_feed_field_headers_async():
 
 def test_delete_feed_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2553,7 +2554,7 @@ def test_delete_feed_flattened():
 
 def test_delete_feed_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2567,7 +2568,7 @@ def test_delete_feed_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_feed_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2595,7 +2596,7 @@ async def test_delete_feed_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_feed_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2613,7 +2614,7 @@ async def test_delete_feed_flattened_error_async():
 ])
 def test_search_all_resources(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2645,7 +2646,7 @@ def test_search_all_resources_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -2661,7 +2662,7 @@ def test_search_all_resources_empty_call():
 @pytest.mark.asyncio
 async def test_search_all_resources_async(transport: str = 'grpc_asyncio', request_type=asset_service.SearchAllResourcesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2696,7 +2697,7 @@ async def test_search_all_resources_async_from_dict():
 
 def test_search_all_resources_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2728,7 +2729,7 @@ def test_search_all_resources_field_headers():
 @pytest.mark.asyncio
 async def test_search_all_resources_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2759,7 +2760,7 @@ async def test_search_all_resources_field_headers_async():
 
 def test_search_all_resources_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2793,7 +2794,7 @@ def test_search_all_resources_flattened():
 
 def test_search_all_resources_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2809,7 +2810,7 @@ def test_search_all_resources_flattened_error():
 @pytest.mark.asyncio
 async def test_search_all_resources_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2845,7 +2846,7 @@ async def test_search_all_resources_flattened_async():
 @pytest.mark.asyncio
 async def test_search_all_resources_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2861,7 +2862,7 @@ async def test_search_all_resources_flattened_error_async():
 
 def test_search_all_resources_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -2914,7 +2915,7 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_search_all_resources_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -2957,7 +2958,7 @@ def test_search_all_resources_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3006,7 +3007,7 @@ async def test_search_all_resources_async_pager():
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3057,7 +3058,7 @@ async def test_search_all_resources_async_pages():
 ])
 def test_search_all_iam_policies(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3089,7 +3090,7 @@ def test_search_all_iam_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -3105,7 +3106,7 @@ def test_search_all_iam_policies_empty_call():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.SearchAllIamPoliciesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3140,7 +3141,7 @@ async def test_search_all_iam_policies_async_from_dict():
 
 def test_search_all_iam_policies_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3172,7 +3173,7 @@ def test_search_all_iam_policies_field_headers():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3203,7 +3204,7 @@ async def test_search_all_iam_policies_field_headers_async():
 
 def test_search_all_iam_policies_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3233,7 +3234,7 @@ def test_search_all_iam_policies_flattened():
 
 def test_search_all_iam_policies_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3248,7 +3249,7 @@ def test_search_all_iam_policies_flattened_error():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3280,7 +3281,7 @@ async def test_search_all_iam_policies_flattened_async():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3295,7 +3296,7 @@ async def test_search_all_iam_policies_flattened_error_async():
 
 def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -3348,7 +3349,7 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -3391,7 +3392,7 @@ def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3440,7 +3441,7 @@ async def test_search_all_iam_policies_async_pager():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3491,7 +3492,7 @@ async def test_search_all_iam_policies_async_pages():
 ])
 def test_analyze_iam_policy(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3523,7 +3524,7 @@ def test_analyze_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -3539,7 +3540,7 @@ def test_analyze_iam_policy_empty_call():
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeIamPolicyRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3574,7 +3575,7 @@ async def test_analyze_iam_policy_async_from_dict():
 
 def test_analyze_iam_policy_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3606,7 +3607,7 @@ def test_analyze_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3641,7 +3642,7 @@ async def test_analyze_iam_policy_field_headers_async():
 ])
 def test_analyze_iam_policy_longrunning(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3670,7 +3671,7 @@ def test_analyze_iam_policy_longrunning_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -3686,7 +3687,7 @@ def test_analyze_iam_policy_longrunning_empty_call():
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3720,7 +3721,7 @@ async def test_analyze_iam_policy_longrunning_async_from_dict():
 
 def test_analyze_iam_policy_longrunning_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3752,7 +3753,7 @@ def test_analyze_iam_policy_longrunning_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3787,7 +3788,7 @@ async def test_analyze_iam_policy_longrunning_field_headers_async():
 ])
 def test_analyze_move(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3817,7 +3818,7 @@ def test_analyze_move_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -3833,7 +3834,7 @@ def test_analyze_move_empty_call():
 @pytest.mark.asyncio
 async def test_analyze_move_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeMoveRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3866,7 +3867,7 @@ async def test_analyze_move_async_from_dict():
 
 def test_analyze_move_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3898,7 +3899,7 @@ def test_analyze_move_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_move_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3933,7 +3934,7 @@ async def test_analyze_move_field_headers_async():
 ])
 def test_query_assets(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3967,7 +3968,7 @@ def test_query_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -3983,7 +3984,7 @@ def test_query_assets_empty_call():
 @pytest.mark.asyncio
 async def test_query_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.QueryAssetsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4020,7 +4021,7 @@ async def test_query_assets_async_from_dict():
 
 def test_query_assets_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4052,7 +4053,7 @@ def test_query_assets_field_headers():
 @pytest.mark.asyncio
 async def test_query_assets_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4087,7 +4088,7 @@ async def test_query_assets_field_headers_async():
 ])
 def test_create_saved_query(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4125,7 +4126,7 @@ def test_create_saved_query_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -4141,7 +4142,7 @@ def test_create_saved_query_empty_call():
 @pytest.mark.asyncio
 async def test_create_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.CreateSavedQueryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4182,7 +4183,7 @@ async def test_create_saved_query_async_from_dict():
 
 def test_create_saved_query_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4214,7 +4215,7 @@ def test_create_saved_query_field_headers():
 @pytest.mark.asyncio
 async def test_create_saved_query_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4245,7 +4246,7 @@ async def test_create_saved_query_field_headers_async():
 
 def test_create_saved_query_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4279,7 +4280,7 @@ def test_create_saved_query_flattened():
 
 def test_create_saved_query_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4295,7 +4296,7 @@ def test_create_saved_query_flattened_error():
 @pytest.mark.asyncio
 async def test_create_saved_query_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4331,7 +4332,7 @@ async def test_create_saved_query_flattened_async():
 @pytest.mark.asyncio
 async def test_create_saved_query_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4351,7 +4352,7 @@ async def test_create_saved_query_flattened_error_async():
 ])
 def test_get_saved_query(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4389,7 +4390,7 @@ def test_get_saved_query_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -4405,7 +4406,7 @@ def test_get_saved_query_empty_call():
 @pytest.mark.asyncio
 async def test_get_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.GetSavedQueryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4446,7 +4447,7 @@ async def test_get_saved_query_async_from_dict():
 
 def test_get_saved_query_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4478,7 +4479,7 @@ def test_get_saved_query_field_headers():
 @pytest.mark.asyncio
 async def test_get_saved_query_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4509,7 +4510,7 @@ async def test_get_saved_query_field_headers_async():
 
 def test_get_saved_query_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4535,7 +4536,7 @@ def test_get_saved_query_flattened():
 
 def test_get_saved_query_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4549,7 +4550,7 @@ def test_get_saved_query_flattened_error():
 @pytest.mark.asyncio
 async def test_get_saved_query_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4577,7 +4578,7 @@ async def test_get_saved_query_flattened_async():
 @pytest.mark.asyncio
 async def test_get_saved_query_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4595,7 +4596,7 @@ async def test_get_saved_query_flattened_error_async():
 ])
 def test_list_saved_queries(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4627,7 +4628,7 @@ def test_list_saved_queries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -4643,7 +4644,7 @@ def test_list_saved_queries_empty_call():
 @pytest.mark.asyncio
 async def test_list_saved_queries_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListSavedQueriesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4678,7 +4679,7 @@ async def test_list_saved_queries_async_from_dict():
 
 def test_list_saved_queries_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4710,7 +4711,7 @@ def test_list_saved_queries_field_headers():
 @pytest.mark.asyncio
 async def test_list_saved_queries_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4741,7 +4742,7 @@ async def test_list_saved_queries_field_headers_async():
 
 def test_list_saved_queries_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4767,7 +4768,7 @@ def test_list_saved_queries_flattened():
 
 def test_list_saved_queries_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4781,7 +4782,7 @@ def test_list_saved_queries_flattened_error():
 @pytest.mark.asyncio
 async def test_list_saved_queries_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4809,7 +4810,7 @@ async def test_list_saved_queries_flattened_async():
 @pytest.mark.asyncio
 async def test_list_saved_queries_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4823,7 +4824,7 @@ async def test_list_saved_queries_flattened_error_async():
 
 def test_list_saved_queries_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -4876,7 +4877,7 @@ def test_list_saved_queries_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_saved_queries_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -4919,7 +4920,7 @@ def test_list_saved_queries_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4968,7 +4969,7 @@ async def test_list_saved_queries_async_pager():
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5019,7 +5020,7 @@ async def test_list_saved_queries_async_pages():
 ])
 def test_update_saved_query(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5057,7 +5058,7 @@ def test_update_saved_query_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -5073,7 +5074,7 @@ def test_update_saved_query_empty_call():
 @pytest.mark.asyncio
 async def test_update_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.UpdateSavedQueryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5114,7 +5115,7 @@ async def test_update_saved_query_async_from_dict():
 
 def test_update_saved_query_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5146,7 +5147,7 @@ def test_update_saved_query_field_headers():
 @pytest.mark.asyncio
 async def test_update_saved_query_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5177,7 +5178,7 @@ async def test_update_saved_query_field_headers_async():
 
 def test_update_saved_query_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5207,7 +5208,7 @@ def test_update_saved_query_flattened():
 
 def test_update_saved_query_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5222,7 +5223,7 @@ def test_update_saved_query_flattened_error():
 @pytest.mark.asyncio
 async def test_update_saved_query_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5254,7 +5255,7 @@ async def test_update_saved_query_flattened_async():
 @pytest.mark.asyncio
 async def test_update_saved_query_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5273,7 +5274,7 @@ async def test_update_saved_query_flattened_error_async():
 ])
 def test_delete_saved_query(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5302,7 +5303,7 @@ def test_delete_saved_query_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -5318,7 +5319,7 @@ def test_delete_saved_query_empty_call():
 @pytest.mark.asyncio
 async def test_delete_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.DeleteSavedQueryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5350,7 +5351,7 @@ async def test_delete_saved_query_async_from_dict():
 
 def test_delete_saved_query_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5382,7 +5383,7 @@ def test_delete_saved_query_field_headers():
 @pytest.mark.asyncio
 async def test_delete_saved_query_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5413,7 +5414,7 @@ async def test_delete_saved_query_field_headers_async():
 
 def test_delete_saved_query_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5439,7 +5440,7 @@ def test_delete_saved_query_flattened():
 
 def test_delete_saved_query_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5453,7 +5454,7 @@ def test_delete_saved_query_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_saved_query_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5481,7 +5482,7 @@ async def test_delete_saved_query_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_saved_query_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5499,7 +5500,7 @@ async def test_delete_saved_query_flattened_error_async():
 ])
 def test_batch_get_effective_iam_policies(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5529,7 +5530,7 @@ def test_batch_get_effective_iam_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -5545,7 +5546,7 @@ def test_batch_get_effective_iam_policies_empty_call():
 @pytest.mark.asyncio
 async def test_batch_get_effective_iam_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5578,7 +5579,7 @@ async def test_batch_get_effective_iam_policies_async_from_dict():
 
 def test_batch_get_effective_iam_policies_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5610,7 +5611,7 @@ def test_batch_get_effective_iam_policies_field_headers():
 @pytest.mark.asyncio
 async def test_batch_get_effective_iam_policies_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5645,7 +5646,7 @@ async def test_batch_get_effective_iam_policies_field_headers_async():
 ])
 def test_analyze_org_policies(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5677,7 +5678,7 @@ def test_analyze_org_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -5693,7 +5694,7 @@ def test_analyze_org_policies_empty_call():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPoliciesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5728,7 +5729,7 @@ async def test_analyze_org_policies_async_from_dict():
 
 def test_analyze_org_policies_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5760,7 +5761,7 @@ def test_analyze_org_policies_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5791,7 +5792,7 @@ async def test_analyze_org_policies_field_headers_async():
 
 def test_analyze_org_policies_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5825,7 +5826,7 @@ def test_analyze_org_policies_flattened():
 
 def test_analyze_org_policies_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5841,7 +5842,7 @@ def test_analyze_org_policies_flattened_error():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5877,7 +5878,7 @@ async def test_analyze_org_policies_flattened_async():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5893,7 +5894,7 @@ async def test_analyze_org_policies_flattened_error_async():
 
 def test_analyze_org_policies_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -5946,7 +5947,7 @@ def test_analyze_org_policies_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_analyze_org_policies_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -5989,7 +5990,7 @@ def test_analyze_org_policies_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6038,7 +6039,7 @@ async def test_analyze_org_policies_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6089,7 +6090,7 @@ async def test_analyze_org_policies_async_pages():
 ])
 def test_analyze_org_policy_governed_containers(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6121,7 +6122,7 @@ def test_analyze_org_policy_governed_containers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -6137,7 +6138,7 @@ def test_analyze_org_policy_governed_containers_empty_call():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6172,7 +6173,7 @@ async def test_analyze_org_policy_governed_containers_async_from_dict():
 
 def test_analyze_org_policy_governed_containers_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6204,7 +6205,7 @@ def test_analyze_org_policy_governed_containers_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6235,7 +6236,7 @@ async def test_analyze_org_policy_governed_containers_field_headers_async():
 
 def test_analyze_org_policy_governed_containers_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6269,7 +6270,7 @@ def test_analyze_org_policy_governed_containers_flattened():
 
 def test_analyze_org_policy_governed_containers_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6285,7 +6286,7 @@ def test_analyze_org_policy_governed_containers_flattened_error():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6321,7 +6322,7 @@ async def test_analyze_org_policy_governed_containers_flattened_async():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6337,7 +6338,7 @@ async def test_analyze_org_policy_governed_containers_flattened_error_async():
 
 def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -6390,7 +6391,7 @@ def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grp
                    for i in results)
 def test_analyze_org_policy_governed_containers_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -6433,7 +6434,7 @@ def test_analyze_org_policy_governed_containers_pages(transport_name: str = "grp
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6482,7 +6483,7 @@ async def test_analyze_org_policy_governed_containers_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6533,7 +6534,7 @@ async def test_analyze_org_policy_governed_containers_async_pages():
 ])
 def test_analyze_org_policy_governed_assets(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6565,7 +6566,7 @@ def test_analyze_org_policy_governed_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -6581,7 +6582,7 @@ def test_analyze_org_policy_governed_assets_empty_call():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6616,7 +6617,7 @@ async def test_analyze_org_policy_governed_assets_async_from_dict():
 
 def test_analyze_org_policy_governed_assets_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6648,7 +6649,7 @@ def test_analyze_org_policy_governed_assets_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6679,7 +6680,7 @@ async def test_analyze_org_policy_governed_assets_field_headers_async():
 
 def test_analyze_org_policy_governed_assets_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6713,7 +6714,7 @@ def test_analyze_org_policy_governed_assets_flattened():
 
 def test_analyze_org_policy_governed_assets_flattened_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6729,7 +6730,7 @@ def test_analyze_org_policy_governed_assets_flattened_error():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6765,7 +6766,7 @@ async def test_analyze_org_policy_governed_assets_flattened_async():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6781,7 +6782,7 @@ async def test_analyze_org_policy_governed_assets_flattened_error_async():
 
 def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -6834,7 +6835,7 @@ def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_analyze_org_policy_governed_assets_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
         transport=transport_name,
     )
 
@@ -6877,7 +6878,7 @@ def test_analyze_org_policy_governed_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6926,7 +6927,7 @@ async def test_analyze_org_policy_governed_assets_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=AnonymousCredentialsWithUniverseDomain,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6978,7 +6979,7 @@ async def test_analyze_org_policy_governed_assets_async_pages():
 ])
 def test_export_assets_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7019,14 +7020,14 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_assets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).export_assets._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_assets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).export_assets._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7034,7 +7035,7 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
     assert jsonified_request["parent"] == 'parent_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -7074,7 +7075,7 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
 
 
 def test_export_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.export_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent", "outputConfig", )))
@@ -7083,7 +7084,7 @@ def test_export_assets_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_export_assets_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -7123,7 +7124,7 @@ def test_export_assets_rest_interceptors(null_interceptor):
 
 def test_export_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.ExportAssetsRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7143,7 +7144,7 @@ def test_export_assets_rest_bad_request(transport: str = 'rest', request_type=as
 
 def test_export_assets_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -7154,7 +7155,7 @@ def test_export_assets_rest_error():
 ])
 def test_list_assets_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7200,14 +7201,14 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_assets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).list_assets._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_assets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).list_assets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("asset_types", "content_type", "page_size", "page_token", "read_time", "relationship_types", ))
     jsonified_request.update(unset_fields)
@@ -7217,7 +7218,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
     assert jsonified_request["parent"] == 'parent_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -7259,7 +7260,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
 
 def test_list_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.list_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", "relationshipTypes", )) & set(("parent", )))
@@ -7268,7 +7269,7 @@ def test_list_assets_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_assets_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -7307,7 +7308,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
 def test_list_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.ListAssetsRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7327,7 +7328,7 @@ def test_list_assets_rest_bad_request(transport: str = 'rest', request_type=asse
 
 def test_list_assets_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7365,7 +7366,7 @@ def test_list_assets_rest_flattened():
 
 def test_list_assets_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7380,7 +7381,7 @@ def test_list_assets_rest_flattened_error(transport: str = 'rest'):
 
 def test_list_assets_rest_pager(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7446,7 +7447,7 @@ def test_list_assets_rest_pager(transport: str = 'rest'):
 ])
 def test_batch_get_assets_history_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7490,14 +7491,14 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("asset_names", "content_type", "read_time_window", "relationship_types", ))
     jsonified_request.update(unset_fields)
@@ -7507,7 +7508,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
     assert jsonified_request["parent"] == 'parent_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -7549,7 +7550,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
 
 def test_batch_get_assets_history_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.batch_get_assets_history._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetNames", "contentType", "readTimeWindow", "relationshipTypes", )) & set(("parent", )))
@@ -7558,7 +7559,7 @@ def test_batch_get_assets_history_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_batch_get_assets_history_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -7597,7 +7598,7 @@ def test_batch_get_assets_history_rest_interceptors(null_interceptor):
 
 def test_batch_get_assets_history_rest_bad_request(transport: str = 'rest', request_type=asset_service.BatchGetAssetsHistoryRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7617,7 +7618,7 @@ def test_batch_get_assets_history_rest_bad_request(transport: str = 'rest', requ
 
 def test_batch_get_assets_history_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -7628,7 +7629,7 @@ def test_batch_get_assets_history_rest_error():
 ])
 def test_create_feed_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7683,7 +7684,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_feed._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).create_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -7691,7 +7692,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["feedId"] = 'feed_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_feed._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).create_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7701,7 +7702,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
     assert jsonified_request["feedId"] == 'feed_id_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -7744,7 +7745,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
 
 def test_create_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.create_feed._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent", "feedId", "feed", )))
@@ -7753,7 +7754,7 @@ def test_create_feed_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_feed_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -7792,7 +7793,7 @@ def test_create_feed_rest_interceptors(null_interceptor):
 
 def test_create_feed_rest_bad_request(transport: str = 'rest', request_type=asset_service.CreateFeedRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7812,7 +7813,7 @@ def test_create_feed_rest_bad_request(transport: str = 'rest', request_type=asse
 
 def test_create_feed_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7850,7 +7851,7 @@ def test_create_feed_rest_flattened():
 
 def test_create_feed_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7865,7 +7866,7 @@ def test_create_feed_rest_flattened_error(transport: str = 'rest'):
 
 def test_create_feed_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -7876,7 +7877,7 @@ def test_create_feed_rest_error():
 ])
 def test_get_feed_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7930,14 +7931,14 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_feed._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).get_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_feed._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).get_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7945,7 +7946,7 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
     assert jsonified_request["name"] == 'name_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -7987,7 +7988,7 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
 
 def test_get_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.get_feed._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
@@ -7996,7 +7997,7 @@ def test_get_feed_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_feed_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -8035,7 +8036,7 @@ def test_get_feed_rest_interceptors(null_interceptor):
 
 def test_get_feed_rest_bad_request(transport: str = 'rest', request_type=asset_service.GetFeedRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8055,7 +8056,7 @@ def test_get_feed_rest_bad_request(transport: str = 'rest', request_type=asset_s
 
 def test_get_feed_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8093,7 +8094,7 @@ def test_get_feed_rest_flattened():
 
 def test_get_feed_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8108,7 +8109,7 @@ def test_get_feed_rest_flattened_error(transport: str = 'rest'):
 
 def test_get_feed_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -8119,7 +8120,7 @@ def test_get_feed_rest_error():
 ])
 def test_list_feeds_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8163,14 +8164,14 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_feeds._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).list_feeds._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_feeds._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).list_feeds._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -8178,7 +8179,7 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
     assert jsonified_request["parent"] == 'parent_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -8220,7 +8221,7 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
 
 def test_list_feeds_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.list_feeds._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent", )))
@@ -8229,7 +8230,7 @@ def test_list_feeds_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_feeds_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -8268,7 +8269,7 @@ def test_list_feeds_rest_interceptors(null_interceptor):
 
 def test_list_feeds_rest_bad_request(transport: str = 'rest', request_type=asset_service.ListFeedsRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8288,7 +8289,7 @@ def test_list_feeds_rest_bad_request(transport: str = 'rest', request_type=asset
 
 def test_list_feeds_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8326,7 +8327,7 @@ def test_list_feeds_rest_flattened():
 
 def test_list_feeds_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8341,7 +8342,7 @@ def test_list_feeds_rest_flattened_error(transport: str = 'rest'):
 
 def test_list_feeds_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -8352,7 +8353,7 @@ def test_list_feeds_rest_error():
 ])
 def test_update_feed_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8405,18 +8406,18 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_feed._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).update_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_feed._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).update_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -8459,7 +8460,7 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
 
 def test_update_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.update_feed._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("feed", "updateMask", )))
@@ -8468,7 +8469,7 @@ def test_update_feed_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_feed_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -8507,7 +8508,7 @@ def test_update_feed_rest_interceptors(null_interceptor):
 
 def test_update_feed_rest_bad_request(transport: str = 'rest', request_type=asset_service.UpdateFeedRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8527,7 +8528,7 @@ def test_update_feed_rest_bad_request(transport: str = 'rest', request_type=asse
 
 def test_update_feed_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8565,7 +8566,7 @@ def test_update_feed_rest_flattened():
 
 def test_update_feed_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8580,7 +8581,7 @@ def test_update_feed_rest_flattened_error(transport: str = 'rest'):
 
 def test_update_feed_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -8591,7 +8592,7 @@ def test_update_feed_rest_error():
 ])
 def test_delete_feed_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8632,14 +8633,14 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_feed._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).delete_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_feed._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).delete_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -8647,7 +8648,7 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
     assert jsonified_request["name"] == 'name_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -8686,7 +8687,7 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
 
 def test_delete_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.delete_feed._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
@@ -8695,7 +8696,7 @@ def test_delete_feed_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_feed_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -8729,7 +8730,7 @@ def test_delete_feed_rest_interceptors(null_interceptor):
 
 def test_delete_feed_rest_bad_request(transport: str = 'rest', request_type=asset_service.DeleteFeedRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8749,7 +8750,7 @@ def test_delete_feed_rest_bad_request(transport: str = 'rest', request_type=asse
 
 def test_delete_feed_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8785,7 +8786,7 @@ def test_delete_feed_rest_flattened():
 
 def test_delete_feed_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8800,7 +8801,7 @@ def test_delete_feed_rest_flattened_error(transport: str = 'rest'):
 
 def test_delete_feed_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -8811,7 +8812,7 @@ def test_delete_feed_rest_error():
 ])
 def test_search_all_resources_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8857,14 +8858,14 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_resources._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).search_all_resources._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = 'scope_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_resources._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).search_all_resources._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", "read_mask", ))
     jsonified_request.update(unset_fields)
@@ -8874,7 +8875,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
     assert jsonified_request["scope"] == 'scope_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -8916,7 +8917,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
 
 def test_search_all_resources_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.search_all_resources._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", "readMask", )) & set(("scope", )))
@@ -8925,7 +8926,7 @@ def test_search_all_resources_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_search_all_resources_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -8964,7 +8965,7 @@ def test_search_all_resources_rest_interceptors(null_interceptor):
 
 def test_search_all_resources_rest_bad_request(transport: str = 'rest', request_type=asset_service.SearchAllResourcesRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8984,7 +8985,7 @@ def test_search_all_resources_rest_bad_request(transport: str = 'rest', request_
 
 def test_search_all_resources_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -9024,7 +9025,7 @@ def test_search_all_resources_rest_flattened():
 
 def test_search_all_resources_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9041,7 +9042,7 @@ def test_search_all_resources_rest_flattened_error(transport: str = 'rest'):
 
 def test_search_all_resources_rest_pager(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9107,7 +9108,7 @@ def test_search_all_resources_rest_pager(transport: str = 'rest'):
 ])
 def test_search_all_iam_policies_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -9153,14 +9154,14 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_iam_policies._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).search_all_iam_policies._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = 'scope_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_iam_policies._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).search_all_iam_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", ))
     jsonified_request.update(unset_fields)
@@ -9170,7 +9171,7 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
     assert jsonified_request["scope"] == 'scope_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -9212,7 +9213,7 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
 
 
 def test_search_all_iam_policies_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.search_all_iam_policies._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", )) & set(("scope", )))
@@ -9221,7 +9222,7 @@ def test_search_all_iam_policies_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_search_all_iam_policies_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -9260,7 +9261,7 @@ def test_search_all_iam_policies_rest_interceptors(null_interceptor):
 
 def test_search_all_iam_policies_rest_bad_request(transport: str = 'rest', request_type=asset_service.SearchAllIamPoliciesRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9280,7 +9281,7 @@ def test_search_all_iam_policies_rest_bad_request(transport: str = 'rest', reque
 
 def test_search_all_iam_policies_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -9319,7 +9320,7 @@ def test_search_all_iam_policies_rest_flattened():
 
 def test_search_all_iam_policies_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9335,7 +9336,7 @@ def test_search_all_iam_policies_rest_flattened_error(transport: str = 'rest'):
 
 def test_search_all_iam_policies_rest_pager(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9401,7 +9402,7 @@ def test_search_all_iam_policies_rest_pager(transport: str = 'rest'):
 ])
 def test_analyze_iam_policy_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -9446,12 +9447,12 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_iam_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_iam_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("analysis_query", "execution_timeout", "saved_analysis_query", ))
     jsonified_request.update(unset_fields)
@@ -9459,7 +9460,7 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
     # verify required fields with non-default values are left alone
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -9501,7 +9502,7 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
 
 
 def test_analyze_iam_policy_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.analyze_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", )) & set(("analysisQuery", )))
@@ -9510,7 +9511,7 @@ def test_analyze_iam_policy_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_analyze_iam_policy_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -9549,7 +9550,7 @@ def test_analyze_iam_policy_rest_interceptors(null_interceptor):
 
 def test_analyze_iam_policy_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeIamPolicyRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9569,7 +9570,7 @@ def test_analyze_iam_policy_rest_bad_request(transport: str = 'rest', request_ty
 
 def test_analyze_iam_policy_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -9580,7 +9581,7 @@ def test_analyze_iam_policy_rest_error():
 ])
 def test_analyze_iam_policy_longrunning_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -9620,18 +9621,18 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy_longrunning._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_iam_policy_longrunning._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy_longrunning._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_iam_policy_longrunning._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -9671,7 +9672,7 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
 
 
 def test_analyze_iam_policy_longrunning_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.analyze_iam_policy_longrunning._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("analysisQuery", "outputConfig", )))
@@ -9680,7 +9681,7 @@ def test_analyze_iam_policy_longrunning_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -9720,7 +9721,7 @@ def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
 
 def test_analyze_iam_policy_longrunning_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9740,7 +9741,7 @@ def test_analyze_iam_policy_longrunning_rest_bad_request(transport: str = 'rest'
 
 def test_analyze_iam_policy_longrunning_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -9751,7 +9752,7 @@ def test_analyze_iam_policy_longrunning_rest_error():
 ])
 def test_analyze_move_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -9797,7 +9798,7 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     # verify fields with default values are dropped
     assert "destinationParent" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_move._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_move._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -9807,7 +9808,7 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     jsonified_request["resource"] = 'resource_value'
     jsonified_request["destinationParent"] = 'destination_parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_move._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_move._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("destination_parent", "view", ))
     jsonified_request.update(unset_fields)
@@ -9819,7 +9820,7 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     assert jsonified_request["destinationParent"] == 'destination_parent_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -9865,7 +9866,7 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
 
 
 def test_analyze_move_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.analyze_move._get_unset_required_fields({})
     assert set(unset_fields) == (set(("destinationParent", "view", )) & set(("resource", "destinationParent", )))
@@ -9874,7 +9875,7 @@ def test_analyze_move_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_analyze_move_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -9913,7 +9914,7 @@ def test_analyze_move_rest_interceptors(null_interceptor):
 
 def test_analyze_move_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeMoveRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9933,7 +9934,7 @@ def test_analyze_move_rest_bad_request(transport: str = 'rest', request_type=ass
 
 def test_analyze_move_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -9944,7 +9945,7 @@ def test_analyze_move_rest_error():
 ])
 def test_query_assets_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -9992,14 +9993,14 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).query_assets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).query_assets._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).query_assets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).query_assets._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10007,7 +10008,7 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
     assert jsonified_request["parent"] == 'parent_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -10050,7 +10051,7 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
 
 
 def test_query_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.query_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent", )))
@@ -10059,7 +10060,7 @@ def test_query_assets_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_query_assets_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -10098,7 +10099,7 @@ def test_query_assets_rest_interceptors(null_interceptor):
 
 def test_query_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.QueryAssetsRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10118,7 +10119,7 @@ def test_query_assets_rest_bad_request(transport: str = 'rest', request_type=ass
 
 def test_query_assets_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -10129,7 +10130,7 @@ def test_query_assets_rest_error():
 ])
 def test_create_saved_query_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -10247,7 +10248,7 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     # verify fields with default values are dropped
     assert "savedQueryId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_saved_query._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).create_saved_query._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -10257,7 +10258,7 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["savedQueryId"] = 'saved_query_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_saved_query._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).create_saved_query._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("saved_query_id", ))
     jsonified_request.update(unset_fields)
@@ -10269,7 +10270,7 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     assert jsonified_request["savedQueryId"] == 'saved_query_id_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -10316,7 +10317,7 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
 
 
 def test_create_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.create_saved_query._get_unset_required_fields({})
     assert set(unset_fields) == (set(("savedQueryId", )) & set(("parent", "savedQuery", "savedQueryId", )))
@@ -10325,7 +10326,7 @@ def test_create_saved_query_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_saved_query_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -10364,7 +10365,7 @@ def test_create_saved_query_rest_interceptors(null_interceptor):
 
 def test_create_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.CreateSavedQueryRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10384,7 +10385,7 @@ def test_create_saved_query_rest_bad_request(transport: str = 'rest', request_ty
 
 def test_create_saved_query_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -10424,7 +10425,7 @@ def test_create_saved_query_rest_flattened():
 
 def test_create_saved_query_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10441,7 +10442,7 @@ def test_create_saved_query_rest_flattened_error(transport: str = 'rest'):
 
 def test_create_saved_query_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -10452,7 +10453,7 @@ def test_create_saved_query_rest_error():
 ])
 def test_get_saved_query_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -10504,14 +10505,14 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_saved_query._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).get_saved_query._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_saved_query._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).get_saved_query._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10519,7 +10520,7 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
     assert jsonified_request["name"] == 'name_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -10561,7 +10562,7 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
 
 
 def test_get_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.get_saved_query._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
@@ -10570,7 +10571,7 @@ def test_get_saved_query_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_saved_query_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -10609,7 +10610,7 @@ def test_get_saved_query_rest_interceptors(null_interceptor):
 
 def test_get_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.GetSavedQueryRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10629,7 +10630,7 @@ def test_get_saved_query_rest_bad_request(transport: str = 'rest', request_type=
 
 def test_get_saved_query_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -10667,7 +10668,7 @@ def test_get_saved_query_rest_flattened():
 
 def test_get_saved_query_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10682,7 +10683,7 @@ def test_get_saved_query_rest_flattened_error(transport: str = 'rest'):
 
 def test_get_saved_query_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -10693,7 +10694,7 @@ def test_get_saved_query_rest_error():
 ])
 def test_list_saved_queries_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -10739,14 +10740,14 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_saved_queries._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).list_saved_queries._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_saved_queries._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).list_saved_queries._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("filter", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -10756,7 +10757,7 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
     assert jsonified_request["parent"] == 'parent_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -10798,7 +10799,7 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
 
 
 def test_list_saved_queries_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.list_saved_queries._get_unset_required_fields({})
     assert set(unset_fields) == (set(("filter", "pageSize", "pageToken", )) & set(("parent", )))
@@ -10807,7 +10808,7 @@ def test_list_saved_queries_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_saved_queries_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -10846,7 +10847,7 @@ def test_list_saved_queries_rest_interceptors(null_interceptor):
 
 def test_list_saved_queries_rest_bad_request(transport: str = 'rest', request_type=asset_service.ListSavedQueriesRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10866,7 +10867,7 @@ def test_list_saved_queries_rest_bad_request(transport: str = 'rest', request_ty
 
 def test_list_saved_queries_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -10904,7 +10905,7 @@ def test_list_saved_queries_rest_flattened():
 
 def test_list_saved_queries_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10919,7 +10920,7 @@ def test_list_saved_queries_rest_flattened_error(transport: str = 'rest'):
 
 def test_list_saved_queries_rest_pager(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10985,7 +10986,7 @@ def test_list_saved_queries_rest_pager(transport: str = 'rest'):
 ])
 def test_update_saved_query_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -11100,12 +11101,12 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_saved_query._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).update_saved_query._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_saved_query._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).update_saved_query._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask", ))
     jsonified_request.update(unset_fields)
@@ -11113,7 +11114,7 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
     # verify required fields with non-default values are left alone
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -11156,7 +11157,7 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
 
 
 def test_update_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.update_saved_query._get_unset_required_fields({})
     assert set(unset_fields) == (set(("updateMask", )) & set(("savedQuery", "updateMask", )))
@@ -11165,7 +11166,7 @@ def test_update_saved_query_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_saved_query_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -11204,7 +11205,7 @@ def test_update_saved_query_rest_interceptors(null_interceptor):
 
 def test_update_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.UpdateSavedQueryRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11224,7 +11225,7 @@ def test_update_saved_query_rest_bad_request(transport: str = 'rest', request_ty
 
 def test_update_saved_query_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -11263,7 +11264,7 @@ def test_update_saved_query_rest_flattened():
 
 def test_update_saved_query_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11279,7 +11280,7 @@ def test_update_saved_query_rest_flattened_error(transport: str = 'rest'):
 
 def test_update_saved_query_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -11290,7 +11291,7 @@ def test_update_saved_query_rest_error():
 ])
 def test_delete_saved_query_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -11331,14 +11332,14 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_saved_query._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).delete_saved_query._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_saved_query._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).delete_saved_query._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11346,7 +11347,7 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
     assert jsonified_request["name"] == 'name_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -11385,7 +11386,7 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
 
 
 def test_delete_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.delete_saved_query._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
@@ -11394,7 +11395,7 @@ def test_delete_saved_query_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_saved_query_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -11428,7 +11429,7 @@ def test_delete_saved_query_rest_interceptors(null_interceptor):
 
 def test_delete_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.DeleteSavedQueryRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11448,7 +11449,7 @@ def test_delete_saved_query_rest_bad_request(transport: str = 'rest', request_ty
 
 def test_delete_saved_query_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -11484,7 +11485,7 @@ def test_delete_saved_query_rest_flattened():
 
 def test_delete_saved_query_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11499,7 +11500,7 @@ def test_delete_saved_query_rest_flattened_error(transport: str = 'rest'):
 
 def test_delete_saved_query_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -11510,7 +11511,7 @@ def test_delete_saved_query_rest_error():
 ])
 def test_batch_get_effective_iam_policies_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -11556,7 +11557,7 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     # verify fields with default values are dropped
     assert "names" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -11566,7 +11567,7 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["names"] = 'names_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("names", ))
     jsonified_request.update(unset_fields)
@@ -11578,7 +11579,7 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     assert jsonified_request["names"] == 'names_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -11624,7 +11625,7 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
 
 
 def test_batch_get_effective_iam_policies_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.batch_get_effective_iam_policies._get_unset_required_fields({})
     assert set(unset_fields) == (set(("names", )) & set(("scope", "names", )))
@@ -11633,7 +11634,7 @@ def test_batch_get_effective_iam_policies_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -11672,7 +11673,7 @@ def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
 
 def test_batch_get_effective_iam_policies_rest_bad_request(transport: str = 'rest', request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11692,7 +11693,7 @@ def test_batch_get_effective_iam_policies_rest_bad_request(transport: str = 'res
 
 def test_batch_get_effective_iam_policies_rest_error():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -11703,7 +11704,7 @@ def test_batch_get_effective_iam_policies_rest_error():
 ])
 def test_analyze_org_policies_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -11751,7 +11752,7 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     # verify fields with default values are dropped
     assert "constraint" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policies._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_org_policies._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -11761,7 +11762,7 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["constraint"] = 'constraint_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policies._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_org_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -11773,7 +11774,7 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     assert jsonified_request["constraint"] == 'constraint_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -11819,7 +11820,7 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
 
 
 def test_analyze_org_policies_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.analyze_org_policies._get_unset_required_fields({})
     assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
@@ -11828,7 +11829,7 @@ def test_analyze_org_policies_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_analyze_org_policies_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -11867,7 +11868,7 @@ def test_analyze_org_policies_rest_interceptors(null_interceptor):
 
 def test_analyze_org_policies_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeOrgPoliciesRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11887,7 +11888,7 @@ def test_analyze_org_policies_rest_bad_request(transport: str = 'rest', request_
 
 def test_analyze_org_policies_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -11927,7 +11928,7 @@ def test_analyze_org_policies_rest_flattened():
 
 def test_analyze_org_policies_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11944,7 +11945,7 @@ def test_analyze_org_policies_rest_flattened_error(transport: str = 'rest'):
 
 def test_analyze_org_policies_rest_pager(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12010,7 +12011,7 @@ def test_analyze_org_policies_rest_pager(transport: str = 'rest'):
 ])
 def test_analyze_org_policy_governed_containers_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -12058,7 +12059,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     # verify fields with default values are dropped
     assert "constraint" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12068,7 +12069,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["constraint"] = 'constraint_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -12080,7 +12081,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     assert jsonified_request["constraint"] == 'constraint_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -12126,7 +12127,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
 
 
 def test_analyze_org_policy_governed_containers_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.analyze_org_policy_governed_containers._get_unset_required_fields({})
     assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
@@ -12135,7 +12136,7 @@ def test_analyze_org_policy_governed_containers_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_analyze_org_policy_governed_containers_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -12174,7 +12175,7 @@ def test_analyze_org_policy_governed_containers_rest_interceptors(null_intercept
 
 def test_analyze_org_policy_governed_containers_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12194,7 +12195,7 @@ def test_analyze_org_policy_governed_containers_rest_bad_request(transport: str 
 
 def test_analyze_org_policy_governed_containers_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -12234,7 +12235,7 @@ def test_analyze_org_policy_governed_containers_rest_flattened():
 
 def test_analyze_org_policy_governed_containers_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12251,7 +12252,7 @@ def test_analyze_org_policy_governed_containers_rest_flattened_error(transport: 
 
 def test_analyze_org_policy_governed_containers_rest_pager(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12317,7 +12318,7 @@ def test_analyze_org_policy_governed_containers_rest_pager(transport: str = 'res
 ])
 def test_analyze_org_policy_governed_assets_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -12365,7 +12366,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     # verify fields with default values are dropped
     assert "constraint" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12375,7 +12376,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["constraint"] = 'constraint_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -12387,7 +12388,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     assert jsonified_request["constraint"] == 'constraint_value'
 
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -12433,7 +12434,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
 
 
 def test_analyze_org_policy_governed_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    transport = transports.AssetServiceRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.analyze_org_policy_governed_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
@@ -12442,7 +12443,7 @@ def test_analyze_org_policy_governed_assets_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
         )
     client = AssetServiceClient(transport=transport)
@@ -12481,7 +12482,7 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
 
 def test_analyze_org_policy_governed_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12501,7 +12502,7 @@ def test_analyze_org_policy_governed_assets_rest_bad_request(transport: str = 'r
 
 def test_analyze_org_policy_governed_assets_rest_flattened():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -12541,7 +12542,7 @@ def test_analyze_org_policy_governed_assets_rest_flattened():
 
 def test_analyze_org_policy_governed_assets_rest_flattened_error(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12558,7 +12559,7 @@ def test_analyze_org_policy_governed_assets_rest_flattened_error(transport: str 
 
 def test_analyze_org_policy_governed_assets_rest_pager(transport: str = 'rest'):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12621,17 +12622,17 @@ def test_analyze_org_policy_governed_assets_rest_pager(transport: str = 'rest'):
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AssetServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = AssetServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=AnonymousCredentialsWithUniverseDomain(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.AssetServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = AssetServiceClient(
@@ -12641,7 +12642,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.AssetServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -12657,12 +12658,12 @@ def test_credentials_transport_error():
     with pytest.raises(ValueError):
         client = AssetServiceClient(
             client_options=options,
-            credentials=ga_credentials.AnonymousCredentials()
+            credentials=AnonymousCredentialsWithUniverseDomain()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.AssetServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = AssetServiceClient(
@@ -12674,7 +12675,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.AssetServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     client = AssetServiceClient(transport=transport)
     assert client.transport is transport
@@ -12682,13 +12683,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.AssetServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.AssetServiceGrpcAsyncIOTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -12701,7 +12702,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, 'default') as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -12711,14 +12712,14 @@ def test_transport_adc(transport_class):
 ])
 def test_transport_kind(transport_name):
     transport = AssetServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     assert transport.kind == transport_name
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     assert isinstance(
         client.transport,
@@ -12729,7 +12730,7 @@ def test_asset_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.AssetServiceTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=AnonymousCredentialsWithUniverseDomain(),
             credentials_file="credentials.json"
         )
 
@@ -12739,7 +12740,7 @@ def test_asset_service_base_transport():
     with mock.patch('google.cloud.asset_v1.services.asset_service.transports.AssetServiceTransport.__init__') as Transport:
         Transport.return_value = None
         transport = transports.AssetServiceTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=AnonymousCredentialsWithUniverseDomain(),
         )
 
     # Every method on the transport should just blindly
@@ -12795,7 +12796,7 @@ def test_asset_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(google.auth, 'load_credentials_from_file', autospec=True) as load_creds, mock.patch('google.cloud.asset_v1.services.asset_service.transports.AssetServiceTransport._prep_wrapped_messages') as Transport:
         Transport.return_value = None
-        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.AssetServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -12813,7 +12814,7 @@ def test_asset_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('google.cloud.asset_v1.services.asset_service.transports.AssetServiceTransport._prep_wrapped_messages') as Transport:
         Transport.return_value = None
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.AssetServiceTransport()
         adc.assert_called_once()
 
@@ -12821,7 +12822,7 @@ def test_asset_service_base_transport_with_adc():
 def test_asset_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
         AssetServiceClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -12843,7 +12844,7 @@ def test_asset_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -12888,7 +12889,7 @@ def test_asset_service_transport_create_channel(transport_class, grpc_helpers):
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
+        creds = AnonymousCredentialsWithUniverseDomain()
         adc.return_value = (creds, None)
         transport_class(
             quota_project_id="octopus",
@@ -12917,7 +12918,7 @@ def test_asset_service_transport_create_channel(transport_class, grpc_helpers):
 def test_asset_service_grpc_transport_client_cert_source_for_mtls(
     transport_class
 ):
-    cred = ga_credentials.AnonymousCredentials()
+    cred = AnonymousCredentialsWithUniverseDomain()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -12955,7 +12956,7 @@ def test_asset_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 def test_asset_service_http_transport_client_cert_source_for_mtls():
-    cred = ga_credentials.AnonymousCredentials()
+    cred = AnonymousCredentialsWithUniverseDomain()
     with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
         transports.AssetServiceRestTransport (
             credentials=cred,
@@ -12966,7 +12967,7 @@ def test_asset_service_http_transport_client_cert_source_for_mtls():
 
 def test_asset_service_rest_lro_client():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     transport = client.transport
@@ -12988,7 +12989,7 @@ def test_asset_service_rest_lro_client():
 ])
 def test_asset_service_host_no_port(transport_name):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(api_endpoint='cloudasset.googleapis.com'),
          transport=transport_name,
     )
@@ -13005,7 +13006,7 @@ def test_asset_service_host_no_port(transport_name):
 ])
 def test_asset_service_host_with_port(transport_name):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(api_endpoint='cloudasset.googleapis.com:8000'),
         transport=transport_name,
     )
@@ -13019,8 +13020,8 @@ def test_asset_service_host_with_port(transport_name):
     "rest",
 ])
 def test_asset_service_client_transport_session_collision(transport_name):
-    creds1 = ga_credentials.AnonymousCredentials()
-    creds2 = ga_credentials.AnonymousCredentials()
+    creds1 = AnonymousCredentialsWithUniverseDomain()
+    creds2 = AnonymousCredentialsWithUniverseDomain()
     client1 = AssetServiceClient(
         credentials=creds1,
         transport=transport_name,
@@ -13138,7 +13139,7 @@ def test_asset_service_transport_channel_mtls_with_client_cert_source(
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = ga_credentials.AnonymousCredentials()
+            cred = AnonymousCredentialsWithUniverseDomain()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, 'default') as adc:
                     adc.return_value = (cred, None)
@@ -13210,7 +13211,7 @@ def test_asset_service_transport_channel_mtls_with_adc(
 
 def test_asset_service_grpc_lro_client():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
     transport = client.transport
@@ -13227,7 +13228,7 @@ def test_asset_service_grpc_lro_client():
 
 def test_asset_service_grpc_lro_async_client():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport='grpc_asyncio',
     )
     transport = client.transport
@@ -13464,7 +13465,7 @@ def test_client_with_default_client_info():
 
     with mock.patch.object(transports.AssetServiceTransport, '_prep_wrapped_messages') as prep:
         client = AssetServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -13472,7 +13473,7 @@ def test_client_with_default_client_info():
     with mock.patch.object(transports.AssetServiceTransport, '_prep_wrapped_messages') as prep:
         transport_class = AssetServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -13480,7 +13481,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
@@ -13491,7 +13492,7 @@ async def test_transport_close_async():
 
 def test_get_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.GetOperationRequest):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -13513,7 +13514,7 @@ def test_get_operation_rest_bad_request(transport: str = 'rest', request_type=op
 ])
 def test_get_operation_rest(request_type):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request_init = {'name': 'sample1/sample2/operations/sample3/sample4'}
@@ -13539,7 +13540,7 @@ def test_get_operation_rest(request_type):
 
 def test_get_operation(transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13561,7 +13562,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13585,7 +13586,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 def test_get_operation_field_headers():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13609,7 +13610,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13634,7 +13635,7 @@ async def test_get_operation_field_headers_async():
 
 def test_get_operation_from_dict():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -13650,7 +13651,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -13674,7 +13675,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = AssetServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=AnonymousCredentialsWithUniverseDomain(),
             transport=transport
         )
         with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
@@ -13689,7 +13690,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = AssetServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=AnonymousCredentialsWithUniverseDomain(),
             transport=transport
         )
         # Test client calls underlying transport.
