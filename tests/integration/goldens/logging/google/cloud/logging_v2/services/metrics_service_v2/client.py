@@ -387,7 +387,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             the universe domain in the credentials.
         """
         if client_universe != credentials_universe:
-            raise ValueError("The configured universe domain (", client_universe, ") does not match the universe domain found in the credentials (", credentials_universe, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            raise ValueError("The configured universe domain (" + client_universe + ") does not match the universe domain found in the credentials (" + credentials_universe + "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
 
     @property
     def api_endpoint(self):
