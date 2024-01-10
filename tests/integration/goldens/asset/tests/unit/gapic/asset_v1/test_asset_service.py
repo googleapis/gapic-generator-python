@@ -1074,7 +1074,7 @@ async def test_list_assets_flattened_error_async():
 
 def test_list_assets_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1127,7 +1127,7 @@ def test_list_assets_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_assets_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1170,7 +1170,7 @@ def test_list_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_assets_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1219,7 +1219,7 @@ async def test_list_assets_async_pager():
 @pytest.mark.asyncio
 async def test_list_assets_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2862,7 +2862,7 @@ async def test_search_all_resources_flattened_error_async():
 
 def test_search_all_resources_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -2915,7 +2915,7 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_search_all_resources_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -2958,7 +2958,7 @@ def test_search_all_resources_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3007,7 +3007,7 @@ async def test_search_all_resources_async_pager():
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3296,7 +3296,7 @@ async def test_search_all_iam_policies_flattened_error_async():
 
 def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -3349,7 +3349,7 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -3392,7 +3392,7 @@ def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3441,7 +3441,7 @@ async def test_search_all_iam_policies_async_pager():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4824,7 +4824,7 @@ async def test_list_saved_queries_flattened_error_async():
 
 def test_list_saved_queries_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4877,7 +4877,7 @@ def test_list_saved_queries_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_saved_queries_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4920,7 +4920,7 @@ def test_list_saved_queries_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4969,7 +4969,7 @@ async def test_list_saved_queries_async_pager():
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5894,7 +5894,7 @@ async def test_analyze_org_policies_flattened_error_async():
 
 def test_analyze_org_policies_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -5947,7 +5947,7 @@ def test_analyze_org_policies_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_analyze_org_policies_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -5990,7 +5990,7 @@ def test_analyze_org_policies_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6039,7 +6039,7 @@ async def test_analyze_org_policies_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6338,7 +6338,7 @@ async def test_analyze_org_policy_governed_containers_flattened_error_async():
 
 def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -6391,7 +6391,7 @@ def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grp
                    for i in results)
 def test_analyze_org_policy_governed_containers_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -6434,7 +6434,7 @@ def test_analyze_org_policy_governed_containers_pages(transport_name: str = "grp
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6483,7 +6483,7 @@ async def test_analyze_org_policy_governed_containers_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6782,7 +6782,7 @@ async def test_analyze_org_policy_governed_assets_flattened_error_async():
 
 def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -6835,7 +6835,7 @@ def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_analyze_org_policy_governed_assets_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -6878,7 +6878,7 @@ def test_analyze_org_policy_governed_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6927,7 +6927,7 @@ async def test_analyze_org_policy_governed_assets_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.

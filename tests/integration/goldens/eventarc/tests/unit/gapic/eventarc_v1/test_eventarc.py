@@ -1190,7 +1190,7 @@ async def test_list_triggers_flattened_error_async():
 
 def test_list_triggers_pager(transport_name: str = "grpc"):
     client = EventarcClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1243,7 +1243,7 @@ def test_list_triggers_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_triggers_pages(transport_name: str = "grpc"):
     client = EventarcClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1286,7 +1286,7 @@ def test_list_triggers_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_triggers_async_pager():
     client = EventarcAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1335,7 +1335,7 @@ async def test_list_triggers_async_pager():
 @pytest.mark.asyncio
 async def test_list_triggers_async_pages():
     client = EventarcAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2611,7 +2611,7 @@ async def test_list_channels_flattened_error_async():
 
 def test_list_channels_pager(transport_name: str = "grpc"):
     client = EventarcClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -2664,7 +2664,7 @@ def test_list_channels_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_channels_pages(transport_name: str = "grpc"):
     client = EventarcClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -2707,7 +2707,7 @@ def test_list_channels_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_channels_async_pager():
     client = EventarcAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2756,7 +2756,7 @@ async def test_list_channels_async_pager():
 @pytest.mark.asyncio
 async def test_list_channels_async_pages():
     client = EventarcAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3995,7 +3995,7 @@ async def test_list_providers_flattened_error_async():
 
 def test_list_providers_pager(transport_name: str = "grpc"):
     client = EventarcClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4048,7 +4048,7 @@ def test_list_providers_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_providers_pages(transport_name: str = "grpc"):
     client = EventarcClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4091,7 +4091,7 @@ def test_list_providers_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_providers_async_pager():
     client = EventarcAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4140,7 +4140,7 @@ async def test_list_providers_async_pager():
 @pytest.mark.asyncio
 async def test_list_providers_async_pages():
     client = EventarcAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4667,7 +4667,7 @@ async def test_list_channel_connections_flattened_error_async():
 
 def test_list_channel_connections_pager(transport_name: str = "grpc"):
     client = EventarcClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4720,7 +4720,7 @@ def test_list_channel_connections_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_channel_connections_pages(transport_name: str = "grpc"):
     client = EventarcClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4763,7 +4763,7 @@ def test_list_channel_connections_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_channel_connections_async_pager():
     client = EventarcAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4812,7 +4812,7 @@ async def test_list_channel_connections_async_pager():
 @pytest.mark.asyncio
 async def test_list_channel_connections_async_pages():
     client = EventarcAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.

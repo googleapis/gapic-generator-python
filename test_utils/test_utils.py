@@ -408,3 +408,7 @@ class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials
     def __init__(self, universe_domain="googleapis.com"):
         super(AnonymousCredentialsWithUniverseDomain, self).__init__()
         self._universe_domain = universe_domain
+
+    @property
+    def universe_domain(self):
+        return self._universe_domain

@@ -933,7 +933,7 @@ async def test_list_instances_flattened_error_async():
 
 def test_list_instances_pager(transport_name: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -986,7 +986,7 @@ def test_list_instances_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_instances_pages(transport_name: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1029,7 +1029,7 @@ def test_list_instances_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_instances_async_pager():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1078,7 +1078,7 @@ async def test_list_instances_async_pager():
 @pytest.mark.asyncio
 async def test_list_instances_async_pages():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.

@@ -906,7 +906,7 @@ async def test_list_buckets_flattened_error_async():
 
 def test_list_buckets_pager(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -959,7 +959,7 @@ def test_list_buckets_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_buckets_pages(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1002,7 +1002,7 @@ def test_list_buckets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_buckets_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1051,7 +1051,7 @@ async def test_list_buckets_async_pager():
 @pytest.mark.asyncio
 async def test_list_buckets_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2432,7 +2432,7 @@ async def test_list_views_flattened_error_async():
 
 def test_list_views_pager(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -2485,7 +2485,7 @@ def test_list_views_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_views_pages(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -2528,7 +2528,7 @@ def test_list_views_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_views_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2577,7 +2577,7 @@ async def test_list_views_async_pager():
 @pytest.mark.asyncio
 async def test_list_views_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3474,7 +3474,7 @@ async def test_list_sinks_flattened_error_async():
 
 def test_list_sinks_pager(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -3527,7 +3527,7 @@ def test_list_sinks_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_sinks_pages(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -3570,7 +3570,7 @@ def test_list_sinks_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_sinks_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3619,7 +3619,7 @@ async def test_list_sinks_async_pager():
 @pytest.mark.asyncio
 async def test_list_sinks_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5414,7 +5414,7 @@ async def test_list_links_flattened_error_async():
 
 def test_list_links_pager(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -5467,7 +5467,7 @@ def test_list_links_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_links_pages(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -5510,7 +5510,7 @@ def test_list_links_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_links_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5559,7 +5559,7 @@ async def test_list_links_async_pager():
 @pytest.mark.asyncio
 async def test_list_links_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6078,7 +6078,7 @@ async def test_list_exclusions_flattened_error_async():
 
 def test_list_exclusions_pager(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -6131,7 +6131,7 @@ def test_list_exclusions_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_exclusions_pages(transport_name: str = "grpc"):
     client = ConfigServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -6174,7 +6174,7 @@ def test_list_exclusions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_exclusions_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6223,7 +6223,7 @@ async def test_list_exclusions_async_pager():
 @pytest.mark.asyncio
 async def test_list_exclusions_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.

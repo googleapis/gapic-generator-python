@@ -1286,7 +1286,7 @@ async def test_list_log_entries_flattened_error_async():
 
 def test_list_log_entries_pager(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1334,7 +1334,7 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_log_entries_pages(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1377,7 +1377,7 @@ def test_list_log_entries_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_log_entries_async_pager():
     client = LoggingServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1426,7 +1426,7 @@ async def test_list_log_entries_async_pager():
 @pytest.mark.asyncio
 async def test_list_log_entries_async_pages():
     client = LoggingServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1560,7 +1560,7 @@ async def test_list_monitored_resource_descriptors_async_from_dict():
 
 def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1608,7 +1608,7 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
                    for i in results)
 def test_list_monitored_resource_descriptors_pages(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1651,7 +1651,7 @@ def test_list_monitored_resource_descriptors_pages(transport_name: str = "grpc")
 @pytest.mark.asyncio
 async def test_list_monitored_resource_descriptors_async_pager():
     client = LoggingServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1700,7 +1700,7 @@ async def test_list_monitored_resource_descriptors_async_pager():
 @pytest.mark.asyncio
 async def test_list_monitored_resource_descriptors_async_pages():
     client = LoggingServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1983,7 +1983,7 @@ async def test_list_logs_flattened_error_async():
 
 def test_list_logs_pager(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -2036,7 +2036,7 @@ def test_list_logs_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_logs_pages(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -2079,7 +2079,7 @@ def test_list_logs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_logs_async_pager():
     client = LoggingServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2128,7 +2128,7 @@ async def test_list_logs_async_pager():
 @pytest.mark.asyncio
 async def test_list_logs_async_pages():
     client = LoggingServiceV2AsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.

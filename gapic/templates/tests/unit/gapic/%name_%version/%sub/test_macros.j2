@@ -564,7 +564,7 @@ async def test_{{ method_name }}_flattened_error_async():
 {% if not method.paged_result_field.map %}
 def test_{{ method_name }}_pager(transport_name: str = "grpc"):
     client = {{ service.client_name }}(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -624,7 +624,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
 {% endif %}
 def test_{{ method_name }}_pages(transport_name: str = "grpc"):
     client = {{ service.client_name }}(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -698,7 +698,7 @@ def test_{{ method_name }}_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async_pager():
     client = {{ service.async_client_name }}(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -788,7 +788,7 @@ async def test_{{ method_name }}_async_pager():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async_pages():
     client = {{ service.async_client_name }}(
-        credentials=AnonymousCredentialsWithUniverseDomain,
+        credentials=AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
