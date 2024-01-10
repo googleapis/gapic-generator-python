@@ -201,8 +201,6 @@ def intercepted_echo(use_mtls):
     )
     return EchoClient(transport=transport)
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
 class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
     def __init__(self, universe_domain="googleapis.com"):
         super(AnonymousCredentialsWithUniverseDomain, self).__init__()
