@@ -471,7 +471,7 @@ def test_eventarc_client_mtls_env_auto(client_class, transport_class, transport_
 @pytest.mark.parametrize("client_class", [
     EventarcClient, EventarcAsyncClient
 ])
-@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcClient))
+@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT_TEMP", modify_default_endpoint(EventarcClient))
 @mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcAsyncClient))
 def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
@@ -538,32 +538,28 @@ def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
 @pytest.mark.parametrize("client_class", [
     EventarcClient, EventarcAsyncClient
 ])
-@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcClient))
-@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcAsyncClient))
+@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcClient))
+@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcAsyncClient))
 def test_eventarc_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
+    api_override = "foo.com"
+    default_universe = EventarcClient.GOOGLE_DEFAULT_UNIVERSE
+    default_endpoint = EventarcClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = EventarcClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_endpoint)
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
-        assert client.api_endpoint == mock_api_endpoint
-
-    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="false",
-    # use ClientOptions.api_endpoint as the api endpoint.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
-        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
-        assert client.api_endpoint == mock_api_endpoint
+        assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the DEFAULT_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(credentials=ga_credentials.AnonymousCredentials())
-        assert client.api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
@@ -571,31 +567,13 @@ def test_eventarc_client_client_api_endpoint(client_class):
         client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
-    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (by default),
-    # GOOGLE_API_USE_CLIENT_CERTIFICATE="true" and default cert source doesn't exist,
-    # use the DEFAULT_ENDPOINT as the api endpoint.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
-            client = client_class(credentials=ga_credentials.AnonymousCredentials())
-            assert client.api_endpoint == client_class.DEFAULT_ENDPOINT
-
-    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (by default),
-    # GOOGLE_API_USE_CLIENT_CERTIFICATE="true" and default cert source exists,
-    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
-            with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_client_cert_source):
-                client = client_class(credentials=ga_credentials.AnonymousCredentials())
-                assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
-
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
     # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
     # and ClientOptions.universe_domain="bar.com",
     # use the DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
-    mock_universe = "bar.com"
     options = client_options.ClientOptions(universe_domain=mock_universe)
     client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
-    assert client.api_endpoint == client_class.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+    assert client.api_endpoint == mock_endpoint
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
