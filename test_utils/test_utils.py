@@ -22,7 +22,7 @@ from google.api import annotations_pb2, routing_pb2
 from google.api import client_pb2
 from google.api import http_pb2
 from google.protobuf import descriptor_pb2 as desc
-from google.auth import AnonymousCredentials
+from google.auth import credentials as ga_credentials
 
 
 def make_service(
@@ -404,7 +404,7 @@ def make_doc_meta(
         ),
     )
 
-class AnonymousCredentialsWithUniverseDomain(AnonymousCredentials):
+class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
     def __init__(self, universe_domain):
         super(AnonymousCredentialsWithUniverseDomain, self).__init__()
         self._universe_domain = universe_domain
