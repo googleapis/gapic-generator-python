@@ -187,6 +187,16 @@ class CloudRedisAsyncClient:
         """
         return self._client._universe_domain
 
+    def _validate_universe_domain(self) -> bool:
+        """Returns True if the universe domain used by the client instance matches
+        the universe domain in the credentials, else returns False.
+
+        Returns:
+            bool: Validates the universe domain used by the client instance against
+            the universe domain in the credentials.
+        """
+        return self._client._validate_universe_domain()
+
     get_transport_class = functools.partial(type(CloudRedisClient).get_transport_class, type(CloudRedisClient))
 
     def __init__(self, *,

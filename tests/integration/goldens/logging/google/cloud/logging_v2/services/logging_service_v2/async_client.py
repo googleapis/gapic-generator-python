@@ -162,6 +162,16 @@ class LoggingServiceV2AsyncClient:
         """
         return self._client._universe_domain
 
+    def _validate_universe_domain(self) -> bool:
+        """Returns True if the universe domain used by the client instance matches
+        the universe domain in the credentials, else returns False.
+
+        Returns:
+            bool: Validates the universe domain used by the client instance against
+            the universe domain in the credentials.
+        """
+        return self._client._validate_universe_domain()
+
     get_transport_class = functools.partial(type(LoggingServiceV2Client).get_transport_class, type(LoggingServiceV2Client))
 
     def __init__(self, *,
