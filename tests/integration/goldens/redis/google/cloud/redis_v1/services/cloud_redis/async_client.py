@@ -1753,7 +1753,7 @@ class CloudRedisAsyncClient:
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(
@@ -1807,7 +1807,7 @@ class CloudRedisAsyncClient:
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(
@@ -1865,7 +1865,7 @@ class CloudRedisAsyncClient:
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -1918,7 +1918,7 @@ class CloudRedisAsyncClient:
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -1968,7 +1968,7 @@ class CloudRedisAsyncClient:
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(
