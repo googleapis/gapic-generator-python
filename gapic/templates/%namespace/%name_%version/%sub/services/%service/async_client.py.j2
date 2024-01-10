@@ -163,7 +163,7 @@ class {{ service.async_client_name }}:
             str: The universe domain used
                 by the client instance.
         """
-        return self._universe_domain
+        return self._client._universe_domain
 
 
     get_transport_class = functools.partial(type({{ service.client_name }}).get_transport_class, type({{ service.client_name }}))

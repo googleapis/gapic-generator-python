@@ -161,7 +161,7 @@ class MetricsServiceV2AsyncClient:
             str: The universe domain used
                 by the client instance.
         """
-        return self._universe_domain
+        return self._client._universe_domain
 
     get_transport_class = functools.partial(type(MetricsServiceV2Client).get_transport_class, type(MetricsServiceV2Client))
 

@@ -175,7 +175,7 @@ class ConfigServiceV2AsyncClient:
             str: The universe domain used
                 by the client instance.
         """
-        return self._universe_domain
+        return self._client._universe_domain
 
     get_transport_class = functools.partial(type(ConfigServiceV2Client).get_transport_class, type(ConfigServiceV2Client))
 
