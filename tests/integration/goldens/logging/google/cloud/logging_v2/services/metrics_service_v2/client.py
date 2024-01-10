@@ -381,6 +381,13 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
+    def _validate_universe_domain(self):
+        if not self.transport.is_universe_domain_valid:
+            if self.universe_domain != self.transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials.universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self.transport.is_universe_domain_valid = True
+
     @property
     def api_endpoint(self):
         """Return the API endpoint used by the client instance.
@@ -591,11 +598,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.transport.is_universe_domain_valid:
-            if self.universe_domain != self.transport._credentials._universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials.universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
-            else:
-                self.transport.is_universe_domain_valid = True
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -720,11 +723,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.transport.is_universe_domain_valid:
-            if self.universe_domain != self.transport._credentials._universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials.universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
-            else:
-                self.transport.is_universe_domain_valid = True
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -859,11 +858,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.transport.is_universe_domain_valid:
-            if self.universe_domain != self.transport._credentials._universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials.universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
-            else:
-                self.transport.is_universe_domain_valid = True
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -997,11 +992,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.transport.is_universe_domain_valid:
-            if self.universe_domain != self.transport._credentials._universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials.universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
-            else:
-                self.transport.is_universe_domain_valid = True
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1098,11 +1089,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.transport.is_universe_domain_valid:
-            if self.universe_domain != self.transport._credentials._universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials.universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
-            else:
-                self.transport.is_universe_domain_valid = True
+        self._validate_universe_domain()
 
         # Send the request.
         rpc(
@@ -1170,11 +1157,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.transport.is_universe_domain_valid:
-            if self.universe_domain != self.transport._credentials._universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials.universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
-            else:
-                self.transport.is_universe_domain_valid = True
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1228,11 +1211,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.transport.is_universe_domain_valid:
-            if self.universe_domain != self.transport._credentials._universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials.universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
-            else:
-                self.transport.is_universe_domain_valid = True
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1289,11 +1268,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.transport.is_universe_domain_valid:
-            if self.universe_domain != self.transport._credentials._universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials.universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
-            else:
-                self.transport.is_universe_domain_valid = True
+        self._validate_universe_domain()
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

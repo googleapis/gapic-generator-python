@@ -586,7 +586,6 @@ def test_eventarc_client_client_api_endpoint(client_class):
     assert client.api_endpoint == mock_endpoint
     assert client.universe_domain == mock_universe
 
-
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (EventarcClient, transports.EventarcGrpcTransport, "grpc"),
     (EventarcAsyncClient, transports.EventarcGrpcAsyncIOTransport, "grpc_asyncio"),

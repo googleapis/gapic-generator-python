@@ -635,7 +635,6 @@ def test_{{ service.client_name|snake_case }}_client_api_endpoint(client_class):
     client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
     assert client.api_endpoint == mock_endpoint
     assert client.universe_domain == mock_universe
-    
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     {% if 'grpc' in opts.transport %}

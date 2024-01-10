@@ -576,7 +576,6 @@ def test_asset_service_client_client_api_endpoint(client_class):
     assert client.api_endpoint == mock_endpoint
     assert client.universe_domain == mock_universe
 
-
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (AssetServiceClient, transports.AssetServiceGrpcTransport, "grpc"),
     (AssetServiceAsyncClient, transports.AssetServiceGrpcAsyncIOTransport, "grpc_asyncio"),

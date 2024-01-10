@@ -552,7 +552,6 @@ def test_metrics_service_v2_client_client_api_endpoint(client_class):
     assert client.api_endpoint == mock_endpoint
     assert client.universe_domain == mock_universe
 
-
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),
     (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),

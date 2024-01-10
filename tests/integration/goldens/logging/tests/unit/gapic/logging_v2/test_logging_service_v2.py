@@ -554,7 +554,6 @@ def test_logging_service_v2_client_client_api_endpoint(client_class):
     assert client.api_endpoint == mock_endpoint
     assert client.universe_domain == mock_universe
 
-
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (LoggingServiceV2Client, transports.LoggingServiceV2GrpcTransport, "grpc"),
     (LoggingServiceV2AsyncClient, transports.LoggingServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
