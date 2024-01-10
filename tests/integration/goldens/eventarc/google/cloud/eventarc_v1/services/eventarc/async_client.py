@@ -3081,7 +3081,7 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self._universe_domain, self.transport._credentials.universe_domain)
+        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(
