@@ -437,8 +437,8 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
 @pytest.mark.parametrize("client_class", [
     MetricsServiceV2Client, MetricsServiceV2AsyncClient
 ])
-@mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2Client))
-@mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2AsyncClient))
+@mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
+@mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(MetricsServiceV2AsyncClient))
 def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
@@ -462,7 +462,7 @@ def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
-        assert api_endpoint == client_class.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client_class.GOOGLE_DEFAULT_UNIVERSE)
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
         assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
@@ -475,7 +475,7 @@ def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
-            assert api_endpoint == client_class.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client_class.GOOGLE_DEFAULT_UNIVERSE)
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
