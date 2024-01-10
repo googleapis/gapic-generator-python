@@ -519,7 +519,7 @@ def test_logging_service_v2_client_client_api_endpoint(client_class):
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_endpoint)
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == api_override
 
