@@ -78,6 +78,9 @@ class IAMCredentialsTransport(abc.ABC):
 
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
+        # Initialize the universe domain validation.
+        self.is_universe_domain_valid = False
+
         # Save the scopes.
         self._scopes = scopes
 

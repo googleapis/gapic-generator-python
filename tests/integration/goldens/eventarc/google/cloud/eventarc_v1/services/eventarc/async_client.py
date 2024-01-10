@@ -335,6 +335,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -438,6 +445,13 @@ class EventarcAsyncClient:
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -585,6 +599,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -722,6 +743,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -850,6 +878,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -965,6 +1000,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -1068,6 +1110,13 @@ class EventarcAsyncClient:
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1215,6 +1264,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -1344,6 +1400,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -1464,6 +1527,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -1573,6 +1643,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -1676,6 +1753,13 @@ class EventarcAsyncClient:
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1792,6 +1876,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -1896,6 +1987,13 @@ class EventarcAsyncClient:
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2043,6 +2141,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -2161,6 +2266,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -2275,6 +2387,13 @@ class EventarcAsyncClient:
                 ("name", request.name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2396,6 +2515,13 @@ class EventarcAsyncClient:
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -2451,6 +2577,13 @@ class EventarcAsyncClient:
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2501,6 +2634,13 @@ class EventarcAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2557,6 +2697,13 @@ class EventarcAsyncClient:
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
@@ -2606,6 +2753,13 @@ class EventarcAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2719,6 +2873,13 @@ class EventarcAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata(
                 (("resource", request.resource),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2838,6 +2999,13 @@ class EventarcAsyncClient:
                 (("resource", request.resource),)),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2894,6 +3062,13 @@ class EventarcAsyncClient:
                 (("resource", request.resource),)),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2945,6 +3120,13 @@ class EventarcAsyncClient:
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2995,6 +3177,13 @@ class EventarcAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(

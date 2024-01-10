@@ -587,6 +587,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         rpc(
             request,
@@ -771,6 +778,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.write_log_entries]
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -915,6 +929,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_log_entries]
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -1001,6 +1022,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_monitored_resource_descriptors]
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1121,6 +1149,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -1207,6 +1242,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.tail_log_entries]
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             requests,
@@ -1275,6 +1317,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -1325,6 +1374,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1379,6 +1435,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

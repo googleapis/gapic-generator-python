@@ -665,6 +665,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -754,6 +761,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("name", request.name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -846,6 +860,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -949,6 +970,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -1041,6 +1069,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -1128,6 +1163,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -1205,6 +1247,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         rpc(
             request,
@@ -1275,6 +1324,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("name", request.name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         rpc(
@@ -1380,6 +1436,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -1470,6 +1533,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -1552,6 +1622,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1638,6 +1715,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -1712,6 +1796,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("name", request.name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         rpc(
@@ -1819,6 +1910,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1945,6 +2043,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("sink_name", request.sink_name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2081,6 +2186,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2245,6 +2357,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -2347,6 +2466,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("sink_name", request.sink_name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         rpc(
@@ -2482,6 +2608,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -2609,6 +2742,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -2726,6 +2866,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -2839,6 +2986,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -2949,6 +3103,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3073,6 +3234,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("name", request.name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3208,6 +3376,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3358,6 +3533,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -3460,6 +3642,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         rpc(
             request,
@@ -3561,6 +3750,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("name", request.name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3671,6 +3867,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("name", request.name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3804,6 +4007,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 ("name", request.name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3948,6 +4158,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -4031,6 +4248,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.copy_log_entries]
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request,
@@ -4107,6 +4331,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -4157,6 +4388,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -4211,6 +4449,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

@@ -316,6 +316,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -445,6 +452,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 ("metric_name", request.metric_name),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -577,6 +591,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 ("parent", request.parent),
             )),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -717,6 +738,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request,
@@ -819,6 +847,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             )),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         await rpc(
             request,
@@ -871,6 +906,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -921,6 +963,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -975,6 +1024,13 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        if not self._transport.is_universe_domain_valid:
+            if self.universe_domain != self._transport._credentials._universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._transport.is_universe_domain_valid = True
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
