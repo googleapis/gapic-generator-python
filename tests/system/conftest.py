@@ -19,7 +19,7 @@ import os
 import pytest
 
 from google.api_core.client_options import ClientOptions  # type: ignore
-from google.auth import credentials
+from test_utils.test_utils import AnonymousCredentialsWithUniverseDomain
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
@@ -97,7 +97,7 @@ def construct_client(
             with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
                 mock_ssl_cred.return_value = ssl_credentials
                 client = client_class(
-                    credentials=credentials.AnonymousCredentials(),
+                    credentials=AnonymousCredentialsWithUniverseDomain(),
                     client_options=client_options,
                 )
                 mock_ssl_cred.assert_called_once_with(
@@ -108,13 +108,13 @@ def construct_client(
         transport_cls = client_class.get_transport_class(transport_name)
         if transport_name in ["grpc", "grpc_asyncio"]:
             transport = transport_cls(
-                credentials=credentials.AnonymousCredentials(),
+                credentials=AnonymousCredentialsWithUniverseDomain(),
                 channel=channel_creator("localhost:7469"),
             )
         elif transport_name == "rest":
             # The custom host explicitly bypasses https.
             transport = transport_cls(
-                credentials=credentials.AnonymousCredentials(),
+                credentials=AnonymousCredentialsWithUniverseDomain(),
                 host="localhost:7469",
                 url_scheme="http",
             )
