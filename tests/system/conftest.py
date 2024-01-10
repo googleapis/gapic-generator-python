@@ -19,7 +19,7 @@ import os
 import pytest
 
 from google.api_core.client_options import ClientOptions  # type: ignore
-from test_utils.test_utils import AnonymousCredentialsWithUniverseDomain
+from google.auth import credentials as ga_credentials
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
@@ -200,3 +200,10 @@ def intercepted_echo(use_mtls):
         channel=intercept_channel
     )
     return EchoClient(transport=transport)
+
+# Anonymous Credentials with universe domain property. If no universe domain is provided, then
+# the default universe domain is "googleapis.com".
+class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
+    def __init__(self, universe_domain="googleapis.com"):
+        super(AnonymousCredentialsWithUniverseDomain, self).__init__()
+        self._universe_domain = universe_domain

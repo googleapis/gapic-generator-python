@@ -50,7 +50,6 @@ from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from test_utils.test_utils import AnonymousCredentialsWithUniverseDomain
 import google.auth
 
 
@@ -70,6 +69,16 @@ def modify_default_endpoint(client):
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client.DEFAULT_ENDPOINT_TEMPLATE) else client.DEFAULT_ENDPOINT_TEMPLATE
 
+# Anonymous Credentials with universe domain property. If no universe domain is provided, then
+# the default universe domain is "googleapis.com".
+class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
+    def __init__(self, universe_domain="googleapis.com"):
+        super(AnonymousCredentialsWithUniverseDomain, self).__init__()
+        self._universe_domain = universe_domain
+
+    @property
+    def universe_domain(self):
+        return self._universe_domain
 
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
