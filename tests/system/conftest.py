@@ -201,6 +201,7 @@ def intercepted_echo(use_mtls):
     )
     return EchoClient(transport=transport)
 
+
 class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
     def __init__(self, universe_domain="googleapis.com"):
         super(AnonymousCredentialsWithUniverseDomain, self).__init__()
