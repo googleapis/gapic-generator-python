@@ -405,6 +405,6 @@ def make_doc_meta(
     )
 
 class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain):
+    def __init__(self, universe_domain="googleapis.com"):
         super(AnonymousCredentialsWithUniverseDomain, self).__init__()
         self._universe_domain = universe_domain
