@@ -165,11 +165,11 @@ class {{ service.async_client_name }}:
         """
         return self._client._universe_domain
     
-    def _validate_universe_domain(self):
+    def _validate_universe_domain(client_universe, credentials_universe):
         """Validates the universe domain used by the client instance against
             the universe domain in the credentials.
         """
-        return self._client._validate_universe_domain()
+        return self._client._validate_universe_domain(client_universe, credentials_universe)
 
 
     get_transport_class = functools.partial(type({{ service.client_name }}).get_transport_class, type({{ service.client_name }}))
@@ -373,7 +373,7 @@ class {{ service.async_client_name }}:
         {% endif %}
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         {%+ if not method.void %}response = {% endif %}
@@ -528,7 +528,7 @@ class {{ service.async_client_name }}:
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -647,7 +647,7 @@ class {{ service.async_client_name }}:
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -704,7 +704,7 @@ class {{ service.async_client_name }}:
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

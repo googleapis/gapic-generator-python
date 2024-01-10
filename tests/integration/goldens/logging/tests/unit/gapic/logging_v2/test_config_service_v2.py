@@ -174,6 +174,14 @@ def test__get_universe_domain():
         ConfigServiceV2Client._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
+def test__validate_universe_domain():
+
+    assert ConfigServiceV2Client._validate_universe_domain("foo.com", "foo.com") == None
+
+    with pytest.raises(ValueError) as excinfo:
+        ConfigServiceV2Client._validate_universe_domain("foo.com", "bar.com")
+    assert str(excinfo.value) == "The configured universe domain ("foo.com") does not match the universe domain found in the credentials ("bar.com"). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
 @pytest.mark.parametrize("client_class,transport_name", [
     (ConfigServiceV2Client, "grpc"),
     (ConfigServiceV2AsyncClient, "grpc_asyncio"),
