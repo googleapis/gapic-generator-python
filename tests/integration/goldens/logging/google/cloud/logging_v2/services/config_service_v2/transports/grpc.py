@@ -119,8 +119,6 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
         if channel:
-            # Ignore credentials if a channel was passed.
-            credentials = False
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
