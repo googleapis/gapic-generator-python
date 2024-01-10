@@ -599,7 +599,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         rpc(
@@ -786,7 +786,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self.transport.write_log_entries]
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -933,7 +933,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self.transport.list_log_entries]
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1023,7 +1023,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self.transport.list_monitored_resource_descriptors]
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1145,7 +1145,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1234,7 +1234,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self.transport.tail_log_entries]
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1305,7 +1305,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1359,7 +1359,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1416,7 +1416,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

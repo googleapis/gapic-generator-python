@@ -675,7 +675,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -796,7 +796,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -893,7 +893,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1016,7 +1016,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1127,7 +1127,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1233,7 +1233,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1348,7 +1348,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1444,7 +1444,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         rpc(
@@ -1661,7 +1661,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1851,7 +1851,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1949,7 +1949,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2058,7 +2058,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2158,7 +2158,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2256,7 +2256,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2394,7 +2394,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2501,7 +2501,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2614,7 +2614,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2741,7 +2741,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2839,7 +2839,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         rpc(
@@ -2922,7 +2922,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -3064,7 +3064,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -3215,7 +3215,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -3395,7 +3395,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -3475,7 +3475,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        AssetServiceClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(

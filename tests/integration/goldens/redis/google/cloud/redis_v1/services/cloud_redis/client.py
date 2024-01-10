@@ -639,7 +639,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -751,7 +751,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -857,7 +857,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1015,7 +1015,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1162,7 +1162,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1294,7 +1294,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1436,7 +1436,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1575,7 +1575,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1708,7 +1708,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1836,7 +1836,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1979,7 +1979,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2058,7 +2058,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2112,7 +2112,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2170,7 +2170,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2223,7 +2223,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2273,7 +2273,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -2327,7 +2327,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        CloudRedisClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
