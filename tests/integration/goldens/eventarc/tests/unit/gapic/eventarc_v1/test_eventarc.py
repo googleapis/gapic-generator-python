@@ -265,8 +265,8 @@ def test_eventarc_client_get_transport_class():
     (EventarcAsyncClient, transports.EventarcGrpcAsyncIOTransport, "grpc_asyncio"),
     (EventarcClient, transports.EventarcRestTransport, "rest"),
 ])
-@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcClient))
-@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcAsyncClient))
+@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcClient))
+@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcAsyncClient))
 def test_eventarc_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(EventarcClient, 'get_transport_class') as gtc:
@@ -307,7 +307,7 @@ def test_eventarc_client_client_options(client_class, transport_class, transport
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -355,7 +355,7 @@ def test_eventarc_client_client_options(client_class, transport_class, transport
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -371,7 +371,7 @@ def test_eventarc_client_client_options(client_class, transport_class, transport
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -388,8 +388,8 @@ def test_eventarc_client_client_options(client_class, transport_class, transport
     (EventarcClient, transports.EventarcRestTransport, "rest", "true"),
     (EventarcClient, transports.EventarcRestTransport, "rest", "false"),
 ])
-@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcClient))
-@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcAsyncClient))
+@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcClient))
+@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_eventarc_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -405,7 +405,7 @@ def test_eventarc_client_mtls_env_auto(client_class, transport_class, transport_
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT
+                expected_host = client.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -429,7 +429,7 @@ def test_eventarc_client_mtls_env_auto(client_class, transport_class, transport_
             with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
                 with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_host = client.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -458,7 +458,7 @@ def test_eventarc_client_mtls_env_auto(client_class, transport_class, transport_
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
+                    host=client.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -471,8 +471,8 @@ def test_eventarc_client_mtls_env_auto(client_class, transport_class, transport_
 @pytest.mark.parametrize("client_class", [
     EventarcClient, EventarcAsyncClient
 ])
-@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(EventarcClient))
-@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(EventarcAsyncClient))
+@mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcClient))
+@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcAsyncClient))
 def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
@@ -496,7 +496,7 @@ def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
-        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client_class.GOOGLE_DEFAULT_UNIVERSE)
         assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
@@ -509,7 +509,7 @@ def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
-            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client_class.GOOGLE_DEFAULT_UNIVERSE)
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
@@ -556,7 +556,7 @@ def test_eventarc_client_client_api_endpoint(client_class):
         assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
-    # use the DEFAULT_ENDPOINT as the api endpoint.
+    # use the DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
@@ -592,7 +592,7 @@ def test_eventarc_client_client_options_scopes(client_class, transport_class, tr
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -618,7 +618,7 @@ def test_eventarc_client_client_options_credentials_file(client_class, transport
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -662,7 +662,7 @@ def test_eventarc_client_create_channel_credentials_file(client_class, transport
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -13403,7 +13403,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client.DEFAULT_ENDPOINT_TEMPLATE(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
