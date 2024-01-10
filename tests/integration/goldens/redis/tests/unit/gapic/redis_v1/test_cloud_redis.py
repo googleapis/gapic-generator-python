@@ -565,6 +565,7 @@ def test_cloud_redis_client_client_api_endpoint(client_class):
     options = client_options.ClientOptions(universe_domain=mock_universe)
     client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     assert client.api_endpoint == mock_endpoint
+    assert client.universe_domain == mock_universe
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
