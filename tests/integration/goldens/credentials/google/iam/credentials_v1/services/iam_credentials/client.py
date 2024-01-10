@@ -637,7 +637,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.generate_access_token]
+        rpc = self._transport._wrapped_methods[self.transport.generate_access_token]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -648,11 +648,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        if not self._transport.is_universe_domain_valid:
-            if self.universe_domain != self._transport._credentials.universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+        if not self.transport.is_universe_domain_valid:
+            if self.universe_domain != self.transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
             else:
-                self._transport.is_universe_domain_valid = True
+                self.transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -791,7 +791,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.generate_id_token]
+        rpc = self._transport._wrapped_methods[self.transport.generate_id_token]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -802,11 +802,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        if not self._transport.is_universe_domain_valid:
-            if self.universe_domain != self._transport._credentials.universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+        if not self.transport.is_universe_domain_valid:
+            if self.universe_domain != self.transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
             else:
-                self._transport.is_universe_domain_valid = True
+                self.transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -931,7 +931,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.sign_blob]
+        rpc = self._transport._wrapped_methods[self.transport.sign_blob]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -942,11 +942,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        if not self._transport.is_universe_domain_valid:
-            if self.universe_domain != self._transport._credentials.universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+        if not self.transport.is_universe_domain_valid:
+            if self.universe_domain != self.transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
             else:
-                self._transport.is_universe_domain_valid = True
+                self.transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1074,7 +1074,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.sign_jwt]
+        rpc = self._transport._wrapped_methods[self.transport.sign_jwt]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1085,11 +1085,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        if not self._transport.is_universe_domain_valid:
-            if self.universe_domain != self._transport._credentials.universe_domain:
-                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self._transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+        if not self.transport.is_universe_domain_valid:
+            if self.universe_domain != self.transport._credentials.universe_domain:
+                raise ValueError("The configured universe domain (", self.universe_domain, ") does not match the universe domain found in the credentials (", self.transport._credentials._universe_domain, "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
             else:
-                self._transport.is_universe_domain_valid = True
+                self.transport.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
