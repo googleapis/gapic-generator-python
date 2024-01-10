@@ -439,8 +439,8 @@ def test_logging_service_v2_client_mtls_env_auto(client_class, transport_class, 
 @pytest.mark.parametrize("client_class", [
     LoggingServiceV2Client, LoggingServiceV2AsyncClient
 ])
-@mock.patch.object(LoggingServiceV2Client, "DEFAULT_ENDPOINT_TEMP", modify_default_endpoint(LoggingServiceV2Client))
-@mock.patch.object(LoggingServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(LoggingServiceV2AsyncClient))
+@mock.patch.object(LoggingServiceV2Client, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(LoggingServiceV2Client))
+@mock.patch.object(LoggingServiceV2AsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(LoggingServiceV2AsyncClient))
 def test_logging_service_v2_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 

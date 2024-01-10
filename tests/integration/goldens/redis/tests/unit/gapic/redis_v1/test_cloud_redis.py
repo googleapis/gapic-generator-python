@@ -462,8 +462,8 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
 @pytest.mark.parametrize("client_class", [
     CloudRedisClient, CloudRedisAsyncClient
 ])
-@mock.patch.object(CloudRedisClient, "DEFAULT_ENDPOINT_TEMP", modify_default_endpoint(CloudRedisClient))
-@mock.patch.object(CloudRedisAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisAsyncClient))
+@mock.patch.object(CloudRedisClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(CloudRedisClient))
+@mock.patch.object(CloudRedisAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(CloudRedisAsyncClient))
 def test_cloud_redis_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
