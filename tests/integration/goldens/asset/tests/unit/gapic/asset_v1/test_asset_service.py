@@ -462,7 +462,7 @@ def test_asset_service_client_mtls_env_auto(client_class, transport_class, trans
     AssetServiceClient, AssetServiceAsyncClient
 ])
 @mock.patch.object(AssetServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceClient))
-@mock.patch.object(AssetServiceAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(AssetServiceAsyncClient))
+@mock.patch.object(AssetServiceAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceAsyncClient))
 def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 

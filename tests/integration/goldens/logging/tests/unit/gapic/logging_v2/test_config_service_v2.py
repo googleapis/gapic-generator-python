@@ -439,7 +439,7 @@ def test_config_service_v2_client_mtls_env_auto(client_class, transport_class, t
     ConfigServiceV2Client, ConfigServiceV2AsyncClient
 ])
 @mock.patch.object(ConfigServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2Client))
-@mock.patch.object(ConfigServiceV2AsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(ConfigServiceV2AsyncClient))
+@mock.patch.object(ConfigServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigServiceV2AsyncClient))
 def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 

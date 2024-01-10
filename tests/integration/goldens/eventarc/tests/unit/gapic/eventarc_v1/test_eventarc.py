@@ -472,7 +472,7 @@ def test_eventarc_client_mtls_env_auto(client_class, transport_class, transport_
     EventarcClient, EventarcAsyncClient
 ])
 @mock.patch.object(EventarcClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcClient))
-@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(EventarcAsyncClient))
+@mock.patch.object(EventarcAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(EventarcAsyncClient))
 def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 

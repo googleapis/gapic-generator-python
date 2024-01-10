@@ -452,7 +452,7 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
     IAMCredentialsClient, IAMCredentialsAsyncClient
 ])
 @mock.patch.object(IAMCredentialsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsClient))
-@mock.patch.object(IAMCredentialsAsyncClient, "DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint(IAMCredentialsAsyncClient))
+@mock.patch.object(IAMCredentialsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsAsyncClient))
 def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
