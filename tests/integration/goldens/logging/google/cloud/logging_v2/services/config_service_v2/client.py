@@ -449,12 +449,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    def _validate_universe_domain(self) -> bool:
-        """Returns True if the universe domain used by the client instance matches
-        the universe domain in the credentials, else returns False.
-
-        Returns:
-            bool: Validates the universe domain used by the client instance against
+    def _validate_universe_domain(self):
+        """Validates the universe domain used by the client instance against
             the universe domain in the credentials.
         """
         if not self.transport.is_universe_domain_valid:
