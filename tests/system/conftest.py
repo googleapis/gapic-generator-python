@@ -197,7 +197,8 @@ def intercepted_echo(use_mtls):
     )
     intercept_channel = grpc.intercept_channel(channel, interceptor)
     transport = EchoClient.get_transport_class("grpc")(
-        channel=intercept_channel
+        credentials=AnonymousCredentialsWithUniverseDomain(),
+        channel=intercept_channel,
     )
     return EchoClient(transport=transport)
 
