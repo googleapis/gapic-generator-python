@@ -177,12 +177,6 @@ class ConfigServiceV2AsyncClient:
         """
         return self._client._universe_domain
 
-    def _validate_universe_domain(client_universe, credentials_universe):
-        """Validates the universe domain used by the client instance against
-            the universe domain in the credentials.
-        """
-        return self._client._validate_universe_domain(client_universe, credentials_universe)
-
     get_transport_class = functools.partial(type(ConfigServiceV2Client).get_transport_class, type(ConfigServiceV2Client))
 
     def __init__(self, *,
