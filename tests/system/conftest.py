@@ -86,18 +86,25 @@ def pytest_addoption(parser):
     )
 
 
+class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
+    def __init__(self, universe_domain="googleapis.com"):
+        super(AnonymousCredentialsWithUniverseDomain, self).__init__()
+        self._universe_domain = universe_domain
+
+
 def construct_client(
     client_class,
     use_mtls,
     transport_name="grpc",
     channel_creator=grpc.insecure_channel,
+    credentials=AnonymousCredentialsWithUniverseDomain()
 ):
     if use_mtls:
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
             with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
                 mock_ssl_cred.return_value = ssl_credentials
                 client = client_class(
-                    credentials=AnonymousCredentialsWithUniverseDomain(),
+                    credentials=credentials,
                     client_options=client_options,
                 )
                 mock_ssl_cred.assert_called_once_with(
@@ -108,13 +115,13 @@ def construct_client(
         transport_cls = client_class.get_transport_class(transport_name)
         if transport_name in ["grpc", "grpc_asyncio"]:
             transport = transport_cls(
-                credentials=AnonymousCredentialsWithUniverseDomain(),
+                credentials=credentials,
                 channel=channel_creator("localhost:7469"),
             )
         elif transport_name == "rest":
             # The custom host explicitly bypasses https.
             transport = transport_cls(
-                credentials=AnonymousCredentialsWithUniverseDomain(),
+                credentials=credentials,
                 host="localhost:7469",
                 url_scheme="http",
             )
@@ -132,6 +139,11 @@ def use_mtls(request):
 @pytest.fixture(params=["grpc", "rest"])
 def echo(use_mtls, request):
     return construct_client(EchoClient, use_mtls, transport_name=request.param)
+
+
+@pytest.fixture(params=["grpc", "rest"])
+def echo_with_localhost_universe(use_mtls, request):
+    return construct_client(EchoClient, use_mtls, transport_name=request.param, cl=client_options, credentials=AnonymousCredentialsWithUniverseDomain(universe_domain="localhost:7469"))
 
 
 @pytest.fixture(params=["grpc", "rest"])
@@ -201,9 +213,3 @@ def intercepted_echo(use_mtls):
         channel=intercept_channel,
     )
     return EchoClient(transport=transport)
-
-
-class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
