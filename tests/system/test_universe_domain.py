@@ -1,6 +1,6 @@
 import pytest
 
-#Note(TODO): Uncomment these test cases once showcase library is updated
+# Note(TODO): Uncomment these test cases once showcase library is updated
 # def test_universe_domain_validation_pass(echo_with_localhost_universe):
 #     assert echo_with_localhost_universe.universe_domain == "localhost:7469"
 #     assert echo_with_localhost_universe.api_endpoint == "localhost:7469"
