@@ -588,7 +588,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_log]
+        rpc = self._transport._wrapped_methods[self._transport.delete_log]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -783,7 +783,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.write_log_entries]
+        rpc = self._transport._wrapped_methods[self._transport.write_log_entries]
 
         # Validate the universe domain.
         LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
@@ -930,7 +930,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_log_entries]
+        rpc = self._transport._wrapped_methods[self._transport.list_log_entries]
 
         # Validate the universe domain.
         LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
@@ -1020,7 +1020,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_monitored_resource_descriptors]
+        rpc = self._transport._wrapped_methods[self._transport.list_monitored_resource_descriptors]
 
         # Validate the universe domain.
         LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
@@ -1134,7 +1134,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_logs]
+        rpc = self._transport._wrapped_methods[self._transport.list_logs]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1231,7 +1231,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.tail_log_entries]
+        rpc = self._transport._wrapped_methods[self._transport.tail_log_entries]
 
         # Validate the universe domain.
         LoggingServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)

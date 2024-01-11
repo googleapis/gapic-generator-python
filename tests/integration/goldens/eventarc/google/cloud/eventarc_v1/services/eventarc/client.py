@@ -704,7 +704,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_trigger]
+        rpc = self._transport._wrapped_methods[self._transport.get_trigger]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -811,7 +811,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_triggers]
+        rpc = self._transport._wrapped_methods[self._transport.list_triggers]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -960,7 +960,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_trigger]
+        rpc = self._transport._wrapped_methods[self._transport.create_trigger]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -984,7 +984,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             gce_trigger.Trigger,
             metadata_type=eventarc.OperationMetadata,
         )
@@ -1100,7 +1100,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_trigger]
+        rpc = self._transport._wrapped_methods[self._transport.update_trigger]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1124,7 +1124,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             gce_trigger.Trigger,
             metadata_type=eventarc.OperationMetadata,
         )
@@ -1231,7 +1231,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_trigger]
+        rpc = self._transport._wrapped_methods[self._transport.delete_trigger]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1255,7 +1255,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             trigger.Trigger,
             metadata_type=eventarc.OperationMetadata,
         )
@@ -1349,7 +1349,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_channel]
+        rpc = self._transport._wrapped_methods[self._transport.get_channel]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1456,7 +1456,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_channels]
+        rpc = self._transport._wrapped_methods[self._transport.list_channels]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1605,7 +1605,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_channel_]
+        rpc = self._transport._wrapped_methods[self._transport.create_channel_]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1629,7 +1629,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             gce_channel.Channel,
             metadata_type=eventarc.OperationMetadata,
         )
@@ -1737,7 +1737,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_channel]
+        rpc = self._transport._wrapped_methods[self._transport.update_channel]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1761,7 +1761,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             gce_channel.Channel,
             metadata_type=eventarc.OperationMetadata,
         )
@@ -1860,7 +1860,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_channel]
+        rpc = self._transport._wrapped_methods[self._transport.delete_channel]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1884,7 +1884,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             channel.Channel,
             metadata_type=eventarc.OperationMetadata,
         )
@@ -1972,7 +1972,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_provider]
+        rpc = self._transport._wrapped_methods[self._transport.get_provider]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2079,7 +2079,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_providers]
+        rpc = self._transport._wrapped_methods[self._transport.list_providers]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2197,7 +2197,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_channel_connection]
+        rpc = self._transport._wrapped_methods[self._transport.get_channel_connection]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2305,7 +2305,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_channel_connections]
+        rpc = self._transport._wrapped_methods[self._transport.list_channel_connections]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2454,7 +2454,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_channel_connection]
+        rpc = self._transport._wrapped_methods[self._transport.create_channel_connection]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2478,7 +2478,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             gce_channel_connection.ChannelConnection,
             metadata_type=eventarc.OperationMetadata,
         )
@@ -2575,7 +2575,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_channel_connection]
+        rpc = self._transport._wrapped_methods[self._transport.delete_channel_connection]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2599,7 +2599,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             channel_connection.ChannelConnection,
             metadata_type=eventarc.OperationMetadata,
         )
@@ -2693,7 +2693,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_google_channel_config]
+        rpc = self._transport._wrapped_methods[self._transport.get_google_channel_config]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2816,7 +2816,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_google_channel_config]
+        rpc = self._transport._wrapped_methods[self._transport.update_google_channel_config]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3179,7 +3179,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain
+        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(

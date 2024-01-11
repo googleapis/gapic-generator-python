@@ -591,7 +591,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_log_metrics]
+        rpc = self._transport._wrapped_methods[self._transport.list_log_metrics]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -716,7 +716,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_log_metric]
+        rpc = self._transport._wrapped_methods[self._transport.get_log_metric]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -851,7 +851,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_log_metric]
+        rpc = self._transport._wrapped_methods[self._transport.create_log_metric]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -985,7 +985,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_log_metric]
+        rpc = self._transport._wrapped_methods[self._transport.update_log_metric]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1082,7 +1082,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_log_metric]
+        rpc = self._transport._wrapped_methods[self._transport.delete_log_metric]
 
          # Certain fields should be provided within the metadata header;
         # add these here.

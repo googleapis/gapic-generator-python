@@ -80,7 +80,6 @@ class AssetServiceTransport(abc.ABC):
         """
 
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
-
         # Save the scopes.
         self._scopes = scopes
 

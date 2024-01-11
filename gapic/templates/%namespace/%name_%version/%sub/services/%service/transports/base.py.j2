@@ -104,7 +104,6 @@ class {{ service.name }}Transport(abc.ABC):
         {% endif %}
 
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
- 
         # Save the scopes.
         self._scopes = scopes
 

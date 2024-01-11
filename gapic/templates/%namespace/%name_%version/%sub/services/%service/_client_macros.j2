@@ -142,7 +142,7 @@
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.{{ method.transport_safe_name|snake_case}}]
+        rpc = self._transport._wrapped_methods[self._transport.{{ method.transport_safe_name|snake_case}}]
 
         {% if method.explicit_routing %}
         header_params = {}
@@ -202,7 +202,7 @@
         # Wrap the response in an operation future.
         response = {{ method.client_output.ident.module_alias or method.client_output.ident.module }}.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             {{ method.lro.response_type.ident }},
             metadata_type={{ method.lro.metadata_type.ident }},
         )
@@ -231,7 +231,7 @@
 {% macro extended_operation_service_setup(api, method) %}
 {% with op_service = api.get_custom_operation_service(method) %}
 
-        operation_service = self.transport._{{ op_service.client_name|snake_case }}
+        operation_service = self._transport._{{ op_service.client_name|snake_case }}
         operation_request = {{ op_service.operation_polling_method.input.ident }}()
 {% for field in method.input.extended_operation_request_fields %}
         operation_request.{{ field.operation_request_field }} = request.{{ field.name }}

@@ -664,7 +664,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.export_assets]
+        rpc = self._transport._wrapped_methods[self._transport.export_assets]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -688,7 +688,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             asset_service.ExportAssetsResponse,
             metadata_type=asset_service.ExportAssetsRequest,
         )
@@ -785,7 +785,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_assets]
+        rpc = self._transport._wrapped_methods[self._transport.list_assets]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -882,7 +882,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.batch_get_assets_history]
+        rpc = self._transport._wrapped_methods[self._transport.batch_get_assets_history]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1005,7 +1005,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_feed]
+        rpc = self._transport._wrapped_methods[self._transport.create_feed]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1116,7 +1116,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_feed]
+        rpc = self._transport._wrapped_methods[self._transport.get_feed]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1222,7 +1222,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_feeds]
+        rpc = self._transport._wrapped_methods[self._transport.list_feeds]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1337,7 +1337,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_feed]
+        rpc = self._transport._wrapped_methods[self._transport.update_feed]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1433,7 +1433,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_feed]
+        rpc = self._transport._wrapped_methods[self._transport.delete_feed]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1650,7 +1650,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.search_all_resources]
+        rpc = self._transport._wrapped_methods[self._transport.search_all_resources]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1840,7 +1840,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.search_all_iam_policies]
+        rpc = self._transport._wrapped_methods[self._transport.search_all_iam_policies]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1938,7 +1938,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.analyze_iam_policy]
+        rpc = self._transport._wrapped_methods[self._transport.analyze_iam_policy]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2047,7 +2047,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.analyze_iam_policy_longrunning]
+        rpc = self._transport._wrapped_methods[self._transport.analyze_iam_policy_longrunning]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2071,7 +2071,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             asset_service.AnalyzeIamPolicyLongrunningResponse,
             metadata_type=asset_service.AnalyzeIamPolicyLongrunningMetadata,
         )
@@ -2147,7 +2147,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.analyze_move]
+        rpc = self._transport._wrapped_methods[self._transport.analyze_move]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2245,7 +2245,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.query_assets]
+        rpc = self._transport._wrapped_methods[self._transport.query_assets]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2383,7 +2383,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_saved_query]
+        rpc = self._transport._wrapped_methods[self._transport.create_saved_query]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2490,7 +2490,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_saved_query]
+        rpc = self._transport._wrapped_methods[self._transport.get_saved_query]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2603,7 +2603,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_saved_queries]
+        rpc = self._transport._wrapped_methods[self._transport.list_saved_queries]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2730,7 +2730,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_saved_query]
+        rpc = self._transport._wrapped_methods[self._transport.update_saved_query]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2828,7 +2828,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_saved_query]
+        rpc = self._transport._wrapped_methods[self._transport.delete_saved_query]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2911,7 +2911,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.batch_get_effective_iam_policies]
+        rpc = self._transport._wrapped_methods[self._transport.batch_get_effective_iam_policies]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3053,7 +3053,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.analyze_org_policies]
+        rpc = self._transport._wrapped_methods[self._transport.analyze_org_policies]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3204,7 +3204,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.analyze_org_policy_governed_containers]
+        rpc = self._transport._wrapped_methods[self._transport.analyze_org_policy_governed_containers]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3384,7 +3384,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.analyze_org_policy_governed_assets]
+        rpc = self._transport._wrapped_methods[self._transport.analyze_org_policy_governed_assets]
 
          # Certain fields should be provided within the metadata header;
         # add these here.

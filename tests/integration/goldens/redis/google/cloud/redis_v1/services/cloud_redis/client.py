@@ -628,7 +628,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_instances]
+        rpc = self._transport._wrapped_methods[self._transport.list_instances]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -740,7 +740,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_instance]
+        rpc = self._transport._wrapped_methods[self._transport.get_instance]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -846,7 +846,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_instance_auth_string]
+        rpc = self._transport._wrapped_methods[self._transport.get_instance_auth_string]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1004,7 +1004,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_instance]
+        rpc = self._transport._wrapped_methods[self._transport.create_instance]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1028,7 +1028,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             cloud_redis.Instance,
             metadata_type=cloud_redis.OperationMetadata,
         )
@@ -1151,7 +1151,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_instance]
+        rpc = self._transport._wrapped_methods[self._transport.update_instance]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1175,7 +1175,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             cloud_redis.Instance,
             metadata_type=cloud_redis.OperationMetadata,
         )
@@ -1283,7 +1283,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.upgrade_instance]
+        rpc = self._transport._wrapped_methods[self._transport.upgrade_instance]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1307,7 +1307,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             cloud_redis.Instance,
             metadata_type=cloud_redis.OperationMetadata,
         )
@@ -1425,7 +1425,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.import_instance]
+        rpc = self._transport._wrapped_methods[self._transport.import_instance]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1449,7 +1449,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             cloud_redis.Instance,
             metadata_type=cloud_redis.OperationMetadata,
         )
@@ -1564,7 +1564,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.export_instance]
+        rpc = self._transport._wrapped_methods[self._transport.export_instance]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1588,7 +1588,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             cloud_redis.Instance,
             metadata_type=cloud_redis.OperationMetadata,
         )
@@ -1697,7 +1697,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.failover_instance]
+        rpc = self._transport._wrapped_methods[self._transport.failover_instance]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1721,7 +1721,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             cloud_redis.Instance,
             metadata_type=cloud_redis.OperationMetadata,
         )
@@ -1825,7 +1825,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_instance]
+        rpc = self._transport._wrapped_methods[self._transport.delete_instance]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1849,7 +1849,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=cloud_redis.OperationMetadata,
         )
@@ -1968,7 +1968,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.reschedule_maintenance]
+        rpc = self._transport._wrapped_methods[self._transport.reschedule_maintenance]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1992,7 +1992,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             cloud_redis.Instance,
             metadata_type=cloud_redis.OperationMetadata,
         )

@@ -666,7 +666,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_buckets]
+        rpc = self._transport._wrapped_methods[self._transport.list_buckets]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -759,7 +759,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_bucket]
+        rpc = self._transport._wrapped_methods[self._transport.get_bucket]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -854,7 +854,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_bucket_async]
+        rpc = self._transport._wrapped_methods[self._transport.create_bucket_async]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -878,7 +878,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             logging_config.LogBucket,
             metadata_type=logging_config.BucketMetadata,
         )
@@ -959,7 +959,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_bucket_async]
+        rpc = self._transport._wrapped_methods[self._transport.update_bucket_async]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -983,7 +983,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             logging_config.LogBucket,
             metadata_type=logging_config.BucketMetadata,
         )
@@ -1054,7 +1054,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_bucket]
+        rpc = self._transport._wrapped_methods[self._transport.create_bucket]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1144,7 +1144,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_bucket]
+        rpc = self._transport._wrapped_methods[self._transport.update_bucket]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1224,7 +1224,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_bucket]
+        rpc = self._transport._wrapped_methods[self._transport.delete_bucket]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1298,7 +1298,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.undelete_bucket]
+        rpc = self._transport._wrapped_methods[self._transport.undelete_bucket]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1405,7 +1405,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_views]
+        rpc = self._transport._wrapped_methods[self._transport.list_views]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1498,7 +1498,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_view]
+        rpc = self._transport._wrapped_methods[self._transport.get_view]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1584,7 +1584,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_view]
+        rpc = self._transport._wrapped_methods[self._transport.create_view]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1672,7 +1672,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_view]
+        rpc = self._transport._wrapped_methods[self._transport.update_view]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1750,7 +1750,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_view]
+        rpc = self._transport._wrapped_methods[self._transport.delete_view]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1860,7 +1860,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_sinks]
+        rpc = self._transport._wrapped_methods[self._transport.list_sinks]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1989,7 +1989,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_sink]
+        rpc = self._transport._wrapped_methods[self._transport.get_sink]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2128,7 +2128,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_sink]
+        rpc = self._transport._wrapped_methods[self._transport.create_sink]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2294,7 +2294,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_sink]
+        rpc = self._transport._wrapped_methods[self._transport.update_sink]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2400,7 +2400,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_sink]
+        rpc = self._transport._wrapped_methods[self._transport.delete_sink]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2537,7 +2537,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_link]
+        rpc = self._transport._wrapped_methods[self._transport.create_link]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2561,7 +2561,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             logging_config.Link,
             metadata_type=logging_config.LinkMetadata,
         )
@@ -2667,7 +2667,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_link]
+        rpc = self._transport._wrapped_methods[self._transport.delete_link]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2691,7 +2691,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=logging_config.LinkMetadata,
         )
@@ -2787,7 +2787,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_links]
+        rpc = self._transport._wrapped_methods[self._transport.list_links]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2903,7 +2903,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_link]
+        rpc = self._transport._wrapped_methods[self._transport.get_link]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3017,7 +3017,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.list_exclusions]
+        rpc = self._transport._wrapped_methods[self._transport.list_exclusions]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3144,7 +3144,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_exclusion]
+        rpc = self._transport._wrapped_methods[self._transport.get_exclusion]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3282,7 +3282,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.create_exclusion]
+        rpc = self._transport._wrapped_methods[self._transport.create_exclusion]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3434,7 +3434,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_exclusion]
+        rpc = self._transport._wrapped_methods[self._transport.update_exclusion]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3539,7 +3539,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.delete_exclusion]
+        rpc = self._transport._wrapped_methods[self._transport.delete_exclusion]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3644,7 +3644,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_cmek_settings]
+        rpc = self._transport._wrapped_methods[self._transport.get_cmek_settings]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3757,7 +3757,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_cmek_settings]
+        rpc = self._transport._wrapped_methods[self._transport.update_cmek_settings]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3893,7 +3893,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.get_settings]
+        rpc = self._transport._wrapped_methods[self._transport.get_settings]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4039,7 +4039,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.update_settings]
+        rpc = self._transport._wrapped_methods[self._transport.update_settings]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4133,7 +4133,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self.transport.copy_log_entries]
+        rpc = self._transport._wrapped_methods[self._transport.copy_log_entries]
 
         # Validate the universe domain.
         ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
@@ -4149,7 +4149,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
-            self.transport.operations_client,
+            self._transport.operations_client,
             logging_config.CopyLogEntriesResponse,
             metadata_type=logging_config.CopyLogEntriesMetadata,
         )

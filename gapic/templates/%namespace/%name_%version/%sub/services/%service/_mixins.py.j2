@@ -403,7 +403,7 @@
         )
 
         # Validate the universe domain.
-        {{ service.client_name }}._validate_universe_domain
+        {{ service.client_name }}._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
