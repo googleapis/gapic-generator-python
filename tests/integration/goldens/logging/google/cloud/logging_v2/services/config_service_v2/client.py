@@ -677,9 +677,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -772,9 +771,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -869,9 +867,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -976,9 +973,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1073,9 +1069,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1165,9 +1160,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1247,9 +1241,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(
@@ -1323,9 +1316,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(
@@ -1432,9 +1424,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1527,9 +1518,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1615,9 +1605,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1705,9 +1694,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1785,9 +1773,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(
@@ -1897,9 +1884,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2028,9 +2014,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2169,9 +2154,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2337,9 +2321,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2445,9 +2428,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(
@@ -2584,9 +2566,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2716,9 +2697,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2838,9 +2818,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2956,9 +2935,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3072,9 +3050,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3201,9 +3178,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3341,9 +3317,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3495,9 +3470,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3602,9 +3576,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(
@@ -3709,9 +3682,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3824,9 +3796,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3962,9 +3933,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -4110,9 +4080,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -4198,9 +4167,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.copy_log_entries]
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -4279,9 +4247,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -4335,9 +4302,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -4394,9 +4360,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            ConfigServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

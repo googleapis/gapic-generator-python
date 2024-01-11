@@ -317,9 +317,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        if not self._client.is_universe_domain_valid:
-            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
-            self._client.is_universe_domain_valid = True
+        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client.is_universe_domain_valid else None
+        self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -452,9 +451,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        if not self._client.is_universe_domain_valid:
-            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
-            self._client.is_universe_domain_valid = True
+        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client.is_universe_domain_valid else None
+        self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -589,9 +587,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        if not self._client.is_universe_domain_valid:
-            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
-            self._client.is_universe_domain_valid = True
+        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client.is_universe_domain_valid else None
+        self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -733,9 +730,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        if not self._client.is_universe_domain_valid:
-            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
-            self._client.is_universe_domain_valid = True
+        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client.is_universe_domain_valid else None
+        self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -840,9 +836,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        if not self._client.is_universe_domain_valid:
-            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
-            self._client.is_universe_domain_valid = True
+        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client.is_universe_domain_valid else None
+        self._client.is_universe_domain_valid = True
 
         # Send the request.
         await rpc(
@@ -897,9 +892,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        if not self._client.is_universe_domain_valid:
-            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
-            self._client.is_universe_domain_valid = True
+        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client.is_universe_domain_valid else None
+        self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -953,9 +947,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        if not self._client.is_universe_domain_valid:
-            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
-            self._client.is_universe_domain_valid = True
+        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client.is_universe_domain_valid else None
+        self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1012,9 +1005,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        if not self._client.is_universe_domain_valid:
-            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
-            self._client.is_universe_domain_valid = True
+        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client.is_universe_domain_valid else None
+        self._client.is_universe_domain_valid = True
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

@@ -659,9 +659,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            IAMCredentialsClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -811,9 +810,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            IAMCredentialsClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -949,9 +947,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            IAMCredentialsClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1090,9 +1087,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        if not self.is_universe_domain_valid:
-            IAMCredentialsClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
-            self.is_universe_domain_valid = True
+        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self.is_universe_domain_valid else None
+        self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
