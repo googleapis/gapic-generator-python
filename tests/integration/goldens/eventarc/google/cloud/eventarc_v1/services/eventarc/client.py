@@ -715,7 +715,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -822,7 +824,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -971,7 +975,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1111,7 +1117,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1242,7 +1250,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1360,7 +1370,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1467,7 +1479,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1616,7 +1630,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1748,7 +1764,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1871,7 +1889,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1983,7 +2003,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2090,7 +2112,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2208,7 +2232,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2316,7 +2342,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2465,7 +2493,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2586,7 +2616,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2704,7 +2736,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2827,7 +2861,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2898,7 +2934,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -2952,7 +2990,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3010,7 +3050,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -3063,7 +3105,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -3179,7 +3223,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3300,7 +3346,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3359,7 +3407,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3413,7 +3463,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -3467,7 +3519,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(

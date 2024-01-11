@@ -602,7 +602,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -727,7 +729,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -862,7 +866,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -996,7 +1002,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1093,7 +1101,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(
@@ -1161,7 +1171,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1215,7 +1227,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         response = rpc(
@@ -1272,7 +1286,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self.is_universe_domain_valid:
+            MetricsServiceV2Client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+            self.is_universe_domain_valid = True
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

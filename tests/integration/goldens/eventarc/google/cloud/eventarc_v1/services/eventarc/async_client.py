@@ -336,7 +336,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -443,7 +445,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -592,7 +596,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -732,7 +738,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -863,7 +871,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -981,7 +991,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1088,7 +1100,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1237,7 +1251,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1369,7 +1385,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1492,7 +1510,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1604,7 +1624,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1711,7 +1733,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1829,7 +1853,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -1937,7 +1963,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2086,7 +2114,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2207,7 +2237,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2325,7 +2357,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2448,7 +2482,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2506,7 +2542,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2560,7 +2598,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2618,7 +2658,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2671,7 +2713,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2787,7 +2831,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        EventarcClient._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2908,7 +2954,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -2967,7 +3015,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -3021,7 +3071,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain,self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
@@ -3075,7 +3127,9 @@ class EventarcAsyncClient:
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+        if not self._client.is_universe_domain_valid:
+            self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+            self._client.is_universe_domain_valid = True
 
         # Send the request.
         response = await rpc(
