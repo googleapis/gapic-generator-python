@@ -556,18 +556,13 @@ def test_logging_service_v2_client_client_api_endpoint(client_class):
     # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
     # and ClientOptions.universe_domain="bar.com",
     # use the DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
-    if hasattr(client_options.ClientOptions, "universe_domain"):
+    options = client_options.ClientOptions()
+    if hasattr(options, "universe_domain"):
         options = client_options.ClientOptions(universe_domain=mock_universe)
+    with pytest.raises(AttributeError, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
         client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
-        assert client.api_endpoint == mock_endpoint
-        assert client.universe_domain == mock_universe
-    else:
-        options = client_options.ClientOptions()
-        with pytest.raises(AttributeError) as excinfo:
-            client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
-        assert str(excinfo.value) == "Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."
-        assert client.api_endpoint == default_endpoint
-        assert client.universe_domain == default_universe
+    assert client.api_endpoint == (mock_endpoint if hasattr(options, "universe_domain") else default_endpoint)
+    assert client.universe_domain == (mock_universe if hasattr(options, "universe_domain") else default_universe)
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
