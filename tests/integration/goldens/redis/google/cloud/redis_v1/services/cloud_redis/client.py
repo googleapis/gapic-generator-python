@@ -488,9 +488,15 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             self._client_options = client_options_lib.ClientOptions()
         self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
+        try:
+            universe_domain_opt = getattr(self._client_options, 'universe_domain')
+        except AttributeError:
+            warnings.warn(f"Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None.")
+            universe_domain_opt = None
+
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = CloudRedisClient._read_environment_variables()
         self._client_cert_source = CloudRedisClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
-        self._universe_domain = CloudRedisClient._get_universe_domain(self._client_options.universe_domain, self._universe_domain_env)
+        self._universe_domain = CloudRedisClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = CloudRedisClient._get_api_endpoint(self._client_options.api_endpoint, self._client_cert_source, self._universe_domain, self._use_mtls_endpoint)
 
         # Initialize the universe domain validation.
