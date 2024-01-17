@@ -585,7 +585,7 @@ def test_cloud_redis_client_client_api_endpoint(client_class):
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
     else:
-        with pytest.raises(AttributeError, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
+        with pytest.warns(UserWarning,, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
             client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
     assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
     assert client.universe_domain == (mock_universe if universe_exists else default_universe)
@@ -595,7 +595,7 @@ def test_cloud_redis_client_client_api_endpoint(client_class):
     options = client_options.ClientOptions()
     delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        with pytest.raises(AttributeError, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
+        with pytest.warns(UserWarning, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
             client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
             assert client.api_endpoint == default_endpoint
 
