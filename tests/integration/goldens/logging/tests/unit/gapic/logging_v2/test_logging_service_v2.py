@@ -567,6 +567,15 @@ def test_logging_service_v2_client_client_api_endpoint(client_class):
     assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
     assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
+    # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    options = mock.Mock()
+    delattr(options, "universe_domain")
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        with pytest.raises(AttributeError, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
+            client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
+            assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (LoggingServiceV2Client, transports.LoggingServiceV2GrpcTransport, "grpc"),
