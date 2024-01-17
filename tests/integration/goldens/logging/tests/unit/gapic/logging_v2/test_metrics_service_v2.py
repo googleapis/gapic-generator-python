@@ -557,8 +557,9 @@ def test_metrics_service_v2_client_client_api_endpoint(client_class):
     options = client_options.ClientOptions()
     if hasattr(options, "universe_domain"):
         options = client_options.ClientOptions(universe_domain=mock_universe)
-    with pytest.raises(AttributeError, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
-        client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
+    else:
+        with pytest.raises(AttributeError, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
+            client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
     assert client.api_endpoint == (mock_endpoint if hasattr(options, "universe_domain") else default_endpoint)
     assert client.universe_domain == (mock_universe if hasattr(options, "universe_domain") else default_universe)
 
