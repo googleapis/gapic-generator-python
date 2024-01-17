@@ -581,7 +581,7 @@ def test_iam_credentials_client_client_api_endpoint(client_class):
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
-    options = client_options.Client_Options()
+    options = client_options.ClientOptions()
     delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with pytest.raises(AttributeError, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
