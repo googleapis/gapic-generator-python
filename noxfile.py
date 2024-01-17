@@ -267,7 +267,6 @@ def showcase(
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
     env: typing.Optional[typing.Dict[str, str]] = None,
-    ignore_file=None,
 ):
     """Run the Showcase test suite."""
 
@@ -278,7 +277,6 @@ def showcase(
             "--quiet",
             *(session.posargs or [path.join("tests", "system")]),
             env=env,
-            ignore_file=ignore_file
         )
 
 
@@ -288,7 +286,6 @@ def showcase_mtls(
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
     env: typing.Optional[typing.Dict[str, str]] = None,
-    ignore_file=None,
 ):
     """Run the Showcase mtls test suite."""
 
@@ -300,33 +297,28 @@ def showcase_mtls(
             "--mtls",
             *(session.posargs or [path.join("tests", "system")]),
             env=env,
-            ignore_file=ignore_file,
         )
 
 
 @nox.session(python=ALL_PYTHON)
 def showcase_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    ignore_file = "test_universe_domain.py"
     showcase(
         session,
         templates=templates,
         other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False"},
-        ignore_file=ignore_file,
+        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
     )
 
 
 @nox.session(python=NEWEST_PYTHON)
 def showcase_mtls_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    ignore_file = "test_universe_domain.py"
     showcase_mtls(
         session,
         templates=templates,
         other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False"},
-        ignore_file=ignore_file,
+        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
     )
 
 
