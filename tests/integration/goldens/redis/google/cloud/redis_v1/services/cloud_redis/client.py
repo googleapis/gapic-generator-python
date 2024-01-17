@@ -413,7 +413,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             the universe domain in the credentials.
         """
         if client_universe != credentials_universe:
-            raise ValueError("The configured universe domain (" + client_universe + ") does not match the universe domain found in the credentials (" + credentials_universe + "). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            raise ValueError(f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credentials_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
 
     @property
     def api_endpoint(self):
@@ -491,7 +491,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         try:
             universe_domain_opt = getattr(self._client_options, 'universe_domain')
         except AttributeError:
-            warnings.warn(f"Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None.")
+            warnings.warn("Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None.")
             universe_domain_opt = None
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = CloudRedisClient._read_environment_variables()
