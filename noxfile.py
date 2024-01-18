@@ -277,7 +277,7 @@ def showcase(
         pytest_command = [
             "py.test",
             "--quiet",
-            *(session.posargs) or str(test_directory),
+            *(session.posargs or [str(test_directory)]),
         ]
         if ignore_file:
             ignore_path = test_directory / ignore_file
@@ -306,7 +306,7 @@ def showcase_mtls(
             "py.test",
             "--quiet",
             "--mtls",
-            *(session.posargs) or str(test_directory),
+            *(session.posargs or [str(test_directory)]),
         ]
         if ignore_file:
             ignore_path = test_directory / ignore_file
