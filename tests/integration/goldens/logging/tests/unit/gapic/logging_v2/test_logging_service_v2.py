@@ -2308,7 +2308,7 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = LoggingServiceV2Client(
