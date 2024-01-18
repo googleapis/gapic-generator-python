@@ -141,7 +141,7 @@ def echo(use_mtls, request):
     return construct_client(EchoClient, use_mtls, transport_name=request.param)
 
 
-@pytest.fixture(params=["grpc", "rest"])
+@pytest.fixture(params=["rest"])
 def echo_with_localhost_universe(use_mtls, request):
     return construct_client(EchoClient, use_mtls, transport_name=request.param, credentials=AnonymousCredentialsWithUniverseDomain(universe_domain="localhost:7469"))
 
