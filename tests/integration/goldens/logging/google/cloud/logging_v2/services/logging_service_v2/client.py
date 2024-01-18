@@ -380,7 +380,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    @staticmethod
     def _validate_universe_domain(self, client_universe, credentials_universe):
         """Validates the universe domain used by the client instance against
             the universe domain in the credentials.
