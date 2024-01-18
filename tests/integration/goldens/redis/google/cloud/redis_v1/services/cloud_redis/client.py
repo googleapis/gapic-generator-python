@@ -368,7 +368,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         """Return the API endpoint used by the client.
 
         Args:
-            api_override (str): The API endpoint override. If specified, this is always the return value of this function.
+            api_override (str): The API endpoint override. If specified, this is always the return value of this function
+            and the other arguments are not used.
             client_cert_source (bytes): The client certificate source used by the client.
             universe_domain (str): The universe domain used by the client.
             use_mtls_endpoint (str): How to use the MTLS endpoint, which depends also on the other parameters.
@@ -377,10 +378,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         Returns:
             str: The API endpoint to be used by the client.
         """
-        use_mtls_endpoint = use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source)
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint:
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             if universe_domain != CloudRedisClient.GOOGLE_DEFAULT_UNIVERSE:
                 raise MutualTLSChannelError("MTLS is not supported in any universe other than googleapis.com.")
             api_endpoint = CloudRedisClient.DEFAULT_MTLS_ENDPOINT
@@ -398,12 +398,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         Returns:
             str: The universe domain to be used by the client.
         """
-        universe_domain = CloudRedisClient.GOOGLE_DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if universe_domain == "":
+        universe_domain = (client_universe_domain or universe_domain_env or CloudRedisClient.GOOGLE_DEFAULT_UNIVERSE)
+        if len(universe_domain.strip()) == 0:
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
@@ -420,8 +416,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         """Return the API endpoint used by the client instance.
 
         Returns:
-            str: The API endpoint used
-                by the client instance.
+            str: The API endpoint used by the client instance.
         """
         return self._api_endpoint
 
@@ -500,7 +495,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         self._api_endpoint = CloudRedisClient._get_api_endpoint(self._client_options.api_endpoint, self._client_cert_source, self._universe_domain, self._use_mtls_endpoint)
 
         # Initialize the universe domain validation.
-        self.is_universe_domain_valid = False
+        self._is_universe_domain_valid = False
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:

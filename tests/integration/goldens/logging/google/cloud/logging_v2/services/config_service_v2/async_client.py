@@ -162,8 +162,7 @@ class ConfigServiceV2AsyncClient:
         """Return the API endpoint used by the client instance.
 
         Returns:
-            str: The API endpoint used
-                by the client instance.
+            str: The API endpoint used by the client instance.
         """
         return self._client._api_endpoint
 
