@@ -371,10 +371,10 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Returns:
             str: The universe domain to be used by the client.
         """
-        universe_domain = (client_universe_domain or universe_domain_env or LoggingServiceV2Client.GOOGLE_DEFAULT_UNIVERSE)
+        universe_domain = (client_universe_domain or universe_domain_env
         if len(universe_domain.strip()) == 0:
             raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
+        return universe_domain or LoggingServiceV2Client.GOOGLE_DEFAULT_UNIVERSE)
 
     @staticmethod
     def _validate_universe_domain(client_universe, credentials_universe):
