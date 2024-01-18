@@ -47,6 +47,7 @@ class LoggingServiceV2AsyncClient:
 
     _client: LoggingServiceV2Client
 
+    # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = LoggingServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT

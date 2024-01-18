@@ -72,6 +72,7 @@ class CloudRedisAsyncClient:
 
     _client: CloudRedisClient
 
+    # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = CloudRedisClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = CloudRedisClient.DEFAULT_MTLS_ENDPOINT

@@ -50,6 +50,7 @@ class ConfigServiceV2AsyncClient:
 
     _client: ConfigServiceV2Client
 
+    # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = ConfigServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT

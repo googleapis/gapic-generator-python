@@ -54,6 +54,7 @@ class {{ service.async_client_name }}:
 
     _client: {{ service.client_name }}
 
+    # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = {{ service.client_name }}.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = {{ service.client_name }}.DEFAULT_MTLS_ENDPOINT
