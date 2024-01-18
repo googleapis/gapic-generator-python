@@ -17,4 +17,4 @@ def test_universe_domain_validation_fail(echo_with_localhost_universe):
         echo_with_localhost_universe.echo({
             'content': 'Universe validation failed!'
             })
-    assert err.match("The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (localhost:7469). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+    assert str(err) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (localhost:7469). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
