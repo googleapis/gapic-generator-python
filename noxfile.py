@@ -280,7 +280,7 @@ def showcase(
             *(session.posargs or test_directory),
         ]
         if ignore_file:
-            pytest_command.extend(["--ignore", f"{test_directory}/{ignore_file}"])
+            pytest_command.extend(["f --ignore {test_directory}/{ignore_file}"])
 
         session.run(
             *pytest_command,
@@ -308,7 +308,7 @@ def showcase_mtls(
             *(session.posargs or test_directory),
         ]
         if ignore_file:
-            pytest_command.extend(["--ignore", f"{test_directory}/{ignore_file}"])
+            pytest_command.extend(["f --ignore {test_directory}/{ignore_file}"])
 
         session.run(
             *pytest_command,
