@@ -381,12 +381,16 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return universe_domain
 
     @staticmethod
-    def _validate_universe_domain(client_universe, credentials_universe):
+    def _validate_universe_domain(self, client_universe, credentials_universe):
         """Validates the universe domain used by the client instance against
             the universe domain in the credentials.
         """
-        if client_universe != credentials_universe:
-            raise ValueError(f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credentials_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+        if not self._is_universe_domain_valid:
+            if client_universe != credentials_universe:
+                raise ValueError(f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credentials_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            else:
+                self._is_universe_domain_valid = True
+        return self._is_universe_domain_valid
 
     @property
     def api_endpoint(self):
@@ -604,8 +608,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._is_universe_domain_valid else None
-        self._is_universe_domain_valid = True
+        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         rpc(
@@ -792,8 +795,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.write_log_entries]
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._is_universe_domain_valid else None
-        self._is_universe_domain_valid = True
+        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -940,8 +942,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_log_entries]
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._is_universe_domain_valid else None
-        self._is_universe_domain_valid = True
+        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1031,8 +1032,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_monitored_resource_descriptors]
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._is_universe_domain_valid else None
-        self._is_universe_domain_valid = True
+        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1154,8 +1154,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._is_universe_domain_valid else None
-        self._is_universe_domain_valid = True
+        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1244,8 +1243,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.tail_log_entries]
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._is_universe_domain_valid else None
-        self._is_universe_domain_valid = True
+        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1316,8 +1314,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._is_universe_domain_valid else None
-        self._is_universe_domain_valid = True
+        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1371,8 +1368,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._is_universe_domain_valid else None
-        self._is_universe_domain_valid = True
+        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = rpc(
@@ -1429,8 +1425,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._is_universe_domain_valid else None
-        self._is_universe_domain_valid = True
+        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

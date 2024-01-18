@@ -367,8 +367,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client._is_universe_domain_valid else None
-        self._client._is_universe_domain_valid = True
+        self.transport._credentials and self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(
@@ -525,8 +524,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client._is_universe_domain_valid else None
-        self._client._is_universe_domain_valid = True
+        self.transport._credentials and self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(
@@ -669,8 +667,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client._is_universe_domain_valid else None
-        self._client._is_universe_domain_valid = True
+        self.transport._credentials and self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(
@@ -816,8 +813,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain) if not self._client._is_universe_domain_valid else None
-        self._client._is_universe_domain_valid = True
+        self.transport._credentials and self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
 
         # Send the request.
         response = await rpc(

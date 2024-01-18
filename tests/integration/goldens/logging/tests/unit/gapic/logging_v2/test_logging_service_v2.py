@@ -176,10 +176,16 @@ def test__get_universe_domain():
 
 def test__validate_universe_domain():
 
-    assert LoggingServiceV2Client._validate_universe_domain("foo.com", "foo.com") == None
+    client = LoggingServiceV2Client()
+    assert client._validate_universe_domain("foo.com", "foo.com") == True
 
+    # Test the case when universe is already validated.
+    assert client._validate_universe_domain("foo.com", "foo.com") == True
+
+    # Test the case when there is a universe mismatch.
+    client = LoggingServiceV2Client()
     with pytest.raises(ValueError) as excinfo:
-        LoggingServiceV2Client._validate_universe_domain("foo.com", "bar.com")
+        client._validate_universe_domain("foo.com", "bar.com")
     assert str(excinfo.value) == "The configured universe domain (foo.com) does not match the universe domain found in the credentials (bar.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
 
 @pytest.mark.parametrize("client_class,transport_name", [
