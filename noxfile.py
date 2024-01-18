@@ -266,7 +266,7 @@ def showcase(
     session,
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
-    env: typing.Optional[typing.Dict[str, str]] = None,
+    env: typing.Optional[typing.Dict[str, str]] = {},
 ):
     """Run the Showcase test suite."""
 
@@ -294,7 +294,7 @@ def showcase_mtls(
     session,
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
-    env: typing.Optional[typing.Dict[str, str]] = None,
+    env: typing.Optional[typing.Dict[str, str]] = {},
 ):
     """Run the Showcase mtls test suite."""
 
