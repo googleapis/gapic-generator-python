@@ -272,7 +272,7 @@ def showcase(
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
-        test_directory = [path.join("tests", "system")]
+        test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
             "py.test",
@@ -280,7 +280,8 @@ def showcase(
             *(session.posargs or test_directory),
         ]
         if ignore_file:
-            pytest_command.extend(["f --ignore {test_directory}/{ignore_file}"])
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
 
         session.run(
             *pytest_command,
@@ -299,7 +300,7 @@ def showcase_mtls(
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
-        test_directory = [path.join("tests", "system")]
+        test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
             "py.test",
@@ -308,7 +309,8 @@ def showcase_mtls(
             *(session.posargs or test_directory),
         ]
         if ignore_file:
-            pytest_command.extend(["f --ignore {test_directory}/{ignore_file}"])
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
 
         session.run(
             *pytest_command,
