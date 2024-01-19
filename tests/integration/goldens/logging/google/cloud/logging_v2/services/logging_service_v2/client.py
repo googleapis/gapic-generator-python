@@ -380,6 +380,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
+    @staticmethod
     def compare_universes(client_universe, credentials_universe):
         if client_universe != credentials_universe:
             raise ValueError(f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credentials_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
@@ -392,7 +393,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Returns:
             bool: True if valid universe, else returns False.
         """
-        self._is_universe_domain_valid = compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
+        self._is_universe_domain_valid = LoggingServiceV2Client.compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
         return self._is_universe_domain_valid
 
     @property
