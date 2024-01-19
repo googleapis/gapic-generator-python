@@ -202,7 +202,7 @@ def test__validate_universe_domain():
     assert client._validate_universe_domain() == True
 
     # Test the case when there is a universe mismatch.
-    client = EventarcClient(lient_options=client_options.ClientOptions(universe_domain="foo.com"), credentials=AnonymousCredentialsWithUniverseDomain())
+    client = EventarcClient(client_options=client_options.ClientOptions(universe_domain="foo.com"), credentials=AnonymousCredentialsWithUniverseDomain())
     with pytest.raises(ValueError) as excinfo:
         client._validate_universe_domain()
     assert str(excinfo.value) == "The configured universe domain (foo.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
