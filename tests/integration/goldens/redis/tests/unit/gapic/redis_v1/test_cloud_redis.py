@@ -81,9 +81,9 @@ def modify_default_endpoint_template(client):
 
 # Anonymous Credentials with universe domain property. If no universe domain is provided, then
 # the default universe domain is "googleapis.com".
-class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
+class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
     def __init__(self, universe_domain="googleapis.com"):
-        super(AnonymousCredentialsWithUniverseDomain, self).__init__()
+        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
         self._universe_domain = universe_domain
 
     @property
@@ -154,7 +154,7 @@ def test__get_client_cert_source():
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = CloudRedisClient.GOOGLE_DEFAULT_UNIVERSE
+    default_universe = CloudRedisClient._DEFAULT_UNIVERSE
     default_endpoint = CloudRedisClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
     mock_endpoint = CloudRedisClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
@@ -178,7 +178,7 @@ def test__get_universe_domain():
 
     assert CloudRedisClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
     assert CloudRedisClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert CloudRedisClient._get_universe_domain(None, None) == CloudRedisClient.GOOGLE_DEFAULT_UNIVERSE
+    assert CloudRedisClient._get_universe_domain(None, None) == CloudRedisClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         CloudRedisClient._get_universe_domain("", None)
@@ -186,14 +186,14 @@ def test__get_universe_domain():
 
 def test__validate_universe_domain():
 
-    client = CloudRedisClient(credentials=AnonymousCredentialsWithUniverseDomain())
+    client = CloudRedisClient(credentials=_AnonymousCredentialsWithUniverseDomain())
     assert client._validate_universe_domain() == True
 
     # Test the case when universe is already validated.
     assert client._validate_universe_domain() == True
 
     # Test the case when there is a universe mismatch.
-    client = CloudRedisClient(credentials=AnonymousCredentialsWithUniverseDomain(universe_domain="foo.com"))
+    client = CloudRedisClient(credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="foo.com"))
     with pytest.raises(ValueError) as excinfo:
         client._validate_universe_domain()
     assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
@@ -204,7 +204,7 @@ def test__validate_universe_domain():
     (CloudRedisClient, "rest"),
 ])
 def test_cloud_redis_client_from_service_account_info(client_class, transport_name):
-    creds = AnonymousCredentialsWithUniverseDomain()
+    creds = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
         info = {"valid": True}
@@ -243,7 +243,7 @@ def test_cloud_redis_client_service_account_always_use_jwt(transport_class, tran
     (CloudRedisClient, "rest"),
 ])
 def test_cloud_redis_client_from_service_account_file(client_class, transport_name):
-    creds = AnonymousCredentialsWithUniverseDomain()
+    creds = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
@@ -285,7 +285,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(CloudRedisClient, 'get_transport_class') as gtc:
         transport = transport_class(
-            credentials=AnonymousCredentialsWithUniverseDomain()
+            credentials=_AnonymousCredentialsWithUniverseDomain()
         )
         client = client_class(transport=transport)
         gtc.assert_not_called()
@@ -321,7 +321,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
+                host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -369,7 +369,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
+            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -385,7 +385,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
+            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -419,7 +419,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE)
+                expected_host = client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -443,7 +443,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
             with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
                 with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE)
+                        expected_host = client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -472,7 +472,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
+                    host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -557,7 +557,7 @@ def test_cloud_redis_client_get_mtls_endpoint_and_cert_source(client_class):
 def test_cloud_redis_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = CloudRedisClient.GOOGLE_DEFAULT_UNIVERSE
+    default_universe = CloudRedisClient._DEFAULT_UNIVERSE
     default_endpoint = CloudRedisClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
     mock_endpoint = CloudRedisClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
@@ -566,19 +566,19 @@ def test_cloud_redis_client_client_api_endpoint(client_class):
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
-        client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
+        client = client_class(client_options=options, credentials=_AnonymousCredentialsWithUniverseDomain())
         assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -589,10 +589,10 @@ def test_cloud_redis_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
+        client = client_class(client_options=options, credentials=_AnonymousCredentialsWithUniverseDomain())
     else:
         with pytest.warns(UserWarning, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
-            client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
+            client = client_class(client_options=options, credentials=_AnonymousCredentialsWithUniverseDomain())
     assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
     assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
@@ -603,7 +603,7 @@ def test_cloud_redis_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with pytest.warns(UserWarning, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None."):
-            client = client_class(client_options=options, credentials=AnonymousCredentialsWithUniverseDomain())
+            client = client_class(client_options=options, credentials=_AnonymousCredentialsWithUniverseDomain())
             assert client.api_endpoint == default_endpoint
 
 
@@ -623,7 +623,7 @@ def test_cloud_redis_client_client_options_scopes(client_class, transport_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
+            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -649,7 +649,7 @@ def test_cloud_redis_client_client_options_credentials_file(client_class, transp
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
+            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -693,7 +693,7 @@ def test_cloud_redis_client_create_channel_credentials_file(client_class, transp
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
+            host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -710,8 +710,8 @@ def test_cloud_redis_client_create_channel_credentials_file(client_class, transp
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = AnonymousCredentialsWithUniverseDomain()
-        file_creds = AnonymousCredentialsWithUniverseDomain()
+        creds = _AnonymousCredentialsWithUniverseDomain()
+        file_creds = _AnonymousCredentialsWithUniverseDomain()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -739,7 +739,7 @@ def test_cloud_redis_client_create_channel_credentials_file(client_class, transp
 ])
 def test_list_instances(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -773,7 +773,7 @@ def test_list_instances_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -789,7 +789,7 @@ def test_list_instances_empty_call():
 @pytest.mark.asyncio
 async def test_list_instances_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ListInstancesRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -826,7 +826,7 @@ async def test_list_instances_async_from_dict():
 
 def test_list_instances_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -858,7 +858,7 @@ def test_list_instances_field_headers():
 @pytest.mark.asyncio
 async def test_list_instances_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -889,7 +889,7 @@ async def test_list_instances_field_headers_async():
 
 def test_list_instances_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -915,7 +915,7 @@ def test_list_instances_flattened():
 
 def test_list_instances_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -929,7 +929,7 @@ def test_list_instances_flattened_error():
 @pytest.mark.asyncio
 async def test_list_instances_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -957,7 +957,7 @@ async def test_list_instances_flattened_async():
 @pytest.mark.asyncio
 async def test_list_instances_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -971,7 +971,7 @@ async def test_list_instances_flattened_error_async():
 
 def test_list_instances_pager(transport_name: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1024,7 +1024,7 @@ def test_list_instances_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_instances_pages(transport_name: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1067,7 +1067,7 @@ def test_list_instances_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_instances_async_pager():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1116,7 +1116,7 @@ async def test_list_instances_async_pager():
 @pytest.mark.asyncio
 async def test_list_instances_async_pages():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1167,7 +1167,7 @@ async def test_list_instances_async_pages():
 ])
 def test_get_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1251,7 +1251,7 @@ def test_get_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -1267,7 +1267,7 @@ def test_get_instance_empty_call():
 @pytest.mark.asyncio
 async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1354,7 +1354,7 @@ async def test_get_instance_async_from_dict():
 
 def test_get_instance_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1386,7 +1386,7 @@ def test_get_instance_field_headers():
 @pytest.mark.asyncio
 async def test_get_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1417,7 +1417,7 @@ async def test_get_instance_field_headers_async():
 
 def test_get_instance_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1443,7 +1443,7 @@ def test_get_instance_flattened():
 
 def test_get_instance_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1457,7 +1457,7 @@ def test_get_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_get_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1485,7 +1485,7 @@ async def test_get_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_get_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1503,7 +1503,7 @@ async def test_get_instance_flattened_error_async():
 ])
 def test_get_instance_auth_string(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1535,7 +1535,7 @@ def test_get_instance_auth_string_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -1551,7 +1551,7 @@ def test_get_instance_auth_string_empty_call():
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceAuthStringRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1586,7 +1586,7 @@ async def test_get_instance_auth_string_async_from_dict():
 
 def test_get_instance_auth_string_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1618,7 +1618,7 @@ def test_get_instance_auth_string_field_headers():
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1649,7 +1649,7 @@ async def test_get_instance_auth_string_field_headers_async():
 
 def test_get_instance_auth_string_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1675,7 +1675,7 @@ def test_get_instance_auth_string_flattened():
 
 def test_get_instance_auth_string_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1689,7 +1689,7 @@ def test_get_instance_auth_string_flattened_error():
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1717,7 +1717,7 @@ async def test_get_instance_auth_string_flattened_async():
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1735,7 +1735,7 @@ async def test_get_instance_auth_string_flattened_error_async():
 ])
 def test_create_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1764,7 +1764,7 @@ def test_create_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -1780,7 +1780,7 @@ def test_create_instance_empty_call():
 @pytest.mark.asyncio
 async def test_create_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.CreateInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1814,7 +1814,7 @@ async def test_create_instance_async_from_dict():
 
 def test_create_instance_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1846,7 +1846,7 @@ def test_create_instance_field_headers():
 @pytest.mark.asyncio
 async def test_create_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1877,7 +1877,7 @@ async def test_create_instance_field_headers_async():
 
 def test_create_instance_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1911,7 +1911,7 @@ def test_create_instance_flattened():
 
 def test_create_instance_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1927,7 +1927,7 @@ def test_create_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_create_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1965,7 +1965,7 @@ async def test_create_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_create_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1985,7 +1985,7 @@ async def test_create_instance_flattened_error_async():
 ])
 def test_update_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2014,7 +2014,7 @@ def test_update_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -2030,7 +2030,7 @@ def test_update_instance_empty_call():
 @pytest.mark.asyncio
 async def test_update_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpdateInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2064,7 +2064,7 @@ async def test_update_instance_async_from_dict():
 
 def test_update_instance_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2096,7 +2096,7 @@ def test_update_instance_field_headers():
 @pytest.mark.asyncio
 async def test_update_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2127,7 +2127,7 @@ async def test_update_instance_field_headers_async():
 
 def test_update_instance_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2157,7 +2157,7 @@ def test_update_instance_flattened():
 
 def test_update_instance_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2172,7 +2172,7 @@ def test_update_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_update_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2206,7 +2206,7 @@ async def test_update_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_update_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2225,7 +2225,7 @@ async def test_update_instance_flattened_error_async():
 ])
 def test_upgrade_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2254,7 +2254,7 @@ def test_upgrade_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -2270,7 +2270,7 @@ def test_upgrade_instance_empty_call():
 @pytest.mark.asyncio
 async def test_upgrade_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpgradeInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2304,7 +2304,7 @@ async def test_upgrade_instance_async_from_dict():
 
 def test_upgrade_instance_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2336,7 +2336,7 @@ def test_upgrade_instance_field_headers():
 @pytest.mark.asyncio
 async def test_upgrade_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2367,7 +2367,7 @@ async def test_upgrade_instance_field_headers_async():
 
 def test_upgrade_instance_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2397,7 +2397,7 @@ def test_upgrade_instance_flattened():
 
 def test_upgrade_instance_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2412,7 +2412,7 @@ def test_upgrade_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_upgrade_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2446,7 +2446,7 @@ async def test_upgrade_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_upgrade_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2465,7 +2465,7 @@ async def test_upgrade_instance_flattened_error_async():
 ])
 def test_import_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2494,7 +2494,7 @@ def test_import_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -2510,7 +2510,7 @@ def test_import_instance_empty_call():
 @pytest.mark.asyncio
 async def test_import_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ImportInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2544,7 +2544,7 @@ async def test_import_instance_async_from_dict():
 
 def test_import_instance_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2576,7 +2576,7 @@ def test_import_instance_field_headers():
 @pytest.mark.asyncio
 async def test_import_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2607,7 +2607,7 @@ async def test_import_instance_field_headers_async():
 
 def test_import_instance_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2637,7 +2637,7 @@ def test_import_instance_flattened():
 
 def test_import_instance_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2652,7 +2652,7 @@ def test_import_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_import_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2686,7 +2686,7 @@ async def test_import_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_import_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2705,7 +2705,7 @@ async def test_import_instance_flattened_error_async():
 ])
 def test_export_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2734,7 +2734,7 @@ def test_export_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -2750,7 +2750,7 @@ def test_export_instance_empty_call():
 @pytest.mark.asyncio
 async def test_export_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ExportInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2784,7 +2784,7 @@ async def test_export_instance_async_from_dict():
 
 def test_export_instance_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2816,7 +2816,7 @@ def test_export_instance_field_headers():
 @pytest.mark.asyncio
 async def test_export_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2847,7 +2847,7 @@ async def test_export_instance_field_headers_async():
 
 def test_export_instance_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2877,7 +2877,7 @@ def test_export_instance_flattened():
 
 def test_export_instance_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2892,7 +2892,7 @@ def test_export_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_export_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2926,7 +2926,7 @@ async def test_export_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_export_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2945,7 +2945,7 @@ async def test_export_instance_flattened_error_async():
 ])
 def test_failover_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2974,7 +2974,7 @@ def test_failover_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -2990,7 +2990,7 @@ def test_failover_instance_empty_call():
 @pytest.mark.asyncio
 async def test_failover_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.FailoverInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3024,7 +3024,7 @@ async def test_failover_instance_async_from_dict():
 
 def test_failover_instance_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3056,7 +3056,7 @@ def test_failover_instance_field_headers():
 @pytest.mark.asyncio
 async def test_failover_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3087,7 +3087,7 @@ async def test_failover_instance_field_headers_async():
 
 def test_failover_instance_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3117,7 +3117,7 @@ def test_failover_instance_flattened():
 
 def test_failover_instance_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3132,7 +3132,7 @@ def test_failover_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_failover_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3166,7 +3166,7 @@ async def test_failover_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_failover_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3185,7 +3185,7 @@ async def test_failover_instance_flattened_error_async():
 ])
 def test_delete_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3214,7 +3214,7 @@ def test_delete_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -3230,7 +3230,7 @@ def test_delete_instance_empty_call():
 @pytest.mark.asyncio
 async def test_delete_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.DeleteInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3264,7 +3264,7 @@ async def test_delete_instance_async_from_dict():
 
 def test_delete_instance_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3296,7 +3296,7 @@ def test_delete_instance_field_headers():
 @pytest.mark.asyncio
 async def test_delete_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3327,7 +3327,7 @@ async def test_delete_instance_field_headers_async():
 
 def test_delete_instance_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3353,7 +3353,7 @@ def test_delete_instance_flattened():
 
 def test_delete_instance_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3367,7 +3367,7 @@ def test_delete_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3397,7 +3397,7 @@ async def test_delete_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3415,7 +3415,7 @@ async def test_delete_instance_flattened_error_async():
 ])
 def test_reschedule_maintenance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3444,7 +3444,7 @@ def test_reschedule_maintenance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
 
@@ -3460,7 +3460,7 @@ def test_reschedule_maintenance_empty_call():
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.RescheduleMaintenanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3494,7 +3494,7 @@ async def test_reschedule_maintenance_async_from_dict():
 
 def test_reschedule_maintenance_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3526,7 +3526,7 @@ def test_reschedule_maintenance_field_headers():
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3557,7 +3557,7 @@ async def test_reschedule_maintenance_field_headers_async():
 
 def test_reschedule_maintenance_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3589,7 +3589,7 @@ def test_reschedule_maintenance_flattened():
 
 def test_reschedule_maintenance_flattened_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3605,7 +3605,7 @@ def test_reschedule_maintenance_flattened_error():
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3641,7 +3641,7 @@ async def test_reschedule_maintenance_flattened_async():
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3661,7 +3661,7 @@ async def test_reschedule_maintenance_flattened_error_async():
 ])
 def test_list_instances_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -3709,14 +3709,14 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).list_instances._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).list_instances._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).list_instances._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).list_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -3726,7 +3726,7 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
     assert jsonified_request["parent"] == 'parent_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -3768,7 +3768,7 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
 
 def test_list_instances_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.list_instances._get_unset_required_fields({})
     assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
@@ -3777,7 +3777,7 @@ def test_list_instances_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_instances_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -3816,7 +3816,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
 
 def test_list_instances_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.ListInstancesRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3836,7 +3836,7 @@ def test_list_instances_rest_bad_request(transport: str = 'rest', request_type=c
 
 def test_list_instances_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -3874,7 +3874,7 @@ def test_list_instances_rest_flattened():
 
 def test_list_instances_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3889,7 +3889,7 @@ def test_list_instances_rest_flattened_error(transport: str = 'rest'):
 
 def test_list_instances_rest_pager(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3955,7 +3955,7 @@ def test_list_instances_rest_pager(transport: str = 'rest'):
 ])
 def test_get_instance_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -4053,14 +4053,14 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).get_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).get_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).get_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).get_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4068,7 +4068,7 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
     assert jsonified_request["name"] == 'name_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -4110,7 +4110,7 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
 
 def test_get_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.get_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
@@ -4119,7 +4119,7 @@ def test_get_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_instance_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -4158,7 +4158,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
 
 def test_get_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.GetInstanceRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4178,7 +4178,7 @@ def test_get_instance_rest_bad_request(transport: str = 'rest', request_type=clo
 
 def test_get_instance_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -4216,7 +4216,7 @@ def test_get_instance_rest_flattened():
 
 def test_get_instance_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4231,7 +4231,7 @@ def test_get_instance_rest_flattened_error(transport: str = 'rest'):
 
 def test_get_instance_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -4242,7 +4242,7 @@ def test_get_instance_rest_error():
 ])
 def test_get_instance_auth_string_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -4288,14 +4288,14 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).get_instance_auth_string._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).get_instance_auth_string._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).get_instance_auth_string._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).get_instance_auth_string._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4303,7 +4303,7 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
     assert jsonified_request["name"] == 'name_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -4345,7 +4345,7 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
 
 
 def test_get_instance_auth_string_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.get_instance_auth_string._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
@@ -4354,7 +4354,7 @@ def test_get_instance_auth_string_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_instance_auth_string_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -4393,7 +4393,7 @@ def test_get_instance_auth_string_rest_interceptors(null_interceptor):
 
 def test_get_instance_auth_string_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.GetInstanceAuthStringRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4413,7 +4413,7 @@ def test_get_instance_auth_string_rest_bad_request(transport: str = 'rest', requ
 
 def test_get_instance_auth_string_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -4451,7 +4451,7 @@ def test_get_instance_auth_string_rest_flattened():
 
 def test_get_instance_auth_string_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4466,7 +4466,7 @@ def test_get_instance_auth_string_rest_flattened_error(transport: str = 'rest'):
 
 def test_get_instance_auth_string_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -4477,7 +4477,7 @@ def test_get_instance_auth_string_rest_error():
 ])
 def test_create_instance_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -4584,7 +4584,7 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     # verify fields with default values are dropped
     assert "instanceId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).create_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).create_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -4594,7 +4594,7 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["instanceId"] = 'instance_id_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).create_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).create_instance._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("instance_id", ))
     jsonified_request.update(unset_fields)
@@ -4606,7 +4606,7 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     assert jsonified_request["instanceId"] == 'instance_id_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -4650,7 +4650,7 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
 
 
 def test_create_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.create_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(("instanceId", )) & set(("parent", "instanceId", "instance", )))
@@ -4659,7 +4659,7 @@ def test_create_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_instance_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -4699,7 +4699,7 @@ def test_create_instance_rest_interceptors(null_interceptor):
 
 def test_create_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.CreateInstanceRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4719,7 +4719,7 @@ def test_create_instance_rest_bad_request(transport: str = 'rest', request_type=
 
 def test_create_instance_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -4757,7 +4757,7 @@ def test_create_instance_rest_flattened():
 
 def test_create_instance_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4774,7 +4774,7 @@ def test_create_instance_rest_flattened_error(transport: str = 'rest'):
 
 def test_create_instance_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -4785,7 +4785,7 @@ def test_create_instance_rest_error():
 ])
 def test_update_instance_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -4889,12 +4889,12 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).update_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).update_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).update_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).update_instance._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask", ))
     jsonified_request.update(unset_fields)
@@ -4902,7 +4902,7 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
     # verify required fields with non-default values are left alone
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -4942,7 +4942,7 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
 
 
 def test_update_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.update_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(("updateMask", )) & set(("updateMask", "instance", )))
@@ -4951,7 +4951,7 @@ def test_update_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_instance_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -4991,7 +4991,7 @@ def test_update_instance_rest_interceptors(null_interceptor):
 
 def test_update_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.UpdateInstanceRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5011,7 +5011,7 @@ def test_update_instance_rest_bad_request(transport: str = 'rest', request_type=
 
 def test_update_instance_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5048,7 +5048,7 @@ def test_update_instance_rest_flattened():
 
 def test_update_instance_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5064,7 +5064,7 @@ def test_update_instance_rest_flattened_error(transport: str = 'rest'):
 
 def test_update_instance_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -5075,7 +5075,7 @@ def test_update_instance_rest_error():
 ])
 def test_upgrade_instance_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5117,7 +5117,7 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).upgrade_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).upgrade_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -5125,7 +5125,7 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
     jsonified_request["name"] = 'name_value'
     jsonified_request["redisVersion"] = 'redis_version_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).upgrade_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).upgrade_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5135,7 +5135,7 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
     assert jsonified_request["redisVersion"] == 'redis_version_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -5175,7 +5175,7 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
 
 
 def test_upgrade_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.upgrade_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "redisVersion", )))
@@ -5184,7 +5184,7 @@ def test_upgrade_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_upgrade_instance_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -5224,7 +5224,7 @@ def test_upgrade_instance_rest_interceptors(null_interceptor):
 
 def test_upgrade_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.UpgradeInstanceRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5244,7 +5244,7 @@ def test_upgrade_instance_rest_bad_request(transport: str = 'rest', request_type
 
 def test_upgrade_instance_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5281,7 +5281,7 @@ def test_upgrade_instance_rest_flattened():
 
 def test_upgrade_instance_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5297,7 +5297,7 @@ def test_upgrade_instance_rest_flattened_error(transport: str = 'rest'):
 
 def test_upgrade_instance_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -5308,7 +5308,7 @@ def test_upgrade_instance_rest_error():
 ])
 def test_import_instance_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5349,14 +5349,14 @@ def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportIns
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).import_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).import_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).import_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).import_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5364,7 +5364,7 @@ def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportIns
     assert jsonified_request["name"] == 'name_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -5404,7 +5404,7 @@ def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportIns
 
 
 def test_import_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.import_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "inputConfig", )))
@@ -5413,7 +5413,7 @@ def test_import_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_import_instance_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -5453,7 +5453,7 @@ def test_import_instance_rest_interceptors(null_interceptor):
 
 def test_import_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.ImportInstanceRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5473,7 +5473,7 @@ def test_import_instance_rest_bad_request(transport: str = 'rest', request_type=
 
 def test_import_instance_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5510,7 +5510,7 @@ def test_import_instance_rest_flattened():
 
 def test_import_instance_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5526,7 +5526,7 @@ def test_import_instance_rest_flattened_error(transport: str = 'rest'):
 
 def test_import_instance_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -5537,7 +5537,7 @@ def test_import_instance_rest_error():
 ])
 def test_export_instance_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5578,14 +5578,14 @@ def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportIns
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).export_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).export_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).export_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).export_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5593,7 +5593,7 @@ def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportIns
     assert jsonified_request["name"] == 'name_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -5633,7 +5633,7 @@ def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportIns
 
 
 def test_export_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.export_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "outputConfig", )))
@@ -5642,7 +5642,7 @@ def test_export_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_export_instance_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -5682,7 +5682,7 @@ def test_export_instance_rest_interceptors(null_interceptor):
 
 def test_export_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.ExportInstanceRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5702,7 +5702,7 @@ def test_export_instance_rest_bad_request(transport: str = 'rest', request_type=
 
 def test_export_instance_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5739,7 +5739,7 @@ def test_export_instance_rest_flattened():
 
 def test_export_instance_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5755,7 +5755,7 @@ def test_export_instance_rest_flattened_error(transport: str = 'rest'):
 
 def test_export_instance_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -5766,7 +5766,7 @@ def test_export_instance_rest_error():
 ])
 def test_failover_instance_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5807,14 +5807,14 @@ def test_failover_instance_rest_required_fields(request_type=cloud_redis.Failove
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).failover_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).failover_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).failover_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).failover_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5822,7 +5822,7 @@ def test_failover_instance_rest_required_fields(request_type=cloud_redis.Failove
     assert jsonified_request["name"] == 'name_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -5862,7 +5862,7 @@ def test_failover_instance_rest_required_fields(request_type=cloud_redis.Failove
 
 
 def test_failover_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.failover_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
@@ -5871,7 +5871,7 @@ def test_failover_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_failover_instance_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -5911,7 +5911,7 @@ def test_failover_instance_rest_interceptors(null_interceptor):
 
 def test_failover_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.FailoverInstanceRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5931,7 +5931,7 @@ def test_failover_instance_rest_bad_request(transport: str = 'rest', request_typ
 
 def test_failover_instance_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5968,7 +5968,7 @@ def test_failover_instance_rest_flattened():
 
 def test_failover_instance_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5984,7 +5984,7 @@ def test_failover_instance_rest_flattened_error(transport: str = 'rest'):
 
 def test_failover_instance_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -5995,7 +5995,7 @@ def test_failover_instance_rest_error():
 ])
 def test_delete_instance_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6036,14 +6036,14 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).delete_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).delete_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).delete_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).delete_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6051,7 +6051,7 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
     assert jsonified_request["name"] == 'name_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -6090,7 +6090,7 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
 
 
 def test_delete_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.delete_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
@@ -6099,7 +6099,7 @@ def test_delete_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_instance_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -6139,7 +6139,7 @@ def test_delete_instance_rest_interceptors(null_interceptor):
 
 def test_delete_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.DeleteInstanceRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6159,7 +6159,7 @@ def test_delete_instance_rest_bad_request(transport: str = 'rest', request_type=
 
 def test_delete_instance_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6195,7 +6195,7 @@ def test_delete_instance_rest_flattened():
 
 def test_delete_instance_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6210,7 +6210,7 @@ def test_delete_instance_rest_flattened_error(transport: str = 'rest'):
 
 def test_delete_instance_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -6221,7 +6221,7 @@ def test_delete_instance_rest_error():
 ])
 def test_reschedule_maintenance_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6262,14 +6262,14 @@ def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.Re
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).reschedule_maintenance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).reschedule_maintenance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=AnonymousCredentialsWithUniverseDomain()).reschedule_maintenance._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).reschedule_maintenance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6277,7 +6277,7 @@ def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.Re
     assert jsonified_request["name"] == 'name_value'
 
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -6317,7 +6317,7 @@ def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.Re
 
 
 def test_reschedule_maintenance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=AnonymousCredentialsWithUniverseDomain)
+    transport = transports.CloudRedisRestTransport(credentials=_AnonymousCredentialsWithUniverseDomain)
 
     unset_fields = transport.reschedule_maintenance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "rescheduleType", )))
@@ -6326,7 +6326,7 @@ def test_reschedule_maintenance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_reschedule_maintenance_rest_interceptors(null_interceptor):
     transport = transports.CloudRedisRestTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
         )
     client = CloudRedisClient(transport=transport)
@@ -6366,7 +6366,7 @@ def test_reschedule_maintenance_rest_interceptors(null_interceptor):
 
 def test_reschedule_maintenance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.RescheduleMaintenanceRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6386,7 +6386,7 @@ def test_reschedule_maintenance_rest_bad_request(transport: str = 'rest', reques
 
 def test_reschedule_maintenance_rest_flattened():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6424,7 +6424,7 @@ def test_reschedule_maintenance_rest_flattened():
 
 def test_reschedule_maintenance_rest_flattened_error(transport: str = 'rest'):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6441,7 +6441,7 @@ def test_reschedule_maintenance_rest_flattened_error(transport: str = 'rest'):
 
 def test_reschedule_maintenance_rest_error():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest'
     )
 
@@ -6449,17 +6449,17 @@ def test_reschedule_maintenance_rest_error():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudRedisGrpcTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = CloudRedisClient(
-            credentials=AnonymousCredentialsWithUniverseDomain(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.CloudRedisGrpcTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = CloudRedisClient(
@@ -6469,7 +6469,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.CloudRedisGrpcTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -6485,12 +6485,12 @@ def test_credentials_transport_error():
     with pytest.raises(ValueError):
         client = CloudRedisClient(
             client_options=options,
-            credentials=AnonymousCredentialsWithUniverseDomain()
+            credentials=_AnonymousCredentialsWithUniverseDomain()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.CloudRedisGrpcTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = CloudRedisClient(
@@ -6502,7 +6502,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.CloudRedisGrpcTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     client = CloudRedisClient(transport=transport)
     assert client.transport is transport
@@ -6510,13 +6510,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.CloudRedisGrpcTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.CloudRedisGrpcAsyncIOTransport(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -6529,7 +6529,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, 'default') as adc:
-        adc.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -6539,14 +6539,14 @@ def test_transport_adc(transport_class):
 ])
 def test_transport_kind(transport_name):
     transport = CloudRedisClient.get_transport_class(transport_name)(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     assert transport.kind == transport_name
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     assert isinstance(
         client.transport,
@@ -6557,7 +6557,7 @@ def test_cloud_redis_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.CloudRedisTransport(
-            credentials=AnonymousCredentialsWithUniverseDomain(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             credentials_file="credentials.json"
         )
 
@@ -6567,7 +6567,7 @@ def test_cloud_redis_base_transport():
     with mock.patch('google.cloud.redis_v1.services.cloud_redis.transports.CloudRedisTransport.__init__') as Transport:
         Transport.return_value = None
         transport = transports.CloudRedisTransport(
-            credentials=AnonymousCredentialsWithUniverseDomain(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
         )
 
     # Every method on the transport should just blindly
@@ -6616,7 +6616,7 @@ def test_cloud_redis_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(google.auth, 'load_credentials_from_file', autospec=True) as load_creds, mock.patch('google.cloud.redis_v1.services.cloud_redis.transports.CloudRedisTransport._prep_wrapped_messages') as Transport:
         Transport.return_value = None
-        load_creds.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.CloudRedisTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -6634,7 +6634,7 @@ def test_cloud_redis_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('google.cloud.redis_v1.services.cloud_redis.transports.CloudRedisTransport._prep_wrapped_messages') as Transport:
         Transport.return_value = None
-        adc.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.CloudRedisTransport()
         adc.assert_called_once()
 
@@ -6642,7 +6642,7 @@ def test_cloud_redis_base_transport_with_adc():
 def test_cloud_redis_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc:
-        adc.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         CloudRedisClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -6664,7 +6664,7 @@ def test_cloud_redis_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc:
-        adc.return_value = (AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -6709,7 +6709,7 @@ def test_cloud_redis_transport_create_channel(transport_class, grpc_helpers):
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = AnonymousCredentialsWithUniverseDomain()
+        creds = _AnonymousCredentialsWithUniverseDomain()
         adc.return_value = (creds, None)
         transport_class(
             quota_project_id="octopus",
@@ -6738,7 +6738,7 @@ def test_cloud_redis_transport_create_channel(transport_class, grpc_helpers):
 def test_cloud_redis_grpc_transport_client_cert_source_for_mtls(
     transport_class
 ):
-    cred = AnonymousCredentialsWithUniverseDomain()
+    cred = _AnonymousCredentialsWithUniverseDomain()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -6776,7 +6776,7 @@ def test_cloud_redis_grpc_transport_client_cert_source_for_mtls(
             )
 
 def test_cloud_redis_http_transport_client_cert_source_for_mtls():
-    cred = AnonymousCredentialsWithUniverseDomain()
+    cred = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
         transports.CloudRedisRestTransport (
             credentials=cred,
@@ -6787,7 +6787,7 @@ def test_cloud_redis_http_transport_client_cert_source_for_mtls():
 
 def test_cloud_redis_rest_lro_client():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='rest',
     )
     transport = client.transport
@@ -6809,7 +6809,7 @@ def test_cloud_redis_rest_lro_client():
 ])
 def test_cloud_redis_host_no_port(transport_name):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(api_endpoint='redis.googleapis.com'),
          transport=transport_name,
     )
@@ -6826,7 +6826,7 @@ def test_cloud_redis_host_no_port(transport_name):
 ])
 def test_cloud_redis_host_with_port(transport_name):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(api_endpoint='redis.googleapis.com:8000'),
         transport=transport_name,
     )
@@ -6840,8 +6840,8 @@ def test_cloud_redis_host_with_port(transport_name):
     "rest",
 ])
 def test_cloud_redis_client_transport_session_collision(transport_name):
-    creds1 = AnonymousCredentialsWithUniverseDomain()
-    creds2 = AnonymousCredentialsWithUniverseDomain()
+    creds1 = _AnonymousCredentialsWithUniverseDomain()
+    creds2 = _AnonymousCredentialsWithUniverseDomain()
     client1 = CloudRedisClient(
         credentials=creds1,
         transport=transport_name,
@@ -6923,7 +6923,7 @@ def test_cloud_redis_transport_channel_mtls_with_client_cert_source(
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = AnonymousCredentialsWithUniverseDomain()
+            cred = _AnonymousCredentialsWithUniverseDomain()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, 'default') as adc:
                     adc.return_value = (cred, None)
@@ -6995,7 +6995,7 @@ def test_cloud_redis_transport_channel_mtls_with_adc(
 
 def test_cloud_redis_grpc_lro_client():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc',
     )
     transport = client.transport
@@ -7012,7 +7012,7 @@ def test_cloud_redis_grpc_lro_client():
 
 def test_cloud_redis_grpc_lro_async_client():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport='grpc_asyncio',
     )
     transport = client.transport
@@ -7141,7 +7141,7 @@ def test_client_with_default_client_info():
 
     with mock.patch.object(transports.CloudRedisTransport, '_prep_wrapped_messages') as prep:
         client = CloudRedisClient(
-            credentials=AnonymousCredentialsWithUniverseDomain(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -7149,7 +7149,7 @@ def test_client_with_default_client_info():
     with mock.patch.object(transports.CloudRedisTransport, '_prep_wrapped_messages') as prep:
         transport_class = CloudRedisClient.get_transport_class()
         transport = transport_class(
-            credentials=AnonymousCredentialsWithUniverseDomain(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -7157,7 +7157,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
@@ -7168,7 +7168,7 @@ async def test_transport_close_async():
 
 def test_get_location_rest_bad_request(transport: str = 'rest', request_type=locations_pb2.GetLocationRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7190,7 +7190,7 @@ def test_get_location_rest_bad_request(transport: str = 'rest', request_type=loc
 ])
 def test_get_location_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request_init = {'name': 'projects/sample1/locations/sample2'}
@@ -7215,7 +7215,7 @@ def test_get_location_rest(request_type):
 
 def test_list_locations_rest_bad_request(transport: str = 'rest', request_type=locations_pb2.ListLocationsRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7237,7 +7237,7 @@ def test_list_locations_rest_bad_request(transport: str = 'rest', request_type=l
 ])
 def test_list_locations_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request_init = {'name': 'projects/sample1'}
@@ -7262,7 +7262,7 @@ def test_list_locations_rest(request_type):
 
 def test_cancel_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.CancelOperationRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7284,7 +7284,7 @@ def test_cancel_operation_rest_bad_request(transport: str = 'rest', request_type
 ])
 def test_cancel_operation_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
@@ -7309,7 +7309,7 @@ def test_cancel_operation_rest(request_type):
 
 def test_delete_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.DeleteOperationRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7331,7 +7331,7 @@ def test_delete_operation_rest_bad_request(transport: str = 'rest', request_type
 ])
 def test_delete_operation_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
@@ -7356,7 +7356,7 @@ def test_delete_operation_rest(request_type):
 
 def test_get_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.GetOperationRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7378,7 +7378,7 @@ def test_get_operation_rest_bad_request(transport: str = 'rest', request_type=op
 ])
 def test_get_operation_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
@@ -7403,7 +7403,7 @@ def test_get_operation_rest(request_type):
 
 def test_list_operations_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.ListOperationsRequest):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7425,7 +7425,7 @@ def test_list_operations_rest_bad_request(transport: str = 'rest', request_type=
 ])
 def test_list_operations_rest(request_type):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request_init = {'name': 'projects/sample1/locations/sample2'}
@@ -7451,7 +7451,7 @@ def test_list_operations_rest(request_type):
 
 def test_delete_operation(transport: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7473,7 +7473,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7497,7 +7497,7 @@ async def test_delete_operation_async(transport: str = "grpc_asyncio"):
 
 def test_delete_operation_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7521,7 +7521,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7546,7 +7546,7 @@ async def test_delete_operation_field_headers_async():
 
 def test_delete_operation_from_dict():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -7562,7 +7562,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -7580,7 +7580,7 @@ async def test_delete_operation_from_dict_async():
 
 def test_cancel_operation(transport: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7602,7 +7602,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7626,7 +7626,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
 
 def test_cancel_operation_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7650,7 +7650,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7675,7 +7675,7 @@ async def test_cancel_operation_field_headers_async():
 
 def test_cancel_operation_from_dict():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -7691,7 +7691,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -7709,7 +7709,7 @@ async def test_cancel_operation_from_dict_async():
 
 def test_get_operation(transport: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7731,7 +7731,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7755,7 +7755,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 def test_get_operation_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7779,7 +7779,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7804,7 +7804,7 @@ async def test_get_operation_field_headers_async():
 
 def test_get_operation_from_dict():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -7820,7 +7820,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -7838,7 +7838,7 @@ async def test_get_operation_from_dict_async():
 
 def test_list_operations(transport: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7860,7 +7860,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7884,7 +7884,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 def test_list_operations_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7908,7 +7908,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7933,7 +7933,7 @@ async def test_list_operations_field_headers_async():
 
 def test_list_operations_from_dict():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -7949,7 +7949,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -7967,7 +7967,7 @@ async def test_list_operations_from_dict_async():
 
 def test_list_locations(transport: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7989,7 +7989,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8013,7 +8013,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 def test_list_locations_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8037,7 +8037,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8062,7 +8062,7 @@ async def test_list_locations_field_headers_async():
 
 def test_list_locations_from_dict():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -8078,7 +8078,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -8096,7 +8096,7 @@ async def test_list_locations_from_dict_async():
 
 def test_get_location(transport: str = "grpc"):
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8118,7 +8118,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8142,7 +8142,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 def test_get_location_field_headers():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain())
+        credentials=_AnonymousCredentialsWithUniverseDomain())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8165,7 +8165,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8190,7 +8190,7 @@ async def test_get_location_field_headers_async():
 
 def test_get_location_from_dict():
     client = CloudRedisClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -8206,7 +8206,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -8230,7 +8230,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = CloudRedisClient(
-            credentials=AnonymousCredentialsWithUniverseDomain(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             transport=transport
         )
         with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
@@ -8273,7 +8273,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client.GOOGLE_DEFAULT_UNIVERSE),
+                host=client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

@@ -60,7 +60,7 @@ class IAMCredentialsAsyncClient:
     DEFAULT_ENDPOINT = IAMCredentialsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
     DEFAULT_ENDPOINT_TEMPLATE = IAMCredentialsClient.DEFAULT_ENDPOINT_TEMPLATE
-    GOOGLE_DEFAULT_UNIVERSE = IAMCredentialsClient.GOOGLE_DEFAULT_UNIVERSE
+    _DEFAULT_UNIVERSE = IAMCredentialsClient._DEFAULT_UNIVERSE
 
     service_account_path = staticmethod(IAMCredentialsClient.service_account_path)
     parse_service_account_path = staticmethod(IAMCredentialsClient.parse_service_account_path)

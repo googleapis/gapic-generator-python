@@ -121,7 +121,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     )
 
     DEFAULT_ENDPOINT_TEMPLATE = "logging.{UNIVERSE_DOMAIN}"
-    GOOGLE_DEFAULT_UNIVERSE = "googleapis.com"
+    _DEFAULT_UNIVERSE = "googleapis.com"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -423,7 +423,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         if api_override is not None:
             api_endpoint = api_override
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            if universe_domain != ConfigServiceV2Client.GOOGLE_DEFAULT_UNIVERSE:
+            if universe_domain != ConfigServiceV2Client._DEFAULT_UNIVERSE:
                 raise MutualTLSChannelError("MTLS is not supported in any universe other than googleapis.com.")
             api_endpoint = ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
         else:
@@ -440,7 +440,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         Returns:
             str: The universe domain to be used by the client.
         """
-        universe_domain = ConfigServiceV2Client.GOOGLE_DEFAULT_UNIVERSE
+        universe_domain = ConfigServiceV2Client._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -450,9 +450,20 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return universe_domain
 
     @staticmethod
-    def compare_universes(client_universe, credentials_universe):
+    def _compare_universes(client_universe, credentials_universe):
+        """Returns True if the universe domain used by the client
+            is the same as the universe domain in credentials.
+
+        Args:
+            client_universe (str): The universe domain configured via the client options.
+            credentials_universe (str): The universe domain in the credentials.
+
+        Returns:
+            bool: True if valid universe, else raise a "ValueError" exception.
+        """
+        default_universe = ConfigServiceV2Client._DEFAULT_UNIVERSE
         if client_universe != credentials_universe:
-            raise ValueError(f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credentials_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+            raise ValueError(f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credentials_universe}). If you haven't configured the universe domain explicitly, `{default_universe}` is the default.")
         return True
 
     def _validate_universe_domain(self):
@@ -460,9 +471,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             the universe domain in the credentials.
 
         Returns:
-            bool: True if valid universe, else returns False.
+            bool: True if valid universe, else raise a "ValueError" exception.
         """
-        self._is_universe_domain_valid = ConfigServiceV2Client.compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
+        self._is_universe_domain_valid = ConfigServiceV2Client._compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
         return self._is_universe_domain_valid
 
     @property

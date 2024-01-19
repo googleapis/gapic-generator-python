@@ -57,7 +57,7 @@ class AssetServiceAsyncClient:
     DEFAULT_ENDPOINT = AssetServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AssetServiceClient.DEFAULT_MTLS_ENDPOINT
     DEFAULT_ENDPOINT_TEMPLATE = AssetServiceClient.DEFAULT_ENDPOINT_TEMPLATE
-    GOOGLE_DEFAULT_UNIVERSE = AssetServiceClient.GOOGLE_DEFAULT_UNIVERSE
+    _DEFAULT_UNIVERSE = AssetServiceClient._DEFAULT_UNIVERSE
 
     access_level_path = staticmethod(AssetServiceClient.access_level_path)
     parse_access_level_path = staticmethod(AssetServiceClient.parse_access_level_path)

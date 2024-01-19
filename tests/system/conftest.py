@@ -86,9 +86,9 @@ def pytest_addoption(parser):
     )
 
 
-class AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
+class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
     def __init__(self, universe_domain="googleapis.com"):
-        super(AnonymousCredentialsWithUniverseDomain, self).__init__()
+        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
         self._universe_domain = universe_domain
 
 
@@ -97,7 +97,7 @@ def construct_client(
     use_mtls,
     transport_name="grpc",
     channel_creator=grpc.insecure_channel,
-    credentials=AnonymousCredentialsWithUniverseDomain()
+    credentials=_AnonymousCredentialsWithUniverseDomain()
 ):
     if use_mtls:
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
@@ -143,7 +143,7 @@ def echo(use_mtls, request):
 
 @pytest.fixture(params=["rest"])
 def echo_with_localhost_universe(use_mtls, request):
-    return construct_client(EchoClient, use_mtls, transport_name=request.param, credentials=AnonymousCredentialsWithUniverseDomain(universe_domain="localhost:7469"))
+    return construct_client(EchoClient, use_mtls, transport_name=request.param, credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="localhost:7469"))
 
 
 @pytest.fixture(params=["grpc", "rest"])
@@ -209,7 +209,7 @@ def intercepted_echo(use_mtls):
     )
     intercept_channel = grpc.intercept_channel(channel, interceptor)
     transport = EchoClient.get_transport_class("grpc")(
-        credentials=AnonymousCredentialsWithUniverseDomain(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         channel=intercept_channel,
     )
     return EchoClient(transport=transport)
