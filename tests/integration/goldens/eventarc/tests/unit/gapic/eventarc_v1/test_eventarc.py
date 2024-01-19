@@ -201,6 +201,11 @@ def test__validate_universe_domain():
     # Test the case when universe is already validated.
     assert client._validate_universe_domain() == True
 
+    # Test the case where credentials do not exist i.e. a channel is provided.
+    channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+    client = EchoClient(transport=transports.EchoGrpcTransport(channel=channel))
+    assert client._validate_universe_domain() == False
+
     # Test the case when there is a universe mismatch.
     client = EventarcClient(credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="foo.com"))
     with pytest.raises(ValueError) as excinfo:
