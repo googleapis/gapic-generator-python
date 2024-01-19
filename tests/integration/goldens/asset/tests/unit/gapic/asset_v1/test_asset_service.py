@@ -13728,7 +13728,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = AssetServiceClient(
-            credentials=AnonymousCredentialsWithUniverseDomain(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             transport=transport
         )
         # Test client calls underlying transport.

@@ -3389,7 +3389,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = IAMCredentialsClient(
-            credentials=AnonymousCredentialsWithUniverseDomain(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             transport=transport
         )
         # Test client calls underlying transport.
