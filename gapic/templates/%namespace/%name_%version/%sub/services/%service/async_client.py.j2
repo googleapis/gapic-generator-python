@@ -366,7 +366,7 @@ class {{ service.async_client_name }}:
         {% endif %}
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+        self.transport._credentials and self._client._validate_universe_domain()
 
         # Send the request.
         {%+ if not method.void %}response = {% endif %}
@@ -521,8 +521,7 @@ class {{ service.async_client_name }}:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
-        
+        self.transport._credentials and self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -641,7 +640,7 @@ class {{ service.async_client_name }}:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+        self.transport._credentials and self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -698,7 +697,7 @@ class {{ service.async_client_name }}:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+        self.transport._credentials and self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

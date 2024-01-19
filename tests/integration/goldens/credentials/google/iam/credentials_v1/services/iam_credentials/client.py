@@ -390,15 +390,19 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    def _validate_universe_domain(self, client_universe, credentials_universe):
+    def compare_universes(client_universe, credentials_universe):
+        if client_universe != credentials_universe:
+            raise ValueError(f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credentials_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
+        return True
+
+    def _validate_universe_domain(self):
         """Validates the universe domain used by the client instance against
             the universe domain in the credentials.
+
+        Returns:
+            bool: True if valid universe, else returns False.
         """
-        if not self._is_universe_domain_valid:
-            if client_universe != credentials_universe:
-                raise ValueError(f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credentials_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default.")
-            else:
-                self._is_universe_domain_valid = True
+        self._is_universe_domain_valid = compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
         return self._is_universe_domain_valid
 
     @property
@@ -667,7 +671,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+        self.transport._credentials and self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -817,7 +821,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+        self.transport._credentials and self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -953,7 +957,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+        self.transport._credentials and self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1092,7 +1096,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain(self.universe_domain, self.transport._credentials.universe_domain)
+        self.transport._credentials and self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
