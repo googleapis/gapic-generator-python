@@ -184,7 +184,7 @@
         {% endif %} {# method.explicit_routing #}
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         {%+ if not method.void %}response = {% endif %}rpc(

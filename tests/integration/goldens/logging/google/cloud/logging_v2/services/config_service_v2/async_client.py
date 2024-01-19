@@ -330,7 +330,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -422,7 +422,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -516,7 +516,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -620,7 +620,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -714,7 +714,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -803,7 +803,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -882,7 +882,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(
@@ -955,7 +955,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(
@@ -1062,7 +1062,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1154,7 +1154,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1239,7 +1239,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1326,7 +1326,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1403,7 +1403,7 @@ class ConfigServiceV2AsyncClient:
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(
@@ -1521,7 +1521,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1658,7 +1658,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1797,7 +1797,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1971,7 +1971,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -2085,7 +2085,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(
@@ -2222,7 +2222,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -2352,7 +2352,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -2472,7 +2472,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -2588,7 +2588,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -2710,7 +2710,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -2845,7 +2845,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -2983,7 +2983,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -3135,7 +3135,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -3248,7 +3248,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(
@@ -3352,7 +3352,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -3464,7 +3464,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -3600,7 +3600,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -3746,7 +3746,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -3831,7 +3831,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -3897,7 +3897,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -3951,7 +3951,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -4008,7 +4008,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._client._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)

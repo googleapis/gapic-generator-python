@@ -380,6 +380,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         Returns:
             str: The universe domain to be used by the client.
+        Raises:
+            ValueError: If universe domain is an empty string.
         """
         universe_domain = IAMCredentialsClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
@@ -400,7 +402,9 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             credentials_universe (str): The universe domain in the credentials.
 
         Returns:
-            bool: True if valid universe, else raise a "ValueError" exception.
+            bool: Returns True if universe domain is valid.
+        Raises:
+            ValueError: If universe domain is not valid.
         """
         default_universe = IAMCredentialsClient._DEFAULT_UNIVERSE
         if client_universe != credentials_universe:
@@ -412,9 +416,12 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             the universe domain in the credentials.
 
         Returns:
-            bool: True if valid universe, else raise a "ValueError" exception.
+            bool: Returns True if universe domain is valid, otherwise False.
+        Raises:
+            ValueError: If universe domain is not valid.
         """
-        self._is_universe_domain_valid = IAMCredentialsClient._compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
+        if self.transport._credentials:
+            self._is_universe_domain_valid = IAMCredentialsClient._compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
         return self._is_universe_domain_valid
 
     @property
@@ -431,8 +438,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         """Return the universe domain used by the client instance.
 
         Returns:
-            str: The universe domain used
-                by the client instance.
+            str: The universe domain used by the client instance.
         """
         return self._universe_domain
 
@@ -492,7 +498,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         try:
             universe_domain_opt = getattr(self._client_options, 'universe_domain')
         except AttributeError:
-            warnings.warn("Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None.")
+            warnings.warn("Attribute universe_domain does not exist in self._client_options. Setting universe_domain to None.")
             universe_domain_opt = None
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = IAMCredentialsClient._read_environment_variables()
@@ -683,7 +689,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -833,7 +839,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -969,7 +975,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1108,7 +1114,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(

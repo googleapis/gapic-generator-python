@@ -370,6 +370,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         Returns:
             str: The universe domain to be used by the client.
+        Raises:
+            ValueError: If universe domain is an empty string.
         """
         universe_domain = LoggingServiceV2Client._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
@@ -390,7 +392,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             credentials_universe (str): The universe domain in the credentials.
 
         Returns:
-            bool: True if valid universe, else raise a "ValueError" exception.
+            bool: Returns True if universe domain is valid.
+        Raises:
+            ValueError: If universe domain is not valid.
         """
         default_universe = LoggingServiceV2Client._DEFAULT_UNIVERSE
         if client_universe != credentials_universe:
@@ -402,9 +406,12 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             the universe domain in the credentials.
 
         Returns:
-            bool: True if valid universe, else raise a "ValueError" exception.
+            bool: Returns True if universe domain is valid, otherwise False.
+        Raises:
+            ValueError: If universe domain is not valid.
         """
-        self._is_universe_domain_valid = LoggingServiceV2Client._compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
+        if self.transport._credentials:
+            self._is_universe_domain_valid = LoggingServiceV2Client._compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
         return self._is_universe_domain_valid
 
     @property
@@ -421,8 +428,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         """Return the universe domain used by the client instance.
 
         Returns:
-            str: The universe domain used
-                by the client instance.
+            str: The universe domain used by the client instance.
         """
         return self._universe_domain
 
@@ -479,7 +485,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         try:
             universe_domain_opt = getattr(self._client_options, 'universe_domain')
         except AttributeError:
-            warnings.warn("Attribute universe_domain does not exist in self._client_options. Setting universe_domain_opt to None.")
+            warnings.warn("Attribute universe_domain does not exist in self._client_options. Setting universe_domain to None.")
             universe_domain_opt = None
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = LoggingServiceV2Client._read_environment_variables()
@@ -623,7 +629,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         rpc(
@@ -810,7 +816,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.write_log_entries]
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -957,7 +963,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_log_entries]
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1047,7 +1053,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_monitored_resource_descriptors]
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1169,7 +1175,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1258,7 +1264,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.tail_log_entries]
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1329,7 +1335,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1383,7 +1389,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -1440,7 +1446,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         )
 
         # Validate the universe domain.
-        self.transport._credentials and self._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
