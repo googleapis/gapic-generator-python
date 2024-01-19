@@ -342,8 +342,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         """Return the API endpoint used by the client.
 
         Args:
-            api_override (str): The API endpoint override. If specified, this is always the return value of this function
-            and the other arguments are not used.
+            api_override (str): The API endpoint override. If specified, this is always
+                the return value of this function and the other arguments are not used.
             client_cert_source (bytes): The client certificate source used by the client.
             universe_domain (str): The universe domain used by the client.
             use_mtls_endpoint (str): How to use the MTLS endpoint, which depends also on the other parameters.
@@ -352,11 +352,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         Returns:
             str: The API endpoint to be used by the client.
         """
+        _default_universe = MetricsServiceV2Client._DEFAULT_UNIVERSE
         if api_override is not None:
             api_endpoint = api_override
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            if universe_domain != MetricsServiceV2Client._DEFAULT_UNIVERSE:
-                raise MutualTLSChannelError("MTLS is not supported in any universe other than googleapis.com.")
+            if universe_domain != _default_universe:
+                raise MutualTLSChannelError(f"MTLS is not supported in any universe other than {_default_universe}")
             api_endpoint = MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = MetricsServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
@@ -393,9 +394,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             credentials_universe (str): The universe domain in the credentials.
 
         Returns:
-            bool: Returns True if universe domain is valid.
+            bool: Returns True if universes match.
         Raises:
-            ValueError: If universe domain is not valid.
+            ValueError: when the universes do not match.
         """
         default_universe = MetricsServiceV2Client._DEFAULT_UNIVERSE
         if client_universe != credentials_universe:
@@ -412,7 +413,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             ValueError: If universe domain is not valid.
         """
         if self.transport._credentials:
-            self._is_universe_domain_valid = MetricsServiceV2Client._compare_universes(self.universe_domain, self.transport._credentials.universe_domain)
+            self._is_universe_domain_valid = (self._is_universe_domain_valid or
+                self.transport._credentials is None or
+                MetricsServiceV2Client._compare_universes(self.universe_domain, self.transport._credentials.universe_domain))
         return self._is_universe_domain_valid
 
     @property
@@ -451,7 +454,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
-                client. It won't take effect if a ``transport`` instance is provided.
+                client.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
@@ -466,6 +469,10 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
+                (3) The ``universe_domain`` property can be used to override the
+                default "googleapis.com" universe. Note that ``api_endpoint`` property
+                still takes precedence and ``universe_domain`` is currently not supported
+                for MTLS.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
