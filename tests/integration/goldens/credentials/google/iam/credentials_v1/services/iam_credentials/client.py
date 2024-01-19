@@ -366,7 +366,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             api_endpoint = api_override
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(f"MTLS is not supported in any universe other than {_default_universe}")
+                raise MutualTLSChannelError(f"MTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = IAMCredentialsClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
