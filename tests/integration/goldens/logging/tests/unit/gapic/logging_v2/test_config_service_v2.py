@@ -183,7 +183,7 @@ def test__validate_universe_domain():
 
     # Test the case where credentials do not exist i.e. a channel is provided.
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-    client = ConfigServiceV2Client(transport=transports.EchoGrpcTransport(channel=channel))
+    client = ConfigServiceV2Client(transport=transports.ConfigServiceV2GrpcTransport(channel=channel))
     assert client._validate_universe_domain() == False
 
     # Test the case when there is a universe mismatch.
