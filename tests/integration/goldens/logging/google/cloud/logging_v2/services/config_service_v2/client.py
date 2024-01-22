@@ -440,6 +440,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             str: The universe domain to be used by the client.
+
         Raises:
             ValueError: If universe domain is an empty string.
         """

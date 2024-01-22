@@ -381,6 +381,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         Returns:
             str: The universe domain to be used by the client.
+
         Raises:
             ValueError: If universe domain is an empty string.
         """
