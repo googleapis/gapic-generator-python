@@ -605,8 +605,7 @@ def test_eventarc_client_client_api_endpoint(client_class):
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(client_options=options, credentials=_AnonymousCredentialsWithUniverseDomain())
     else:
-        with pytest.warns(UserWarning, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain to None."):
-            client = client_class(client_options=options, credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(client_options=options, credentials=_AnonymousCredentialsWithUniverseDomain())
     assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
     assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
@@ -616,9 +615,8 @@ def test_eventarc_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        with pytest.warns(UserWarning, match="Attribute universe_domain does not exist in self._client_options. Setting universe_domain to None."):
-            client = client_class(client_options=options, credentials=_AnonymousCredentialsWithUniverseDomain())
-            assert client.api_endpoint == default_endpoint
+        client = client_class(client_options=options, credentials=_AnonymousCredentialsWithUniverseDomain())
+        assert client.api_endpoint == default_endpoint
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
