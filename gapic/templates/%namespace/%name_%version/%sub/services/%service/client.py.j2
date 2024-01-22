@@ -138,10 +138,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         DEFAULT_ENDPOINT
     )
 
+    _DEFAULT_ENDPOINT_TEMPLATE = {% if service.host %}"{{ service.host.replace("googleapis.com", "{UNIVERSE_DOMAIN}") }}"{% else %}None{% endif %}
+
     _DEFAULT_UNIVERSE = "googleapis.com"
 
-    _DEFAULT_ENDPOINT_TEMPLATE = {% if service.host %}"{{ service.host.replace(_DEFAULT_UNIVERSE, "{UNIVERSE_DOMAIN}") }}"{% else %}None{% endif %}
-    
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
