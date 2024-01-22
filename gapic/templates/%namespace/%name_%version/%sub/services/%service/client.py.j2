@@ -131,14 +131,14 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
-    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = {% if service.host %}"{{ service.host }}"{% else %}None{% endif %}
 
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
 
-    DEFAULT_ENDPOINT_TEMPLATE = {% if service.host %}"{{ service.host.replace("googleapis.com", "{UNIVERSE_DOMAIN}") }}"{% else %}None{% endif %}
+    _DEFAULT_ENDPOINT_TEMPLATE = {% if service.host %}"{{ service.host.replace("googleapis.com", "{UNIVERSE_DOMAIN}") }}"{% else %}None{% endif %}
     
     _DEFAULT_UNIVERSE = "googleapis.com"
 
@@ -344,7 +344,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 raise MutualTLSChannelError(f"MTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = {{ service.client_name }}.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = {{ service.client_name }}.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
+            api_endpoint = {{ service.client_name }}._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
     
     def _get_universe_domain(client_universe_domain, universe_domain_env):
@@ -378,7 +378,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             credentials_universe (str): The universe domain in the credentials.
 
         Returns:
-            bool: Returns True if universes match.
+            bool: True if universes match.
+
         Raises:
             ValueError: when the universes do not match.
         """
@@ -392,7 +393,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             the universe domain in the credentials.
         
         Returns:
-            bool: Returns True if universe domain is valid, otherwise False.
+            bool: True if universe domain is valid, otherwise False.
+
         Raises:
             ValueError: If universe domain is not valid.
         """

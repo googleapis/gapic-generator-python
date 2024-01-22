@@ -169,7 +169,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
         if channel:
-            # Ignore credentials if a channel was passed
+            # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel

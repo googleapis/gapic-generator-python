@@ -130,13 +130,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
-    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "eventarc.googleapis.com"
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
 
-    DEFAULT_ENDPOINT_TEMPLATE = "eventarc.{UNIVERSE_DOMAIN}"
+    _DEFAULT_ENDPOINT_TEMPLATE = "eventarc.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
 
     @classmethod
@@ -477,7 +477,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 raise MutualTLSChannelError(f"MTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = EventarcClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = EventarcClient.DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
+            api_endpoint = EventarcClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
 
     def _get_universe_domain(client_universe_domain, universe_domain_env):
@@ -511,7 +511,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
             credentials_universe (str): The universe domain in the credentials.
 
         Returns:
-            bool: Returns True if universes match.
+            bool: True if universes match.
+
         Raises:
             ValueError: when the universes do not match.
         """
@@ -525,7 +526,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
             the universe domain in the credentials.
 
         Returns:
-            bool: Returns True if universe domain is valid, otherwise False.
+            bool: True if universe domain is valid, otherwise False.
+
         Raises:
             ValueError: If universe domain is not valid.
         """

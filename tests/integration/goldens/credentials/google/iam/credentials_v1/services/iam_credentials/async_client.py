@@ -56,10 +56,10 @@ class IAMCredentialsAsyncClient:
     _client: IAMCredentialsClient
 
     # Copy defaults from the synchronous client for use here.
-    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = IAMCredentialsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    DEFAULT_ENDPOINT_TEMPLATE = IAMCredentialsClient.DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_ENDPOINT_TEMPLATE = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = IAMCredentialsClient._DEFAULT_UNIVERSE
 
     service_account_path = staticmethod(IAMCredentialsClient.service_account_path)

@@ -55,10 +55,10 @@ class {{ service.async_client_name }}:
     _client: {{ service.client_name }}
 
     # Copy defaults from the synchronous client for use here.
-    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = {{ service.client_name }}.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = {{ service.client_name }}.DEFAULT_MTLS_ENDPOINT
-    DEFAULT_ENDPOINT_TEMPLATE = {{ service.client_name }}.DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_ENDPOINT_TEMPLATE = {{ service.client_name }}._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = {{ service.client_name }}._DEFAULT_UNIVERSE
 
     {% for message in service.resource_messages|sort(attribute="resource_type") %}

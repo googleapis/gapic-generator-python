@@ -49,10 +49,10 @@ class MetricsServiceV2AsyncClient:
     _client: MetricsServiceV2Client
 
     # Copy defaults from the synchronous client for use here.
-    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = MetricsServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    DEFAULT_ENDPOINT_TEMPLATE = MetricsServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_ENDPOINT_TEMPLATE = MetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = MetricsServiceV2Client._DEFAULT_UNIVERSE
 
     log_metric_path = staticmethod(MetricsServiceV2Client.log_metric_path)

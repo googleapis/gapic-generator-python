@@ -51,10 +51,10 @@ class ConfigServiceV2AsyncClient:
     _client: ConfigServiceV2Client
 
     # Copy defaults from the synchronous client for use here.
-    # Note: DEFAULT_ENDPOINT is deprecated. Use DEFAULT_ENDPOINT_TEMPLATE instead.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = ConfigServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    DEFAULT_ENDPOINT_TEMPLATE = ConfigServiceV2Client.DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_ENDPOINT_TEMPLATE = ConfigServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ConfigServiceV2Client._DEFAULT_UNIVERSE
 
     cmek_settings_path = staticmethod(ConfigServiceV2Client.cmek_settings_path)
