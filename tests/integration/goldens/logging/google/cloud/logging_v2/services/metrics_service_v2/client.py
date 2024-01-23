@@ -363,6 +363,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             api_endpoint = MetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
 
+    @staticmethod
     def _get_universe_domain(client_universe_domain, universe_domain_env):
         """Return the universe domain used by the client.
 
