@@ -178,7 +178,7 @@ def test__get_api_endpoint():
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
         EventarcClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "MTLS is not supported in any universe other than googleapis.com."
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 def test__get_universe_domain():
 

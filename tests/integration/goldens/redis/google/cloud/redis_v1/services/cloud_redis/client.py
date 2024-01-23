@@ -372,18 +372,18 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 the return value of this function and the other arguments are not used.
             client_cert_source (bytes): The client certificate source used by the client.
             universe_domain (str): The universe domain used by the client.
-            use_mtls_endpoint (str): How to use the MTLS endpoint, which depends also on the other parameters.
+            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
                 Possible values are "always", "auto", or "never".
 
         Returns:
             str: The API endpoint to be used by the client.
         """
-        _default_universe = CloudRedisClient._DEFAULT_UNIVERSE
         if api_override is not None:
             api_endpoint = api_override
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+            _default_universe = CloudRedisClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(f"MTLS is not supported in any universe other than {_default_universe}.")
+                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = CloudRedisClient.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = CloudRedisClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
@@ -400,7 +400,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             str: The universe domain to be used by the client.
 
         Raises:
-            ValueError: If universe domain is an empty string.
+            ValueError: If the universe domain is an empty string.
         """
         universe_domain = CloudRedisClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
@@ -436,10 +436,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             the universe domain in the credentials.
 
         Returns:
-            bool: True if universe domain is valid, otherwise False.
+            bool: True iff the configured universe domain is valid.
 
         Raises:
-            ValueError: If universe domain is not valid.
+            ValueError: If the configured universe domain is not valid.
         """
         if self.transport._credentials:
             self._is_universe_domain_valid = (self._is_universe_domain_valid or
@@ -485,26 +485,31 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
-            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
-                client.
-                (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
-                environment variable can also be used to override the endpoint:
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client.
+
+                1. The ``api_endpoint`` property can be used to override the
+                default endpoint provided by the client. Only if this property
+                is not set, the endpoint is determined by the
+                GOOGLE_API_USE_MTLS_ENDPOINT
+                environment variable, which have one of the following values:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint) and "auto" (auto switch to the
-                default mTLS endpoint if client certificate is present, this is
-                the default value). However, the ``api_endpoint`` property takes
-                precedence if provided.
-                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                use the default regular endpoint) and "auto" (auto-switch to the
+                default mTLS endpoint if client certificate is present; this is
+                the default value).
+
+                2. If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
                 is "true", then the ``client_cert_source`` property can be used
-                to provide client certificate for mutual TLS transport. If
+                to provide client certificate for mTLS transport. If
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-                (3) The ``universe_domain`` property can be used to override the
-                default "googleapis.com" universe. Note that ``api_endpoint`` property
-                still takes precedence and ``universe_domain`` is currently not supported
-                for MTLS.
+
+                3. The ``universe_domain`` property can be used to override the
+                default "googleapis.com" universe. Note that ``api_endpoint``
+                property still takes precedence; and ``universe_domain`` is
+                currently not supported for mTLS.
+
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
