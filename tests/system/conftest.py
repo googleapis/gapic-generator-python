@@ -92,12 +92,14 @@ class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredential
         self._universe_domain = universe_domain
 
 
+# TODO: Need to test  without passing in a transport class
 def construct_client(
     client_class,
     use_mtls,
     transport_name="grpc",
-    channel_creator=grpc.insecure_channel,
-    credentials=_AnonymousCredentialsWithUniverseDomain()
+    channel_creator=grpc.insecure_channel, # for grpc,grpc_asyncio only
+    credentials=_AnonymousCredentialsWithUniverseDomain(),
+    transport_endpoint="localhost:7469"
 ):
     if use_mtls:
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
@@ -110,25 +112,32 @@ def construct_client(
                 mock_ssl_cred.assert_called_once_with(
                     certificate_chain=cert, private_key=key
                 )
+                print(f"** Using mTLS: construct_client: transport: {client.transport}")
                 return client
     else:
         transport_cls = client_class.get_transport_class(transport_name)
         if transport_name in ["grpc", "grpc_asyncio"]:
+            # TODO: Need to test grpc transports without a channel_creator
+            assert channel_creator
             transport = transport_cls(
                 credentials=credentials,
-                channel=channel_creator("localhost:7469"),
+                channel=channel_creator(transport_endpoint),
             )
         elif transport_name == "rest":
             # The custom host explicitly bypasses https.
             transport = transport_cls(
                 credentials=credentials,
-                host="localhost:7469",
+                host=transport_endpoint,
                 url_scheme="http",
             )
         else:
             raise RuntimeError(f"Unexpected transport type: {transport_name}")
 
-        return client_class(transport=transport)
+        # return client_class(transport=transport)
+        client=client_class(transport=transport)
+        print(f"** Not using mTLS: construct_client: transport: {client.transport}")
+        print(f"** Not using mTLS: construct_client: transport._credentials: {client.transport._credentials}")
+        return client
 
 
 @pytest.fixture
@@ -136,13 +145,24 @@ def use_mtls(request):
     return request.config.getoption("--mtls")
 
 
+
+@pytest.fixture
+def parametrized_echo(use_mtls, test_params):
+    print(f"test_params: {vars(test_params)}")
+    return construct_client(EchoClient, use_mtls,
+                            transport_endpoint=test_params.transport_endpoint,
+                            transport_name=test_params.transport_name,
+                            channel_creator=test_params.channel_creator,
+                            credentials=_AnonymousCredentialsWithUniverseDomain(
+                                universe_domain=test_params.credential_universe))
+
 @pytest.fixture(params=["grpc", "rest"])
 def echo(use_mtls, request):
     return construct_client(EchoClient, use_mtls, transport_name=request.param)
 
 
 @pytest.fixture(params=["grpc", "rest"])
-def echo_with_localhost_universe(use_mtls, request):
+def echo_with_universe_credentials_localhost(use_mtls, request):
     return construct_client(EchoClient, use_mtls, transport_name=request.param, credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="localhost:7469"))
 
 
