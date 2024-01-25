@@ -186,7 +186,6 @@ def test__get_api_endpoint():
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 def test__get_universe_domain():
-
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
@@ -199,7 +198,6 @@ def test__get_universe_domain():
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 def test__validate_universe_domain():
-    
     client = {{ service.client_name }}(credentials=_AnonymousCredentialsWithUniverseDomain())
     assert client._validate_universe_domain() == True
     

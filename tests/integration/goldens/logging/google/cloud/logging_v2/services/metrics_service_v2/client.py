@@ -387,8 +387,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return universe_domain
 
     @staticmethod
-    def _compare_universes(client_universe: str,
-                           credentials: Union[ga_credentials.Credentials, bool]):
+    def _compare_universes(client_universe, credentials_universe):
+        """Returns True if the universe domain used by the client
+            is the same as the universe domain in credentials.
         """Returns True iff the universe domains used by the client and credentials match.
 
         Args:

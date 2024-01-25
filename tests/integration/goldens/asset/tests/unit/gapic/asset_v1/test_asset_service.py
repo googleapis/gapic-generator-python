@@ -171,7 +171,6 @@ def test__get_api_endpoint():
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 def test__get_universe_domain():
-
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
@@ -184,23 +183,39 @@ def test__get_universe_domain():
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 def test__validate_universe_domain():
-
     client = AssetServiceClient(credentials=_AnonymousCredentialsWithUniverseDomain())
     assert client._validate_universe_domain() == True
 
     # Test the case when universe is already validated.
     assert client._validate_universe_domain() == True
 
-    # Test the case where credentials do not exist i.e. a channel is provided.
+    # Test the case where credentials are provided by the
+    # `local_channel_credentials`. The default universes in both match.
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
     client = AssetServiceClient(transport=transports.AssetServiceGrpcTransport(channel=channel))
-    assert client._validate_universe_domain() == False
+    assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch.
+    # Test the case where credentials do not exist: e.g. a transport is provided
+    # with no credentials. Validation should still succeed because there is no
+    # mismatch with non-existent credentials.
+    channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+    transport=transports.AssetServiceGrpcTransport(channel=channel)
+    transport._credentials = None
+    client = AssetServiceClient()
+    assert client._validate_universe_domain() == True
+
+    # Test the case when there is a universe mismatch from the credentials.
     client = AssetServiceClient(credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="foo.com"))
     with pytest.raises(ValueError) as excinfo:
         client._validate_universe_domain()
     assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+    # Test the case when there is a universe mismatch from the client.
+    client = AssetServiceClient(credentials=_AnonymousCredentialsWithUniverseDomain(),
+        client_options={"universe_domain": "bar.com"})
+    with pytest.raises(ValueError) as excinfo:
+        client._validate_universe_domain()
+    assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (AssetServiceClient, "grpc"),
