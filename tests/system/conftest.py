@@ -97,7 +97,7 @@ def construct_client(
     client_class,
     use_mtls,
     transport_name="grpc",
-    channel_creator=grpc.insecure_channel, # for grpc,grpc_asyncio only
+    channel_creator=grpc.insecure_channel,  # for grpc,grpc_asyncio only
     credentials=_AnonymousCredentialsWithUniverseDomain(),
     transport_endpoint="localhost:7469"
 ):
@@ -133,7 +133,7 @@ def construct_client(
             raise RuntimeError(f"Unexpected transport type: {transport_name}")
 
         # return client_class(transport=transport)
-        client=client_class(transport=transport)
+        client = client_class(transport=transport)
         return client
 
 
@@ -151,6 +151,7 @@ def parametrized_echo(use_mtls, test_params):
                             channel_creator=test_params.channel_creator,
                             credentials=_AnonymousCredentialsWithUniverseDomain(
                                 universe_domain=test_params.credential_universe))
+
 
 @pytest.fixture(params=["grpc", "rest"])
 def echo(use_mtls, request):
