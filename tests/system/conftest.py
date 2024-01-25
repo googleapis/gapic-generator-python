@@ -145,7 +145,6 @@ def use_mtls(request):
     return request.config.getoption("--mtls")
 
 
-
 @pytest.fixture
 def parametrized_echo(use_mtls, test_params):
     print(f"test_params: {vars(test_params)}")
