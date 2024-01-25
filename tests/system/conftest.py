@@ -112,7 +112,6 @@ def construct_client(
                 mock_ssl_cred.assert_called_once_with(
                     certificate_chain=cert, private_key=key
                 )
-                print(f"** Using mTLS: construct_client: transport: {client.transport}")
                 return client
     else:
         transport_cls = client_class.get_transport_class(transport_name)
@@ -135,8 +134,6 @@ def construct_client(
 
         # return client_class(transport=transport)
         client=client_class(transport=transport)
-        print(f"** Not using mTLS: construct_client: transport: {client.transport}")
-        print(f"** Not using mTLS: construct_client: transport._credentials: {client.transport._credentials}")
         return client
 
 
