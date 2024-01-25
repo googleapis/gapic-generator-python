@@ -196,10 +196,11 @@ class IAMCredentialsAsyncClient:
                 Custom options for the client.
 
                 1. The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. Only if this property
-                is not set, the endpoint is determined by the
-                GOOGLE_API_USE_MTLS_ENDPOINT
-                environment variable, which have one of the following values:
+                default endpoint provided by the client when ``transport`` is
+                not explicitly provided. Only if this property is not set and
+                ``transport`` was not explicitly provided, the endpoint is
+                determined by the GOOGLE_API_USE_MTLS_ENDPOINT environment
+                variable, which have one of the following values:
                 "always" (always use the default mTLS endpoint), "never" (always
                 use the default regular endpoint) and "auto" (auto-switch to the
                 default mTLS endpoint if client certificate is present; this is

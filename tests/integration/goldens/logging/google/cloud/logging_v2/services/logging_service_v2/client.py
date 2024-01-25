@@ -386,28 +386,33 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         return universe_domain
 
     @staticmethod
-    def _compare_universes(client_universe, credentials_universe):
-        """Returns True if the universe domain used by the client
-            is the same as the universe domain in credentials.
+    def _compare_universes(client_universe: str,
+                           credentials: Union[ga_credentials.Credentials, bool]):
+        """Returns True iff the universe domains used by the client and credentials match.
 
         Args:
             client_universe (str): The universe domain configured via the client options.
-            credentials_universe (str): The universe domain in the credentials.
+            credentials (ga_credentials.Credentials): The credentials being used in the client.
 
         Returns:
-            bool: True if universes match.
+            bool: True iff client_universe matches the universe in credentials.
 
         Raises:
-            ValueError: when the universes do not match.
+            ValueError: when client_universe does not match the universe in credentials.
         """
-        default_universe = LoggingServiceV2Client._DEFAULT_UNIVERSE
-        if client_universe != credentials_universe:
-            raise ValueError(f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credentials_universe}). If you haven't configured the universe domain explicitly, `{default_universe}` is the default.")
+        if credentials:
+            credentials_universe = credentials.universe_domain
+            if client_universe != credentials_universe:
+                default_universe = LoggingServiceV2Client._DEFAULT_UNIVERSE
+                raise ValueError("The configured universe domain " +
+                    f"({client_universe}) does not match the universe domain " +
+                    f"found in the credentials ({credentials_universe}). " +
+                    "If you haven't configured the universe domain explicitly, " +
+                    f"`{default_universe}` is the default.")
         return True
 
     def _validate_universe_domain(self):
-        """Validates the universe domain used by the client instance against
-            the universe domain in the credentials.
+        """Validates client's and credentials' universe domains are consistent.
 
         Returns:
             bool: True iff the configured universe domain is valid.
@@ -415,10 +420,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Raises:
             ValueError: If the configured universe domain is not valid.
         """
-        if self.transport._credentials:
-            self._is_universe_domain_valid = (self._is_universe_domain_valid or
-                self.transport._credentials is None or
-                LoggingServiceV2Client._compare_universes(self.universe_domain, self.transport._credentials.universe_domain))
+        self._is_universe_domain_valid = (self._is_universe_domain_valid or
+            LoggingServiceV2Client._compare_universes(self.universe_domain, self.transport._credentials))
         return self._is_universe_domain_valid
 
     @property
@@ -460,10 +463,11 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 Custom options for the client.
 
                 1. The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. Only if this property
-                is not set, the endpoint is determined by the
-                GOOGLE_API_USE_MTLS_ENDPOINT
-                environment variable, which have one of the following values:
+                default endpoint provided by the client when ``transport`` is
+                not explicitly provided. Only if this property is not set and
+                ``transport`` was not explicitly provided, the endpoint is
+                determined by the GOOGLE_API_USE_MTLS_ENDPOINT environment
+                variable, which have one of the following values:
                 "always" (always use the default mTLS endpoint), "never" (always
                 use the default regular endpoint) and "auto" (auto-switch to the
                 default mTLS endpoint if client certificate is present; this is
@@ -503,7 +507,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = LoggingServiceV2Client._read_environment_variables()
         self._client_cert_source = LoggingServiceV2Client._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = LoggingServiceV2Client._get_universe_domain(universe_domain_opt, self._universe_domain_env)
-        self._api_endpoint = LoggingServiceV2Client._get_api_endpoint(self._client_options.api_endpoint, self._client_cert_source, self._universe_domain, self._use_mtls_endpoint)
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -515,7 +518,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, LoggingServiceV2Transport):
+        transport_provided = isinstance(transport, LoggingServiceV2Transport)
+        if transport_provided:
             # transport is a LoggingServiceV2Transport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
@@ -526,7 +530,16 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                     "directly."
                 )
             self._transport = transport
-        else:
+            self._api_endpoint = transport.host
+
+        self._api_endpoint = (self._api_endpoint or
+            LoggingServiceV2Client._get_api_endpoint(
+                self._client_options.api_endpoint,
+                self._client_cert_source,
+                self._universe_domain,
+                self._use_mtls_endpoint))
+
+        if not transport_provided:
             import google.auth._default  # type: ignore
 
             if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
