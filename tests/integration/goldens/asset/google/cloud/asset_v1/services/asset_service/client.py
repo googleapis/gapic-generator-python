@@ -459,9 +459,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return universe_domain
 
     @staticmethod
-    def _compare_universes(client_universe, credentials_universe):
-        """Returns True if the universe domain used by the client
-            is the same as the universe domain in credentials.
+    def _compare_universes(client_universe: str,
+                           credentials: ga_credentials.Credentials):
         """Returns True iff the universe domains used by the client and credentials match.
 
         Args:
