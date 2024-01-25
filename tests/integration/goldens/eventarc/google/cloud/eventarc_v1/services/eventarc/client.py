@@ -522,10 +522,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
             credentials_universe = credentials.universe_domain
             if client_universe != credentials_universe:
                 default_universe = EventarcClient._DEFAULT_UNIVERSE
-                raise ValueError("The configured universe domain " +
-                    f"({client_universe}) does not match the universe domain " +
-                    f"found in the credentials ({credentials_universe}). " +
-                    "If you haven't configured the universe domain explicitly, " +
+                raise ValueError("The configured universe domain "
+                    f"({client_universe}) does not match the universe domain "
+                    f"found in the credentials ({credentials_universe}). "
+                    "If you haven't configured the universe domain explicitly, "
                     f"`{default_universe}` is the default.")
         return True
 
@@ -628,6 +628,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = EventarcClient._read_environment_variables()
         self._client_cert_source = EventarcClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = EventarcClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
+        self._api_endpoint = None # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False

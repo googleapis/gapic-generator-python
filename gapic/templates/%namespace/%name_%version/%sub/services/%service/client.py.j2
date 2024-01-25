@@ -390,10 +390,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             credentials_universe = credentials.universe_domain
             if client_universe != credentials_universe:
                 default_universe = {{ service.client_name }}._DEFAULT_UNIVERSE
-                raise ValueError("The configured universe domain " +
-                    f"({client_universe}) does not match the universe domain " +
-                    f"found in the credentials ({credentials_universe}). " +
-                    "If you haven't configured the universe domain explicitly, " +
+                raise ValueError("The configured universe domain "
+                    f"({client_universe}) does not match the universe domain "
+                    f"found in the credentials ({credentials_universe}). "
+                    "If you haven't configured the universe domain explicitly, "
                     f"`{default_universe}` is the default.")
         return True
     
