@@ -203,11 +203,8 @@ def test__validate_universe_domain():
 
     # Test the case when there is a universe mismatch from the client.
     #
-    # This test case depends on `python-api-core` features not included in
-    # the dependency version for running this test under Python 3.7, so we skip
-    # this test case in that situation.
-    #
-    # TODO: Once we drop support for Python 3.7, make this test unconditional.
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.15.0 or higher.
     python_version = sys.version_info
     if python_version[0] >= 3 and python_version[1] > 7:
         client = LoggingServiceV2Client(credentials=_AnonymousCredentialsWithUniverseDomain(),
