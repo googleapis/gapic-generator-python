@@ -530,8 +530,8 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = transport
-            self._api_endpoint = transport.host
+            self._transport = cast(LoggingServiceV2Transport, transport)
+            self._api_endpoint = self._transport.host
 
         self._api_endpoint = (self._api_endpoint or
             LoggingServiceV2Client._get_api_endpoint(
@@ -546,7 +546,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
                 credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            Transport = type(self).get_transport_class(transport)
+            Transport = type(self).get_transport_class(cast(str, transport))
             self._transport = Transport(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
