@@ -105,7 +105,6 @@ def test__get_default_mtls_endpoint():
     assert CloudRedisClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 def test__read_environment_variables():
-
     assert CloudRedisClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
@@ -202,7 +201,7 @@ def test__validate_universe_domain():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
     transport=transports.CloudRedisGrpcTransport(channel=channel)
     transport._credentials = None
-    client = CloudRedisClient()
+    client = CloudRedisClient(transport=transport)
     assert client._validate_universe_domain() == True
 
     # Test the case when there is a universe mismatch from the credentials.
