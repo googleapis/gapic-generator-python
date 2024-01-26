@@ -28,7 +28,7 @@ from google.protobuf import json_format
 import json
 import math
 import pytest
-import sys
+from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 from requests import Response
@@ -204,8 +204,8 @@ def test__validate_universe_domain():
     #
     # TODO: Make this test unconditional once the minimum supported version of
     # google-api-core becomes 2.15.0 or higher.
-    python_version = sys.version_info
-    if python_version[0] >= 3 and python_version[1] > 7:
+    api_core_major, api_core_minor, _ = [int(part) for part in api_core_version.__version__.split(".")]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
         client = IAMCredentialsClient(credentials=_AnonymousCredentialsWithUniverseDomain(),
             client_options={"universe_domain": "bar.com"})
         with pytest.raises(ValueError) as excinfo:
