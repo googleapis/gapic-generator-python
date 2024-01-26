@@ -108,7 +108,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.                (default: 'logging.googleapis.com')            credentials (Optional[google.auth.credentials.Credentials]): The
+                 The hostname to connect to (default: 'logging.googleapis.com').
+            credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
@@ -163,6 +164,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
         if channel:
+            # Ignore credentials if a channel was passed.
+            credentials = False
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None

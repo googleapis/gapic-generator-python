@@ -145,12 +145,21 @@ def use_mtls(request):
 @pytest.fixture
 def parametrized_echo(use_mtls, test_params):
     print(f"test_params: {vars(test_params)}")
-    return construct_client(EchoClient, use_mtls,
-                            transport_endpoint=test_params.transport_endpoint,
-                            transport_name=test_params.transport_name,
-                            channel_creator=test_params.channel_creator,
-                            credentials=_AnonymousCredentialsWithUniverseDomain(
-                                universe_domain=test_params.credential_universe))
+    credentials = _AnonymousCredentialsWithUniverseDomain(
+        universe_domain=test_params.credential_universe)
+    client = construct_client(EchoClient, use_mtls,
+                              transport_endpoint=test_params.transport_endpoint,
+                              transport_name=test_params.transport_name,
+                              channel_creator=test_params.channel_creator,
+                              credentials=credentials)
+    # Since `channel_creator` does not take credentials, we set them
+    # explicitly in the client for test purposes.
+    #
+    # TODO: verify that the transport gets the correct credentials
+    # from the client.
+    if test_params.credential_universe:
+        client.transport._credentials = credentials
+    return client
 
 
 @pytest.fixture(params=["grpc", "rest"])

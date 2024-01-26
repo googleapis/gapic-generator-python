@@ -66,7 +66,8 @@ class EventarcTransport(abc.ABC):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.                (default: 'eventarc.googleapis.com')            credentials (Optional[google.auth.credentials.Credentials]): The
+                 The hostname to connect to (default: 'eventarc.googleapis.com').
+            credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the

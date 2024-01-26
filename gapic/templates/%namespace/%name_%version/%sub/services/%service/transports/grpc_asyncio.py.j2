@@ -120,8 +120,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
-                {{ ' ' }}The hostname to connect to.{% if service.host %}
-                (default: '{{ service.host }}'){% endif %}
+                {{ ' ' }}The hostname to connect to {% if service.host %}(default: '{{ service.host }}'){% endif %}.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -179,6 +178,8 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
         if channel:
+            # Ignore credentials if a channel was passed.
+            credentials = False
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
