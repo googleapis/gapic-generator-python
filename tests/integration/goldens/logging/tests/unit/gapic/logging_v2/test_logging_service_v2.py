@@ -25,6 +25,7 @@ import grpc
 from grpc.experimental import aio
 import math
 import pytest
+import sys
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 
@@ -201,11 +202,19 @@ def test__validate_universe_domain():
     assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
 
     # Test the case when there is a universe mismatch from the client.
-    client = LoggingServiceV2Client(credentials=_AnonymousCredentialsWithUniverseDomain(),
-        client_options={"universe_domain": "bar.com"})
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+    #
+    # This test case depends on `python-api-core` features not included in
+    # the dependency version for running this test under Python 3.7, so we skip
+    # this test case in that situation.
+    #
+    # TODO: Once we drop support for Python 3.7, make this test unconditional.
+    python_version = sys.version_info
+    if python_version[0] >= 3 and python_version[1] > 7:
+        client = LoggingServiceV2Client(credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options={"universe_domain": "bar.com"})
+        with pytest.raises(ValueError) as excinfo:
+            client._validate_universe_domain()
+        assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (LoggingServiceV2Client, "grpc"),
