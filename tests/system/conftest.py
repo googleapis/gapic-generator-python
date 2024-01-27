@@ -23,6 +23,8 @@ from google.auth import credentials
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
+from google.showcase import ComplianceClient
+
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     from grpc.experimental import aio
@@ -132,6 +134,11 @@ def use_mtls(request):
 @pytest.fixture(params=["grpc", "rest"])
 def echo(use_mtls, request):
     return construct_client(EchoClient, use_mtls, transport_name=request.param)
+
+
+@pytest.fixture(params=["grpc", "rest"])
+def compliance(use_mtls, request):
+    return construct_client(ComplianceClient, use_mtls, transport_name=request.param)
 
 
 @pytest.fixture(params=["grpc", "rest"])
