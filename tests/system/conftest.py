@@ -21,6 +21,7 @@ import pytest
 from google.api_core.client_options import ClientOptions  # type: ignore
 from google.auth import credentials
 from google.showcase import EchoClient
+from google.showcase import SequenceServiceClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
 
@@ -29,6 +30,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
+    from google.showcase import SequenceServiceAsyncClient
 
     _test_event_loop = asyncio.new_event_loop()
     asyncio.set_event_loop(_test_event_loop)
@@ -55,6 +57,15 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     def async_identity(use_mtls, event_loop):
         return construct_client(
             IdentityAsyncClient,
+            use_mtls,
+            transport_name="grpc_asyncio",
+            channel_creator=aio.insecure_channel
+        )
+
+    @pytest.fixture
+    def async_sequence(use_mtls, event_loop):
+        return construct_client(
+            SequenceServiceAsyncClient,
             use_mtls,
             transport_name="grpc_asyncio",
             channel_creator=aio.insecure_channel
@@ -132,6 +143,11 @@ def use_mtls(request):
 @pytest.fixture(params=["grpc", "rest"])
 def echo(use_mtls, request):
     return construct_client(EchoClient, use_mtls, transport_name=request.param)
+
+
+@pytest.fixture(params=["grpc", "rest"])
+def sequence(use_mtls, request):
+    return construct_client(SequenceServiceClient, use_mtls, transport_name=request.param)
 
 
 @pytest.fixture(params=["grpc", "rest"])
