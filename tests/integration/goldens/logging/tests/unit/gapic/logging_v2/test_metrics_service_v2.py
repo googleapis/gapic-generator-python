@@ -171,7 +171,7 @@ def test__get_universe_domain():
         MetricsServiceV2Client._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
-@pytest.mark.parametrize("client_class", "transport_class", "transport_name", [
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),
     (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
 ])

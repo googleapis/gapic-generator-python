@@ -197,7 +197,7 @@ def test__get_universe_domain():
         {{ service.client_name }}._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
-@pytest.mark.parametrize("client_class", "transport_class", "transport_name", [
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),

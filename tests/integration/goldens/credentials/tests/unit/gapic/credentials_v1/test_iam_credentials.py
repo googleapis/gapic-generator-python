@@ -172,7 +172,7 @@ def test__get_universe_domain():
         IAMCredentialsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
-@pytest.mark.parametrize("client_class", "transport_class", "transport_name", [
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport, "grpc"),
     (IAMCredentialsAsyncClient, transports.IAMCredentialsGrpcAsyncIOTransport, "grpc_asyncio"),
     (IAMCredentialsClient, transports.IAMCredentialsRestTransport, "rest"),
