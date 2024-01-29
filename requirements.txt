@@ -112,9 +112,9 @@ exceptiongroup==1.2.0 \
     --hash=sha256:4bfd3996ac73b41e9b9628b04e079f193850720ea5945fc96a08633c66912f14 \
     --hash=sha256:91f5c769735f051a4290d52edd0858999b57e5876e9f85937691bd4c9fa3ed68
     # via pytest
-google-api-core==2.15.0 \
-    --hash=sha256:2aa56d2be495551e66bbff7f729b790546f87d5c90e74781aa77233bcb395a8a \
-    --hash=sha256:abc978a72658f14a2df1e5e12532effe40f94f868f6e23d95133bd6abcca35ca
+google-api-core==2.16.0rc0 \
+    --hash=sha256:3fea2766932cf8140405645c0579a05889cdf07f9a390a984a27322e0c24a86a \
+    --hash=sha256:ff19d76605a31284e2ee6107843b9ae649f1b69373714c4f20457c41d8623dfd
     # via -r requirements.in
 google-auth==2.27.0 \
     --hash=sha256:8e4bad367015430ff253fe49d500fdc3396c1a434db5740828c728e45bcce245 \
@@ -238,7 +238,7 @@ libcst==1.1.0 \
     --hash=sha256:f561c9a84eca18be92f4ad90aa9bd873111efbea995449301719a1a7805dbc5c \
     --hash=sha256:fe41b33aa73635b1651f64633f429f7aa21f86d2db5748659a99d9b7b1ed2a90
     # via -r requirements.in
-MarkupSafe==2.1.4 \
+markupsafe==2.1.4 \
     --hash=sha256:0042d6a9880b38e1dd9ff83146cc3c9c18a059b9360ceae207805567aacccc69 \
     --hash=sha256:0c26f67b3fe27302d3a412b85ef696792c4a2386293c53ba683a89562f9399b0 \
     --hash=sha256:0fbad3d346df8f9d72622ac71b69565e621ada2ce6572f37c2eae8dacd60385d \
