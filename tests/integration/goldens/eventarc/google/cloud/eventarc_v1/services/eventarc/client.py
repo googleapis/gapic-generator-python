@@ -485,8 +485,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         """Return the universe domain used by the client.
 
         Args:
-            client_universe_domain (str): The universe domain configured via the client options.
-            universe_domain_env (str): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
+            client_universe_domain (Optional[str]): The universe domain configured via the client options.
+            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
 
         Returns:
             str: The universe domain to be used by the client.
