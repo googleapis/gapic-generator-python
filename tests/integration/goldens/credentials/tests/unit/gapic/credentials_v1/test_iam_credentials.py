@@ -178,7 +178,12 @@ def test__get_universe_domain():
     (IAMCredentialsClient, transports.IAMCredentialsRestTransport, "rest"),
 ])
 def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport_class())
+    client = client_class(
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        transport=transport_class(
+            credentials=_AnonymousCredentialsWithUniverseDomain()
+        )
+    )
     assert client._validate_universe_domain() == True
 
     # Test the case when universe is already validated.
@@ -197,11 +202,14 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
         transport=transport_class(channel=channel)
         transport._credentials = None
-        client = client_class(transport=transport_class())
+        client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
     # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="foo.com"), transport=transport_class())
+    client = client_class(
+        credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="foo.com"),
+        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+    )
     with pytest.raises(ValueError) as excinfo:
         client._validate_universe_domain()
     assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
