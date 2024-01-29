@@ -436,7 +436,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(client_universe_domain, universe_domain_env):
+    def _get_universe_domain(client_universe_domain: str, universe_domain_env: str) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -460,7 +460,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     @staticmethod
     def _compare_universes(client_universe: str,
-                           credentials: ga_credentials.Credentials):
+                           credentials: ga_credentials.Credentials) -> bool:
         """Returns True iff the universe domains used by the client and credentials match.
 
         Args:
@@ -551,13 +551,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 2. If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
                 is "true", then the ``client_cert_source`` property can be used
-                to provide client certificate for mTLS transport. If
+                to provide a client certificate for mTLS transport. If
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
 
                 3. The ``universe_domain`` property can be used to override the
-                default "googleapis.com" universe. Note that ``api_endpoint``
+                default "googleapis.com" universe. Note that the ``api_endpoint``
                 property still takes precedence; and ``universe_domain`` is
                 currently not supported for mTLS.
 

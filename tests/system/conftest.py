@@ -116,7 +116,7 @@ def construct_client(
     else:
         transport_cls = client_class.get_transport_class(transport_name)
         if transport_name in ["grpc", "grpc_asyncio"]:
-            # TODO: Need to test grpc transports without a channel_creator
+            # TODO(gapic-generator-python/issues/1914): Need to test grpc transports without a channel_creator
             assert channel_creator
             transport = transport_cls(
                 credentials=credentials,
@@ -132,7 +132,6 @@ def construct_client(
         else:
             raise RuntimeError(f"Unexpected transport type: {transport_name}")
 
-        # return client_class(transport=transport)
         client = client_class(transport=transport)
         return client
 

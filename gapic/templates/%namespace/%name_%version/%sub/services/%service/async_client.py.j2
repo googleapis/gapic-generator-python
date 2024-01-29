@@ -185,6 +185,7 @@ class {{ service.async_client_name }}:
                 transport to use. If set to None, a transport is chosen
                 automatically.
                 {% if 'rest' in opts.transport and not opts.rest_numeric_enums %}
+                {# TODO (gapic-generator-python/issues/1918): Remove the beta preview comment. #}
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -205,7 +206,7 @@ class {{ service.async_client_name }}:
 
                 2. If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
                 is "true", then the ``client_cert_source`` property can be used
-                to provide client certificate for mTLS transport. If
+                to provide a client certificate for mTLS transport. If
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
