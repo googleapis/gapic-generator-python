@@ -192,7 +192,7 @@ def test__get_universe_domain():
         EventarcClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
-@pytest.mark.parametrize("client_class,transport_class", "transport_name", [
+@pytest.mark.parametrize("client_class", "transport_class", "transport_name", [
     (EventarcClient, transports.EventarcGrpcTransport, "grpc"),
     (EventarcAsyncClient, transports.EventarcGrpcAsyncIOTransport, "grpc_asyncio"),
     (EventarcClient, transports.EventarcRestTransport, "rest"),
