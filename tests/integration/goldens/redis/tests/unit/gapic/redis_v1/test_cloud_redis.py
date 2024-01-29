@@ -185,7 +185,6 @@ def test__get_universe_domain():
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (CloudRedisClient, transports.CloudRedisGrpcTransport, "grpc"),
-    (CloudRedisAsyncClient, transports.CloudRedisGrpcAsyncIOTransport, "grpc_asyncio"),
     (CloudRedisClient, transports.CloudRedisRestTransport, "rest"),
 ])
 def test__validate_universe_domain(client_class, transport_class, transport_name):
@@ -199,7 +198,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # Test the case when universe is already validated.
     assert client._validate_universe_domain() == True
 
-    if transport_name != "rest":
+    if transport_name == "grpc":
         # Test the case where credentials are provided by the
         # `local_channel_credentials`. The default universes in both match.
         channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
