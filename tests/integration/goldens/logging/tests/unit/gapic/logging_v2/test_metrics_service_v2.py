@@ -216,7 +216,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # google-api-core becomes 2.15.0 or higher.
     api_core_major, api_core_minor, _ = [int(part) for part in api_core_version.__version__.split(".")]
     if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class())
+        client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain(),))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
