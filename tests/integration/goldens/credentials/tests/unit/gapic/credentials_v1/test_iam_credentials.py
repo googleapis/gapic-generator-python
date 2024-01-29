@@ -172,30 +172,36 @@ def test__get_universe_domain():
         IAMCredentialsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
-def test__validate_universe_domain():
-    client = IAMCredentialsClient(credentials=_AnonymousCredentialsWithUniverseDomain())
+@pytest.mark.parametrize("client_class,transport_class", "transport_name", [
+    (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport, "grpc"),
+    (IAMCredentialsAsyncClient, transports.IAMCredentialsGrpcAsyncIOTransport, "grpc_asyncio"),
+    (IAMCredentialsClient, transports.IAMCredentialsRestTransport, "rest"),
+])
+def test__validate_universe_domain(client_class, transport_class, transport_name):
+    client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport_class())
     assert client._validate_universe_domain() == True
 
     # Test the case when universe is already validated.
     assert client._validate_universe_domain() == True
 
-    # Test the case where credentials are provided by the
-    # `local_channel_credentials`. The default universes in both match.
-    channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-    client = IAMCredentialsClient(transport=transports.IAMCredentialsGrpcTransport(channel=channel))
-    assert client._validate_universe_domain() == True
+    if transport_name != "rest":
+        # Test the case where credentials are provided by the
+        # `local_channel_credentials`. The default universes in both match.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        client = client_class(transport=transport_class(channel=channel))
+        assert client._validate_universe_domain() == True
 
-    # Test the case where credentials do not exist: e.g. a transport is provided
-    # with no credentials. Validation should still succeed because there is no
-    # mismatch with non-existent credentials.
-    channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-    transport=transports.IAMCredentialsGrpcTransport(channel=channel)
-    transport._credentials = None
-    client = IAMCredentialsClient(transport=transport)
-    assert client._validate_universe_domain() == True
+        # Test the case where credentials do not exist: e.g. a transport is provided
+        # with no credentials. Validation should still succeed because there is no
+        # mismatch with non-existent credentials.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        transport=transport_class(channel=channel)
+        transport._credentials = None
+        client = client_class(transport=transport_class())
+        assert client._validate_universe_domain() == True
 
     # Test the case when there is a universe mismatch from the credentials.
-    client = IAMCredentialsClient(credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="foo.com"))
+    client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="foo.com"), transport=transport_class())
     with pytest.raises(ValueError) as excinfo:
         client._validate_universe_domain()
     assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
@@ -206,8 +212,8 @@ def test__validate_universe_domain():
     # google-api-core becomes 2.15.0 or higher.
     api_core_major, api_core_minor, _ = [int(part) for part in api_core_version.__version__.split(".")]
     if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = IAMCredentialsClient(credentials=_AnonymousCredentialsWithUniverseDomain(),
-            client_options={"universe_domain": "bar.com"})
+        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options={"universe_domain": "bar.com"}, transport=transport_class())
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
