@@ -4,20 +4,31 @@ import grpc
 
 # Define the parametrized data
 vary_transport = [
-    (grpc.insecure_channel, "grpc", "localhost:7469", "googleapis.com", "googleapis.com"),
-    (grpc.insecure_channel, "rest", "localhost:7469", "googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "grpc", "localhost:7469",
+     "googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "localhost:7469",
+     "googleapis.com", "googleapis.com"),
 ]
 
 vary_channel_transport_endpoints_universes = [
-    (grpc.insecure_channel, "grpc", "showcase.googleapis.com", "showcase.googleapis.com", "googleapis.com"),
-    (grpc.insecure_channel, "grpc", "showcase.googleapis.com", "localhost:7469", "googleapis.com"),
-    (grpc.insecure_channel, "grpc", "localhost:7469", "showcase.googleapis.com", "googleapis.com"),
-    (grpc.insecure_channel, "grpc", "localhost:7469", "localhost:7469", "googleapis.com"),
-    (grpc.insecure_channel, "rest", "showcase.googleapis.com", "showcase.googleapis.com", "googleapis.com"),
-    (grpc.insecure_channel, "rest", "showcase.googleapis.com", "localhost:7469", "googleapis.com"),
-    (grpc.insecure_channel, "rest", "localhost:7469", "showcase.googleapis.com", "googleapis.com"),
-    (grpc.insecure_channel, "rest", "localhost:7469", "localhost:7469", "googleapis.com"),
+    (grpc.insecure_channel, "grpc", "showcase.googleapis.com",
+     "showcase.googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "grpc", "showcase.googleapis.com",
+     "localhost:7469", "googleapis.com"),
+    (grpc.insecure_channel, "grpc", "localhost:7469",
+     "showcase.googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "grpc", "localhost:7469",
+     "localhost:7469", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "showcase.googleapis.com",
+     "showcase.googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "showcase.googleapis.com",
+     "localhost:7469", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "localhost:7469",
+     "showcase.googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "localhost:7469",
+     "localhost:7469", "googleapis.com"),
 ]
+
 
 @pytest.mark.parametrize(
     "channel_creator, transport_name, transport_endpoint, credential_universe, client_universe",

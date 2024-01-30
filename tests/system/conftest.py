@@ -143,7 +143,8 @@ def use_mtls(request):
 
 @pytest.fixture
 def parametrized_echo(use_mtls, channel_creator, transport_name, transport_endpoint, credential_universe, client_universe):
-    print(f"test_params: {channel_creator, transport_name, transport_endpoint, credential_universe, client_universe}")
+    print(
+        f"test_params: {channel_creator, transport_name, transport_endpoint, credential_universe, client_universe}")
     credentials = _AnonymousCredentialsWithUniverseDomain(
         universe_domain=credential_universe)
     client = construct_client(EchoClient, use_mtls,
