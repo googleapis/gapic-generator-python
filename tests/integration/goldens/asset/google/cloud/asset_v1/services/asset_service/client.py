@@ -392,6 +392,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
         return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
 
+    @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
         """Return the client cert source to be used by the client.
 
@@ -410,6 +411,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client_cert_source = mtls.default_client_cert_source()
         return client_cert_source
 
+    @staticmethod
     def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
