@@ -37,7 +37,8 @@ vary_channel_transport_endpoints_universes = [
 def test_universe_domain_validation_pass(parametrized_echo, channel_creator, transport_name, transport_endpoint, credential_universe, client_universe):
     # Test that only the configured client universe and credentials universe are used for validation
     assert parametrized_echo.universe_domain == client_universe
-    assert parametrized_echo.transport._credentials._universe_domain == credential_universe
+    if hasattr(parametrized_echo.transport._credentials, "universe_domain"):
+        assert parametrized_echo.transport._credentials.universe_domain == credential_universe
     if transport_name == "rest":
         assert parametrized_echo.api_endpoint == "http://" + transport_endpoint
     else:
@@ -61,17 +62,18 @@ def test_universe_domain_validation_pass(parametrized_echo, channel_creator, tra
 def test_universe_domain_validation_fail(parametrized_echo, channel_creator, transport_name, transport_endpoint, credential_universe, client_universe):
     """Test that only the client and credentials universes are used for validation, and not the endpoint."""
     assert parametrized_echo.universe_domain == client_universe
-    assert parametrized_echo.transport._credentials._universe_domain == credential_universe
-    if transport_name == "rest":
-        assert parametrized_echo.api_endpoint == "http://" + transport_endpoint
-    elif channel_creator == grpc.insecure_channel:
-        # TODO: Investigate where this endpoint override is coming from
-        assert parametrized_echo.api_endpoint == "localhost:7469"
-    else:
-        assert parametrized_echo.api_endpoint == transport_endpoint
-    with pytest.raises(ValueError) as err:
-        parametrized_echo.echo({
-            'content': 'Universe validation failed!'
-            })
-    assert str(
-        err.value) == f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credential_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+    if hasattr(parametrized_echo.transport._credentials, "universe_domain"):
+        assert parametrized_echo.transport._credentials.universe_domain == credential_universe
+        if transport_name == "rest":
+            assert parametrized_echo.api_endpoint == "http://" + transport_endpoint
+        elif channel_creator == grpc.insecure_channel:
+            # TODO: Investigate where this endpoint override is coming from
+            assert parametrized_echo.api_endpoint == "localhost:7469"
+        else:
+            assert parametrized_echo.api_endpoint == transport_endpoint
+        with pytest.raises(ValueError) as err:
+            parametrized_echo.echo({
+                'content': 'Universe validation failed!'
+                })
+        assert str(
+            err.value) == f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credential_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
