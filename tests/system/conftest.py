@@ -19,6 +19,7 @@ import os
 import pytest
 
 from google.api_core.client_options import ClientOptions  # type: ignore
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
@@ -140,7 +141,13 @@ def parametrized_echo(use_mtls, channel_creator, transport_name, transport_endpo
     print(
         f"test_params: {channel_creator, transport_name, transport_endpoint, credential_universe, client_universe}")
     credentials = ga_credentials.AnonymousCredentials()
-    if hasattr(credentials, "universe_domain"):
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
+    ]
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials._universe_domain = credential_universe
     client = construct_client(EchoClient, use_mtls,
                               transport_endpoint=transport_endpoint,

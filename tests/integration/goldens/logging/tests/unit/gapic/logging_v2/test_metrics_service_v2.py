@@ -191,7 +191,11 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    if hasattr(ga_credentials.AnonymousCredentials, "universe_domain"):
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [int(part) for part in google.auth.__version__.split(".")]
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
         credentials._universe_domain = "foo.com"
         # Test the case when there is a universe mismatch from the credentials.
@@ -212,6 +216,11 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
             with pytest.raises(ValueError) as excinfo:
                 client._validate_universe_domain()
             assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
+
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (MetricsServiceV2Client, "grpc"),
