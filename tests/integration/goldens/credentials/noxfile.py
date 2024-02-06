@@ -73,7 +73,7 @@ def unit(session):
 
 @nox.session(python=ALL_PYTHON[-1])
 def prerelease_deps(session):
-    """Run the unit test suite."""
+    """Run the unit test suite against pre-release versions of dependencies."""
 
     # Install test environment dependencies
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
@@ -81,8 +81,8 @@ def prerelease_deps(session):
     # Install the package without dependencies
     session.install('-e', '.', '--no-deps')
 
-    # Because we test the minimum dependency versions using the minimum Python
-    # version, the lowest python runtime that we test has a corresponding constraints
+    # We test the minimum dependency versions using the minimum Python
+    # version so the lowest python runtime that we test has a corresponding constraints
     # file, located at `testing/constraints-<version>-.txt`,  which contains all of the
     # dependencies and extras.
     with open(
