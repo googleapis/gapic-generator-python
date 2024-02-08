@@ -15,6 +15,7 @@
 #
 import io
 import os
+import re
 
 import setuptools # type: ignore
 
@@ -25,10 +26,12 @@ name = 'google-cloud-asset'
 
 description = "Google Cloud Asset API client library"
 
-version = {}
+version = None
+
 with open(os.path.join(package_root, 'google/cloud/asset/gapic_version.py')) as fp:
-    exec(fp.read(), version)
-version = version["__version__"]
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    assert (len(version_candidates) == 1)
+    version = version_candidates[0]
 
 if version[0] == "0":
     release_status = "Development Status :: 4 - Beta"
@@ -37,14 +40,14 @@ else:
 
 dependencies = [
     "google-api-core[grpc] >= 1.34.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "proto-plus >= 1.22.0, <2.0.0dev",
-    "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
+    "google-auth >= 2.14.1, <3.0.0dev",
+    "proto-plus >= 1.22.3, <2.0.0dev",
     "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "google-cloud-access-context-manager >= 0.1.2, <1.0.0dev",
     "google-cloud-os-config >= 1.0.0, <2.0.0dev",
     "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
 ]
-url = "https://github.com/googleapis/python-asset"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 

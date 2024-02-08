@@ -1,6 +1,54 @@
 # Changelog
 
 
+## [1.14.2](https://github.com/googleapis/gapic-generator-python/compare/v1.14.1...v1.14.2) (2024-02-06)
+
+
+### Bug Fixes
+
+* Fix `ValueError` in `test__validate_universe_domain` ([#1931](https://github.com/googleapis/gapic-generator-python/issues/1931)) ([ce855a8](https://github.com/googleapis/gapic-generator-python/commit/ce855a866c43e80fb3f9ba3b295c83afcd6297b7))
+
+## [1.14.1](https://github.com/googleapis/gapic-generator-python/compare/v1.14.0...v1.14.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([2154924](https://github.com/googleapis/gapic-generator-python/commit/2154924c6ef9df6e2727b433ec7d2fee762ccde8))
+* Add staticmethod decorator to methods added in [#1873](https://github.com/googleapis/gapic-generator-python/issues/1873) ([2154924](https://github.com/googleapis/gapic-generator-python/commit/2154924c6ef9df6e2727b433ec7d2fee762ccde8))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([2154924](https://github.com/googleapis/gapic-generator-python/commit/2154924c6ef9df6e2727b433ec7d2fee762ccde8))
+
+## [1.14.0](https://github.com/googleapis/gapic-generator-python/compare/v1.13.1...v1.14.0) (2024-01-31)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain. ([#1898](https://github.com/googleapis/gapic-generator-python/issues/1898)) ([e5a55c1](https://github.com/googleapis/gapic-generator-python/commit/e5a55c1c01f0e1b3739927640c713057cd17b4ae))
+
+
+### Bug Fixes
+
+* Mock out configure_mtls_channel in rest transport for testing ([#1920](https://github.com/googleapis/gapic-generator-python/issues/1920)) ([9ade50d](https://github.com/googleapis/gapic-generator-python/commit/9ade50d2dfff0bb15fbe1fb2b00644047f6d2d38))
+
+## [1.13.1](https://github.com/googleapis/gapic-generator-python/compare/v1.13.0...v1.13.1) (2024-01-17)
+
+
+### Bug Fixes
+
+* Add None as a type to OptionalRetry ([#1901](https://github.com/googleapis/gapic-generator-python/issues/1901)) ([011475c](https://github.com/googleapis/gapic-generator-python/commit/011475c525cda4245803e197c77fa2a1c37fa98d))
+
+## [1.13.0](https://github.com/googleapis/gapic-generator-python/compare/v1.12.0...v1.13.0) (2023-11-20)
+
+
+### Features
+
+* Add support for python 3.12 ([#1816](https://github.com/googleapis/gapic-generator-python/issues/1816)) ([b65898e](https://github.com/googleapis/gapic-generator-python/commit/b65898e11f6b7210a0614eb1ece4b139541f17cd))
+* Add support for python 312 (ads templates) ([#1861](https://github.com/googleapis/gapic-generator-python/issues/1861)) ([d65a540](https://github.com/googleapis/gapic-generator-python/commit/d65a54045abb9b25364e8cfb0ad4c7e5d95917d2))
+
+
+### Bug Fixes
+
+* Bump proto-plus version to 1.22.3 ([#1863](https://github.com/googleapis/gapic-generator-python/issues/1863)) ([2ad9be2](https://github.com/googleapis/gapic-generator-python/commit/2ad9be28500972777cec69097be6581eaefb89e4))
+
 ## [1.12.0](https://github.com/googleapis/gapic-generator-python/compare/v1.11.11...v1.12.0) (2023-11-09)
 
 
