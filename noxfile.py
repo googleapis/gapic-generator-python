@@ -255,9 +255,23 @@ def showcase_library(
             *cmd_tup, external=True,
         )
 
-        # Install the library.
-        session.install("-e", tmp_dir)
-
+        # Install the generated showcase library.
+        if templates == "DEFAULT":
+            # Use the constraints file for the specific python runtime version.
+            # We do this to make sure that we're testing against the lowest
+            # supported version of a dependency.
+            # This is needed to recreate the issue reported in
+            # https://github.com/googleapis/google-cloud-python/issues/12254
+            constraints_path = str(
+            f"{tmp_dir}/testing/constraints-{session.python}.txt"
+            )
+            # Install the library with a constraints file.
+            session.install("-e", tmp_dir, "-r", constraints_path)
+        else:
+            # The ads templates do not have constraints files.
+            # See https://github.com/googleapis/gapic-generator-python/issues/1788
+            # Install the library without a constraints file.
+            session.install("-e", tmp_dir)
         yield tmp_dir
 
 
@@ -266,16 +280,25 @@ def showcase(
     session,
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
-    env: typing.Optional[typing.Dict[str, str]] = None,
+    env: typing.Optional[typing.Dict[str, str]] = {},
 ):
     """Run the Showcase test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
-        session.run(
+        test_directory = Path("tests", "system")
+        ignore_file = env.get("IGNORE_FILE")
+        pytest_command = [
             "py.test",
             "--quiet",
-            *(session.posargs or [path.join("tests", "system")]),
+            *(session.posargs or [str(test_directory)]),
+        ]
+        if ignore_file:
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
+
+        session.run(
+            *pytest_command,
             env=env,
         )
 
@@ -285,17 +308,26 @@ def showcase_mtls(
     session,
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
-    env: typing.Optional[typing.Dict[str, str]] = None,
+    env: typing.Optional[typing.Dict[str, str]] = {},
 ):
     """Run the Showcase mtls test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
-        session.run(
+        test_directory = Path("tests", "system")
+        ignore_file = env.get("IGNORE_FILE")
+        pytest_command = [
             "py.test",
             "--quiet",
             "--mtls",
-            *(session.posargs or [path.join("tests", "system")]),
+            *(session.posargs or [str(test_directory)]),
+        ]
+        if ignore_file:
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
+
+        session.run(
+            *pytest_command,
             env=env,
         )
 
@@ -307,7 +339,7 @@ def showcase_alternative_templates(session):
         session,
         templates=templates,
         other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False"},
+        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
     )
 
 
@@ -318,7 +350,7 @@ def showcase_mtls_alternative_templates(session):
         session,
         templates=templates,
         other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False"},
+        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
     )
 
 
@@ -441,7 +473,19 @@ def snippetgen(session):
 def docs(session):
     """Build the docs."""
 
-    session.install("sphinx==4.5.0", "sphinx_rtd_theme")
+    session.install(
+        # We need to pin to specific versions of the `sphinxcontrib-*` packages
+        # which still support sphinx 4.x.
+        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/344
+        # and https://github.com/googleapis/sphinx-docfx-yaml/issues/345.
+        "sphinxcontrib-applehelp==1.0.4",
+        "sphinxcontrib-devhelp==1.0.2",
+        "sphinxcontrib-htmlhelp==2.0.1",
+        "sphinxcontrib-qthelp==1.0.3",
+        "sphinxcontrib-serializinghtml==1.1.5",
+        "sphinx==4.5.0",
+        "sphinx_rtd_theme"
+    )
     session.install(".")
 
     # Build the docs!

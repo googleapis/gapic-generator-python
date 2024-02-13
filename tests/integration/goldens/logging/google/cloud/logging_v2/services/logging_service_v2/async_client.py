@@ -28,9 +28,9 @@ from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
 try:
-    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
@@ -47,8 +47,12 @@ class LoggingServiceV2AsyncClient:
 
     _client: LoggingServiceV2Client
 
+    # Copy defaults from the synchronous client for use here.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = LoggingServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = LoggingServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = LoggingServiceV2Client._DEFAULT_UNIVERSE
 
     log_path = staticmethod(LoggingServiceV2Client.log_path)
     parse_log_path = staticmethod(LoggingServiceV2Client.parse_log_path)
@@ -139,6 +143,25 @@ class LoggingServiceV2AsyncClient:
         """
         return self._client.transport
 
+    @property
+    def api_endpoint(self):
+        """Return the API endpoint used by the client instance.
+
+        Returns:
+            str: The API endpoint used by the client instance.
+        """
+        return self._client._api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used
+                by the client instance.
+        """
+        return self._client._universe_domain
+
     get_transport_class = functools.partial(type(LoggingServiceV2Client).get_transport_class, type(LoggingServiceV2Client))
 
     def __init__(self, *,
@@ -147,7 +170,7 @@ class LoggingServiceV2AsyncClient:
             client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
-        """Instantiates the logging service v2 client.
+        """Instantiates the logging service v2 async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -165,16 +188,27 @@ class LoggingServiceV2AsyncClient:
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint) and "auto" (auto switch to the
-                default mTLS endpoint if client certificate is present, this is
-                the default value). However, the ``api_endpoint`` property takes
-                precedence if provided.
-                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                use the default regular endpoint) and "auto" (auto-switch to the
+                default mTLS endpoint if client certificate is present; this is
+                the default value).
+
+                2. If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
                 is "true", then the ``client_cert_source`` property can be used
-                to provide client certificate for mutual TLS transport. If
+                to provide a client certificate for mTLS transport. If
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
+
+                3. The ``universe_domain`` property can be used to override the
+                default "googleapis.com" universe. Note that ``api_endpoint``
+                property still takes precedence; and ``universe_domain`` is
+                currently not supported for mTLS.
+
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -290,6 +324,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 ("log_name", request.log_name),
             )),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(
@@ -484,6 +521,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request,
@@ -636,6 +676,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request,
@@ -729,6 +772,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -857,6 +903,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             )),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request,
@@ -955,6 +1004,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = rpc(
             requests,
@@ -1010,6 +1062,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -1060,6 +1115,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1114,6 +1172,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
