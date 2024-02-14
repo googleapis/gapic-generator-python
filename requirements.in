@@ -1,6 +1,5 @@
 click
-# TODO: DO NOT MERGE. For testing purposes
-google-api-core==2.17.1rc1
+google-api-core
 googleapis-common-protos
 jinja2
 MarkupSafe
