@@ -49,7 +49,6 @@ branchProtectionRules:
     - 'showcase-unit-add-iam-methods'
     - 'integration'
     - 'goldens-lint'
-    - 'goldens-prerelease'
     - 'style-check'
     - 'snippetgen'
     - 'unit (3.7)'
