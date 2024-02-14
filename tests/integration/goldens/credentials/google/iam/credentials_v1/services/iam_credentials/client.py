@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+import warnings
 
 from google.iam.credentials_v1 import gapic_version as package_version
 
@@ -469,8 +470,9 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
             transport (Optional[Union[str,IAMCredentialsTransport,Callable[..., IAMCredentialsTransport]]]):
-                The transport to use, or a callable that generates one with the
-                set of initialization arguments.
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the IAMCredentialsTransport constructor.
                 If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
@@ -567,6 +569,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 if isinstance(transport, str) or transport is None
                 else transport
             )
+            # initialize with the provided callable or the passed in class
             self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,

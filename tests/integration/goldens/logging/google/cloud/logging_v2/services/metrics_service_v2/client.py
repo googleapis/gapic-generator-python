@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+import warnings
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
@@ -460,14 +461,19 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
             transport (Optional[Union[str,MetricsServiceV2Transport,Callable[..., MetricsServiceV2Transport]]]):
-                The transport to use, or a callable that generates one with the
-                set of initialization arguments.
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the MetricsServiceV2Transport constructor.
                 If set to None, a transport is chosen automatically.
-            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
-                client. It won't take effect if a ``transport`` instance is provided.
-                (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
-                environment variable can also be used to override the endpoint:
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client.
+
+                1. The ``api_endpoint`` property can be used to override the
+                default endpoint provided by the client when ``transport`` is
+                not explicitly provided. Only if this property is not set and
+                ``transport`` was not explicitly provided, the endpoint is
+                determined by the GOOGLE_API_USE_MTLS_ENDPOINT environment
+                variable, which have one of the following values:
                 "always" (always use the default mTLS endpoint), "never" (always
                 use the default regular endpoint) and "auto" (auto-switch to the
                 default mTLS endpoint if client certificate is present; this is
@@ -551,6 +557,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 if isinstance(transport, str) or transport is None
                 else transport
             )
+            # initialize with the provided callable or the passed in class
             self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
