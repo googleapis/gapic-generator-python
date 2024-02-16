@@ -554,7 +554,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             transport_init: Union[Type[LoggingServiceV2Transport], Callable[..., LoggingServiceV2Transport]] = (
                 type(self).get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else transport
+                else cast(Callable[..., LoggingServiceV2Transport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(

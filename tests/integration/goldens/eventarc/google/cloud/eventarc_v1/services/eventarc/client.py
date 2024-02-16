@@ -675,7 +675,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
             transport_init: Union[Type[EventarcTransport], Callable[..., EventarcTransport]] = (
                 type(self).get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else transport
+                else cast(Callable[..., EventarcTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(

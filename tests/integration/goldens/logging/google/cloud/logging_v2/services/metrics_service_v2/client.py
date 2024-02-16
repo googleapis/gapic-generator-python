@@ -555,7 +555,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             transport_init: Union[Type[MetricsServiceV2Transport], Callable[..., MetricsServiceV2Transport]] = (
                 type(self).get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else transport
+                else cast(Callable[..., MetricsServiceV2Transport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(

@@ -545,7 +545,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             transport_init: Union[Type[{{ service.name  }}Transport], Callable[..., {{ service.name }}Transport]] = (
                 type(self).get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else transport
+                else cast(Callable[..., {{ service.name }}Transport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
