@@ -23,13 +23,20 @@ service MyService {
   option (google.api.default_host) = "my.example.com";
 
   rpc MyMethod(MethodRequest) returns (MethodResponse) {
-    option (google.api.method_signature) = "parameter,items";
+    option (google.api.method_signature) = "parameter,items,some_message";
+    option (google.api.method_signature) = "some_message.foo,some_message.bar";
   }
 }
 
 message MethodRequest {
+  message SomeNestedMessage {
+    string foo = 1;
+    string bar = 2;
+  }
+
   google.protobuf.Value parameter = 1;
   repeated google.protobuf.Value items = 2;
+  SomeNestedMessage some_message = 3;
 }
 
 message MethodResponse {
