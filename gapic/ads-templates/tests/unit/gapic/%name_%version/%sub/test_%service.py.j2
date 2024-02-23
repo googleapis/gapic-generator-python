@@ -756,6 +756,26 @@ def test_{{ method_name }}_flattened():
         rule = ValueRule(marshal=Marshal(name="Test"))
         mock_val = rule.to_python(mock_val)
         {% endif %}{# struct_pb2.Value #}
+        {% if field.field_pb.type == 11 and "struct_pb2.Value" not in field.ident|string() %}{# For messages, ensure that only the first field is checked #}
+        # See https://github.com/googleapis/gapic-generator-python/issues/1956
+        # Mocked values for messages only include a single nested field.
+        # In the case that the api signature contains multiple nested fields,
+        # modify the message in the argument before comparing to the mocked value.
+        # Create a new message to avoid changing the original argument
+        arg_message = type(args[0].{{ key }})()
+        # Get all fields for the message
+        {% if field.meta.address.is_proto_plus_type %}
+        message_fields = {{ field.mock_value }}._pb.ListFields()
+        {% else %}
+        message_fields = {{ field.mock_value }}.ListFields()
+        {% endif %}
+        # Only set the first nested field
+        for mock_sub_field, _ in message_fields:
+            nested_field_value = getattr(args[0].{{ key }}, mock_sub_field.name)
+            setattr(arg_message, mock_sub_field.name, nested_field_value)
+            break
+        arg = arg_message
+        {% endif %}{# field.field_pb.type == 11 and "struct_pb2.Value" not in field.ident|string() #}
         assert arg == mock_val
         {% endif %}
         {% endif %}{% endfor %}
