@@ -55,7 +55,6 @@ class ConfigServiceV2AsyncClient:
     DEFAULT_ENDPOINT = ConfigServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = ConfigServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = ConfigServiceV2Client._DEFAULT_UNIVERSE
 
     cmek_settings_path = staticmethod(ConfigServiceV2Client.cmek_settings_path)
     parse_cmek_settings_path = staticmethod(ConfigServiceV2Client.parse_cmek_settings_path)

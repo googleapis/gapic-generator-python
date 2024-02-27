@@ -26,6 +26,7 @@ from grpc.experimental import aio
 import math
 import pytest
 from google.api_core import api_core_version
+from google.api_core import universe_helpers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 
@@ -134,7 +135,7 @@ def test__get_client_cert_source():
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = LoggingServiceV2Client._DEFAULT_UNIVERSE
+    default_universe = universe_helpers._DEFAULT_UNIVERSE
     default_endpoint = LoggingServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
     mock_endpoint = LoggingServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
@@ -150,18 +151,6 @@ def test__get_api_endpoint():
     with pytest.raises(MutualTLSChannelError) as excinfo:
         LoggingServiceV2Client._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert LoggingServiceV2Client._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert LoggingServiceV2Client._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert LoggingServiceV2Client._get_universe_domain(None, None) == LoggingServiceV2Client._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        LoggingServiceV2Client._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (LoggingServiceV2Client, transports.LoggingServiceV2GrpcTransport, "grpc"),
@@ -221,7 +210,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 
     # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
     with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
+        universe_helpers._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize("client_class,transport_name", [
@@ -336,7 +325,7 @@ def test_logging_service_v2_client_client_options(client_class, transport_class,
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -384,7 +373,7 @@ def test_logging_service_v2_client_client_options(client_class, transport_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -400,7 +389,7 @@ def test_logging_service_v2_client_client_options(client_class, transport_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -432,7 +421,7 @@ def test_logging_service_v2_client_mtls_env_auto(client_class, transport_class, 
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -456,7 +445,7 @@ def test_logging_service_v2_client_mtls_env_auto(client_class, transport_class, 
             with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
                 with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -485,7 +474,7 @@ def test_logging_service_v2_client_mtls_env_auto(client_class, transport_class, 
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -570,7 +559,7 @@ def test_logging_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
 def test_logging_service_v2_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = LoggingServiceV2Client._DEFAULT_UNIVERSE
+    default_universe = universe_helpers._DEFAULT_UNIVERSE
     default_endpoint = LoggingServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
     mock_endpoint = LoggingServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
@@ -634,7 +623,7 @@ def test_logging_service_v2_client_client_options_scopes(client_class, transport
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -659,7 +648,7 @@ def test_logging_service_v2_client_client_options_credentials_file(client_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -703,7 +692,7 @@ def test_logging_service_v2_client_create_channel_credentials_file(client_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -3352,7 +3341,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_helpers._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
