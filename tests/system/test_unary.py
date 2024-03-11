@@ -24,15 +24,39 @@ from google import showcase
 def test_unary_with_request_object(echo):
     response = echo.echo(showcase.EchoRequest(
         content='The hail in Wales falls mainly on the snails.',
+        request_id = 'some_value',
     ))
     assert response.content == 'The hail in Wales falls mainly on the snails.'
+    assert response.request_id == 'some_value'
+
+    # Repeat the same test but this time without `request_id`` set
+    # The `request_id` field should be automatically populated with
+    # a UUID4 value if it is not set.
+    # See https://google.aip.dev/client-libraries/4235
+    response = echo.echo(showcase.EchoRequest(
+        content='The hail in Wales falls mainly on the snails.',
+    ))
+    assert response.content == 'The hail in Wales falls mainly on the snails.'
+    assert len(response.request_id) == 36
 
 
 def test_unary_with_dict(echo):
     response = echo.echo({
         'content': 'The hail in Wales falls mainly on the snails.',
+        'request_id': 'some_value'
     })
     assert response.content == 'The hail in Wales falls mainly on the snails.'
+    assert response.request_id == 'some_value'
+
+    # Repeat the same test but this time without `request_id`` set
+    # The `request_id` field should be automatically populated with
+    # a UUID4 value if it is not set.
+    # See https://google.aip.dev/client-libraries/4235
+    response = echo.echo({
+        'content': 'The hail in Wales falls mainly on the snails.',
+    })
+    assert response.content == 'The hail in Wales falls mainly on the snails.'
+    assert len(response.request_id) == 36
 
 
 def test_unary_error(echo):

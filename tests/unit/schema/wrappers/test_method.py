@@ -19,6 +19,7 @@ import pytest
 from typing import Sequence
 
 from google.api import field_behavior_pb2
+from google.api import field_info_pb2
 from google.api import http_pb2
 from google.api import routing_pb2
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
@@ -824,6 +825,42 @@ def test_flattened_oneof_fields():
     expected = {"mass": [mass_kg, mass_lbs], "length": [length_m, length_f]}
     actual = method.flattened_oneof_fields()
     assert expected == actual
+
+    """
+    For a field to be automatically populated, all the below configurations must be true:
+
+    - The field must be of type string
+    - The field must be at the top-level of the request message
+    # Defer. Only auto-populate if not streaming RPC
+    - The RPC must be a unary RPC (i.e. streaming RPCs are not supported)
+    
+    - The field must not be annotated with google.api.field_behavior = REQUIRED.
+    - The field must be annotated with google.api.field_info.format = UUID4.
+    - The field name must be listed in the google.api.MethodSettings.auto_populated_fields entry in google.api.Publishing.method_settings for the target method.
+    """
+    
+    required_options = descriptor_pb2.FieldOptions()
+    required_options.Extensions[field_behavior_pb2.field_behavior].append(
+        field_behavior_pb2.FieldBehavior.Value("REQUIRED"))
+    required_options.Extensions[field_info_pb2.field_info].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
+
+    # Cephalopods are required.
+    squid = make_field(name="squid", type='TYPE_STRING', options=required_options)
+    request = make_message(
+        name="CreateMolluscReuqest",
+        fields=(
+            squid,
+        ),
+    )
+    method = make_method(
+        name="CreateMollusc",
+        input_message=request,
+        signatures=[
+            "squid",
+        ]
+    )
+
+    raise Exception(method.auto_populated_fields())
 
     # Check this method too becasue the setup is a lot of work.
     expected = {

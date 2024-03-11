@@ -105,3 +105,9 @@ switched_rules_by_language(
     gapic = True,
     grpc = True,
 )
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+python_register_toolchains(
+    name = "python39",
+    python_version = "3.9",
+)
+

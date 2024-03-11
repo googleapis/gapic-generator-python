@@ -10,6 +10,7 @@ import functools
 import os
 import re
 from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
+import uuid
 import warnings
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}

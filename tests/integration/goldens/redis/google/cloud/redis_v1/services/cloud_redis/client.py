@@ -696,6 +696,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("parent", request.parent),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -808,6 +811,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("name", request.name),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
+            if request.name is None:
+                request.name = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -914,6 +922,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("name", request.name),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1072,6 +1083,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("parent", request.parent),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1219,6 +1233,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("instance.name", request.instance.name),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1351,6 +1368,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("name", request.name),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1493,6 +1513,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("name", request.name),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1632,6 +1655,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("name", request.name),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1765,6 +1791,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("name", request.name),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1893,6 +1922,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("name", request.name),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2036,6 +2068,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 ("name", request.name),
             )),
         )
+         import uuid
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
 
         # Validate the universe domain.
         self._validate_universe_domain()

@@ -183,6 +183,17 @@
         )
         {% endif %} {# method.explicit_routing #}
 
+        # Auto-populate fields with uuid4 according to AIP-4235
+        # https://google.aip.dev/client-libraries/4235
+        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% if method_settings is not none %}
+        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        if not request.{{ auto_populated_field }}:
+            request.{{ auto_populated_field }} = str(uuid.uuid4())
+        {% endfor %}
+        {% endif %}{# if method_settings is not none #}
+        {% endwith %}{# method_settings #}
+
         # Validate the universe domain.
         self._validate_universe_domain()
 

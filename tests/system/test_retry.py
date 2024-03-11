@@ -17,6 +17,7 @@ import pytest
 
 from google.api_core import exceptions
 from google.rpc import code_pb2
+from google.showcase_v1beta1.services.echo.transports import EchoRestInterceptor
 
 
 def test_retry_bubble(echo):
@@ -39,6 +40,32 @@ def test_retry_bubble(echo):
                     'message': 'This took longer than you said it should.',
                 },
             })
+
+    # gapic-generator-python does not yet support gRPC interceptors
+    # See <File bug>
+    if isinstance(echo.transport, type(echo).get_transport_class("rest")):
+        # Ensure that the same UUID is used when requests are retried
+        class CustomEchoRestInterceptor(EchoRestInterceptor):
+            def pre_echo(self, request, metadata):
+                if not hasattr(self, "request_ids_sent"):
+                    self.request_ids_sent = []
+                self.request_ids_sent.append(request.request_id)
+                return request, metadata
+        test = CustomEchoRestInterceptor()
+        echo.transport._interceptor.pre_echo = CustomEchoRestInterceptor()
+        with pytest.raises(exceptions.RetryError):
+            echo.echo({
+                'error': {
+                    'code': code_pb2.Code.Value('UNAVAILABLE'),
+                    'message': 'This service is not available.',
+                },
+            })
+        # Test that the request_ids are all the same for requests that have been retried
+        print(echo.transport._interceptor.request_ids_sent)
+
+        echo.transport._interceptor = EchoRestInterceptor()
+
+
 
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":

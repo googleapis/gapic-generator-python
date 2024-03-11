@@ -68,3 +68,9 @@ authentication:
     oauth:
       canonical_scopes: |-
         https://www.googleapis.com/auth/cloud-platform
+
+publishing:
+  method_settings:
+  - selector: google.cloud.redis.v1.CloudRedis.GetInstance
+    auto_populated_fields:
+    - name

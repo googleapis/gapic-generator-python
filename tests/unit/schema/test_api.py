@@ -20,6 +20,8 @@ import pytest
 
 from google.api import annotations_pb2  # type: ignore
 from google.api import client_pb2
+from google.api import field_behavior_pb2
+from google.api import field_info_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
@@ -52,129 +54,141 @@ def test_api_build():
     # Put together a couple of minimal protos.
     fd = (
         make_file_pb2(
-            name='dep.proto',
-            package='google.dep',
-            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+            name="dep.proto",
+            package="google.dep",
+            messages=(make_message_pb2(name="ImportedMessage", fields=()),),
         ),
         make_file_pb2(
-            name='common.proto',
-            package='google.example.v1.common',
-            messages=(make_message_pb2(name='Bar'),),
+            name="common.proto",
+            package="google.example.v1.common",
+            messages=(make_message_pb2(name="Bar"),),
         ),
         make_file_pb2(
-            name='foo.proto',
-            package='google.example.v1',
+            name="foo.proto",
+            package="google.example.v1",
             messages=(
-                make_message_pb2(name='Foo', fields=()),
-                make_message_pb2(name='GetFooRequest', fields=(
-                    make_field_pb2(name='imported_message', number=1,
-                                   type_name='.google.dep.ImportedMessage'),
-                    make_field_pb2(name='primitive', number=2, type=1),
-                )),
-                make_message_pb2(name='GetFooResponse', fields=(
-                    make_field_pb2(name='foo', number=1,
-                                   type_name='.google.example.v1.Foo'),
-                )),
-            ),
-            services=(descriptor_pb2.ServiceDescriptorProto(
-                name='FooService',
-                method=(
-                    descriptor_pb2.MethodDescriptorProto(
-                        name='GetFoo',
-                        input_type='google.example.v1.GetFooRequest',
-                        output_type='google.example.v1.GetFooResponse',
+                make_message_pb2(name="Foo", fields=()),
+                make_message_pb2(
+                    name="GetFooRequest",
+                    fields=(
+                        make_field_pb2(
+                            name="imported_message",
+                            number=1,
+                            type_name=".google.dep.ImportedMessage",
+                        ),
+                        make_field_pb2(name="primitive", number=2, type=1),
                     ),
                 ),
-            ),),
-
+                make_message_pb2(
+                    name="GetFooResponse",
+                    fields=(
+                        make_field_pb2(
+                            name="foo", number=1, type_name=".google.example.v1.Foo"
+                        ),
+                    ),
+                ),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="FooService",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="GetFoo",
+                            input_type="google.example.v1.GetFooRequest",
+                            output_type="google.example.v1.GetFooResponse",
+                        ),
+                    ),
+                ),
+            ),
         ),
     )
 
     # Create an API with those protos.
-    api_schema = api.API.build(fd, package='google.example.v1')
+    api_schema = api.API.build(fd, package="google.example.v1")
 
     # Establish that the API has the data expected.
     assert isinstance(api_schema, api.API)
     assert len(api_schema.all_protos) == 3
     assert len(api_schema.protos) == 2
-    assert 'google.dep.ImportedMessage' not in api_schema.messages
-    assert 'google.example.v1.common.Bar' in api_schema.messages
-    assert 'google.example.v1.Foo' in api_schema.messages
-    assert 'google.example.v1.GetFooRequest' in api_schema.messages
-    assert 'google.example.v1.GetFooResponse' in api_schema.messages
-    assert 'google.example.v1.FooService' in api_schema.services
+    assert "google.dep.ImportedMessage" not in api_schema.messages
+    assert "google.example.v1.common.Bar" in api_schema.messages
+    assert "google.example.v1.Foo" in api_schema.messages
+    assert "google.example.v1.GetFooRequest" in api_schema.messages
+    assert "google.example.v1.GetFooResponse" in api_schema.messages
+    assert "google.example.v1.FooService" in api_schema.services
     assert len(api_schema.enums) == 0
-    assert api_schema.protos['foo.proto'].python_modules == (
-        imp.Import(package=('google', 'dep'), module='dep_pb2'),
+    assert api_schema.protos["foo.proto"].python_modules == (
+        imp.Import(package=("google", "dep"), module="dep_pb2"),
     )
 
-    assert api_schema.requires_package(('google', 'example', 'v1'))
+    assert api_schema.requires_package(("google", "example", "v1"))
 
-    assert not api_schema.requires_package(('elgoog', 'example', 'v1'))
+    assert not api_schema.requires_package(("elgoog", "example", "v1"))
 
     # Establish that the subpackages work.
-    assert 'common' in api_schema.subpackages
-    sub = api_schema.subpackages['common']
+    assert "common" in api_schema.subpackages
+    sub = api_schema.subpackages["common"]
     assert len(sub.protos) == 1
-    assert 'google.example.v1.common.Bar' in sub.messages
-    assert 'google.example.v1.Foo' not in sub.messages
+    assert "google.example.v1.common.Bar" in sub.messages
+    assert "google.example.v1.Foo" not in sub.messages
 
 
 def test_top_level_messages():
     message_pbs = (
-        make_message_pb2(name='Mollusc', nested_type=(
-            make_message_pb2(name='Squid'),
-        )),
+        make_message_pb2(name="Mollusc", nested_type=(make_message_pb2(name="Squid"),)),
     )
     fds = (
         make_file_pb2(
             messages=message_pbs,
-            package='google.example.v3',
+            package="google.example.v3",
         ),
     )
-    api_schema = api.API.build(fds, package='google.example.v3')
+    api_schema = api.API.build(fds, package="google.example.v3")
     actual = [m.name for m in api_schema.top_level_messages.values()]
-    expected = ['Mollusc']
+    expected = ["Mollusc"]
     assert expected == actual
 
 
 def test_top_level_enum():
     # Test that a nested enum works properly.
     message_pbs = (
-        make_message_pb2(name='Coleoidea', enum_type=(
-            make_enum_pb2(
-                'Superorder',
-                'Decapodiformes',
-                'Octopodiformes',
-                'Palaeoteuthomorpha',
+        make_message_pb2(
+            name="Coleoidea",
+            enum_type=(
+                make_enum_pb2(
+                    "Superorder",
+                    "Decapodiformes",
+                    "Octopodiformes",
+                    "Palaeoteuthomorpha",
+                ),
             ),
-        )),
+        ),
     )
     enum_pbs = (
         make_enum_pb2(
-            'Order',
-            'Gastropoda',
-            'Bivalvia',
-            'Cephalopoda',
+            "Order",
+            "Gastropoda",
+            "Bivalvia",
+            "Cephalopoda",
         ),
     )
     fds = (
         make_file_pb2(
             messages=message_pbs,
             enums=enum_pbs,
-            package='google.example.v3',
+            package="google.example.v3",
         ),
     )
-    api_schema = api.API.build(fds, package='google.example.v3')
+    api_schema = api.API.build(fds, package="google.example.v3")
     actual = [e.name for e in api_schema.top_level_enums.values()]
-    expected = ['Order']
+    expected = ["Order"]
     assert expected == actual
 
 
 def test_proto_build():
     fdp = descriptor_pb2.FileDescriptorProto(
-        name='my_proto_file.proto',
-        package='google.example.v1',
+        name="my_proto_file.proto",
+        package="google.example.v1",
     )
     proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
     assert isinstance(proto, api.Proto)
@@ -184,35 +198,44 @@ def test_proto_names():
     # Put together a couple of minimal protos.
     fd = (
         make_file_pb2(
-            name='dep.proto',
-            package='google.dep',
-            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+            name="dep.proto",
+            package="google.dep",
+            messages=(make_message_pb2(name="ImportedMessage", fields=()),),
         ),
         make_file_pb2(
-            name='foo.proto',
-            package='google.example.v1',
+            name="foo.proto",
+            package="google.example.v1",
             messages=(
-                make_message_pb2(name='Foo', fields=()),
-                make_message_pb2(name='Bar', fields=(
-                    make_field_pb2(name='imported_message', number=1,
-                                   type_name='.google.dep.ImportedMessage'),
-                    make_field_pb2(name='primitive', number=2, type=1),
-                )),
-                make_message_pb2(name='Baz', fields=(
-                    make_field_pb2(name='foo', number=1,
-                                   type_name='.google.example.v1.Foo'),
-                )),
+                make_message_pb2(name="Foo", fields=()),
+                make_message_pb2(
+                    name="Bar",
+                    fields=(
+                        make_field_pb2(
+                            name="imported_message",
+                            number=1,
+                            type_name=".google.dep.ImportedMessage",
+                        ),
+                        make_field_pb2(name="primitive", number=2, type=1),
+                    ),
+                ),
+                make_message_pb2(
+                    name="Baz",
+                    fields=(
+                        make_field_pb2(
+                            name="foo", number=1, type_name=".google.example.v1.Foo"
+                        ),
+                    ),
+                ),
             ),
         ),
     )
 
     # Create an API with those protos.
-    api_schema = api.API.build(fd, package='google.example.v1')
-    proto = api_schema.protos['foo.proto']
-    assert proto.names == {'Foo', 'Bar', 'Baz', 'foo', 'imported_message',
-                           'primitive'}
-    assert proto.disambiguate('enum') == 'enum'
-    assert proto.disambiguate('foo') == '_foo'
+    api_schema = api.API.build(fd, package="google.example.v1")
+    proto = api_schema.protos["foo.proto"]
+    assert proto.names == {"Foo", "Bar", "Baz", "foo", "imported_message", "primitive"}
+    assert proto.disambiguate("enum") == "enum"
+    assert proto.disambiguate("foo") == "_foo"
 
 
 def test_proto_with_invalid_characters():
@@ -221,21 +244,21 @@ def test_proto_with_invalid_characters():
     # See https://peps.python.org/pep-0008/#package-and-module-names
 
     test_cases = [
-        {'name': 'k8s.min.proto', 'expected': 'k8s_min.proto'},
-        {'name': 'k8s.min.test.proto', 'expected': 'k8s_min_test.proto'}
+        {"name": "k8s.min.proto", "expected": "k8s_min.proto"},
+        {"name": "k8s.min.test.proto", "expected": "k8s_min_test.proto"},
     ]
 
     for test_case in test_cases:
         fd = (
             make_file_pb2(
-                name=test_case['name'],
-                package='google.keywords.v1',
-                messages=(make_message_pb2(name='ImportRequest', fields=()),),
+                name=test_case["name"],
+                package="google.keywords.v1",
+                messages=(make_message_pb2(name="ImportRequest", fields=()),),
             ),
         )
-        api_schema = api.API.build(fd, package='google.keywords.v1')
+        api_schema = api.API.build(fd, package="google.keywords.v1")
         assert set(api_schema.protos.keys()) == {
-            test_case['expected'],
+            test_case["expected"],
         }
 
 
@@ -245,58 +268,58 @@ def test_proto_keyword_fname():
     # Check that the file names are unspecialized when building the API object.
     fd = (
         make_file_pb2(
-            name='import.proto',
-            package='google.keywords.v1',
-            messages=(make_message_pb2(name='ImportRequest', fields=()),),
+            name="import.proto",
+            package="google.keywords.v1",
+            messages=(make_message_pb2(name="ImportRequest", fields=()),),
         ),
         make_file_pb2(
-            name='import_.proto',
-            package='google.keywords.v1',
-            messages=(make_message_pb2(name='ImportUnderRequest', fields=()),),
+            name="import_.proto",
+            package="google.keywords.v1",
+            messages=(make_message_pb2(name="ImportUnderRequest", fields=()),),
         ),
         make_file_pb2(
-            name='class_.proto',
-            package='google.keywords.v1',
-            messages=(make_message_pb2(name='ClassUnderRequest', fields=()),),
+            name="class_.proto",
+            package="google.keywords.v1",
+            messages=(make_message_pb2(name="ClassUnderRequest", fields=()),),
         ),
         make_file_pb2(
-            name='class.proto',
-            package='google.keywords.v1',
-            messages=(make_message_pb2(name='ClassRequest', fields=()),),
+            name="class.proto",
+            package="google.keywords.v1",
+            messages=(make_message_pb2(name="ClassRequest", fields=()),),
         ),
         make_file_pb2(
-            name='metadata.proto',
-            package='google.keywords.v1',
-            messages=(make_message_pb2(name='MetadataRequest', fields=()),),
+            name="metadata.proto",
+            package="google.keywords.v1",
+            messages=(make_message_pb2(name="MetadataRequest", fields=()),),
         ),
         make_file_pb2(
-            name='retry.proto',
-            package='google.keywords.v1',
-            messages=(make_message_pb2(name='RetryRequest', fields=()),),
+            name="retry.proto",
+            package="google.keywords.v1",
+            messages=(make_message_pb2(name="RetryRequest", fields=()),),
         ),
         make_file_pb2(
-            name='timeout.proto',
-            package='google.keywords.v1',
-            messages=(make_message_pb2(name='TimeoutRequest', fields=()),),
+            name="timeout.proto",
+            package="google.keywords.v1",
+            messages=(make_message_pb2(name="TimeoutRequest", fields=()),),
         ),
         make_file_pb2(
-            name='request.proto',
-            package='google.keywords.v1',
-            messages=(make_message_pb2(name='RequestRequest', fields=()),),
+            name="request.proto",
+            package="google.keywords.v1",
+            messages=(make_message_pb2(name="RequestRequest", fields=()),),
         ),
     )
 
     # We can't create new collisions, so check that renames cascade.
-    api_schema = api.API.build(fd, package='google.keywords.v1')
+    api_schema = api.API.build(fd, package="google.keywords.v1")
     assert set(api_schema.protos.keys()) == {
-        'import_.proto',
-        'import__.proto',
-        'class_.proto',
-        'class__.proto',
-        'metadata_.proto',
-        'retry_.proto',
-        'timeout_.proto',
-        'request_.proto',
+        "import_.proto",
+        "import__.proto",
+        "class_.proto",
+        "class__.proto",
+        "metadata_.proto",
+        "retry_.proto",
+        "timeout_.proto",
+        "request_.proto",
     }
 
 
@@ -304,36 +327,38 @@ def test_proto_oneof():
     # Put together a couple of minimal protos.
     fd = (
         make_file_pb2(
-            name='dep.proto',
-            package='google.dep',
-            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+            name="dep.proto",
+            package="google.dep",
+            messages=(make_message_pb2(name="ImportedMessage", fields=()),),
         ),
         make_file_pb2(
-            name='foo.proto',
-            package='google.example.v1',
+            name="foo.proto",
+            package="google.example.v1",
             messages=(
-                make_message_pb2(name='Foo', fields=()),
+                make_message_pb2(name="Foo", fields=()),
                 make_message_pb2(
-                    name='Bar',
+                    name="Bar",
                     fields=(
-                        make_field_pb2(name='imported_message', number=1,
-                                       type_name='.google.dep.ImportedMessage',
-                                       oneof_index=0),
                         make_field_pb2(
-                            name='primitive', number=2, type=1, oneof_index=0),
+                            name="imported_message",
+                            number=1,
+                            type_name=".google.dep.ImportedMessage",
+                            oneof_index=0,
+                        ),
+                        make_field_pb2(
+                            name="primitive", number=2, type=1, oneof_index=0
+                        ),
                     ),
-                    oneof_decl=(
-                        make_oneof_pb2(name="value_type"),
-                    )
-                )
-            )
-        )
+                    oneof_decl=(make_oneof_pb2(name="value_type"),),
+                ),
+            ),
+        ),
     )
 
     # Create an API with those protos.
-    api_schema = api.API.build(fd, package='google.example.v1')
-    proto = api_schema.protos['foo.proto']
-    assert proto.names == {'imported_message', 'Bar', 'primitive', 'Foo'}
+    api_schema = api.API.build(fd, package="google.example.v1")
+    proto = api_schema.protos["foo.proto"]
+    assert proto.names == {"imported_message", "Bar", "primitive", "Foo"}
     oneofs = proto.messages["google.example.v1.Bar"].oneofs
     assert len(oneofs) == 1
     assert "value_type" in oneofs.keys()
@@ -343,85 +368,117 @@ def test_proto_names_import_collision():
     # Put together a couple of minimal protos.
     fd = (
         make_file_pb2(
-            name='a/b/c/spam.proto',
-            package='a.b.c',
-            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+            name="a/b/c/spam.proto",
+            package="a.b.c",
+            messages=(make_message_pb2(name="ImportedMessage", fields=()),),
         ),
         make_file_pb2(
-            name='x/y/z/spam.proto',
-            package='x.y.z',
-            messages=(make_message_pb2(name='OtherMessage', fields=()),),
+            name="x/y/z/spam.proto",
+            package="x.y.z",
+            messages=(make_message_pb2(name="OtherMessage", fields=()),),
         ),
         make_file_pb2(
-            name='foo.proto',
-            package='google.example.v1',
+            name="foo.proto",
+            package="google.example.v1",
             messages=(
-                make_message_pb2(name='Foo', fields=()),
-                make_message_pb2(name='Bar', fields=(
-                    make_field_pb2(name='imported_message', number=1,
-                                   type_name='.a.b.c.ImportedMessage'),
-                    make_field_pb2(name='other_message', number=2,
-                                   type_name='.x.y.z.OtherMessage'),
-                    make_field_pb2(name='primitive', number=3, type=1),
-                )),
-                make_message_pb2(name='Baz', fields=(
-                    make_field_pb2(name='foo', number=1,
-                                   type_name='.google.example.v1.Foo'),
-                )),
+                make_message_pb2(name="Foo", fields=()),
+                make_message_pb2(
+                    name="Bar",
+                    fields=(
+                        make_field_pb2(
+                            name="imported_message",
+                            number=1,
+                            type_name=".a.b.c.ImportedMessage",
+                        ),
+                        make_field_pb2(
+                            name="other_message",
+                            number=2,
+                            type_name=".x.y.z.OtherMessage",
+                        ),
+                        make_field_pb2(name="primitive", number=3, type=1),
+                    ),
+                ),
+                make_message_pb2(
+                    name="Baz",
+                    fields=(
+                        make_field_pb2(
+                            name="foo", number=1, type_name=".google.example.v1.Foo"
+                        ),
+                    ),
+                ),
             ),
         ),
     )
 
     # Create an API with those protos.
-    api_schema = api.API.build(fd, package='google.example.v1')
-    proto = api_schema.protos['foo.proto']
-    assert proto.names == {'Foo', 'Bar', 'Baz', 'foo', 'imported_message',
-                           'other_message', 'primitive', 'spam'}
+    api_schema = api.API.build(fd, package="google.example.v1")
+    proto = api_schema.protos["foo.proto"]
+    assert proto.names == {
+        "Foo",
+        "Bar",
+        "Baz",
+        "foo",
+        "imported_message",
+        "other_message",
+        "primitive",
+        "spam",
+    }
 
 
 def test_proto_names_import_collision_flattening():
-    lro_proto = api.Proto.build(make_file_pb2(
-        name='operations.proto', package='google.longrunning',
-        messages=(make_message_pb2(name='Operation'),),
-    ), file_to_generate=False, naming=make_naming())
+    lro_proto = api.Proto.build(
+        make_file_pb2(
+            name="operations.proto",
+            package="google.longrunning",
+            messages=(make_message_pb2(name="Operation"),),
+        ),
+        file_to_generate=False,
+        naming=make_naming(),
+    )
 
     fd = (
         make_file_pb2(
-            name='mollusc.proto',
-            package='google.animalia.mollusca',
+            name="mollusc.proto",
+            package="google.animalia.mollusca",
             messages=(
-                make_message_pb2(name='Mollusc',),
-                make_message_pb2(name='MolluscResponse',),
-                make_message_pb2(name='MolluscMetadata',),
+                make_message_pb2(
+                    name="Mollusc",
+                ),
+                make_message_pb2(
+                    name="MolluscResponse",
+                ),
+                make_message_pb2(
+                    name="MolluscMetadata",
+                ),
             ),
         ),
         make_file_pb2(
-            name='squid.proto',
-            package='google.animalia.mollusca',
+            name="squid.proto",
+            package="google.animalia.mollusca",
             messages=(
                 make_message_pb2(
-                    name='IdentifySquidRequest',
+                    name="IdentifySquidRequest",
                     fields=(
                         make_field_pb2(
-                            name='mollusc',
+                            name="mollusc",
                             number=1,
-                            type_name='.google.animalia.mollusca.Mollusc'
+                            type_name=".google.animalia.mollusca.Mollusc",
                         ),
                     ),
                 ),
                 make_message_pb2(
-                    name='IdentifySquidResponse',
+                    name="IdentifySquidResponse",
                     fields=(),
                 ),
             ),
             services=(
                 descriptor_pb2.ServiceDescriptorProto(
-                    name='SquidIdentificationService',
+                    name="SquidIdentificationService",
                     method=(
                         descriptor_pb2.MethodDescriptorProto(
-                            name='IdentifyMollusc',
-                            input_type='google.animalia.mollusca.IdentifySquidRequest',
-                            output_type='google.longrunning.Operation',
+                            name="IdentifyMollusc",
+                            input_type="google.animalia.mollusca.IdentifySquidRequest",
+                            output_type="google.longrunning.Operation",
                         ),
                     ),
                 ),
@@ -431,19 +488,19 @@ def test_proto_names_import_collision_flattening():
 
     method_options = fd[1].service[0].method[0].options
     # Notice that a signature field collides with the name of an imported module
-    method_options.Extensions[client_pb2.method_signature].append('mollusc')
+    method_options.Extensions[client_pb2.method_signature].append("mollusc")
     method_options.Extensions[operations_pb2.operation_info].MergeFrom(
         operations_pb2.OperationInfo(
-            response_type='google.animalia.mollusca.MolluscResponse',
-            metadata_type='google.animalia.mollusca.MolluscMetadata',
+            response_type="google.animalia.mollusca.MolluscResponse",
+            metadata_type="google.animalia.mollusca.MolluscMetadata",
         )
     )
     api_schema = api.API.build(
         fd,
-        package='google.animalia.mollusca',
+        package="google.animalia.mollusca",
         prior_protos={
-            'google/longrunning/operations.proto': lro_proto,
-        }
+            "google/longrunning/operations.proto": lro_proto,
+        },
     )
 
     actual_imports = {
@@ -455,31 +512,35 @@ def test_proto_names_import_collision_flattening():
 
     expected_imports = {
         imp.Import(
-            package=('google', 'animalia', 'mollusca', 'types'),
-            module='mollusc',
-            alias='gam_mollusc',
+            package=("google", "animalia", "mollusca", "types"),
+            module="mollusc",
+            alias="gam_mollusc",
         ),
         imp.Import(
-            package=('google', 'animalia', 'mollusca', 'types'),
-            module='squid',
+            package=("google", "animalia", "mollusca", "types"),
+            module="squid",
         ),
-        imp.Import(package=('google', 'api_core'), module='operation',),
-        imp.Import(package=('google', 'api_core'), module='operation_async',),
+        imp.Import(
+            package=("google", "api_core"),
+            module="operation",
+        ),
+        imp.Import(
+            package=("google", "api_core"),
+            module="operation_async",
+        ),
     }
 
     assert expected_imports == actual_imports
 
-    method = (
-        api_schema
-        .services['google.animalia.mollusca.SquidIdentificationService']
-        .methods['IdentifyMollusc']
-    )
+    method = api_schema.services[
+        "google.animalia.mollusca.SquidIdentificationService"
+    ].methods["IdentifyMollusc"]
 
     actual_response_import = method.lro.response_type.ident.python_import
     expected_response_import = imp.Import(
-        package=('google', 'animalia', 'mollusca', 'types'),
-        module='mollusc',
-        alias='gam_mollusc',
+        package=("google", "animalia", "mollusca", "types"),
+        module="mollusc",
+        alias="gam_mollusc",
     )
     assert actual_response_import == expected_response_import
 
@@ -499,11 +560,12 @@ def test_proto_builder_constructor():
     )
 
     # Test the load function.
-    with mock.patch.object(api._ProtoBuilder, '_load_children') as lc:
-        pb = api._ProtoBuilder(fdp,
-                               file_to_generate=True,
-                               naming=make_naming(),
-                               )
+    with mock.patch.object(api._ProtoBuilder, "_load_children") as lc:
+        pb = api._ProtoBuilder(
+            fdp,
+            file_to_generate=True,
+            naming=make_naming(),
+        )
 
         # There should be three total calls to load the different types
         # of children.
@@ -528,7 +590,7 @@ def test_proto_builder_constructor():
 def test_not_target_file():
     """Establish that services are not ignored for untargeted protos."""
     message_pb = make_message_pb2(
-        name='Foo', fields=(make_field_pb2(name='bar', type=3, number=1),)
+        name="Foo", fields=(make_field_pb2(name="bar", type=3, number=1),)
     )
     service_pb = descriptor_pb2.ServiceDescriptorProto()
     fdp = make_file_pb2(messages=(message_pb,), services=(service_pb,))
@@ -545,16 +607,16 @@ def test_messages():
     L = descriptor_pb2.SourceCodeInfo.Location
 
     message_pb = make_message_pb2(
-        name='Foo', fields=(make_field_pb2(name='bar', type=3, number=1),)
+        name="Foo", fields=(make_field_pb2(name="bar", type=3, number=1),)
     )
     locations = (
-        L(path=(4, 0), leading_comments='This is the Foo message.'),
-        L(path=(4, 0, 2, 0), leading_comments='This is the bar field.'),
+        L(path=(4, 0), leading_comments="This is the Foo message."),
+        L(path=(4, 0, 2, 0), leading_comments="This is the bar field."),
     )
     fdp = make_file_pb2(
         messages=(message_pb,),
         locations=locations,
-        package='google.example.v2',
+        package="google.example.v2",
     )
 
     # Make the proto object.
@@ -562,27 +624,30 @@ def test_messages():
 
     # Get the message.
     assert len(proto.messages) == 1
-    message = proto.messages['google.example.v2.Foo']
+    message = proto.messages["google.example.v2.Foo"]
     assert isinstance(message, wrappers.MessageType)
-    assert message.meta.doc == 'This is the Foo message.'
+    assert message.meta.doc == "This is the Foo message."
     assert len(message.fields) == 1
-    assert message.fields['bar'].meta.doc == 'This is the bar field.'
+    assert message.fields["bar"].meta.doc == "This is the bar field."
 
 
 def test_messages_reverse_declaration_order():
     # Test that if a message is used as a field higher in the same file,
     # that things still work.
     message_pbs = (
-        make_message_pb2(name='Foo', fields=(
-            make_field_pb2(name='bar', number=1,
-                           type_name='.google.example.v3.Bar'),
+        make_message_pb2(
+            name="Foo",
+            fields=(
+                make_field_pb2(
+                    name="bar", number=1, type_name=".google.example.v3.Bar"
+                ),
+            ),
         ),
-        ),
-        make_message_pb2(name='Bar'),
+        make_message_pb2(name="Bar"),
     )
     fdp = make_file_pb2(
         messages=message_pbs,
-        package='google.example.v3',
+        package="google.example.v3",
     )
 
     # Make the proto object.
@@ -590,23 +655,26 @@ def test_messages_reverse_declaration_order():
 
     # Get the message.
     assert len(proto.messages) == 2
-    Foo = proto.messages['google.example.v3.Foo']
-    assert Foo.fields['bar'].message == proto.messages['google.example.v3.Bar']
+    Foo = proto.messages["google.example.v3.Foo"]
+    assert Foo.fields["bar"].message == proto.messages["google.example.v3.Bar"]
 
 
 def test_messages_recursive():
     # Test that if a message is used inside itself, that things will still
     # work.
     message_pbs = (
-        make_message_pb2(name='Foo', fields=(
-            make_field_pb2(name='foo', number=1,
-                           type_name='.google.example.v3.Foo'),
-        ),
+        make_message_pb2(
+            name="Foo",
+            fields=(
+                make_field_pb2(
+                    name="foo", number=1, type_name=".google.example.v3.Foo"
+                ),
+            ),
         ),
     )
     fdp = make_file_pb2(
         messages=message_pbs,
-        package='google.example.v3',
+        package="google.example.v3",
     )
 
     # Make the proto object.
@@ -614,33 +682,31 @@ def test_messages_recursive():
 
     # Get the message.
     assert len(proto.messages) == 1
-    Foo = proto.messages['google.example.v3.Foo']
-    assert Foo.fields['foo'].message == proto.messages['google.example.v3.Foo']
+    Foo = proto.messages["google.example.v3.Foo"]
+    assert Foo.fields["foo"].message == proto.messages["google.example.v3.Foo"]
 
 
 def test_messages_nested():
     # Test that a nested message works properly.
     message_pbs = (
-        make_message_pb2(name='Foo', nested_type=(
-            make_message_pb2(name='Bar'),
-        )),
+        make_message_pb2(name="Foo", nested_type=(make_message_pb2(name="Bar"),)),
     )
     fdp = make_file_pb2(
         messages=message_pbs,
-        package='google.example.v3',
+        package="google.example.v3",
     )
 
     # Make the proto object.
     proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
 
     # Set short variables for the names.
-    foo = 'google.example.v3.Foo'
-    bar = 'google.example.v3.Foo.Bar'
+    foo = "google.example.v3.Foo"
+    bar = "google.example.v3.Foo.Bar"
 
     # Get the message.
     assert len(proto.all_messages) == 2
-    assert proto.all_messages[foo].name == 'Foo'
-    assert proto.all_messages[bar].name == 'Bar'
+    assert proto.all_messages[foo].name == "Foo"
+    assert proto.all_messages[bar].name == "Bar"
 
     # Assert that the `messages` property only shows top-level messages.
     assert len(proto.messages) == 1
@@ -654,66 +720,59 @@ def test_out_of_order_enums():
     # This happens when they're a nested type within a message.
     messages = (
         make_message_pb2(
-            name='Squid',
+            name="Squid",
             fields=(
                 make_field_pb2(
-                    name='base_color',
-                    type_name='google.mollusca.Chromatophore.Color',
+                    name="base_color",
+                    type_name="google.mollusca.Chromatophore.Color",
                     number=1,
                 ),
             ),
         ),
         make_message_pb2(
-            name='Chromatophore',
-            enum_type=(
-                descriptor_pb2.EnumDescriptorProto(name='Color', value=()),
-            ),
-        )
+            name="Chromatophore",
+            enum_type=(descriptor_pb2.EnumDescriptorProto(name="Color", value=()),),
+        ),
     )
     fd = (
         make_file_pb2(
-            name='squid.proto',
-            package='google.mollusca',
+            name="squid.proto",
+            package="google.mollusca",
             messages=messages,
             services=(
                 descriptor_pb2.ServiceDescriptorProto(
-                    name='SquidService',
+                    name="SquidService",
                 ),
             ),
         ),
     )
-    api_schema = api.API.build(fd, package='google.mollusca')
-    field_type = (
-        api_schema
-        .messages['google.mollusca.Squid']
-        .fields['base_color']
-        .type
-    )
-    enum_type = api_schema.enums['google.mollusca.Chromatophore.Color']
+    api_schema = api.API.build(fd, package="google.mollusca")
+    field_type = api_schema.messages["google.mollusca.Squid"].fields["base_color"].type
+    enum_type = api_schema.enums["google.mollusca.Chromatophore.Color"]
     assert field_type == enum_type
 
 
 def test_undefined_type():
     fd = (
         make_file_pb2(
-            name='mollusc.proto',
-            package='google.mollusca',
+            name="mollusc.proto",
+            package="google.mollusca",
             messages=(
                 make_message_pb2(
-                    name='Mollusc',
+                    name="Mollusc",
                     fields=(
                         make_field_pb2(
-                            name='class',
-                            type_name='google.mollusca.Class',
+                            name="class",
+                            type_name="google.mollusca.Class",
                             number=1,
                         ),
-                    )
+                    ),
                 ),
             ),
         ),
     )
     with pytest.raises(TypeError):
-        api.API.build(fd, package='google.mollusca')
+        api.API.build(fd, package="google.mollusca")
 
 
 def test_python_modules_nested():
@@ -865,62 +924,69 @@ def test_services():
     # Make a silly helper method to not repeat some of the structure.
     def _n(method_name: str):
         return {
-            'service': 'google.example.v2.FooService',
-            'method': method_name,
+            "service": "google.example.v2.FooService",
+            "method": method_name,
         }
 
     # Set up retry information.
-    opts = Options(retry={'methodConfig': [
-        {'name': [_n('TimeoutableGetFoo')], 'timeout': '30s'},
-        {'name': [_n('RetryableGetFoo')], 'retryPolicy': {
-            'maxAttempts': 3,
-            'initialBackoff': '%dn' % 1e6,
-            'maxBackoff': '60s',
-            'backoffMultiplier': 1.5,
-            'retryableStatusCodes': ['UNAVAILABLE', 'ABORTED'],
-        }},
-    ]})
+    opts = Options(
+        retry={
+            "methodConfig": [
+                {"name": [_n("TimeoutableGetFoo")], "timeout": "30s"},
+                {
+                    "name": [_n("RetryableGetFoo")],
+                    "retryPolicy": {
+                        "maxAttempts": 3,
+                        "initialBackoff": "%dn" % 1e6,
+                        "maxBackoff": "60s",
+                        "backoffMultiplier": 1.5,
+                        "retryableStatusCodes": ["UNAVAILABLE", "ABORTED"],
+                    },
+                },
+            ]
+        }
+    )
 
     # Set up messages for our RPC.
     request_message_pb = make_message_pb2(
-        name='GetFooRequest', fields=(make_field_pb2(name='name', type=9, number=1),)
+        name="GetFooRequest", fields=(make_field_pb2(name="name", type=9, number=1),)
     )
-    response_message_pb = make_message_pb2(name='GetFooResponse', fields=())
+    response_message_pb = make_message_pb2(name="GetFooResponse", fields=())
 
     # Set up the service with an RPC.
     service_pb = descriptor_pb2.ServiceDescriptorProto(
-        name='FooService',
+        name="FooService",
         method=(
             descriptor_pb2.MethodDescriptorProto(
-                name='GetFoo',
-                input_type='google.example.v2.GetFooRequest',
-                output_type='google.example.v2.GetFooResponse',
+                name="GetFoo",
+                input_type="google.example.v2.GetFooRequest",
+                output_type="google.example.v2.GetFooResponse",
             ),
             descriptor_pb2.MethodDescriptorProto(
-                name='TimeoutableGetFoo',
-                input_type='google.example.v2.GetFooRequest',
-                output_type='google.example.v2.GetFooResponse',
+                name="TimeoutableGetFoo",
+                input_type="google.example.v2.GetFooRequest",
+                output_type="google.example.v2.GetFooResponse",
             ),
             descriptor_pb2.MethodDescriptorProto(
-                name='RetryableGetFoo',
-                input_type='google.example.v2.GetFooRequest',
-                output_type='google.example.v2.GetFooResponse',
+                name="RetryableGetFoo",
+                input_type="google.example.v2.GetFooRequest",
+                output_type="google.example.v2.GetFooResponse",
             ),
         ),
     )
 
     # Fake-document our fake stuff.
     locations = (
-        L(path=(6, 0), leading_comments='This is the FooService service.'),
-        L(path=(6, 0, 2, 0), leading_comments='This is the GetFoo method.'),
-        L(path=(4, 0), leading_comments='This is the GetFooRequest message.'),
-        L(path=(4, 1), leading_comments='This is the GetFooResponse message.'),
+        L(path=(6, 0), leading_comments="This is the FooService service."),
+        L(path=(6, 0, 2, 0), leading_comments="This is the GetFoo method."),
+        L(path=(4, 0), leading_comments="This is the GetFooRequest message."),
+        L(path=(4, 1), leading_comments="This is the GetFooResponse message."),
     )
 
     # Finally, set up the file that encompasses these.
     fdp = make_file_pb2(
-        name='test.proto',
-        package='google.example.v2',
+        name="test.proto",
+        package="google.example.v2",
         messages=(request_message_pb, response_message_pb),
         services=(service_pb,),
         locations=locations,
@@ -929,43 +995,44 @@ def test_services():
     # Make the proto object.
     proto = api.API.build(
         [fdp],
-        'google.example.v2',
+        "google.example.v2",
         opts=opts,
-    ).protos['test.proto']
+    ).protos["test.proto"]
 
     # Establish that our data looks correct.
     assert len(proto.services) == 1
     assert len(proto.messages) == 2
-    service = proto.services['google.example.v2.FooService']
-    assert service.meta.doc == 'This is the FooService service.'
+    service = proto.services["google.example.v2.FooService"]
+    assert service.meta.doc == "This is the FooService service."
     assert len(service.methods) == 3
-    method = service.methods['GetFoo']
-    assert method.meta.doc == 'This is the GetFoo method.'
+    method = service.methods["GetFoo"]
+    assert method.meta.doc == "This is the GetFoo method."
     assert isinstance(method.input, wrappers.MessageType)
     assert isinstance(method.output, wrappers.MessageType)
-    assert method.input.name == 'GetFooRequest'
-    assert method.input.meta.doc == 'This is the GetFooRequest message.'
-    assert method.output.name == 'GetFooResponse'
-    assert method.output.meta.doc == 'This is the GetFooResponse message.'
+    assert method.input.name == "GetFooRequest"
+    assert method.input.meta.doc == "This is the GetFooRequest message."
+    assert method.output.name == "GetFooResponse"
+    assert method.output.meta.doc == "This is the GetFooResponse message."
     assert not method.timeout
     assert not method.retry
 
     # Establish that the retry information on a timeout-able method also
     # looks correct.
-    timeout_method = service.methods['TimeoutableGetFoo']
+    timeout_method = service.methods["TimeoutableGetFoo"]
     assert timeout_method.timeout == pytest.approx(30.0)
     assert not timeout_method.retry
 
     # Establish that the retry information on the retryable method also
     # looks correct.
-    retry_method = service.methods['RetryableGetFoo']
+    retry_method = service.methods["RetryableGetFoo"]
     assert retry_method.timeout is None
     assert retry_method.retry.max_attempts == 3
     assert retry_method.retry.initial_backoff == pytest.approx(0.001)
     assert retry_method.retry.backoff_multiplier == pytest.approx(1.5)
     assert retry_method.retry.max_backoff == pytest.approx(60.0)
     assert retry_method.retry.retryable_exceptions == {
-        exceptions.ServiceUnavailable, exceptions.Aborted,
+        exceptions.ServiceUnavailable,
+        exceptions.Aborted,
     }
 
 
@@ -973,98 +1040,120 @@ def test_prior_protos():
     L = descriptor_pb2.SourceCodeInfo.Location
 
     # Set up a prior proto that mimics google/protobuf/empty.proto
-    empty_proto = api.Proto.build(make_file_pb2(
-        name='empty.proto', package='google.protobuf',
-        messages=(make_message_pb2(name='Empty'),),
-    ), file_to_generate=False, naming=make_naming())
+    empty_proto = api.Proto.build(
+        make_file_pb2(
+            name="empty.proto",
+            package="google.protobuf",
+            messages=(make_message_pb2(name="Empty"),),
+        ),
+        file_to_generate=False,
+        naming=make_naming(),
+    )
 
     # Set up the service with an RPC.
     service_pb = descriptor_pb2.ServiceDescriptorProto(
-        name='PingService',
-        method=(descriptor_pb2.MethodDescriptorProto(
-            name='Ping',
-            input_type='google.protobuf.Empty',
-            output_type='google.protobuf.Empty',
-        ),),
+        name="PingService",
+        method=(
+            descriptor_pb2.MethodDescriptorProto(
+                name="Ping",
+                input_type="google.protobuf.Empty",
+                output_type="google.protobuf.Empty",
+            ),
+        ),
     )
 
     # Fake-document our fake stuff.
     locations = (
-        L(path=(6, 0), leading_comments='This is the PingService service.'),
-        L(path=(6, 0, 2, 0), leading_comments='This is the Ping method.'),
+        L(path=(6, 0), leading_comments="This is the PingService service."),
+        L(path=(6, 0, 2, 0), leading_comments="This is the Ping method."),
     )
 
     # Finally, set up the file that encompasses these.
     fdp = make_file_pb2(
-        package='google.example.v1',
+        package="google.example.v1",
         services=(service_pb,),
         locations=locations,
     )
 
     # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
-        'google/protobuf/empty.proto': empty_proto,
-    }, naming=make_naming())
+    proto = api.Proto.build(
+        fdp,
+        file_to_generate=True,
+        prior_protos={
+            "google/protobuf/empty.proto": empty_proto,
+        },
+        naming=make_naming(),
+    )
 
     # Establish that our data looks correct.
     assert len(proto.services) == 1
     assert len(empty_proto.messages) == 1
     assert len(proto.messages) == 0
-    service = proto.services['google.example.v1.PingService']
-    assert service.meta.doc == 'This is the PingService service.'
+    service = proto.services["google.example.v1.PingService"]
+    assert service.meta.doc == "This is the PingService service."
     assert len(service.methods) == 1
-    method = service.methods['Ping']
+    method = service.methods["Ping"]
     assert isinstance(method.input, wrappers.MessageType)
     assert isinstance(method.output, wrappers.MessageType)
-    assert method.input.name == 'Empty'
-    assert method.output.name == 'Empty'
-    assert method.meta.doc == 'This is the Ping method.'
+    assert method.input.name == "Empty"
+    assert method.output.name == "Empty"
+    assert method.meta.doc == "This is the Ping method."
 
 
 def test_lro():
     # Set up a prior proto that mimics google/protobuf/empty.proto
-    lro_proto = api.Proto.build(make_file_pb2(
-        name='operations.proto', package='google.longrunning',
-        messages=(make_message_pb2(name='Operation'),),
-    ), file_to_generate=False, naming=make_naming())
+    lro_proto = api.Proto.build(
+        make_file_pb2(
+            name="operations.proto",
+            package="google.longrunning",
+            messages=(make_message_pb2(name="Operation"),),
+        ),
+        file_to_generate=False,
+        naming=make_naming(),
+    )
 
     # Set up a method with LRO annotations.
     method_pb2 = descriptor_pb2.MethodDescriptorProto(
-        name='AsyncDoThing',
-        input_type='google.example.v3.AsyncDoThingRequest',
-        output_type='google.longrunning.Operation',
+        name="AsyncDoThing",
+        input_type="google.example.v3.AsyncDoThingRequest",
+        output_type="google.longrunning.Operation",
     )
     method_pb2.options.Extensions[operations_pb2.operation_info].MergeFrom(
         operations_pb2.OperationInfo(
-            response_type='google.example.v3.AsyncDoThingResponse',
-            metadata_type='google.example.v3.AsyncDoThingMetadata',
+            response_type="google.example.v3.AsyncDoThingResponse",
+            metadata_type="google.example.v3.AsyncDoThingMetadata",
         ),
     )
 
     # Set up the service with an RPC.
     service_pb = descriptor_pb2.ServiceDescriptorProto(
-        name='LongRunningService',
+        name="LongRunningService",
         method=(method_pb2,),
     )
 
     # Set up the messages, including the annotated ones.
     messages = (
-        make_message_pb2(name='AsyncDoThingRequest', fields=()),
-        make_message_pb2(name='AsyncDoThingResponse', fields=()),
-        make_message_pb2(name='AsyncDoThingMetadata', fields=()),
+        make_message_pb2(name="AsyncDoThingRequest", fields=()),
+        make_message_pb2(name="AsyncDoThingResponse", fields=()),
+        make_message_pb2(name="AsyncDoThingMetadata", fields=()),
     )
 
     # Finally, set up the file that encompasses these.
     fdp = make_file_pb2(
-        package='google.example.v3',
+        package="google.example.v3",
         messages=messages,
         services=(service_pb,),
     )
 
     # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
-        'google/longrunning/operations.proto': lro_proto,
-    }, naming=make_naming())
+    proto = api.Proto.build(
+        fdp,
+        file_to_generate=True,
+        prior_protos={
+            "google/longrunning/operations.proto": lro_proto,
+        },
+        naming=make_naming(),
+    )
 
     # Establish that our data looks correct.
     assert len(proto.services) == 1
@@ -1077,88 +1166,104 @@ def test_lro_operation_no_annotation():
     # but has no operation_info option, is treated as not lro.
 
     # Set up a prior proto that mimics google/protobuf/empty.proto
-    lro_proto = api.Proto.build(make_file_pb2(
-        name='operations.proto', package='google.longrunning',
-        messages=(make_message_pb2(name='Operation'),),
-    ), file_to_generate=False, naming=make_naming())
+    lro_proto = api.Proto.build(
+        make_file_pb2(
+            name="operations.proto",
+            package="google.longrunning",
+            messages=(make_message_pb2(name="Operation"),),
+        ),
+        file_to_generate=False,
+        naming=make_naming(),
+    )
 
     # Set up a method that returns an Operation, but has no annotation.
     method_pb2 = descriptor_pb2.MethodDescriptorProto(
-        name='GetOperation',
-        input_type='google.example.v3.GetOperationRequest',
-        output_type='google.longrunning.Operation',
+        name="GetOperation",
+        input_type="google.example.v3.GetOperationRequest",
+        output_type="google.longrunning.Operation",
     )
 
     # Set up the service with an RPC.
     service_pb = descriptor_pb2.ServiceDescriptorProto(
-        name='OperationService',
+        name="OperationService",
         method=(method_pb2,),
     )
 
     # Set up the messages, including the annotated ones.
-    messages = (
-        make_message_pb2(name='GetOperationRequest', fields=()),
-    )
+    messages = (make_message_pb2(name="GetOperationRequest", fields=()),)
 
     # Finally, set up the file that encompasses these.
     fdp = make_file_pb2(
-        package='google.example.v3',
+        package="google.example.v3",
         messages=messages,
         services=(service_pb,),
     )
 
     # Make the proto object.
-    proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
-        'google/longrunning/operations.proto': lro_proto,
-    }, naming=make_naming())
+    proto = api.Proto.build(
+        fdp,
+        file_to_generate=True,
+        prior_protos={
+            "google/longrunning/operations.proto": lro_proto,
+        },
+        naming=make_naming(),
+    )
 
-    service = proto.services['google.example.v3.OperationService']
-    method = service.methods['GetOperation']
+    service = proto.services["google.example.v3.OperationService"]
+    method = service.methods["GetOperation"]
     assert method.lro is None
 
 
 def test_lro_bad_annotation():
     # Set up a prior proto that mimics google/protobuf/empty.proto
-    lro_proto = api.Proto.build(make_file_pb2(
-        name='operations.proto', package='google.longrunning',
-        messages=(make_message_pb2(name='Operation'),),
-    ), file_to_generate=False, naming=make_naming())
+    lro_proto = api.Proto.build(
+        make_file_pb2(
+            name="operations.proto",
+            package="google.longrunning",
+            messages=(make_message_pb2(name="Operation"),),
+        ),
+        file_to_generate=False,
+        naming=make_naming(),
+    )
 
     # Set up a method with an LRO and incomplete annotation.
     method_pb2 = descriptor_pb2.MethodDescriptorProto(
-        name='AsyncDoThing',
-        input_type='google.example.v3.AsyncDoThingRequest',
-        output_type='google.longrunning.Operation',
+        name="AsyncDoThing",
+        input_type="google.example.v3.AsyncDoThingRequest",
+        output_type="google.longrunning.Operation",
     )
     method_pb2.options.Extensions[operations_pb2.operation_info].MergeFrom(
         operations_pb2.OperationInfo(
-            response_type='google.example.v3.AsyncDoThingResponse',
+            response_type="google.example.v3.AsyncDoThingResponse",
         ),
     )
 
     # Set up the service with an RPC.
     service_pb = descriptor_pb2.ServiceDescriptorProto(
-        name='LongRunningService',
+        name="LongRunningService",
         method=(method_pb2,),
     )
 
     # Set up the messages, including the annotated ones.
-    messages = (
-        make_message_pb2(name='AsyncDoThingRequest', fields=()),
-    )
+    messages = (make_message_pb2(name="AsyncDoThingRequest", fields=()),)
 
     # Finally, set up the file that encompasses these.
     fdp = make_file_pb2(
-        package='google.example.v3',
+        package="google.example.v3",
         messages=messages,
         services=(service_pb,),
     )
 
     # Make the proto object.
     with pytest.raises(TypeError):
-        api.Proto.build(fdp, file_to_generate=True, prior_protos={
-            'google/longrunning/operations.proto': lro_proto,
-        }, naming=make_naming())
+        api.Proto.build(
+            fdp,
+            file_to_generate=True,
+            prior_protos={
+                "google/longrunning/operations.proto": lro_proto,
+            },
+            naming=make_naming(),
+        )
 
 
 def test_cross_file_lro():
@@ -1171,48 +1276,51 @@ def test_cross_file_lro():
     # is handled correctly.
 
     # Set up a prior proto that mimics google/protobuf/empty.proto
-    lro_proto = api.Proto.build(make_file_pb2(
-        name='operations.proto', package='google.longrunning',
-        messages=(make_message_pb2(name='Operation'),),
-    ), file_to_generate=False, naming=make_naming())
+    lro_proto = api.Proto.build(
+        make_file_pb2(
+            name="operations.proto",
+            package="google.longrunning",
+            messages=(make_message_pb2(name="Operation"),),
+        ),
+        file_to_generate=False,
+        naming=make_naming(),
+    )
 
     # Set up a method with LRO annotations.
     method_pb2 = descriptor_pb2.MethodDescriptorProto(
-        name='AsyncDoThing',
-        input_type='google.example.v3.AsyncDoThingRequest',
-        output_type='google.longrunning.Operation',
+        name="AsyncDoThing",
+        input_type="google.example.v3.AsyncDoThingRequest",
+        output_type="google.longrunning.Operation",
     )
     method_pb2.options.Extensions[operations_pb2.operation_info].MergeFrom(
         operations_pb2.OperationInfo(
-            response_type='google.example.v3.AsyncDoThingResponse',
-            metadata_type='google.example.v3.AsyncDoThingMetadata',
+            response_type="google.example.v3.AsyncDoThingResponse",
+            metadata_type="google.example.v3.AsyncDoThingMetadata",
         ),
     )
 
     # Set up the service with an RPC.
     service_file = make_file_pb2(
-        name='service_file.proto',
-        package='google.example.v3',
-        messages=(
-            make_message_pb2(name='AsyncDoThingRequest', fields=()),
-        ),
+        name="service_file.proto",
+        package="google.example.v3",
+        messages=(make_message_pb2(name="AsyncDoThingRequest", fields=()),),
         services=(
             descriptor_pb2.ServiceDescriptorProto(
-                name='LongRunningService',
+                name="LongRunningService",
                 method=(method_pb2,),
             ),
-        )
+        ),
     )
 
     # Set up the messages, including the annotated ones.
     # This file is distinct and is not explicitly imported
     # into the file that defines the service.
     messages_file = make_file_pb2(
-        name='messages_file.proto',
-        package='google.example.v3',
+        name="messages_file.proto",
+        package="google.example.v3",
         messages=(
-            make_message_pb2(name='AsyncDoThingResponse', fields=()),
-            make_message_pb2(name='AsyncDoThingMetadata', fields=()),
+            make_message_pb2(name="AsyncDoThingResponse", fields=()),
+            make_message_pb2(name="AsyncDoThingMetadata", fields=()),
         ),
     )
 
@@ -1221,20 +1329,21 @@ def test_cross_file_lro():
             service_file,
             messages_file,
         ),
-        package='google.example.v3',
-        prior_protos={'google/longrunning/operations.proto': lro_proto, },
+        package="google.example.v3",
+        prior_protos={
+            "google/longrunning/operations.proto": lro_proto,
+        },
     )
 
     method = (
-        api_schema.
-        all_protos['service_file.proto'].
-        services['google.example.v3.LongRunningService'].
-        methods['AsyncDoThing']
+        api_schema.all_protos["service_file.proto"]
+        .services["google.example.v3.LongRunningService"]
+        .methods["AsyncDoThing"]
     )
 
     assert method.lro
-    assert method.lro.response_type.name == 'AsyncDoThingResponse'
-    assert method.lro.metadata_type.name == 'AsyncDoThingMetadata'
+    assert method.lro.response_type.name == "AsyncDoThingResponse"
+    assert method.lro.metadata_type.name == "AsyncDoThingMetadata"
 
 
 def test_extended_lro():
@@ -1247,7 +1356,9 @@ def test_extended_lro():
     T = descriptor_pb2.FieldDescriptorProto.Type
     operation_fields = tuple(
         make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
-        for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        for i, name in enumerate(
+            ("name", "status", "error_code", "error_message"), start=1
+        )
     )
     for f in operation_fields:
         options = descriptor_pb2.FieldOptions()
@@ -1262,7 +1373,7 @@ def test_extended_lro():
                 make_message_pb2(name="Operation", fields=operation_fields),
                 make_message_pb2(name="InitialRequest"),
                 make_message_pb2(name="GetOperationRequest"),
-                ),
+            ),
             services=(
                 descriptor_pb2.ServiceDescriptorProto(
                     name="OpsService",
@@ -1272,9 +1383,9 @@ def test_extended_lro():
                             input_type="exlro.GetOperationRequest",
                             output_type="exlro.Operation",
                             options=polling_method_options,
-                            ),
                         ),
                     ),
+                ),
                 descriptor_pb2.ServiceDescriptorProto(
                     name="BasicService",
                     method=(
@@ -1283,19 +1394,24 @@ def test_extended_lro():
                             input_type="exlro.InitialRequest",
                             output_type="exlro.Operation",
                             options=initiate_options,
-                            ),
                         ),
                     ),
                 ),
             ),
+        ),
         file_to_generate=True,
         naming=make_naming(),
     )
 
     initiate = api_schema.services["exlro.BasicService"].methods["Initiate"]
     assert initiate.extended_lro
-    assert initiate.extended_lro.request_type == api_schema.messages["exlro.GetOperationRequest"]
-    assert initiate.extended_lro.operation_type == api_schema.messages["exlro.Operation"]
+    assert (
+        initiate.extended_lro.request_type
+        == api_schema.messages["exlro.GetOperationRequest"]
+    )
+    assert (
+        initiate.extended_lro.operation_type == api_schema.messages["exlro.Operation"]
+    )
 
 
 def test_extended_lro_no_such_service():
@@ -1308,7 +1424,9 @@ def test_extended_lro_no_such_service():
     T = descriptor_pb2.FieldDescriptorProto.Type
     operation_fields = tuple(
         make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
-        for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        for i, name in enumerate(
+            ("name", "status", "error_code", "error_message"), start=1
+        )
     )
     for f in operation_fields:
         options = descriptor_pb2.FieldOptions()
@@ -1325,12 +1443,8 @@ def test_extended_lro_no_such_service():
                         name="Operation",
                         fields=operation_fields,
                     ),
-                    make_message_pb2(
-                        name="InitialRequest"
-                    ),
-                    make_message_pb2(
-                        name="GetOperationRequest"
-                    ),
+                    make_message_pb2(name="InitialRequest"),
+                    make_message_pb2(name="GetOperationRequest"),
                 ),
                 services=(
                     descriptor_pb2.ServiceDescriptorProto(
@@ -1341,9 +1455,9 @@ def test_extended_lro_no_such_service():
                                 input_type="exlro.GetOperationRequest",
                                 output_type="exlro.Operation",
                                 options=polling_method_options,
-                                ),
                             ),
                         ),
+                    ),
                     descriptor_pb2.ServiceDescriptorProto(
                         name="BasicService",
                         method=(
@@ -1352,11 +1466,11 @@ def test_extended_lro_no_such_service():
                                 input_type="exlro.InitialRequest",
                                 output_type="exlro.Operation",
                                 options=initiate_options,
-                                ),
                             ),
                         ),
                     ),
                 ),
+            ),
             file_to_generate=True,
             naming=make_naming(),
         )
@@ -1369,7 +1483,9 @@ def test_extended_lro_no_polling_method():
     T = descriptor_pb2.FieldDescriptorProto.Type
     operation_fields = tuple(
         make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
-        for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        for i, name in enumerate(
+            ("name", "status", "error_code", "error_message"), start=1
+        )
     )
     for f in operation_fields:
         options = descriptor_pb2.FieldOptions()
@@ -1401,9 +1517,9 @@ def test_extended_lro_no_polling_method():
                                 name="Get",
                                 input_type="exlro.GetOperationRequest",
                                 output_type="exlro.Operation",
-                                ),
                             ),
                         ),
+                    ),
                     descriptor_pb2.ServiceDescriptorProto(
                         name="BasicService",
                         method=(
@@ -1412,11 +1528,11 @@ def test_extended_lro_no_polling_method():
                                 input_type="exlro.InitialRequest",
                                 output_type="exlro.Operation",
                                 options=initiate_options,
-                                ),
                             ),
                         ),
                     ),
                 ),
+            ),
             file_to_generate=True,
             naming=make_naming(),
         )
@@ -1432,7 +1548,9 @@ def test_extended_lro_different_output_types():
     T = descriptor_pb2.FieldDescriptorProto.Type
     operation_fields = tuple(
         make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
-        for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        for i, name in enumerate(
+            ("name", "status", "error_code", "error_message"), start=1
+        )
     )
     for f in operation_fields:
         options = descriptor_pb2.FieldOptions()
@@ -1468,9 +1586,9 @@ def test_extended_lro_different_output_types():
                                 input_type="exlro.GetOperationRequest",
                                 output_type="exlro.GetOperationResponse",
                                 options=polling_method_options,
-                                ),
                             ),
                         ),
+                    ),
                     descriptor_pb2.ServiceDescriptorProto(
                         name="BasicService",
                         method=(
@@ -1479,11 +1597,11 @@ def test_extended_lro_different_output_types():
                                 input_type="exlro.InitialRequest",
                                 output_type="exlro.Operation",
                                 options=initiate_options,
-                                ),
                             ),
                         ),
                     ),
                 ),
+            ),
             file_to_generate=True,
             naming=make_naming(),
         )
@@ -1505,7 +1623,7 @@ def test_extended_lro_not_an_operation():
                     make_message_pb2(name="Operation"),
                     make_message_pb2(name="InitialRequest"),
                     make_message_pb2(name="GetOperationRequest"),
-                    ),
+                ),
                 services=(
                     descriptor_pb2.ServiceDescriptorProto(
                         name="OpsService",
@@ -1515,9 +1633,9 @@ def test_extended_lro_not_an_operation():
                                 input_type="exlro.GetOperationRequest",
                                 output_type="exlro.Operation",
                                 options=polling_method_options,
-                                ),
                             ),
                         ),
+                    ),
                     descriptor_pb2.ServiceDescriptorProto(
                         name="BasicService",
                         method=(
@@ -1526,11 +1644,11 @@ def test_extended_lro_not_an_operation():
                                 input_type="exlro.InitialRequest",
                                 output_type="exlro.Operation",
                                 options=initiate_options,
-                                ),
                             ),
                         ),
                     ),
                 ),
+            ),
             file_to_generate=True,
             naming=make_naming(),
         )
@@ -1538,29 +1656,36 @@ def test_extended_lro_not_an_operation():
 
 def test_enums():
     L = descriptor_pb2.SourceCodeInfo.Location
-    enum_pb = descriptor_pb2.EnumDescriptorProto(name='Silly', value=(
-        descriptor_pb2.EnumValueDescriptorProto(name='ZERO', number=0),
-        descriptor_pb2.EnumValueDescriptorProto(name='ONE', number=1),
-        descriptor_pb2.EnumValueDescriptorProto(name='THREE', number=3),
-    ))
-    fdp = make_file_pb2(package='google.enum.v1', enums=(enum_pb,), locations=(
-        L(path=(5, 0), leading_comments='This is the Silly enum.'),
-        L(path=(5, 0, 2, 0), leading_comments='This is the zero value.'),
-        L(path=(5, 0, 2, 1), leading_comments='This is the one value.'),
-    ))
+    enum_pb = descriptor_pb2.EnumDescriptorProto(
+        name="Silly",
+        value=(
+            descriptor_pb2.EnumValueDescriptorProto(name="ZERO", number=0),
+            descriptor_pb2.EnumValueDescriptorProto(name="ONE", number=1),
+            descriptor_pb2.EnumValueDescriptorProto(name="THREE", number=3),
+        ),
+    )
+    fdp = make_file_pb2(
+        package="google.enum.v1",
+        enums=(enum_pb,),
+        locations=(
+            L(path=(5, 0), leading_comments="This is the Silly enum."),
+            L(path=(5, 0, 2, 0), leading_comments="This is the zero value."),
+            L(path=(5, 0, 2, 1), leading_comments="This is the one value."),
+        ),
+    )
     proto = api.Proto.build(fdp, file_to_generate=True, naming=make_naming())
     assert len(proto.enums) == 1
-    enum = proto.enums['google.enum.v1.Silly']
-    assert enum.meta.doc == 'This is the Silly enum.'
+    enum = proto.enums["google.enum.v1.Silly"]
+    assert enum.meta.doc == "This is the Silly enum."
     assert isinstance(enum, wrappers.EnumType)
     assert len(enum.values) == 3
     assert all([isinstance(i, wrappers.EnumValueType) for i in enum.values])
-    assert enum.values[0].name == 'ZERO'
-    assert enum.values[0].meta.doc == 'This is the zero value.'
-    assert enum.values[1].name == 'ONE'
-    assert enum.values[1].meta.doc == 'This is the one value.'
-    assert enum.values[2].name == 'THREE'
-    assert enum.values[2].meta.doc == ''
+    assert enum.values[0].name == "ZERO"
+    assert enum.values[0].meta.doc == "This is the zero value."
+    assert enum.values[1].name == "ONE"
+    assert enum.values[1].meta.doc == "This is the one value."
+    assert enum.values[2].name == "THREE"
+    assert enum.values[2].meta.doc == ""
 
 
 def test_file_level_resources():
@@ -1570,9 +1695,7 @@ def test_file_level_resources():
         messages=(
             make_message_pb2(
                 name="CreateSpeciesRequest",
-                fields=(
-                    make_field_pb2(name='species', number=1, type=9),
-                ),
+                fields=(make_field_pb2(name="species", number=1, type=9),),
             ),
             make_message_pb2(
                 name="CreateSpeciesResponse",
@@ -1593,10 +1716,11 @@ def test_file_level_resources():
     )
     res_pb2 = fdp.options.Extensions[resource_pb2.resource_definition]
     definitions = [
-        ("nomenclature.linnaen.com/Species",
-         "families/{family}/genera/{genus}/species/{species}"),
-        ("nomenclature.linnaen.com/Phylum",
-         "kingdoms/{kingdom}/phyla/{phylum}"),
+        (
+            "nomenclature.linnaen.com/Species",
+            "families/{family}/genera/{genus}/species/{species}",
+        ),
+        ("nomenclature.linnaen.com/Phylum", "kingdoms/{kingdom}/phyla/{phylum}"),
     ]
     for type_, pattern in definitions:
         resource_definition = res_pb2.add()
@@ -1604,23 +1728,31 @@ def test_file_level_resources():
         resource_definition.pattern.append(pattern)
 
     species_field = fdp.message_type[0].field[0]
-    resource_reference = species_field.options.Extensions[resource_pb2.resource_reference]
+    resource_reference = species_field.options.Extensions[
+        resource_pb2.resource_reference
+    ]
     resource_reference.type = "nomenclature.linnaen.com/Species"
 
-    api_schema = api.API.build([fdp], package='nomenclature.linneaen.v1')
-    actual = api_schema.protos['nomenclature.proto'].resource_messages
-    expected = collections.OrderedDict((
-        ("nomenclature.linnaen.com/Species",
-         wrappers.CommonResource(
-             type_name="nomenclature.linnaen.com/Species",
-             pattern="families/{family}/genera/{genus}/species/{species}"
-         ).message_type),
-        ("nomenclature.linnaen.com/Phylum",
-         wrappers.CommonResource(
-             type_name="nomenclature.linnaen.com/Phylum",
-             pattern="kingdoms/{kingdom}/phyla/{phylum}"
-         ).message_type),
-    ))
+    api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1")
+    actual = api_schema.protos["nomenclature.proto"].resource_messages
+    expected = collections.OrderedDict(
+        (
+            (
+                "nomenclature.linnaen.com/Species",
+                wrappers.CommonResource(
+                    type_name="nomenclature.linnaen.com/Species",
+                    pattern="families/{family}/genera/{genus}/species/{species}",
+                ).message_type,
+            ),
+            (
+                "nomenclature.linnaen.com/Phylum",
+                wrappers.CommonResource(
+                    type_name="nomenclature.linnaen.com/Phylum",
+                    pattern="kingdoms/{kingdom}/phyla/{phylum}",
+                ).message_type,
+            ),
+        )
+    )
 
     assert actual == expected
 
@@ -1649,9 +1781,7 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
             ),
             make_message_pb2(
                 name="CreateSpeciesRequest",
-                fields=(
-                    make_field_pb2(name='species', number=1, type=9),
-                ),
+                fields=(make_field_pb2(name="species", number=1, type=9),),
             ),
             make_message_pb2(
                 name="CreateSpeciesResponse",
@@ -1672,13 +1802,18 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
     )
 
     # Set up the resource
-    species_resource_opts = fdp.message_type[0].options.Extensions[resource_pb2.resource]
+    species_resource_opts = fdp.message_type[0].options.Extensions[
+        resource_pb2.resource
+    ]
     species_resource_opts.type = "nomenclature.linnaen.com/Species"
     species_resource_opts.pattern.append(
-        "families/{family}/genera/{genus}/species/{species}")
+        "families/{family}/genera/{genus}/species/{species}"
+    )
 
     # Set up the reference
-    name_resource_opts = fdp.message_type[1].field[0].options.Extensions[resource_pb2.resource_reference]
+    name_resource_opts = (
+        fdp.message_type[1].field[0].options.Extensions[resource_pb2.resource_reference]
+    )
     if reference_attr == "type":
         name_resource_opts.type = species_resource_opts.type
     else:
@@ -1686,7 +1821,9 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
 
     api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1")
     expected = {api_schema.messages["nomenclature.linneaen.v1.Species"]}
-    actual = api_schema.services["nomenclature.linneaen.v1.SpeciesService"].resource_messages
+    actual = api_schema.services[
+        "nomenclature.linneaen.v1.SpeciesService"
+    ].resource_messages
 
     assert actual == expected
 
@@ -1745,7 +1882,7 @@ def test_map_field_name_disambiguation():
                                 # https://github.com/googleapis/gapic-generator-python/issues/618.
                                 # The module _is_ disambiguated for singleton
                                 # fields but NOT for map fields.
-                                type_name=".animalia.mollusca.v2.Mollusc"
+                                type_name=".animalia.mollusca.v2.Mollusc",
                             ),
                         ),
                         options=descriptor_pb2.MessageOptions(map_entry=True),
@@ -1757,11 +1894,11 @@ def test_map_field_name_disambiguation():
     my_api = api.API.build(
         file_descriptors=[squid_file_pb, method_types_file_pb],
     )
-    create = my_api.messages['animalia.mollusca.v2.CreateMolluscRequest']
-    mollusc = create.fields['mollusc']
-    molluscs_map = create.fields['molluscs_map']
+    create = my_api.messages["animalia.mollusca.v2.CreateMolluscRequest"]
+    mollusc = create.fields["mollusc"]
+    molluscs_map = create.fields["molluscs_map"]
     mollusc_ident = str(mollusc.type.ident)
-    mollusc_map_ident = str(molluscs_map.message.fields['value'].type.ident)
+    mollusc_map_ident = str(molluscs_map.message.fields["value"].type.ident)
 
     # The same module used in the same place should have the same import alias.
     # Because there's a "mollusc" name used, the import should be disambiguated.
@@ -1816,7 +1953,7 @@ def test_gapic_metadata():
                                 input_type="animalia.mollusca.v1.MolluscRequest",
                                 output_type="animalia.mollusca.v1.Mollusc",
                             ),
-                        ]
+                        ],
                     ),
                 ],
             )
@@ -1836,15 +1973,23 @@ def test_gapic_metadata():
                     "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="OctopusClient",
                         rpcs={
-                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["blue_spot"]),
-                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant_pacific"]),
+                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["blue_spot"]
+                            ),
+                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant_pacific"]
+                            ),
                         },
                     ),
                     "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="OctopusAsyncClient",
                         rpcs={
-                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["blue_spot"]),
-                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant_pacific"]),
+                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["blue_spot"]
+                            ),
+                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant_pacific"]
+                            ),
                         },
                     ),
                 }
@@ -1854,22 +1999,34 @@ def test_gapic_metadata():
                     "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidClient",
                         rpcs={
-                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant"]),
-                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["humboldt"]),
-                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["ramshorn"]),
+                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant"]
+                            ),
+                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["humboldt"]
+                            ),
+                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["ramshorn"]
+                            ),
                         },
                     ),
                     "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidAsyncClient",
                         rpcs={
-                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant"]),
-                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["humboldt"]),
-                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["ramshorn"]),
+                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant"]
+                            ),
+                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["humboldt"]
+                            ),
+                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["ramshorn"]
+                            ),
                         },
                     ),
                 }
             ),
-        }
+        },
     )
     actual = api_schema.gapic_metadata(opts)
     assert expected == actual
@@ -1890,8 +2047,12 @@ def test_gapic_metadata():
                     "rest": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="OctopusClient",
                         rpcs={
-                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["blue_spot"]),
-                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant_pacific"]),
+                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["blue_spot"]
+                            ),
+                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant_pacific"]
+                            ),
                         },
                     )
                 }
@@ -1901,15 +2062,20 @@ def test_gapic_metadata():
                     "rest": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidClient",
                         rpcs={
-                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant"]),
-                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["humboldt"]),
-                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["ramshorn"]),
+                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant"]
+                            ),
+                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["humboldt"]
+                            ),
+                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["ramshorn"]
+                            ),
                         },
                     ),
-
                 }
             ),
-        }
+        },
     )
     actual = api_schema.gapic_metadata(opts)
     assert expected == actual
@@ -1930,24 +2096,36 @@ def test_gapic_metadata():
                     "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="OctopusClient",
                         rpcs={
-                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["blue_spot"]),
-                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant_pacific"]),
+                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["blue_spot"]
+                            ),
+                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant_pacific"]
+                            ),
                         },
                     ),
                     "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="OctopusAsyncClient",
                         rpcs={
-                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["blue_spot"]),
-                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant_pacific"]),
+                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["blue_spot"]
+                            ),
+                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant_pacific"]
+                            ),
                         },
                     ),
                     "rest": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="OctopusClient",
                         rpcs={
-                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["blue_spot"]),
-                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant_pacific"]),
+                            "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["blue_spot"]
+                            ),
+                            "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant_pacific"]
+                            ),
                         },
-                    )
+                    ),
                 }
             ),
             "Squid": gapic_metadata_pb2.GapicMetadata.ServiceForTransport(
@@ -1955,31 +2133,48 @@ def test_gapic_metadata():
                     "grpc": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidClient",
                         rpcs={
-                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant"]),
-                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["humboldt"]),
-                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["ramshorn"]),
+                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant"]
+                            ),
+                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["humboldt"]
+                            ),
+                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["ramshorn"]
+                            ),
                         },
                     ),
                     "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidAsyncClient",
                         rpcs={
-                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant"]),
-                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["humboldt"]),
-                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["ramshorn"]),
+                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant"]
+                            ),
+                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["humboldt"]
+                            ),
+                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["ramshorn"]
+                            ),
                         },
                     ),
                     "rest": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidClient",
                         rpcs={
-                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant"]),
-                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["humboldt"]),
-                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["ramshorn"]),
+                            "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["giant"]
+                            ),
+                            "Humboldt": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["humboldt"]
+                            ),
+                            "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(
+                                methods=["ramshorn"]
+                            ),
                         },
                     ),
-
                 }
             ),
-        }
+        },
     )
 
     actual = api_schema.gapic_metadata(opts)
@@ -1992,35 +2187,53 @@ def test_gapic_metadata():
 def test_http_options(fs):
     fd = (
         make_file_pb2(
-            name='example.proto',
-            package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
-        ),)
+            name="example.proto",
+            package="google.example.v1",
+            messages=(make_message_pb2(name="ExampleRequest", fields=()),),
+        ),
+    )
 
-    opts = Options(service_yaml_config={
-        'http': {
-            'rules': [
-                {
-                    'selector': 'Cancel',
-                    'post': '/v3/{name=projects/*/locations/*/operations/*}:cancel',
-                    'body': '*'
-                },
-                {
-                    'selector': 'Get',
-                    'get': '/v3/{name=projects/*/locations/*/operations/*}',
-                    'additional_bindings': [{'get': '/v3/{name=/locations/*/operations/*}'}],
-                }, ]
+    opts = Options(
+        service_yaml_config={
+            "http": {
+                "rules": [
+                    {
+                        "selector": "Cancel",
+                        "post": "/v3/{name=projects/*/locations/*/operations/*}:cancel",
+                        "body": "*",
+                    },
+                    {
+                        "selector": "Get",
+                        "get": "/v3/{name=projects/*/locations/*/operations/*}",
+                        "additional_bindings": [
+                            {"get": "/v3/{name=/locations/*/operations/*}"}
+                        ],
+                    },
+                ]
+            }
         }
-    })
+    )
 
-    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    api_schema = api.API.build(fd, "google.example.v1", opts=opts)
     http_options = api_schema.http_options
     assert http_options == {
-        'Cancel': [wrappers.HttpRule(method='post', uri='/v3/{name=projects/*/locations/*/operations/*}:cancel', body='*')],
-        'Get': [
+        "Cancel": [
             wrappers.HttpRule(
-                method='get', uri='/v3/{name=projects/*/locations/*/operations/*}', body=None),
-            wrappers.HttpRule(method='get', uri='/v3/{name=/locations/*/operations/*}', body=None)]
+                method="post",
+                uri="/v3/{name=projects/*/locations/*/operations/*}:cancel",
+                body="*",
+            )
+        ],
+        "Get": [
+            wrappers.HttpRule(
+                method="get",
+                uri="/v3/{name=projects/*/locations/*/operations/*}",
+                body=None,
+            ),
+            wrappers.HttpRule(
+                method="get", uri="/v3/{name=/locations/*/operations/*}", body=None
+            ),
+        ],
     }
 
 
@@ -2031,7 +2244,9 @@ def generate_basic_extended_operations_setup():
         name="Operation",
         fields=(
             make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
-            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+            for i, name in enumerate(
+                ("name", "status", "error_code", "error_message"), start=1
+            )
         ),
     )
 
@@ -2067,9 +2282,7 @@ def generate_basic_extended_operations_setup():
 
     request = make_message_pb2(
         name="GetOperation",
-        fields=[
-            make_field_pb2(name="name", type=T.Value("TYPE_STRING"), number=1)
-        ],
+        fields=[make_field_pb2(name="name", type=T.Value("TYPE_STRING"), number=1)],
     )
 
     initial_opts = descriptor_pb2.MethodOptions()
@@ -2113,10 +2326,14 @@ def generate_basic_extended_operations_setup():
 def test_extended_operations_lro_operation_service():
     file_protos = generate_basic_extended_operations_setup()
     api_schema = api.API.build(file_protos)
-    regular_service = api_schema.services["google.extended_operations.v1.stuff.RegularService"]
+    regular_service = api_schema.services[
+        "google.extended_operations.v1.stuff.RegularService"
+    ]
     initial_method = regular_service.methods["CreateTask"]
 
-    operation_service = api_schema.services['google.extended_operations.v1.stuff.CustomOperations']
+    operation_service = api_schema.services[
+        "google.extended_operations.v1.stuff.CustomOperations"
+    ]
     expected = operation_service
     actual = api_schema.get_custom_operation_service(initial_method)
 
@@ -2132,7 +2349,9 @@ def test_extended_operations_lro_operation_service():
 def test_extended_operations_lro_operation_service_no_annotation():
     file_protos = generate_basic_extended_operations_setup()
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method = api_schema.services[
+        "google.extended_operations.v1.stuff.RegularService"
+    ].methods["CreateTask"]
 
     # It's easier to manipulate data structures after building the API.
     del initial_method.options.Extensions[ex_ops_pb2.operation_service]
@@ -2145,7 +2364,9 @@ def test_extended_operations_lro_operation_service_no_such_service():
     file_protos = generate_basic_extended_operations_setup()
 
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method = api_schema.services[
+        "google.extended_operations.v1.stuff.RegularService"
+    ].methods["CreateTask"]
     initial_method.options.Extensions[ex_ops_pb2.operation_service] = "UnrealService"
 
     with pytest.raises(ValueError):
@@ -2156,10 +2377,13 @@ def test_extended_operations_lro_operation_service_not_an_lro():
     file_protos = generate_basic_extended_operations_setup()
 
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method = api_schema.services[
+        "google.extended_operations.v1.stuff.RegularService"
+    ].methods["CreateTask"]
     # Hack to pretend that the initial_method is not an LRO
     super(type(initial_method), initial_method).__setattr__(
-        "output", initial_method.input)
+        "output", initial_method.input
+    )
 
     with pytest.raises(ValueError):
         api_schema.get_custom_operation_service(initial_method)
@@ -2169,10 +2393,16 @@ def test_extended_operations_lro_operation_service_no_polling_method():
     file_protos = generate_basic_extended_operations_setup()
 
     api_schema = api.API.build(file_protos)
-    initial_method = api_schema.services["google.extended_operations.v1.stuff.RegularService"].methods["CreateTask"]
+    initial_method = api_schema.services[
+        "google.extended_operations.v1.stuff.RegularService"
+    ].methods["CreateTask"]
 
-    operation_service = api_schema.services["google.extended_operations.v1.stuff.CustomOperations"]
-    del operation_service.methods["Get"].options.Extensions[ex_ops_pb2.operation_polling_method]
+    operation_service = api_schema.services[
+        "google.extended_operations.v1.stuff.CustomOperations"
+    ]
+    del operation_service.methods["Get"].options.Extensions[
+        ex_ops_pb2.operation_polling_method
+    ]
 
     with pytest.raises(ValueError):
         api_schema.get_custom_operation_service(initial_method)
@@ -2191,240 +2421,340 @@ def methods_from_service(service_pb, name: str):
 def test_mixin_api_methods_locations():
     fd = (
         make_file_pb2(
-            name='example.proto',
-            package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
-        ),)
-    opts = Options(service_yaml_config={
-        'apis': [
-            {
-                'name': 'google.cloud.location.Locations'
-            }
-        ],
-        'http': {
-            'rules': [
-                {
-                    'selector': 'google.cloud.location.Locations.ListLocations',
-                    'get': '/v1/{name=examples/*}/*',
-                    'body': '*'
-                },
-                {
-                    'selector': 'google.cloud.location.Locations.GetLocation',
-                    'get': '/v1/{name=examples/*}/*',
-                    'body': '*'
-                },
-                {
-                    'selector': 'google.example.v1.Example',
-                }]
+            name="example.proto",
+            package="google.example.v1",
+            messages=(make_message_pb2(name="ExampleRequest", fields=()),),
+        ),
+    )
+    opts = Options(
+        service_yaml_config={
+            "apis": [{"name": "google.cloud.location.Locations"}],
+            "http": {
+                "rules": [
+                    {
+                        "selector": "google.cloud.location.Locations.ListLocations",
+                        "get": "/v1/{name=examples/*}/*",
+                        "body": "*",
+                    },
+                    {
+                        "selector": "google.cloud.location.Locations.GetLocation",
+                        "get": "/v1/{name=examples/*}/*",
+                        "body": "*",
+                    },
+                    {
+                        "selector": "google.example.v1.Example",
+                    },
+                ]
+            },
         }
-    })
-    ms = methods_from_service(locations_pb2, 'Locations')
+    )
+    ms = methods_from_service(locations_pb2, "Locations")
     assert len(ms) == 2
-    m1 = ms['ListLocations']
+    m1 = ms["ListLocations"]
     m1.options.ClearExtension(annotations_pb2.http)
-    m1.options.Extensions[annotations_pb2.http].selector = 'google.cloud.location.Locations.ListLocations'
-    m1.options.Extensions[annotations_pb2.http].get = '/v1/{name=examples/*}/*'
-    m1.options.Extensions[annotations_pb2.http].body = '*'
-    m2 = ms['GetLocation']
+    m1.options.Extensions[
+        annotations_pb2.http
+    ].selector = "google.cloud.location.Locations.ListLocations"
+    m1.options.Extensions[annotations_pb2.http].get = "/v1/{name=examples/*}/*"
+    m1.options.Extensions[annotations_pb2.http].body = "*"
+    m2 = ms["GetLocation"]
     m2.options.ClearExtension(annotations_pb2.http)
-    m2.options.Extensions[annotations_pb2.http].selector = 'google.cloud.location.Locations.GetLocation'
-    m2.options.Extensions[annotations_pb2.http].get = '/v1/{name=examples/*}/*'
-    m2.options.Extensions[annotations_pb2.http].body = '*'
-    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
-    assert api_schema.mixin_api_methods == {
-        'ListLocations': m1, 'GetLocation': m2}
+    m2.options.Extensions[
+        annotations_pb2.http
+    ].selector = "google.cloud.location.Locations.GetLocation"
+    m2.options.Extensions[annotations_pb2.http].get = "/v1/{name=examples/*}/*"
+    m2.options.Extensions[annotations_pb2.http].body = "*"
+    api_schema = api.API.build(fd, "google.example.v1", opts=opts)
+    assert api_schema.mixin_api_methods == {"ListLocations": m1, "GetLocation": m2}
+
+
+def test_auto_populate_fields():
+    required_options = descriptor_pb2.FieldOptions()
+    required_options.Extensions[field_behavior_pb2.field_behavior].append(
+        field_behavior_pb2.FieldBehavior.Value("REQUIRED")
+    )
+    required_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
+
+    # Cephalopods are required.
+    squid = make_field_pb2(
+        name="squid", type="TYPE_STRING", options=required_options, number=1
+    )
+
+    fd = (
+        make_file_pb2(
+            name="echo.proto",
+            package="google.showcase.v1beta1",
+            messages=(
+                make_message_pb2(name="ExampleRequest", fields=(squid,)),
+                make_message_pb2(name="ExampleResponse", fields=()),
+                make_message_pb2(name="AnotherRequest", fields=(squid,)),
+                make_message_pb2(name="AnotherResponse", fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="Echo",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Echo1",
+                            # Input and output types don't matter.
+                            input_type="google.showcase.v1beta1.ExampleRequest",
+                            output_type="google.showcase.v1beta1.ExampleResponse",
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Echo2",
+                            # Input and output types don't matter.
+                            input_type="google.showcase.v1beta1.AnotherRequest",
+                            output_type="google.showcase.v1beta1.AnotherResponse",
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+    service_yaml_config = {
+        "apis": [
+            {"name": "google.showcase.v1beta1.Echo.Echo1"},
+            {"name": "google.showcase.v1beta1.Echo.Echo2"},
+            {"name": "google.example.v1.Example"},
+        ],
+        "publishing": {
+            "method_settings": [
+                {
+                    "selector": "google.showcase.v1beta1.Echo.Echo1",
+                    "auto_populated_fields": [
+                        "squid",
+                        # "another_field",
+                    ],
+                },
+                {
+                    "selector": "google.showcase.v1beta1.Echo.Echo2",
+                    "auto_populated_fields": [
+                        # "request_id",
+                        # "some_other_field",
+                    ],
+                }
+                # {
+                #     'selector': 'google.example.v1.Example',
+                # }
+            ]
+        },
+    }
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fd, "google.showcase.v1beta1", opts=opts)
+
+    assert api_schema.all_method_settings == {
+        "google.showcase.v1beta1.Echo.Echo1": wrappers.MethodSettings(
+            method="google.showcase.v1beta1.Echo.Echo1", auto_populated_fields=["squid"]
+        ),
+        "google.showcase.v1beta1.Echo.Echo2": wrappers.MethodSettings(
+            method="google.showcase.v1beta1.Echo.Echo2", auto_populated_fields=[]
+        ),
+    }
+
+    # del service_yaml_config['publishing']['method_settings']
+
+    # opts = Options(service_yaml_config=service_yaml_config)
+
+    # api_schema = api.API.build(fd, 'google.showcase.v1beta1', opts=opts)
+    # assert api_schema.auto_populated_fields == {}
 
 
 def test_mixin_api_methods_iam():
     fd = (
         make_file_pb2(
-            name='example.proto',
-            package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),
-            make_message_pb2(name='ExampleResponse', fields=())),
-            services=(descriptor_pb2.ServiceDescriptorProto(
-                name='FooService',
-                method=(
-                    descriptor_pb2.MethodDescriptorProto(
-                        name='FooMethod',
-                        # Input and output types don't matter.
-                        input_type='google.example.v1.ExampleRequest',
-                        output_type='google.example.v1.ExampleResponse',
+            name="example.proto",
+            package="google.example.v1",
+            messages=(
+                make_message_pb2(name="ExampleRequest", fields=()),
+                make_message_pb2(name="ExampleResponse", fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="FooService",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="FooMethod",
+                            # Input and output types don't matter.
+                            input_type="google.example.v1.ExampleRequest",
+                            output_type="google.example.v1.ExampleResponse",
+                        ),
                     ),
                 ),
-            ),),
-        ),)
+            ),
+        ),
+    )
     r1 = {
-        'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
-        'post': '/v1/{resource=examples/*}/*',
-        'body': '*'
+        "selector": "google.iam.v1.IAMPolicy.SetIamPolicy",
+        "post": "/v1/{resource=examples/*}/*",
+        "body": "*",
     }
     r2 = {
-        'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
-        'get': '/v1/{resource=examples/*}/*',
-        'body': '*'
+        "selector": "google.iam.v1.IAMPolicy.GetIamPolicy",
+        "get": "/v1/{resource=examples/*}/*",
+        "body": "*",
     }
     r3 = {
-        'selector': 'google.iam.v1.IAMPolicy.TestIamPermissions',
-        'post': '/v1/{resource=examples/*}/*',
-        'body': '*'
+        "selector": "google.iam.v1.IAMPolicy.TestIamPermissions",
+        "post": "/v1/{resource=examples/*}/*",
+        "body": "*",
     }
-    opts = Options(service_yaml_config={
-        'apis': [
-            {
-                'name': 'google.iam.v1.IAMPolicy'
-            }
-        ],
-        'http': {
-            'rules': [r1, r2, r3]
+    opts = Options(
+        service_yaml_config={
+            "apis": [{"name": "google.iam.v1.IAMPolicy"}],
+            "http": {"rules": [r1, r2, r3]},
         }
-    })
-    ms = methods_from_service(iam_policy_pb2, 'IAMPolicy')
+    )
+    ms = methods_from_service(iam_policy_pb2, "IAMPolicy")
     assert len(ms) == 3
-    m1 = ms['SetIamPolicy']
+    m1 = ms["SetIamPolicy"]
     m1.options.ClearExtension(annotations_pb2.http)
-    m1.options.Extensions[annotations_pb2.http].selector = r1['selector']
-    m1.options.Extensions[annotations_pb2.http].post = r1['post']
-    m1.options.Extensions[annotations_pb2.http].body = r1['body']
-    m2 = ms['GetIamPolicy']
+    m1.options.Extensions[annotations_pb2.http].selector = r1["selector"]
+    m1.options.Extensions[annotations_pb2.http].post = r1["post"]
+    m1.options.Extensions[annotations_pb2.http].body = r1["body"]
+    m2 = ms["GetIamPolicy"]
     m2.options.ClearExtension(annotations_pb2.http)
-    m2.options.Extensions[annotations_pb2.http].selector = r2['selector']
-    m2.options.Extensions[annotations_pb2.http].get = r2['get']
-    m2.options.Extensions[annotations_pb2.http].body = r2['body']
-    m3 = ms['TestIamPermissions']
+    m2.options.Extensions[annotations_pb2.http].selector = r2["selector"]
+    m2.options.Extensions[annotations_pb2.http].get = r2["get"]
+    m2.options.Extensions[annotations_pb2.http].body = r2["body"]
+    m3 = ms["TestIamPermissions"]
     m3.options.ClearExtension(annotations_pb2.http)
-    m3.options.Extensions[annotations_pb2.http].selector = r3['selector']
-    m3.options.Extensions[annotations_pb2.http].post = r3['post']
-    m3.options.Extensions[annotations_pb2.http].body = r3['body']
-    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    m3.options.Extensions[annotations_pb2.http].selector = r3["selector"]
+    m3.options.Extensions[annotations_pb2.http].post = r3["post"]
+    m3.options.Extensions[annotations_pb2.http].body = r3["body"]
+    api_schema = api.API.build(fd, "google.example.v1", opts=opts)
     assert api_schema.mixin_api_methods == {
-        'SetIamPolicy': m1, 'GetIamPolicy': m2, 'TestIamPermissions': m3}
+        "SetIamPolicy": m1,
+        "GetIamPolicy": m2,
+        "TestIamPermissions": m3,
+    }
     assert not api_schema.has_operations_mixin
 
 
 def test_mixin_api_methods_iam_overrides():
     fd = (
         make_file_pb2(
-            name='example.proto',
-            package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),
-            make_message_pb2(name='ExampleResponse', fields=()),
-                      ),
-            services=(descriptor_pb2.ServiceDescriptorProto(
-                name='FooService',
-                method=(
-                    descriptor_pb2.MethodDescriptorProto(
-                        name='TestIamPermissions',
-                        # Input and output types don't matter.
-                        input_type='google.example.v1.ExampleRequest',
-                        output_type='google.example.v1.ExampleResponse',
+            name="example.proto",
+            package="google.example.v1",
+            messages=(
+                make_message_pb2(name="ExampleRequest", fields=()),
+                make_message_pb2(name="ExampleResponse", fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="FooService",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="TestIamPermissions",
+                            # Input and output types don't matter.
+                            input_type="google.example.v1.ExampleRequest",
+                            output_type="google.example.v1.ExampleResponse",
+                        ),
                     ),
                 ),
-            ),),
+            ),
         ),
     )
     r1 = {
-        'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
-        'post': '/v1/{resource=examples/*}/*',
-        'body': '*'
+        "selector": "google.iam.v1.IAMPolicy.SetIamPolicy",
+        "post": "/v1/{resource=examples/*}/*",
+        "body": "*",
     }
     r2 = {
-        'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
-        'get': '/v1/{resource=examples/*}/*',
-        'body': '*'
+        "selector": "google.iam.v1.IAMPolicy.GetIamPolicy",
+        "get": "/v1/{resource=examples/*}/*",
+        "body": "*",
     }
     r3 = {
-        'selector': 'google.iam.v1.IAMPolicy.TestIamPermissions',
-        'post': '/v1/{resource=examples/*}/*',
-        'body': '*'
+        "selector": "google.iam.v1.IAMPolicy.TestIamPermissions",
+        "post": "/v1/{resource=examples/*}/*",
+        "body": "*",
     }
-    opts = Options(service_yaml_config={
-        'apis': [
-            {
-                'name': 'google.iam.v1.IAMPolicy'
-            }
-        ],
-        'http': {
-            'rules': [r1, r2, r3]
+    opts = Options(
+        service_yaml_config={
+            "apis": [{"name": "google.iam.v1.IAMPolicy"}],
+            "http": {"rules": [r1, r2, r3]},
         }
-    })
-    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    )
+    api_schema = api.API.build(fd, "google.example.v1", opts=opts)
     assert api_schema.mixin_api_methods == {}
 
 
-def create_service_config_with_all_mixins(http_opt_uri='/v1/{name=examples/*}/*'):
+def create_service_config_with_all_mixins(http_opt_uri="/v1/{name=examples/*}/*"):
     service_yaml_config = {
-        'apis': [
+        "apis": [
             {
-                'name': 'google.cloud.location.Locations',
+                "name": "google.cloud.location.Locations",
             },
             {
-                'name': 'google.longrunning.Operations',
+                "name": "google.longrunning.Operations",
             },
             {
-                'name': 'google.iam.v1.IAMPolicy',
+                "name": "google.iam.v1.IAMPolicy",
             },
         ],
-        'http': {
-            'rules': [
+        "http": {
+            "rules": [
                 # Locations
                 {
-                    'selector': 'google.cloud.location.Locations.ListLocations',
-                    'get': http_opt_uri,
-                    'body': '*'
+                    "selector": "google.cloud.location.Locations.ListLocations",
+                    "get": http_opt_uri,
+                    "body": "*",
                 },
                 {
-                    'selector': 'google.cloud.location.Locations.GetLocation',
-                    'get': http_opt_uri,
-                    'body': '*'
+                    "selector": "google.cloud.location.Locations.GetLocation",
+                    "get": http_opt_uri,
+                    "body": "*",
                 },
                 # LRO
                 {
-                    'selector': 'google.longrunning.Operations.CancelOperation',
-                    'post': http_opt_uri,
-                    'body': '*',
+                    "selector": "google.longrunning.Operations.CancelOperation",
+                    "post": http_opt_uri,
+                    "body": "*",
                 },
                 {
-                    'selector': 'google.longrunning.Operations.DeleteOperation',
-                    'get': http_opt_uri,
-                    'body': '*'
+                    "selector": "google.longrunning.Operations.DeleteOperation",
+                    "get": http_opt_uri,
+                    "body": "*",
                 },
                 {
-                    'selector': 'google.longrunning.Operations.WaitOperation',
-                    'post': http_opt_uri,
-                    'body': '*'
+                    "selector": "google.longrunning.Operations.WaitOperation",
+                    "post": http_opt_uri,
+                    "body": "*",
                 },
                 {
-                    'selector': 'google.longrunning.Operations.GetOperation',
-                    'post': http_opt_uri,
-                    'body': '*'
+                    "selector": "google.longrunning.Operations.GetOperation",
+                    "post": http_opt_uri,
+                    "body": "*",
                 },
                 {
-                    'selector': 'google.longrunning.Operations.ListOperations',
-                    'post': http_opt_uri,
-                    'body': '*'
+                    "selector": "google.longrunning.Operations.ListOperations",
+                    "post": http_opt_uri,
+                    "body": "*",
                 },
                 # IAM
                 {
-                    'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
-                    'post': http_opt_uri,
-                    'body': '*'
+                    "selector": "google.iam.v1.IAMPolicy.SetIamPolicy",
+                    "post": http_opt_uri,
+                    "body": "*",
                 },
                 {
-                    'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
-                    'get': http_opt_uri,
-                    'body': '*'
+                    "selector": "google.iam.v1.IAMPolicy.GetIamPolicy",
+                    "get": http_opt_uri,
+                    "body": "*",
                 },
                 {
-                    'selector': 'google.iam.v1.IAMPolicy.TestIamPermissions',
-                    'post': http_opt_uri,
-                    'body': '*'
+                    "selector": "google.iam.v1.IAMPolicy.TestIamPermissions",
+                    "post": http_opt_uri,
+                    "body": "*",
                 },
                 {
-                    'selector': 'google.example.v1.Example',
-                }
+                    "selector": "google.example.v1.Example",
+                },
             ]
-        }
+        },
     }
     return service_yaml_config
 
@@ -2432,12 +2762,13 @@ def create_service_config_with_all_mixins(http_opt_uri='/v1/{name=examples/*}/*'
 def test_mixin_api_signatures():
     fd = (
         make_file_pb2(
-            name='example.proto',
-            package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
-        ),)
+            name="example.proto",
+            package="google.example.v1",
+            messages=(make_message_pb2(name="ExampleRequest", fields=()),),
+        ),
+    )
     opts = Options(service_yaml_config=create_service_config_with_all_mixins())
-    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    api_schema = api.API.build(fd, "google.example.v1", opts=opts)
     res = api_schema.mixin_api_signatures
     assert res == mixins.MIXINS_MAP
 
@@ -2445,143 +2776,158 @@ def test_mixin_api_signatures():
 def test_mixin_http_options():
     fd = (
         make_file_pb2(
-            name='example.proto',
-            package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
-            ),)
-    opts = Options(service_yaml_config={
-        'apis': [
-            {
-                'name': 'google.cloud.location.Locations',
+            name="example.proto",
+            package="google.example.v1",
+            messages=(make_message_pb2(name="ExampleRequest", fields=()),),
+        ),
+    )
+    opts = Options(
+        service_yaml_config={
+            "apis": [
+                {
+                    "name": "google.cloud.location.Locations",
+                },
+                {
+                    "name": "google.longrunning.Operations",
+                },
+                {
+                    "name": "google.iam.v1.IAMPolicy",
+                },
+            ],
+            "http": {
+                "rules": [
+                    # LRO
+                    {
+                        "selector": "google.longrunning.Operations.CancelOperation",
+                        "post": "/v1/{name=examples/*}/*",
+                        "body": "*",
+                    },
+                    {
+                        "selector": "google.longrunning.Operations.DeleteOperation",
+                        "get": "/v1/{name=examples/*}/*",
+                        "body": "*",
+                    },
+                    {
+                        "selector": "google.longrunning.Operations.WaitOperation",
+                        "post": "/v1/{name=examples/*}/*",
+                        "body": "*",
+                    },
+                    {
+                        "selector": "google.longrunning.Operations.GetOperation",
+                        "post": "/v1/{name=examples/*}/*",
+                        "body": "*",
+                    },
+                    {
+                        "selector": "google.longrunning.Operations.ListOperations",
+                        "post": "/v1/{name=examples/*}/*",
+                        "body": "*",
+                    },
+                ]
             },
-            {
-                'name': 'google.longrunning.Operations',
-            },
-            {
-                'name': 'google.iam.v1.IAMPolicy',
-            },
-        ],
-        'http': {
-            'rules': [
-                # LRO
-                {
-                    'selector': 'google.longrunning.Operations.CancelOperation',
-                    'post': '/v1/{name=examples/*}/*',
-                    'body': '*',
-                },
-                {
-                    'selector': 'google.longrunning.Operations.DeleteOperation',
-                    'get': '/v1/{name=examples/*}/*',
-                    'body': '*'
-                },
-                {
-                    'selector': 'google.longrunning.Operations.WaitOperation',
-                    'post': '/v1/{name=examples/*}/*',
-                    'body': '*'
-                },
-                {
-                    'selector': 'google.longrunning.Operations.GetOperation',
-                    'post': '/v1/{name=examples/*}/*',
-                    'body': '*'
-                },
-                {
-                    'selector': 'google.longrunning.Operations.ListOperations',
-                    'post': '/v1/{name=examples/*}/*',
-                    'body': '*'
-                },
-            ]
         }
-    })
-    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    )
+    api_schema = api.API.build(fd, "google.example.v1", opts=opts)
     res = api_schema.mixin_http_options
     assert res == {
-        'ListOperations': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
-        'GetOperation': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
-        'DeleteOperation': [wrappers.MixinHttpRule('get', '/v1/{name=examples/*}/*', '*')],
-        'CancelOperation': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
-        'WaitOperation': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
+        "ListOperations": [
+            wrappers.MixinHttpRule("post", "/v1/{name=examples/*}/*", "*")
+        ],
+        "GetOperation": [
+            wrappers.MixinHttpRule("post", "/v1/{name=examples/*}/*", "*")
+        ],
+        "DeleteOperation": [
+            wrappers.MixinHttpRule("get", "/v1/{name=examples/*}/*", "*")
+        ],
+        "CancelOperation": [
+            wrappers.MixinHttpRule("post", "/v1/{name=examples/*}/*", "*")
+        ],
+        "WaitOperation": [
+            wrappers.MixinHttpRule("post", "/v1/{name=examples/*}/*", "*")
+        ],
     }
 
 
 def test_mixin_api_methods_lro():
     fd = (
         make_file_pb2(
-            name='example.proto',
-            package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),
-            make_message_pb2(name='ExampleResponse', fields=()),
-                      ),
-            services=(descriptor_pb2.ServiceDescriptorProto(
-                name='FooService',
-                method=(
-                    descriptor_pb2.MethodDescriptorProto(
-                        name='FooMethod',
-                        # Input and output types don't matter.
-                        input_type='google.example.v1.ExampleRequest',
-                        output_type='google.example.v1.ExampleResponse',
+            name="example.proto",
+            package="google.example.v1",
+            messages=(
+                make_message_pb2(name="ExampleRequest", fields=()),
+                make_message_pb2(name="ExampleResponse", fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="FooService",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="FooMethod",
+                            # Input and output types don't matter.
+                            input_type="google.example.v1.ExampleRequest",
+                            output_type="google.example.v1.ExampleResponse",
+                        ),
                     ),
                 ),
-            ),),
+            ),
         ),
     )
     r1 = {
-        'selector': 'google.longrunning.Operations.CancelOperation',
-        'post': '/v1/{name=examples/*}/*',
-        'body': '*'
+        "selector": "google.longrunning.Operations.CancelOperation",
+        "post": "/v1/{name=examples/*}/*",
+        "body": "*",
     }
     r2 = {
-        'selector': 'google.longrunning.Operations.DeleteOperation',
-        'get': '/v1/{name=examples/*}/*',
-        'body': '*'
+        "selector": "google.longrunning.Operations.DeleteOperation",
+        "get": "/v1/{name=examples/*}/*",
+        "body": "*",
     }
     r3 = {
-        'selector': 'google.longrunning.Operations.WaitOperation',
-        'post': '/v1/{name=examples/*}/*',
-        'body': '*'
+        "selector": "google.longrunning.Operations.WaitOperation",
+        "post": "/v1/{name=examples/*}/*",
+        "body": "*",
     }
     r4 = {
-        'selector': 'google.longrunning.Operations.GetOperation',
-        'post': '/v1/{name=examples/*}/*',
-        'body': '*'
+        "selector": "google.longrunning.Operations.GetOperation",
+        "post": "/v1/{name=examples/*}/*",
+        "body": "*",
     }
-    opts = Options(service_yaml_config={
-        'apis': [
-            {
-                'name': 'google.longrunning.Operations'
-            }
-        ],
-        'http': {
-            'rules': [r1, r2, r3, r4]
+    opts = Options(
+        service_yaml_config={
+            "apis": [{"name": "google.longrunning.Operations"}],
+            "http": {"rules": [r1, r2, r3, r4]},
         }
-    })
+    )
 
-    ms = methods_from_service(operations_pb2, 'Operations')
+    ms = methods_from_service(operations_pb2, "Operations")
     assert len(ms) == 5
-    m1 = ms['CancelOperation']
+    m1 = ms["CancelOperation"]
     m1.options.ClearExtension(annotations_pb2.http)
-    m1.options.Extensions[annotations_pb2.http].selector = r1['selector']
-    m1.options.Extensions[annotations_pb2.http].post = r1['post']
-    m1.options.Extensions[annotations_pb2.http].body = r1['body']
-    m2 = ms['DeleteOperation']
+    m1.options.Extensions[annotations_pb2.http].selector = r1["selector"]
+    m1.options.Extensions[annotations_pb2.http].post = r1["post"]
+    m1.options.Extensions[annotations_pb2.http].body = r1["body"]
+    m2 = ms["DeleteOperation"]
     m2.options.ClearExtension(annotations_pb2.http)
-    m2.options.Extensions[annotations_pb2.http].selector = r2['selector']
-    m2.options.Extensions[annotations_pb2.http].get = r2['get']
-    m2.options.Extensions[annotations_pb2.http].body = r2['body']
-    m3 = ms['WaitOperation']
+    m2.options.Extensions[annotations_pb2.http].selector = r2["selector"]
+    m2.options.Extensions[annotations_pb2.http].get = r2["get"]
+    m2.options.Extensions[annotations_pb2.http].body = r2["body"]
+    m3 = ms["WaitOperation"]
     m3.options.ClearExtension(annotations_pb2.http)
-    m3.options.Extensions[annotations_pb2.http].selector = r3['selector']
-    m3.options.Extensions[annotations_pb2.http].post = r3['post']
-    m3.options.Extensions[annotations_pb2.http].body = r3['body']
-    m4 = ms['GetOperation']
+    m3.options.Extensions[annotations_pb2.http].selector = r3["selector"]
+    m3.options.Extensions[annotations_pb2.http].post = r3["post"]
+    m3.options.Extensions[annotations_pb2.http].body = r3["body"]
+    m4 = ms["GetOperation"]
     m4.options.ClearExtension(annotations_pb2.http)
-    m4.options.Extensions[annotations_pb2.http].selector = r4['selector']
-    m4.options.Extensions[annotations_pb2.http].post = r4['post']
-    m4.options.Extensions[annotations_pb2.http].body = r4['body']
+    m4.options.Extensions[annotations_pb2.http].selector = r4["selector"]
+    m4.options.Extensions[annotations_pb2.http].post = r4["post"]
+    m4.options.Extensions[annotations_pb2.http].body = r4["body"]
 
-    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    api_schema = api.API.build(fd, "google.example.v1", opts=opts)
     assert api_schema.mixin_api_methods == {
-        'CancelOperation': m1, 'DeleteOperation': m2, 'WaitOperation': m3,
-        'GetOperation': m4}
+        "CancelOperation": m1,
+        "DeleteOperation": m2,
+        "WaitOperation": m3,
+        "GetOperation": m4,
+    }
 
 
 def test_has_iam_mixin():
@@ -2589,16 +2935,15 @@ def test_has_iam_mixin():
     # service YAML contains `google.iam.v1.IAMPolicy`.
     fd = (
         make_file_pb2(
-            name='example.proto',
-            package='google.example.v1',
-            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
-        ),)
-    opts = Options(service_yaml_config={
-        'apis': [
-            {
-                'name': 'google.iam.v1.IAMPolicy'
-            }
-        ],
-    })
-    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+            name="example.proto",
+            package="google.example.v1",
+            messages=(make_message_pb2(name="ExampleRequest", fields=()),),
+        ),
+    )
+    opts = Options(
+        service_yaml_config={
+            "apis": [{"name": "google.iam.v1.IAMPolicy"}],
+        }
+    )
+    api_schema = api.API.build(fd, "google.example.v1", opts=opts)
     assert api_schema.has_iam_mixin

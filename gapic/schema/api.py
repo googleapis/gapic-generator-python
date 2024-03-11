@@ -23,10 +23,21 @@ import itertools
 import keyword
 import os
 import sys
-from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
+from typing import (
+    Callable,
+    Container,
+    Dict,
+    FrozenSet,
+    Mapping,
+    Optional,
+    Sequence,
+    Set,
+    Tuple,
+)
 from types import MappingProxyType
 
 from google.api_core import exceptions
+from google.api import client_pb2  # type: ignore
 from google.api import http_pb2  # type: ignore
 from google.api import resource_pb2  # type: ignore
 from google.api import service_pb2  # type: ignore
@@ -76,15 +87,15 @@ class Proto:
 
     @classmethod
     def build(
-            cls,
-            file_descriptor: descriptor_pb2.FileDescriptorProto,
-            file_to_generate: bool,
-            naming: api_naming.Naming,
-            opts: Options = Options(),
-            prior_protos: Optional[Mapping[str, 'Proto']] = None,
-            load_services: bool = True,
-            all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
-    ) -> 'Proto':
+        cls,
+        file_descriptor: descriptor_pb2.FileDescriptorProto,
+        file_to_generate: bool,
+        naming: api_naming.Naming,
+        opts: Options = Options(),
+        prior_protos: Optional[Mapping[str, "Proto"]] = None,
+        load_services: bool = True,
+        all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
+    ) -> "Proto":
         """Build and return a Proto instance.
 
         Args:
@@ -113,17 +124,15 @@ class Proto:
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
         """Return top-level enums on the proto."""
-        return collections.OrderedDict([
-            (k, v) for k, v in self.all_enums.items()
-            if not v.meta.address.parent
-        ])
+        return collections.OrderedDict(
+            [(k, v) for k, v in self.all_enums.items() if not v.meta.address.parent]
+        )
 
     @cached_property
     def messages(self) -> Mapping[str, wrappers.MessageType]:
         """Return top-level messages on the proto."""
         return collections.OrderedDict(
-            (k, v) for k, v in self.all_messages.items()
-            if not v.meta.address.parent
+            (k, v) for k, v in self.all_messages.items() if not v.meta.address.parent
         )
 
     @cached_property
@@ -131,7 +140,9 @@ class Proto:
         """Return the file level resources of the proto."""
         file_resource_messages = (
             (res.type, wrappers.CommonResource.build(res).message_type)
-            for res in self.file_pb2.options.Extensions[resource_pb2.resource_definition]
+            for res in self.file_pb2.options.Extensions[
+                resource_pb2.resource_definition
+            ]
         )
         resource_messages = (
             (msg.options.Extensions[resource_pb2.resource].type, msg)
@@ -140,7 +151,8 @@ class Proto:
         )
         return collections.OrderedDict(
             itertools.chain(
-                file_resource_messages, resource_messages,
+                file_resource_messages,
+                resource_messages,
             )
         )
 
@@ -152,7 +164,7 @@ class Proto:
             str: The module name for this service (which is the service
                 name in snake case).
         """
-        return to_snake_case(self.name.split('/')[-1][:-len('.proto')])
+        return to_snake_case(self.name.split("/")[-1][: -len(".proto")])
 
     @cached_property
     def names(self) -> FrozenSet[str]:
@@ -202,7 +214,8 @@ class Proto:
             for m in self.all_messages.values()
             # Quick check: We do make sure that we are not trying to have
             # a module import itself.
-            for t in m.field_types if t.ident.python_import != self_reference
+            for t in m.field_types
+            if t.ident.python_import != self_reference
         }
 
         # Done; return the sorted sequence.
@@ -216,7 +229,7 @@ class Proto:
         it will cause a naming collision with messages or fields in this proto.
         """
         if string in self.names:
-            return self.disambiguate(f'_{string}')
+            return self.disambiguate(f"_{string}")
         return string
 
 
@@ -232,6 +245,7 @@ class API:
     An instance of this object is made available to every template
     (as ``api``).
     """
+
     naming: api_naming.Naming
     all_protos: Mapping[str, Proto]
     service_yaml_config: service_pb2.Service
@@ -241,10 +255,10 @@ class API:
     def build(
         cls,
         file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
-        package: str = '',
+        package: str = "",
         opts: Options = Options(),
-        prior_protos: Optional[Mapping[str, 'Proto']] = None,
-    ) -> 'API':
+        prior_protos: Optional[Mapping[str, "Proto"]] = None,
+    ) -> "API":
         """Build the internal API schema based on the request.
 
         Args:
@@ -261,18 +275,25 @@ class API:
                 Primarily used for testing.
         """
         # Save information about the overall naming for this API.
-        naming = api_naming.Naming.build(*filter(
-            lambda fd: fd.package.startswith(package),
-            file_descriptors,
-        ), opts=opts)
+        naming = api_naming.Naming.build(
+            *filter(
+                lambda fd: fd.package.startswith(package),
+                file_descriptors,
+            ),
+            opts=opts,
+        )
 
         # "metadata", "retry", "timeout", and "request" are reserved words in client methods.
         invalid_module_names = set(keyword.kwlist) | {
-            "metadata", "retry", "timeout", "request"}
+            "metadata",
+            "retry",
+            "timeout",
+            "request",
+        }
 
         def disambiguate_keyword_sanitize_fname(
-                full_path: str,
-                visited_names: Container[str]) -> str:
+            full_path: str, visited_names: Container[str]
+        ) -> str:
             path, fname = os.path.split(full_path)
             name, ext = os.path.splitext(fname)
 
@@ -342,47 +363,39 @@ class API:
         # Parse the google.api.Service proto from the service_yaml data.
         service_yaml_config = service_pb2.Service()
         ParseDict(
-            opts.service_yaml_config,
-            service_yaml_config,
-            ignore_unknown_fields=True
+            opts.service_yaml_config, service_yaml_config, ignore_unknown_fields=True
         )
 
         # Done; return the API.
-        return cls(naming=naming,
-                   all_protos=protos,
-                   service_yaml_config=service_yaml_config)
+        return cls(
+            naming=naming, all_protos=protos, service_yaml_config=service_yaml_config
+        )
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
         """Return a map of all enums available in the API."""
-        return collections.ChainMap({},
-                                    *[p.all_enums for p in self.protos.values()],
-                                    )
+        return collections.ChainMap(
+            {},
+            *[p.all_enums for p in self.protos.values()],
+        )
 
     @cached_property
     def messages(self) -> Mapping[str, wrappers.MessageType]:
         """Return a map of all messages available in the API."""
-        return collections.ChainMap({},
-                                    *[p.all_messages for p in self.protos.values()],
-                                    )
+        return collections.ChainMap(
+            {},
+            *[p.all_messages for p in self.protos.values()],
+        )
 
     @cached_property
     def top_level_messages(self) -> Mapping[str, wrappers.MessageType]:
         """Return a map of all messages that are NOT nested."""
-        return {
-            k: v
-            for p in self.protos.values()
-            for k, v in p.messages.items()
-        }
+        return {k: v for p in self.protos.values() for k, v in p.messages.items()}
 
     @cached_property
     def top_level_enums(self) -> Mapping[str, wrappers.EnumType]:
         """Return a map of all messages that are NOT nested."""
-        return {
-            k: v
-            for p in self.protos.values()
-            for k, v in p.enums.items()
-        }
+        return {k: v for p in self.protos.values() for k, v in p.enums.items()}
 
     @cached_property
     def protos(self) -> Mapping[str, Proto]:
@@ -392,28 +405,32 @@ class API:
         of this API but not being directly generated.
         """
         view = self.subpackage_view
-        return collections.OrderedDict([
-            (k, v) for k, v in self.all_protos.items()
-            if v.file_to_generate and
-            v.meta.address.subpackage[:len(view)] == view
-        ])
+        return collections.OrderedDict(
+            [
+                (k, v)
+                for k, v in self.all_protos.items()
+                if v.file_to_generate and v.meta.address.subpackage[: len(view)] == view
+            ]
+        )
 
     @cached_property
     def services(self) -> Mapping[str, wrappers.Service]:
         """Return a map of all services available in the API."""
-        return collections.ChainMap({},
-                                    *[p.services for p in self.protos.values()],
-                                    )
+        return collections.ChainMap(
+            {},
+            *[p.services for p in self.protos.values()],
+        )
 
     @cached_property
     def http_options(self) -> Mapping[str, Sequence[wrappers.HttpRule]]:
         """Return a map of API-wide http rules."""
 
-        def make_http_options(rule: http_pb2.HttpRule
-                              ) -> Sequence[wrappers.HttpRule]:
+        def make_http_options(rule: http_pb2.HttpRule) -> Sequence[wrappers.HttpRule]:
             http_options = [rule] + list(rule.additional_bindings)
-            opt_gen = (wrappers.HttpRule.try_parse_http_rule(http_rule)
-                       for http_rule in http_options)
+            opt_gen = (
+                wrappers.HttpRule.try_parse_http_rule(http_rule)
+                for http_rule in http_options
+            )
             return [rule for rule in opt_gen if rule]
 
         result: Mapping[str, Sequence[http_pb2.HttpRule]] = {
@@ -424,7 +441,7 @@ class API:
         return result
 
     @cached_property
-    def subpackages(self) -> Mapping[str, 'API']:
+    def subpackages(self) -> Mapping[str, "API"]:
         """Return a map of all subpackages, if any.
 
         Each value in the mapping is another API object, but the ``protos``
@@ -438,14 +455,18 @@ class API:
         # subpackages can be accessed by requesting subpackages of the
         # derivative API objects returned here.
         level = len(self.subpackage_view)
-        for subpkg_name in sorted({p.meta.address.subpackage[0]
-                                   for p in self.protos.values()
-                                   if len(p.meta.address.subpackage) > level and
-                                   p.meta.address.subpackage[:level] == self.subpackage_view}):
-            answer[subpkg_name] = dataclasses.replace(self,
-                                                      subpackage_view=self.subpackage_view +
-                                                      (subpkg_name,),
-                                                      )
+        for subpkg_name in sorted(
+            {
+                p.meta.address.subpackage[0]
+                for p in self.protos.values()
+                if len(p.meta.address.subpackage) > level
+                and p.meta.address.subpackage[:level] == self.subpackage_view
+            }
+        ):
+            answer[subpkg_name] = dataclasses.replace(
+                self,
+                subpackage_view=self.subpackage_view + (subpkg_name,),
+            )
         return answer
 
     def gapic_metadata(self, options: Options) -> gapic_metadata_pb2.GapicMetadata:
@@ -455,8 +476,7 @@ class API:
             language="python",
             proto_package=self.naming.proto_package,
             library_package=".".join(
-                self.naming.module_namespace +
-                    (self.naming.versioned_module_name,)
+                self.naming.module_namespace + (self.naming.versioned_module_name,)
             ),
         )
 
@@ -469,8 +489,7 @@ class API:
             transports = []
             if "grpc" in options.transport:
                 transports.append((TRANSPORT_GRPC, service.client_name))
-                transports.append(
-                    (TRANSPORT_GRPC_ASYNC, service.async_client_name))
+                transports.append((TRANSPORT_GRPC_ASYNC, service.async_client_name))
 
             if "rest" in options.transport:
                 transports.append((TRANSPORT_REST, service.client_name))
@@ -489,15 +508,16 @@ class API:
         return MessageToJson(self.gapic_metadata(options), sort_keys=True)
 
     def requires_package(self, pkg: Tuple[str, ...]) -> bool:
-        pkg_has_iam_mixin = self.has_iam_mixin and \
-            pkg == ('google', 'iam', 'v1')
+        pkg_has_iam_mixin = self.has_iam_mixin and pkg == ("google", "iam", "v1")
         return pkg_has_iam_mixin or any(
             message.ident.package == pkg
             for proto in self.all_protos.values()
             for message in proto.all_messages.values()
         )
 
-    def get_custom_operation_service(self, method: "wrappers.Method") -> "wrappers.Service":
+    def get_custom_operation_service(
+        self, method: "wrappers.Method"
+    ) -> "wrappers.Service":
         """Return the extended operation service that should be polled for progress
         from a given initial method.
 
@@ -505,20 +525,21 @@ class API:
         and has an `operation_polling_service` annotation.
         """
         if not method.output.is_extended_operation:
-            raise ValueError(
-                f"Method is not an extended operation LRO: {method.name}")
+            raise ValueError(f"Method is not an extended operation LRO: {method.name}")
 
-        op_serv_name = self.naming.proto_package + "." + \
-            method.options.Extensions[ex_ops_pb2.operation_service]
+        op_serv_name = (
+            self.naming.proto_package
+            + "."
+            + method.options.Extensions[ex_ops_pb2.operation_service]
+        )
         op_serv = self.services.get(op_serv_name)
         if not op_serv:
-            raise ValueError(
-                f"No such service: {op_serv_name}"
-            )
+            raise ValueError(f"No such service: {op_serv_name}")
 
         if not op_serv.operation_polling_method:
             raise ValueError(
-                f"Service is not an extended operation operation service: {op_serv.name}")
+                f"Service is not an extended operation operation service: {op_serv.name}"
+            )
 
         return op_serv
 
@@ -536,14 +557,11 @@ class API:
     def mixin_api_methods(self) -> Dict[str, MethodDescriptorProto]:
         methods: Dict[str, MethodDescriptorProto] = {}
         if self.has_location_mixin:
-            methods = {**methods, **
-                self._get_methods_from_service(locations_pb2)}
+            methods = {**methods, **self._get_methods_from_service(locations_pb2)}
         if not self._has_iam_overrides and self.has_iam_mixin:
-            methods = {**methods, **
-                self._get_methods_from_service(iam_policy_pb2)}
+            methods = {**methods, **self._get_methods_from_service(iam_policy_pb2)}
         if self.has_operations_mixin:
-            methods = {**methods, **
-                self._get_methods_from_service(operations_pb2)}
+            methods = {**methods, **self._get_methods_from_service(operations_pb2)}
         return methods
 
     @cached_property
@@ -555,30 +573,145 @@ class API:
             m = api_methods[s]
             http = m.options.Extensions[annotations_pb2.http]
             http_options = [http] + list(http.additional_bindings)
-            opt_gen = (wrappers.MixinHttpRule.try_parse_http_rule(http_rule)
-                   for http_rule in http_options)
+            opt_gen = (
+                wrappers.MixinHttpRule.try_parse_http_rule(http_rule)
+                for http_rule in http_options
+            )
             res[s] = [rule for rule in opt_gen if rule]
         return res
 
     @cached_property
+    def all_method_settings(self) -> Mapping[str, Sequence[wrappers.MethodSettings]]:
+        """Return a map of API-wide method settings from the service YAML config"""
+
+        def _get_all_methods(self) -> Mapping[str, MethodDescriptorProto]:
+            """Return a map of all API-wide methods"""
+            methods = {}
+            for service_key, service_value in self.services.items():
+                for method_key, method_value in service_value.methods.items():
+                    methods[f"{service_key}.{method_key}"] = method_value
+            return methods
+
+        methods = _get_all_methods(self)
+
+        def _get_auto_populated_fields_candidates(
+            message: MethodDescriptorProto,
+        ) -> Sequence[str]:
+            """
+            Retrun field which meet the criteria to be autopopulated. For a field to be automatically populated, all the below
+            configurations must be true.
+
+            - The RPC must be a unary RPC (i.e. streaming RPCs are not supported)
+            - The field must be of type string
+            - The field must be at the top-level of the request message
+            - The field must not be annotated with google.api.field_behavior = REQUIRED.
+            - The field must be annotated with google.api.field_info.format = UUID4.
+            """
+            candidates = []
+            top_level_request_message = message.input
+            if not message.client_streaming and not message.server_streaming:
+                # candidates = [field.name for field in top_level_request_message.fields.values() if field.type == wrappers.PrimitiveType.build(str) and field.required and field.uuid4]
+                candidates = [
+                    field.name
+                    for field in top_level_request_message.fields.values()
+                    if field.type == wrappers.PrimitiveType.build(str)
+                ]
+            return candidates
+
+        def _get_auto_populated_fields(
+            method_settings: client_pb2.MethodSettings,
+        ) -> Sequence[wrappers.MethodSettings]:
+            """
+            Return a list of auto-populated fields based on the service YAML.
+
+            Raise ValueError if auto_populated_fields are incorrectly set in the service config
+            """
+            try:
+                method_in_scope = methods[method_settings.selector]
+            except KeyError:
+                raise ValueError(
+                    f"Selector {method_settings.selector} is not a valid method in this API"
+                )
+
+            if (
+                method_in_scope.client_streaming or method_in_scope.server_streaming
+            ) and method_settings.auto_populated_fields:
+                raise ValueError(
+                    f"Selector {method_settings.selector} is not a valid method in this API"
+                )
+
+            # The field name must be listed in the google.api.MethodSettings.auto_populated_fields entry in google.api.Publishing.method_settings for the target method.
+            auto_populated_fields = [
+                field for field in method_settings.auto_populated_fields
+            ]
+            for field in auto_populated_fields:
+                if field not in _get_auto_populated_fields_candidates(method_in_scope):
+                    raise ValueError(
+                        f"Field {field} is not valid as an auto populated field for the top level request message of selector {method_settings.selector}"
+                    )
+
+            return auto_populated_fields
+
+        result: Mapping[str, Sequence[wrappers.MethodSettings]] = {
+            method_setting.selector: wrappers.MethodSettings(
+                method=method_setting.selector,
+                auto_populated_fields=_get_auto_populated_fields(method_setting),
+            )
+            for method_setting in self.service_yaml_config.publishing.method_settings
+        }
+
+        return result
+
+    @cached_property
     def has_location_mixin(self) -> bool:
-        return len(list(filter(lambda api: api.name == "google.cloud.location.Locations", self.service_yaml_config.apis))) > 0
+        return (
+            len(
+                list(
+                    filter(
+                        lambda api: api.name == "google.cloud.location.Locations",
+                        self.service_yaml_config.apis,
+                    )
+                )
+            )
+            > 0
+        )
 
     @cached_property
     def has_iam_mixin(self) -> bool:
-        return len(list(filter(lambda api: api.name == "google.iam.v1.IAMPolicy", self.service_yaml_config.apis))) > 0
+        return (
+            len(
+                list(
+                    filter(
+                        lambda api: api.name == "google.iam.v1.IAMPolicy",
+                        self.service_yaml_config.apis,
+                    )
+                )
+            )
+            > 0
+        )
 
     @cached_property
     def has_operations_mixin(self) -> bool:
-        return len(list(filter(lambda api: api.name == "google.longrunning.Operations", self.service_yaml_config.apis))) > 0
+        return (
+            len(
+                list(
+                    filter(
+                        lambda api: api.name == "google.longrunning.Operations",
+                        self.service_yaml_config.apis,
+                    )
+                )
+            )
+            > 0
+        )
 
     @cached_property
     def _has_iam_overrides(self) -> bool:
         if not self.has_iam_mixin:
             return False
-        iam_mixin_methods: Dict[str, MethodDescriptorProto] = self._get_methods_from_service(
-            iam_policy_pb2)
-        for (_, s) in self.services.items():
+        iam_mixin_methods: Dict[
+            str, MethodDescriptorProto
+        ] = self._get_methods_from_service(iam_policy_pb2)
+        for _, s in self.services.items():
             for m_name in iam_mixin_methods:
                 if m_name in s.methods:
                     return True
@@ -592,7 +725,8 @@ class API:
             service: ServiceDescriptor = services[service_name]
             for method in service.methods:
                 fqn = "{}.{}.{}".format(
-                    service_pb.DESCRIPTOR.package, service.name, method.name)
+                    service_pb.DESCRIPTOR.package, service.name, method.name
+                )
                 methods[fqn] = method
         for rule in self.service_yaml_config.http.rules:
             if rule.selector in methods:
@@ -629,6 +763,7 @@ class _ProtoBuilder:
     the :attr:`proto` property, and then throw the builder away. Additionally,
     there should be no reason to use this class outside of this module.
     """
+
     EMPTY = descriptor_pb2.SourceCodeInfo.Location()
 
     def __init__(
@@ -655,8 +790,7 @@ class _ProtoBuilder:
         # the "path", which is a sequence of integers described in more
         # detail below; this code simply shifts from a list to a dict,
         # with tuples of paths as the dictionary keys.
-        self.docs: Dict[Tuple[int, ...],
-                        descriptor_pb2.SourceCodeInfo.Location] = {}
+        self.docs: Dict[Tuple[int, ...], descriptor_pb2.SourceCodeInfo.Location] = {}
         for location in file_descriptor.source_code_info.location:
             self.docs[tuple(location.path)] = location
 
@@ -668,8 +802,8 @@ class _ProtoBuilder:
         # for each item as it is loaded.
         self.address = metadata.Address(
             api_naming=naming,
-            module=file_descriptor.name.split('/')[-1][:-len('.proto')],
-            package=tuple(file_descriptor.package.split('.')),
+            module=file_descriptor.name.split("/")[-1][: -len(".proto")],
+            package=tuple(file_descriptor.package.split(".")),
         )
 
         # Now iterate over the FileDescriptorProto and pull out each of
@@ -680,12 +814,20 @@ class _ProtoBuilder:
         # message (e.g. the hard-code `4` for `message_type` immediately
         # below is because `repeated DescriptorProto message_type = 4;` in
         # descriptor.proto itself).
-        self._load_children(file_descriptor.enum_type, self._load_enum,
-                            address=self.address, path=(5,),
-                            resources=all_resources or {})
-        self._load_children(file_descriptor.message_type, self._load_message,
-                            address=self.address, path=(4,),
-                            resources=all_resources or {})
+        self._load_children(
+            file_descriptor.enum_type,
+            self._load_enum,
+            address=self.address,
+            path=(5,),
+            resources=all_resources or {},
+        )
+        self._load_children(
+            file_descriptor.message_type,
+            self._load_message,
+            address=self.address,
+            path=(4,),
+            resources=all_resources or {},
+        )
 
         # Edge case: Protocol buffers is not particularly picky about
         # ordering, and it is possible that a message will have had a field
@@ -696,7 +838,7 @@ class _ProtoBuilder:
         # and the field would have its original textual reference to the
         # message (`type_name`) but not its resolved message wrapper.
         orphan_field_gen = (
-            (field.type_name.lstrip('.'), field)
+            (field.type_name.lstrip("."), field)
             for message in self.proto_messages.values()
             for field in message.fields.values()
             if field.type_name and not (field.message or field.enum)
@@ -705,9 +847,9 @@ class _ProtoBuilder:
             maybe_msg_type = self.proto_messages.get(key)
             maybe_enum_type = self.proto_enums.get(key)
             if maybe_msg_type:
-                object.__setattr__(field, 'message', maybe_msg_type)
+                object.__setattr__(field, "message", maybe_msg_type)
             elif maybe_enum_type:
-                object.__setattr__(field, 'enum', maybe_enum_type)
+                object.__setattr__(field, "enum", maybe_enum_type)
             else:
                 raise TypeError(
                     f"Unknown type referenced in "
@@ -719,9 +861,13 @@ class _ProtoBuilder:
         # they are being used as an import just to get types declared in the
         # same files.
         if file_to_generate and load_services:
-            self._load_children(file_descriptor.service, self._load_service,
-                                address=self.address, path=(6,),
-                                resources=all_resources or {})
+            self._load_children(
+                file_descriptor.service,
+                self._load_service,
+                address=self.address,
+                path=(6,),
+                resources=all_resources or {},
+            )
         # TODO(lukesneeringer): oneofs are on path 7.
 
     @property
@@ -755,19 +901,25 @@ class _ProtoBuilder:
                 for k, v in naive.all_enums.items()
             ),
             all_messages=collections.OrderedDict(
-                (k, v.with_context(
-                    collisions=naive.names,
-                    visited_messages=visited_messages,
-                ))
+                (
+                    k,
+                    v.with_context(
+                        collisions=naive.names,
+                        visited_messages=visited_messages,
+                    ),
+                )
                 for k, v in naive.all_messages.items()
             ),
             services=collections.OrderedDict(
                 # Note: services bind to themselves because services get their
                 # own output files.
-                (k, v.with_context(
-                    collisions=v.names,
-                    visited_messages=visited_messages,
-                ))
+                (
+                    k,
+                    v.with_context(
+                        collisions=v.names,
+                        visited_messages=visited_messages,
+                    ),
+                )
                 for k, v in naive.services.items()
             ),
             meta=naive.meta.with_context(collisions=naive.names),
@@ -795,10 +947,15 @@ class _ProtoBuilder:
             *[p.all_messages for p in self.prior_protos.values()],  # type: ignore
         )
 
-    def _load_children(self,
-                       children: Sequence, loader: Callable, *,
-                       address: metadata.Address, path: Tuple[int, ...],
-                       resources: Mapping[str, wrappers.MessageType]) -> Mapping:
+    def _load_children(
+        self,
+        children: Sequence,
+        loader: Callable,
+        *,
+        address: metadata.Address,
+        path: Tuple[int, ...],
+        resources: Mapping[str, wrappers.MessageType],
+    ) -> Mapping:
         """Return wrapped versions of arbitrary children from a Descriptor.
 
         Args:
@@ -824,15 +981,18 @@ class _ProtoBuilder:
         # applicable loader function on each.
         answer = {}
         for child, i in zip(children, range(0, sys.maxsize)):
-            wrapped = loader(child, address=address, path=path + (i,),
-                             resources=resources)
+            wrapped = loader(
+                child, address=address, path=path + (i,), resources=resources
+            )
             answer[wrapped.name] = wrapped
         return answer
 
-    def _get_oneofs(self,
-                    oneof_pbs: Sequence[descriptor_pb2.OneofDescriptorProto],
-                    address: metadata.Address, path: Tuple[int, ...],
-                    ) -> Dict[str, wrappers.Oneof]:
+    def _get_oneofs(
+        self,
+        oneof_pbs: Sequence[descriptor_pb2.OneofDescriptorProto],
+        address: metadata.Address,
+        path: Tuple[int, ...],
+    ) -> Dict[str, wrappers.Oneof]:
         """Return a dictionary of wrapped oneofs for the given message.
 
         Args:
@@ -856,11 +1016,13 @@ class _ProtoBuilder:
         # Done; return the answer.
         return answer
 
-    def _get_fields(self,
-                    field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
-                    address: metadata.Address, path: Tuple[int, ...],
-                    oneofs: Optional[Dict[str, wrappers.Oneof]] = None
-                    ) -> Dict[str, wrappers.Field]:
+    def _get_fields(
+        self,
+        field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
+        address: metadata.Address,
+        path: Tuple[int, ...],
+        oneofs: Optional[Dict[str, wrappers.Oneof]] = None,
+    ) -> Dict[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
 
         Args:
@@ -887,16 +1049,15 @@ class _ProtoBuilder:
         # `_load_message` method.
         answer: Dict[str, wrappers.Field] = collections.OrderedDict()
         for i, field_pb in enumerate(field_pbs):
-            is_oneof = oneofs and field_pb.HasField('oneof_index')
-            oneof_name = nth(
-                (oneofs or {}).keys(),
-                field_pb.oneof_index
-            ) if is_oneof else None
+            is_oneof = oneofs and field_pb.HasField("oneof_index")
+            oneof_name = (
+                nth((oneofs or {}).keys(), field_pb.oneof_index) if is_oneof else None
+            )
 
             field = wrappers.Field(
                 field_pb=field_pb,
-                enum=self.api_enums.get(field_pb.type_name.lstrip('.')),
-                message=self.api_messages.get(field_pb.type_name.lstrip('.')),
+                enum=self.api_enums.get(field_pb.type_name.lstrip(".")),
+                message=self.api_messages.get(field_pb.type_name.lstrip(".")),
                 meta=metadata.Metadata(
                     address=address.child(field_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
@@ -911,7 +1072,7 @@ class _ProtoBuilder:
     def _get_retry_and_timeout(
         self,
         service_address: metadata.Address,
-        meth_pb: descriptor_pb2.MethodDescriptorProto
+        meth_pb: descriptor_pb2.MethodDescriptorProto,
     ) -> Tuple[Optional[wrappers.RetryInfo], Optional[float]]:
         """Returns the retry and timeout configuration of a method if it exists.
 
@@ -943,36 +1104,42 @@ class _ProtoBuilder:
             # with a particular format, which we match against.
             # This defines the expected selector for *this* method.
             selector = {
-                'service': '{package}.{service_name}'.format(
-                    package='.'.join(service_address.package),
+                "service": "{package}.{service_name}".format(
+                    package=".".join(service_address.package),
                     service_name=service_address.name,
                 ),
-                'method': meth_pb.name,
+                "method": meth_pb.name,
             }
 
             # Find the method config that applies to us, if any.
-            mc = next((c for c in self.opts.retry.get('methodConfig', [])
-                       if selector in c.get('name')), None)
+            mc = next(
+                (
+                    c
+                    for c in self.opts.retry.get("methodConfig", [])
+                    if selector in c.get("name")
+                ),
+                None,
+            )
             if mc:
                 # Set the timeout according to this method config.
-                if mc.get('timeout'):
-                    timeout = self._to_float(mc['timeout'])
+                if mc.get("timeout"):
+                    timeout = self._to_float(mc["timeout"])
 
                 # Set the retry according to this method config.
-                if 'retryPolicy' in mc:
-                    r = mc['retryPolicy']
+                if "retryPolicy" in mc:
+                    r = mc["retryPolicy"]
                     retry = wrappers.RetryInfo(
-                        max_attempts=r.get('maxAttempts', 0),
+                        max_attempts=r.get("maxAttempts", 0),
                         initial_backoff=self._to_float(
-                            r.get('initialBackoff', '0s'),
+                            r.get("initialBackoff", "0s"),
                         ),
-                        max_backoff=self._to_float(r.get('maxBackoff', '0s')),
-                        backoff_multiplier=r.get('backoffMultiplier', 0.0),
+                        max_backoff=self._to_float(r.get("maxBackoff", "0s")),
+                        backoff_multiplier=r.get("backoffMultiplier", 0.0),
                         retryable_exceptions=frozenset(
                             exceptions.exception_class_for_grpc_status(
                                 getattr(grpc.StatusCode, code),
                             )
-                            for code in r.get('retryableStatusCodes', [])
+                            for code in r.get("retryableStatusCodes", [])
                         ),
                     )
 
@@ -981,7 +1148,7 @@ class _ProtoBuilder:
     def _maybe_get_lro(
         self,
         service_address: metadata.Address,
-        meth_pb: descriptor_pb2.MethodDescriptorProto
+        meth_pb: descriptor_pb2.MethodDescriptorProto,
     ) -> Optional[wrappers.OperationInfo]:
         """Determines whether a method is a Long Running Operation (aka LRO)
                and, if it is, return an OperationInfo that includes the response
@@ -1001,7 +1168,7 @@ class _ProtoBuilder:
 
         # If the output type is google.longrunning.Operation, we use
         # a specialized object in its place.
-        if meth_pb.output_type.endswith('google.longrunning.Operation'):
+        if meth_pb.output_type.endswith("google.longrunning.Operation"):
             if not meth_pb.options.HasExtension(operations_pb2.operation_info):
                 # This is not a long running operation even though it returns
                 # an Operation.
@@ -1009,9 +1176,9 @@ class _ProtoBuilder:
             op = meth_pb.options.Extensions[operations_pb2.operation_info]
             if not op.response_type or not op.metadata_type:
                 raise TypeError(
-                    f'rpc {meth_pb.name} returns a google.longrunning.'
-                    'Operation, but is missing a response type or '
-                    'metadata type.',
+                    f"rpc {meth_pb.name} returns a google.longrunning."
+                    "Operation, but is missing a response type or "
+                    "metadata type.",
                 )
             response_key = service_address.resolve(op.response_type)
             metadata_key = service_address.resolve(op.metadata_type)
@@ -1065,9 +1232,7 @@ class _ProtoBuilder:
         operation_type = service_address.resolve(
             operation_polling_method_pb.output_type.lstrip(".")
         )
-        method_output_type = service_address.resolve(
-            meth_pb.output_type.lstrip(".")
-        )
+        method_output_type = service_address.resolve(meth_pb.output_type.lstrip("."))
         if operation_type != method_output_type:
             raise ValueError(
                 f"Inconsistent return types between extended lro method '{meth_pb.name}'"
@@ -1077,19 +1242,19 @@ class _ProtoBuilder:
 
         operation_message = self.api_messages[operation_type]
         if not operation_message.is_extended_operation:
-            raise ValueError(
-                f"Message is not an extended operation: {operation_type}"
-            )
+            raise ValueError(f"Message is not an extended operation: {operation_type}")
 
         return wrappers.ExtendedOperationInfo(
             request_type=operation_request_message,
             operation_type=operation_message,
         )
 
-    def _get_methods(self,
-                     methods: Sequence[descriptor_pb2.MethodDescriptorProto],
-                     service_address: metadata.Address, path: Tuple[int, ...],
-                     ) -> Mapping[str, wrappers.Method]:
+    def _get_methods(
+        self,
+        methods: Sequence[descriptor_pb2.MethodDescriptorProto],
+        service_address: metadata.Address,
+        path: Tuple[int, ...],
+    ) -> Mapping[str, wrappers.Method]:
         """Return a dictionary of wrapped methods for the given service.
 
         Args:
@@ -1107,14 +1272,11 @@ class _ProtoBuilder:
         # Iterate over the methods and collect them into a dictionary.
         answer: Dict[str, wrappers.Method] = collections.OrderedDict()
         for i, meth_pb in enumerate(methods):
-            retry, timeout = self._get_retry_and_timeout(
-                service_address,
-                meth_pb
-            )
+            retry, timeout = self._get_retry_and_timeout(service_address, meth_pb)
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
-                input=self.api_messages[meth_pb.input_type.lstrip('.')],
+                input=self.api_messages[meth_pb.input_type.lstrip(".")],
                 lro=self._maybe_get_lro(service_address, meth_pb),
                 extended_lro=self._maybe_get_extended_lro(
                     service_address,
@@ -1125,7 +1287,7 @@ class _ProtoBuilder:
                     address=service_address.child(meth_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
-                output=self.api_messages[meth_pb.output_type.lstrip('.')],
+                output=self.api_messages[meth_pb.output_type.lstrip(".")],
                 retry=retry,
                 timeout=timeout,
             )
@@ -1133,12 +1295,13 @@ class _ProtoBuilder:
         # Done; return the answer.
         return answer
 
-    def _load_message(self,
-                      message_pb: descriptor_pb2.DescriptorProto,
-                      address: metadata.Address,
-                      path: Tuple[int],
-                      resources: Mapping[str, wrappers.MessageType],
-                      ) -> wrappers.MessageType:
+    def _load_message(
+        self,
+        message_pb: descriptor_pb2.DescriptorProto,
+        address: metadata.Address,
+        path: Tuple[int],
+        resources: Mapping[str, wrappers.MessageType],
+    ) -> wrappers.MessageType:
         """Load message descriptions from DescriptorProtos."""
         address = address.child(message_pb.name, path)
 
@@ -1177,12 +1340,14 @@ class _ProtoBuilder:
             path=path + (2,),
             oneofs=oneofs,
         )
-        fields.update(self._get_fields(
-            message_pb.extension,
-            address=address,
-            path=path + (6,),
-            oneofs=oneofs,
-        ))
+        fields.update(
+            self._get_fields(
+                message_pb.extension,
+                address=address,
+                path=path + (6,),
+                oneofs=oneofs,
+            )
+        )
 
         # Create a message correspoding to this descriptor.
         self.proto_messages[address.proto] = wrappers.MessageType(
@@ -1198,25 +1363,28 @@ class _ProtoBuilder:
         )
         return self.proto_messages[address.proto]
 
-    def _load_enum(self,
-                   enum: descriptor_pb2.EnumDescriptorProto,
-                   address: metadata.Address,
-                   path: Tuple[int],
-                   resources: Mapping[str, wrappers.MessageType],
-                   ) -> wrappers.EnumType:
+    def _load_enum(
+        self,
+        enum: descriptor_pb2.EnumDescriptorProto,
+        address: metadata.Address,
+        path: Tuple[int],
+        resources: Mapping[str, wrappers.MessageType],
+    ) -> wrappers.EnumType:
         """Load enum descriptions from EnumDescriptorProtos."""
         address = address.child(enum.name, path)
 
         # Put together wrapped objects for the enum values.
         values = []
         for enum_value, i in zip(enum.value, range(0, sys.maxsize)):
-            values.append(wrappers.EnumValueType(
-                enum_value_pb=enum_value,
-                meta=metadata.Metadata(
-                    address=address,
-                    documentation=self.docs.get(path + (2, i), self.EMPTY),
-                ),
-            ))
+            values.append(
+                wrappers.EnumValueType(
+                    enum_value_pb=enum_value,
+                    meta=metadata.Metadata(
+                        address=address,
+                        documentation=self.docs.get(path + (2, i), self.EMPTY),
+                    ),
+                )
+            )
 
         # Load the enum itself.
         self.proto_enums[address.proto] = wrappers.EnumType(
@@ -1229,12 +1397,13 @@ class _ProtoBuilder:
         )
         return self.proto_enums[address.proto]
 
-    def _load_service(self,
-                      service: descriptor_pb2.ServiceDescriptorProto,
-                      address: metadata.Address,
-                      path: Tuple[int],
-                      resources: Mapping[str, wrappers.MessageType],
-                      ) -> wrappers.Service:
+    def _load_service(
+        self,
+        service: descriptor_pb2.ServiceDescriptorProto,
+        address: metadata.Address,
+        path: Tuple[int],
+        resources: Mapping[str, wrappers.MessageType],
+    ) -> wrappers.Service:
         """Load comments for a service and its methods."""
         address = address.child(service.name, path)
 
@@ -1259,4 +1428,4 @@ class _ProtoBuilder:
 
     def _to_float(self, s: str) -> float:
         """Convert a protobuf duration string (e.g. `"30s"`) to float."""
-        return int(s[:-1]) / 1e9 if s.endswith('n') else float(s[:-1])
+        return int(s[:-1]) / 1e9 if s.endswith("n") else float(s[:-1])
