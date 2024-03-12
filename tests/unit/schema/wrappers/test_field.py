@@ -143,7 +143,9 @@ def test_not_required():
 
 def test_uuid4():
     field = make_field()
-    field.options.Extensions[field_info_pb2.field_info].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
+    field.options.Extensions[field_info_pb2.field_info].format = field_info_pb2.FieldInfo.Format.Value(
+        "UUID4"
+    )
     assert field.uuid4
 
 

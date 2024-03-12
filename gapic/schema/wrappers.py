@@ -319,7 +319,6 @@ class Field:
         """
         return self.options.Extensions[field_info_pb2.field_info].format == field_info_pb2.FieldInfo.Format.Value("UUID4")
 
-
     @property
     def resource_reference(self) -> Optional[str]:
         """Return a resource reference type if it exists.
