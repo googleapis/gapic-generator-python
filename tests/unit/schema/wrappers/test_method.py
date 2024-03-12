@@ -833,10 +833,14 @@ def test_flattened_oneof_fields():
     - The field must be at the top-level of the request message
     # Defer. Only auto-populate if not streaming RPC
     - The RPC must be a unary RPC (i.e. streaming RPCs are not supported)
-    
     - The field must not be annotated with google.api.field_behavior = REQUIRED.
     - The field must be annotated with google.api.field_info.format = UUID4.
     - The field name must be listed in the google.api.MethodSettings.auto_populated_fields entry in google.api.Publishing.method_settings for the target method.
+    
+    Only auto-populate if the field value is not equal to default value at the
+    time of sending the request, implying it was set by the user. If the field 
+    has explicit presence (proto3 optional) and is set by the user, the field 
+    **must not** be auto-populated by the client.
     """
     
     required_options = descriptor_pb2.FieldOptions()

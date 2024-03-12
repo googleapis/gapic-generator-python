@@ -598,8 +598,8 @@ class API:
             message: MethodDescriptorProto,
         ) -> Sequence[str]:
             """
-            Retrun field which meet the criteria to be autopopulated. For a field to be automatically populated, all the below
-            configurations must be true.
+            Return fields which meets the criteria to be automatically populated. For a field to be automatically populated,
+            all the below configurations must be true according to https://google.aip.dev/client-libraries/4235.
 
             - The RPC must be a unary RPC (i.e. streaming RPCs are not supported)
             - The field must be of type string

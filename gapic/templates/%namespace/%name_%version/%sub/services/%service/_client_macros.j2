@@ -184,11 +184,19 @@
         {% endif %} {# method.explicit_routing #}
 
         # Auto-populate fields with uuid4 according to AIP-4235
+        # Only auto-populate if the field value is not equal to default value at the
+        # time of sending the request, implying it was set by the user. If the field 
+        # has explicit presence (proto3 optional) and is set by the user, the field 
+        # **must not** be auto-populated by the client.
         # https://google.aip.dev/client-libraries/4235
         {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
+        {% if request.{{ auto_populated_field }}.proto3_optional %}
+        if not request.HasField({{ auto_populated_field }}):
+        {% else %}{# proto3_optional #}
         if not request.{{ auto_populated_field }}:
+        {% endif %}{# proto3_optional #}
             request.{{ auto_populated_field }} = str(uuid.uuid4())
         {% endfor %}
         {% endif %}{# if method_settings is not none #}
