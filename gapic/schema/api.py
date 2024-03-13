@@ -561,6 +561,104 @@ class API:
             res[s] = [rule for rule in opt_gen if rule]
         return res
 
+    def get_auto_populated_fields_candidates(
+        self,
+        message: MethodDescriptorProto,
+    ) -> Sequence[str]:
+        """Return fields which meet the criteria to be automatically populated for a given message.
+        For a field to be automatically populated, all the below configurations must
+        be true according to https://google.aip.dev/client-libraries/4235:
+
+        - The field must be of type string
+        - The field must be at the top-level of the request message
+        - The field must not be annotated with google.api.field_behavior = REQUIRED.
+        - The field must be annotated with google.api.field_info.format = UUID4.
+
+        Args:
+            message[MethodDescriptorProto]: Describes a method of a service.
+        Return:
+            Sequence[str]: A list of candidates to be automatically populated
+                according to https://google.aip.dev/client-libraries/4235.
+        """
+        top_level_request_message = self.messages[
+            message.input_type.lstrip(".")
+        ]
+        return [
+            field.name
+            for field in top_level_request_message.fields.values()
+            if field.type == wrappers.PrimitiveType.build(str)
+            and not field.required
+            and field.uuid4
+        ]
+
+    def get_auto_populated_fields(
+        self,
+        method_settings: client_pb2.MethodSettings,
+    ) -> Sequence[str]:
+        """
+        Return a list of auto-populated fields based on the service YAML.
+
+        Args:
+            method_settings (client_pb2.MethodSettings): The settings
+            to be used when generating API methods.
+        Return:
+            Sequence[str]: A sequence of all fields to be automatically
+                populated, taking into account the requirements
+                from AIP-4235.
+                https://google.aip.dev/client-libraries/4235
+
+        Raises:
+            ValueError: if `auto_populated_fields` are incorrectly set in the service config
+        """
+        auto_populated_fields = []
+
+        def _check_service_yaml_validity(method_in_scope: MethodDescriptorProto, method_settings: client_pb2.MethodSettings):
+            """
+            Ensure that the method and fields meet the criteria of AIP-4235.
+            Use the helper function get_auto_populated_fields_candidates() to return on fields
+            which meet the criteria of AIP-4235.
+            https://google.aip.dev/client-libraries/4235
+            """
+
+            # The method must not be a streaming rpc
+            if method_in_scope.client_streaming or method_in_scope.server_streaming:
+                raise ValueError(
+                    f"Selector {method_settings.selector} is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs."
+                )
+            # The field name must be listed in the google.api.MethodSettings.auto_populated_fields entry in google.api.Publishing.method_settings for the target method.
+            for field in method_settings.auto_populated_fields:
+                if field not in self.get_auto_populated_fields_candidates(method_in_scope):
+                    raise ValueError(
+                        f"Field {field} is not valid as an auto populated field for the top level request message of selector {method_settings.selector}"
+                    )
+
+        # Ensure that the method defined in the service YAML exists
+        try:
+            method_in_scope = self.all_methods[method_settings.selector]
+        except KeyError:
+            raise ValueError(
+                f"Selector {method_settings.selector} is not a valid method in this API."
+            )
+
+        if method_settings.auto_populated_fields:
+            _check_service_yaml_validity(method_in_scope)
+            auto_populated_fields = method_settings.auto_populated_fields
+
+        return auto_populated_fields
+
+    @cached_property
+    def all_methods(self) -> Mapping[str, MethodDescriptorProto]:
+        """Return a map of all API-wide methods.
+        Return:
+            Mapping[str, MethodDescriptorProto]: A mapping of MethodDescriptorProto
+                values for the API.
+        """
+        return {
+            f"{service_key}.{method_key}": method_value
+            for service_key, service_value in self.services.items()
+            for method_key, method_value in service_value.methods.items()
+        }
+
     @cached_property
     def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:
         """Return a map of API-wide `MethodSettings` from the service YAML config to be used
@@ -575,99 +673,11 @@ class API:
         Raises:
             ValueError: if `auto_populated_fields` are incorrectly set in the service config
         """
-
-        def _get_all_methods(self) -> Mapping[str, MethodDescriptorProto]:
-            """Return a map of all API-wide methods.
-            Return:
-                Mapping[str, MethodDescriptorProto]: A mapping of MethodDescriptorProto
-                    values for the API.
-            """
-            methods = {}
-            for service_key, service_value in self.services.items():
-                for method_key, method_value in service_value.methods.items():
-                    methods[f"{service_key}.{method_key}"] = method_value
-            return methods
-
-        methods = _get_all_methods(self)
-
-        def _get_auto_populated_fields_candidates(
-            message: MethodDescriptorProto,
-        ) -> Sequence[str]:
-            """Return fields which meet the criteria to be automatically populated for a given message.
-            For a field to be automatically populated, all the below configurations must
-            be true according to https://google.aip.dev/client-libraries/4235:
-
-            - The field must be of type string
-            - The field must be at the top-level of the request message
-            - The field must not be annotated with google.api.field_behavior = REQUIRED.
-            - The field must be annotated with google.api.field_info.format = UUID4.
-
-            Args:
-                message[MethodDescriptorProto]: Describes a method of a service.
-            Return:
-                Sequence[str]: A list of candidates to be automatically populated
-                    according to https://google.aip.dev/client-libraries/4235.
-            """
-            top_level_request_message = self.messages[
-                message.input_type.lstrip(".")
-            ]
-            return [
-                field.name
-                for field in top_level_request_message.fields.values()
-                if field.type == wrappers.PrimitiveType.build(str)
-                and not field.required
-                and field.uuid4
-            ]
-
-        def _get_auto_populated_fields(
-            method_settings: client_pb2.MethodSettings,
-        ) -> Sequence[str]:
-            """
-            Return a list of auto-populated fields based on the service YAML.
-
-            Args:
-                method_settings (client_pb2.MethodSettings): The settings
-                to be used when generating API methods.
-            Return:
-                Sequence[str]: A sequence of all fields to be automatically
-                    populated, taking into account the requirements
-                    from AIP-4235.
-                    https://google.aip.dev/client-libraries/4235
-
-            Raises:
-                ValueError: if `auto_populated_fields` are incorrectly set in the service config
-            """
-            try:
-                method_in_scope = methods[method_settings.selector]
-            except KeyError:
-                raise ValueError(
-                    f"Selector {method_settings.selector} is not a valid method in this API."
-                )
-
-            if (
-                method_in_scope.client_streaming or method_in_scope.server_streaming
-            ) and method_settings.auto_populated_fields:
-                raise ValueError(
-                    f"Selector {method_settings.selector} is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs."
-                )
-
-            # The field name must be listed in the google.api.MethodSettings.auto_populated_fields entry in google.api.Publishing.method_settings for the target method.
-            auto_populated_fields = [
-                field for field in method_settings.auto_populated_fields
-            ]
-            for field in auto_populated_fields:
-                if field not in _get_auto_populated_fields_candidates(method_in_scope):
-                    raise ValueError(
-                        f"Field {field} is not valid as an auto populated field for the top level request message of selector {method_settings.selector}"
-                    )
-
-            return auto_populated_fields
-
         return {
             method_setting.selector: client_pb2.MethodSettings(
                 selector=method_setting.selector,
                 long_running=method_setting.long_running,
-                auto_populated_fields=_get_auto_populated_fields(
+                auto_populated_fields=self.get_auto_populated_fields(
                     method_setting
                 ),
             )
