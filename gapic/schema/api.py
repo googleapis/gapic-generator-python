@@ -608,7 +608,9 @@ class API:
                 Sequence[str]: A list of candidates to be automatically populated
                     according to https://google.aip.dev/client-libraries/4235.
             """
-            top_level_request_message = self.messages[message.input_type.lstrip(".")]
+            top_level_request_message = self.messages[
+                message.input_type.lstrip(".")
+            ]
             return [
                 field.name
                 for field in top_level_request_message.fields.values()
@@ -665,11 +667,12 @@ class API:
             method_setting.selector: client_pb2.MethodSettings(
                 selector=method_setting.selector,
                 long_running=method_setting.long_running,
-                auto_populated_fields=_get_auto_populated_fields(method_setting),
+                auto_populated_fields=_get_auto_populated_fields(
+                    method_setting
+                ),
             )
             for method_setting in self.service_yaml_config.publishing.method_settings
         }
-
 
     @cached_property
     def has_location_mixin(self) -> bool:

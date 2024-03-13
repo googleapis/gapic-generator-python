@@ -2606,7 +2606,6 @@ def test_has_iam_mixin():
     assert api_schema.has_iam_mixin
 
 
-
 def test_get_method_settings():
     """
     Tests the `all_method_settings` method of `gapic.schema.api` which
@@ -2638,7 +2637,10 @@ def test_get_method_settings():
             name="someexample.proto",
             package="google.example.v1beta1",
             messages=(
-                make_message_pb2(name="ExampleRequest", fields=(squid, mollusc, clam)),
+                make_message_pb2(
+                    name="ExampleRequest",
+                    fields=(squid, mollusc, clam)
+                ),
                 make_message_pb2(name="ExampleResponse", fields=()),
                 make_message_pb2(name="AnotherRequest", fields=(squid,)),
                 make_message_pb2(name="AnotherResponse", fields=()),
