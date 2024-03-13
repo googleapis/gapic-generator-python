@@ -626,8 +626,11 @@ class API:
                     f"Selector {method_settings.selector} is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs."
                 )
             # The field name must be listed in the google.api.MethodSettings.auto_populated_fields entry in google.api.Publishing.method_settings for the target method.
+            candidates = self.get_auto_populated_fields_candidates(
+                method_in_scope
+            )
             for field in method_settings.auto_populated_fields:
-                if field not in self.get_auto_populated_fields_candidates(method_in_scope):
+                if field not in candidates:
                     raise ValueError(
                         f"Field {field} is not valid as an auto populated field for the top level request message of selector {method_settings.selector}"
                     )
@@ -641,7 +644,7 @@ class API:
             )
 
         if method_settings.auto_populated_fields:
-            _check_service_yaml_validity(method_in_scope)
+            _check_service_yaml_validity(method_in_scope, method_settings)
             auto_populated_fields = method_settings.auto_populated_fields
 
         return auto_populated_fields
