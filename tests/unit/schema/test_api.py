@@ -20,6 +20,8 @@ import pytest
 
 from google.api import annotations_pb2  # type: ignore
 from google.api import client_pb2
+from google.api import field_behavior_pb2
+from google.api import field_info_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
@@ -2602,3 +2604,257 @@ def test_has_iam_mixin():
     })
     api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
     assert api_schema.has_iam_mixin
+
+
+
+def test_get_method_settings():
+    """
+    Tests the `all_method_settings` method of `gapic.schema.api` which
+    reads `MethodSettings` from the service config YAML.
+    https://github.com/googleapis/googleapis/blob/7dab3de7ec79098bb367b6b2ac3815512a49dd56/google/api/client.proto#L325
+    """
+    field_options = descriptor_pb2.FieldOptions()
+    field_options.Extensions[field_info_pb2.field_info].format = (
+        field_info_pb2.FieldInfo.Format.Value("UUID4")
+    )
+
+    # See AIP https://google.aip.dev/client-libraries/4235
+    # Only fields which are not required should be auto-populated
+    squid = make_field_pb2(
+        name="squid", type="TYPE_STRING", options=field_options, number=1
+    )
+    mollusc = make_field_pb2(
+        name="mollusc", type="TYPE_STRING", options=field_options, number=2
+    )
+    # Also include a required field
+    field_options.Extensions[field_behavior_pb2.field_behavior].append(
+        field_behavior_pb2.FieldBehavior.Value("REQUIRED")
+    )
+    clam = make_field_pb2(
+        name="clam", type="TYPE_STRING", options=field_options, number=3
+    )
+    fd = (
+        make_file_pb2(
+            name="someexample.proto",
+            package="google.example.v1beta1",
+            messages=(
+                make_message_pb2(name="ExampleRequest", fields=(squid, mollusc, clam)),
+                make_message_pb2(name="ExampleResponse", fields=()),
+                make_message_pb2(name="AnotherRequest", fields=(squid,)),
+                make_message_pb2(name="AnotherResponse", fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="SomeExample",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Example1",
+                            # Input and output types don't matter.
+                            input_type="google.example.v1beta1.ExampleRequest",
+                            output_type="google.example.v1beta1.ExampleResponse",
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Example2",
+                            # Input and output types don't matter.
+                            input_type="google.example.v1beta1.ExampleRequest",
+                            output_type="google.example.v1beta1.ExampleResponse",
+                            client_streaming=True,
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Example3",
+                            # Input and output types don't matter.
+                            input_type="google.example.v1beta1.ExampleRequest",
+                            output_type="google.example.v1beta1.ExampleResponse",
+                            server_streaming=True,
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Example4",
+                            # Input and output types don't matter.
+                            input_type="google.example.v1beta1.AnotherRequest",
+                            output_type="google.example.v1beta1.AnotherResponse",
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="Example5",
+                            # Input and output types don't matter.
+                            input_type="google.example.v1beta1.AnotherRequest",
+                            output_type="google.example.v1beta1.AnotherResponse",
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+    service_yaml_config = {
+        "apis": [
+            {"name": "google.example.v1beta1.SomeExample.Example1"},
+            {"name": "google.example.v1beta1.SomeExample.Example2"},
+            {"name": "google.example.v1beta1.SomeExample.Example3"},
+            {"name": "google.example.v1beta1.SomeExample.Example4"},
+            {"name": "google.example.v1beta1.SomeExample.Example5"},
+        ],
+        "publishing": {
+            "method_settings": [
+                {
+                    "selector": "google.example.v1beta1.SomeExample.Example1",
+                    "auto_populated_fields": [
+                        "squid",
+                        "mollusc",
+                    ],
+                },
+                {
+                    "selector": "google.example.v1beta1.SomeExample.Example2",
+                    "auto_populated_fields": [],
+                },
+                {
+                    "selector": "google.example.v1beta1.SomeExample.Example3",
+                    "auto_populated_fields": [],
+                },
+                {
+                    "selector": "google.example.v1beta1.SomeExample.Example4",
+                    "auto_populated_fields": [],
+                },
+                {
+                    "selector": "google.example.v1beta1.SomeExample.Example5",
+                },
+            ]
+        },
+    }
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
+
+    assert api_schema.all_method_settings == {
+        "google.example.v1beta1.SomeExample.Example1": client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+            auto_populated_fields=["squid", "mollusc"],
+            long_running=client_pb2.MethodSettings.LongRunning(),
+        ),
+        "google.example.v1beta1.SomeExample.Example2": client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example2",
+            auto_populated_fields=[],
+            long_running=client_pb2.MethodSettings.LongRunning(),
+        ),
+        "google.example.v1beta1.SomeExample.Example3": client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example3",
+            auto_populated_fields=[],
+            long_running=client_pb2.MethodSettings.LongRunning(),
+        ),
+        "google.example.v1beta1.SomeExample.Example4": client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example4",
+            auto_populated_fields=[],
+            long_running=client_pb2.MethodSettings.LongRunning(),
+        ),
+        "google.example.v1beta1.SomeExample.Example5": client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example5",
+            auto_populated_fields=[],
+            long_running=client_pb2.MethodSettings.LongRunning(),
+        ),
+    }
+
+    # Test that ValueError is raised when there is an invalid value for publishing.method_settings.selector
+    opts = Options(
+        service_yaml_config={
+            "apis": [
+                {"name": "google.example.v1beta1.SomeExample.Example1"},
+            ],
+            "publishing": {
+                "method_settings": [
+                    {
+                        "selector": "google.example.v1beta1.DoesNotExist.Example1",
+                        "auto_populated_fields": [
+                            "squid",
+                            "mollusc",
+                        ],
+                    }
+                ]
+            },
+        }
+    )
+    api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
+
+    with pytest.raises(
+        ValueError,
+        match="Selector google.example.v1beta1.DoesNotExist.Example1 is not a valid method in this API",
+    ):
+        api_schema.all_method_settings
+
+    # Test that ValueError is raised when the rpc in publishing.method_settings.selector is not a unary one
+    opts = Options(
+        service_yaml_config={
+            "apis": [
+                {"name": "google.example.v1beta1.SomeExample.Example1"},
+            ],
+            "publishing": {
+                "method_settings": [
+                    {
+                        "selector": "google.example.v1beta1.SomeExample.Example2",
+                        "auto_populated_fields": [
+                            "squid",
+                            "mollusc",
+                        ],
+                    }
+                ]
+            },
+        }
+    )
+    api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
+
+    with pytest.raises(
+        ValueError,
+        match="Selector google.example.v1beta1.SomeExample.Example2 is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs",
+    ):
+        api_schema.all_method_settings
+
+    # Test that ValueError is raised when the rpc in publishing.method_settings.selector is not a unary one
+    opts = Options(
+        service_yaml_config={
+            "apis": [
+                {"name": "google.example.v1beta1.SomeExample.Example1"},
+            ],
+            "publishing": {
+                "method_settings": [
+                    {
+                        "selector": "google.example.v1beta1.SomeExample.Example3",
+                        "auto_populated_fields": [
+                            "squid",
+                            "mollusc",
+                        ],
+                    }
+                ]
+            },
+        }
+    )
+    api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
+
+    with pytest.raises(
+        ValueError,
+        match="Selector google.example.v1beta1.SomeExample.Example3 is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs",
+    ):
+        api_schema.all_method_settings
+
+    # Test that ValueError is raised when the field in publishing.method_settings.auto_populated_fields does not exist
+    opts = Options(
+        service_yaml_config={
+            "apis": [
+                {"name": "google.example.v1beta1.SomeExample.Example1"},
+            ],
+            "publishing": {
+                "method_settings": [
+                    {
+                        "selector": "google.example.v1beta1.SomeExample.Example1",
+                        "auto_populated_fields": [
+                            "doesnotexist",
+                            "mollusc",
+                        ],
+                    }
+                ]
+            },
+        }
+    )
+    api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
+
+    with pytest.raises(
+        ValueError,
+        match="Field doesnotexist is not valid as an auto populated field for the top level request message of selector google.example.v1beta1.SomeExample.Example1",
+    ):
+        api_schema.all_method_settings
