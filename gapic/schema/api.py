@@ -652,7 +652,7 @@ class API:
 
     @cached_property
     def all_methods(self) -> Mapping[str, MethodDescriptorProto]:
-        """Return a map of all API-wide methods.
+        """Return a map of all methods for the API.
 
         Return:
             Mapping[str, MethodDescriptorProto]: A mapping of MethodDescriptorProto
