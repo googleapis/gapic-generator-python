@@ -602,43 +602,39 @@ class API:
                 automatically populated.
         """
 
+        message: str = ""
         for method_settings in service_method_settings:
-            try:
-                method_descriptor = self.all_methods[method_settings.selector]
-            except KeyError:
-                raise ValueError(
-                    f"Selector {method_settings.selector} is not a valid method in this API."
-                )
-
+            method_descriptor = self.all_methods.get(method_settings.selector)
+            if not method_descriptor:
+                message += f"Selector {method_settings.selector} is not a valid method in this API. "
+                continue
             if method_settings.auto_populated_fields:
                 # The method must not be a streaming rpc.
                 if method_descriptor.client_streaming or method_descriptor.server_streaming:
-                    raise ValueError(
-                        f"Selector {method_settings.selector} is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs."
-                    )
+                    message = f"Selector {method_settings.selector} is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs."
+                    continue
 
                 top_level_request_message = self.messages[
                     method_descriptor.input_type.lstrip(".")
                 ]
-                message: str = ""
                 for field_str in method_settings.auto_populated_fields:
                     if field_str not in top_level_request_message.fields:
-                        message += f"Field `{field_str}` is not in the top level request message.\n"
+                        message += f"Field `{field_str}` is not in the top level request message. "
                     else:
                         field = top_level_request_message.fields[field_str]
                         if field.type != wrappers.PrimitiveType.build(str):
-                            message += f"Field `{field}` is not of type string.\n"
+                            message += f"Field `{field_str}` is not of type string. "
                         if field.required:
-                            message += f"Field `{field}` is a required field.\n"
+                            message += f"Field `{field_str}` is a required field. "
                         if not field.uuid4:
-                            message += f"Field `{field}` is not a UUID4 field.\n"
+                            message += f"Field `{field_str}` is not a UUID4 field. "
 
-                if message:
-                    raise ValueError(
-                        f"Field cannot be automatically populated in the top level "
-                        f"request message of selector {method_settings.selector}. "
-                        f"{message}"
-                    )
+        if message:
+            raise ValueError(
+                f"Fields cannot be automatically populated in the top level "
+                f"request message of selector {method_settings.selector}. "
+                f"{message.strip()}"
+            )
 
     @cached_property
     def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:

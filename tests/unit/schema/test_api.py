@@ -2618,7 +2618,7 @@ def test_get_method_settings():
     ].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
 
     # See AIP https://google.aip.dev/client-libraries/4235
-    # Only fields which are not required should be auto-populated
+    # for the specific requirements to be tested.
     squid = make_field_pb2(
         name="squid", type="TYPE_STRING", options=field_options, number=1
     )
@@ -2632,13 +2632,17 @@ def test_get_method_settings():
     clam = make_field_pb2(
         name="clam", type="TYPE_STRING", options=field_options, number=3
     )
+    field_options.ClearExtension(field_info_pb2.field_info)
+    octopus = make_field_pb2(
+        name="octopus", type="TYPE_INT32", options=field_options, number=4
+    )
     fd = (
         make_file_pb2(
             name="someexample.proto",
             package="google.example.v1beta1",
             messages=(
                 make_message_pb2(
-                    name="ExampleRequest", fields=(squid, mollusc, clam)
+                    name="ExampleRequest", fields=(squid, mollusc, clam, octopus)
                 ),
                 make_message_pb2(name="ExampleResponse", fields=()),
                 make_message_pb2(name="AnotherRequest", fields=(squid,)),
@@ -2846,16 +2850,18 @@ def test_get_method_settings():
                         "auto_populated_fields": [
                             "doesnotexist",
                             "mollusc",
-                        ],
+                            "octopus",
+                        ]
                     }
                 ]
             },
         }
     )
     api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
-
-    with pytest.raises(
-        ValueError,
-        match="Field cannot be automatically populated in the top level request message of selector google.example.v1beta1.SomeExample.Example1. Field `doesnotexist` is not in the top level request message.",
-    ):
+    exception_message = """Fields cannot be automatically populated in the top level \
+request message of selector google.example.v1beta1.SomeExample.Example1. \
+Field `doesnotexist` is not in the top level request message. Field \
+`octopus` is not of type string. Field `octopus` is a required field. \
+Field `octopus` is not a UUID4 field."""
+    with pytest.raises(ValueError, match=exception_message):
         api_schema.all_method_settings
