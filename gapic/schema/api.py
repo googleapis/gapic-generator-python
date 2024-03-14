@@ -656,11 +656,11 @@ class API:
 
         Return:
             Mapping[str, Sequence[client_pb2.MethodSettings]]: A mapping of all method
-                settings read from the service YAML, taking into account the requirements
-                from AIPs, such as AIP-4235.
+                settings read from the service YAML.
 
         Raises:
-            ValueError: if `auto_populated_fields` are incorrectly set in the service config
+            ValueError: if the method settings do not meet the requirements of AIPs,
+                including AIP-4235 (https://google.aip.dev/client-libraries/4235).
         """
         self.check_method_settings_validity(
             self.service_yaml_config.publishing.method_settings
