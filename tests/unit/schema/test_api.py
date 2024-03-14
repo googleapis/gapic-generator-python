@@ -2792,32 +2792,20 @@ def test_get_method_settings():
             "publishing": {
                 "method_settings": [
                     {
+                        "selector": "google.example.v1beta1.SomeExample.Example1",
+                        "auto_populated_fields": [
+                            "doesnotexist",
+                            "mollusc",
+                            "octopus",
+                        ]
+                    },
+                    {
                         "selector": "google.example.v1beta1.SomeExample.Example2",
                         "auto_populated_fields": [
                             "squid",
                             "mollusc",
                         ],
-                    }
-                ]
-            },
-        }
-    )
-    api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
-
-    with pytest.raises(
-        ValueError,
-        match="Selector google.example.v1beta1.SomeExample.Example2 is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs",
-    ):
-        api_schema.all_method_settings
-
-    # Test that ValueError is raised when the rpc in publishing.method_settings.selector is not a unary one
-    opts = Options(
-        service_yaml_config={
-            "apis": [
-                {"name": "google.example.v1beta1.SomeExample.Example1"},
-            ],
-            "publishing": {
-                "method_settings": [
+                    },
                     {
                         "selector": "google.example.v1beta1.SomeExample.Example3",
                         "auto_populated_fields": [
@@ -2831,37 +2819,13 @@ def test_get_method_settings():
     )
     api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
 
-    with pytest.raises(
-        ValueError,
-        match="Selector google.example.v1beta1.SomeExample.Example3 is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs",
-    ):
-        api_schema.all_method_settings
-
-    # Test that ValueError is raised when the field in publishing.method_settings.auto_populated_fields does not exist
-    opts = Options(
-        service_yaml_config={
-            "apis": [
-                {"name": "google.example.v1beta1.SomeExample.Example1"},
-            ],
-            "publishing": {
-                "method_settings": [
-                    {
-                        "selector": "google.example.v1beta1.SomeExample.Example1",
-                        "auto_populated_fields": [
-                            "doesnotexist",
-                            "mollusc",
-                            "octopus",
-                        ]
-                    }
-                ]
-            },
-        }
-    )
-    api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
     exception_message = """Fields cannot be automatically populated in the top level \
-request message of selector google.example.v1beta1.SomeExample.Example1. \
-Field `doesnotexist` is not in the top level request message. Field \
-`octopus` is not of type string. Field `octopus` is a required field. \
-Field `octopus` is not a UUID4 field."""
+request message of selector google.example.v1beta1.SomeExample.Example3. Field \
+`doesnotexist` is not in the top level request message. Field `octopus` is not \
+of type string. Field `octopus` is a required field. Field `octopus` is not a \
+UUID4 field. Selector google.example.v1beta1.SomeExample.Example2 is a \
+streaming method. `auto_populated_fields` are only supported for unary \
+methods. Selector google.example.v1beta1.SomeExample.Example3 is a streaming \
+method. `auto_populated_fields` are only supported for unary methods."""
     with pytest.raises(ValueError, match=exception_message):
         api_schema.all_method_settings
