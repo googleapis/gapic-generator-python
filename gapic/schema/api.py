@@ -650,7 +650,7 @@ class API:
 
     @cached_property
     def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:
-        """Return a map of API-wide `MethodSettings` from the service YAML config to be used
+        """Return a map of all `google.api.client.MethodSettings` to be used
         when generating methods.
         https://github.com/googleapis/googleapis/blob/7dab3de7ec79098bb367b6b2ac3815512a49dd56/google/api/client.proto#L325
 
