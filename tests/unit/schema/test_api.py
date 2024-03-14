@@ -2606,7 +2606,7 @@ def test_has_iam_mixin():
     assert api_schema.has_iam_mixin
 
 
-def test_get_method_settings():
+def test_all_method_settings():
     """
     Tests the `all_method_settings` method of `gapic.schema.api` which
     reads `MethodSettings` from the service config YAML.
