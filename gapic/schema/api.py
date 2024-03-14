@@ -643,8 +643,8 @@ class API:
 
                 if message:
                     raise ValueError(
-                        f"Field cannot be automatically populated "
-                        f"in the top level request message of selector {method_settings.selector}. "
+                        f"Field cannot be automatically populated in the top level "
+                        f"request message of selector {method_settings.selector}. "
                         f"{message}"
                     )
 
