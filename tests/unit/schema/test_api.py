@@ -2632,6 +2632,7 @@ def test_get_method_settings():
     clam = make_field_pb2(
         name="clam", type="TYPE_STRING", options=field_options, number=3
     )
+    # Also include a field which is not of type string
     field_options.ClearExtension(field_info_pb2.field_info)
     octopus = make_field_pb2(
         name="octopus", type="TYPE_INT32", options=field_options, number=4
@@ -2654,33 +2655,28 @@ def test_get_method_settings():
                     method=(
                         descriptor_pb2.MethodDescriptorProto(
                             name="Example1",
-                            # Input and output types don't matter.
                             input_type="google.example.v1beta1.ExampleRequest",
                             output_type="google.example.v1beta1.ExampleResponse",
                         ),
                         descriptor_pb2.MethodDescriptorProto(
                             name="Example2",
-                            # Input and output types don't matter.
                             input_type="google.example.v1beta1.ExampleRequest",
                             output_type="google.example.v1beta1.ExampleResponse",
                             client_streaming=True,
                         ),
                         descriptor_pb2.MethodDescriptorProto(
                             name="Example3",
-                            # Input and output types don't matter.
                             input_type="google.example.v1beta1.ExampleRequest",
                             output_type="google.example.v1beta1.ExampleResponse",
                             server_streaming=True,
                         ),
                         descriptor_pb2.MethodDescriptorProto(
                             name="Example4",
-                            # Input and output types don't matter.
                             input_type="google.example.v1beta1.AnotherRequest",
                             output_type="google.example.v1beta1.AnotherResponse",
                         ),
                         descriptor_pb2.MethodDescriptorProto(
                             name="Example5",
-                            # Input and output types don't matter.
                             input_type="google.example.v1beta1.AnotherRequest",
                             output_type="google.example.v1beta1.AnotherResponse",
                         ),
