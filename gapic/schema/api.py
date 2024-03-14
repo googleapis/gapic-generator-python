@@ -620,24 +620,24 @@ class API:
                 top_level_request_message = self.messages[
                     method_descriptor.input_type.lstrip(".")
                 ]
-                message: str = None
+                message: str = ""
                 for field_str in method_settings.auto_populated_fields:
                     if field_str not in top_level_request_message.fields:
-                        message = (
-                            f"Field `{field_str}` is not in the top level request message."
+                        message.join(
+                            f"Field `{field_str}` is not in the top level request message.\n"
                         )
                     else:
                         field = top_level_request_message.fields[field_str]
                         if field.type != wrappers.PrimitiveType.build(str):
-                            message.append(
+                            message.join(
                                 f"Field `{field}` is not of type string.\n"
                             )
                         if field.required:
-                            message.append(
+                            message.join(
                                 f"Field `{field}` is a required field.\n"
                             )
                         if not field.uuid4:
-                            message.append(
+                            message.join(
                                 f"Field `{field}` is not a UUID4 field.\n"
                             )
 
