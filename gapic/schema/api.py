@@ -617,7 +617,7 @@ class API:
         def _check_service_yaml_validity(method_in_scope: MethodDescriptorProto, method_settings: client_pb2.MethodSettings):
             """
             Ensure that the method and fields meet the criteria of AIP-4235.
-            Use the helper function get_auto_populated_fields_candidates() to return on fields
+            Use the helper function get_auto_populated_fields_candidates() to return fields
             which meet the criteria of AIP-4235.
             https://google.aip.dev/client-libraries/4235
             """
