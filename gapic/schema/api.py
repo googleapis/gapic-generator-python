@@ -618,8 +618,7 @@ class API:
             """
             Ensure that the method and fields meet the criteria of AIP-4235.
             Use the helper function get_auto_populated_fields_candidates() to return fields
-            which meet the criteria of AIP-4235.
-            https://google.aip.dev/client-libraries/4235
+            which meet the criteria of AIP-4235 (https://google.aip.dev/client-libraries/4235).
             """
 
             # The method must not be a streaming rpc
