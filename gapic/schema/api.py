@@ -576,7 +576,7 @@ class API:
         }
 
     def check_method_settings_validity(
-        self, all_method_settings: Sequence[client_pb2.MethodSettings]
+        self, service_method_settings: Sequence[client_pb2.MethodSettings]
     ) -> None:
         """
         Checks each `google.api.client.MethodSettings` for validity. If
@@ -593,7 +593,7 @@ class API:
         - The field presence requirements in AIP-4235 are checked at run time.
 
         Args:
-            all_method_settings (Sequence[client_pb2.MethodSettings]): Method settings to be used
+            service_method_settings (Sequence[client_pb2.MethodSettings]): Method settings to be used
                 when generating API methods.
         Return:
             None
@@ -602,7 +602,7 @@ class API:
                 automatically populated.
         """
 
-        for method_settings in all_method_settings:
+        for method_settings in service_method_settings:
             try:
                 method_descriptor = self.all_methods[method_settings.selector]
             except KeyError:
