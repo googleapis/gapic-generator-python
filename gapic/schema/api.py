@@ -598,7 +598,7 @@ class API:
         method_settings: client_pb2.MethodSettings,
     ) -> Sequence[str]:
         """
-        Return a list of auto-populated fields based on the service YAML.
+        Return a list of fields with requested auto-population in the `method_settings`.
 
         Args:
             method_settings (client_pb2.MethodSettings): The settings
