@@ -609,9 +609,9 @@ class API:
                 message += f"Selector {method_settings.selector} is not a valid method in this API. "
                 continue
             if method_settings.auto_populated_fields:
-                # The method must not be a streaming rpc.
+                # The method must not be a streaming method.
                 if method_descriptor.client_streaming or method_descriptor.server_streaming:
-                    message = f"Selector {method_settings.selector} is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs."
+                    message = f"Selector {method_settings.selector} is a streaming method. `auto_populated_fields` are only supported in unary methods."
                     continue
 
                 top_level_request_message = self.messages[
