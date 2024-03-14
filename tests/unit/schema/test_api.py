@@ -2727,7 +2727,14 @@ def test_get_method_settings():
     opts = Options(service_yaml_config=service_yaml_config)
 
     api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
-
+    assert len(api_schema.all_methods) == 5
+    assert list(api_schema.all_methods.keys()) == [
+        'google.example.v1beta1.SomeExample.Example1',
+        'google.example.v1beta1.SomeExample.Example2',
+        'google.example.v1beta1.SomeExample.Example3',
+        'google.example.v1beta1.SomeExample.Example4',
+        'google.example.v1beta1.SomeExample.Example5'
+    ]
     assert api_schema.all_method_settings == {
         "google.example.v1beta1.SomeExample.Example1": client_pb2.MethodSettings(
             selector="google.example.v1beta1.SomeExample.Example1",
