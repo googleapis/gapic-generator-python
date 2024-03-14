@@ -563,16 +563,18 @@ class API:
 
     def get_auto_populated_fields_candidates(
         self,
-        message: MethodDescriptorProto,
+        method_descriptor: MethodDescriptorProto,
     ) -> Sequence[str]:
-        """Return fields which meet the criteria to be automatically populated for a given message.
-        For a field to be automatically populated, all the below configurations must
-        be true according to https://google.aip.dev/client-libraries/4235:
+        """Return fields in the request message for a given method which meet the
+        criteria for being automatically populated. For a field to be automatically
+        populated, all the configurations below must be true according to
+        https://google.aip.dev/client-libraries/4235:
 
         - The field must be of type string
         - The field must be at the top-level of the request message
         - The field must not be annotated with google.api.field_behavior = REQUIRED.
         - The field must be annotated with google.api.field_info.format = UUID4.
+        - The field presence requirements in AIP-4235 are checked at run time.
 
         Args:
             message[MethodDescriptorProto]: Describes a method of a service.
@@ -581,7 +583,7 @@ class API:
                 according to https://google.aip.dev/client-libraries/4235.
         """
         top_level_request_message = self.messages[
-            message.input_type.lstrip(".")
+            method_descriptor.input_type.lstrip(".")
         ]
         return [
             field.name
