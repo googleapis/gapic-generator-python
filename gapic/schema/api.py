@@ -611,7 +611,7 @@ class API:
             if method_settings.auto_populated_fields:
                 # The method must not be a streaming method.
                 if method_descriptor.client_streaming or method_descriptor.server_streaming:
-                    message = f"Selector {method_settings.selector} is a streaming method. `auto_populated_fields` are only supported in unary methods."
+                    message = f"Selector {method_settings.selector} is a streaming method. `auto_populated_fields` are only supported for unary methods."
                     continue
 
                 top_level_request_message = self.messages[
