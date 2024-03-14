@@ -2803,7 +2803,10 @@ def test_get_method_settings():
     api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
 
     exception_message = """Fields cannot be automatically populated in the top level \
-request message of selector google.example.v1beta1.SomeExample.Example3. Selector \
+request message for selectors: \['google.example.v1beta1.DoesNotExist.Example1', \
+'google.example.v1beta1.SomeExample.Example1', \
+'google.example.v1beta1.SomeExample.Example2', \
+'google.example.v1beta1.SomeExample.Example3'\]. Selector \
 google.example.v1beta1.DoesNotExist.Example1 is not a valid method in this API. \
 Field `doesnotexist` is not in the top level request message. Field `octopus` is not \
 of type string. Field `octopus` is a required field. Field `octopus` is not a UUID4 \

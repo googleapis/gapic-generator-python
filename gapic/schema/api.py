@@ -602,38 +602,46 @@ class API:
                 automatically populated.
         """
 
-        message: str = ""
+        all_errors: str = ""
+        invalid_selectors = []
         for method_settings in service_method_settings:
             method_descriptor = self.all_methods.get(method_settings.selector)
             if not method_descriptor:
-                message += f"Selector {method_settings.selector} is not a valid method in this API. "
+                all_errors += f"Selector {method_settings.selector} is not a valid method in this API. "
+                invalid_selectors.append(method_settings.selector)
                 continue
             if method_settings.auto_populated_fields:
                 # The method must not be a streaming method.
                 if method_descriptor.client_streaming or method_descriptor.server_streaming:
-                    message += f"Selector {method_settings.selector} is a streaming method. `auto_populated_fields` are only supported for unary methods. "
+                    all_errors += f"Selector {method_settings.selector} is a streaming method. `auto_populated_fields` are only supported for unary methods. "
+                    invalid_selectors.append(method_settings.selector)
                     continue
 
+                selector_error_message: str = ""
                 top_level_request_message = self.messages[
                     method_descriptor.input_type.lstrip(".")
                 ]
                 for field_str in method_settings.auto_populated_fields:
                     if field_str not in top_level_request_message.fields:
-                        message += f"Field `{field_str}` is not in the top level request message. "
+                        selector_error_message += f"Field `{field_str}` is not in the top level request message. "
                     else:
                         field = top_level_request_message.fields[field_str]
                         if field.type != wrappers.PrimitiveType.build(str):
-                            message += f"Field `{field_str}` is not of type string. "
+                            selector_error_message += f"Field `{field_str}` is not of type string. "
                         if field.required:
-                            message += f"Field `{field_str}` is a required field. "
+                            selector_error_message += f"Field `{field_str}` is a required field. "
                         if not field.uuid4:
-                            message += f"Field `{field_str}` is not a UUID4 field. "
+                            selector_error_message += f"Field `{field_str}` is not a UUID4 field. "
 
-        if message:
+                if selector_error_message:
+                    all_errors += selector_error_message
+                    invalid_selectors.append(method_settings.selector)
+
+        if all_errors:
             raise ValueError(
                 f"Fields cannot be automatically populated in the top level "
-                f"request message of selector {method_settings.selector}. "
-                f"{message.strip()}"
+                f"request message for selectors: {invalid_selectors}. "
+                f"{all_errors.strip()}"
             )
 
     @cached_property
