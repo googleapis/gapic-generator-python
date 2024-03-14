@@ -2613,9 +2613,9 @@ def test_get_method_settings():
     https://github.com/googleapis/googleapis/blob/7dab3de7ec79098bb367b6b2ac3815512a49dd56/google/api/client.proto#L325
     """
     field_options = descriptor_pb2.FieldOptions()
-    field_options.Extensions[field_info_pb2.field_info].format = (
-        field_info_pb2.FieldInfo.Format.Value("UUID4")
-    )
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
 
     # See AIP https://google.aip.dev/client-libraries/4235
     # Only fields which are not required should be auto-populated
@@ -2638,8 +2638,7 @@ def test_get_method_settings():
             package="google.example.v1beta1",
             messages=(
                 make_message_pb2(
-                    name="ExampleRequest",
-                    fields=(squid, mollusc, clam)
+                    name="ExampleRequest", fields=(squid, mollusc, clam)
                 ),
                 make_message_pb2(name="ExampleResponse", fields=()),
                 make_message_pb2(name="AnotherRequest", fields=(squid,)),
@@ -2857,6 +2856,6 @@ def test_get_method_settings():
 
     with pytest.raises(
         ValueError,
-        match="Field doesnotexist is not valid as an auto populated field for the top level request message of selector google.example.v1beta1.SomeExample.Example1",
+        match="Field cannot be automatically populated in the top level request message of selector google.example.v1beta1.SomeExample.Example1. Field `doesnotexist` is not in the top level request message.",
     ):
         api_schema.all_method_settings
