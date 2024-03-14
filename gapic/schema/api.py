@@ -561,32 +561,6 @@ class API:
             res[s] = [rule for rule in opt_gen if rule]
         return res
 
-    def get_auto_populated_fields(
-        self,
-        method_settings: client_pb2.MethodSettings,
-    ) -> Sequence[str]:
-        """
-        Return a list of fields to be automatically populated as defined in
-        `method_settings.auto_populated_fields`.
-
-        Args:
-            method_settings (client_pb2.MethodSettings): The settings to be used
-                when generating API methods.
-        Return:
-            Sequence[str]: A sequence of all fields to be automatically
-                populated, taking into account the requirements
-                from AIP-4235 (https://google.aip.dev/client-libraries/4235).
-
-        Raises:
-            ValueError: if `method_settings.auto_populated_fields` do not meet
-                the requirements of AIP-4235
-                (https://google.aip.dev/client-libraries/4235).
-        """
-
-        self.check_method_settings_validity(method_settings)
-
-        return method_settings.auto_populated_fields
-
     @cached_property
     def all_methods(self) -> Mapping[str, MethodDescriptorProto]:
         """Return a map of all methods for the API.
@@ -602,10 +576,11 @@ class API:
         }
 
     def check_method_settings_validity(
-        self, method_settings: client_pb2.MethodSettings
+        self, all_method_settings: Sequence[client_pb2.MethodSettings]
     ) -> None:
         """
-        Check `method_settings` for validity. If `method_settings.auto_populated_fields`
+        Checks each `google.api.client.MethodSettings` for validity. If
+        `google.api.client.MethodSettings.auto_populated_fields`
         is set, verify each field against the criteria of AIP-4235
         (https://google.aip.dev/client-libraries/4235). All the configurations 
         below must be true:
@@ -618,7 +593,7 @@ class API:
         - The field presence requirements in AIP-4235 are checked at run time.
 
         Args:
-            method_settings (client_pb2.MethodSettings): The settings to be used
+            all_method_settings (Sequence[client_pb2.MethodSettings]): Method settings to be used
                 when generating API methods.
         Return:
             None
@@ -627,50 +602,51 @@ class API:
                 automatically populated.
         """
 
-        try:
-            method_descriptor = self.all_methods[method_settings.selector]
-        except KeyError:
-            raise ValueError(
-                f"Selector {method_settings.selector} is not a valid method in this API."
-            )
-
-        if method_settings.auto_populated_fields:
-            # The method must not be a streaming rpc.
-            if method_descriptor.client_streaming or method_descriptor.server_streaming:
+        for method_settings in all_method_settings:
+            try:
+                method_descriptor = self.all_methods[method_settings.selector]
+            except KeyError:
                 raise ValueError(
-                    f"Selector {method_settings.selector} is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs."
+                    f"Selector {method_settings.selector} is not a valid method in this API."
                 )
 
-            top_level_request_message = self.messages[
-                method_descriptor.input_type.lstrip(".")
-            ]
-            message: str = None
-            for field_str in method_settings.auto_populated_fields:
-                if field_str not in top_level_request_message.fields:
-                    message = (
-                        f"Field `{field_str}` is not in the top level request message."
+            if method_settings.auto_populated_fields:
+                # The method must not be a streaming rpc.
+                if method_descriptor.client_streaming or method_descriptor.server_streaming:
+                    raise ValueError(
+                        f"Selector {method_settings.selector} is a streaming rpc. `auto_populated_fields` are only supported in unary rpcs."
                     )
-                else:
-                    field = top_level_request_message.fields[field_str]
-                    if field.type != wrappers.PrimitiveType.build(str):
-                        message.append(
-                            f"Field `{field}` is not of type string.\n"
-                        )
-                    if field.required:
-                        message.append(
-                            f"Field `{field}` is a required field.\n"
-                        )
-                    if not field.uuid4:
-                        message.append(
-                            f"Field `{field}` is not a UUID4 field.\n"
-                        )
 
-            if message:
-                raise ValueError(
-                    f"Field cannot be automatically populated "
-                    f"in the top level request message of selector {method_settings.selector}. "
-                    f"{message}"
-                )
+                top_level_request_message = self.messages[
+                    method_descriptor.input_type.lstrip(".")
+                ]
+                message: str = None
+                for field_str in method_settings.auto_populated_fields:
+                    if field_str not in top_level_request_message.fields:
+                        message = (
+                            f"Field `{field_str}` is not in the top level request message."
+                        )
+                    else:
+                        field = top_level_request_message.fields[field_str]
+                        if field.type != wrappers.PrimitiveType.build(str):
+                            message.append(
+                                f"Field `{field}` is not of type string.\n"
+                            )
+                        if field.required:
+                            message.append(
+                                f"Field `{field}` is a required field.\n"
+                            )
+                        if not field.uuid4:
+                            message.append(
+                                f"Field `{field}` is not a UUID4 field.\n"
+                            )
+
+                if message:
+                    raise ValueError(
+                        f"Field cannot be automatically populated "
+                        f"in the top level request message of selector {method_settings.selector}. "
+                        f"{message}"
+                    )
 
     @cached_property
     def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:
@@ -679,20 +655,22 @@ class API:
         https://github.com/googleapis/googleapis/blob/7dab3de7ec79098bb367b6b2ac3815512a49dd56/google/api/client.proto#L325
 
         Return:
-            Mapping[str, Sequence[client_pb2.MethodSettings]]: A mapping of all API-wide method
+            Mapping[str, Sequence[client_pb2.MethodSettings]]: A mapping of all method
                 settings read from the service YAML, taking into account the requirements
                 from AIPs, such as AIP-4235.
 
         Raises:
             ValueError: if `auto_populated_fields` are incorrectly set in the service config
         """
+        self.check_method_settings_validity(
+            self.service_yaml_config.publishing.method_settings
+        )
+
         return {
             method_setting.selector: client_pb2.MethodSettings(
                 selector=method_setting.selector,
                 long_running=method_setting.long_running,
-                auto_populated_fields=self.get_auto_populated_fields(
-                    method_setting
-                ),
+                auto_populated_fields=method_setting.auto_populated_fields,
             )
             for method_setting in self.service_yaml_config.publishing.method_settings
         }
