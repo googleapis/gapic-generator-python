@@ -20,6 +20,7 @@ through an :class:`~.API` object.
 import collections
 import dataclasses
 import itertools
+import json
 import keyword
 import os
 import sys
@@ -57,6 +58,15 @@ from gapic.utils import RESERVED_NAMES
 TRANSPORT_GRPC = "grpc"
 TRANSPORT_GRPC_ASYNC = "grpc-async"
 TRANSPORT_REST = "rest"
+
+
+
+class MethodSettingsError(ValueError):
+    """
+    Raised when `google.api.client_pb2.MethodSettings` contains
+    an invalid value.
+    """
+    pass
 
 
 @dataclasses.dataclass(frozen=True)
@@ -575,14 +585,15 @@ class API:
             for method_key, method_value in service_value.methods.items()
         }
 
-    def check_method_settings_validity(
+    def enforce_valid_method_settings(
         self, service_method_settings: Sequence[client_pb2.MethodSettings]
     ) -> None:
         """
-        Checks each `google.api.client.MethodSettings` for validity. If
+        Checks each `google.api.client.MethodSettings` provided for validity and
+        raises an exception if invalid values are found. If
         `google.api.client.MethodSettings.auto_populated_fields`
         is set, verify each field against the criteria of AIP-4235
-        (https://google.aip.dev/client-libraries/4235). All the configurations 
+        (https://google.aip.dev/client-libraries/4235). All of the conditions
         below must be true:
 
         - The field must be of type string
@@ -590,59 +601,75 @@ class API:
         - The RPC must be a unary RPC (i.e. streaming RPCs are not supported)
         - The field must not be annotated with google.api.field_behavior = REQUIRED.
         - The field must be annotated with google.api.field_info.format = UUID4.
-        - The field presence requirements in AIP-4235 are checked at run time.
+
+        Note that the field presence requirements in AIP-4235 should be checked at run
+        time.
 
         Args:
-            service_method_settings (Sequence[client_pb2.MethodSettings]): Method settings to be used
-                when generating API methods.
+            service_method_settings (Sequence[client_pb2.MethodSettings]): Method
+                settings to be used when generating API methods.
         Return:
             None
         Raises:
-            ValueError: if fields in `method_settings.auto_populated_fields` cannot be
-                automatically populated.
+            MethodSettingsError: if fields in  `method_settings.auto_populated_fields`
+                cannot be automatically populated.
         """
 
-        all_errors: str = ""
-        invalid_selectors = []
+        all_errors: dict = {}
+        selectors_seen = []
         for method_settings in service_method_settings:
-            method_descriptor = self.all_methods.get(method_settings.selector)
-            if not method_descriptor:
-                all_errors += f"Selector {method_settings.selector} is not a valid method in this API. "
-                invalid_selectors.append(method_settings.selector)
+            # Check if this selector is defind more than once
+            if method_settings.selector in selectors_seen:
+                all_errors[method_settings.selector] = ["Duplicate selector"]
                 continue
-            if method_settings.auto_populated_fields:
-                # The method must not be a streaming method.
-                if method_descriptor.client_streaming or method_descriptor.server_streaming:
-                    all_errors += f"Selector {method_settings.selector} is a streaming method. `auto_populated_fields` are only supported for unary methods. "
-                    invalid_selectors.append(method_settings.selector)
-                    continue
+            selectors_seen.append(method_settings.selector)
 
-                selector_error_message: str = ""
+            method_descriptor = self.all_methods.get(method_settings.selector)
+            # Check if this selector can be mapped to a method in the API.
+            if not method_descriptor:
+                all_errors[method_settings.selector] = [
+                    "Method was not found."
+                ]
+                continue
+
+            if method_settings.auto_populated_fields:
+                # Check if the selector maps to a streaming method
+                if (
+                    method_descriptor.client_streaming
+                    or method_descriptor.server_streaming
+                ):
+                    all_errors[method_settings.selector] = [
+                        "Method is not a unary method."
+                    ]
+                    continue
                 top_level_request_message = self.messages[
                     method_descriptor.input_type.lstrip(".")
                 ]
+                selector_errors = []
                 for field_str in method_settings.auto_populated_fields:
                     if field_str not in top_level_request_message.fields:
-                        selector_error_message += f"Field `{field_str}` is not in the top level request message. "
+                        selector_errors.append(
+                            f"Field `{field_str}` was not found"
+                        )
                     else:
                         field = top_level_request_message.fields[field_str]
                         if field.type != wrappers.PrimitiveType.build(str):
-                            selector_error_message += f"Field `{field_str}` is not of type string. "
+                            selector_errors.append(
+                                f"Field `{field_str}` is not of type string."
+                            )
                         if field.required:
-                            selector_error_message += f"Field `{field_str}` is a required field. "
+                            selector_errors.append(
+                                f"Field `{field_str}` is a required field."
+                            )
                         if not field.uuid4:
-                            selector_error_message += f"Field `{field_str}` is not a UUID4 field. "
-
-                if selector_error_message:
-                    all_errors += selector_error_message
-                    invalid_selectors.append(method_settings.selector)
-
+                            selector_errors.append(
+                                f"Field `{field_str}` is not annotated with "
+                                "`google.api.field_info.format = \"UUID4\"."
+                            )
+                if selector_errors:
+                    all_errors[method_settings.selector] = selector_errors
         if all_errors:
-            raise ValueError(
-                f"Fields cannot be automatically populated in the top level "
-                f"request message for selectors: {invalid_selectors}. "
-                f"{all_errors.strip()}"
-            )
+            raise MethodSettingsError(json.dumps(all_errors))
 
     @cached_property
     def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:
@@ -655,10 +682,10 @@ class API:
                 settings read from the service YAML.
 
         Raises:
-            ValueError: if the method settings do not meet the requirements of AIPs,
-                including AIP-4235 (https://google.aip.dev/client-libraries/4235).
+            gapic.schema.api.MethodSettingsError: if the method settings do not 
+                meet the requirements of https://google.aip.dev/client-libraries/4235.
         """
-        self.check_method_settings_validity(
+        self.enforce_valid_method_settings(
             self.service_yaml_config.publishing.method_settings
         )
 

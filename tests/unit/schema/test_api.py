@@ -13,6 +13,9 @@
 # limitations under the License.
 
 import collections
+import json
+import re
+from typing import Sequence
 
 from unittest import mock
 
@@ -2606,48 +2609,29 @@ def test_has_iam_mixin():
     assert api_schema.has_iam_mixin
 
 
-def test_all_method_settings():
+def get_file_descriptor_proto_for_method_settings_tests(
+    fields: Sequence[descriptor_pb2.FieldDescriptorProto] = None,
+    client_streaming: bool = False,
+    server_streaming: bool = False,
+) -> descriptor_pb2.FileDescriptorProto:
     """
-    Tests the `all_method_settings` method of `gapic.schema.api` which
-    reads `MethodSettings` from the service config YAML.
-    https://github.com/googleapis/googleapis/blob/7dab3de7ec79098bb367b6b2ac3815512a49dd56/google/api/client.proto#L325
+    Args:
+        fields (Sequence[descriptor_pb2.FieldDescriptorProto]): Fields to include
+            in messages in the return object `descriptor_pb2.FileDescriptorProto`.
+        client_streaming (bool): Whether the methods in the return object
+            `descriptor_pb2.FileDescriptorProto` should use client streaming.
+        server_streaming (bool): Whether the methods in the return object
+            `descriptor_pb2.FileDescriptorProto` should use server streaming.
+    Return:
+        descriptor_pb2.FileDescriptorProto: Returns an object describing the API.
     """
-    field_options = descriptor_pb2.FieldOptions()
-    field_options.Extensions[
-        field_info_pb2.field_info
-    ].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
-
-    # See AIP https://google.aip.dev/client-libraries/4235
-    # for the specific requirements to be tested.
-    squid = make_field_pb2(
-        name="squid", type="TYPE_STRING", options=field_options, number=1
-    )
-    mollusc = make_field_pb2(
-        name="mollusc", type="TYPE_STRING", options=field_options, number=2
-    )
-    # Also include a required field
-    field_options.Extensions[field_behavior_pb2.field_behavior].append(
-        field_behavior_pb2.FieldBehavior.Value("REQUIRED")
-    )
-    clam = make_field_pb2(
-        name="clam", type="TYPE_STRING", options=field_options, number=3
-    )
-    # Also include a field which is not of type string
-    field_options.ClearExtension(field_info_pb2.field_info)
-    octopus = make_field_pb2(
-        name="octopus", type="TYPE_INT32", options=field_options, number=4
-    )
     fd = (
         make_file_pb2(
             name="someexample.proto",
             package="google.example.v1beta1",
             messages=(
-                make_message_pb2(
-                    name="ExampleRequest", fields=(squid, mollusc, clam, octopus)
-                ),
+                make_message_pb2(name="ExampleRequest", fields=fields),
                 make_message_pb2(name="ExampleResponse", fields=()),
-                make_message_pb2(name="AnotherRequest", fields=(squid,)),
-                make_message_pb2(name="AnotherResponse", fields=()),
             ),
             services=(
                 descriptor_pb2.ServiceDescriptorProto(
@@ -2657,41 +2641,52 @@ def test_all_method_settings():
                             name="Example1",
                             input_type="google.example.v1beta1.ExampleRequest",
                             output_type="google.example.v1beta1.ExampleResponse",
+                            client_streaming=client_streaming,
+                            server_streaming=server_streaming,
                         ),
+                    ),
+                ),
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="AnotherExample",
+                    method=(
                         descriptor_pb2.MethodDescriptorProto(
-                            name="Example2",
+                            name="Example1",
                             input_type="google.example.v1beta1.ExampleRequest",
                             output_type="google.example.v1beta1.ExampleResponse",
-                            client_streaming=True,
-                        ),
-                        descriptor_pb2.MethodDescriptorProto(
-                            name="Example3",
-                            input_type="google.example.v1beta1.ExampleRequest",
-                            output_type="google.example.v1beta1.ExampleResponse",
-                            server_streaming=True,
-                        ),
-                        descriptor_pb2.MethodDescriptorProto(
-                            name="Example4",
-                            input_type="google.example.v1beta1.AnotherRequest",
-                            output_type="google.example.v1beta1.AnotherResponse",
-                        ),
-                        descriptor_pb2.MethodDescriptorProto(
-                            name="Example5",
-                            input_type="google.example.v1beta1.AnotherRequest",
-                            output_type="google.example.v1beta1.AnotherResponse",
+                            client_streaming=client_streaming,
+                            server_streaming=server_streaming,
                         ),
                     ),
                 ),
             ),
         ),
     )
+    return fd
+
+
+def test_api_all_methods():
+    """
+    Tests the `all_methods` method of `gapic.schema.api` method which returns a map of
+    all methods for the API.
+    """
+    fd = get_file_descriptor_proto_for_method_settings_tests()
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    assert len(api_schema.all_methods) == 2
+    assert list(api_schema.all_methods.keys()) == [
+        "google.example.v1beta1.SomeExample.Example1",
+        "google.example.v1beta1.AnotherExample.Example1",
+    ]
+
+
+def test_read_method_settings_from_service_yaml():
+    """
+    Tests the `gapic.schema.api.all_method_settings` method which reads
+    `MethodSettings` from the service config YAML.
+    https://github.com/googleapis/googleapis/blob/7dab3de7ec79098bb367b6b2ac3815512a49dd56/google/api/client.proto#L325
+    """
     service_yaml_config = {
         "apis": [
             {"name": "google.example.v1beta1.SomeExample.Example1"},
-            {"name": "google.example.v1beta1.SomeExample.Example2"},
-            {"name": "google.example.v1beta1.SomeExample.Example3"},
-            {"name": "google.example.v1beta1.SomeExample.Example4"},
-            {"name": "google.example.v1beta1.SomeExample.Example5"},
         ],
         "publishing": {
             "method_settings": [
@@ -2702,117 +2697,284 @@ def test_all_method_settings():
                         "mollusc",
                     ],
                 },
-                {
-                    "selector": "google.example.v1beta1.SomeExample.Example2",
-                    "auto_populated_fields": [],
-                },
-                {
-                    "selector": "google.example.v1beta1.SomeExample.Example3",
-                    "auto_populated_fields": [],
-                },
-                {
-                    "selector": "google.example.v1beta1.SomeExample.Example4",
-                    "auto_populated_fields": [],
-                },
-                {
-                    "selector": "google.example.v1beta1.SomeExample.Example5",
-                },
             ]
         },
     }
-    opts = Options(service_yaml_config=service_yaml_config)
+    cli_options = Options(service_yaml_config=service_yaml_config)
+    field_options = descriptor_pb2.FieldOptions()
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
 
-    api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
-    assert len(api_schema.all_methods) == 5
-    assert list(api_schema.all_methods.keys()) == [
-        'google.example.v1beta1.SomeExample.Example1',
-        'google.example.v1beta1.SomeExample.Example2',
-        'google.example.v1beta1.SomeExample.Example3',
-        'google.example.v1beta1.SomeExample.Example4',
-        'google.example.v1beta1.SomeExample.Example5'
-    ]
+    squid = make_field_pb2(
+        name="squid", type="TYPE_STRING", options=field_options, number=1
+    )
+    mollusc = make_field_pb2(
+        name="mollusc", type="TYPE_STRING", options=field_options, number=2
+    )
+    fields = [squid, mollusc]
+    fd = get_file_descriptor_proto_for_method_settings_tests(fields=fields)
+    api_schema = api.API.build(fd, "google.example.v1beta1", opts=cli_options)
     assert api_schema.all_method_settings == {
         "google.example.v1beta1.SomeExample.Example1": client_pb2.MethodSettings(
             selector="google.example.v1beta1.SomeExample.Example1",
             auto_populated_fields=["squid", "mollusc"],
             long_running=client_pb2.MethodSettings.LongRunning(),
-        ),
-        "google.example.v1beta1.SomeExample.Example2": client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example2",
-            auto_populated_fields=[],
-            long_running=client_pb2.MethodSettings.LongRunning(),
-        ),
-        "google.example.v1beta1.SomeExample.Example3": client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example3",
-            auto_populated_fields=[],
-            long_running=client_pb2.MethodSettings.LongRunning(),
-        ),
-        "google.example.v1beta1.SomeExample.Example4": client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example4",
-            auto_populated_fields=[],
-            long_running=client_pb2.MethodSettings.LongRunning(),
-        ),
-        "google.example.v1beta1.SomeExample.Example5": client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example5",
-            auto_populated_fields=[],
-            long_running=client_pb2.MethodSettings.LongRunning(),
-        ),
+        )
     }
 
-    # Test that ValueError is raised when the rpc in publishing.method_settings.selector is not a unary one
-    opts = Options(
-        service_yaml_config={
-            "apis": [
-                {"name": "google.example.v1beta1.SomeExample.Example1"},
-            ],
-            "publishing": {
-                "method_settings": [
-                    {
-                        "selector": "google.example.v1beta1.DoesNotExist.Example1",
-                        "auto_populated_fields": [
-                            "squid",
-                            "mollusc",
-                        ],
-                    },
-                    {
-                        "selector": "google.example.v1beta1.SomeExample.Example1",
-                        "auto_populated_fields": [
-                            "doesnotexist",
-                            "mollusc",
-                            "octopus",
-                        ]
-                    },
-                    {
-                        "selector": "google.example.v1beta1.SomeExample.Example2",
-                        "auto_populated_fields": [
-                            "squid",
-                            "mollusc",
-                        ],
-                    },
-                    {
-                        "selector": "google.example.v1beta1.SomeExample.Example3",
-                        "auto_populated_fields": [
-                            "squid",
-                            "mollusc",
-                        ],
-                    }
-                ]
-            },
-        }
-    )
-    api_schema = api.API.build(fd, "google.example.v1beta1", opts=opts)
 
-    exception_message = """Fields cannot be automatically populated in the top level \
-request message for selectors: \['google.example.v1beta1.DoesNotExist.Example1', \
-'google.example.v1beta1.SomeExample.Example1', \
-'google.example.v1beta1.SomeExample.Example2', \
-'google.example.v1beta1.SomeExample.Example3'\]. Selector \
-google.example.v1beta1.DoesNotExist.Example1 is not a valid method in this API. \
-Field `doesnotexist` is not in the top level request message. Field `octopus` is not \
-of type string. Field `octopus` is a required field. Field `octopus` is not a UUID4 \
-field. Selector google.example.v1beta1.SomeExample.Example2 is a streaming method. \
-`auto_populated_fields` are only supported for unary methods. Selector \
-google.example.v1beta1.SomeExample.Example3 is a streaming method. \
-`auto_populated_fields` are only supported for unary methods."""
-    with pytest.raises(ValueError, match=exception_message):
-        api_schema.all_method_settings
+def test_method_settings_duplicate_selector_raises_error():
+    """
+    Test that `MethodSettingsError` is raised when there are duplicate selectors in
+    `client_pb2.MethodSettings`.
+    """
+    fd = get_file_descriptor_proto_for_method_settings_tests()
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+        ),
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+        ),
+    ]
+    with pytest.raises(
+        api.MethodSettingsError, match="(?i)duplicate selector"
+    ):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_invalid_selector_raises_error():
+    """
+    Test that `MethodSettingsError` when `client_pb2.MethodSettings.selector`
+    cannot be mapped to a method in the API.
+    """
+    fd = get_file_descriptor_proto_for_method_settings_tests()
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.DoesNotExist.Example1",
+        ),
+    ]
+    with pytest.raises(
+        api.MethodSettingsError, match="(?i)method was not found"
+    ):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_unsupported_auto_populated_field_type_raises_error():
+    """
+    Test that `MethodSettingsError` is raised when a field in
+    `client_pb2.MethodSettings.auto_populated_fields` is not of type string.
+    """
+    squid = make_field_pb2(name="squid", type="TYPE_INT32", number=1)
+    fd = get_file_descriptor_proto_for_method_settings_tests(fields=[squid])
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+            auto_populated_fields=["squid"],
+        ),
+    ]
+    with pytest.raises(api.MethodSettingsError, match="(?i)type string"):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_auto_populated_field_not_found_raises_error():
+    """
+    Test that `MethodSettingsError` is raised when a field in
+    `client_pb2.MethodSettings.auto_populated_fields` is not found in the top-level
+    request message of the selector.
+    """
+    fd = get_file_descriptor_proto_for_method_settings_tests()
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+            auto_populated_fields=["squid"],
+        ),
+    ]
+    with pytest.raises(api.MethodSettingsError, match="(?i)not found"):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_auto_populated_field_client_streaming_rpc_raises_error():
+    """
+    Test that `MethodSettingsError` is raised when the selector in
+    `client_pb2.MethodSettings.selector` maps to a method which uses client streaming.
+    """
+    fd = get_file_descriptor_proto_for_method_settings_tests(
+        client_streaming=True
+    )
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+            auto_populated_fields=["squid"],
+        ),
+    ]
+    with pytest.raises(
+        api.MethodSettingsError, match="(?i)not a unary method"
+    ):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_auto_populated_field_server_streaming_rpc_raises_error():
+    """
+    Test that `MethodSettingsError` is raised when the selector in
+    `client_pb2.MethodSettings.selector` maps to a method which uses server streaming.
+    """
+    fd = get_file_descriptor_proto_for_method_settings_tests(
+        server_streaming=True
+    )
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+            auto_populated_fields=["squid"],
+        ),
+    ]
+    with pytest.raises(
+        api.MethodSettingsError, match="(?i)not a unary method"
+    ):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_unsupported_auto_populated_field_behavior_raises_error():
+    """
+    Test that `MethodSettingsError` is raised when a field in
+    `client_pb2.MethodSettings.auto_populated_fields` is a required field.
+    """
+    field_options = descriptor_pb2.FieldOptions()
+    field_options.Extensions[field_behavior_pb2.field_behavior].append(
+        field_behavior_pb2.FieldBehavior.Value("REQUIRED")
+    )
+    squid = make_field_pb2(
+        name="squid", type="TYPE_STRING", options=field_options, number=1
+    )
+    fd = get_file_descriptor_proto_for_method_settings_tests(fields=[squid])
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+            auto_populated_fields=["squid"],
+        ),
+    ]
+    with pytest.raises(
+        api.MethodSettingsError, match="(?i)required field"
+    ):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_auto_populated_field_field_info_format_not_specified_raises_error():
+    """
+    Test that `MethodSettingsError` is raised when a field in
+    `client_pb2.MethodSettings.auto_populated_fields` is not annotated with
+    `google.api.field_info.format = UUID4`. For this test case,
+    the format of the field is not specified.
+    """
+    squid = make_field_pb2(name="squid", type="TYPE_STRING", number=1)
+    fd = get_file_descriptor_proto_for_method_settings_tests(fields=[squid])
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+            auto_populated_fields=["squid"],
+        ),
+    ]
+    with pytest.raises(api.MethodSettingsError):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_unsupported_auto_populated_field_field_info_format_raises_error():
+    """
+    Test that `MethodSettingsError` is raised when a field in
+    `client_pb2.MethodSettings.auto_populated_fields` is not annotated with
+    `google.api.field_info.format = UUID4`.For this test case,
+    the format of the field is `IPV4`.
+    """
+    field_options = descriptor_pb2.FieldOptions()
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("IPV4")
+    squid = make_field_pb2(
+        name="squid", type="TYPE_STRING", options=field_options, number=1
+    )
+    fd = get_file_descriptor_proto_for_method_settings_tests(fields=[squid])
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.SomeExample.Example1",
+            auto_populated_fields=["squid"],
+        ),
+    ]
+    with pytest.raises(api.MethodSettingsError):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_invalid_multiple_issues():
+    """
+    A kitchen sink type of test to ensure `MethodSettingsError` is raised and the contents
+    of the exception includes sufficient detail describing each issue.
+    """
+    method_example1 = "google.example.v1beta1.SomeExample.Example1"
+    method_example2 = "google.example.v1beta1.SomeExample2.Example2"
+    field_options = descriptor_pb2.FieldOptions()
+
+    # Field Squid Errors
+    # - Not annotated with google.api.field_info.format = UUID4
+    # - Not of type string
+    # - Required field
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("IPV4")
+    squid = make_field_pb2(
+        name="squid", type="TYPE_INT32", options=field_options, number=1
+    )
+    field_options = descriptor_pb2.FieldOptions()
+    field_options.Extensions[field_behavior_pb2.field_behavior].append(
+        field_behavior_pb2.FieldBehavior.Value("REQUIRED")
+    )
+
+    # Field Octopus Errors
+    # - Not annotated with google.api.field_info.format = UUID4
+    octopus = make_field_pb2(name="octopus", type="TYPE_STRING", number=1)
+    fd = get_file_descriptor_proto_for_method_settings_tests(
+        fields=[squid, octopus]
+    )
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector=method_example1,
+            auto_populated_fields=[
+                "squid",
+                "octopus",
+            ],
+        ),
+        client_pb2.MethodSettings(
+            selector=method_example2,
+            auto_populated_fields=["squid", "octopus"],
+        ),
+    ]
+    with pytest.raises(api.MethodSettingsError) as ex:
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+    error_json = json.loads(ex.value.args[0])
+
+    assert re.match(
+        ".*squid.*not.*string.*",
+        error_json[method_example1][0].lower()
+    )
+    assert re.match(
+        ".*squid.*not.*uuid4.*",
+        error_json[method_example1][1].lower()
+    )
+    assert re.match(
+        ".*octopus.*not.*uuid4.*",
+        error_json[method_example1][2].lower()
+    )
+    assert re.match(
+        ".*method.*not found.*",
+        error_json[method_example2][0].lower()
+    )
