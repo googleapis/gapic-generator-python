@@ -60,7 +60,6 @@ TRANSPORT_GRPC_ASYNC = "grpc-async"
 TRANSPORT_REST = "rest"
 
 
-
 class MethodSettingsError(ValueError):
     """
     Raised when `google.api.client_pb2.MethodSettings` contains
