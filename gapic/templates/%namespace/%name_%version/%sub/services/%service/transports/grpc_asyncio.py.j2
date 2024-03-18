@@ -386,7 +386,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             self.{{ method.transport_safe_name|snake_case }}: gapic_v1.method_async.wrap_method(
                 self.{{ method.transport_safe_name|snake_case }},
                 {% if method.retry %}
-                default_retry=retries.Retry(
+                default_retry=retries.AsyncRetry(
                     {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
                     {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
                     {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
