@@ -610,7 +610,7 @@ class API:
         Return:
             None
         Raises:
-            MethodSettingsError: if fields in  `method_settings.auto_populated_fields`
+            MethodSettingsError: if fields in `method_settings.auto_populated_fields`
                 cannot be automatically populated.
         """
 
