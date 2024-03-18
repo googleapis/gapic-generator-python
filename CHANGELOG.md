@@ -1,6 +1,150 @@
 # Changelog
 
 
+## [1.15.0](https://github.com/googleapis/gapic-generator-python/compare/v1.14.5...v1.15.0) (2024-03-15)
+
+
+### Features
+
+* Add support for checking uuid4 fields ([#1972](https://github.com/googleapis/gapic-generator-python/issues/1972)) ([d5f90a2](https://github.com/googleapis/gapic-generator-python/commit/d5f90a2455cb671e67e2cd30f3eb470092e4f889))
+
+
+### Bug Fixes
+
+* Fix resource path helpers for paths with =** ([#1976](https://github.com/googleapis/gapic-generator-python/issues/1976)) ([08c01e9](https://github.com/googleapis/gapic-generator-python/commit/08c01e9d92adeb492a7b526b1b5267931750ee61))
+
+## [1.14.5](https://github.com/googleapis/gapic-generator-python/compare/v1.14.4...v1.14.5) (2024-03-04)
+
+
+### Bug Fixes
+
+* Update copyright year ([dde240b](https://github.com/googleapis/gapic-generator-python/commit/dde240bc7e63396416709b7f3dd7b50b355bc829))
+
+## [1.14.4](https://github.com/googleapis/gapic-generator-python/compare/v1.14.3...v1.14.4) (2024-02-29)
+
+
+### Bug Fixes
+
+* Add `google-apps-card` dependency ([#1964](https://github.com/googleapis/gapic-generator-python/issues/1964)) ([d4d51d4](https://github.com/googleapis/gapic-generator-python/commit/d4d51d4e84342065f34ef584abbe4b99404de574))
+* Exclude google-auth 2.24.0 and 2.25.0 ([#1957](https://github.com/googleapis/gapic-generator-python/issues/1957)) ([abe8de3](https://github.com/googleapis/gapic-generator-python/commit/abe8de30086506f4694c5c5e4bae08fae8525e4b))
+
+## [1.14.3](https://github.com/googleapis/gapic-generator-python/compare/v1.14.2...v1.14.3) (2024-02-14)
+
+
+### Bug Fixes
+
+* Fix TypeError: MessageToJson() got an unexpected keyword argument 'including_default_value_fields' ([#1936](https://github.com/googleapis/gapic-generator-python/issues/1936)) ([12734ff](https://github.com/googleapis/gapic-generator-python/commit/12734ffb37ab005d556f7b7a23219701d404487d))
+* Require google-api-core 1.34.1 ([#1942](https://github.com/googleapis/gapic-generator-python/issues/1942)) ([6c176a3](https://github.com/googleapis/gapic-generator-python/commit/6c176a3277c935bf5b02ce2d1a8b1ef7503c338a))
+* Resolve issue with missing import for certain enums in **/types/… ([#1944](https://github.com/googleapis/gapic-generator-python/issues/1944)) ([97a4eed](https://github.com/googleapis/gapic-generator-python/commit/97a4eedeee196568008ce6612abbce566d9ad5a0))
+
+## [1.14.2](https://github.com/googleapis/gapic-generator-python/compare/v1.14.1...v1.14.2) (2024-02-06)
+
+
+### Bug Fixes
+
+* Fix `ValueError` in `test__validate_universe_domain` ([#1931](https://github.com/googleapis/gapic-generator-python/issues/1931)) ([ce855a8](https://github.com/googleapis/gapic-generator-python/commit/ce855a866c43e80fb3f9ba3b295c83afcd6297b7))
+
+## [1.14.1](https://github.com/googleapis/gapic-generator-python/compare/v1.14.0...v1.14.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([2154924](https://github.com/googleapis/gapic-generator-python/commit/2154924c6ef9df6e2727b433ec7d2fee762ccde8))
+* Add staticmethod decorator to methods added in [#1873](https://github.com/googleapis/gapic-generator-python/issues/1873) ([2154924](https://github.com/googleapis/gapic-generator-python/commit/2154924c6ef9df6e2727b433ec7d2fee762ccde8))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([2154924](https://github.com/googleapis/gapic-generator-python/commit/2154924c6ef9df6e2727b433ec7d2fee762ccde8))
+
+## [1.14.0](https://github.com/googleapis/gapic-generator-python/compare/v1.13.1...v1.14.0) (2024-01-31)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain. ([#1898](https://github.com/googleapis/gapic-generator-python/issues/1898)) ([e5a55c1](https://github.com/googleapis/gapic-generator-python/commit/e5a55c1c01f0e1b3739927640c713057cd17b4ae))
+
+
+### Bug Fixes
+
+* Mock out configure_mtls_channel in rest transport for testing ([#1920](https://github.com/googleapis/gapic-generator-python/issues/1920)) ([9ade50d](https://github.com/googleapis/gapic-generator-python/commit/9ade50d2dfff0bb15fbe1fb2b00644047f6d2d38))
+
+## [1.13.1](https://github.com/googleapis/gapic-generator-python/compare/v1.13.0...v1.13.1) (2024-01-17)
+
+
+### Bug Fixes
+
+* Add None as a type to OptionalRetry ([#1901](https://github.com/googleapis/gapic-generator-python/issues/1901)) ([011475c](https://github.com/googleapis/gapic-generator-python/commit/011475c525cda4245803e197c77fa2a1c37fa98d))
+
+## [1.13.0](https://github.com/googleapis/gapic-generator-python/compare/v1.12.0...v1.13.0) (2023-11-20)
+
+
+### Features
+
+* Add support for python 3.12 ([#1816](https://github.com/googleapis/gapic-generator-python/issues/1816)) ([b65898e](https://github.com/googleapis/gapic-generator-python/commit/b65898e11f6b7210a0614eb1ece4b139541f17cd))
+* Add support for python 312 (ads templates) ([#1861](https://github.com/googleapis/gapic-generator-python/issues/1861)) ([d65a540](https://github.com/googleapis/gapic-generator-python/commit/d65a54045abb9b25364e8cfb0ad4c7e5d95917d2))
+
+
+### Bug Fixes
+
+* Bump proto-plus version to 1.22.3 ([#1863](https://github.com/googleapis/gapic-generator-python/issues/1863)) ([2ad9be2](https://github.com/googleapis/gapic-generator-python/commit/2ad9be28500972777cec69097be6581eaefb89e4))
+
+## [1.12.0](https://github.com/googleapis/gapic-generator-python/compare/v1.11.11...v1.12.0) (2023-11-09)
+
+
+### Features
+
+* Introduce compatibility with native namespace packages ([#1852](https://github.com/googleapis/gapic-generator-python/issues/1852)) ([ef2094a](https://github.com/googleapis/gapic-generator-python/commit/ef2094ae15cd8b4be5e18f1c6b4d62a6b8f0d416))
+
+
+### Bug Fixes
+
+* Allow pb2 files to be included in the output of py_gapic_assembly_pkg ([#1855](https://github.com/googleapis/gapic-generator-python/issues/1855)) ([e374734](https://github.com/googleapis/gapic-generator-python/commit/e37473494002de855d63498f731c26cec5c49b9c))
+* Implement Async Client to use Async Retry to work as expected ([#1823](https://github.com/googleapis/gapic-generator-python/issues/1823)) ([8ede788](https://github.com/googleapis/gapic-generator-python/commit/8ede788616b5b73f52bc7a8aca831c37b054b81f))
+* Wrap method in async client ([#1834](https://github.com/googleapis/gapic-generator-python/issues/1834)) ([8e1b5e0](https://github.com/googleapis/gapic-generator-python/commit/8e1b5e077a78904710d350b7dc97cdd2d6034fa9))
+
+## [1.11.11](https://github.com/googleapis/gapic-generator-python/compare/v1.11.10...v1.11.11) (2023-11-02)
+
+
+### Bug Fixes
+
+* Add missing dependency google-shopping-type ([#1842](https://github.com/googleapis/gapic-generator-python/issues/1842)) ([b1eabd7](https://github.com/googleapis/gapic-generator-python/commit/b1eabd7f439d032edd3fb6d0b65415a2c6b737ab))
+
+## [1.11.10](https://github.com/googleapis/gapic-generator-python/compare/v1.11.9...v1.11.10) (2023-10-26)
+
+
+### Bug Fixes
+
+* Upgrade rules_python to 0.26.0 ([#1825](https://github.com/googleapis/gapic-generator-python/issues/1825)) ([5d66387](https://github.com/googleapis/gapic-generator-python/commit/5d66387cd42a38d54dde5e8f0153446fee194b27))
+
+## [1.11.9](https://github.com/googleapis/gapic-generator-python/compare/v1.11.8...v1.11.9) (2023-10-18)
+
+
+### Bug Fixes
+
+* Rename rst files to avoid conflict with service names ([#1706](https://github.com/googleapis/gapic-generator-python/issues/1706)) ([70c3db5](https://github.com/googleapis/gapic-generator-python/commit/70c3db5ae1bac69e8ade13e4608af60c824e7870))
+
+## [1.11.8](https://github.com/googleapis/gapic-generator-python/compare/v1.11.7...v1.11.8) (2023-10-16)
+
+
+### Bug Fixes
+
+* Add missing dependencies ([#1804](https://github.com/googleapis/gapic-generator-python/issues/1804)) ([3e020cd](https://github.com/googleapis/gapic-generator-python/commit/3e020cd338339e311f825c7ea77dd473b660bcc5))
+* Fix coverage gap in tests ([#1802](https://github.com/googleapis/gapic-generator-python/issues/1802)) ([2fe0df1](https://github.com/googleapis/gapic-generator-python/commit/2fe0df19261bf5e6e7589a7cd77de03dd1c5c5fc))
+
+## [1.11.7](https://github.com/googleapis/gapic-generator-python/compare/v1.11.6...v1.11.7) (2023-10-12)
+
+
+### Bug Fixes
+
+* Add google-cloud-iam to dependencies ([#1792](https://github.com/googleapis/gapic-generator-python/issues/1792)) ([c5ed152](https://github.com/googleapis/gapic-generator-python/commit/c5ed1529f1d61ea3d0990b662a3d979d05192ab5))
+* Fix regression in REST unit test ([#1798](https://github.com/googleapis/gapic-generator-python/issues/1798)) ([0cee3c2](https://github.com/googleapis/gapic-generator-python/commit/0cee3c26bcd428ce6eec57c3616423905ec21781))
+* **revert:** Partial revert of [#1125](https://github.com/googleapis/gapic-generator-python/issues/1125) ([#1799](https://github.com/googleapis/gapic-generator-python/issues/1799)) ([14eec93](https://github.com/googleapis/gapic-generator-python/commit/14eec937fc4eddf3d6bd32f7ae35969bdc6f8bb5))
+
+## [1.11.6](https://github.com/googleapis/gapic-generator-python/compare/v1.11.5...v1.11.6) (2023-10-09)
+
+
+### Bug Fixes
+
+* Change to Set vs FrozenSet and thread the same set through ([#1125](https://github.com/googleapis/gapic-generator-python/issues/1125)) ([723efca](https://github.com/googleapis/gapic-generator-python/commit/723efca3f909527c48e8070eff61511293888626))
+* Resolve unit test failure caused by differences in protobuf runtimes ([#1749](https://github.com/googleapis/gapic-generator-python/issues/1749)) ([812abce](https://github.com/googleapis/gapic-generator-python/commit/812abceeb68d86f3902974aaeef8a58cfd6e7515))
+
 ## [1.11.5](https://github.com/googleapis/gapic-generator-python/compare/v1.11.4...v1.11.5) (2023-09-06)
 
 

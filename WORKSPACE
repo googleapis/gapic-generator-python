@@ -2,14 +2,14 @@ workspace(name = "gapic_generator_python")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-_bazel_skylib_version = "0.9.0"
+_bazel_skylib_version = "1.4.0"
 
-_bazel_skylib_sha256 = "1dde365491125a3db70731e25658dfdd3bc5dbdfd11b840b3e987ecf043c7ca0"
+_bazel_skylib_sha256 = "f24ab666394232f834f74d19e2ff142b0af17466ea0c69a3f4c276ee75f6efce"
 
 http_archive(
     name = "bazel_skylib",
     sha256 = _bazel_skylib_sha256,
-    url = "https://github.com/bazelbuild/bazel-skylib/releases/download/{0}/bazel_skylib-{0}.tar.gz".format(_bazel_skylib_version),
+    url = "https://github.com/bazelbuild/bazel-skylib/releases/download/{0}/bazel-skylib-{0}.tar.gz".format(_bazel_skylib_version),
 )
 
 _io_bazel_rules_go_version = "0.33.0"
@@ -22,9 +22,9 @@ http_archive(
     ],
 )
 
-_rules_python_version = "0.24.0"
+_rules_python_version = "0.26.0"
 
-_rules_python_sha256 = "0a8003b044294d7840ac7d9d73eef05d6ceb682d7516781a4ec62eeb34702578"
+_rules_python_sha256 = "9d04041ac92a0985e344235f5d946f71ac543f1b1565f2cdbc9a2aaee8adf55b"
 
 http_archive(
     name = "rules_python",
@@ -35,9 +35,10 @@ http_archive(
 
 load("@rules_python//python:repositories.bzl", "py_repositories")
 
+py_repositories()
+
 load("@rules_python//python:pip.bzl", "pip_parse")
 
-py_repositories()
 
 pip_parse(
     name = "gapic_generator_python_pip_deps",
@@ -59,37 +60,35 @@ gapic_generator_python()
 
 gapic_generator_register_toolchains()
 
-load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+_grpc_version = "1.60.0"
 
-protobuf_deps()
+_grpc_sha256 = "09640607a340ff0d97407ed22fe4adb177e5bb85329821122084359cd57c3dea"
 
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/1781):
-# Remove this import once gRPC depends on a newer version.
-#
-# Background: Import boringssl explicitly to override what gRPC
-# imports as its dependency.  Boringssl build fails on gcc12 without
-# this fix:
-# https://github.com/google/boringssl/commit/8462a367bb57e9524c3d8eca9c62733c63a63cf4,
-# which is present only in the newest version of boringssl, not the
-# one imported by gRPC.
 http_archive(
-    name = "boringssl",
-    sha256 = "b460f8673f3393e58ce506e9cdde7f2c3b2575b075f214cb819fb57d809f052b",
-    strip_prefix = "boringssl-bb41bc007079982da419c0ec3186e510cbcf09d0",
-    urls = [
-        "https://github.com/google/boringssl/archive/bb41bc007079982da419c0ec3186e510cbcf09d0.zip",
-    ],
+    name = "com_github_grpc_grpc",
+    sha256 = _grpc_sha256,
+    strip_prefix = "grpc-%s" % _grpc_version,
+    urls = ["https://github.com/grpc/grpc/archive/v%s.zip" % _grpc_version],
 )
-
-#
-# Import grpc as a native bazel dependency. This avoids duplication and also
-# speeds up loading phase a lot (otherwise python_rules will be building grpcio
-# from sources in a single-core speed, which takes around 5 minutes on a regular
-# workstation)
-#
+# instantiated in grpc_deps().
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "d19643d265b978383352b3143f04c0641eea75a75235c111cc01a1350173180e",
+    strip_prefix = "protobuf-25.3",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v25.3.tar.gz"],
+)
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps", "PROTOBUF_MAVEN_ARTIFACTS")
+# This is actually already done within grpc_deps but calling this for Bazel convention.
+protobuf_deps()
+
+# gRPC enforces a specific version of Go toolchain which conflicts with our build.
+# All the relevant parts of grpc_extra_deps() are imported in this  WORKSPACE file
+# explicitly, that is why we do not call grpc_extra_deps() here and call
+# apple_rules_dependencies and apple_support_dependencies macros explicitly.
 
 load("@build_bazel_rules_apple//apple:repositories.bzl", "apple_rules_dependencies")
 

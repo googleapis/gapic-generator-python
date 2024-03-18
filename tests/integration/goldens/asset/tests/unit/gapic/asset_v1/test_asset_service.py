@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ from google.protobuf import json_format
 import json
 import math
 import pytest
+from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 from requests import Response
@@ -66,12 +67,17 @@ import google.auth
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
-
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
     return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
+
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -87,6 +93,145 @@ def test__get_default_mtls_endpoint():
     assert AssetServiceClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
     assert AssetServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+
+def test__read_environment_variables():
+    assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert AssetServiceClient._read_environment_variables() == (True, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            AssetServiceClient._read_environment_variables()
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        assert AssetServiceClient._read_environment_variables() == (False, "never", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert AssetServiceClient._read_environment_variables() == (False, "always", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            AssetServiceClient._read_environment_variables()
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        assert AssetServiceClient._read_environment_variables() == (False, "auto", "foo.com")
+
+def test__get_client_cert_source():
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
+
+    assert AssetServiceClient._get_client_cert_source(None, False) is None
+    assert AssetServiceClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert AssetServiceClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
+
+    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_default_cert_source):
+            assert AssetServiceClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert AssetServiceClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
+
+@mock.patch.object(AssetServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceClient))
+@mock.patch.object(AssetServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceAsyncClient))
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+    default_universe = AssetServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
+    assert AssetServiceClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
+    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "always") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
+    assert AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
+    assert AssetServiceClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
+def test__get_universe_domain():
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert AssetServiceClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert AssetServiceClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert AssetServiceClient._get_universe_domain(None, None) == AssetServiceClient._DEFAULT_UNIVERSE
+
+    with pytest.raises(ValueError) as excinfo:
+        AssetServiceClient._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    (AssetServiceClient, transports.AssetServiceGrpcTransport, "grpc"),
+    (AssetServiceClient, transports.AssetServiceRestTransport, "rest"),
+])
+def test__validate_universe_domain(client_class, transport_class, transport_name):
+    client = client_class(
+        transport=transport_class(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+    )
+    assert client._validate_universe_domain() == True
+
+    # Test the case when universe is already validated.
+    assert client._validate_universe_domain() == True
+
+    if transport_name == "grpc":
+        # Test the case where credentials are provided by the
+        # `local_channel_credentials`. The default universes in both match.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        client = client_class(transport=transport_class(channel=channel))
+        assert client._validate_universe_domain() == True
+
+        # Test the case where credentials do not exist: e.g. a transport is provided
+        # with no credentials. Validation should still succeed because there is no
+        # mismatch with non-existent credentials.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        transport=transport_class(channel=channel)
+        transport._credentials = None
+        client = client_class(transport=transport)
+        assert client._validate_universe_domain() == True
+
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor = [int(part) for part in google.auth.__version__.split(".")[0:2]]
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(
+            transport=transport_class(credentials=credentials)
+        )
+        with pytest.raises(ValueError) as excinfo:
+            client._validate_universe_domain()
+        assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class(credentials=ga_credentials.AnonymousCredentials(),))
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize("client_class,transport_name", [
@@ -170,8 +315,8 @@ def test_asset_service_client_get_transport_class():
     (AssetServiceAsyncClient, transports.AssetServiceGrpcAsyncIOTransport, "grpc_asyncio"),
     (AssetServiceClient, transports.AssetServiceRestTransport, "rest"),
 ])
-@mock.patch.object(AssetServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceClient))
-@mock.patch.object(AssetServiceAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceAsyncClient))
+@mock.patch.object(AssetServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceClient))
+@mock.patch.object(AssetServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceAsyncClient))
 def test_asset_service_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(AssetServiceClient, 'get_transport_class') as gtc:
@@ -212,7 +357,7 @@ def test_asset_service_client_client_options(client_class, transport_class, tran
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -242,13 +387,15 @@ def test_asset_service_client_client_options(client_class, transport_class, tran
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -258,7 +405,7 @@ def test_asset_service_client_client_options(client_class, transport_class, tran
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -274,7 +421,7 @@ def test_asset_service_client_client_options(client_class, transport_class, tran
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -291,8 +438,8 @@ def test_asset_service_client_client_options(client_class, transport_class, tran
     (AssetServiceClient, transports.AssetServiceRestTransport, "rest", "true"),
     (AssetServiceClient, transports.AssetServiceRestTransport, "rest", "false"),
 ])
-@mock.patch.object(AssetServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceClient))
-@mock.patch.object(AssetServiceAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AssetServiceAsyncClient))
+@mock.patch.object(AssetServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceClient))
+@mock.patch.object(AssetServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_asset_service_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -308,7 +455,7 @@ def test_asset_service_client_mtls_env_auto(client_class, transport_class, trans
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -332,7 +479,7 @@ def test_asset_service_client_mtls_env_auto(client_class, transport_class, trans
             with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
                 with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -361,7 +508,7 @@ def test_asset_service_client_mtls_env_auto(client_class, transport_class, trans
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -423,6 +570,77 @@ def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+@pytest.mark.parametrize("client_class", [
+    AssetServiceClient, AssetServiceAsyncClient
+])
+@mock.patch.object(AssetServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceClient))
+@mock.patch.object(AssetServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceAsyncClient))
+def test_asset_service_client_client_api_endpoint(client_class):
+    mock_client_cert_source = client_cert_source_callback
+    api_override = "foo.com"
+    default_universe = AssetServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+    # use ClientOptions.api_endpoint as the api endpoint regardless.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+            assert client.api_endpoint == api_override
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == default_endpoint
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
+    # and ClientOptions.universe_domain="bar.com",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+    options = client_options.ClientOptions()
+    universe_exists = hasattr(options, "universe_domain")
+    if universe_exists:
+        options = client_options.ClientOptions(universe_domain=mock_universe)
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    else:
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
+
+    # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    options = client_options.ClientOptions()
+    if hasattr(options, "universe_domain"):
+        delattr(options, "universe_domain")
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (AssetServiceClient, transports.AssetServiceGrpcTransport, "grpc"),
@@ -440,7 +658,7 @@ def test_asset_service_client_client_options_scopes(client_class, transport_clas
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -466,7 +684,7 @@ def test_asset_service_client_client_options_credentials_file(client_class, tran
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -510,7 +728,7 @@ def test_asset_service_client_create_channel_credentials_file(client_class, tran
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -930,7 +1148,7 @@ async def test_list_assets_flattened_error_async():
 
 def test_list_assets_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -983,7 +1201,7 @@ def test_list_assets_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_assets_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1026,7 +1244,7 @@ def test_list_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_assets_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1075,7 +1293,7 @@ async def test_list_assets_async_pager():
 @pytest.mark.asyncio
 async def test_list_assets_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2718,7 +2936,7 @@ async def test_search_all_resources_flattened_error_async():
 
 def test_search_all_resources_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2771,7 +2989,7 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_search_all_resources_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2814,7 +3032,7 @@ def test_search_all_resources_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2863,7 +3081,7 @@ async def test_search_all_resources_async_pager():
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3152,7 +3370,7 @@ async def test_search_all_iam_policies_flattened_error_async():
 
 def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3205,7 +3423,7 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3248,7 +3466,7 @@ def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3297,7 +3515,7 @@ async def test_search_all_iam_policies_async_pager():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4680,7 +4898,7 @@ async def test_list_saved_queries_flattened_error_async():
 
 def test_list_saved_queries_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4733,7 +4951,7 @@ def test_list_saved_queries_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_saved_queries_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4776,7 +4994,7 @@ def test_list_saved_queries_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4825,7 +5043,7 @@ async def test_list_saved_queries_async_pager():
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5750,7 +5968,7 @@ async def test_analyze_org_policies_flattened_error_async():
 
 def test_analyze_org_policies_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -5803,7 +6021,7 @@ def test_analyze_org_policies_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_analyze_org_policies_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -5846,7 +6064,7 @@ def test_analyze_org_policies_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5895,7 +6113,7 @@ async def test_analyze_org_policies_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6194,7 +6412,7 @@ async def test_analyze_org_policy_governed_containers_flattened_error_async():
 
 def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6247,7 +6465,7 @@ def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grp
                    for i in results)
 def test_analyze_org_policy_governed_containers_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6290,7 +6508,7 @@ def test_analyze_org_policy_governed_containers_pages(transport_name: str = "grp
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6339,7 +6557,7 @@ async def test_analyze_org_policy_governed_containers_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6638,7 +6856,7 @@ async def test_analyze_org_policy_governed_assets_flattened_error_async():
 
 def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6691,7 +6909,7 @@ def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_analyze_org_policy_governed_assets_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6734,7 +6952,7 @@ def test_analyze_org_policy_governed_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6783,7 +7001,7 @@ async def test_analyze_org_policy_governed_assets_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6870,7 +7088,6 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7029,8 +7246,9 @@ def test_list_assets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.ListAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.ListAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7050,7 +7268,6 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7099,8 +7316,9 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.ListAssetsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.ListAssetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -7203,8 +7421,9 @@ def test_list_assets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.ListAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.ListAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -7317,8 +7536,9 @@ def test_batch_get_assets_history_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7337,7 +7557,6 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7386,8 +7605,9 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -7502,8 +7722,9 @@ def test_create_feed_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7528,7 +7749,6 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7579,8 +7799,9 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.Feed.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.Feed.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -7683,8 +7904,9 @@ def test_create_feed_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -7747,8 +7969,9 @@ def test_get_feed_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7772,7 +7995,6 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7819,8 +8041,9 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.Feed.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.Feed.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -7923,8 +8146,9 @@ def test_get_feed_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -7982,8 +8206,9 @@ def test_list_feeds_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.ListFeedsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.ListFeedsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8002,7 +8227,6 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8049,8 +8273,9 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.ListFeedsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.ListFeedsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -8153,8 +8378,9 @@ def test_list_feeds_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.ListFeedsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.ListFeedsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -8217,8 +8443,9 @@ def test_update_feed_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8241,7 +8468,6 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8285,8 +8511,9 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.Feed.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.Feed.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -8389,8 +8616,9 @@ def test_update_feed_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -8466,7 +8694,6 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8669,8 +8896,9 @@ def test_search_all_resources_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8690,7 +8918,6 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8739,8 +8966,9 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -8845,8 +9073,9 @@ def test_search_all_resources_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -8962,8 +9191,9 @@ def test_search_all_iam_policies_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8983,7 +9213,6 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9032,8 +9261,9 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -9137,8 +9367,9 @@ def test_search_all_iam_policies_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -9253,8 +9484,9 @@ def test_analyze_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -9273,7 +9505,6 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9318,8 +9549,9 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -9446,7 +9678,6 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9600,8 +9831,9 @@ def test_analyze_move_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -9621,7 +9853,6 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9676,8 +9907,9 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -9793,8 +10025,9 @@ def test_query_assets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.QueryAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.QueryAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -9815,7 +10048,6 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9863,8 +10095,9 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.QueryAssetsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.QueryAssetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -9964,6 +10197,69 @@ def test_create_saved_query_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'sample1/sample2'}
     request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = asset_service.CreateSavedQueryRequest.meta.fields["saved_query"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["saved_query"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["saved_query"][field])):
+                    del request_init["saved_query"][field][i][subfield]
+            else:
+                del request_init["saved_query"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9979,8 +10275,9 @@ def test_create_saved_query_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -10004,7 +10301,6 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10060,8 +10356,9 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.SavedQuery.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.SavedQuery.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -10133,7 +10430,6 @@ def test_create_saved_query_rest_bad_request(transport: str = 'rest', request_ty
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'sample1/sample2'}
-    request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10171,8 +10467,9 @@ def test_create_saved_query_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -10236,8 +10533,9 @@ def test_get_saved_query_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -10260,7 +10558,6 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10307,8 +10604,9 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.SavedQuery.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.SavedQuery.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -10411,8 +10709,9 @@ def test_get_saved_query_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -10471,8 +10770,9 @@ def test_list_saved_queries_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -10492,7 +10792,6 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10541,8 +10840,9 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -10645,8 +10945,9 @@ def test_list_saved_queries_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -10749,6 +11050,69 @@ def test_update_saved_query_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
     request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["saved_query"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["saved_query"][field])):
+                    del request_init["saved_query"][field][i][subfield]
+            else:
+                del request_init["saved_query"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10764,8 +11128,9 @@ def test_update_saved_query_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -10787,7 +11152,6 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10833,8 +11197,9 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.SavedQuery.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.SavedQuery.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -10902,7 +11267,6 @@ def test_update_saved_query_rest_bad_request(transport: str = 'rest', request_ty
 
     # send a request that will satisfy transcoding
     request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
-    request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10939,8 +11303,9 @@ def test_update_saved_query_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -11017,7 +11382,6 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -11219,8 +11583,9 @@ def test_batch_get_effective_iam_policies_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -11240,7 +11605,6 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -11295,8 +11659,9 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -11411,8 +11776,9 @@ def test_analyze_org_policies_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -11433,7 +11799,6 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -11488,8 +11853,9 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -11598,8 +11964,9 @@ def test_analyze_org_policies_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -11715,8 +12082,9 @@ def test_analyze_org_policy_governed_containers_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -11737,7 +12105,6 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -11792,8 +12159,9 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -11902,8 +12270,9 @@ def test_analyze_org_policy_governed_containers_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -12019,8 +12388,9 @@ def test_analyze_org_policy_governed_assets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -12041,7 +12411,6 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -12096,8 +12465,9 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -12206,8 +12576,9 @@ def test_analyze_org_policy_governed_assets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -12333,7 +12704,7 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = AssetServiceClient(
@@ -13240,7 +13611,7 @@ def test_get_operation(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
 @pytest.mark.asyncio
-async def test_get_operation_async(transport: str = "grpc"):
+async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -13398,7 +13769,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

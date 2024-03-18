@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 #
 import os
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -28,16 +29,17 @@ ALL_PYTHON = [
     "3.9",
     "3.10",
     "3.11",
+    "3.12"
 ]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
-PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
+PACKAGE_NAME = 'google-cloud-asset'
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
-DEFAULT_PYTHON_VERSION = "3.11"
+DEFAULT_PYTHON_VERSION = "3.12"
 
 nox.sessions = [
     "unit",
@@ -48,7 +50,7 @@ nox.sessions = [
     "docs",
     "blacken",
     "lint",
-    "lint_setup_py",
+    "prerelease_deps",
 ]
 
 @nox.session(python=ALL_PYTHON)
@@ -57,6 +59,80 @@ def unit(session):
 
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
     session.install('-e', '.')
+
+    session.run(
+        'py.test',
+        '--quiet',
+        '--cov=google/cloud/asset_v1/',
+        '--cov=tests/',
+        '--cov-config=.coveragerc',
+        '--cov-report=term',
+        '--cov-report=html',
+        os.path.join('tests', 'unit', ''.join(session.posargs))
+    )
+
+@nox.session(python=ALL_PYTHON[-1])
+def prerelease_deps(session):
+    """Run the unit test suite against pre-release versions of dependencies."""
+
+    # Install test environment dependencies
+    session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
+
+    # Install the package without dependencies
+    session.install('-e', '.', '--no-deps')
+
+    # We test the minimum dependency versions using the minimum Python
+    # version so the lowest python runtime that we test has a corresponding constraints
+    # file, located at `testing/constraints-<version>-.txt`,  which contains all of the
+    # dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{ALL_PYTHON[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    session.install(*constraints_deps)
+
+    prerel_deps = [
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpcio",
+        "grpcio-status",
+        "protobuf",
+        "proto-plus",
+    ]
+
+    for dep in prerel_deps:
+        session.install("--pre", "--no-deps", "--upgrade", dep)
+
+    # Remaining dependencies
+    other_deps = [
+        "requests",
+    ]
+    session.install(*other_deps)
+
+    # Print out prerelease package versions
+
+    session.run("python", "-c", "import google.api_core; print(google.api_core.__version__)")
+    session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
+    session.run("python", "-c", "import grpc; print(grpc.__version__)")
+    session.run(
+        "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
+    )
+    session.run(
+        "python", "-c", "import proto; print(proto.__version__)"
+    )
 
     session.run(
         'py.test',
@@ -93,7 +169,7 @@ def mypy(session):
     session.install('.')
     session.run(
         'mypy',
-        '--explicit-package-bases',
+        '-p',
         'google',
     )
 
@@ -175,10 +251,3 @@ def blacken(session):
         "black",
         *BLACK_PATHS,
     )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def lint_setup_py(session):
-    """Verify that setup.py is valid (including RST check)."""
-    session.install("docutils", "pygments")
-    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
