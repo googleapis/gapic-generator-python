@@ -2634,7 +2634,7 @@ def get_file_descriptor_proto_for_method_settings_tests(
             ),
             services=(
                 descriptor_pb2.ServiceDescriptorProto(
-                    name="SomeExample",
+                    name="ServiceOne",
                     method=(
                         descriptor_pb2.MethodDescriptorProto(
                             name="Example1",
@@ -2646,7 +2646,7 @@ def get_file_descriptor_proto_for_method_settings_tests(
                     ),
                 ),
                 descriptor_pb2.ServiceDescriptorProto(
-                    name="AnotherExample",
+                    name="ServiceTwo",
                     method=(
                         descriptor_pb2.MethodDescriptorProto(
                             name="Example1",
@@ -2672,8 +2672,8 @@ def test_api_all_methods():
     api_schema = api.API.build(fd, "google.example.v1beta1")
     assert len(api_schema.all_methods) == 2
     assert list(api_schema.all_methods.keys()) == [
-        "google.example.v1beta1.SomeExample.Example1",
-        "google.example.v1beta1.AnotherExample.Example1",
+        "google.example.v1beta1.ServiceOne.Example1",
+        "google.example.v1beta1.ServiceTwo.Example1",
     ]
 
 
@@ -2685,12 +2685,12 @@ def test_read_method_settings_from_service_yaml():
     """
     service_yaml_config = {
         "apis": [
-            {"name": "google.example.v1beta1.SomeExample.Example1"},
+            {"name": "google.example.v1beta1.ServiceOne.Example1"},
         ],
         "publishing": {
             "method_settings": [
                 {
-                    "selector": "google.example.v1beta1.SomeExample.Example1",
+                    "selector": "google.example.v1beta1.ServiceOne.Example1",
                     "auto_populated_fields": [
                         "squid",
                         "mollusc",
@@ -2715,8 +2715,8 @@ def test_read_method_settings_from_service_yaml():
     fd = get_file_descriptor_proto_for_method_settings_tests(fields=fields)
     api_schema = api.API.build(fd, "google.example.v1beta1", opts=cli_options)
     assert api_schema.all_method_settings == {
-        "google.example.v1beta1.SomeExample.Example1": client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example1",
+        "google.example.v1beta1.ServiceOne.Example1": client_pb2.MethodSettings(
+            selector="google.example.v1beta1.ServiceOne.Example1",
             auto_populated_fields=["squid", "mollusc"],
             long_running=client_pb2.MethodSettings.LongRunning(),
         )
@@ -2732,10 +2732,10 @@ def test_method_settings_duplicate_selector_raises_error():
     api_schema = api.API.build(fd, "google.example.v1beta1")
     methodsettings = [
         client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example1",
+            selector="google.example.v1beta1.ServiceOne.Example1",
         ),
         client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example1",
+            selector="google.example.v1beta1.ServiceOne.Example1",
         ),
     ]
     with pytest.raises(
@@ -2772,7 +2772,7 @@ def test_method_settings_unsupported_auto_populated_field_type_raises_error():
     api_schema = api.API.build(fd, "google.example.v1beta1")
     methodsettings = [
         client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example1",
+            selector="google.example.v1beta1.ServiceOne.Example1",
             auto_populated_fields=["squid"],
         ),
     ]
@@ -2790,7 +2790,7 @@ def test_method_settings_auto_populated_field_not_found_raises_error():
     api_schema = api.API.build(fd, "google.example.v1beta1")
     methodsettings = [
         client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example1",
+            selector="google.example.v1beta1.ServiceOne.Example1",
             auto_populated_fields=["squid"],
         ),
     ]
@@ -2809,7 +2809,7 @@ def test_method_settings_auto_populated_field_client_streaming_rpc_raises_error(
     api_schema = api.API.build(fd, "google.example.v1beta1")
     methodsettings = [
         client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example1",
+            selector="google.example.v1beta1.ServiceOne.Example1",
             auto_populated_fields=["squid"],
         ),
     ]
@@ -2830,7 +2830,7 @@ def test_method_settings_auto_populated_field_server_streaming_rpc_raises_error(
     api_schema = api.API.build(fd, "google.example.v1beta1")
     methodsettings = [
         client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example1",
+            selector="google.example.v1beta1.ServiceOne.Example1",
             auto_populated_fields=["squid"],
         ),
     ]
@@ -2856,7 +2856,7 @@ def test_method_settings_unsupported_auto_populated_field_behavior_raises_error(
     api_schema = api.API.build(fd, "google.example.v1beta1")
     methodsettings = [
         client_pb2.MethodSettings(
-            selector="google.example.v1beta1.SomeExample.Example1",
+            selector="google.example.v1beta1.ServiceOne.Example1",
             auto_populated_fields=["squid"],
         ),
     ]
@@ -2917,8 +2917,8 @@ def test_method_settings_invalid_multiple_issues():
     A kitchen sink type of test to ensure `MethodSettingsError` is raised and the contents
     of the exception includes sufficient detail describing each issue.
     """
-    method_example1 = "google.example.v1beta1.SomeExample.Example1"
-    method_example2 = "google.example.v1beta1.SomeExample2.Example2"
+    method_example1 = "google.example.v1beta1.ServiceTwo.Example1"
+    method_example2 = "google.example.v1beta1.ServiceThree.Example2"
     field_options = descriptor_pb2.FieldOptions()
 
     # Field Squid Errors
