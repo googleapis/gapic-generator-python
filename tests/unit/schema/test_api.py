@@ -43,10 +43,10 @@ from gapic.utils import Options
 
 from test_utils.test_utils import (
     make_enum_pb2,
+    make_field,
     make_field_pb2,
     make_file_pb2,
     make_message_pb2,
-    make_method,
     make_naming,
     make_oneof_pb2,
 )
@@ -2624,6 +2624,12 @@ def get_file_descriptor_proto_for_method_settings_tests(
     Return:
         descriptor_pb2.FileDescriptorProto: Returns an object describing the API.
     """
+
+    field_options = descriptor_pb2.FieldOptions()
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
+
     fd = (
         make_file_pb2(
             name="someexample.proto",
@@ -2631,6 +2637,18 @@ def get_file_descriptor_proto_for_method_settings_tests(
             messages=(
                 make_message_pb2(name="ExampleRequest", fields=fields),
                 make_message_pb2(name="ExampleResponse", fields=()),
+                make_message_pb2(
+                    name='NestedMessage',
+                    fields=(
+                        make_field_pb2(
+                            name="squid",
+                            options=field_options,
+                            type="TYPE_STRING",
+                            number=1
+                        ),
+                    ),
+                    options=descriptor_pb2.MessageOptions(map_entry=True),
+                )
             ),
             services=(
                 descriptor_pb2.ServiceDescriptorProto(
@@ -2808,6 +2826,34 @@ def test_method_settings_auto_populated_field_not_found_raises_error():
         client_pb2.MethodSettings(
             selector="google.example.v1beta1.ServiceOne.Example1",
             auto_populated_fields=["whelk"],
+        ),
+    ]
+    with pytest.raises(api.MethodSettingsError, match="(?i)not found"):
+        api_schema.enforce_valid_method_settings(methodsettings)
+
+
+def test_method_settings_auto_populated_nested_field_raises_error():
+    """
+    Test that `MethodSettingsError` is raised when a field in
+    `client_pb2.MethodSettings.auto_populated_fields` is not found in the top-level
+    request message of the selector. Instead, the field exists in a nested message.
+    """
+
+    octopus = make_field(
+        name='octopus',
+        type_name='google.example.v1beta1.NestedMessage',
+        label=3,
+        type='TYPE_MESSAGE',
+    )
+
+    fd = get_file_descriptor_proto_for_method_settings_tests(
+        fields=[octopus.field_pb]
+    )
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    methodsettings = [
+        client_pb2.MethodSettings(
+            selector="google.example.v1beta1.ServiceOne.Example1",
+            auto_populated_fields=["squid"],
         ),
     ]
     with pytest.raises(api.MethodSettingsError, match="(?i)not found"):
