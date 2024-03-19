@@ -13,11 +13,10 @@
 # limitations under the License.
 
 import collections
-import json
 import re
 from typing import Sequence
-
 from unittest import mock
+import yaml
 
 import pytest
 
@@ -2960,7 +2959,7 @@ def test_method_settings_invalid_multiple_issues():
     with pytest.raises(api.MethodSettingsError) as ex:
         api_schema.enforce_valid_method_settings(methodsettings)
 
-    error_json = json.loads(ex.value.args[0])
+    error_json = yaml.safe_load(ex.value.args[0])
 
     assert re.match(
         ".*squid.*not.*string.*",

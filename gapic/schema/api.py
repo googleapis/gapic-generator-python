@@ -20,12 +20,12 @@ through an :class:`~.API` object.
 import collections
 import dataclasses
 import itertools
-import json
 import keyword
 import os
 import sys
-from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
 from types import MappingProxyType
+from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
+import yaml
 
 from google.api_core import exceptions
 from google.api import client_pb2  # type: ignore
@@ -668,7 +668,7 @@ class API:
                 if selector_errors:
                     all_errors[method_settings.selector] = selector_errors
         if all_errors:
-            raise MethodSettingsError(json.dumps(all_errors))
+            raise MethodSettingsError(yaml.dump(all_errors))
 
     @cached_property
     def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:
