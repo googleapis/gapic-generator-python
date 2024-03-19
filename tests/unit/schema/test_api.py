@@ -2959,21 +2959,21 @@ def test_method_settings_invalid_multiple_issues():
     with pytest.raises(api.MethodSettingsError) as ex:
         api_schema.enforce_valid_method_settings(methodsettings)
 
-    error_json = yaml.safe_load(ex.value.args[0])
+    error_yaml = yaml.safe_load(ex.value.args[0])
 
     assert re.match(
         ".*squid.*not.*string.*",
-        error_json[method_example1][0].lower()
+        error_yaml[method_example1][0].lower()
     )
     assert re.match(
         ".*squid.*not.*uuid4.*",
-        error_json[method_example1][1].lower()
+        error_yaml[method_example1][1].lower()
     )
     assert re.match(
         ".*octopus.*not.*uuid4.*",
-        error_json[method_example1][2].lower()
+        error_yaml[method_example1][2].lower()
     )
     assert re.match(
         ".*method.*not found.*",
-        error_json[method_example2][0].lower()
+        error_yaml[method_example2][0].lower()
     )
