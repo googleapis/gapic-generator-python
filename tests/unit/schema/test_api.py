@@ -2749,17 +2749,33 @@ def test_method_settings_invalid_selector_raises_error():
     Test that `MethodSettingsError` when `client_pb2.MethodSettings.selector`
     cannot be mapped to a method in the API.
     """
+    method_example1 = "google.example.v1beta1.DoesNotExist.Example1"
+    method_example2 = "google.example.v1beta1.ServiceOne.DoesNotExist"
+
     fd = get_file_descriptor_proto_for_method_settings_tests()
     api_schema = api.API.build(fd, "google.example.v1beta1")
     methodsettings = [
         client_pb2.MethodSettings(
-            selector="google.example.v1beta1.DoesNotExist.Example1",
+            selector=method_example1,
+        ),
+        client_pb2.MethodSettings(
+            selector=method_example2,
         ),
     ]
-    with pytest.raises(
-        api.MethodSettingsError, match="(?i)method was not found"
-    ):
+
+    with pytest.raises(api.MethodSettingsError) as ex:
         api_schema.enforce_valid_method_settings(methodsettings)
+
+    error_yaml = yaml.safe_load(ex.value.args[0])
+
+    assert re.match(
+        ".*not found.*",
+        error_yaml[method_example1][0].lower()
+    )
+    assert re.match(
+        ".*not found.*",
+        error_yaml[method_example2][0].lower()
+    )
 
 
 def test_method_settings_unsupported_auto_populated_field_type_raises_error():
