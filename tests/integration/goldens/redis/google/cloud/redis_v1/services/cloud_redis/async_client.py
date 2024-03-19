@@ -335,7 +335,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.ListInstancesRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.ListInstancesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.ListInstancesRequest):
+            request = cloud_redis.ListInstancesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -344,11 +349,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instances,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_instances]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -447,7 +448,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.GetInstanceRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.GetInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.GetInstanceRequest):
+            request = cloud_redis.GetInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -456,11 +462,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instance,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -553,7 +555,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.GetInstanceAuthStringRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.GetInstanceAuthStringRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.GetInstanceAuthStringRequest):
+            request = cloud_redis.GetInstanceAuthStringRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -562,11 +569,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instance_auth_string,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_instance_auth_string]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -707,7 +710,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.CreateInstanceRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.CreateInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.CreateInstanceRequest):
+            request = cloud_redis.CreateInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -720,11 +728,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_instance,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -856,7 +860,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.UpdateInstanceRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.UpdateInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.UpdateInstanceRequest):
+            request = cloud_redis.UpdateInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -867,11 +876,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_instance,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -988,7 +993,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.UpgradeInstanceRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.UpgradeInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.UpgradeInstanceRequest):
+            request = cloud_redis.UpgradeInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -999,11 +1009,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.upgrade_instance,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.upgrade_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1130,7 +1136,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.ImportInstanceRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.ImportInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.ImportInstanceRequest):
+            request = cloud_redis.ImportInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1141,11 +1152,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_instance,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1269,7 +1276,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.ExportInstanceRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.ExportInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.ExportInstanceRequest):
+            request = cloud_redis.ExportInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1280,11 +1292,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.export_instance,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.export_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1402,7 +1410,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.FailoverInstanceRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.FailoverInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.FailoverInstanceRequest):
+            request = cloud_redis.FailoverInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1413,11 +1426,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.failover_instance,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.failover_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1532,7 +1541,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.DeleteInstanceRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.DeleteInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.DeleteInstanceRequest):
+            request = cloud_redis.DeleteInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1541,11 +1555,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_instance,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1671,7 +1681,12 @@ class CloudRedisAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = cloud_redis.RescheduleMaintenanceRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.RescheduleMaintenanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.RescheduleMaintenanceRequest):
+            request = cloud_redis.RescheduleMaintenanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1684,11 +1699,7 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reschedule_maintenance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.reschedule_maintenance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

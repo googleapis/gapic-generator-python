@@ -321,15 +321,16 @@ class AssetServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = asset_service.ExportAssetsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.ExportAssetsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.ExportAssetsRequest):
+            request = asset_service.ExportAssetsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.export_assets,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.export_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -437,7 +438,12 @@ class AssetServiceAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.ListAssetsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.ListAssetsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.ListAssetsRequest):
+            request = asset_service.ListAssetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -446,11 +452,7 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_assets,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -538,22 +540,16 @@ class AssetServiceAsyncClient:
                 Batch get assets history response.
         """
         # Create or coerce a protobuf request object.
-        request = asset_service.BatchGetAssetsHistoryRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.BatchGetAssetsHistoryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.BatchGetAssetsHistoryRequest):
+            request = asset_service.BatchGetAssetsHistoryRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_get_assets_history,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_assets_history]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -663,7 +659,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.CreateFeedRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.CreateFeedRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.CreateFeedRequest):
+            request = asset_service.CreateFeedRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -672,11 +673,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_feed,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -774,7 +771,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.GetFeedRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.GetFeedRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.GetFeedRequest):
+            request = asset_service.GetFeedRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -783,18 +785,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_feed,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -887,7 +878,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.ListFeedsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.ListFeedsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.ListFeedsRequest):
+            request = asset_service.ListFeedsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -896,18 +892,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_feeds,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_feeds]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1009,7 +994,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.UpdateFeedRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.UpdateFeedRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.UpdateFeedRequest):
+            request = asset_service.UpdateFeedRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1018,11 +1008,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_feed,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1105,7 +1091,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.DeleteFeedRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.DeleteFeedRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.DeleteFeedRequest):
+            request = asset_service.DeleteFeedRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1114,18 +1105,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_feed,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1325,7 +1305,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.SearchAllResourcesRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.SearchAllResourcesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.SearchAllResourcesRequest):
+            request = asset_service.SearchAllResourcesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1338,18 +1323,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_all_resources,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=15.0,
-            ),
-            default_timeout=15.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_resources]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1524,7 +1498,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.SearchAllIamPoliciesRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.SearchAllIamPoliciesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.SearchAllIamPoliciesRequest):
+            request = asset_service.SearchAllIamPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1535,18 +1514,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_all_iam_policies,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=15.0,
-            ),
-            default_timeout=15.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_iam_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1635,21 +1603,16 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        request = asset_service.AnalyzeIamPolicyRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.AnalyzeIamPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.AnalyzeIamPolicyRequest):
+            request = asset_service.AnalyzeIamPolicyRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.analyze_iam_policy,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1749,15 +1712,16 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        request = asset_service.AnalyzeIamPolicyLongrunningRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.AnalyzeIamPolicyLongrunningRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.AnalyzeIamPolicyLongrunningRequest):
+            request = asset_service.AnalyzeIamPolicyLongrunningRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.analyze_iam_policy_longrunning,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy_longrunning]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1848,15 +1812,16 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        request = asset_service.AnalyzeMoveRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.AnalyzeMoveRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.AnalyzeMoveRequest):
+            request = asset_service.AnalyzeMoveRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.analyze_move,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_move]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1945,15 +1910,16 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 QueryAssets response.
         """
         # Create or coerce a protobuf request object.
-        request = asset_service.QueryAssetsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.QueryAssetsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.QueryAssetsRequest):
+            request = asset_service.QueryAssetsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_assets,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.query_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2074,7 +2040,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.CreateSavedQueryRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.CreateSavedQueryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.CreateSavedQueryRequest):
+            request = asset_service.CreateSavedQueryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2087,11 +2058,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_saved_query,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2185,7 +2152,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.GetSavedQueryRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.GetSavedQueryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.GetSavedQueryRequest):
+            request = asset_service.GetSavedQueryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2194,11 +2166,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_saved_query,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2298,7 +2266,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.ListSavedQueriesRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.ListSavedQueriesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.ListSavedQueriesRequest):
+            request = asset_service.ListSavedQueriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2307,11 +2280,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_saved_queries,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_saved_queries]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2423,7 +2392,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.UpdateSavedQueryRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.UpdateSavedQueryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.UpdateSavedQueryRequest):
+            request = asset_service.UpdateSavedQueryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2434,11 +2408,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_saved_query,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2523,7 +2493,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.DeleteSavedQueryRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.DeleteSavedQueryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.DeleteSavedQueryRequest):
+            request = asset_service.DeleteSavedQueryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2532,11 +2507,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_saved_query,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2610,15 +2581,16 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         """
         # Create or coerce a protobuf request object.
-        request = asset_service.BatchGetEffectiveIamPoliciesRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.BatchGetEffectiveIamPoliciesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.BatchGetEffectiveIamPoliciesRequest):
+            request = asset_service.BatchGetEffectiveIamPoliciesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_get_effective_iam_policies,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_effective_iam_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2743,7 +2715,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.AnalyzeOrgPoliciesRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.AnalyzeOrgPoliciesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.AnalyzeOrgPoliciesRequest):
+            request = asset_service.AnalyzeOrgPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2756,11 +2733,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.analyze_org_policies,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2894,7 +2867,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.AnalyzeOrgPolicyGovernedContainersRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
+            request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2907,11 +2885,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.analyze_org_policy_governed_containers,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_containers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3074,7 +3048,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
+            request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3087,11 +3066,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.analyze_org_policy_governed_assets,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

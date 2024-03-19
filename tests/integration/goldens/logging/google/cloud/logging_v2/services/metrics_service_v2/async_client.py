@@ -300,7 +300,12 @@ class MetricsServiceV2AsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = logging_metrics.ListLogMetricsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a logging_metrics.ListLogMetricsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, logging_metrics.ListLogMetricsRequest):
+            request = logging_metrics.ListLogMetricsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -309,19 +314,7 @@ class MetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_log_metrics,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_log_metrics]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -433,7 +426,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = logging_metrics.GetLogMetricRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a logging_metrics.GetLogMetricRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, logging_metrics.GetLogMetricRequest):
+            request = logging_metrics.GetLogMetricRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -442,19 +440,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_log_metric,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -574,7 +560,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = logging_metrics.CreateLogMetricRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a logging_metrics.CreateLogMetricRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, logging_metrics.CreateLogMetricRequest):
+            request = logging_metrics.CreateLogMetricRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -585,11 +576,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_log_metric,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -708,7 +695,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = logging_metrics.UpdateLogMetricRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a logging_metrics.UpdateLogMetricRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, logging_metrics.UpdateLogMetricRequest):
+            request = logging_metrics.UpdateLogMetricRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -719,19 +711,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_log_metric,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -815,7 +795,12 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = logging_metrics.DeleteLogMetricRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a logging_metrics.DeleteLogMetricRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, logging_metrics.DeleteLogMetricRequest):
+            request = logging_metrics.DeleteLogMetricRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -824,19 +809,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_log_metric,
-            default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
