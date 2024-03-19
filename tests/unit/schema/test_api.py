@@ -2807,7 +2807,7 @@ def test_method_settings_auto_populated_field_not_found_raises_error():
     methodsettings = [
         client_pb2.MethodSettings(
             selector="google.example.v1beta1.ServiceOne.Example1",
-            auto_populated_fields=["squid"],
+            auto_populated_fields=["whelk"],
         ),
     ]
     with pytest.raises(api.MethodSettingsError, match="(?i)not found"):
