@@ -146,9 +146,7 @@ def test_{{ method_name }}_use_cached_wrapped_rpc():
         request = {}
         {% if method.client_streaming %}
         requests = [request]
-        {% endif %}
 
-        {% if method.client_streaming %}
         client.{{ method.safe_name|snake_case }}(iter(requests))
         {% else %}
         client.{{ method_name }}(request)
@@ -1179,9 +1177,7 @@ def test_{{ method_name }}_rest_use_cached_wrapped_rpc():
         request = {}
         {% if method.client_streaming %}
         requests = [request]
-        {% endif %}
 
-        {% if method.client_streaming %}
         client.{{ method.safe_name|snake_case }}(iter(requests))
         {% else %}
         client.{{ method_name }}(request)
@@ -1710,7 +1706,5 @@ def test_{{ method_name }}_rest_no_http_options():
 
 
 {% endif %}{# not method.http_options #}
-
-
 {% endwith %}{# method_name #}
 {% endmacro %}
