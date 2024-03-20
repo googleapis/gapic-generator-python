@@ -26,9 +26,11 @@ def test_unary_with_request_object(echo):
     response = echo.echo(showcase.EchoRequest(
         content='The hail in Wales falls mainly on the snails.',
         request_id='some_value',
+        other_request_id='',
     ))
     assert response.content == 'The hail in Wales falls mainly on the snails.'
     assert response.request_id == 'some_value'
+    assert response.other_request_id == ''
 
     # Repeat the same test but this time without `request_id`` set
     # The `request_id` field should be automatically populated with
@@ -44,15 +46,23 @@ def test_unary_with_request_object(echo):
         response.request_id,
     )
     assert len(response.request_id) == 36
+    # Ensure that the uuid4 field is set according to AIP 4235
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        response.other_request_id,
+    )
+    assert len(response.other_request_id) == 36
 
 
 def test_unary_with_dict(echo):
     response = echo.echo({
         'content': 'The hail in Wales falls mainly on the snails.',
         'request_id': 'some_value',
+        'other_request_id': '',
     })
     assert response.content == 'The hail in Wales falls mainly on the snails.'
     assert response.request_id == 'some_value'
+    assert response.other_request_id == ''
 
     # Repeat the same test but this time without `request_id`` set
     # The `request_id` field should be automatically populated with
@@ -67,6 +77,12 @@ def test_unary_with_dict(echo):
         response.request_id,
     )
     assert len(response.request_id) == 36
+    # Ensure that the uuid4 field is set according to AIP 4235
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        response.other_request_id,
+    )
+    assert len(response.other_request_id) == 36
 
 
 def test_unary_error(echo):
