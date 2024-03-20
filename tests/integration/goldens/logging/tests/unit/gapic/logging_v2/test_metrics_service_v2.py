@@ -772,7 +772,8 @@ def test_list_log_metrics(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest()
+        request = logging_metrics.ListLogMetricsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsPager)
@@ -792,6 +793,28 @@ def test_list_log_metrics_empty_call():
             type(client.transport.list_log_metrics),
             '__call__') as call:
         client.list_log_metrics()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.ListLogMetricsRequest()
+
+@pytest.mark.asyncio
+async def test_list_log_metrics_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_log_metrics),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
+            next_page_token='next_page_token_value',
+        ))
+        response = await client.list_log_metrics()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.ListLogMetricsRequest()
@@ -820,7 +843,8 @@ async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_t
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest()
+        request = logging_metrics.ListLogMetricsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsAsyncPager)
@@ -1202,7 +1226,8 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest()
+        request = logging_metrics.GetLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1228,6 +1253,34 @@ def test_get_log_metric_empty_call():
             type(client.transport.get_log_metric),
             '__call__') as call:
         client.get_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.GetLogMetricRequest()
+
+@pytest.mark.asyncio
+async def test_get_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+            name='name_value',
+            description='description_value',
+            filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
+            value_extractor='value_extractor_value',
+            version=logging_metrics.LogMetric.ApiVersion.V1,
+        ))
+        response = await client.get_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.GetLogMetricRequest()
@@ -1262,7 +1315,8 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest()
+        request = logging_metrics.GetLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1458,7 +1512,8 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest()
+        request = logging_metrics.CreateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1484,6 +1539,34 @@ def test_create_log_metric_empty_call():
             type(client.transport.create_log_metric),
             '__call__') as call:
         client.create_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.CreateLogMetricRequest()
+
+@pytest.mark.asyncio
+async def test_create_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+            name='name_value',
+            description='description_value',
+            filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
+            value_extractor='value_extractor_value',
+            version=logging_metrics.LogMetric.ApiVersion.V1,
+        ))
+        response = await client.create_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.CreateLogMetricRequest()
@@ -1518,7 +1601,8 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest()
+        request = logging_metrics.CreateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1724,7 +1808,8 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+        request = logging_metrics.UpdateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1750,6 +1835,34 @@ def test_update_log_metric_empty_call():
             type(client.transport.update_log_metric),
             '__call__') as call:
         client.update_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+
+@pytest.mark.asyncio
+async def test_update_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+            name='name_value',
+            description='description_value',
+            filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
+            value_extractor='value_extractor_value',
+            version=logging_metrics.LogMetric.ApiVersion.V1,
+        ))
+        response = await client.update_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.UpdateLogMetricRequest()
@@ -1784,7 +1897,8 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+        request = logging_metrics.UpdateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1982,7 +2096,8 @@ def test_delete_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+        request = logging_metrics.DeleteLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2001,6 +2116,26 @@ def test_delete_log_metric_empty_call():
             type(client.transport.delete_log_metric),
             '__call__') as call:
         client.delete_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+
+@pytest.mark.asyncio
+async def test_delete_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest()
@@ -2027,7 +2162,8 @@ async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+        request = logging_metrics.DeleteLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

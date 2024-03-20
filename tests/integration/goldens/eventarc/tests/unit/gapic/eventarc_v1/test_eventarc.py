@@ -809,7 +809,8 @@ def test_get_trigger(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetTriggerRequest()
+        request = eventarc.GetTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trigger.Trigger)
@@ -833,6 +834,32 @@ def test_get_trigger_empty_call():
             type(client.transport.get_trigger),
             '__call__') as call:
         client.get_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetTriggerRequest()
+
+@pytest.mark.asyncio
+async def test_get_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_trigger),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(trigger.Trigger(
+            name='name_value',
+            uid='uid_value',
+            service_account='service_account_value',
+            channel='channel_value',
+            etag='etag_value',
+        ))
+        response = await client.get_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetTriggerRequest()
@@ -865,7 +892,8 @@ async def test_get_trigger_async(transport: str = 'grpc_asyncio', request_type=e
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetTriggerRequest()
+        request = eventarc.GetTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trigger.Trigger)
@@ -1054,7 +1082,8 @@ def test_list_triggers(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListTriggersRequest()
+        request = eventarc.ListTriggersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTriggersPager)
@@ -1075,6 +1104,29 @@ def test_list_triggers_empty_call():
             type(client.transport.list_triggers),
             '__call__') as call:
         client.list_triggers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListTriggersRequest()
+
+@pytest.mark.asyncio
+async def test_list_triggers_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_triggers),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListTriggersResponse(
+            next_page_token='next_page_token_value',
+            unreachable=['unreachable_value'],
+        ))
+        response = await client.list_triggers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListTriggersRequest()
@@ -1104,7 +1156,8 @@ async def test_list_triggers_async(transport: str = 'grpc_asyncio', request_type
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListTriggersRequest()
+        request = eventarc.ListTriggersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTriggersAsyncPager)
@@ -1479,7 +1532,8 @@ def test_create_trigger(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateTriggerRequest()
+        request = eventarc.CreateTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1498,6 +1552,28 @@ def test_create_trigger_empty_call():
             type(client.transport.create_trigger),
             '__call__') as call:
         client.create_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateTriggerRequest()
+
+@pytest.mark.asyncio
+async def test_create_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_trigger),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.create_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateTriggerRequest()
@@ -1526,7 +1602,8 @@ async def test_create_trigger_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateTriggerRequest()
+        request = eventarc.CreateTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1729,7 +1806,8 @@ def test_update_trigger(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateTriggerRequest()
+        request = eventarc.UpdateTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1748,6 +1826,28 @@ def test_update_trigger_empty_call():
             type(client.transport.update_trigger),
             '__call__') as call:
         client.update_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.UpdateTriggerRequest()
+
+@pytest.mark.asyncio
+async def test_update_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_trigger),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.update_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateTriggerRequest()
@@ -1776,7 +1876,8 @@ async def test_update_trigger_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateTriggerRequest()
+        request = eventarc.UpdateTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1979,7 +2080,8 @@ def test_delete_trigger(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteTriggerRequest()
+        request = eventarc.DeleteTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1998,6 +2100,28 @@ def test_delete_trigger_empty_call():
             type(client.transport.delete_trigger),
             '__call__') as call:
         client.delete_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteTriggerRequest()
+
+@pytest.mark.asyncio
+async def test_delete_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_trigger),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.delete_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteTriggerRequest()
@@ -2026,7 +2150,8 @@ async def test_delete_trigger_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteTriggerRequest()
+        request = eventarc.DeleteTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2227,7 +2352,8 @@ def test_get_channel(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetChannelRequest()
+        request = eventarc.GetChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel.Channel)
@@ -2252,6 +2378,33 @@ def test_get_channel_empty_call():
             type(client.transport.get_channel),
             '__call__') as call:
         client.get_channel()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelRequest()
+
+@pytest.mark.asyncio
+async def test_get_channel_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(channel.Channel(
+            name='name_value',
+            uid='uid_value',
+            provider='provider_value',
+            state=channel.Channel.State.PENDING,
+            activation_token='activation_token_value',
+            crypto_key_name='crypto_key_name_value',
+        ))
+        response = await client.get_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetChannelRequest()
@@ -2285,7 +2438,8 @@ async def test_get_channel_async(transport: str = 'grpc_asyncio', request_type=e
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetChannelRequest()
+        request = eventarc.GetChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel.Channel)
@@ -2475,7 +2629,8 @@ def test_list_channels(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListChannelsRequest()
+        request = eventarc.ListChannelsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelsPager)
@@ -2496,6 +2651,29 @@ def test_list_channels_empty_call():
             type(client.transport.list_channels),
             '__call__') as call:
         client.list_channels()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelsRequest()
+
+@pytest.mark.asyncio
+async def test_list_channels_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channels),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelsResponse(
+            next_page_token='next_page_token_value',
+            unreachable=['unreachable_value'],
+        ))
+        response = await client.list_channels()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListChannelsRequest()
@@ -2525,7 +2703,8 @@ async def test_list_channels_async(transport: str = 'grpc_asyncio', request_type
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListChannelsRequest()
+        request = eventarc.ListChannelsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelsAsyncPager)
@@ -2900,7 +3079,8 @@ def test_create_channel(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateChannelRequest()
+        request = eventarc.CreateChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2919,6 +3099,28 @@ def test_create_channel_empty_call():
             type(client.transport.create_channel_),
             '__call__') as call:
         client.create_channel()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelRequest()
+
+@pytest.mark.asyncio
+async def test_create_channel_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.create_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateChannelRequest()
@@ -2947,7 +3149,8 @@ async def test_create_channel_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateChannelRequest()
+        request = eventarc.CreateChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3150,7 +3353,8 @@ def test_update_channel(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateChannelRequest()
+        request = eventarc.UpdateChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3169,6 +3373,28 @@ def test_update_channel_empty_call():
             type(client.transport.update_channel),
             '__call__') as call:
         client.update_channel()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.UpdateChannelRequest()
+
+@pytest.mark.asyncio
+async def test_update_channel_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_channel),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.update_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateChannelRequest()
@@ -3197,7 +3423,8 @@ async def test_update_channel_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateChannelRequest()
+        request = eventarc.UpdateChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3390,7 +3617,8 @@ def test_delete_channel(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteChannelRequest()
+        request = eventarc.DeleteChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3409,6 +3637,28 @@ def test_delete_channel_empty_call():
             type(client.transport.delete_channel),
             '__call__') as call:
         client.delete_channel()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelRequest()
+
+@pytest.mark.asyncio
+async def test_delete_channel_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.delete_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteChannelRequest()
@@ -3437,7 +3687,8 @@ async def test_delete_channel_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteChannelRequest()
+        request = eventarc.DeleteChannelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3623,7 +3874,8 @@ def test_get_provider(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetProviderRequest()
+        request = eventarc.GetProviderRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, discovery.Provider)
@@ -3644,6 +3896,29 @@ def test_get_provider_empty_call():
             type(client.transport.get_provider),
             '__call__') as call:
         client.get_provider()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetProviderRequest()
+
+@pytest.mark.asyncio
+async def test_get_provider_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_provider),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(discovery.Provider(
+            name='name_value',
+            display_name='display_name_value',
+        ))
+        response = await client.get_provider()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetProviderRequest()
@@ -3673,7 +3948,8 @@ async def test_get_provider_async(transport: str = 'grpc_asyncio', request_type=
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetProviderRequest()
+        request = eventarc.GetProviderRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, discovery.Provider)
@@ -3859,7 +4135,8 @@ def test_list_providers(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListProvidersRequest()
+        request = eventarc.ListProvidersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProvidersPager)
@@ -3880,6 +4157,29 @@ def test_list_providers_empty_call():
             type(client.transport.list_providers),
             '__call__') as call:
         client.list_providers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListProvidersRequest()
+
+@pytest.mark.asyncio
+async def test_list_providers_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_providers),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListProvidersResponse(
+            next_page_token='next_page_token_value',
+            unreachable=['unreachable_value'],
+        ))
+        response = await client.list_providers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListProvidersRequest()
@@ -3909,7 +4209,8 @@ async def test_list_providers_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListProvidersRequest()
+        request = eventarc.ListProvidersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProvidersAsyncPager)
@@ -4289,7 +4590,8 @@ def test_get_channel_connection(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetChannelConnectionRequest()
+        request = eventarc.GetChannelConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_connection.ChannelConnection)
@@ -4312,6 +4614,31 @@ def test_get_channel_connection_empty_call():
             type(client.transport.get_channel_connection),
             '__call__') as call:
         client.get_channel_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelConnectionRequest()
+
+@pytest.mark.asyncio
+async def test_get_channel_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel_connection),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(channel_connection.ChannelConnection(
+            name='name_value',
+            uid='uid_value',
+            channel='channel_value',
+            activation_token='activation_token_value',
+        ))
+        response = await client.get_channel_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetChannelConnectionRequest()
@@ -4343,7 +4670,8 @@ async def test_get_channel_connection_async(transport: str = 'grpc_asyncio', req
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetChannelConnectionRequest()
+        request = eventarc.GetChannelConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_connection.ChannelConnection)
@@ -4531,7 +4859,8 @@ def test_list_channel_connections(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListChannelConnectionsRequest()
+        request = eventarc.ListChannelConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelConnectionsPager)
@@ -4552,6 +4881,29 @@ def test_list_channel_connections_empty_call():
             type(client.transport.list_channel_connections),
             '__call__') as call:
         client.list_channel_connections()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelConnectionsRequest()
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channel_connections),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelConnectionsResponse(
+            next_page_token='next_page_token_value',
+            unreachable=['unreachable_value'],
+        ))
+        response = await client.list_channel_connections()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListChannelConnectionsRequest()
@@ -4581,7 +4933,8 @@ async def test_list_channel_connections_async(transport: str = 'grpc_asyncio', r
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.ListChannelConnectionsRequest()
+        request = eventarc.ListChannelConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelConnectionsAsyncPager)
@@ -4956,7 +5309,8 @@ def test_create_channel_connection(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateChannelConnectionRequest()
+        request = eventarc.CreateChannelConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4975,6 +5329,28 @@ def test_create_channel_connection_empty_call():
             type(client.transport.create_channel_connection),
             '__call__') as call:
         client.create_channel_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelConnectionRequest()
+
+@pytest.mark.asyncio
+async def test_create_channel_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_connection),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.create_channel_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateChannelConnectionRequest()
@@ -5003,7 +5379,8 @@ async def test_create_channel_connection_async(transport: str = 'grpc_asyncio', 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.CreateChannelConnectionRequest()
+        request = eventarc.CreateChannelConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5206,7 +5583,8 @@ def test_delete_channel_connection(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteChannelConnectionRequest()
+        request = eventarc.DeleteChannelConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5225,6 +5603,28 @@ def test_delete_channel_connection_empty_call():
             type(client.transport.delete_channel_connection),
             '__call__') as call:
         client.delete_channel_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelConnectionRequest()
+
+@pytest.mark.asyncio
+async def test_delete_channel_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel_connection),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.delete_channel_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteChannelConnectionRequest()
@@ -5253,7 +5653,8 @@ async def test_delete_channel_connection_async(transport: str = 'grpc_asyncio', 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.DeleteChannelConnectionRequest()
+        request = eventarc.DeleteChannelConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5439,7 +5840,8 @@ def test_get_google_channel_config(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetGoogleChannelConfigRequest()
+        request = eventarc.GetGoogleChannelConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, google_channel_config.GoogleChannelConfig)
@@ -5460,6 +5862,29 @@ def test_get_google_channel_config_empty_call():
             type(client.transport.get_google_channel_config),
             '__call__') as call:
         client.get_google_channel_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetGoogleChannelConfigRequest()
+
+@pytest.mark.asyncio
+async def test_get_google_channel_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_google_channel_config),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(google_channel_config.GoogleChannelConfig(
+            name='name_value',
+            crypto_key_name='crypto_key_name_value',
+        ))
+        response = await client.get_google_channel_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetGoogleChannelConfigRequest()
@@ -5489,7 +5914,8 @@ async def test_get_google_channel_config_async(transport: str = 'grpc_asyncio', 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.GetGoogleChannelConfigRequest()
+        request = eventarc.GetGoogleChannelConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, google_channel_config.GoogleChannelConfig)
@@ -5675,7 +6101,8 @@ def test_update_google_channel_config(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateGoogleChannelConfigRequest()
+        request = eventarc.UpdateGoogleChannelConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
@@ -5696,6 +6123,29 @@ def test_update_google_channel_config_empty_call():
             type(client.transport.update_google_channel_config),
             '__call__') as call:
         client.update_google_channel_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.UpdateGoogleChannelConfigRequest()
+
+@pytest.mark.asyncio
+async def test_update_google_channel_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_google_channel_config),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(gce_google_channel_config.GoogleChannelConfig(
+            name='name_value',
+            crypto_key_name='crypto_key_name_value',
+        ))
+        response = await client.update_google_channel_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateGoogleChannelConfigRequest()
@@ -5725,7 +6175,8 @@ async def test_update_google_channel_config_async(transport: str = 'grpc_asyncio
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == eventarc.UpdateGoogleChannelConfigRequest()
+        request = eventarc.UpdateGoogleChannelConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)

@@ -1,4 +1,4 @@
-{% macro grpc_required_tests(method, service, full_extended_lro=False) %}
+{% macro grpc_required_tests(method, service, api, full_extended_lro=False) %}
 {% with method_name = method.safe_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.safe_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
@@ -13,6 +13,17 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    {# Set UUID4 fields so that they are not automatically popoulated. #}
+    {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+    {% if method_settings is not none %}
+    {% for auto_populated_field in method_settings.auto_populated_fields %}
+    if isinstance(request, dict):
+        request['{{ auto_populated_field }}'] = "str_value"
+    else:
+        request.{{ auto_populated_field }} = "str_value"
+    {% endfor %}
+    {% endif %}{# if method_settings is not none #}
+    {% endwith %}{# method_settings #}
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -58,7 +69,15 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         {% if method.client_streaming %}
         assert next(args[0]) == request
         {% else %}
-        assert args[0] == {{ method.input.ident }}()
+        request = {{ method.input.ident }}()
+        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% if method_settings is not none %}
+        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        request.{{ auto_populated_field }} = "str_value"
+        {% endfor %}
+        {% endif %}{# if method_settings is not none #}
+        {% endwith %}{# method_settings #}
+        assert args[0] == request
         {% endif %}
 
     # Establish that the response is the type that we expect.
@@ -119,11 +138,77 @@ def test_{{ method_name }}_empty_call():
         {% if method.client_streaming %}
         assert next(args[0]) == request
         {% else %}
+        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% if method_settings is not none %}
+        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].{{ auto_populated_field }})
+        # clear UUID field so that the check below succeeds
+        args[0].{{ auto_populated_field }} = None
+        {% endfor %}
+        {% endif %}{# if method_settings is not none #}
+        {% endwith %}{# method_settings #}
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
 {% endif %}
 
 {% if not full_extended_lro %}
+{% if not method.client_streaming %}
+@pytest.mark.asyncio
+async def test_{{ method_name }}_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = {{ service.async_client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        {% if method.void %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        {% elif method.lro %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        {% elif not method.client_streaming and method.server_streaming %}
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
+        {% elif method.client_streaming and method.server_streaming %}
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
+        {% else %}
+        call.return_value ={{ '' }}
+            {%- if not method.client_streaming and not method.server_streaming -%}
+                grpc_helpers_async.FakeUnaryUnaryCall
+            {%- else -%}
+                grpc_helpers_async.FakeStreamUnaryCall
+            {%- endif -%}({{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message') %}{% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        ))
+        {% endif %}
+        response = await client.{{ method_name }}()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% if method_settings is not none %}
+        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].{{ auto_populated_field }})
+        # clear UUID field so that the check below succeeds
+        args[0].{{ auto_populated_field }} = None
+        {% endfor %}
+        {% endif %}{# if method_settings is not none #}
+        {% endwith %}{# method_settings #}
+        assert args[0] == {{ method.input.ident }}()
+{% endif %}
+
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_type={{ method.input.ident }}):
     client = {{ service.async_client_name }}(
@@ -134,6 +219,17 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    {# Set UUID4 fields so that they are not automatically popoulated. #}
+    {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+    {% if method_settings is not none %}
+    {% for auto_populated_field in method_settings.auto_populated_fields %}
+    if isinstance(request, dict):
+        request['{{ auto_populated_field }}'] = "str_value"
+    else:
+        request.{{ auto_populated_field }} = "str_value"
+    {% endfor %}
+    {% endif %}{# if method_settings is not none #}
+    {% endwith %}{# method_settings #}
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -182,7 +278,15 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         {% if method.client_streaming %}
         assert next(args[0]) == request
         {% else %}
-        assert args[0] == {{ method.input.ident }}()
+        request = {{ method.input.ident }}()
+        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% if method_settings is not none %}
+        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        request.{{ auto_populated_field }} = "str_value"
+        {% endfor %}
+        {% endif %}{# if method_settings is not none #}
+        {% endwith %}{# method_settings #}
+        assert args[0] == request
         {% endif %}
 
     # Establish that the response is the type that we expect.

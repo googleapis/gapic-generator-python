@@ -3,6 +3,9 @@
 {% block content %}
 
 import os
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields")|list %}
+import re
+{% endif %}
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
@@ -521,6 +524,18 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+
+    {# Set UUID4 fields so that they are not automatically popoulated. #}
+    {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+    {% if method_settings is not none %}
+    {% for auto_populated_field in method_settings.auto_populated_fields %}
+    if isinstance(request, dict):
+        request['{{ auto_populated_field }}'] = "str_value"
+    else:
+        request.{{ auto_populated_field }} = "str_value"
+    {% endfor %}
+    {% endif %}{# if method_settings is not none #}
+    {% endwith %}{# method_settings #}
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -568,7 +583,15 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         {% if method.client_streaming %}
         assert next(args[0]) == request
         {% else %}
-        assert args[0] == {{ method.input.ident }}()
+        request = {{ method.input.ident }}()
+        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% if method_settings is not none %}
+        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        request.{{ auto_populated_field }} = "str_value"
+        {% endfor %}
+        {% endif %}{# if method_settings is not none #}
+        {% endwith %}{# method_settings #}
+        assert args[0] == request
         {% endif %}
 
     # Establish that the response is the type that we expect.
@@ -629,6 +652,16 @@ def test_{{ method_name }}_empty_call():
         {% if method.client_streaming %}
         assert next(args[0]) == request
         {% else %}
+{% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+{% if method_settings is not none %}
+{% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].{{ auto_populated_field }})
+        # clear UUID field so that the check below succeeds
+        args[0].{{ auto_populated_field }} = None
+{% endfor %}
+{% endif %}{# if method_settings is not none #}
+{% endwith %}{# method_settings #}
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
 {% endif %}
