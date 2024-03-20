@@ -796,17 +796,13 @@ def test_list_buckets_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListBucketsRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_list_buckets_use_cached_wrapped_rpc(transport):
+def test_list_buckets_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -827,8 +823,14 @@ def test_list_buckets_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_buckets(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_list_buckets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1297,17 +1299,13 @@ def test_get_bucket_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetBucketRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_get_bucket_use_cached_wrapped_rpc(transport):
+def test_get_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -1328,8 +1326,14 @@ def test_get_bucket_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_bucket(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1521,17 +1525,13 @@ def test_create_bucket_async_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateBucketRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_create_bucket_async_use_cached_wrapped_rpc(transport):
+def test_create_bucket_async_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -1552,8 +1552,14 @@ def test_create_bucket_async_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_bucket_async(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_create_bucket_async_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1732,17 +1738,13 @@ def test_update_bucket_async_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateBucketRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_update_bucket_async_use_cached_wrapped_rpc(transport):
+def test_update_bucket_async_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -1763,8 +1765,14 @@ def test_update_bucket_async_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_bucket_async(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_update_bucket_async_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -1958,17 +1966,13 @@ def test_create_bucket_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateBucketRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_create_bucket_use_cached_wrapped_rpc(transport):
+def test_create_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -1989,8 +1993,14 @@ def test_create_bucket_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_bucket(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_create_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2197,17 +2207,13 @@ def test_update_bucket_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateBucketRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_update_bucket_use_cached_wrapped_rpc(transport):
+def test_update_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -2228,8 +2234,14 @@ def test_update_bucket_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_bucket(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_update_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2421,17 +2433,13 @@ def test_delete_bucket_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteBucketRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_delete_bucket_use_cached_wrapped_rpc(transport):
+def test_delete_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -2452,8 +2460,14 @@ def test_delete_bucket_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.delete_bucket(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_delete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2630,17 +2644,13 @@ def test_undelete_bucket_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UndeleteBucketRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_undelete_bucket_use_cached_wrapped_rpc(transport):
+def test_undelete_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -2661,8 +2671,14 @@ def test_undelete_bucket_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.undelete_bucket(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_undelete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -2842,17 +2858,13 @@ def test_list_views_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListViewsRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_list_views_use_cached_wrapped_rpc(transport):
+def test_list_views_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -2873,8 +2885,14 @@ def test_list_views_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_views(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3335,17 +3353,13 @@ def test_get_view_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetViewRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_get_view_use_cached_wrapped_rpc(transport):
+def test_get_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -3366,8 +3380,14 @@ def test_get_view_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_view(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3558,17 +3578,13 @@ def test_create_view_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateViewRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_create_view_use_cached_wrapped_rpc(transport):
+def test_create_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -3589,8 +3605,14 @@ def test_create_view_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_view(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_create_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3781,17 +3803,13 @@ def test_update_view_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateViewRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_update_view_use_cached_wrapped_rpc(transport):
+def test_update_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -3812,8 +3830,14 @@ def test_update_view_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_view(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_update_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -3997,17 +4021,13 @@ def test_delete_view_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteViewRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_delete_view_use_cached_wrapped_rpc(transport):
+def test_delete_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -4028,8 +4048,14 @@ def test_delete_view_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.delete_view(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_delete_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4209,17 +4235,13 @@ def test_list_sinks_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListSinksRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_list_sinks_use_cached_wrapped_rpc(transport):
+def test_list_sinks_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -4240,8 +4262,14 @@ def test_list_sinks_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_sinks(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -4712,17 +4740,13 @@ def test_get_sink_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetSinkRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_get_sink_use_cached_wrapped_rpc(transport):
+def test_get_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -4743,8 +4767,14 @@ def test_get_sink_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_sink(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5037,17 +5067,13 @@ def test_create_sink_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateSinkRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_create_sink_use_cached_wrapped_rpc(transport):
+def test_create_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -5068,8 +5094,14 @@ def test_create_sink_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_sink(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_create_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5372,17 +5404,13 @@ def test_update_sink_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateSinkRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_update_sink_use_cached_wrapped_rpc(transport):
+def test_update_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -5403,8 +5431,14 @@ def test_update_sink_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_sink(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_update_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5700,17 +5734,13 @@ def test_delete_sink_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteSinkRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_delete_sink_use_cached_wrapped_rpc(transport):
+def test_delete_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -5731,8 +5761,14 @@ def test_delete_sink_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.delete_sink(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_delete_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -5991,17 +6027,13 @@ def test_create_link_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateLinkRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_create_link_use_cached_wrapped_rpc(transport):
+def test_create_link_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -6022,8 +6054,14 @@ def test_create_link_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_link(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_create_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6306,17 +6344,13 @@ def test_delete_link_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteLinkRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_delete_link_use_cached_wrapped_rpc(transport):
+def test_delete_link_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -6337,8 +6371,14 @@ def test_delete_link_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.delete_link(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_delete_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -6604,17 +6644,13 @@ def test_list_links_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListLinksRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_list_links_use_cached_wrapped_rpc(transport):
+def test_list_links_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -6635,8 +6671,14 @@ def test_list_links_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_links(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7097,17 +7139,13 @@ def test_get_link_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetLinkRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_get_link_use_cached_wrapped_rpc(transport):
+def test_get_link_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -7128,8 +7166,14 @@ def test_get_link_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_link(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7398,17 +7442,13 @@ def test_list_exclusions_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListExclusionsRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_list_exclusions_use_cached_wrapped_rpc(transport):
+def test_list_exclusions_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -7429,8 +7469,14 @@ def test_list_exclusions_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_exclusions(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_list_exclusions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -7893,17 +7939,13 @@ def test_get_exclusion_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetExclusionRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_get_exclusion_use_cached_wrapped_rpc(transport):
+def test_get_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -7924,8 +7966,14 @@ def test_get_exclusion_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_exclusion(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_get_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -8202,17 +8250,13 @@ def test_create_exclusion_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateExclusionRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_create_exclusion_use_cached_wrapped_rpc(transport):
+def test_create_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -8233,8 +8277,14 @@ def test_create_exclusion_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_exclusion(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_create_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -8521,17 +8571,13 @@ def test_update_exclusion_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateExclusionRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_update_exclusion_use_cached_wrapped_rpc(transport):
+def test_update_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -8552,8 +8598,14 @@ def test_update_exclusion_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_exclusion(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_update_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -8841,17 +8893,13 @@ def test_delete_exclusion_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteExclusionRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_delete_exclusion_use_cached_wrapped_rpc(transport):
+def test_delete_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -8872,8 +8920,14 @@ def test_delete_exclusion_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.delete_exclusion(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_delete_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -9141,17 +9195,13 @@ def test_get_cmek_settings_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetCmekSettingsRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_get_cmek_settings_use_cached_wrapped_rpc(transport):
+def test_get_cmek_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -9172,8 +9222,14 @@ def test_get_cmek_settings_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_cmek_settings(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_get_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -9368,17 +9424,13 @@ def test_update_cmek_settings_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateCmekSettingsRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_update_cmek_settings_use_cached_wrapped_rpc(transport):
+def test_update_cmek_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -9399,8 +9451,14 @@ def test_update_cmek_settings_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_cmek_settings(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_update_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -9597,17 +9655,13 @@ def test_get_settings_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetSettingsRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_get_settings_use_cached_wrapped_rpc(transport):
+def test_get_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -9628,8 +9682,14 @@ def test_get_settings_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_settings(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_get_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -9910,17 +9970,13 @@ def test_update_settings_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateSettingsRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_update_settings_use_cached_wrapped_rpc(transport):
+def test_update_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -9941,8 +9997,14 @@ def test_update_settings_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_settings(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_update_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
@@ -10222,17 +10284,13 @@ def test_copy_log_entries_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CopyLogEntriesRequest()
 
-@pytest.mark.parametrize("transport", [
-  "grpc",
-  "rest"
-])
-def test_copy_log_entries_use_cached_wrapped_rpc(transport):
+def test_copy_log_entries_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
         client = ConfigServiceV2Client(
             credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
+            transport="grpc",
         )
 
         # Should wrap all calls on client creation
@@ -10253,8 +10311,14 @@ def test_copy_log_entries_use_cached_wrapped_rpc(transport):
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.copy_log_entries(request)
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 async def test_copy_log_entries_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
