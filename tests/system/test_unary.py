@@ -39,7 +39,7 @@ def test_unary_with_request_object(echo):
     ))
     assert response.content == 'The hail in Wales falls mainly on the snails.'
     # Ensure that the uuid4 field is set according to AIP 4235
-    re.match(
+    assert re.match(
         r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
         response.request_id,
     )
@@ -62,7 +62,7 @@ def test_unary_with_dict(echo):
         'content': 'The hail in Wales falls mainly on the snails.',
     })
     assert response.content == 'The hail in Wales falls mainly on the snails.'
-    re.match(
+    assert re.match(
         r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
         response.request_id,
     )
