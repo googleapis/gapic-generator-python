@@ -3406,11 +3406,11 @@ def test_create_channel_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.create_channel in client._transport._wrapped_methods
+        assert client._transport.create_channel_ in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        client._transport._wrapped_methods[client._transport.create_channel] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_channel_] = mock_rpc
 
         request = {}
 
@@ -3443,11 +3443,11 @@ async def test_create_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._client._transport.create_channel in client._client._transport._wrapped_methods
+        assert client._client._transport.create_channel_ in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_channel] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_channel_] = mock_rpc
 
         request = {}
 
@@ -9394,11 +9394,11 @@ def test_create_channel_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.create_channel in client._transport._wrapped_methods
+        assert client._transport.create_channel_ in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        client._transport._wrapped_methods[client._transport.create_channel] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_channel_] = mock_rpc
 
         request = {}
 
