@@ -326,7 +326,12 @@ class {{ service.async_client_name }}:
             request = {{ method.input.ident }}({% if method.input.ident.package != method.ident.package %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}, {% endfor %}{% endif %})
         {% endif %}{# Cross-package req and flattened fields #}
         {% else %}
-        request = {{ method.input.ident }}(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a {{ method.input.ident }}.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, {{ method.input.ident }}):
+            request = {{ method.input.ident }}(request)
         {% endif %} {# different request package #}
 
         {# Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
@@ -353,26 +358,9 @@ class {{ service.async_client_name }}:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.{{ method.transport_safe_name|snake_case }},
-            {% if method.retry %}
-            default_retry=retries.AsyncRetry(
-                {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
-                {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
-                {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
-                predicate=retries.if_exception_type(
-                    {% for ex in method.retry.retryable_exceptions|sort(attribute="__name__") %}
-                    core_exceptions.{{ ex.__name__ }},
-                    {% endfor %}
-                ),
-                deadline={{ method.timeout }},
-            ),
-            {% endif %}
-            default_timeout={{ method.timeout }},
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-        {% if method.field_headers %}
+        rpc = self._client._transport._wrapped_methods[self._client._transport.{{ method.transport_safe_name|snake_case }}]
 
+        {% if method.field_headers %}
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (

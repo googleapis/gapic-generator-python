@@ -816,6 +816,71 @@ def test_export_assets_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ExportAssetsRequest()
 
+def test_export_assets_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.export_assets in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.export_assets] = mock_rpc
+
+        request = {}
+        client.export_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.export_assets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_export_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.export_assets in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.export_assets] = mock_rpc
+
+        request = {}
+        await client.export_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_export_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.ExportAssetsRequest):
     client = AssetServiceAsyncClient(
@@ -964,6 +1029,71 @@ def test_list_assets_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListAssetsRequest()
+
+def test_list_assets_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_assets in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_assets] = mock_rpc
+
+        request = {}
+        client.list_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_assets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_list_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.list_assets in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.list_assets] = mock_rpc
+
+        request = {}
+        await client.list_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_list_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListAssetsRequest):
@@ -1387,6 +1517,71 @@ def test_batch_get_assets_history_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetAssetsHistoryRequest()
 
+def test_batch_get_assets_history_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.batch_get_assets_history in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.batch_get_assets_history] = mock_rpc
+
+        request = {}
+        client.batch_get_assets_history(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.batch_get_assets_history(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_batch_get_assets_history_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.batch_get_assets_history in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.batch_get_assets_history] = mock_rpc
+
+        request = {}
+        await client.batch_get_assets_history(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_async(transport: str = 'grpc_asyncio', request_type=asset_service.BatchGetAssetsHistoryRequest):
     client = AssetServiceAsyncClient(
@@ -1542,6 +1737,71 @@ def test_create_feed_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateFeedRequest()
+
+def test_create_feed_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_feed in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.create_feed] = mock_rpc
+
+        request = {}
+        client.create_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_feed(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_create_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.create_feed in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.create_feed] = mock_rpc
+
+        request = {}
+        await client.create_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.CreateFeedRequest):
@@ -1791,6 +2051,71 @@ def test_get_feed_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetFeedRequest()
 
+def test_get_feed_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_feed in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.get_feed] = mock_rpc
+
+        request = {}
+        client.get_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_feed(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_feed in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_feed] = mock_rpc
+
+        request = {}
+        await client.get_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_get_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.GetFeedRequest):
     client = AssetServiceAsyncClient(
@@ -2028,6 +2353,71 @@ def test_list_feeds_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListFeedsRequest()
+
+def test_list_feeds_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_feeds in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_feeds] = mock_rpc
+
+        request = {}
+        client.list_feeds(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_feeds(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.list_feeds in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.list_feeds] = mock_rpc
+
+        request = {}
+        await client.list_feeds(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_list_feeds_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListFeedsRequest):
@@ -2267,6 +2657,71 @@ def test_update_feed_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateFeedRequest()
 
+def test_update_feed_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_feed in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.update_feed] = mock_rpc
+
+        request = {}
+        client.update_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_feed(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_update_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.update_feed in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.update_feed] = mock_rpc
+
+        request = {}
+        await client.update_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_update_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.UpdateFeedRequest):
     client = AssetServiceAsyncClient(
@@ -2504,6 +2959,71 @@ def test_delete_feed_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest()
 
+def test_delete_feed_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_feed in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.delete_feed] = mock_rpc
+
+        request = {}
+        client.delete_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.delete_feed(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_delete_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.delete_feed in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_feed] = mock_rpc
+
+        request = {}
+        await client.delete_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_delete_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.DeleteFeedRequest):
     client = AssetServiceAsyncClient(
@@ -2732,6 +3252,71 @@ def test_search_all_resources_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllResourcesRequest()
+
+def test_search_all_resources_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.search_all_resources in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.search_all_resources] = mock_rpc
+
+        request = {}
+        client.search_all_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.search_all_resources(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_search_all_resources_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.search_all_resources in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.search_all_resources] = mock_rpc
+
+        request = {}
+        await client.search_all_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_search_all_resources_async(transport: str = 'grpc_asyncio', request_type=asset_service.SearchAllResourcesRequest):
@@ -3177,6 +3762,71 @@ def test_search_all_iam_policies_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllIamPoliciesRequest()
 
+def test_search_all_iam_policies_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.search_all_iam_policies in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.search_all_iam_policies] = mock_rpc
+
+        request = {}
+        client.search_all_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.search_all_iam_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_search_all_iam_policies_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.search_all_iam_policies in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.search_all_iam_policies] = mock_rpc
+
+        request = {}
+        await client.search_all_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.SearchAllIamPoliciesRequest):
     client = AssetServiceAsyncClient(
@@ -3611,6 +4261,71 @@ def test_analyze_iam_policy_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyRequest()
 
+def test_analyze_iam_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_iam_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_iam_policy] = mock_rpc
+
+        request = {}
+        client.analyze_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_iam_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_analyze_iam_policy_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.analyze_iam_policy in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy] = mock_rpc
+
+        request = {}
+        await client.analyze_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeIamPolicyRequest):
     client = AssetServiceAsyncClient(
@@ -3758,6 +4473,71 @@ def test_analyze_iam_policy_longrunning_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest()
 
+def test_analyze_iam_policy_longrunning_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_iam_policy_longrunning in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_iam_policy_longrunning] = mock_rpc
+
+        request = {}
+        client.analyze_iam_policy_longrunning(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_iam_policy_longrunning(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_analyze_iam_policy_longrunning_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.analyze_iam_policy_longrunning in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy_longrunning] = mock_rpc
+
+        request = {}
+        await client.analyze_iam_policy_longrunning(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
     client = AssetServiceAsyncClient(
@@ -3904,6 +4684,71 @@ def test_analyze_move_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeMoveRequest()
+
+def test_analyze_move_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_move in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_move] = mock_rpc
+
+        request = {}
+        client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_move(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_analyze_move_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.analyze_move in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_move] = mock_rpc
+
+        request = {}
+        await client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_analyze_move_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeMoveRequest):
@@ -4054,6 +4899,71 @@ def test_query_assets_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.QueryAssetsRequest()
+
+def test_query_assets_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.query_assets in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.query_assets] = mock_rpc
+
+        request = {}
+        client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.query_assets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_query_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.query_assets in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.query_assets] = mock_rpc
+
+        request = {}
+        await client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_query_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.QueryAssetsRequest):
@@ -4212,6 +5122,71 @@ def test_create_saved_query_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateSavedQueryRequest()
+
+def test_create_saved_query_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_saved_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.create_saved_query] = mock_rpc
+
+        request = {}
+        client.create_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_saved_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_create_saved_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.create_saved_query in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.create_saved_query] = mock_rpc
+
+        request = {}
+        await client.create_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_create_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.CreateSavedQueryRequest):
@@ -4477,6 +5452,71 @@ def test_get_saved_query_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetSavedQueryRequest()
 
+def test_get_saved_query_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_saved_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.get_saved_query] = mock_rpc
+
+        request = {}
+        client.get_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_saved_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_get_saved_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_saved_query in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_saved_query] = mock_rpc
+
+        request = {}
+        await client.get_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_get_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.GetSavedQueryRequest):
     client = AssetServiceAsyncClient(
@@ -4714,6 +5754,71 @@ def test_list_saved_queries_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListSavedQueriesRequest()
+
+def test_list_saved_queries_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_saved_queries in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_saved_queries] = mock_rpc
+
+        request = {}
+        client.list_saved_queries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_saved_queries(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_list_saved_queries_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.list_saved_queries in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.list_saved_queries] = mock_rpc
+
+        request = {}
+        await client.list_saved_queries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_list_saved_queries_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListSavedQueriesRequest):
@@ -5145,6 +6250,71 @@ def test_update_saved_query_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateSavedQueryRequest()
 
+def test_update_saved_query_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_saved_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.update_saved_query] = mock_rpc
+
+        request = {}
+        client.update_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_saved_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_update_saved_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.update_saved_query in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.update_saved_query] = mock_rpc
+
+        request = {}
+        await client.update_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_update_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.UpdateSavedQueryRequest):
     client = AssetServiceAsyncClient(
@@ -5390,6 +6560,71 @@ def test_delete_saved_query_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteSavedQueryRequest()
 
+def test_delete_saved_query_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_saved_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.delete_saved_query] = mock_rpc
+
+        request = {}
+        client.delete_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.delete_saved_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_delete_saved_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.delete_saved_query in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_saved_query] = mock_rpc
+
+        request = {}
+        await client.delete_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_delete_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.DeleteSavedQueryRequest):
     client = AssetServiceAsyncClient(
@@ -5617,6 +6852,71 @@ def test_batch_get_effective_iam_policies_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
 
+def test_batch_get_effective_iam_policies_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.batch_get_effective_iam_policies in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.batch_get_effective_iam_policies] = mock_rpc
+
+        request = {}
+        client.batch_get_effective_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.batch_get_effective_iam_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_batch_get_effective_iam_policies_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.batch_get_effective_iam_policies in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.batch_get_effective_iam_policies] = mock_rpc
+
+        request = {}
+        await client.batch_get_effective_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_batch_get_effective_iam_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
     client = AssetServiceAsyncClient(
@@ -5764,6 +7064,71 @@ def test_analyze_org_policies_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
+
+def test_analyze_org_policies_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_org_policies in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_org_policies] = mock_rpc
+
+        request = {}
+        client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_org_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_analyze_org_policies_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.analyze_org_policies in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_org_policies] = mock_rpc
+
+        request = {}
+        await client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPoliciesRequest):
@@ -6209,6 +7574,71 @@ def test_analyze_org_policy_governed_containers_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
+def test_analyze_org_policy_governed_containers_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_org_policy_governed_containers in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_org_policy_governed_containers] = mock_rpc
+
+        request = {}
+        client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_org_policy_governed_containers(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_analyze_org_policy_governed_containers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.analyze_org_policy_governed_containers in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_containers] = mock_rpc
+
+        request = {}
+        await client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
     client = AssetServiceAsyncClient(
@@ -6653,6 +8083,71 @@ def test_analyze_org_policy_governed_assets_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
 
+def test_analyze_org_policy_governed_assets_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_org_policy_governed_assets in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_org_policy_governed_assets] = mock_rpc
+
+        request = {}
+        client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_org_policy_governed_assets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_analyze_org_policy_governed_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AssetServiceAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.analyze_org_policy_governed_assets in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_assets] = mock_rpc
+
+        request = {}
+        await client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
     client = AssetServiceAsyncClient(
@@ -7078,6 +8573,41 @@ def test_export_assets_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_export_assets_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.export_assets in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.export_assets] = mock_rpc
+
+        request = {}
+        client.export_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.export_assets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_export_assets_rest_required_fields(request_type=asset_service.ExportAssetsRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -7257,6 +8787,41 @@ def test_list_assets_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsPager)
     assert response.next_page_token == 'next_page_token_value'
+
+def test_list_assets_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_assets in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_assets] = mock_rpc
+
+        request = {}
+        client.list_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_assets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsRequest):
@@ -7547,6 +9112,41 @@ def test_batch_get_assets_history_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
 
+def test_batch_get_assets_history_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.batch_get_assets_history in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.batch_get_assets_history] = mock_rpc
+
+        request = {}
+        client.batch_get_assets_history(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.batch_get_assets_history(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_batch_get_assets_history_rest_required_fields(request_type=asset_service.BatchGetAssetsHistoryRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -7737,6 +9337,41 @@ def test_create_feed_rest(request_type):
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ['relationship_types_value']
+
+def test_create_feed_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_feed in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.create_feed] = mock_rpc
+
+        request = {}
+        client.create_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_feed(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedRequest):
@@ -7985,6 +9620,41 @@ def test_get_feed_rest(request_type):
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ['relationship_types_value']
 
+def test_get_feed_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_feed in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.get_feed] = mock_rpc
+
+        request = {}
+        client.get_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_feed(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -8216,6 +9886,41 @@ def test_list_feeds_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.ListFeedsResponse)
+
+def test_list_feeds_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_feeds in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_feeds] = mock_rpc
+
+        request = {}
+        client.list_feeds(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_feeds(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsRequest):
@@ -8459,6 +10164,41 @@ def test_update_feed_rest(request_type):
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ['relationship_types_value']
 
+def test_update_feed_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_feed in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.update_feed] = mock_rpc
+
+        request = {}
+        client.update_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_feed(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -8684,6 +10424,41 @@ def test_delete_feed_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response is None
 
+def test_delete_feed_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_feed in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.delete_feed] = mock_rpc
+
+        request = {}
+        client.delete_feed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.delete_feed(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -8907,6 +10682,41 @@ def test_search_all_resources_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllResourcesPager)
     assert response.next_page_token == 'next_page_token_value'
+
+def test_search_all_resources_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.search_all_resources in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.search_all_resources] = mock_rpc
+
+        request = {}
+        client.search_all_resources(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.search_all_resources(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_search_all_resources_rest_required_fields(request_type=asset_service.SearchAllResourcesRequest):
@@ -9203,6 +11013,41 @@ def test_search_all_iam_policies_rest(request_type):
     assert isinstance(response, pagers.SearchAllIamPoliciesPager)
     assert response.next_page_token == 'next_page_token_value'
 
+def test_search_all_iam_policies_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.search_all_iam_policies in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.search_all_iam_policies] = mock_rpc
+
+        request = {}
+        client.search_all_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.search_all_iam_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_search_all_iam_policies_rest_required_fields(request_type=asset_service.SearchAllIamPoliciesRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -9496,6 +11341,41 @@ def test_analyze_iam_policy_rest(request_type):
     assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
     assert response.fully_explored is True
 
+def test_analyze_iam_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_iam_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_iam_policy] = mock_rpc
+
+        request = {}
+        client.analyze_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_iam_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.AnalyzeIamPolicyRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -9669,6 +11549,41 @@ def test_analyze_iam_policy_longrunning_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_analyze_iam_policy_longrunning_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_iam_policy_longrunning in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_iam_policy_longrunning] = mock_rpc
+
+        request = {}
+        client.analyze_iam_policy_longrunning(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_iam_policy_longrunning(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -9841,6 +11756,41 @@ def test_analyze_move_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+def test_analyze_move_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_move in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_move] = mock_rpc
+
+        request = {}
+        client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_move(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMoveRequest):
@@ -10037,6 +11987,41 @@ def test_query_assets_rest(request_type):
     assert isinstance(response, asset_service.QueryAssetsResponse)
     assert response.job_reference == 'job_reference_value'
     assert response.done is True
+
+def test_query_assets_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.query_assets in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.query_assets] = mock_rpc
+
+        request = {}
+        client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.query_assets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_query_assets_rest_required_fields(request_type=asset_service.QueryAssetsRequest):
@@ -10289,6 +12274,41 @@ def test_create_saved_query_rest(request_type):
     assert response.description == 'description_value'
     assert response.creator == 'creator_value'
     assert response.last_updater == 'last_updater_value'
+
+def test_create_saved_query_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_saved_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.create_saved_query] = mock_rpc
+
+        request = {}
+        client.create_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.create_saved_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_create_saved_query_rest_required_fields(request_type=asset_service.CreateSavedQueryRequest):
@@ -10548,6 +12568,41 @@ def test_get_saved_query_rest(request_type):
     assert response.creator == 'creator_value'
     assert response.last_updater == 'last_updater_value'
 
+def test_get_saved_query_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_saved_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.get_saved_query] = mock_rpc
+
+        request = {}
+        client.get_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.get_saved_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSavedQueryRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -10781,6 +12836,41 @@ def test_list_saved_queries_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSavedQueriesPager)
     assert response.next_page_token == 'next_page_token_value'
+
+def test_list_saved_queries_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_saved_queries in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_saved_queries] = mock_rpc
+
+        request = {}
+        client.list_saved_queries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.list_saved_queries(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_saved_queries_rest_required_fields(request_type=asset_service.ListSavedQueriesRequest):
@@ -11143,6 +13233,41 @@ def test_update_saved_query_rest(request_type):
     assert response.creator == 'creator_value'
     assert response.last_updater == 'last_updater_value'
 
+def test_update_saved_query_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_saved_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.update_saved_query] = mock_rpc
+
+        request = {}
+        client.update_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.update_saved_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_update_saved_query_rest_required_fields(request_type=asset_service.UpdateSavedQueryRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -11372,6 +13497,41 @@ def test_delete_saved_query_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response is None
 
+def test_delete_saved_query_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_saved_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.delete_saved_query] = mock_rpc
+
+        request = {}
+        client.delete_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.delete_saved_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_delete_saved_query_rest_required_fields(request_type=asset_service.DeleteSavedQueryRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -11594,6 +13754,41 @@ def test_batch_get_effective_iam_policies_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
 
+def test_batch_get_effective_iam_policies_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.batch_get_effective_iam_policies in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.batch_get_effective_iam_policies] = mock_rpc
+
+        request = {}
+        client.batch_get_effective_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.batch_get_effective_iam_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -11787,6 +13982,41 @@ def test_analyze_org_policies_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
     assert response.next_page_token == 'next_page_token_value'
+
+def test_analyze_org_policies_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_org_policies in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_org_policies] = mock_rpc
+
+        request = {}
+        client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_org_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_analyze_org_policies_rest_required_fields(request_type=asset_service.AnalyzeOrgPoliciesRequest):
@@ -12094,6 +14324,41 @@ def test_analyze_org_policy_governed_containers_rest(request_type):
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
     assert response.next_page_token == 'next_page_token_value'
 
+def test_analyze_org_policy_governed_containers_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_org_policy_governed_containers in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_org_policy_governed_containers] = mock_rpc
+
+        request = {}
+        client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_org_policy_governed_containers(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_analyze_org_policy_governed_containers_rest_required_fields(request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
     transport_class = transports.AssetServiceRestTransport
@@ -12399,6 +14664,41 @@ def test_analyze_org_policy_governed_assets_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
     assert response.next_page_token == 'next_page_token_value'
+
+def test_analyze_org_policy_governed_assets_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AssetServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.analyze_org_policy_governed_assets in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.analyze_org_policy_governed_assets] = mock_rpc
+
+        request = {}
+        client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+        client.analyze_org_policy_governed_assets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):

@@ -330,7 +330,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.GetTriggerRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.GetTriggerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.GetTriggerRequest):
+            request = eventarc.GetTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -339,11 +344,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_trigger,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_trigger]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -437,7 +438,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.ListTriggersRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.ListTriggersRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.ListTriggersRequest):
+            request = eventarc.ListTriggersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -446,11 +452,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_triggers,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_triggers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -582,7 +584,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.CreateTriggerRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.CreateTriggerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.CreateTriggerRequest):
+            request = eventarc.CreateTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -595,11 +602,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_trigger,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_trigger]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -722,7 +725,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.UpdateTriggerRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.UpdateTriggerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.UpdateTriggerRequest):
+            request = eventarc.UpdateTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -735,11 +743,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_trigger,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_trigger]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -855,7 +859,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.DeleteTriggerRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.DeleteTriggerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.DeleteTriggerRequest):
+            request = eventarc.DeleteTriggerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -866,11 +875,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_trigger,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_trigger]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -975,7 +980,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.GetChannelRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.GetChannelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.GetChannelRequest):
+            request = eventarc.GetChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -984,11 +994,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_channel,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1082,7 +1088,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.ListChannelsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.ListChannelsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.ListChannelsRequest):
+            request = eventarc.ListChannelsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1091,11 +1102,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_channels,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_channels]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1227,7 +1234,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.CreateChannelRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.CreateChannelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.CreateChannelRequest):
+            request = eventarc.CreateChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1240,11 +1252,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_channel_,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_channel_]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1361,7 +1369,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.UpdateChannelRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.UpdateChannelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.UpdateChannelRequest):
+            request = eventarc.UpdateChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1372,11 +1385,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_channel,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1486,7 +1495,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.DeleteChannelRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.DeleteChannelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.DeleteChannelRequest):
+            request = eventarc.DeleteChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1495,11 +1509,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_channel,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1598,7 +1608,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.GetProviderRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.GetProviderRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.GetProviderRequest):
+            request = eventarc.GetProviderRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1607,11 +1622,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_provider,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_provider]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1705,7 +1716,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.ListProvidersRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.ListProvidersRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.ListProvidersRequest):
+            request = eventarc.ListProvidersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1714,11 +1730,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_providers,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_providers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1823,7 +1835,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.GetChannelConnectionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.GetChannelConnectionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.GetChannelConnectionRequest):
+            request = eventarc.GetChannelConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1832,11 +1849,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_channel_connection,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_channel_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1931,7 +1944,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.ListChannelConnectionsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.ListChannelConnectionsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.ListChannelConnectionsRequest):
+            request = eventarc.ListChannelConnectionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1940,11 +1958,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_channel_connections,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_channel_connections]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2076,7 +2090,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.CreateChannelConnectionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.CreateChannelConnectionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.CreateChannelConnectionRequest):
+            request = eventarc.CreateChannelConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2089,11 +2108,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_channel_connection,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_channel_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2201,7 +2216,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.DeleteChannelConnectionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.DeleteChannelConnectionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.DeleteChannelConnectionRequest):
+            request = eventarc.DeleteChannelConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2210,11 +2230,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_channel_connection,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_channel_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2319,7 +2335,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.GetGoogleChannelConfigRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.GetGoogleChannelConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.GetGoogleChannelConfigRequest):
+            request = eventarc.GetGoogleChannelConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2328,11 +2349,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_google_channel_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_google_channel_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2440,7 +2457,12 @@ class EventarcAsyncClient:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        request = eventarc.UpdateGoogleChannelConfigRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.UpdateGoogleChannelConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.UpdateGoogleChannelConfigRequest):
+            request = eventarc.UpdateGoogleChannelConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2451,11 +2473,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_google_channel_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_google_channel_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
