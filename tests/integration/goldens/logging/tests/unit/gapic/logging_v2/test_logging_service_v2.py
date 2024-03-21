@@ -798,15 +798,15 @@ def test_delete_log_empty_call():
 
 
 def test_delete_log_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.DeleteLogRequest(
         log_name='log_name_value',
@@ -1074,15 +1074,15 @@ def test_write_log_entries_empty_call():
 
 
 def test_write_log_entries_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.WriteLogEntriesRequest(
         log_name='log_name_value',
@@ -1321,15 +1321,15 @@ def test_list_log_entries_empty_call():
 
 
 def test_list_log_entries_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.ListLogEntriesRequest(
         filter='filter_value',
@@ -1752,15 +1752,15 @@ def test_list_monitored_resource_descriptors_empty_call():
 
 
 def test_list_monitored_resource_descriptors_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.ListMonitoredResourceDescriptorsRequest(
         page_token='page_token_value',
@@ -2079,15 +2079,15 @@ def test_list_logs_empty_call():
 
 
 def test_list_logs_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.ListLogsRequest(
         parent='parent_value',

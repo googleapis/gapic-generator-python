@@ -840,15 +840,15 @@ def test_get_trigger_empty_call():
 
 
 def test_get_trigger_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetTriggerRequest(
         name='name_value',
@@ -1137,15 +1137,15 @@ def test_list_triggers_empty_call():
 
 
 def test_list_triggers_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.ListTriggersRequest(
         parent='parent_value',
@@ -1618,15 +1618,15 @@ def test_create_trigger_empty_call():
 
 
 def test_create_trigger_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.CreateTriggerRequest(
         parent='parent_value',
@@ -1921,15 +1921,15 @@ def test_update_trigger_empty_call():
 
 
 def test_update_trigger_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.UpdateTriggerRequest(
     )
@@ -2220,15 +2220,15 @@ def test_delete_trigger_empty_call():
 
 
 def test_delete_trigger_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.DeleteTriggerRequest(
         name='name_value',
@@ -2527,15 +2527,15 @@ def test_get_channel_empty_call():
 
 
 def test_get_channel_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetChannelRequest(
         name='name_value',
@@ -2827,15 +2827,15 @@ def test_list_channels_empty_call():
 
 
 def test_list_channels_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.ListChannelsRequest(
         parent='parent_value',
@@ -3306,15 +3306,15 @@ def test_create_channel_empty_call():
 
 
 def test_create_channel_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.CreateChannelRequest(
         parent='parent_value',
@@ -3609,15 +3609,15 @@ def test_update_channel_empty_call():
 
 
 def test_update_channel_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.UpdateChannelRequest(
     )
@@ -3898,15 +3898,15 @@ def test_delete_channel_empty_call():
 
 
 def test_delete_channel_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.DeleteChannelRequest(
         name='name_value',
@@ -4184,15 +4184,15 @@ def test_get_provider_empty_call():
 
 
 def test_get_provider_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetProviderRequest(
         name='name_value',
@@ -4472,15 +4472,15 @@ def test_list_providers_empty_call():
 
 
 def test_list_providers_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.ListProvidersRequest(
         parent='parent_value',
@@ -4962,15 +4962,15 @@ def test_get_channel_connection_empty_call():
 
 
 def test_get_channel_connection_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetChannelConnectionRequest(
         name='name_value',
@@ -5256,15 +5256,15 @@ def test_list_channel_connections_empty_call():
 
 
 def test_list_channel_connections_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.ListChannelConnectionsRequest(
         parent='parent_value',
@@ -5733,15 +5733,15 @@ def test_create_channel_connection_empty_call():
 
 
 def test_create_channel_connection_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.CreateChannelConnectionRequest(
         parent='parent_value',
@@ -6036,15 +6036,15 @@ def test_delete_channel_connection_empty_call():
 
 
 def test_delete_channel_connection_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.DeleteChannelConnectionRequest(
         name='name_value',
@@ -6322,15 +6322,15 @@ def test_get_google_channel_config_empty_call():
 
 
 def test_get_google_channel_config_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetGoogleChannelConfigRequest(
         name='name_value',
@@ -6610,15 +6610,15 @@ def test_update_google_channel_config_empty_call():
 
 
 def test_update_google_channel_config_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.UpdateGoogleChannelConfigRequest(
     )

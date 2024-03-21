@@ -825,15 +825,15 @@ def test_list_instances_empty_call():
 
 
 def test_list_instances_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.ListInstancesRequest(
         parent='parent_value',
@@ -1357,15 +1357,15 @@ def test_get_instance_empty_call():
 
 
 def test_get_instance_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.GetInstanceRequest(
         name='name_value',
@@ -1718,15 +1718,15 @@ def test_get_instance_auth_string_empty_call():
 
 
 def test_get_instance_auth_string_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.GetInstanceAuthStringRequest(
         name='name_value',
@@ -1998,15 +1998,15 @@ def test_create_instance_empty_call():
 
 
 def test_create_instance_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.CreateInstanceRequest(
         parent='parent_value',
@@ -2301,15 +2301,15 @@ def test_update_instance_empty_call():
 
 
 def test_update_instance_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.UpdateInstanceRequest(
     )
@@ -2590,15 +2590,15 @@ def test_upgrade_instance_empty_call():
 
 
 def test_upgrade_instance_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.UpgradeInstanceRequest(
         name='name_value',
@@ -2883,15 +2883,15 @@ def test_import_instance_empty_call():
 
 
 def test_import_instance_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.ImportInstanceRequest(
         name='name_value',
@@ -3174,15 +3174,15 @@ def test_export_instance_empty_call():
 
 
 def test_export_instance_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.ExportInstanceRequest(
         name='name_value',
@@ -3465,15 +3465,15 @@ def test_failover_instance_empty_call():
 
 
 def test_failover_instance_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.FailoverInstanceRequest(
         name='name_value',
@@ -3756,15 +3756,15 @@ def test_delete_instance_empty_call():
 
 
 def test_delete_instance_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.DeleteInstanceRequest(
         name='name_value',
@@ -4037,15 +4037,15 @@ def test_reschedule_maintenance_empty_call():
 
 
 def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.RescheduleMaintenanceRequest(
         name='name_value',

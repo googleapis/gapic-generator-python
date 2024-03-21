@@ -799,15 +799,15 @@ def test_list_log_metrics_empty_call():
 
 
 def test_list_log_metrics_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.ListLogMetricsRequest(
         parent='parent_value',
@@ -1288,15 +1288,15 @@ def test_get_log_metric_empty_call():
 
 
 def test_get_log_metric_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.GetLogMetricRequest(
         metric_name='metric_name_value',
@@ -1601,15 +1601,15 @@ def test_create_log_metric_empty_call():
 
 
 def test_create_log_metric_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.CreateLogMetricRequest(
         parent='parent_value',
@@ -1924,15 +1924,15 @@ def test_update_log_metric_empty_call():
 
 
 def test_update_log_metric_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.UpdateLogMetricRequest(
         metric_name='metric_name_value',
@@ -2232,15 +2232,15 @@ def test_delete_log_metric_empty_call():
 
 
 def test_delete_log_metric_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
-    # Populate all string fields in the request which are not uuid4
-    # since we want to check that uuid4 are populated automatically
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.DeleteLogMetricRequest(
         metric_name='metric_name_value',
