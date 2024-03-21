@@ -67,9 +67,7 @@ def gapic_generator_python():
         strip_prefix = "googleapis-{}".format(_commit_sha),
         urls = ["https://github.com/googleapis/googleapis/archive/{}.zip".format(_commit_sha)],
     )
-    # Commit 109851ef28cecf144dd66c08a946de833d67f8c7 does not exist in the main branch.
-    # DO NOT MERGE. Wait for https://github.com/googleapis/gapic-showcase/pull/1477
-    _commit_sha = "109851ef28cecf144dd66c08a946de833d67f8c7"
+    _commit_sha = "4847b10e47f7ce97128c9b5410000dde1b8bdcea"
     _maybe(
         http_archive,
         name = "com_google_gapic_showcase",
