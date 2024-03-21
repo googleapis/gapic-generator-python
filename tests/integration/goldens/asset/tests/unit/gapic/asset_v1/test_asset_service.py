@@ -837,7 +837,6 @@ def test_export_assets_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.export_assets] = mock_rpc
 
         request = {}
-
         client.export_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -874,7 +873,6 @@ async def test_export_assets_async_use_cached_wrapped_rpc(transport: str = "grpc
         client._client._transport._wrapped_methods[client._client._transport.export_assets] = mock_rpc
 
         request = {}
-
         await client.export_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1053,7 +1051,6 @@ def test_list_assets_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_assets] = mock_rpc
 
         request = {}
-
         client.list_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1090,7 +1087,6 @@ async def test_list_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         client._client._transport._wrapped_methods[client._client._transport.list_assets] = mock_rpc
 
         request = {}
-
         await client.list_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1542,7 +1538,6 @@ def test_batch_get_assets_history_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.batch_get_assets_history] = mock_rpc
 
         request = {}
-
         client.batch_get_assets_history(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1579,7 +1574,6 @@ async def test_batch_get_assets_history_async_use_cached_wrapped_rpc(transport: 
         client._client._transport._wrapped_methods[client._client._transport.batch_get_assets_history] = mock_rpc
 
         request = {}
-
         await client.batch_get_assets_history(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1765,7 +1759,6 @@ def test_create_feed_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_feed] = mock_rpc
 
         request = {}
-
         client.create_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1802,7 +1795,6 @@ async def test_create_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         client._client._transport._wrapped_methods[client._client._transport.create_feed] = mock_rpc
 
         request = {}
-
         await client.create_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2080,7 +2072,6 @@ def test_get_feed_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_feed] = mock_rpc
 
         request = {}
-
         client.get_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2117,7 +2108,6 @@ async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         client._client._transport._wrapped_methods[client._client._transport.get_feed] = mock_rpc
 
         request = {}
-
         await client.get_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2385,7 +2375,6 @@ def test_list_feeds_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_feeds] = mock_rpc
 
         request = {}
-
         client.list_feeds(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2422,7 +2411,6 @@ async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         client._client._transport._wrapped_methods[client._client._transport.list_feeds] = mock_rpc
 
         request = {}
-
         await client.list_feeds(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2690,7 +2678,6 @@ def test_update_feed_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_feed] = mock_rpc
 
         request = {}
-
         client.update_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2727,7 +2714,6 @@ async def test_update_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         client._client._transport._wrapped_methods[client._client._transport.update_feed] = mock_rpc
 
         request = {}
-
         await client.update_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2994,7 +2980,6 @@ def test_delete_feed_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_feed] = mock_rpc
 
         request = {}
-
         client.delete_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3031,7 +3016,6 @@ async def test_delete_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         client._client._transport._wrapped_methods[client._client._transport.delete_feed] = mock_rpc
 
         request = {}
-
         await client.delete_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3290,7 +3274,6 @@ def test_search_all_resources_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.search_all_resources] = mock_rpc
 
         request = {}
-
         client.search_all_resources(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3327,7 +3310,6 @@ async def test_search_all_resources_async_use_cached_wrapped_rpc(transport: str 
         client._client._transport._wrapped_methods[client._client._transport.search_all_resources] = mock_rpc
 
         request = {}
-
         await client.search_all_resources(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3801,7 +3783,6 @@ def test_search_all_iam_policies_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.search_all_iam_policies] = mock_rpc
 
         request = {}
-
         client.search_all_iam_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3838,7 +3819,6 @@ async def test_search_all_iam_policies_async_use_cached_wrapped_rpc(transport: s
         client._client._transport._wrapped_methods[client._client._transport.search_all_iam_policies] = mock_rpc
 
         request = {}
-
         await client.search_all_iam_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4302,7 +4282,6 @@ def test_analyze_iam_policy_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_iam_policy] = mock_rpc
 
         request = {}
-
         client.analyze_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4339,7 +4318,6 @@ async def test_analyze_iam_policy_async_use_cached_wrapped_rpc(transport: str = 
         client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy] = mock_rpc
 
         request = {}
-
         await client.analyze_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4516,7 +4494,6 @@ def test_analyze_iam_policy_longrunning_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_iam_policy_longrunning] = mock_rpc
 
         request = {}
-
         client.analyze_iam_policy_longrunning(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4553,7 +4530,6 @@ async def test_analyze_iam_policy_longrunning_async_use_cached_wrapped_rpc(trans
         client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy_longrunning] = mock_rpc
 
         request = {}
-
         await client.analyze_iam_policy_longrunning(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4730,7 +4706,6 @@ def test_analyze_move_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_move] = mock_rpc
 
         request = {}
-
         client.analyze_move(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4767,7 +4742,6 @@ async def test_analyze_move_async_use_cached_wrapped_rpc(transport: str = "grpc_
         client._client._transport._wrapped_methods[client._client._transport.analyze_move] = mock_rpc
 
         request = {}
-
         await client.analyze_move(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4947,7 +4921,6 @@ def test_query_assets_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.query_assets] = mock_rpc
 
         request = {}
-
         client.query_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4984,7 +4957,6 @@ async def test_query_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_
         client._client._transport._wrapped_methods[client._client._transport.query_assets] = mock_rpc
 
         request = {}
-
         await client.query_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5172,7 +5144,6 @@ def test_create_saved_query_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_saved_query] = mock_rpc
 
         request = {}
-
         client.create_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5209,7 +5180,6 @@ async def test_create_saved_query_async_use_cached_wrapped_rpc(transport: str = 
         client._client._transport._wrapped_methods[client._client._transport.create_saved_query] = mock_rpc
 
         request = {}
-
         await client.create_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5503,7 +5473,6 @@ def test_get_saved_query_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_saved_query] = mock_rpc
 
         request = {}
-
         client.get_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5540,7 +5509,6 @@ async def test_get_saved_query_async_use_cached_wrapped_rpc(transport: str = "gr
         client._client._transport._wrapped_methods[client._client._transport.get_saved_query] = mock_rpc
 
         request = {}
-
         await client.get_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5808,7 +5776,6 @@ def test_list_saved_queries_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_saved_queries] = mock_rpc
 
         request = {}
-
         client.list_saved_queries(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5845,7 +5812,6 @@ async def test_list_saved_queries_async_use_cached_wrapped_rpc(transport: str = 
         client._client._transport._wrapped_methods[client._client._transport.list_saved_queries] = mock_rpc
 
         request = {}
-
         await client.list_saved_queries(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6305,7 +6271,6 @@ def test_update_saved_query_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_saved_query] = mock_rpc
 
         request = {}
-
         client.update_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6342,7 +6307,6 @@ async def test_update_saved_query_async_use_cached_wrapped_rpc(transport: str = 
         client._client._transport._wrapped_methods[client._client._transport.update_saved_query] = mock_rpc
 
         request = {}
-
         await client.update_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6617,7 +6581,6 @@ def test_delete_saved_query_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_saved_query] = mock_rpc
 
         request = {}
-
         client.delete_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6654,7 +6617,6 @@ async def test_delete_saved_query_async_use_cached_wrapped_rpc(transport: str = 
         client._client._transport._wrapped_methods[client._client._transport.delete_saved_query] = mock_rpc
 
         request = {}
-
         await client.delete_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6911,7 +6873,6 @@ def test_batch_get_effective_iam_policies_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.batch_get_effective_iam_policies] = mock_rpc
 
         request = {}
-
         client.batch_get_effective_iam_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6948,7 +6909,6 @@ async def test_batch_get_effective_iam_policies_async_use_cached_wrapped_rpc(tra
         client._client._transport._wrapped_methods[client._client._transport.batch_get_effective_iam_policies] = mock_rpc
 
         request = {}
-
         await client.batch_get_effective_iam_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7126,7 +7086,6 @@ def test_analyze_org_policies_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_org_policies] = mock_rpc
 
         request = {}
-
         client.analyze_org_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7163,7 +7122,6 @@ async def test_analyze_org_policies_async_use_cached_wrapped_rpc(transport: str 
         client._client._transport._wrapped_methods[client._client._transport.analyze_org_policies] = mock_rpc
 
         request = {}
-
         await client.analyze_org_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7637,7 +7595,6 @@ def test_analyze_org_policy_governed_containers_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_org_policy_governed_containers] = mock_rpc
 
         request = {}
-
         client.analyze_org_policy_governed_containers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7674,7 +7631,6 @@ async def test_analyze_org_policy_governed_containers_async_use_cached_wrapped_r
         client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_containers] = mock_rpc
 
         request = {}
-
         await client.analyze_org_policy_governed_containers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8148,7 +8104,6 @@ def test_analyze_org_policy_governed_assets_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_org_policy_governed_assets] = mock_rpc
 
         request = {}
-
         client.analyze_org_policy_governed_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8185,7 +8140,6 @@ async def test_analyze_org_policy_governed_assets_async_use_cached_wrapped_rpc(t
         client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_assets] = mock_rpc
 
         request = {}
-
         await client.analyze_org_policy_governed_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8640,7 +8594,6 @@ def test_export_assets_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.export_assets] = mock_rpc
 
         request = {}
-
         client.export_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8856,7 +8809,6 @@ def test_list_assets_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_assets] = mock_rpc
 
         request = {}
-
         client.list_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9181,7 +9133,6 @@ def test_batch_get_assets_history_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.batch_get_assets_history] = mock_rpc
 
         request = {}
-
         client.batch_get_assets_history(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9408,7 +9359,6 @@ def test_create_feed_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_feed] = mock_rpc
 
         request = {}
-
         client.create_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9691,7 +9641,6 @@ def test_get_feed_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_feed] = mock_rpc
 
         request = {}
-
         client.get_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9959,7 +9908,6 @@ def test_list_feeds_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_feeds] = mock_rpc
 
         request = {}
-
         client.list_feeds(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10237,7 +10185,6 @@ def test_update_feed_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_feed] = mock_rpc
 
         request = {}
-
         client.update_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10498,7 +10445,6 @@ def test_delete_feed_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_feed] = mock_rpc
 
         request = {}
-
         client.delete_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10758,7 +10704,6 @@ def test_search_all_resources_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.search_all_resources] = mock_rpc
 
         request = {}
-
         client.search_all_resources(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11089,7 +11034,6 @@ def test_search_all_iam_policies_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.search_all_iam_policies] = mock_rpc
 
         request = {}
-
         client.search_all_iam_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11418,7 +11362,6 @@ def test_analyze_iam_policy_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_iam_policy] = mock_rpc
 
         request = {}
-
         client.analyze_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11627,7 +11570,6 @@ def test_analyze_iam_policy_longrunning_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_iam_policy_longrunning] = mock_rpc
 
         request = {}
-
         client.analyze_iam_policy_longrunning(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11836,7 +11778,6 @@ def test_analyze_move_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_move] = mock_rpc
 
         request = {}
-
         client.analyze_move(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -12068,7 +12009,6 @@ def test_query_assets_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.query_assets] = mock_rpc
 
         request = {}
-
         client.query_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -12356,7 +12296,6 @@ def test_create_saved_query_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_saved_query] = mock_rpc
 
         request = {}
-
         client.create_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -12650,7 +12589,6 @@ def test_get_saved_query_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_saved_query] = mock_rpc
 
         request = {}
-
         client.get_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -12920,7 +12858,6 @@ def test_list_saved_queries_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_saved_queries] = mock_rpc
 
         request = {}
-
         client.list_saved_queries(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -13317,7 +13254,6 @@ def test_update_saved_query_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_saved_query] = mock_rpc
 
         request = {}
-
         client.update_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -13582,7 +13518,6 @@ def test_delete_saved_query_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_saved_query] = mock_rpc
 
         request = {}
-
         client.delete_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -13840,7 +13775,6 @@ def test_batch_get_effective_iam_policies_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.batch_get_effective_iam_policies] = mock_rpc
 
         request = {}
-
         client.batch_get_effective_iam_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -14070,7 +14004,6 @@ def test_analyze_org_policies_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_org_policies] = mock_rpc
 
         request = {}
-
         client.analyze_org_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -14412,7 +14345,6 @@ def test_analyze_org_policy_governed_containers_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_org_policy_governed_containers] = mock_rpc
 
         request = {}
-
         client.analyze_org_policy_governed_containers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -14754,7 +14686,6 @@ def test_analyze_org_policy_governed_assets_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.analyze_org_policy_governed_assets] = mock_rpc
 
         request = {}
-
         client.analyze_org_policy_governed_assets(request)
 
         # Establish that the underlying gRPC stub method was called.

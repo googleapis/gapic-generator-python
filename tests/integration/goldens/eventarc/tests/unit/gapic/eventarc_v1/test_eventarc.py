@@ -858,7 +858,6 @@ def test_get_trigger_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_trigger] = mock_rpc
 
         request = {}
-
         client.get_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -895,7 +894,6 @@ async def test_get_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         client._client._transport._wrapped_methods[client._client._transport.get_trigger] = mock_rpc
 
         request = {}
-
         await client.get_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1167,7 +1165,6 @@ def test_list_triggers_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_triggers] = mock_rpc
 
         request = {}
-
         client.list_triggers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1204,7 +1201,6 @@ async def test_list_triggers_async_use_cached_wrapped_rpc(transport: str = "grpc
         client._client._transport._wrapped_methods[client._client._transport.list_triggers] = mock_rpc
 
         request = {}
-
         await client.list_triggers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1657,7 +1653,6 @@ def test_create_trigger_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_trigger] = mock_rpc
 
         request = {}
-
         client.create_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1694,7 +1689,6 @@ async def test_create_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
         client._client._transport._wrapped_methods[client._client._transport.create_trigger] = mock_rpc
 
         request = {}
-
         await client.create_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1974,7 +1968,6 @@ def test_update_trigger_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_trigger] = mock_rpc
 
         request = {}
-
         client.update_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2011,7 +2004,6 @@ async def test_update_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
         client._client._transport._wrapped_methods[client._client._transport.update_trigger] = mock_rpc
 
         request = {}
-
         await client.update_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2291,7 +2283,6 @@ def test_delete_trigger_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_trigger] = mock_rpc
 
         request = {}
-
         client.delete_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2328,7 +2319,6 @@ async def test_delete_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
         client._client._transport._wrapped_methods[client._client._transport.delete_trigger] = mock_rpc
 
         request = {}
-
         await client.delete_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2612,7 +2602,6 @@ def test_get_channel_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_channel] = mock_rpc
 
         request = {}
-
         client.get_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2649,7 +2638,6 @@ async def test_get_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         client._client._transport._wrapped_methods[client._client._transport.get_channel] = mock_rpc
 
         request = {}
-
         await client.get_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2923,7 +2911,6 @@ def test_list_channels_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_channels] = mock_rpc
 
         request = {}
-
         client.list_channels(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2960,7 +2947,6 @@ async def test_list_channels_async_use_cached_wrapped_rpc(transport: str = "grpc
         client._client._transport._wrapped_methods[client._client._transport.list_channels] = mock_rpc
 
         request = {}
-
         await client.list_channels(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3413,7 +3399,6 @@ def test_create_channel_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_channel_] = mock_rpc
 
         request = {}
-
         client.create_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3450,7 +3435,6 @@ async def test_create_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         client._client._transport._wrapped_methods[client._client._transport.create_channel_] = mock_rpc
 
         request = {}
-
         await client.create_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3730,7 +3714,6 @@ def test_update_channel_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_channel] = mock_rpc
 
         request = {}
-
         client.update_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3767,7 +3750,6 @@ async def test_update_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         client._client._transport._wrapped_methods[client._client._transport.update_channel] = mock_rpc
 
         request = {}
-
         await client.update_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4037,7 +4019,6 @@ def test_delete_channel_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_channel] = mock_rpc
 
         request = {}
-
         client.delete_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4074,7 +4055,6 @@ async def test_delete_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         client._client._transport._wrapped_methods[client._client._transport.delete_channel] = mock_rpc
 
         request = {}
-
         await client.delete_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4339,7 +4319,6 @@ def test_get_provider_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_provider] = mock_rpc
 
         request = {}
-
         client.get_provider(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4376,7 +4355,6 @@ async def test_get_provider_async_use_cached_wrapped_rpc(transport: str = "grpc_
         client._client._transport._wrapped_methods[client._client._transport.get_provider] = mock_rpc
 
         request = {}
-
         await client.get_provider(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4642,7 +4620,6 @@ def test_list_providers_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_providers] = mock_rpc
 
         request = {}
-
         client.list_providers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4679,7 +4656,6 @@ async def test_list_providers_async_use_cached_wrapped_rpc(transport: str = "grp
         client._client._transport._wrapped_methods[client._client._transport.list_providers] = mock_rpc
 
         request = {}
-
         await client.list_providers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5141,7 +5117,6 @@ def test_get_channel_connection_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_channel_connection] = mock_rpc
 
         request = {}
-
         client.get_channel_connection(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5178,7 +5153,6 @@ async def test_get_channel_connection_async_use_cached_wrapped_rpc(transport: st
         client._client._transport._wrapped_methods[client._client._transport.get_channel_connection] = mock_rpc
 
         request = {}
-
         await client.get_channel_connection(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5448,7 +5422,6 @@ def test_list_channel_connections_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_channel_connections] = mock_rpc
 
         request = {}
-
         client.list_channel_connections(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5485,7 +5458,6 @@ async def test_list_channel_connections_async_use_cached_wrapped_rpc(transport: 
         client._client._transport._wrapped_methods[client._client._transport.list_channel_connections] = mock_rpc
 
         request = {}
-
         await client.list_channel_connections(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5938,7 +5910,6 @@ def test_create_channel_connection_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_channel_connection] = mock_rpc
 
         request = {}
-
         client.create_channel_connection(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5975,7 +5946,6 @@ async def test_create_channel_connection_async_use_cached_wrapped_rpc(transport:
         client._client._transport._wrapped_methods[client._client._transport.create_channel_connection] = mock_rpc
 
         request = {}
-
         await client.create_channel_connection(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6255,7 +6225,6 @@ def test_delete_channel_connection_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_channel_connection] = mock_rpc
 
         request = {}
-
         client.delete_channel_connection(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6292,7 +6261,6 @@ async def test_delete_channel_connection_async_use_cached_wrapped_rpc(transport:
         client._client._transport._wrapped_methods[client._client._transport.delete_channel_connection] = mock_rpc
 
         request = {}
-
         await client.delete_channel_connection(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6557,7 +6525,6 @@ def test_get_google_channel_config_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_google_channel_config] = mock_rpc
 
         request = {}
-
         client.get_google_channel_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6594,7 +6561,6 @@ async def test_get_google_channel_config_async_use_cached_wrapped_rpc(transport:
         client._client._transport._wrapped_methods[client._client._transport.get_google_channel_config] = mock_rpc
 
         request = {}
-
         await client.get_google_channel_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6860,7 +6826,6 @@ def test_update_google_channel_config_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_google_channel_config] = mock_rpc
 
         request = {}
-
         client.update_google_channel_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6897,7 +6862,6 @@ async def test_update_google_channel_config_async_use_cached_wrapped_rpc(transpo
         client._client._transport._wrapped_methods[client._client._transport.update_google_channel_config] = mock_rpc
 
         request = {}
-
         await client.update_google_channel_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7164,7 +7128,6 @@ def test_get_trigger_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_trigger] = mock_rpc
 
         request = {}
-
         client.get_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7436,7 +7399,6 @@ def test_list_triggers_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_triggers] = mock_rpc
 
         request = {}
-
         client.list_triggers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7822,7 +7784,6 @@ def test_create_trigger_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_trigger] = mock_rpc
 
         request = {}
-
         client.create_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8176,7 +8137,6 @@ def test_update_trigger_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_trigger] = mock_rpc
 
         request = {}
-
         client.update_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8451,7 +8411,6 @@ def test_delete_trigger_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_trigger] = mock_rpc
 
         request = {}
-
         client.delete_trigger(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8743,7 +8702,6 @@ def test_get_channel_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_channel] = mock_rpc
 
         request = {}
-
         client.get_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9015,7 +8973,6 @@ def test_list_channels_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_channels] = mock_rpc
 
         request = {}
-
         client.list_channels(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9401,7 +9358,6 @@ def test_create_channel_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_channel_] = mock_rpc
 
         request = {}
-
         client.create_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9755,7 +9711,6 @@ def test_update_channel_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_channel] = mock_rpc
 
         request = {}
-
         client.update_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10028,7 +9983,6 @@ def test_delete_channel_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_channel] = mock_rpc
 
         request = {}
-
         client.delete_channel(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10309,7 +10263,6 @@ def test_get_provider_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_provider] = mock_rpc
 
         request = {}
-
         client.get_provider(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10581,7 +10534,6 @@ def test_list_providers_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_providers] = mock_rpc
 
         request = {}
-
         client.list_providers(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10914,7 +10866,6 @@ def test_get_channel_connection_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_channel_connection] = mock_rpc
 
         request = {}
-
         client.get_channel_connection(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11186,7 +11137,6 @@ def test_list_channel_connections_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.list_channel_connections] = mock_rpc
 
         request = {}
-
         client.list_channel_connections(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11572,7 +11522,6 @@ def test_create_channel_connection_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.create_channel_connection] = mock_rpc
 
         request = {}
-
         client.create_channel_connection(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11851,7 +11800,6 @@ def test_delete_channel_connection_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.delete_channel_connection] = mock_rpc
 
         request = {}
-
         client.delete_channel_connection(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -12119,7 +12067,6 @@ def test_get_google_channel_config_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.get_google_channel_config] = mock_rpc
 
         request = {}
-
         client.get_google_channel_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -12455,7 +12402,6 @@ def test_update_google_channel_config_rest_use_cached_wrapped_rpc():
         client._transport._wrapped_methods[client._transport.update_google_channel_config] = mock_rpc
 
         request = {}
-
         client.update_google_channel_config(request)
 
         # Establish that the underlying gRPC stub method was called.
