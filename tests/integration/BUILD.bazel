@@ -180,6 +180,7 @@ py_gapic_library(
     ],
     service_yaml = "showcase_v1beta1.yaml",
     transport = "grpc+rest",
+    deps = [":iam_policy_py_proto"],
 )
 
 py_test(
