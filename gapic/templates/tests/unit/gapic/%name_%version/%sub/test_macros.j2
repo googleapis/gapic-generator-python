@@ -224,7 +224,7 @@ async def test_{{ method_name }}_empty_call_async():
         call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
         call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
         {% else %}
-        call.return_value ={{ '' }}
+        call.return_value = {{ '' }}
             {%- if not method.client_streaming and not method.server_streaming -%}
                 grpc_helpers_async.FakeUnaryUnaryCall
             {%- else -%}
