@@ -1060,7 +1060,7 @@ async def test_list_assets_empty_call_async():
             type(client.transport.list_assets),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListAssetsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListAssetsResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_assets()
@@ -1533,7 +1533,7 @@ async def test_batch_get_assets_history_empty_call_async():
             type(client.transport.batch_get_assets_history),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetAssetsHistoryResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetAssetsHistoryResponse(
         ))
         response = await client.batch_get_assets_history()
         call.assert_called()
@@ -1741,7 +1741,7 @@ async def test_create_feed_empty_call_async():
             type(client.transport.create_feed),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
             name='name_value',
             asset_names=['asset_names_value'],
             asset_types=['asset_types_value'],
@@ -2044,7 +2044,7 @@ async def test_get_feed_empty_call_async():
             type(client.transport.get_feed),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
             name='name_value',
             asset_names=['asset_names_value'],
             asset_types=['asset_types_value'],
@@ -2337,7 +2337,7 @@ async def test_list_feeds_empty_call_async():
             type(client.transport.list_feeds),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListFeedsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListFeedsResponse(
         ))
         response = await client.list_feeds()
         call.assert_called()
@@ -2623,7 +2623,7 @@ async def test_update_feed_empty_call_async():
             type(client.transport.update_feed),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
             name='name_value',
             asset_names=['asset_names_value'],
             asset_types=['asset_types_value'],
@@ -3199,7 +3199,7 @@ async def test_search_all_resources_empty_call_async():
             type(client.transport.search_all_resources),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllResourcesResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllResourcesResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.search_all_resources()
@@ -3700,7 +3700,7 @@ async def test_search_all_iam_policies_empty_call_async():
             type(client.transport.search_all_iam_policies),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllIamPoliciesResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllIamPoliciesResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.search_all_iam_policies()
@@ -4185,7 +4185,7 @@ async def test_analyze_iam_policy_empty_call_async():
             type(client.transport.analyze_iam_policy),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeIamPolicyResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeIamPolicyResponse(
             fully_explored=True,
         ))
         response = await client.analyze_iam_policy()
@@ -4583,7 +4583,7 @@ async def test_analyze_move_empty_call_async():
             type(client.transport.analyze_move),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeMoveResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeMoveResponse(
         ))
         response = await client.analyze_move()
         call.assert_called()
@@ -4789,7 +4789,7 @@ async def test_query_assets_empty_call_async():
             type(client.transport.query_assets),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.QueryAssetsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.QueryAssetsResponse(
             job_reference='job_reference_value',
             done=True,
         ))
@@ -5001,7 +5001,7 @@ async def test_create_saved_query_empty_call_async():
             type(client.transport.create_saved_query),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
             name='name_value',
             description='description_value',
             creator='creator_value',
@@ -5319,7 +5319,7 @@ async def test_get_saved_query_empty_call_async():
             type(client.transport.get_saved_query),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
             name='name_value',
             description='description_value',
             creator='creator_value',
@@ -5615,7 +5615,7 @@ async def test_list_saved_queries_empty_call_async():
             type(client.transport.list_saved_queries),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_saved_queries()
@@ -6094,7 +6094,7 @@ async def test_update_saved_query_empty_call_async():
             type(client.transport.update_saved_query),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
             name='name_value',
             description='description_value',
             creator='creator_value',
@@ -6669,7 +6669,7 @@ async def test_batch_get_effective_iam_policies_empty_call_async():
             type(client.transport.batch_get_effective_iam_policies),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetEffectiveIamPoliciesResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetEffectiveIamPoliciesResponse(
         ))
         response = await client.batch_get_effective_iam_policies()
         call.assert_called()
@@ -6873,7 +6873,7 @@ async def test_analyze_org_policies_empty_call_async():
             type(client.transport.analyze_org_policies),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.analyze_org_policies()
@@ -7374,7 +7374,7 @@ async def test_analyze_org_policy_governed_containers_empty_call_async():
             type(client.transport.analyze_org_policy_governed_containers),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.analyze_org_policy_governed_containers()
@@ -7875,7 +7875,7 @@ async def test_analyze_org_policy_governed_assets_empty_call_async():
             type(client.transport.analyze_org_policy_governed_assets),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.analyze_org_policy_governed_assets()

@@ -840,7 +840,7 @@ async def test_list_log_metrics_empty_call_async():
             type(client.transport.list_log_metrics),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_log_metrics()
@@ -1327,7 +1327,7 @@ async def test_get_log_metric_empty_call_async():
             type(client.transport.get_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
             name='name_value',
             description='description_value',
             filter='filter_value',
@@ -1640,7 +1640,7 @@ async def test_create_log_metric_empty_call_async():
             type(client.transport.create_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
             name='name_value',
             description='description_value',
             filter='filter_value',
@@ -1963,7 +1963,7 @@ async def test_update_log_metric_empty_call_async():
             type(client.transport.update_log_metric),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
             name='name_value',
             description='description_value',
             filter='filter_value',

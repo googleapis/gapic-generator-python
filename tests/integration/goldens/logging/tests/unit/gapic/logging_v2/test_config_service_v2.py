@@ -840,7 +840,7 @@ async def test_list_buckets_empty_call_async():
             type(client.transport.list_buckets),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListBucketsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListBucketsResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_buckets()
@@ -1327,7 +1327,7 @@ async def test_get_bucket_empty_call_async():
             type(client.transport.get_bucket),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
             name='name_value',
             description='description_value',
             retention_days=1512,
@@ -1956,7 +1956,7 @@ async def test_create_bucket_empty_call_async():
             type(client.transport.create_bucket),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
             name='name_value',
             description='description_value',
             retention_days=1512,
@@ -2187,7 +2187,7 @@ async def test_update_bucket_empty_call_async():
             type(client.transport.update_bucket),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
             name='name_value',
             description='description_value',
             retention_days=1512,
@@ -2794,7 +2794,7 @@ async def test_list_views_empty_call_async():
             type(client.transport.list_views),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListViewsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListViewsResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_views()
@@ -3273,7 +3273,7 @@ async def test_get_view_empty_call_async():
             type(client.transport.get_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
             name='name_value',
             description='description_value',
             filter='filter_value',
@@ -3486,7 +3486,7 @@ async def test_create_view_empty_call_async():
             type(client.transport.create_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
             name='name_value',
             description='description_value',
             filter='filter_value',
@@ -3697,7 +3697,7 @@ async def test_update_view_empty_call_async():
             type(client.transport.update_view),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
             name='name_value',
             description='description_value',
             filter='filter_value',
@@ -4099,7 +4099,7 @@ async def test_list_sinks_empty_call_async():
             type(client.transport.list_sinks),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListSinksResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListSinksResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_sinks()
@@ -4588,7 +4588,7 @@ async def test_get_sink_empty_call_async():
             type(client.transport.get_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
             name='name_value',
             destination='destination_value',
             filter='filter_value',
@@ -4906,7 +4906,7 @@ async def test_create_sink_empty_call_async():
             type(client.transport.create_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
             name='name_value',
             destination='destination_value',
             filter='filter_value',
@@ -5234,7 +5234,7 @@ async def test_update_sink_empty_call_async():
             type(client.transport.update_sink),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
             name='name_value',
             destination='destination_value',
             filter='filter_value',
@@ -6419,7 +6419,7 @@ async def test_list_links_empty_call_async():
             type(client.transport.list_links),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_links()
@@ -6898,7 +6898,7 @@ async def test_get_link_empty_call_async():
             type(client.transport.get_link),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link(
             name='name_value',
             description='description_value',
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
@@ -7189,7 +7189,7 @@ async def test_list_exclusions_empty_call_async():
             type(client.transport.list_exclusions),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListExclusionsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListExclusionsResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_exclusions()
@@ -7670,7 +7670,7 @@ async def test_get_exclusion_empty_call_async():
             type(client.transport.get_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
             name='name_value',
             description='description_value',
             filter='filter_value',
@@ -7968,7 +7968,7 @@ async def test_create_exclusion_empty_call_async():
             type(client.transport.create_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
             name='name_value',
             description='description_value',
             filter='filter_value',
@@ -8276,7 +8276,7 @@ async def test_update_exclusion_empty_call_async():
             type(client.transport.update_exclusion),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
             name='name_value',
             description='description_value',
             filter='filter_value',
@@ -8869,7 +8869,7 @@ async def test_get_cmek_settings_empty_call_async():
             type(client.transport.get_cmek_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
             name='name_value',
             kms_key_name='kms_key_name_value',
             kms_key_version_name='kms_key_version_name_value',
@@ -9085,7 +9085,7 @@ async def test_update_cmek_settings_empty_call_async():
             type(client.transport.update_cmek_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
             name='name_value',
             kms_key_name='kms_key_name_value',
             kms_key_version_name='kms_key_version_name_value',
@@ -9303,7 +9303,7 @@ async def test_get_settings_empty_call_async():
             type(client.transport.get_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
             name='name_value',
             kms_key_name='kms_key_name_value',
             kms_service_account_id='kms_service_account_id_value',
@@ -9606,7 +9606,7 @@ async def test_update_settings_empty_call_async():
             type(client.transport.update_settings),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
             name='name_value',
             kms_key_name='kms_key_name_value',
             kms_service_account_id='kms_service_account_id_value',

@@ -879,7 +879,7 @@ async def test_get_trigger_empty_call_async():
             type(client.transport.get_trigger),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(trigger.Trigger(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(trigger.Trigger(
             name='name_value',
             uid='uid_value',
             service_account='service_account_value',
@@ -1182,7 +1182,7 @@ async def test_list_triggers_empty_call_async():
             type(client.transport.list_triggers),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListTriggersResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListTriggersResponse(
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
@@ -2566,7 +2566,7 @@ async def test_get_channel_empty_call_async():
             type(client.transport.get_channel),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(channel.Channel(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel.Channel(
             name='name_value',
             uid='uid_value',
             provider='provider_value',
@@ -2870,7 +2870,7 @@ async def test_list_channels_empty_call_async():
             type(client.transport.list_channels),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelsResponse(
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
@@ -4223,7 +4223,7 @@ async def test_get_provider_empty_call_async():
             type(client.transport.get_provider),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(discovery.Provider(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(discovery.Provider(
             name='name_value',
             display_name='display_name_value',
         ))
@@ -4517,7 +4517,7 @@ async def test_list_providers_empty_call_async():
             type(client.transport.list_providers),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListProvidersResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListProvidersResponse(
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
@@ -5001,7 +5001,7 @@ async def test_get_channel_connection_empty_call_async():
             type(client.transport.get_channel_connection),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(channel_connection.ChannelConnection(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel_connection.ChannelConnection(
             name='name_value',
             uid='uid_value',
             channel='channel_value',
@@ -5297,7 +5297,7 @@ async def test_list_channel_connections_empty_call_async():
             type(client.transport.list_channel_connections),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelConnectionsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelConnectionsResponse(
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
@@ -6361,7 +6361,7 @@ async def test_get_google_channel_config_empty_call_async():
             type(client.transport.get_google_channel_config),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(google_channel_config.GoogleChannelConfig(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(google_channel_config.GoogleChannelConfig(
             name='name_value',
             crypto_key_name='crypto_key_name_value',
         ))
@@ -6647,7 +6647,7 @@ async def test_update_google_channel_config_empty_call_async():
             type(client.transport.update_google_channel_config),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(gce_google_channel_config.GoogleChannelConfig(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gce_google_channel_config.GoogleChannelConfig(
             name='name_value',
             crypto_key_name='crypto_key_name_value',
         ))

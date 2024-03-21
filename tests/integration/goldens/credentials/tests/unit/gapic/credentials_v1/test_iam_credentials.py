@@ -851,7 +851,7 @@ async def test_generate_access_token_empty_call_async():
             type(client.transport.generate_access_token),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse(
             access_token='access_token_value',
         ))
         response = await client.generate_access_token()
@@ -1162,7 +1162,7 @@ async def test_generate_id_token_empty_call_async():
             type(client.transport.generate_id_token),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
             token='token_value',
         ))
         response = await client.generate_id_token()
@@ -1477,7 +1477,7 @@ async def test_sign_blob_empty_call_async():
             type(client.transport.sign_blob),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(common.SignBlobResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignBlobResponse(
             key_id='key_id_value',
             signed_blob=b'signed_blob_blob',
         ))
@@ -1787,7 +1787,7 @@ async def test_sign_jwt_empty_call_async():
             type(client.transport.sign_jwt),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(common.SignJwtResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignJwtResponse(
             key_id='key_id_value',
             signed_jwt='signed_jwt_value',
         ))

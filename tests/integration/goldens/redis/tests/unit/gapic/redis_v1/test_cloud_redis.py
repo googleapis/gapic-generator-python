@@ -866,7 +866,7 @@ async def test_list_instances_empty_call_async():
             type(client.transport.list_instances),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse(
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
@@ -1396,7 +1396,7 @@ async def test_get_instance_empty_call_async():
             type(client.transport.get_instance),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance(
             name='name_value',
             display_name='display_name_value',
             location_id='location_id_value',
@@ -1757,7 +1757,7 @@ async def test_get_instance_auth_string_empty_call_async():
             type(client.transport.get_instance_auth_string),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
             auth_string='auth_string_value',
         ))
         response = await client.get_instance_auth_string()

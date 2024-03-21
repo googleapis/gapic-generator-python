@@ -1113,7 +1113,7 @@ async def test_write_log_entries_empty_call_async():
             type(client.transport.write_log_entries),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging.WriteLogEntriesResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging.WriteLogEntriesResponse(
         ))
         response = await client.write_log_entries()
         call.assert_called()
@@ -1364,7 +1364,7 @@ async def test_list_log_entries_empty_call_async():
             type(client.transport.list_log_entries),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging.ListLogEntriesResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging.ListLogEntriesResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_log_entries()
@@ -1791,7 +1791,7 @@ async def test_list_monitored_resource_descriptors_empty_call_async():
             type(client.transport.list_monitored_resource_descriptors),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging.ListMonitoredResourceDescriptorsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging.ListMonitoredResourceDescriptorsResponse(
             next_page_token='next_page_token_value',
         ))
         response = await client.list_monitored_resource_descriptors()
@@ -2120,7 +2120,7 @@ async def test_list_logs_empty_call_async():
             type(client.transport.list_logs),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging.ListLogsResponse(
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging.ListLogsResponse(
             log_names=['log_names_value'],
             next_page_token='next_page_token_value',
         ))
