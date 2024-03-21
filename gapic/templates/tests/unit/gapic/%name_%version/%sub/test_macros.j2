@@ -14,7 +14,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
-    {# Set UUID4 fields so that they are not automatically popoulated. #}
+    {# Set UUID4 fields so that they are not automatically populated. #}
     {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
     {% if method_settings is not none %}
     {% for auto_populated_field in method_settings.auto_populated_fields %}
@@ -263,7 +263,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
-    {# Set UUID4 fields so that they are not automatically popoulated. #}
+    {# Set UUID4 fields so that they are not automatically populated. #}
     {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
     {% if method_settings is not none %}
     {% for auto_populated_field in method_settings.auto_populated_fields %}

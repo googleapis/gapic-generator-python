@@ -526,7 +526,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
 
-    {# Set UUID4 fields so that they are not automatically popoulated. #}
+    {# Set UUID4 fields so that they are not automatically populated. #}
     {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
     {% if method_settings is not none %}
     {% for auto_populated_field in method_settings.auto_populated_fields %}
