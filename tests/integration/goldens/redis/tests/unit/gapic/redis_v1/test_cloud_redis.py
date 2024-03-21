@@ -823,6 +823,35 @@ def test_list_instances_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ListInstancesRequest()
 
+
+def test_list_instances_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.ListInstancesRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_instances),
+            '__call__') as call:
+        client.list_instances(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ListInstancesRequest(
+            parent='parent_value',
+            page_token='page_token_value',
+        )
+
 @pytest.mark.asyncio
 async def test_list_instances_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1326,6 +1355,33 @@ def test_get_instance_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.GetInstanceRequest()
 
+
+def test_get_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.GetInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance),
+            '__call__') as call:
+        client.get_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_get_instance_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1660,6 +1716,33 @@ def test_get_instance_auth_string_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
 
+
+def test_get_instance_auth_string_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.GetInstanceAuthStringRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        client.get_instance_auth_string(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1912,6 +1995,35 @@ def test_create_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.CreateInstanceRequest()
+
+
+def test_create_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.CreateInstanceRequest(
+        parent='parent_value',
+        instance_id='instance_id_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_instance),
+            '__call__') as call:
+        client.create_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.CreateInstanceRequest(
+            parent='parent_value',
+            instance_id='instance_id_value',
+        )
 
 @pytest.mark.asyncio
 async def test_create_instance_empty_call_async():
@@ -2187,6 +2299,31 @@ def test_update_instance_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.UpdateInstanceRequest()
 
+
+def test_update_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.UpdateInstanceRequest(
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_instance),
+            '__call__') as call:
+        client.update_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpdateInstanceRequest(
+        )
+
 @pytest.mark.asyncio
 async def test_update_instance_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2450,6 +2587,35 @@ def test_upgrade_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.UpgradeInstanceRequest()
+
+
+def test_upgrade_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.UpgradeInstanceRequest(
+        name='name_value',
+        redis_version='redis_version_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
+        client.upgrade_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpgradeInstanceRequest(
+            name='name_value',
+            redis_version='redis_version_value',
+        )
 
 @pytest.mark.asyncio
 async def test_upgrade_instance_empty_call_async():
@@ -2715,6 +2881,33 @@ def test_import_instance_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ImportInstanceRequest()
 
+
+def test_import_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.ImportInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.import_instance),
+            '__call__') as call:
+        client.import_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ImportInstanceRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_import_instance_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2978,6 +3171,33 @@ def test_export_instance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ExportInstanceRequest()
+
+
+def test_export_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.ExportInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_instance),
+            '__call__') as call:
+        client.export_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ExportInstanceRequest(
+            name='name_value',
+        )
 
 @pytest.mark.asyncio
 async def test_export_instance_empty_call_async():
@@ -3243,6 +3463,33 @@ def test_failover_instance_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.FailoverInstanceRequest()
 
+
+def test_failover_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.FailoverInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.failover_instance),
+            '__call__') as call:
+        client.failover_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.FailoverInstanceRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_failover_instance_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3507,6 +3754,33 @@ def test_delete_instance_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.DeleteInstanceRequest()
 
+
+def test_delete_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.DeleteInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_instance),
+            '__call__') as call:
+        client.delete_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.DeleteInstanceRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_delete_instance_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3760,6 +4034,33 @@ def test_reschedule_maintenance_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
+
+def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.RescheduleMaintenanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        client.reschedule_maintenance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest(
+            name='name_value',
+        )
 
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_empty_call_async():

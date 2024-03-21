@@ -150,6 +150,47 @@ def test_{{ method_name }}_empty_call():
         {% endwith %}{# method_settings #}
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
+
+
+def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = {{ method.input.ident }}(
+    {% for field in method.input.fields.values() if field.ident|string() == "str" and not field.uuid4 %}
+        {{ field.name }}={{ field.mock_value }},
+    {% endfor %}
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            '__call__') as call:
+        client.{{ method_name }}(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+{% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+{% if method_settings is not none %}
+{% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].{{ auto_populated_field }})
+        # clear UUID field so that the check below succeeds
+        args[0].{{ auto_populated_field }} = None
+{% endfor %}
+{% endif %}{# if method_settings is not none #}
+{% endwith %}{# method_settings #}
+        assert args[0] == {{ method.input.ident }}(
+        {% for field in method.input.fields.values() if field.ident|string() == "str" and not field.uuid4 %}
+            {{ field.name }}={{ field.mock_value }},
+        {% endfor %}
+        )
 {% endif %}
 
 {% if not full_extended_lro %}

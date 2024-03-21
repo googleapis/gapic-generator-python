@@ -838,6 +838,33 @@ def test_get_trigger_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetTriggerRequest()
 
+
+def test_get_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.GetTriggerRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_trigger),
+            '__call__') as call:
+        client.get_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetTriggerRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_get_trigger_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1107,6 +1134,39 @@ def test_list_triggers_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListTriggersRequest()
+
+
+def test_list_triggers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.ListTriggersRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+        order_by='order_by_value',
+        filter='filter_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_triggers),
+            '__call__') as call:
+        client.list_triggers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListTriggersRequest(
+            parent='parent_value',
+            page_token='page_token_value',
+            order_by='order_by_value',
+            filter='filter_value',
+        )
 
 @pytest.mark.asyncio
 async def test_list_triggers_empty_call_async():
@@ -1556,6 +1616,35 @@ def test_create_trigger_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateTriggerRequest()
 
+
+def test_create_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.CreateTriggerRequest(
+        parent='parent_value',
+        trigger_id='trigger_id_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_trigger),
+            '__call__') as call:
+        client.create_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateTriggerRequest(
+            parent='parent_value',
+            trigger_id='trigger_id_value',
+        )
+
 @pytest.mark.asyncio
 async def test_create_trigger_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1830,6 +1919,31 @@ def test_update_trigger_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateTriggerRequest()
 
+
+def test_update_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.UpdateTriggerRequest(
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_trigger),
+            '__call__') as call:
+        client.update_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.UpdateTriggerRequest(
+        )
+
 @pytest.mark.asyncio
 async def test_update_trigger_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2103,6 +2217,35 @@ def test_delete_trigger_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteTriggerRequest()
+
+
+def test_delete_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.DeleteTriggerRequest(
+        name='name_value',
+        etag='etag_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_trigger),
+            '__call__') as call:
+        client.delete_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteTriggerRequest(
+            name='name_value',
+            etag='etag_value',
+        )
 
 @pytest.mark.asyncio
 async def test_delete_trigger_empty_call_async():
@@ -2382,6 +2525,33 @@ def test_get_channel_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetChannelRequest()
 
+
+def test_get_channel_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.GetChannelRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel),
+            '__call__') as call:
+        client.get_channel(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_get_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2654,6 +2824,37 @@ def test_list_channels_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListChannelsRequest()
+
+
+def test_list_channels_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.ListChannelsRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+        order_by='order_by_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channels),
+            '__call__') as call:
+        client.list_channels(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelsRequest(
+            parent='parent_value',
+            page_token='page_token_value',
+            order_by='order_by_value',
+        )
 
 @pytest.mark.asyncio
 async def test_list_channels_empty_call_async():
@@ -3103,6 +3304,35 @@ def test_create_channel_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateChannelRequest()
 
+
+def test_create_channel_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.CreateChannelRequest(
+        parent='parent_value',
+        channel_id='channel_id_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_),
+            '__call__') as call:
+        client.create_channel(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelRequest(
+            parent='parent_value',
+            channel_id='channel_id_value',
+        )
+
 @pytest.mark.asyncio
 async def test_create_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3377,6 +3607,31 @@ def test_update_channel_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateChannelRequest()
 
+
+def test_update_channel_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.UpdateChannelRequest(
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_channel),
+            '__call__') as call:
+        client.update_channel(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.UpdateChannelRequest(
+        )
+
 @pytest.mark.asyncio
 async def test_update_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3641,6 +3896,33 @@ def test_delete_channel_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteChannelRequest()
 
+
+def test_delete_channel_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.DeleteChannelRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel),
+            '__call__') as call:
+        client.delete_channel(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_delete_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3899,6 +4181,33 @@ def test_get_provider_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetProviderRequest()
+
+
+def test_get_provider_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.GetProviderRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_provider),
+            '__call__') as call:
+        client.get_provider(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetProviderRequest(
+            name='name_value',
+        )
 
 @pytest.mark.asyncio
 async def test_get_provider_empty_call_async():
@@ -4160,6 +4469,39 @@ def test_list_providers_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListProvidersRequest()
+
+
+def test_list_providers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.ListProvidersRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+        order_by='order_by_value',
+        filter='filter_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_providers),
+            '__call__') as call:
+        client.list_providers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListProvidersRequest(
+            parent='parent_value',
+            page_token='page_token_value',
+            order_by='order_by_value',
+            filter='filter_value',
+        )
 
 @pytest.mark.asyncio
 async def test_list_providers_empty_call_async():
@@ -4618,6 +4960,33 @@ def test_get_channel_connection_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetChannelConnectionRequest()
 
+
+def test_get_channel_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.GetChannelConnectionRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel_connection),
+            '__call__') as call:
+        client.get_channel_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelConnectionRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_get_channel_connection_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4884,6 +5253,35 @@ def test_list_channel_connections_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListChannelConnectionsRequest()
+
+
+def test_list_channel_connections_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.ListChannelConnectionsRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channel_connections),
+            '__call__') as call:
+        client.list_channel_connections(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelConnectionsRequest(
+            parent='parent_value',
+            page_token='page_token_value',
+        )
 
 @pytest.mark.asyncio
 async def test_list_channel_connections_empty_call_async():
@@ -5333,6 +5731,35 @@ def test_create_channel_connection_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateChannelConnectionRequest()
 
+
+def test_create_channel_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.CreateChannelConnectionRequest(
+        parent='parent_value',
+        channel_connection_id='channel_connection_id_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_connection),
+            '__call__') as call:
+        client.create_channel_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelConnectionRequest(
+            parent='parent_value',
+            channel_connection_id='channel_connection_id_value',
+        )
+
 @pytest.mark.asyncio
 async def test_create_channel_connection_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5607,6 +6034,33 @@ def test_delete_channel_connection_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteChannelConnectionRequest()
 
+
+def test_delete_channel_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.DeleteChannelConnectionRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel_connection),
+            '__call__') as call:
+        client.delete_channel_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelConnectionRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_delete_channel_connection_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5865,6 +6319,33 @@ def test_get_google_channel_config_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetGoogleChannelConfigRequest()
+
+
+def test_get_google_channel_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.GetGoogleChannelConfigRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_google_channel_config),
+            '__call__') as call:
+        client.get_google_channel_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetGoogleChannelConfigRequest(
+            name='name_value',
+        )
 
 @pytest.mark.asyncio
 async def test_get_google_channel_config_empty_call_async():
@@ -6126,6 +6607,31 @@ def test_update_google_channel_config_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateGoogleChannelConfigRequest()
+
+
+def test_update_google_channel_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = eventarc.UpdateGoogleChannelConfigRequest(
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_google_channel_config),
+            '__call__') as call:
+        client.update_google_channel_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.UpdateGoogleChannelConfigRequest(
+        )
 
 @pytest.mark.asyncio
 async def test_update_google_channel_config_empty_call_async():

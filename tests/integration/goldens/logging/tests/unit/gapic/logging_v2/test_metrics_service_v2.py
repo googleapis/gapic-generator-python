@@ -797,6 +797,35 @@ def test_list_log_metrics_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.ListLogMetricsRequest()
 
+
+def test_list_log_metrics_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.ListLogMetricsRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_log_metrics),
+            '__call__') as call:
+        client.list_log_metrics(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.ListLogMetricsRequest(
+            parent='parent_value',
+            page_token='page_token_value',
+        )
+
 @pytest.mark.asyncio
 async def test_list_log_metrics_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1257,6 +1286,33 @@ def test_get_log_metric_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.GetLogMetricRequest()
 
+
+def test_get_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.GetLogMetricRequest(
+        metric_name='metric_name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_log_metric),
+            '__call__') as call:
+        client.get_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.GetLogMetricRequest(
+            metric_name='metric_name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_get_log_metric_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1542,6 +1598,33 @@ def test_create_log_metric_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.CreateLogMetricRequest()
+
+
+def test_create_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.CreateLogMetricRequest(
+        parent='parent_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_log_metric),
+            '__call__') as call:
+        client.create_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.CreateLogMetricRequest(
+            parent='parent_value',
+        )
 
 @pytest.mark.asyncio
 async def test_create_log_metric_empty_call_async():
@@ -1839,6 +1922,33 @@ def test_update_log_metric_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.UpdateLogMetricRequest()
 
+
+def test_update_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.UpdateLogMetricRequest(
+        metric_name='metric_name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_log_metric),
+            '__call__') as call:
+        client.update_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.UpdateLogMetricRequest(
+            metric_name='metric_name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_update_log_metric_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2119,6 +2229,33 @@ def test_delete_log_metric_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest()
+
+
+def test_delete_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.DeleteLogMetricRequest(
+        metric_name='metric_name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_log_metric),
+            '__call__') as call:
+        client.delete_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.DeleteLogMetricRequest(
+            metric_name='metric_name_value',
+        )
 
 @pytest.mark.asyncio
 async def test_delete_log_metric_empty_call_async():

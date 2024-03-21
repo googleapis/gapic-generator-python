@@ -817,6 +817,33 @@ def test_export_assets_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ExportAssetsRequest()
 
+
+def test_export_assets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.ExportAssetsRequest(
+        parent='parent_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_assets),
+            '__call__') as call:
+        client.export_assets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ExportAssetsRequest(
+            parent='parent_value',
+        )
+
 @pytest.mark.asyncio
 async def test_export_assets_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -989,6 +1016,35 @@ def test_list_assets_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListAssetsRequest()
+
+
+def test_list_assets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.ListAssetsRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_assets),
+            '__call__') as call:
+        client.list_assets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListAssetsRequest(
+            parent='parent_value',
+            page_token='page_token_value',
+        )
 
 @pytest.mark.asyncio
 async def test_list_assets_empty_call_async():
@@ -1436,6 +1492,33 @@ def test_batch_get_assets_history_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetAssetsHistoryRequest()
 
+
+def test_batch_get_assets_history_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.BatchGetAssetsHistoryRequest(
+        parent='parent_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.batch_get_assets_history),
+            '__call__') as call:
+        client.batch_get_assets_history(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.BatchGetAssetsHistoryRequest(
+            parent='parent_value',
+        )
+
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1614,6 +1697,35 @@ def test_create_feed_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateFeedRequest()
+
+
+def test_create_feed_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.CreateFeedRequest(
+        parent='parent_value',
+        feed_id='feed_id_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_feed),
+            '__call__') as call:
+        client.create_feed(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateFeedRequest(
+            parent='parent_value',
+            feed_id='feed_id_value',
+        )
 
 @pytest.mark.asyncio
 async def test_create_feed_empty_call_async():
@@ -1891,6 +2003,33 @@ def test_get_feed_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetFeedRequest()
 
+
+def test_get_feed_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.GetFeedRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_feed),
+            '__call__') as call:
+        client.get_feed(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetFeedRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_get_feed_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2157,6 +2296,33 @@ def test_list_feeds_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListFeedsRequest()
 
+
+def test_list_feeds_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.ListFeedsRequest(
+        parent='parent_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_feeds),
+            '__call__') as call:
+        client.list_feeds(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListFeedsRequest(
+            parent='parent_value',
+        )
+
 @pytest.mark.asyncio
 async def test_list_feeds_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2417,6 +2583,31 @@ def test_update_feed_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateFeedRequest()
+
+
+def test_update_feed_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.UpdateFeedRequest(
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_feed),
+            '__call__') as call:
+        client.update_feed(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateFeedRequest(
+        )
 
 @pytest.mark.asyncio
 async def test_update_feed_empty_call_async():
@@ -2683,6 +2874,33 @@ def test_delete_feed_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest()
 
+
+def test_delete_feed_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.DeleteFeedRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_feed),
+            '__call__') as call:
+        client.delete_feed(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteFeedRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_delete_feed_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2933,6 +3151,39 @@ def test_search_all_resources_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllResourcesRequest()
+
+
+def test_search_all_resources_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.SearchAllResourcesRequest(
+        scope='scope_value',
+        query='query_value',
+        page_token='page_token_value',
+        order_by='order_by_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.search_all_resources),
+            '__call__') as call:
+        client.search_all_resources(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.SearchAllResourcesRequest(
+            scope='scope_value',
+            query='query_value',
+            page_token='page_token_value',
+            order_by='order_by_value',
+        )
 
 @pytest.mark.asyncio
 async def test_search_all_resources_empty_call_async():
@@ -3402,6 +3653,39 @@ def test_search_all_iam_policies_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllIamPoliciesRequest()
 
+
+def test_search_all_iam_policies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.SearchAllIamPoliciesRequest(
+        scope='scope_value',
+        query='query_value',
+        page_token='page_token_value',
+        order_by='order_by_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.search_all_iam_policies),
+            '__call__') as call:
+        client.search_all_iam_policies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.SearchAllIamPoliciesRequest(
+            scope='scope_value',
+            query='query_value',
+            page_token='page_token_value',
+            order_by='order_by_value',
+        )
+
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3860,6 +4144,33 @@ def test_analyze_iam_policy_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyRequest()
 
+
+def test_analyze_iam_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.AnalyzeIamPolicyRequest(
+        saved_analysis_query='saved_analysis_query_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_iam_policy),
+            '__call__') as call:
+        client.analyze_iam_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeIamPolicyRequest(
+            saved_analysis_query='saved_analysis_query_value',
+        )
+
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4031,6 +4342,33 @@ def test_analyze_iam_policy_longrunning_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest()
 
+
+def test_analyze_iam_policy_longrunning_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.AnalyzeIamPolicyLongrunningRequest(
+        saved_analysis_query='saved_analysis_query_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_iam_policy_longrunning),
+            '__call__') as call:
+        client.analyze_iam_policy_longrunning(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest(
+            saved_analysis_query='saved_analysis_query_value',
+        )
+
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4201,6 +4539,35 @@ def test_analyze_move_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeMoveRequest()
+
+
+def test_analyze_move_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.AnalyzeMoveRequest(
+        resource='resource_value',
+        destination_parent='destination_parent_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_move),
+            '__call__') as call:
+        client.analyze_move(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeMoveRequest(
+            resource='resource_value',
+            destination_parent='destination_parent_value',
+        )
 
 @pytest.mark.asyncio
 async def test_analyze_move_empty_call_async():
@@ -4374,6 +4741,39 @@ def test_query_assets_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.QueryAssetsRequest()
+
+
+def test_query_assets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.QueryAssetsRequest(
+        parent='parent_value',
+        statement='statement_value',
+        job_reference='job_reference_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.query_assets),
+            '__call__') as call:
+        client.query_assets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.QueryAssetsRequest(
+            parent='parent_value',
+            statement='statement_value',
+            job_reference='job_reference_value',
+            page_token='page_token_value',
+        )
 
 @pytest.mark.asyncio
 async def test_query_assets_empty_call_async():
@@ -4557,6 +4957,35 @@ def test_create_saved_query_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateSavedQueryRequest()
+
+
+def test_create_saved_query_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.CreateSavedQueryRequest(
+        parent='parent_value',
+        saved_query_id='saved_query_id_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_saved_query),
+            '__call__') as call:
+        client.create_saved_query(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateSavedQueryRequest(
+            parent='parent_value',
+            saved_query_id='saved_query_id_value',
+        )
 
 @pytest.mark.asyncio
 async def test_create_saved_query_empty_call_async():
@@ -4849,6 +5278,33 @@ def test_get_saved_query_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetSavedQueryRequest()
 
+
+def test_get_saved_query_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.GetSavedQueryRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_saved_query),
+            '__call__') as call:
+        client.get_saved_query(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetSavedQueryRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_get_saved_query_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5113,6 +5569,37 @@ def test_list_saved_queries_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListSavedQueriesRequest()
+
+
+def test_list_saved_queries_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.ListSavedQueriesRequest(
+        parent='parent_value',
+        filter='filter_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        client.list_saved_queries(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListSavedQueriesRequest(
+            parent='parent_value',
+            filter='filter_value',
+            page_token='page_token_value',
+        )
 
 @pytest.mark.asyncio
 async def test_list_saved_queries_empty_call_async():
@@ -5568,6 +6055,31 @@ def test_update_saved_query_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateSavedQueryRequest()
 
+
+def test_update_saved_query_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.UpdateSavedQueryRequest(
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_saved_query),
+            '__call__') as call:
+        client.update_saved_query(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateSavedQueryRequest(
+        )
+
 @pytest.mark.asyncio
 async def test_update_saved_query_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5840,6 +6352,33 @@ def test_delete_saved_query_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteSavedQueryRequest()
 
+
+def test_delete_saved_query_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.DeleteSavedQueryRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
+        client.delete_saved_query(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteSavedQueryRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_delete_saved_query_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6089,6 +6628,33 @@ def test_batch_get_effective_iam_policies_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
 
+
+def test_batch_get_effective_iam_policies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.BatchGetEffectiveIamPoliciesRequest(
+        scope='scope_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.batch_get_effective_iam_policies),
+            '__call__') as call:
+        client.batch_get_effective_iam_policies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest(
+            scope='scope_value',
+        )
+
 @pytest.mark.asyncio
 async def test_batch_get_effective_iam_policies_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6259,6 +6825,39 @@ def test_analyze_org_policies_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
+
+
+def test_analyze_org_policies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.AnalyzeOrgPoliciesRequest(
+        scope='scope_value',
+        constraint='constraint_value',
+        filter='filter_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        client.analyze_org_policies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+            page_token='page_token_value',
+        )
 
 @pytest.mark.asyncio
 async def test_analyze_org_policies_empty_call_async():
@@ -6728,6 +7327,39 @@ def test_analyze_org_policy_governed_containers_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
+
+def test_analyze_org_policy_governed_containers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(
+        scope='scope_value',
+        constraint='constraint_value',
+        filter='filter_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        client.analyze_org_policy_governed_containers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+            page_token='page_token_value',
+        )
+
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -7195,6 +7827,39 @@ def test_analyze_org_policy_governed_assets_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+
+def test_analyze_org_policy_governed_assets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(
+        scope='scope_value',
+        constraint='constraint_value',
+        filter='filter_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        client.analyze_org_policy_governed_assets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+            page_token='page_token_value',
+        )
 
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_empty_call_async():

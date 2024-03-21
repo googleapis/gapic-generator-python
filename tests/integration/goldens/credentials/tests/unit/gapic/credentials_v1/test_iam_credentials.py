@@ -810,6 +810,33 @@ def test_generate_access_token_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateAccessTokenRequest()
 
+
+def test_generate_access_token_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = common.GenerateAccessTokenRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_access_token),
+            '__call__') as call:
+        client.generate_access_token(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.GenerateAccessTokenRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_generate_access_token_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1091,6 +1118,35 @@ def test_generate_id_token_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateIdTokenRequest()
+
+
+def test_generate_id_token_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = common.GenerateIdTokenRequest(
+        name='name_value',
+        audience='audience_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_id_token),
+            '__call__') as call:
+        client.generate_id_token(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.GenerateIdTokenRequest(
+            name='name_value',
+            audience='audience_value',
+        )
 
 @pytest.mark.asyncio
 async def test_generate_id_token_empty_call_async():
@@ -1380,6 +1436,33 @@ def test_sign_blob_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignBlobRequest()
 
+
+def test_sign_blob_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = common.SignBlobRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_blob),
+            '__call__') as call:
+        client.sign_blob(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.SignBlobRequest(
+            name='name_value',
+        )
+
 @pytest.mark.asyncio
 async def test_sign_blob_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1660,6 +1743,35 @@ def test_sign_jwt_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignJwtRequest()
+
+
+def test_sign_jwt_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that uuid4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not uuid4
+    # since we want to check that uuid4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = common.SignJwtRequest(
+        name='name_value',
+        payload='payload_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_jwt),
+            '__call__') as call:
+        client.sign_jwt(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.SignJwtRequest(
+            name='name_value',
+            payload='payload_value',
+        )
 
 @pytest.mark.asyncio
 async def test_sign_jwt_empty_call_async():
