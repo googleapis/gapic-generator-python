@@ -276,6 +276,7 @@
     - The field supports explicit presence and has not been set by the user.
     - The field doesn't support explicit presence, and its value is the empty
       string (i.e. the default value).
+    When using this macro, ensure the calling template generates a line `import uuid`
 #}
 {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
 {% if method_settings is not none %}
