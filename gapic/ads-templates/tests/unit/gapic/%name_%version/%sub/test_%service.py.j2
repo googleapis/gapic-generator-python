@@ -516,6 +516,7 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
   dict,
 ])
 def test_{{ method_name }}(request_type, transport: str = 'grpc'):
+    {% with auto_populated_field_sample_value = "explicit value for autopopulate-able field" %}
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -530,9 +531,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% if method_settings is not none %}
     {% for auto_populated_field in method_settings.auto_populated_fields %}
     if isinstance(request, dict):
-        request['{{ auto_populated_field }}'] = "str_value"
+        request['{{ auto_populated_field }}'] = "{{ auto_populated_field_sample_value }}"
     else:
-        request.{{ auto_populated_field }} = "str_value"
+        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
     {% endfor %}
     {% endif %}{# if method_settings is not none #}
     {% endwith %}{# method_settings #}
@@ -587,7 +588,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
-        request.{{ auto_populated_field }} = "str_value"
+        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
         {% endfor %}
         {% endif %}{# if method_settings is not none #}
         {% endwith %}{# method_settings #}
@@ -631,6 +632,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endwith %}{# auto_populated_field_sample_value #}
 
 
 {% if not method.client_streaming %}

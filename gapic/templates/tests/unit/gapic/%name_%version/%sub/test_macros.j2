@@ -5,6 +5,7 @@
   dict,
 ])
 def test_{{ method_name }}(request_type, transport: str = 'grpc'):
+    {% with auto_populated_field_sample_value = "explicit value for autopopulate-able field" %}
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -18,9 +19,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% if method_settings is not none %}
     {% for auto_populated_field in method_settings.auto_populated_fields %}
     if isinstance(request, dict):
-        request['{{ auto_populated_field }}'] = "str_value"
+        request['{{ auto_populated_field }}'] = "{{ auto_populated_field_sample_value }}"
     else:
-        request.{{ auto_populated_field }} = "str_value"
+        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
     {% endfor %}
     {% endif %}{# if method_settings is not none #}
     {% endwith %}{# method_settings #}
@@ -73,7 +74,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
-        request.{{ auto_populated_field }} = "str_value"
+        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
         {% endfor %}
         {% endif %}{# if method_settings is not none #}
         {% endwith %}{# method_settings #}
@@ -117,6 +118,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endwith %}{# auto_populated_field_sample_value #}
 
 
 {% if not method.client_streaming %}
@@ -252,6 +254,7 @@ async def test_{{ method_name }}_empty_call_async():
 
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_type={{ method.input.ident }}):
+    {% with auto_populated_field_sample_value = "explicit value for autopopulate-able field" %}
     client = {{ service.async_client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -265,9 +268,9 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     {% if method_settings is not none %}
     {% for auto_populated_field in method_settings.auto_populated_fields %}
     if isinstance(request, dict):
-        request['{{ auto_populated_field }}'] = "str_value"
+        request['{{ auto_populated_field }}'] = "{{ auto_populated_field_sample_value }}"
     else:
-        request.{{ auto_populated_field }} = "str_value"
+        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
     {% endfor %}
     {% endif %}{# if method_settings is not none #}
     {% endwith %}{# method_settings #}
@@ -323,7 +326,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
-        request.{{ auto_populated_field }} = "str_value"
+        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
         {% endfor %}
         {% endif %}{# if method_settings is not none #}
         {% endwith %}{# method_settings #}
@@ -363,6 +366,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     {% endif %}{# oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endwith %}{# auto_populated_field_sample_value #}
 
 
 @pytest.mark.asyncio
