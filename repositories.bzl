@@ -60,12 +60,21 @@ def gapic_generator_python():
         strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )
-    _commit_sha = "fae3e6e091418d6343902debaf545cfc8f32c3ff"
+    _commit_sha = "b53452f85b7d66e1336d136ddb52dd2136cc9552"
     _maybe(
         http_archive,
         name = "com_google_googleapis",
         strip_prefix = "googleapis-{}".format(_commit_sha),
         urls = ["https://github.com/googleapis/googleapis/archive/{}.zip".format(_commit_sha)],
+    )
+    # Commit 109851ef28cecf144dd66c08a946de833d67f8c7 does not exist in the main branch.
+    # DO NOT MERGE. Wait for https://github.com/googleapis/gapic-showcase/pull/1477
+    _commit_sha = "109851ef28cecf144dd66c08a946de833d67f8c7"
+    _maybe(
+        http_archive,
+        name = "com_google_gapic_showcase",
+        strip_prefix = "gapic-showcase-{}".format(_commit_sha),
+        urls = ["https://github.com/googleapis/gapic-showcase/archive/{}.zip".format(_commit_sha)],
     )
 
 def gapic_generator_register_toolchains():

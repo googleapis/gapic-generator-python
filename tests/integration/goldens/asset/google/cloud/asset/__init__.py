@@ -85,6 +85,7 @@ from google.cloud.asset_v1.types.asset_service import ContentType
 from google.cloud.asset_v1.types.assets import Asset
 from google.cloud.asset_v1.types.assets import AttachedResource
 from google.cloud.asset_v1.types.assets import ConditionEvaluation
+from google.cloud.asset_v1.types.assets import EffectiveTagDetails
 from google.cloud.asset_v1.types.assets import IamPolicyAnalysisResult
 from google.cloud.asset_v1.types.assets import IamPolicyAnalysisState
 from google.cloud.asset_v1.types.assets import IamPolicySearchResult
@@ -95,6 +96,7 @@ from google.cloud.asset_v1.types.assets import RelatedResources
 from google.cloud.asset_v1.types.assets import RelationshipAttributes
 from google.cloud.asset_v1.types.assets import Resource
 from google.cloud.asset_v1.types.assets import ResourceSearchResult
+from google.cloud.asset_v1.types.assets import Tag
 from google.cloud.asset_v1.types.assets import TemporalAsset
 from google.cloud.asset_v1.types.assets import TimeWindow
 from google.cloud.asset_v1.types.assets import VersionedResource
@@ -165,6 +167,7 @@ __all__ = ('AssetServiceClient',
     'Asset',
     'AttachedResource',
     'ConditionEvaluation',
+    'EffectiveTagDetails',
     'IamPolicyAnalysisResult',
     'IamPolicyAnalysisState',
     'IamPolicySearchResult',
@@ -175,6 +178,7 @@ __all__ = ('AssetServiceClient',
     'RelationshipAttributes',
     'Resource',
     'ResourceSearchResult',
+    'Tag',
     'TemporalAsset',
     'TimeWindow',
     'VersionedResource',
