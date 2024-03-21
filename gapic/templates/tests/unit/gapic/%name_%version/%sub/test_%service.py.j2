@@ -4,7 +4,7 @@
 {% import "tests/unit/gapic/%name_%version/%sub/test_macros.j2" as test_macros %}
 
 import os
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default="")|list %}
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
 import re
 {% endif %}
 # try/except added for compatibility with python < 3.8
