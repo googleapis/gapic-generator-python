@@ -1,5 +1,6 @@
 {% macro grpc_required_tests(method, service, api, full_extended_lro=False) %}
 {% with method_name = method.safe_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.safe_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}
+{% with uuid4_re = "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}" %}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
   dict,
@@ -144,7 +145,7 @@ def test_{{ method_name }}_empty_call():
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].{{ auto_populated_field }})
+        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
         {% endfor %}
@@ -182,7 +183,7 @@ def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].{{ auto_populated_field }})
+        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
 {% endfor %}
@@ -243,7 +244,7 @@ async def test_{{ method_name }}_empty_call_async():
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", args[0].{{ auto_populated_field }})
+        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
         {% endfor %}
@@ -1014,6 +1015,7 @@ def test_{{ method_name }}_raw_page_lro():
     response = {{ method.lro.response_type.ident }}()
     assert response.raw_page is response
 {% endif %}{# method.paged_result_field #}{% endwith %}
+{% endwith %}{# uuid4_re #}
 {% endmacro %}
 
 {% macro rest_required_tests(method, service, numeric_enums=False, full_extended_lro=False) %}

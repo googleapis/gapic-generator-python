@@ -21,6 +21,8 @@ from google.rpc import code_pb2
 
 from google import showcase
 
+UUID4_RE = r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}"
+
 
 def test_unary_with_request_object(echo):
     response = echo.echo(showcase.EchoRequest(
@@ -41,16 +43,10 @@ def test_unary_with_request_object(echo):
     ))
     assert response.content == 'The hail in Wales falls mainly on the snails.'
     # Ensure that the uuid4 field is set according to AIP 4235
-    assert re.match(
-        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-        response.request_id,
-    )
+    assert re.match(UUID4_RE, response.request_id)
     assert len(response.request_id) == 36
     # Ensure that the uuid4 field is set according to AIP 4235
-    assert re.match(
-        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-        response.other_request_id,
-    )
+    assert re.match(UUID4_RE, response.other_request_id)
     assert len(response.other_request_id) == 36
 
 
@@ -72,16 +68,10 @@ def test_unary_with_dict(echo):
         'content': 'The hail in Wales falls mainly on the snails.',
     })
     assert response.content == 'The hail in Wales falls mainly on the snails.'
-    assert re.match(
-        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-        response.request_id,
-    )
+    assert re.match(UUID4_RE, response.request_id)
     assert len(response.request_id) == 36
     # Ensure that the uuid4 field is set according to AIP 4235
-    assert re.match(
-        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-        response.other_request_id,
-    )
+    assert re.match(UUID4_RE, response.other_request_id)
     assert len(response.other_request_id) == 36
 
 
