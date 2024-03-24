@@ -25,6 +25,7 @@ from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core import universe_helpers
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
 from google.auth.transport.grpc import SslCredentials             # type: ignore
@@ -119,8 +120,6 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
     )
 
     _DEFAULT_ENDPOINT_TEMPLATE = "logging.{UNIVERSE_DOMAIN}"
-    _DEFAULT_UNIVERSE = "googleapis.com"
-
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
@@ -357,63 +356,13 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         if api_override is not None:
             api_endpoint = api_override
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            _default_universe = MetricsServiceV2Client._DEFAULT_UNIVERSE
+            _default_universe = universe_helpers._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = MetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
-
-    @staticmethod
-    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
-        """Return the universe domain used by the client.
-
-        Args:
-            client_universe_domain (Optional[str]): The universe domain configured via the client options.
-            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
-
-        Returns:
-            str: The universe domain to be used by the client.
-
-        Raises:
-            ValueError: If the universe domain is an empty string.
-        """
-        universe_domain = MetricsServiceV2Client._DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
-
-    @staticmethod
-    def _compare_universes(client_universe: str,
-                           credentials: ga_credentials.Credentials) -> bool:
-        """Returns True iff the universe domains used by the client and credentials match.
-
-        Args:
-            client_universe (str): The universe domain configured via the client options.
-            credentials (ga_credentials.Credentials): The credentials being used in the client.
-
-        Returns:
-            bool: True iff client_universe matches the universe in credentials.
-
-        Raises:
-            ValueError: when client_universe does not match the universe in credentials.
-        """
-
-        default_universe = MetricsServiceV2Client._DEFAULT_UNIVERSE
-        credentials_universe = getattr(credentials, "universe_domain", default_universe)
-
-        if client_universe != credentials_universe:
-            raise ValueError("The configured universe domain "
-                f"({client_universe}) does not match the universe domain "
-                f"found in the credentials ({credentials_universe}). "
-                "If you haven't configured the universe domain explicitly, "
-                f"`{default_universe}` is the default.")
-        return True
 
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
@@ -425,7 +374,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             ValueError: If the configured universe domain is not valid.
         """
         self._is_universe_domain_valid = (self._is_universe_domain_valid or
-            MetricsServiceV2Client._compare_universes(self.universe_domain, self.transport._credentials))
+            universe_helpers._compare_universes(self.universe_domain, self.transport._credentials))
         return self._is_universe_domain_valid
 
     @property
@@ -510,7 +459,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = MetricsServiceV2Client._read_environment_variables()
         self._client_cert_source = MetricsServiceV2Client._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
-        self._universe_domain = MetricsServiceV2Client._get_universe_domain(universe_domain_opt, self._universe_domain_env)
+        self._universe_domain = universe_helpers._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = None # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
