@@ -25,7 +25,7 @@ def partition(
 
 
 class {{ api.naming.module_name }}CallTransformer(cst.CSTTransformer):
-    CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
+    CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'compression', 'metadata')
     {% with all_methods = [] %}
     {% for service in api.services.values() %}{% for method in service.methods.values() %}
     {% do all_methods.append(method) %}
