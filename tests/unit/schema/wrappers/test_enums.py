@@ -27,9 +27,33 @@ def test_enum_properties():
     assert enum_type.name == 'Color'
 
 
+def test_enum_deprecated():
+    enum = make_enum('SomeEnum', is_deprecated=True)
+    assert enum.is_deprecated
+
+    enum = make_enum('SomeEnum', is_deprecated=False)
+    assert not enum.is_deprecated
+
+
+def test_enum_values_deprecated():
+    enum_type = make_enum(name='Irrelevant', values=(
+        {"name": "RED", "value": 1, "is_deprecated": True},
+        {"name": "GREEN", "value": 2, "is_deprecated": False},
+        {"name": "BLUE", "value": 3, "is_deprecated": False},
+    ))
+    for enum_value in enum_type.values:
+        if enum_value.name == 'RED':
+            assert enum_value.is_deprecated
+        else:
+            assert not enum_value.is_deprecated
+    assert not enum_type.is_deprecated
+
+
 def test_enum_value_properties():
     enum_type = make_enum(name='Irrelevant', values=(
-        ('RED', 1), ('GREEN', 2), ('BLUE', 3),
+        {"name": "RED", "value": 1},
+        {"name": "GREEN", "value": 2},
+        {"name": "BLUE", "value": 3},
     ))
     assert len(enum_type.values) == 3
     for ev, expected in zip(enum_type.values, ('RED', 'GREEN', 'BLUE')):

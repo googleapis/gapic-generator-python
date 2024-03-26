@@ -45,6 +45,14 @@ def test_field_is_primitive():
     assert primitive_field.is_primitive
 
 
+def test_field_deprecated():
+    field = make_field('SomeField', is_deprecated=True)
+    assert field.is_deprecated
+
+    field = make_field('SomeField', is_deprecated=False)
+    assert not field.is_deprecated
+
+
 def test_field_proto_type():
     primitive_field = make_field(type='TYPE_INT32')
     assert primitive_field.proto_type == 'INT32'
@@ -489,11 +497,11 @@ def test_mock_value_original_type_enum():
         enum=make_enum(
             name="Class",
             values=[
-                ("UNKNOWN", 0),
-                ("GASTROPOD", 1),
-                ("BIVALVE", 2),
-                ("CEPHALOPOD", 3),
-            ],
+                {"name": "UNKNOWN", "value": 0},
+                {"name": "GASTROPOD", "value": 1},
+                {"name": "BIVALVE", "value": 2},
+                {"name": "CEPHALOPOD", "value": 3},
+            ]
         ),
     )
 
@@ -503,7 +511,7 @@ def test_mock_value_original_type_enum():
         name="empty",
         enum=make_enum(
             name="Empty",
-            values=[("UNKNOWN", 0)],
+            values=[{"name": "UNKNOWN", "value": 0}]
         ),
     )
 
@@ -516,10 +524,10 @@ def test_mock_value_original_type_enum_repeated():
         enum=make_enum(
             name="Class",
             values=[
-                ("UNKNOWN", 0),
-                ("BIVALVE", 2),
-                ("CEPHALOPOD", 3),
-            ],
+                {"name": "UNKNOWN", "value": 0},
+                {"name": "BIVALVE", "value": 2},
+                {"name": "CEPHALOPOD", "value": 3},
+            ]
         ),
         label=3,
     )
@@ -530,7 +538,7 @@ def test_mock_value_original_type_enum_repeated():
         name="empty",
         enum=make_enum(
             name="Empty",
-            values=[("UNKNOWN", 0)],
+            values=[{"name": "UNKNOWN", "value": 0}]
         ),
         label=3,
     )
