@@ -250,6 +250,7 @@ def showcase_library(
             f"google/showcase/v1beta1/echo.proto",
             f"google/showcase/v1beta1/identity.proto",
             f"google/showcase/v1beta1/messaging.proto",
+            f"google/showcase/v1beta1/compliance.proto",
         )
         session.run(
             *cmd_tup, external=True,
