@@ -389,9 +389,12 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 self.{{ method.transport_safe_name|snake_case }},
                 {% if method.retry %}
                 default_retry=retries.AsyncRetry(
-                    {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
-                    {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
-                    {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
+                    {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},
+                    {% endif %}
+                    {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},
+                    {% endif %}
+                    {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},
+                    {% endif %}
                     predicate=retries.if_exception_type(
                         {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
                         core_exceptions.{{ ex.__name__ }},
