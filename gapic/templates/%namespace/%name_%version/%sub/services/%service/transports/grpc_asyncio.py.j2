@@ -405,7 +405,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 default_timeout={{ method.timeout }},
                 client_info=client_info,
             ),
-            {% endfor %} {# precomputed wrappers loop #}
+            {% endfor %} {# service.methods.values() #}
         }
 
     def close(self):
