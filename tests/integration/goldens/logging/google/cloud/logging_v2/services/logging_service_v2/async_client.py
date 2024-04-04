@@ -290,17 +290,15 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([log_name])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a logging.DeleteLogRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, logging.DeleteLogRequest):
             request = logging.DeleteLogRequest(request)
 
@@ -480,17 +478,15 @@ class LoggingServiceV2AsyncClient:
                 Result returned from WriteLogEntries.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([log_name, resource, labels, entries])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a logging.WriteLogEntriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, logging.WriteLogEntriesRequest):
             request = logging.WriteLogEntriesRequest(request)
 
@@ -631,17 +627,15 @@ class LoggingServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource_names, filter, order_by])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a logging.ListLogEntriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, logging.ListLogEntriesRequest):
             request = logging.ListLogEntriesRequest(request)
 
@@ -737,10 +731,8 @@ class LoggingServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a logging.ListMonitoredResourceDescriptorsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, logging.ListMonitoredResourceDescriptorsRequest):
             request = logging.ListMonitoredResourceDescriptorsRequest(request)
 
@@ -840,17 +832,15 @@ class LoggingServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a logging.ListLogsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, logging.ListLogsRequest):
             request = logging.ListLogsRequest(request)
 

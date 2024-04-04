@@ -732,8 +732,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs['update_google_channel_config']
 
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
-        # override base class to use async wrappers
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.get_trigger: gapic_v1.method_async.wrap_method(
                 self.get_trigger,

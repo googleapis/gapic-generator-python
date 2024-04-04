@@ -605,8 +605,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         return self._stubs['reschedule_maintenance']
 
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
-        # override base class to use async wrappers
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.list_instances: gapic_v1.method_async.wrap_method(
                 self.list_instances,

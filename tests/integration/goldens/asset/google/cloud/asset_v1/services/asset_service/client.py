@@ -714,10 +714,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.ExportAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.ExportAssetsRequest):
             request = asset_service.ExportAssetsRequest(request)
 
@@ -824,17 +822,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.ListAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.ListAssetsRequest):
             request = asset_service.ListAssetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -932,10 +928,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 Batch get assets history response.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.BatchGetAssetsHistoryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.BatchGetAssetsHistoryRequest):
             request = asset_service.BatchGetAssetsHistoryRequest(request)
 
@@ -1044,17 +1038,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.CreateFeedRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.CreateFeedRequest):
             request = asset_service.CreateFeedRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1155,17 +1147,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.GetFeedRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.GetFeedRequest):
             request = asset_service.GetFeedRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1261,17 +1251,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.ListFeedsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.ListFeedsRequest):
             request = asset_service.ListFeedsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1376,17 +1364,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([feed])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.UpdateFeedRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.UpdateFeedRequest):
             request = asset_service.UpdateFeedRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1472,17 +1458,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.DeleteFeedRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.DeleteFeedRequest):
             request = asset_service.DeleteFeedRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1685,17 +1669,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query, asset_types])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.SearchAllResourcesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.SearchAllResourcesRequest):
             request = asset_service.SearchAllResourcesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1877,17 +1859,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, query])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.SearchAllIamPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.SearchAllIamPoliciesRequest):
             request = asset_service.SearchAllIamPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1988,10 +1968,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.AnalyzeIamPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.AnalyzeIamPolicyRequest):
             request = asset_service.AnalyzeIamPolicyRequest(request)
 
@@ -2097,10 +2075,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.AnalyzeIamPolicyLongrunningRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.AnalyzeIamPolicyLongrunningRequest):
             request = asset_service.AnalyzeIamPolicyLongrunningRequest(request)
 
@@ -2197,10 +2173,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.AnalyzeMoveRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.AnalyzeMoveRequest):
             request = asset_service.AnalyzeMoveRequest(request)
 
@@ -2295,10 +2269,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 QueryAssets response.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.QueryAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.QueryAssetsRequest):
             request = asset_service.QueryAssetsRequest(request)
 
@@ -2418,17 +2390,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, saved_query, saved_query_id])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.CreateSavedQueryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.CreateSavedQueryRequest):
             request = asset_service.CreateSavedQueryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2529,17 +2499,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.GetSavedQueryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.GetSavedQueryRequest):
             request = asset_service.GetSavedQueryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2642,17 +2610,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.ListSavedQueriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.ListSavedQueriesRequest):
             request = asset_service.ListSavedQueriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2767,17 +2733,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([saved_query, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.UpdateSavedQueryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.UpdateSavedQueryRequest):
             request = asset_service.UpdateSavedQueryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2867,17 +2831,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.DeleteSavedQueryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.DeleteSavedQueryRequest):
             request = asset_service.DeleteSavedQueryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2961,10 +2923,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.BatchGetEffectiveIamPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.BatchGetEffectiveIamPoliciesRequest):
             request = asset_service.BatchGetEffectiveIamPoliciesRequest(request)
 
@@ -3088,17 +3048,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, constraint, filter])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.AnalyzeOrgPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.AnalyzeOrgPoliciesRequest):
             request = asset_service.AnalyzeOrgPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3239,17 +3197,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, constraint, filter])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.AnalyzeOrgPolicyGovernedContainersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
             request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3419,17 +3375,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([scope, constraint, filter])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
             request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(request)
             # If we have keyword arguments corresponding to fields on the

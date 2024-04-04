@@ -408,13 +408,15 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
         return self._stubs['tail_log_entries']
 
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
-        # override base class to use async wrappers
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.delete_log: gapic_v1.method_async.wrap_method(
                 self.delete_log,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,
@@ -427,7 +429,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.write_log_entries: gapic_v1.method_async.wrap_method(
                 self.write_log_entries,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,
@@ -440,7 +445,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.list_log_entries: gapic_v1.method_async.wrap_method(
                 self.list_log_entries,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,
@@ -453,7 +461,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.list_monitored_resource_descriptors: gapic_v1.method_async.wrap_method(
                 self.list_monitored_resource_descriptors,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,
@@ -466,7 +477,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.list_logs: gapic_v1.method_async.wrap_method(
                 self.list_logs,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,
@@ -479,7 +493,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.tail_log_entries: gapic_v1.method_async.wrap_method(
                 self.tail_log_entries,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,

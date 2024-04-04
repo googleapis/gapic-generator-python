@@ -865,6 +865,68 @@ def test_get_trigger_non_empty_request_with_auto_populated_field():
             name='name_value',
         )
 
+def test_get_trigger_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_trigger in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.get_trigger] = mock_rpc
+
+        request = {}
+        client.get_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_trigger(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_get_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_trigger in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_trigger] = mock_rpc
+
+        request = {}
+        await client.get_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_get_trigger_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1167,6 +1229,68 @@ def test_list_triggers_non_empty_request_with_auto_populated_field():
             order_by='order_by_value',
             filter='filter_value',
         )
+
+def test_list_triggers_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_triggers in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_triggers] = mock_rpc
+
+        request = {}
+        client.list_triggers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_triggers(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_list_triggers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.list_triggers in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.list_triggers] = mock_rpc
+
+        request = {}
+        await client.list_triggers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_list_triggers_empty_call_async():
@@ -1645,6 +1769,72 @@ def test_create_trigger_non_empty_request_with_auto_populated_field():
             trigger_id='trigger_id_value',
         )
 
+def test_create_trigger_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_trigger in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.create_trigger] = mock_rpc
+
+        request = {}
+        client.create_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_trigger(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_create_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.create_trigger in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.create_trigger] = mock_rpc
+
+        request = {}
+        await client.create_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_create_trigger_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1943,6 +2133,72 @@ def test_update_trigger_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateTriggerRequest(
         )
+
+def test_update_trigger_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_trigger in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.update_trigger] = mock_rpc
+
+        request = {}
+        client.update_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_trigger(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_update_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.update_trigger in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.update_trigger] = mock_rpc
+
+        request = {}
+        await client.update_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_update_trigger_empty_call_async():
@@ -2246,6 +2502,72 @@ def test_delete_trigger_non_empty_request_with_auto_populated_field():
             name='name_value',
             etag='etag_value',
         )
+
+def test_delete_trigger_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_trigger in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.delete_trigger] = mock_rpc
+
+        request = {}
+        client.delete_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_trigger(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_delete_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.delete_trigger in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_trigger] = mock_rpc
+
+        request = {}
+        await client.delete_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_delete_trigger_empty_call_async():
@@ -2552,6 +2874,68 @@ def test_get_channel_non_empty_request_with_auto_populated_field():
             name='name_value',
         )
 
+def test_get_channel_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_channel in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.get_channel] = mock_rpc
+
+        request = {}
+        client.get_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_channel(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_get_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_channel in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_channel] = mock_rpc
+
+        request = {}
+        await client.get_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_get_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2855,6 +3239,68 @@ def test_list_channels_non_empty_request_with_auto_populated_field():
             page_token='page_token_value',
             order_by='order_by_value',
         )
+
+def test_list_channels_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_channels in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_channels] = mock_rpc
+
+        request = {}
+        client.list_channels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_channels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_list_channels_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.list_channels in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.list_channels] = mock_rpc
+
+        request = {}
+        await client.list_channels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_list_channels_empty_call_async():
@@ -3333,6 +3779,72 @@ def test_create_channel_non_empty_request_with_auto_populated_field():
             channel_id='channel_id_value',
         )
 
+def test_create_channel_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_channel_ in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.create_channel_] = mock_rpc
+
+        request = {}
+        client.create_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_channel(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_create_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.create_channel_ in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.create_channel_] = mock_rpc
+
+        request = {}
+        await client.create_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_create_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3632,6 +4144,72 @@ def test_update_channel_non_empty_request_with_auto_populated_field():
         assert args[0] == eventarc.UpdateChannelRequest(
         )
 
+def test_update_channel_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_channel in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.update_channel] = mock_rpc
+
+        request = {}
+        client.update_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_channel(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_update_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.update_channel in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.update_channel] = mock_rpc
+
+        request = {}
+        await client.update_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_update_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3923,6 +4501,72 @@ def test_delete_channel_non_empty_request_with_auto_populated_field():
             name='name_value',
         )
 
+def test_delete_channel_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_channel in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.delete_channel] = mock_rpc
+
+        request = {}
+        client.delete_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_channel(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_delete_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.delete_channel in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_channel] = mock_rpc
+
+        request = {}
+        await client.delete_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_delete_channel_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4208,6 +4852,68 @@ def test_get_provider_non_empty_request_with_auto_populated_field():
         assert args[0] == eventarc.GetProviderRequest(
             name='name_value',
         )
+
+def test_get_provider_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_provider in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.get_provider] = mock_rpc
+
+        request = {}
+        client.get_provider(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_provider(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_get_provider_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_provider in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_provider] = mock_rpc
+
+        request = {}
+        await client.get_provider(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_get_provider_empty_call_async():
@@ -4502,6 +5208,68 @@ def test_list_providers_non_empty_request_with_auto_populated_field():
             order_by='order_by_value',
             filter='filter_value',
         )
+
+def test_list_providers_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_providers in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_providers] = mock_rpc
+
+        request = {}
+        client.list_providers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_providers(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_list_providers_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.list_providers in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.list_providers] = mock_rpc
+
+        request = {}
+        await client.list_providers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_list_providers_empty_call_async():
@@ -4987,6 +5755,68 @@ def test_get_channel_connection_non_empty_request_with_auto_populated_field():
             name='name_value',
         )
 
+def test_get_channel_connection_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_channel_connection in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.get_channel_connection] = mock_rpc
+
+        request = {}
+        client.get_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_channel_connection(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_get_channel_connection_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_channel_connection in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_channel_connection] = mock_rpc
+
+        request = {}
+        await client.get_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_get_channel_connection_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5282,6 +6112,68 @@ def test_list_channel_connections_non_empty_request_with_auto_populated_field():
             parent='parent_value',
             page_token='page_token_value',
         )
+
+def test_list_channel_connections_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_channel_connections in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.list_channel_connections] = mock_rpc
+
+        request = {}
+        client.list_channel_connections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_channel_connections(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_list_channel_connections_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.list_channel_connections in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.list_channel_connections] = mock_rpc
+
+        request = {}
+        await client.list_channel_connections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_list_channel_connections_empty_call_async():
@@ -5760,6 +6652,72 @@ def test_create_channel_connection_non_empty_request_with_auto_populated_field()
             channel_connection_id='channel_connection_id_value',
         )
 
+def test_create_channel_connection_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_channel_connection in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.create_channel_connection] = mock_rpc
+
+        request = {}
+        client.create_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_channel_connection(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_create_channel_connection_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.create_channel_connection in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.create_channel_connection] = mock_rpc
+
+        request = {}
+        await client.create_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_create_channel_connection_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6061,6 +7019,72 @@ def test_delete_channel_connection_non_empty_request_with_auto_populated_field()
             name='name_value',
         )
 
+def test_delete_channel_connection_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_channel_connection in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.delete_channel_connection] = mock_rpc
+
+        request = {}
+        client.delete_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_channel_connection(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_delete_channel_connection_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.delete_channel_connection in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_channel_connection] = mock_rpc
+
+        request = {}
+        await client.delete_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_delete_channel_connection_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6347,6 +7371,68 @@ def test_get_google_channel_config_non_empty_request_with_auto_populated_field()
             name='name_value',
         )
 
+def test_get_google_channel_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_google_channel_config in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.get_google_channel_config] = mock_rpc
+
+        request = {}
+        client.get_google_channel_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_google_channel_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_get_google_channel_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_google_channel_config in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_google_channel_config] = mock_rpc
+
+        request = {}
+        await client.get_google_channel_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_get_google_channel_config_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6632,6 +7718,68 @@ def test_update_google_channel_config_non_empty_request_with_auto_populated_fiel
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.UpdateGoogleChannelConfigRequest(
         )
+
+def test_update_google_channel_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EventarcClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_google_channel_config in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.update_google_channel_config] = mock_rpc
+
+        request = {}
+        client.update_google_channel_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_google_channel_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_update_google_channel_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EventarcAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.update_google_channel_config in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.update_google_channel_config] = mock_rpc
+
+        request = {}
+        await client.update_google_channel_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_update_google_channel_config_empty_call_async():
@@ -6920,9 +8068,6 @@ def test_get_trigger_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.get_trigger(request)
 
         # Establish that a new wrapper was not created for this call
@@ -7191,9 +8336,6 @@ def test_list_triggers_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.list_triggers(request)
 
         # Establish that a new wrapper was not created for this call
@@ -7579,6 +8721,7 @@ def test_create_trigger_rest_use_cached_wrapped_rpc():
         # Operation methods build a cached wrapper on first rpc call
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
+
         client.create_trigger(request)
 
         # Establish that a new wrapper was not created for this call
@@ -7932,6 +9075,7 @@ def test_update_trigger_rest_use_cached_wrapped_rpc():
         # Operation methods build a cached wrapper on first rpc call
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
+
         client.update_trigger(request)
 
         # Establish that a new wrapper was not created for this call
@@ -8206,6 +9350,7 @@ def test_delete_trigger_rest_use_cached_wrapped_rpc():
         # Operation methods build a cached wrapper on first rpc call
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
+
         client.delete_trigger(request)
 
         # Establish that a new wrapper was not created for this call
@@ -8494,9 +9639,6 @@ def test_get_channel_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.get_channel(request)
 
         # Establish that a new wrapper was not created for this call
@@ -8765,9 +9907,6 @@ def test_list_channels_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.list_channels(request)
 
         # Establish that a new wrapper was not created for this call
@@ -9153,6 +10292,7 @@ def test_create_channel_rest_use_cached_wrapped_rpc():
         # Operation methods build a cached wrapper on first rpc call
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
+
         client.create_channel(request)
 
         # Establish that a new wrapper was not created for this call
@@ -9506,6 +10646,7 @@ def test_update_channel_rest_use_cached_wrapped_rpc():
         # Operation methods build a cached wrapper on first rpc call
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
+
         client.update_channel(request)
 
         # Establish that a new wrapper was not created for this call
@@ -9778,6 +10919,7 @@ def test_delete_channel_rest_use_cached_wrapped_rpc():
         # Operation methods build a cached wrapper on first rpc call
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
+
         client.delete_channel(request)
 
         # Establish that a new wrapper was not created for this call
@@ -10055,9 +11197,6 @@ def test_get_provider_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.get_provider(request)
 
         # Establish that a new wrapper was not created for this call
@@ -10326,9 +11465,6 @@ def test_list_providers_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.list_providers(request)
 
         # Establish that a new wrapper was not created for this call
@@ -10658,9 +11794,6 @@ def test_get_channel_connection_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.get_channel_connection(request)
 
         # Establish that a new wrapper was not created for this call
@@ -10929,9 +12062,6 @@ def test_list_channel_connections_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.list_channel_connections(request)
 
         # Establish that a new wrapper was not created for this call
@@ -11317,6 +12447,7 @@ def test_create_channel_connection_rest_use_cached_wrapped_rpc():
         # Operation methods build a cached wrapper on first rpc call
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
+
         client.create_channel_connection(request)
 
         # Establish that a new wrapper was not created for this call
@@ -11595,6 +12726,7 @@ def test_delete_channel_connection_rest_use_cached_wrapped_rpc():
         # Operation methods build a cached wrapper on first rpc call
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
+
         client.delete_channel_connection(request)
 
         # Establish that a new wrapper was not created for this call
@@ -11859,9 +12991,6 @@ def test_get_google_channel_config_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.get_google_channel_config(request)
 
         # Establish that a new wrapper was not created for this call
@@ -12194,9 +13323,6 @@ def test_update_google_channel_config_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.update_google_channel_config(request)
 
         # Establish that a new wrapper was not created for this call

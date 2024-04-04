@@ -363,13 +363,15 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         return self._stubs['delete_log_metric']
 
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
-        # override base class to use async wrappers
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.list_log_metrics: gapic_v1.method_async.wrap_method(
                 self.list_log_metrics,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,
@@ -382,7 +384,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.get_log_metric: gapic_v1.method_async.wrap_method(
                 self.get_log_metric,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,
@@ -400,7 +405,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.update_log_metric: gapic_v1.method_async.wrap_method(
                 self.update_log_metric,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,
@@ -413,7 +421,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.delete_log_metric: gapic_v1.method_async.wrap_method(
                 self.delete_log_metric,
                 default_retry=retries.AsyncRetry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+initial=0.1,
+maximum=60.0,
+multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,

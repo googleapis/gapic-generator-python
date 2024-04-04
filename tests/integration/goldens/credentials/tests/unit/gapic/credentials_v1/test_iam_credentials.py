@@ -837,6 +837,68 @@ def test_generate_access_token_non_empty_request_with_auto_populated_field():
             name='name_value',
         )
 
+def test_generate_access_token_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.generate_access_token in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.generate_access_token] = mock_rpc
+
+        request = {}
+        client.generate_access_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_access_token(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = IAMCredentialsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.generate_access_token in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.generate_access_token] = mock_rpc
+
+        request = {}
+        await client.generate_access_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_generate_access_token_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1147,6 +1209,68 @@ def test_generate_id_token_non_empty_request_with_auto_populated_field():
             name='name_value',
             audience='audience_value',
         )
+
+def test_generate_id_token_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.generate_id_token in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.generate_id_token] = mock_rpc
+
+        request = {}
+        client.generate_id_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_id_token(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = IAMCredentialsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.generate_id_token in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.generate_id_token] = mock_rpc
+
+        request = {}
+        await client.generate_id_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
 
 @pytest.mark.asyncio
 async def test_generate_id_token_empty_call_async():
@@ -1463,6 +1587,68 @@ def test_sign_blob_non_empty_request_with_auto_populated_field():
             name='name_value',
         )
 
+def test_sign_blob_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.sign_blob in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.sign_blob] = mock_rpc
+
+        request = {}
+        client.sign_blob(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.sign_blob(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = IAMCredentialsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.sign_blob in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.sign_blob] = mock_rpc
+
+        request = {}
+        await client.sign_blob(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_sign_blob_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1773,6 +1959,68 @@ def test_sign_jwt_non_empty_request_with_auto_populated_field():
             payload='payload_value',
         )
 
+def test_sign_jwt_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.sign_jwt in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[client._transport.sign_jwt] = mock_rpc
+
+        request = {}
+        client.sign_jwt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.sign_jwt(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = IAMCredentialsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.sign_jwt in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.sign_jwt] = mock_rpc
+
+        request = {}
+        await client.sign_jwt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+
 @pytest.mark.asyncio
 async def test_sign_jwt_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2062,9 +2310,6 @@ def test_generate_access_token_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.generate_access_token(request)
 
         # Establish that a new wrapper was not created for this call
@@ -2342,9 +2587,6 @@ def test_generate_id_token_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.generate_id_token(request)
 
         # Establish that a new wrapper was not created for this call
@@ -2624,9 +2866,6 @@ def test_sign_blob_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.sign_blob(request)
 
         # Establish that a new wrapper was not created for this call
@@ -2904,9 +3143,6 @@ def test_sign_jwt_rest_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
         client.sign_jwt(request)
 
         # Establish that a new wrapper was not created for this call
