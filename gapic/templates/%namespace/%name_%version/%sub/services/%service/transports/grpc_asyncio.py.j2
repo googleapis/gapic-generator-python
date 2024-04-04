@@ -381,8 +381,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
     {% endif %}
 
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
-        # override base class to use async wrappers
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             {% for method in service.methods.values() %}
             self.{{ method.transport_safe_name|snake_case }}: gapic_v1.method_async.wrap_method(
