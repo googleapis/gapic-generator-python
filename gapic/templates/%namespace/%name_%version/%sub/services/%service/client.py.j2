@@ -10,6 +10,9 @@ import functools
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+import uuid
+{% endif %}
 import warnings
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
@@ -195,7 +198,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     @staticmethod
     def {{ message.resource_type|snake_case }}_path({% for arg in message.resource_path_args %}{{ arg }}: str,{% endfor %}) -> str:
         """Returns a fully-qualified {{ message.resource_type|snake_case }} string."""
-        return "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+        return "{{ message.resource_path_formatted }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
 
 
     @staticmethod

@@ -4,6 +4,9 @@
 {% import "tests/unit/gapic/%name_%version/%sub/test_macros.j2" as test_macros %}
 
 import os
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+import re
+{% endif %}
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
@@ -849,10 +852,10 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 
 {% for method in service.methods.values() if 'grpc' in opts.transport %}{# method_name #}
 {% if method.extended_lro %}
-{{ test_macros.grpc_required_tests(method, service, full_extended_lro=True) }}
+{{ test_macros.grpc_required_tests(method, service, api, full_extended_lro=True) }}
 
 {% endif %}
-{{ test_macros.grpc_required_tests(method, service) }}
+{{ test_macros.grpc_required_tests(method, service, api) }}
 {% endfor %} {# method in methods for grpc #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport %}
@@ -1543,7 +1546,7 @@ def test_{{ message.resource_type|snake_case }}_path():
     {% for arg in message.resource_path_args %}
     {{ arg }} = "{{ molluscs.next() }}"
     {% endfor %}
-    expected = "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+    expected = "{{ message.resource_path_formatted }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
     actual = {{ service.client_name }}.{{ message.resource_type|snake_case }}_path({{message.resource_path_args|join(", ") }})
     assert expected == actual
 
@@ -1566,7 +1569,7 @@ def test_common_{{ resource_msg.message_type.resource_type|snake_case }}_path():
     {% for arg in resource_msg.message_type.resource_path_args %}
     {{ arg }} = "{{ molluscs.next() }}"
     {% endfor %}
-    expected = "{{ resource_msg.message_type.resource_path }}".format({% for arg in resource_msg.message_type.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+    expected = "{{ resource_msg.message_type.resource_path_formatted }}".format({% for arg in resource_msg.message_type.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
     actual = {{ service.client_name }}.common_{{ resource_msg.message_type.resource_type|snake_case }}_path({{ resource_msg.message_type.resource_path_args|join(", ") }})
     assert expected == actual
 
