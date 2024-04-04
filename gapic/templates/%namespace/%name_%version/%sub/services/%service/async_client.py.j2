@@ -1,11 +1,15 @@
 {% extends "_base.py.j2" %}
 
 {% block content %}
+{% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
 
 from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+import uuid
+{% endif %}
 {% if service.any_deprecated %}
 import warnings
 {% endif %}
@@ -321,10 +325,8 @@ class {{ service.async_client_name }}:
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = {{ method.input.ident }}(**request)
-        {% if method.flattened_fields %}{# Cross-package req and flattened fields #}
         elif not request:
-            request = {{ method.input.ident }}({% if method.input.ident.package != method.ident.package %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}, {% endfor %}{% endif %})
-        {% endif %}{# Cross-package req and flattened fields #}
+            request = {{ method.input.ident }}({% if method.flattened_fields %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %})
         {% else %}
         # Minor optimization to avoid making a copy if the user passes
         # in a {{ method.input.ident }}.
@@ -373,6 +375,8 @@ class {{ service.async_client_name }}:
             )),
         )
         {% endif %}
+
+{{ macros.auto_populate_uuid4_fields(api, method) }}
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

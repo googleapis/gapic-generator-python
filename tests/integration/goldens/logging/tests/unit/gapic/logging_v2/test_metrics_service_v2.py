@@ -772,7 +772,8 @@ def test_list_log_metrics(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest()
+        request = logging_metrics.ListLogMetricsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsPager)
@@ -796,70 +797,56 @@ def test_list_log_metrics_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.ListLogMetricsRequest()
 
-def test_list_log_metrics_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2Client(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
+
+def test_list_log_metrics_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.ListLogMetricsRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_log_metrics),
+            '__call__') as call:
+        client.list_log_metrics(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.ListLogMetricsRequest(
+            parent='parent_value',
+            page_token='page_token_value',
         )
 
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
+@pytest.mark.asyncio
+async def test_list_log_metrics_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
 
-        # Ensure method has been cached
-        assert client._transport.list_log_metrics in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        client._transport._wrapped_methods[client._transport.list_log_metrics] = mock_rpc
-
-        request = {}
-        client.list_log_metrics(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-        client.list_log_metrics(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-async def test_list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._client._transport.list_log_metrics in client._client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_log_metrics] = mock_rpc
-
-        request = {}
-        await client.list_log_metrics(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_log_metrics),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
+            next_page_token='next_page_token_value',
+        ))
+        response = await client.list_log_metrics()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.ListLogMetricsRequest()
 
 @pytest.mark.asyncio
 async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.ListLogMetricsRequest):
@@ -885,7 +872,8 @@ async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_t
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest()
+        request = logging_metrics.ListLogMetricsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsAsyncPager)
@@ -1267,7 +1255,8 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest()
+        request = logging_metrics.GetLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1297,70 +1286,60 @@ def test_get_log_metric_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.GetLogMetricRequest()
 
-def test_get_log_metric_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2Client(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
+
+def test_get_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.GetLogMetricRequest(
+        metric_name='metric_name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_log_metric),
+            '__call__') as call:
+        client.get_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.GetLogMetricRequest(
+            metric_name='metric_name_value',
         )
 
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
+@pytest.mark.asyncio
+async def test_get_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
 
-        # Ensure method has been cached
-        assert client._transport.get_log_metric in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        client._transport._wrapped_methods[client._transport.get_log_metric] = mock_rpc
-
-        request = {}
-        client.get_log_metric(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-        client.get_log_metric(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-async def test_get_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._client._transport.get_log_metric in client._client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_log_metric] = mock_rpc
-
-        request = {}
-        await client.get_log_metric(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+            name='name_value',
+            description='description_value',
+            filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
+            value_extractor='value_extractor_value',
+            version=logging_metrics.LogMetric.ApiVersion.V1,
+        ))
+        response = await client.get_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.GetLogMetricRequest()
 
 @pytest.mark.asyncio
 async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.GetLogMetricRequest):
@@ -1392,7 +1371,8 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest()
+        request = logging_metrics.GetLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1588,7 +1568,8 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest()
+        request = logging_metrics.CreateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1618,70 +1599,60 @@ def test_create_log_metric_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.CreateLogMetricRequest()
 
-def test_create_log_metric_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2Client(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
+
+def test_create_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.CreateLogMetricRequest(
+        parent='parent_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_log_metric),
+            '__call__') as call:
+        client.create_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.CreateLogMetricRequest(
+            parent='parent_value',
         )
 
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
+@pytest.mark.asyncio
+async def test_create_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
 
-        # Ensure method has been cached
-        assert client._transport.create_log_metric in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        client._transport._wrapped_methods[client._transport.create_log_metric] = mock_rpc
-
-        request = {}
-        client.create_log_metric(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-        client.create_log_metric(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-async def test_create_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._client._transport.create_log_metric in client._client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_log_metric] = mock_rpc
-
-        request = {}
-        await client.create_log_metric(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+            name='name_value',
+            description='description_value',
+            filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
+            value_extractor='value_extractor_value',
+            version=logging_metrics.LogMetric.ApiVersion.V1,
+        ))
+        response = await client.create_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.CreateLogMetricRequest()
 
 @pytest.mark.asyncio
 async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.CreateLogMetricRequest):
@@ -1713,7 +1684,8 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest()
+        request = logging_metrics.CreateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1919,7 +1891,8 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+        request = logging_metrics.UpdateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1949,70 +1922,60 @@ def test_update_log_metric_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.UpdateLogMetricRequest()
 
-def test_update_log_metric_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2Client(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
+
+def test_update_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.UpdateLogMetricRequest(
+        metric_name='metric_name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_log_metric),
+            '__call__') as call:
+        client.update_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.UpdateLogMetricRequest(
+            metric_name='metric_name_value',
         )
 
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
+@pytest.mark.asyncio
+async def test_update_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
 
-        # Ensure method has been cached
-        assert client._transport.update_log_metric in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        client._transport._wrapped_methods[client._transport.update_log_metric] = mock_rpc
-
-        request = {}
-        client.update_log_metric(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-        client.update_log_metric(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-async def test_update_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._client._transport.update_log_metric in client._client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_log_metric] = mock_rpc
-
-        request = {}
-        await client.update_log_metric(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+            name='name_value',
+            description='description_value',
+            filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
+            value_extractor='value_extractor_value',
+            version=logging_metrics.LogMetric.ApiVersion.V1,
+        ))
+        response = await client.update_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.UpdateLogMetricRequest()
 
 @pytest.mark.asyncio
 async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.UpdateLogMetricRequest):
@@ -2044,7 +2007,8 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+        request = logging_metrics.UpdateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -2242,7 +2206,8 @@ def test_delete_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+        request = logging_metrics.DeleteLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2265,70 +2230,52 @@ def test_delete_log_metric_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest()
 
-def test_delete_log_metric_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2Client(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
+
+def test_delete_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.DeleteLogMetricRequest(
+        metric_name='metric_name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_log_metric),
+            '__call__') as call:
+        client.delete_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.DeleteLogMetricRequest(
+            metric_name='metric_name_value',
         )
 
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
+@pytest.mark.asyncio
+async def test_delete_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
 
-        # Ensure method has been cached
-        assert client._transport.delete_log_metric in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        client._transport._wrapped_methods[client._transport.delete_log_metric] = mock_rpc
-
-        request = {}
-        client.delete_log_metric(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-        client.delete_log_metric(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-async def test_delete_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = MetricsServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._client._transport.delete_log_metric in client._client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_log_metric] = mock_rpc
-
-        request = {}
-        await client.delete_log_metric(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.DeleteLogMetricRequest()
 
 @pytest.mark.asyncio
 async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.DeleteLogMetricRequest):
@@ -2352,7 +2299,8 @@ async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+        request = logging_metrics.DeleteLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
