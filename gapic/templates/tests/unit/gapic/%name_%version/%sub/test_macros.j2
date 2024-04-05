@@ -262,7 +262,7 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
 
         # Replace cached wrapped function with mock
         class AwaitableMock(mock.AsyncMock):
-            def __await__(self) -> Iterator[Any]:
+            def __await__(self):
                 self.await_count += 1
                 return iter([])
         mock_object = AwaitableMock()
