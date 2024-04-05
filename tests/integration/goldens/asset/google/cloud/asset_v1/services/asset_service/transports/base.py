@@ -133,9 +133,9 @@ class AssetServiceTransport(abc.ABC):
             self.batch_get_assets_history: gapic_v1.method.wrap_method(
                 self.batch_get_assets_history,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
@@ -153,9 +153,9 @@ multiplier=1.3,
             self.get_feed: gapic_v1.method.wrap_method(
                 self.get_feed,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
@@ -168,9 +168,9 @@ multiplier=1.3,
             self.list_feeds: gapic_v1.method.wrap_method(
                 self.list_feeds,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
@@ -188,9 +188,9 @@ multiplier=1.3,
             self.delete_feed: gapic_v1.method.wrap_method(
                 self.delete_feed,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
@@ -203,9 +203,9 @@ multiplier=1.3,
             self.search_all_resources: gapic_v1.method.wrap_method(
                 self.search_all_resources,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
@@ -218,9 +218,9 @@ multiplier=1.3,
             self.search_all_iam_policies: gapic_v1.method.wrap_method(
                 self.search_all_iam_policies,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
@@ -233,9 +233,9 @@ multiplier=1.3,
             self.analyze_iam_policy: gapic_v1.method.wrap_method(
                 self.analyze_iam_policy,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),

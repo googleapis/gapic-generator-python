@@ -413,9 +413,9 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
             self.delete_log: gapic_v1.method_async.wrap_method(
                 self.delete_log,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -429,9 +429,9 @@ multiplier=1.3,
             self.write_log_entries: gapic_v1.method_async.wrap_method(
                 self.write_log_entries,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -445,9 +445,9 @@ multiplier=1.3,
             self.list_log_entries: gapic_v1.method_async.wrap_method(
                 self.list_log_entries,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -461,9 +461,9 @@ multiplier=1.3,
             self.list_monitored_resource_descriptors: gapic_v1.method_async.wrap_method(
                 self.list_monitored_resource_descriptors,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -477,9 +477,9 @@ multiplier=1.3,
             self.list_logs: gapic_v1.method_async.wrap_method(
                 self.list_logs,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -493,9 +493,9 @@ multiplier=1.3,
             self.tail_log_entries: gapic_v1.method_async.wrap_method(
                 self.tail_log_entries,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,

@@ -858,7 +858,7 @@ def test_list_buckets_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_list_buckets_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -876,14 +876,16 @@ async def test_list_buckets_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert client._client._transport.list_buckets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.list_buckets] = mock_rpc
 
         request = {}
         await client.list_buckets(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1407,7 +1409,7 @@ def test_get_bucket_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1425,14 +1427,16 @@ async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.get_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.get_bucket] = mock_rpc
 
         request = {}
         await client.get_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1691,7 +1695,7 @@ def test_create_bucket_async_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_create_bucket_async_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1709,14 +1713,20 @@ async def test_create_bucket_async_async_use_cached_wrapped_rpc(transport: str =
         assert client._client._transport.create_bucket_async in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.create_bucket_async] = mock_rpc
 
         request = {}
         await client.create_bucket_async(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1954,7 +1964,7 @@ def test_update_bucket_async_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_update_bucket_async_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1972,14 +1982,20 @@ async def test_update_bucket_async_async_use_cached_wrapped_rpc(transport: str =
         assert client._client._transport.update_bucket_async in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.update_bucket_async] = mock_rpc
 
         request = {}
         await client.update_bucket_async(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2230,7 +2246,7 @@ def test_create_bucket_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_create_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -2248,14 +2264,16 @@ async def test_create_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.create_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.create_bucket] = mock_rpc
 
         request = {}
         await client.create_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2523,7 +2541,7 @@ def test_update_bucket_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_update_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -2541,14 +2559,16 @@ async def test_update_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.update_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.update_bucket] = mock_rpc
 
         request = {}
         await client.update_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2801,7 +2821,7 @@ def test_delete_bucket_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_delete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -2819,14 +2839,16 @@ async def test_delete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.delete_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.delete_bucket] = mock_rpc
 
         request = {}
         await client.delete_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -3056,7 +3078,7 @@ def test_undelete_bucket_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_undelete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3074,14 +3096,16 @@ async def test_undelete_bucket_async_use_cached_wrapped_rpc(transport: str = "gr
         assert client._client._transport.undelete_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.undelete_bucket] = mock_rpc
 
         request = {}
         await client.undelete_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -3316,7 +3340,7 @@ def test_list_views_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3334,14 +3358,16 @@ async def test_list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.list_views in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.list_views] = mock_rpc
 
         request = {}
         await client.list_views(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -3857,7 +3883,7 @@ def test_get_view_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3875,14 +3901,16 @@ async def test_get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.get_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.get_view] = mock_rpc
 
         request = {}
         await client.get_view(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -4132,7 +4160,7 @@ def test_create_view_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_create_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4150,14 +4178,16 @@ async def test_create_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.create_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.create_view] = mock_rpc
 
         request = {}
         await client.create_view(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -4405,7 +4435,7 @@ def test_update_view_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_update_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4423,14 +4453,16 @@ async def test_update_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.update_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.update_view] = mock_rpc
 
         request = {}
         await client.update_view(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -4671,7 +4703,7 @@ def test_delete_view_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_delete_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4689,14 +4721,16 @@ async def test_delete_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.delete_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.delete_view] = mock_rpc
 
         request = {}
         await client.delete_view(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -4931,7 +4965,7 @@ def test_list_sinks_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4949,14 +4983,16 @@ async def test_list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.list_sinks in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.list_sinks] = mock_rpc
 
         request = {}
         await client.list_sinks(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -5482,7 +5518,7 @@ def test_get_sink_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -5500,14 +5536,16 @@ async def test_get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.get_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.get_sink] = mock_rpc
 
         request = {}
         await client.get_sink(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -5862,7 +5900,7 @@ def test_create_sink_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_create_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -5880,14 +5918,16 @@ async def test_create_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.create_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.create_sink] = mock_rpc
 
         request = {}
         await client.create_sink(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -6252,7 +6292,7 @@ def test_update_sink_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_update_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -6270,14 +6310,16 @@ async def test_update_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.update_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.update_sink] = mock_rpc
 
         request = {}
         await client.update_sink(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -6635,7 +6677,7 @@ def test_delete_sink_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_delete_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -6653,14 +6695,16 @@ async def test_delete_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.delete_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.delete_sink] = mock_rpc
 
         request = {}
         await client.delete_sink(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -6978,7 +7022,7 @@ def test_create_link_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_create_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -6996,14 +7040,20 @@ async def test_create_link_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.create_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.create_link] = mock_rpc
 
         request = {}
         await client.create_link(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -7345,7 +7395,7 @@ def test_delete_link_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_delete_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7363,14 +7413,20 @@ async def test_delete_link_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.delete_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.delete_link] = mock_rpc
 
         request = {}
         await client.delete_link(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -7693,7 +7749,7 @@ def test_list_links_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7711,14 +7767,16 @@ async def test_list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.list_links in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.list_links] = mock_rpc
 
         request = {}
         await client.list_links(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -8234,7 +8292,7 @@ def test_get_link_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -8252,14 +8310,16 @@ async def test_get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.get_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.get_link] = mock_rpc
 
         request = {}
         await client.get_link(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -8587,7 +8647,7 @@ def test_list_exclusions_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_list_exclusions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -8605,14 +8665,16 @@ async def test_list_exclusions_async_use_cached_wrapped_rpc(transport: str = "gr
         assert client._client._transport.list_exclusions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.list_exclusions] = mock_rpc
 
         request = {}
         await client.list_exclusions(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -9130,7 +9192,7 @@ def test_get_exclusion_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_get_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9148,14 +9210,16 @@ async def test_get_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.get_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.get_exclusion] = mock_rpc
 
         request = {}
         await client.get_exclusion(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -9490,7 +9554,7 @@ def test_create_exclusion_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_create_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9508,14 +9572,16 @@ async def test_create_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.create_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.create_exclusion] = mock_rpc
 
         request = {}
         await client.create_exclusion(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -9860,7 +9926,7 @@ def test_update_exclusion_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_update_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9878,14 +9944,16 @@ async def test_update_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.update_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.update_exclusion] = mock_rpc
 
         request = {}
         await client.update_exclusion(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -10231,7 +10299,7 @@ def test_delete_exclusion_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_delete_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -10249,14 +10317,16 @@ async def test_delete_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.delete_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.delete_exclusion] = mock_rpc
 
         request = {}
         await client.delete_exclusion(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -10577,7 +10647,7 @@ def test_get_cmek_settings_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_get_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -10595,14 +10665,16 @@ async def test_get_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "
         assert client._client._transport.get_cmek_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.get_cmek_settings] = mock_rpc
 
         request = {}
         await client.get_cmek_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -10855,7 +10927,7 @@ def test_update_cmek_settings_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_update_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -10873,14 +10945,16 @@ async def test_update_cmek_settings_async_use_cached_wrapped_rpc(transport: str 
         assert client._client._transport.update_cmek_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.update_cmek_settings] = mock_rpc
 
         request = {}
         await client.update_cmek_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -11135,7 +11209,7 @@ def test_get_settings_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_get_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11153,14 +11227,16 @@ async def test_get_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert client._client._transport.get_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.get_settings] = mock_rpc
 
         request = {}
         await client.get_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -11500,7 +11576,7 @@ def test_update_settings_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_update_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11518,14 +11594,16 @@ async def test_update_settings_async_use_cached_wrapped_rpc(transport: str = "gr
         assert client._client._transport.update_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.update_settings] = mock_rpc
 
         request = {}
         await client.update_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -11872,7 +11950,7 @@ def test_copy_log_entries_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_copy_log_entries_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11890,14 +11968,20 @@ async def test_copy_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.copy_log_entries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
+        mock_object = mock.AsyncMock()
+        async def mock_rpc(*args, **kwargs):
+            return mock_object
         client._client._transport._wrapped_methods[client._client._transport.copy_log_entries] = mock_rpc
 
         request = {}
         await client.copy_log_entries(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0

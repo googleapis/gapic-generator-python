@@ -126,9 +126,9 @@ class MetricsServiceV2Transport(abc.ABC):
             self.list_log_metrics: gapic_v1.method.wrap_method(
                 self.list_log_metrics,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -142,9 +142,9 @@ multiplier=1.3,
             self.get_log_metric: gapic_v1.method.wrap_method(
                 self.get_log_metric,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -163,9 +163,9 @@ multiplier=1.3,
             self.update_log_metric: gapic_v1.method.wrap_method(
                 self.update_log_metric,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -179,9 +179,9 @@ multiplier=1.3,
             self.delete_log_metric: gapic_v1.method.wrap_method(
                 self.delete_log_metric,
                 default_retry=retries.Retry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,

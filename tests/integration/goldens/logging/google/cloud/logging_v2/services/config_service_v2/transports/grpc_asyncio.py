@@ -1254,9 +1254,9 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             self.list_sinks: gapic_v1.method_async.wrap_method(
                 self.list_sinks,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -1270,9 +1270,9 @@ multiplier=1.3,
             self.get_sink: gapic_v1.method_async.wrap_method(
                 self.get_sink,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -1291,9 +1291,9 @@ multiplier=1.3,
             self.update_sink: gapic_v1.method_async.wrap_method(
                 self.update_sink,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -1307,9 +1307,9 @@ multiplier=1.3,
             self.delete_sink: gapic_v1.method_async.wrap_method(
                 self.delete_sink,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -1343,9 +1343,9 @@ multiplier=1.3,
             self.list_exclusions: gapic_v1.method_async.wrap_method(
                 self.list_exclusions,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -1359,9 +1359,9 @@ multiplier=1.3,
             self.get_exclusion: gapic_v1.method_async.wrap_method(
                 self.get_exclusion,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
@@ -1385,9 +1385,9 @@ multiplier=1.3,
             self.delete_exclusion: gapic_v1.method_async.wrap_method(
                 self.delete_exclusion,
                 default_retry=retries.AsyncRetry(
-initial=0.1,
-maximum=60.0,
-multiplier=1.3,
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
