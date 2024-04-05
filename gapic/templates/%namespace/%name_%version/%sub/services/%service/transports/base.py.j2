@@ -149,11 +149,14 @@ class {{ service.name }}Transport(abc.ABC):
                 self.{{ method.transport_safe_name|snake_case }},
                 {% if method.retry %}
                 default_retry=retries.Retry(
-                    {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},
+                    {% if method.retry.initial_backoff %}
+                    initial={{ method.retry.initial_backoff }},
                     {% endif %}
-                    {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},
+                    {% if method.retry.max_backoff %}
+                    maximum={{ method.retry.max_backoff }},
                     {% endif %}
-                    {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},
+                    {% if method.retry.backoff_multiplier %}
+                    multiplier={{ method.retry.backoff_multiplier }},
                     {% endif %}
                     predicate=retries.if_exception_type(
                         {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
