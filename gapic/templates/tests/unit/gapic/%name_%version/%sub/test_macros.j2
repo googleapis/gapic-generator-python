@@ -243,7 +243,7 @@ def test_{{ method_name }}_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
-
+@pytest.mark.asyncio
 async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
