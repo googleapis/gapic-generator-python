@@ -216,11 +216,13 @@ def test_{{ method_name }}_use_cached_wrapped_rpc():
         mock_rpc = mock.Mock()
         client._transport._wrapped_methods[client._transport.{{method.transport_safe_name|snake_case}}] = mock_rpc
 
-        request = {}
         {% if method.client_streaming %}
-        request = [request]
-        {% endif %}
+        request = [{}]
         client.{{ method.safe_name|snake_case }}(request)
+        {% else %}
+        request = {}
+        client.{{ method_name }}(request)
+        {% endif %}
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -231,7 +233,12 @@ def test_{{ method_name }}_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
         {% endif %}
 
+        {% if method.client_streaming %}
         client.{{ method.safe_name|snake_case }}(request)
+        {% else %}
+        client.{{ method_name }}(request)
+        {% endif %}
+
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -319,11 +326,13 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
         mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[client._client._transport.{{method.transport_safe_name|snake_case}}] = mock_object
 
-        request = {}
         {% if method.client_streaming %}
-        request = [request]
-        {% endif %}
+        request = [{}]
         await client.{{ method.name|snake_case }}(request)
+        {% else %}
+        request = {}
+        await client.{{ method_name }}(request)
+        {% endif %}
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_object.call_count == 1
@@ -334,8 +343,15 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
         wrapper_fn.reset_mock()
         {% endif %}
 
+        {% if method.client_streaming %}
+        await client.{{ method.name|snake_case }}(request)
+        {% else %}
+        await client.{{ method_name }}(request)
+        {% endif %}
+
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_type={{ method.input.ident }}):
@@ -1324,11 +1340,13 @@ def test_{{ method_name }}_rest_use_cached_wrapped_rpc():
         mock_rpc = mock.Mock()
         client._transport._wrapped_methods[client._transport.{{method.transport_safe_name|snake_case}}] = mock_rpc
 
-        request = {}
         {% if method.client_streaming %}
-        request = [request]
-        {% endif %}
+        request = [{}]
         client.{{ method.safe_name|snake_case }}(request)
+        {% else %}
+        request = {}
+        client.{{ method_name }}(request)
+        {% endif %}
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -1339,7 +1357,11 @@ def test_{{ method_name }}_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
         {% endif %}
 
+        {% if method.client_streaming %}
         client.{{ method.safe_name|snake_case }}(request)
+        {% else %}
+        client.{{ method_name }}(request)
+        {% endif %}
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
