@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.16.2](https://github.com/googleapis/gapic-generator-python/compare/v1.16.1...v1.16.2) (2024-04-08)
+
+
+### Documentation
+
+* Fix docs session ([#2003](https://github.com/googleapis/gapic-generator-python/issues/2003)) ([9b34dbe](https://github.com/googleapis/gapic-generator-python/commit/9b34dbe5112276d96cf64e663d2a005a3d40ccb3))
+
 ## [1.16.1](https://github.com/googleapis/gapic-generator-python/compare/v1.16.0...v1.16.1) (2024-03-22)
 
 
