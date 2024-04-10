@@ -78,6 +78,7 @@ class {{ service.client_name }}Meta(type):
     {% endif %}
     {% if "rest" in opts.transport %}
     _transport_registry["rest"] = {{ service.name }}RestTransport
+    _transport_registry["rest_asyncio"] = {{ service.name }}RestTransport
     {% endif %}
 
     def get_transport_class(cls,

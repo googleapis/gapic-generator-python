@@ -858,7 +858,7 @@ async def test_list_instances_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -876,7 +876,7 @@ async def test_list_instances_empty_call_async():
         assert args[0] == cloud_redis.ListInstancesRequest()
 
 @pytest.mark.asyncio
-async def test_list_instances_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ListInstancesRequest):
+async def test_list_instances_async(transport: str = 'rest', request_type=cloud_redis.ListInstancesRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1388,7 +1388,7 @@ async def test_get_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1431,7 +1431,7 @@ async def test_get_instance_empty_call_async():
         assert args[0] == cloud_redis.GetInstanceRequest()
 
 @pytest.mark.asyncio
-async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceRequest):
+async def test_get_instance_async(transport: str = 'rest', request_type=cloud_redis.GetInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1749,7 +1749,7 @@ async def test_get_instance_auth_string_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1766,7 +1766,7 @@ async def test_get_instance_auth_string_empty_call_async():
         assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
 
 @pytest.mark.asyncio
-async def test_get_instance_auth_string_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceAuthStringRequest):
+async def test_get_instance_auth_string_async(transport: str = 'rest', request_type=cloud_redis.GetInstanceAuthStringRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2031,7 +2031,7 @@ async def test_create_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2048,7 +2048,7 @@ async def test_create_instance_empty_call_async():
         assert args[0] == cloud_redis.CreateInstanceRequest()
 
 @pytest.mark.asyncio
-async def test_create_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.CreateInstanceRequest):
+async def test_create_instance_async(transport: str = 'rest', request_type=cloud_redis.CreateInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2330,7 +2330,7 @@ async def test_update_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2347,7 +2347,7 @@ async def test_update_instance_empty_call_async():
         assert args[0] == cloud_redis.UpdateInstanceRequest()
 
 @pytest.mark.asyncio
-async def test_update_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpdateInstanceRequest):
+async def test_update_instance_async(transport: str = 'rest', request_type=cloud_redis.UpdateInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2623,7 +2623,7 @@ async def test_upgrade_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2640,7 +2640,7 @@ async def test_upgrade_instance_empty_call_async():
         assert args[0] == cloud_redis.UpgradeInstanceRequest()
 
 @pytest.mark.asyncio
-async def test_upgrade_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpgradeInstanceRequest):
+async def test_upgrade_instance_async(transport: str = 'rest', request_type=cloud_redis.UpgradeInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2914,7 +2914,7 @@ async def test_import_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2931,7 +2931,7 @@ async def test_import_instance_empty_call_async():
         assert args[0] == cloud_redis.ImportInstanceRequest()
 
 @pytest.mark.asyncio
-async def test_import_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ImportInstanceRequest):
+async def test_import_instance_async(transport: str = 'rest', request_type=cloud_redis.ImportInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3205,7 +3205,7 @@ async def test_export_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3222,7 +3222,7 @@ async def test_export_instance_empty_call_async():
         assert args[0] == cloud_redis.ExportInstanceRequest()
 
 @pytest.mark.asyncio
-async def test_export_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ExportInstanceRequest):
+async def test_export_instance_async(transport: str = 'rest', request_type=cloud_redis.ExportInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3496,7 +3496,7 @@ async def test_failover_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3513,7 +3513,7 @@ async def test_failover_instance_empty_call_async():
         assert args[0] == cloud_redis.FailoverInstanceRequest()
 
 @pytest.mark.asyncio
-async def test_failover_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.FailoverInstanceRequest):
+async def test_failover_instance_async(transport: str = 'rest', request_type=cloud_redis.FailoverInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3787,7 +3787,7 @@ async def test_delete_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3804,7 +3804,7 @@ async def test_delete_instance_empty_call_async():
         assert args[0] == cloud_redis.DeleteInstanceRequest()
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.DeleteInstanceRequest):
+async def test_delete_instance_async(transport: str = 'rest', request_type=cloud_redis.DeleteInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -4068,7 +4068,7 @@ async def test_reschedule_maintenance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4085,7 +4085,7 @@ async def test_reschedule_maintenance_empty_call_async():
         assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
 
 @pytest.mark.asyncio
-async def test_reschedule_maintenance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.RescheduleMaintenanceRequest):
+async def test_reschedule_maintenance_async(transport: str = 'rest', request_type=cloud_redis.RescheduleMaintenanceRequest):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,

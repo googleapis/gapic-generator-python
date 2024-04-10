@@ -62,6 +62,7 @@ class CloudRedisClientMeta(type):
     _transport_registry["grpc"] = CloudRedisGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
     _transport_registry["rest"] = CloudRedisRestTransport
+    _transport_registry["rest_asyncio"] = CloudRedisRestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,

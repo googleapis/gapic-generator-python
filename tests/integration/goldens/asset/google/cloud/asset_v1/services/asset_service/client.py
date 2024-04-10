@@ -63,6 +63,7 @@ class AssetServiceClientMeta(type):
     _transport_registry["grpc"] = AssetServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AssetServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = AssetServiceRestTransport
+    _transport_registry["rest_asyncio"] = AssetServiceRestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,
