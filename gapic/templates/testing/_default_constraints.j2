@@ -1,7 +1,6 @@
 {% from '_pypi_packages.j2' import pypi_packages %}
 # This constraints file is required for unit tests.
 # List all library dependencies and extras in this file.
-google-api-core
 proto-plus
 protobuf
 {% for package_tuple, package_info in pypi_packages.items() %}

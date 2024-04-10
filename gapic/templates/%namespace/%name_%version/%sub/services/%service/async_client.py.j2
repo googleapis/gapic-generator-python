@@ -54,7 +54,10 @@ from .client import {{ service.client_name }}
 
 {# TODO(yon-mg): handle rest transport async client interaction #}
 class {{ service.async_client_name }}:
-    """{{ service.meta.doc|rst(width=72, indent=4) }}"""
+    """{{ service.meta.doc|rst(width=72, indent=4) }}{% if service.version|length %}
+    This class implements API version {{ service.version }}."""
+    {% else %}"""
+    {% endif %}
 
     _client: {{ service.client_name }}
 
@@ -385,6 +388,12 @@ class {{ service.async_client_name }}:
                 {% endif %}
                 {% endfor %}
             )),
+        )
+        {% endif %}
+
+        {% if service.version %}
+        metadata = tuple(metadata) + (
+            gapic_v1.version_header.to_grpc_metadata("{{ service.version }}")
         )
         {% endif %}
 

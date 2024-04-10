@@ -183,6 +183,12 @@
         )
         {% endif %} {# method.explicit_routing #}
 
+        {% if service.version %}
+        metadata = tuple(metadata) + (
+            gapic_v1.version_header.to_grpc_metadata("{{ service.version }}"),
+        )
+        {% endif %}
+
 {{ auto_populate_uuid4_fields(api, method) }}
 
         # Validate the universe domain.
