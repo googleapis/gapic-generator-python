@@ -312,7 +312,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         {% if method.client_streaming and method.server_streaming %}
         response = await client.{{ method.name|snake_case }}(iter(requests))
         {% elif method.client_streaming and not method.server_streaming %}
-        response = await (await client.{{ method.name|snake_case }}(iter(requests)))
+        response = await client.{{ method.name|snake_case }}(iter(requests))
         {% else %}
         response = await client.{{ method_name }}(request)
         {% endif %}
