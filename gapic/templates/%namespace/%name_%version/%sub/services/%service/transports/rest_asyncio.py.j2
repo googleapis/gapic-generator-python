@@ -3,7 +3,7 @@
 {% block content %}
 
 
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth.transport._aiohttp_requests import AuthorizedSession  # type: ignore
 import json  # type: ignore
 import grpc  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -251,7 +251,7 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
             api_audience=api_audience
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST)
+            self._credentials)
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         {% endif %}
@@ -324,7 +324,7 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
         {% endif %}{# required fields #}
         {% endif %}{# not method.client_streaming #}
 
-        def __call__(self,
+        async def __call__(self,
                 request: {{method.input.ident}}, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
@@ -400,7 +400,7 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
             # Send the request
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
+            response = await getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
@@ -412,14 +412,16 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
+            if response.status >= 400:
+                raise await core_exceptions.from_http_response_async(response)
+            
+            content = await response.read()
 
             {% if not method.void %}
             # Return the response
             {% if method.lro %}
             resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            json_format.Parse(content, resp, ignore_unknown_fields=True)
             {% elif method.server_streaming %}
             resp = rest_streaming.ResponseIterator(response, {{method.output.ident}})
             {% else %}
@@ -430,7 +432,7 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
             pb_resp = resp
             {% endif %}
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             {% endif %}{# method.lro #}
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
             return resp

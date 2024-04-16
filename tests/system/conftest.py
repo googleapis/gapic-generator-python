@@ -43,22 +43,22 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     def event_loop():
         return asyncio.get_event_loop()
 
-    @pytest.fixture
-    def async_echo(use_mtls, event_loop):
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    def async_echo(use_mtls, request, event_loop):
         return construct_client(
             EchoAsyncClient,
             use_mtls,
-            transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel
+            transport_name=request.param,
+            channel_creator=aio.insecure_channel if request.param == "grpc_asyncio" else None,
         )
 
-    @pytest.fixture
-    def async_identity(use_mtls, event_loop):
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    def async_identity(use_mtls, request, event_loop):
         return construct_client(
             IdentityAsyncClient,
             use_mtls,
-            transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel
+            transport_name=request.param,
+            channel_creator=aio.insecure_channel if request.param == "grpc_asyncio" else None,
         )
 
 
@@ -117,7 +117,7 @@ def construct_client(
                 credentials=credentials,
                 channel=channel_creator(transport_endpoint),
             )
-        elif transport_name == "rest":
+        elif transport_name in ["rest", "rest_asyncio"]:
             # The custom host explicitly bypasses https.
             transport = transport_cls(
                 credentials=credentials,
