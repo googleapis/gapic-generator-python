@@ -253,7 +253,7 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
         self._session = AuthorizedSession(
             self._credentials)
         {% if service.has_lro %}
-        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
+        self._operations_client: Optional[operations_v1.AbstractOperationsAsyncClient] = None
         {% endif %}
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -263,7 +263,7 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
     {% if service.has_lro %}
 
     @property
-    def operations_client(self) -> operations_v1.AbstractOperationsClient:
+    def operations_client(self) -> operations_v1.AbstractOperationsAsyncClient:
         """Create the client designed to process long-running operations.
 
         This property caches on the instance; repeated calls return the same
@@ -297,7 +297,7 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
                     http_options=http_options,
                     path_prefix="{{ service.client_package_version }}")
 
-            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
+            self._operations_client = operations_v1.AbstractOperationsAsyncClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -462,8 +462,12 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
     def kind(self) -> str:
         return "rest"
 
-    def close(self):
-        self._session.close()
+    # async Authorizedsession does not implement close so we add the logic here.
+    # Similar to what we do in requests.
+    async def close(self):
+        if self._session._auth_request_session is not None:
+            await self._session._auth_request.close()
+        await super(AuthorizedSession, self._session).close()
 
 
 __all__=(
