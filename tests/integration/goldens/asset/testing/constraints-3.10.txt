@@ -3,6 +3,7 @@
 # List all library dependencies and extras in this file.
 proto-plus
 protobuf
+google-api-core
 google-cloud-access-context-manager
 google-cloud-os-config
 grpc-google-iam-v1

@@ -52,6 +52,10 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
+try:
+    from google.api_core import version_header
+except ImportError:
+    version_header = None
 
 
 def client_cert_source_callback():
@@ -149,6 +153,7 @@ def test__get_api_endpoint():
     with pytest.raises(MutualTLSChannelError) as excinfo:
         IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
@@ -792,7 +797,6 @@ def test_generate_access_token(request_type, transport: str = 'grpc'):
     assert isinstance(response, common.GenerateAccessTokenResponse)
     assert response.access_token == 'access_token_value'
 
-
 def test_generate_access_token_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1100,7 +1104,6 @@ def test_generate_id_token(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
     assert response.token == 'token_value'
-
 
 def test_generate_id_token_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1418,7 +1421,6 @@ def test_sign_blob(request_type, transport: str = 'grpc'):
     assert response.key_id == 'key_id_value'
     assert response.signed_blob == b'signed_blob_blob'
 
-
 def test_sign_blob_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1725,7 +1727,6 @@ def test_sign_jwt(request_type, transport: str = 'grpc'):
     assert isinstance(response, common.SignJwtResponse)
     assert response.key_id == 'key_id_value'
     assert response.signed_jwt == 'signed_jwt_value'
-
 
 def test_sign_jwt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,

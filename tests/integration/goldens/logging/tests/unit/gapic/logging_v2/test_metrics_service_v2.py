@@ -51,6 +51,10 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
+try:
+    from google.api_core import version_header
+except ImportError:
+    version_header = None
 
 
 def client_cert_source_callback():
@@ -148,6 +152,7 @@ def test__get_api_endpoint():
     with pytest.raises(MutualTLSChannelError) as excinfo:
         MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
@@ -779,7 +784,6 @@ def test_list_log_metrics(request_type, transport: str = 'grpc'):
     assert isinstance(response, pagers.ListLogMetricsPager)
     assert response.next_page_token == 'next_page_token_value'
 
-
 def test_list_log_metrics_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1069,15 +1073,15 @@ def test_list_log_metrics_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
         pager = client.list_log_metrics(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -1267,7 +1271,6 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
     assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
 
 def test_get_log_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1580,7 +1583,6 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
     assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
 
 def test_create_log_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1904,7 +1906,6 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
-
 def test_update_log_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2211,7 +2212,6 @@ def test_delete_log_metric(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
 
 def test_delete_log_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,

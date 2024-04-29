@@ -183,12 +183,7 @@
         )
         {% endif %} {# method.explicit_routing #}
 
-        {% if service.version %}
-        metadata = tuple(metadata) + (
-            gapic_v1.version_header.to_grpc_metadata("{{ service.version }}"),
-        )
-        {% endif %}
-
+{{ add_api_version_header_to_metadata(service) }}
 {{ auto_populate_uuid4_fields(api, method) }}
 
         # Validate the universe domain.
@@ -296,4 +291,22 @@
 {% endfor %}
 {% endif %}{# if method_settings is not none #}
 {% endwith %}{# method_settings #}
+{% endmacro %}
+
+{% macro add_api_version_header_to_metadata(service) %}
+{#
+    Add API Version to metadata as per https://github.com/aip-dev/google.aip.dev/pull/1331.
+    When using this macro, ensure the calling template
+    generates the following lines:
+        try:
+            from google.api_core import version_header
+        except ImportError:
+            version_header = None
+#}
+    {% if service.version %}
+        if version_header:
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("{{ service.version }}"),
+            )
+    {% endif %}{# service.version #}
 {% endmacro %}

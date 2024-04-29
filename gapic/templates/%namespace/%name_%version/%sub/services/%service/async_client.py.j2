@@ -25,6 +25,11 @@ from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
 try:
+    from google.api_core import version_header
+except ImportError:
+    version_header = None
+
+try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
@@ -391,12 +396,7 @@ class {{ service.async_client_name }}:
         )
         {% endif %}
 
-        {% if service.version %}
-        metadata = tuple(metadata) + (
-            gapic_v1.version_header.to_grpc_metadata("{{ service.version }}")
-        )
-        {% endif %}
-
+{{ macros.add_api_version_header_to_metadata(service) }}
 {{ macros.auto_populate_uuid4_fields(api, method) }}
 
         # Validate the universe domain.

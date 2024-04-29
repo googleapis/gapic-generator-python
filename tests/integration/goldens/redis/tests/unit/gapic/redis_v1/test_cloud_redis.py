@@ -63,6 +63,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
 import google.auth
+try:
+    from google.api_core import version_header
+except ImportError:
+    version_header = None
 
 
 def client_cert_source_callback():
@@ -160,6 +164,7 @@ def test__get_api_endpoint():
     with pytest.raises(MutualTLSChannelError) as excinfo:
         CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
@@ -805,7 +810,6 @@ def test_list_instances(request_type, transport: str = 'grpc'):
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
 
-
 def test_list_instances_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1098,15 +1102,15 @@ def test_list_instances_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
         pager = client.list_instances(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -1336,7 +1340,6 @@ def test_get_instance(request_type, transport: str = 'grpc'):
     assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
     assert response.maintenance_version == 'maintenance_version_value'
     assert response.available_maintenance_versions == ['available_maintenance_versions_value']
-
 
 def test_get_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1698,7 +1701,6 @@ def test_get_instance_auth_string(request_type, transport: str = 'grpc'):
     assert isinstance(response, cloud_redis.InstanceAuthString)
     assert response.auth_string == 'auth_string_value'
 
-
 def test_get_instance_auth_string_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1977,7 +1979,6 @@ def test_create_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
 
 def test_create_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2281,7 +2282,6 @@ def test_update_instance(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
-
 def test_update_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2569,7 +2569,6 @@ def test_upgrade_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
 
 def test_upgrade_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2863,7 +2862,6 @@ def test_import_instance(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
-
 def test_import_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -3153,7 +3151,6 @@ def test_export_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
 
 def test_export_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3445,7 +3442,6 @@ def test_failover_instance(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
-
 def test_failover_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -3736,7 +3732,6 @@ def test_delete_instance(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
-
 def test_delete_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -4016,7 +4011,6 @@ def test_reschedule_maintenance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
 
 def test_reschedule_maintenance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,

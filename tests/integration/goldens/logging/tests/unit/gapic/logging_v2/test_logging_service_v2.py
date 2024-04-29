@@ -53,6 +53,10 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
+try:
+    from google.api_core import version_header
+except ImportError:
+    version_header = None
 
 
 def client_cert_source_callback():
@@ -150,6 +154,7 @@ def test__get_api_endpoint():
     with pytest.raises(MutualTLSChannelError) as excinfo:
         LoggingServiceV2Client._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
@@ -778,7 +783,6 @@ def test_delete_log(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert response is None
 
-
 def test_delete_log_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1054,7 +1058,6 @@ def test_write_log_entries(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging.WriteLogEntriesResponse)
 
-
 def test_write_log_entries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1300,7 +1303,6 @@ def test_list_log_entries(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogEntriesPager)
     assert response.next_page_token == 'next_page_token_value'
-
 
 def test_list_log_entries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1550,10 +1552,10 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
+        expected_metadata = ()
         pager = client.list_log_entries(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -1732,7 +1734,6 @@ def test_list_monitored_resource_descriptors(request_type, transport: str = 'grp
     assert isinstance(response, pagers.ListMonitoredResourceDescriptorsPager)
     assert response.next_page_token == 'next_page_token_value'
 
-
 def test_list_monitored_resource_descriptors_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1875,10 +1876,10 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
             RuntimeError,
         )
 
-        metadata = ()
+        expected_metadata = ()
         pager = client.list_monitored_resource_descriptors(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -2058,7 +2059,6 @@ def test_list_logs(request_type, transport: str = 'grpc'):
     assert isinstance(response, pagers.ListLogsPager)
     assert response.log_names == ['log_names_value']
     assert response.next_page_token == 'next_page_token_value'
-
 
 def test_list_logs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2352,15 +2352,15 @@ def test_list_logs_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
         pager = client.list_logs(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6

@@ -3,6 +3,7 @@
 # List all library dependencies and extras in this file.
 proto-plus
 protobuf
+google-api-core
 {% for package_tuple, package_info in pypi_packages.items() %}
 {# Quick check to make sure the package is different from this setup.py #}
 {% if api.naming.warehouse_package_name != package_info.package_name %}

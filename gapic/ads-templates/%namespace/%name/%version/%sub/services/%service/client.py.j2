@@ -23,6 +23,11 @@ from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
 
+try:
+    from google.api_core import version_header
+except ImportError:
+    version_header = None
+
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}} import gapic_version as package_version
 
@@ -479,11 +484,21 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         )
         {% endif %}
 
-        {% if service.version %}
-        metadata = tuple(metadata) + (
-            gapic_v1.version_header.to_grpc_metadata("{{ service.version }}"),
-        )
-        {% endif %}
+{#
+    Add API Version to metadata as per https://github.com/aip-dev/google.aip.dev/pull/1331.
+    When using this macro, ensure the calling template
+    generates the following lines:
+        try:
+            from google.api_core import version_header
+        except ImportError:
+            version_header = None
+#}
+    {% if service.version %}
+        if version_header:
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("{{ service.version }}"),
+            )
+    {% endif %}{# service.version #}
 {#
     Automatically populate UUID4 fields according to
     https://google.aip.dev/client-libraries/4235 when the

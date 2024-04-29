@@ -62,6 +62,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import google.auth
+try:
+    from google.api_core import version_header
+except ImportError:
+    version_header = None
 
 
 def client_cert_source_callback():
@@ -159,6 +163,7 @@ def test__get_api_endpoint():
     with pytest.raises(MutualTLSChannelError) as excinfo:
         AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
     assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
@@ -799,7 +804,6 @@ def test_export_assets(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
-
 def test_export_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -998,7 +1002,6 @@ def test_list_assets(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsPager)
     assert response.next_page_token == 'next_page_token_value'
-
 
 def test_list_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1289,15 +1292,15 @@ def test_list_assets_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
         pager = client.list_assets(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -1473,7 +1476,6 @@ def test_batch_get_assets_history(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
-
 
 def test_batch_get_assets_history_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1679,7 +1681,6 @@ def test_create_feed(request_type, transport: str = 'grpc'):
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ['relationship_types_value']
-
 
 def test_create_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1985,7 +1986,6 @@ def test_get_feed(request_type, transport: str = 'grpc'):
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ['relationship_types_value']
 
-
 def test_get_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2278,7 +2278,6 @@ def test_list_feeds(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.ListFeedsResponse)
 
-
 def test_list_feeds_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2565,7 +2564,6 @@ def test_update_feed(request_type, transport: str = 'grpc'):
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ['relationship_types_value']
-
 
 def test_update_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2856,7 +2854,6 @@ def test_delete_feed(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert response is None
 
-
 def test_delete_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -3133,7 +3130,6 @@ def test_search_all_resources(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllResourcesPager)
     assert response.next_page_token == 'next_page_token_value'
-
 
 def test_search_all_resources_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3448,15 +3444,15 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('scope', ''),
             )),
         )
         pager = client.search_all_resources(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -3634,7 +3630,6 @@ def test_search_all_iam_policies(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllIamPoliciesPager)
     assert response.next_page_token == 'next_page_token_value'
-
 
 def test_search_all_iam_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3939,15 +3934,15 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('scope', ''),
             )),
         )
         pager = client.search_all_iam_policies(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -4125,7 +4120,6 @@ def test_analyze_iam_policy(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
     assert response.fully_explored is True
-
 
 def test_analyze_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4324,7 +4318,6 @@ def test_analyze_iam_policy_longrunning(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
-
 def test_analyze_iam_policy_longrunning_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -4521,7 +4514,6 @@ def test_analyze_move(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeMoveResponse)
-
 
 def test_analyze_move_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4723,7 +4715,6 @@ def test_query_assets(request_type, transport: str = 'grpc'):
     assert isinstance(response, asset_service.QueryAssetsResponse)
     assert response.job_reference == 'job_reference_value'
     assert response.done is True
-
 
 def test_query_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4939,7 +4930,6 @@ def test_create_saved_query(request_type, transport: str = 'grpc'):
     assert response.description == 'description_value'
     assert response.creator == 'creator_value'
     assert response.last_updater == 'last_updater_value'
-
 
 def test_create_saved_query_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5260,7 +5250,6 @@ def test_get_saved_query(request_type, transport: str = 'grpc'):
     assert response.creator == 'creator_value'
     assert response.last_updater == 'last_updater_value'
 
-
 def test_get_saved_query_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -5551,7 +5540,6 @@ def test_list_saved_queries(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSavedQueriesPager)
     assert response.next_page_token == 'next_page_token_value'
-
 
 def test_list_saved_queries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5844,15 +5832,15 @@ def test_list_saved_queries_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
         pager = client.list_saved_queries(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -6036,7 +6024,6 @@ def test_update_saved_query(request_type, transport: str = 'grpc'):
     assert response.description == 'description_value'
     assert response.creator == 'creator_value'
     assert response.last_updater == 'last_updater_value'
-
 
 def test_update_saved_query_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6334,7 +6321,6 @@ def test_delete_saved_query(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert response is None
 
-
 def test_delete_saved_query_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -6610,7 +6596,6 @@ def test_batch_get_effective_iam_policies(request_type, transport: str = 'grpc')
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
 
-
 def test_batch_get_effective_iam_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -6807,7 +6792,6 @@ def test_analyze_org_policies(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
     assert response.next_page_token == 'next_page_token_value'
-
 
 def test_analyze_org_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -7122,15 +7106,15 @@ def test_analyze_org_policies_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('scope', ''),
             )),
         )
         pager = client.analyze_org_policies(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -7308,7 +7292,6 @@ def test_analyze_org_policy_governed_containers(request_type, transport: str = '
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
     assert response.next_page_token == 'next_page_token_value'
-
 
 def test_analyze_org_policy_governed_containers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -7623,15 +7606,15 @@ def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grp
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('scope', ''),
             )),
         )
         pager = client.analyze_org_policy_governed_containers(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -7809,7 +7792,6 @@ def test_analyze_org_policy_governed_assets(request_type, transport: str = 'grpc
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
     assert response.next_page_token == 'next_page_token_value'
-
 
 def test_analyze_org_policy_governed_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -8124,15 +8106,15 @@ def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('scope', ''),
             )),
         )
         pager = client.analyze_org_policy_governed_assets(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
