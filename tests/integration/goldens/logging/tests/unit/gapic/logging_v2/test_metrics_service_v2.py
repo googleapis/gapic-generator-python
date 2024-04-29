@@ -784,6 +784,7 @@ def test_list_log_metrics(request_type, transport: str = 'grpc'):
     assert isinstance(response, pagers.ListLogMetricsPager)
     assert response.next_page_token == 'next_page_token_value'
 
+
 def test_list_log_metrics_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1272,6 +1273,7 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
+
 def test_get_log_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1583,6 +1585,7 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
     assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
+
 
 def test_create_log_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1906,6 +1909,7 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
+
 def test_update_log_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2212,6 +2216,7 @@ def test_delete_log_metric(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 
 def test_delete_log_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,

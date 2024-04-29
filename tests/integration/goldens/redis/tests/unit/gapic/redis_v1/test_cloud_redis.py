@@ -810,6 +810,7 @@ def test_list_instances(request_type, transport: str = 'grpc'):
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
 
+
 def test_list_instances_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1341,6 +1342,7 @@ def test_get_instance(request_type, transport: str = 'grpc'):
     assert response.maintenance_version == 'maintenance_version_value'
     assert response.available_maintenance_versions == ['available_maintenance_versions_value']
 
+
 def test_get_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1701,6 +1703,7 @@ def test_get_instance_auth_string(request_type, transport: str = 'grpc'):
     assert isinstance(response, cloud_redis.InstanceAuthString)
     assert response.auth_string == 'auth_string_value'
 
+
 def test_get_instance_auth_string_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1979,6 +1982,7 @@ def test_create_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
 
 def test_create_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2282,6 +2286,7 @@ def test_update_instance(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_update_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2569,6 +2574,7 @@ def test_upgrade_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
 
 def test_upgrade_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2862,6 +2868,7 @@ def test_import_instance(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_import_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -3151,6 +3158,7 @@ def test_export_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
 
 def test_export_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3442,6 +3450,7 @@ def test_failover_instance(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_failover_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -3732,6 +3741,7 @@ def test_delete_instance(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_delete_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -4011,6 +4021,7 @@ def test_reschedule_maintenance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
 
 def test_reschedule_maintenance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,

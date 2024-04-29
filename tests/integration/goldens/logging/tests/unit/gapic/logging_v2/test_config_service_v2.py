@@ -784,6 +784,7 @@ def test_list_buckets(request_type, transport: str = 'grpc'):
     assert isinstance(response, pagers.ListBucketsPager)
     assert response.next_page_token == 'next_page_token_value'
 
+
 def test_list_buckets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1272,6 +1273,7 @@ def test_get_bucket(request_type, transport: str = 'grpc'):
     assert response.analytics_enabled is True
     assert response.restricted_fields == ['restricted_fields_value']
 
+
 def test_get_bucket_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1487,6 +1489,7 @@ def test_create_bucket_async(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_create_bucket_async_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1684,6 +1687,7 @@ def test_update_bucket_async(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
 
 def test_update_bucket_async_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1895,6 +1899,7 @@ def test_create_bucket(request_type, transport: str = 'grpc'):
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
     assert response.restricted_fields == ['restricted_fields_value']
+
 
 def test_create_bucket_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2128,6 +2133,7 @@ def test_update_bucket(request_type, transport: str = 'grpc'):
     assert response.analytics_enabled is True
     assert response.restricted_fields == ['restricted_fields_value']
 
+
 def test_update_bucket_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2343,6 +2349,7 @@ def test_delete_bucket(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_delete_bucket_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2534,6 +2541,7 @@ def test_undelete_bucket(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 
 def test_undelete_bucket_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2729,6 +2737,7 @@ def test_list_views(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListViewsPager)
     assert response.next_page_token == 'next_page_token_value'
+
 
 def test_list_views_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3210,6 +3219,7 @@ def test_get_view(request_type, transport: str = 'grpc'):
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
 
+
 def test_get_view_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -3419,6 +3429,7 @@ def test_create_view(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+
 
 def test_create_view_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3632,6 +3643,7 @@ def test_update_view(request_type, transport: str = 'grpc'):
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
 
+
 def test_update_view_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -3835,6 +3847,7 @@ def test_delete_view(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_delete_view_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -4029,6 +4042,7 @@ def test_list_sinks(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSinksPager)
     assert response.next_page_token == 'next_page_token_value'
+
 
 def test_list_sinks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4520,6 +4534,7 @@ def test_get_sink(request_type, transport: str = 'grpc'):
     assert response.writer_identity == 'writer_identity_value'
     assert response.include_children is True
 
+
 def test_get_sink_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -4836,6 +4851,7 @@ def test_create_sink(request_type, transport: str = 'grpc'):
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
     assert response.writer_identity == 'writer_identity_value'
     assert response.include_children is True
+
 
 def test_create_sink_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5164,6 +5180,7 @@ def test_update_sink(request_type, transport: str = 'grpc'):
     assert response.writer_identity == 'writer_identity_value'
     assert response.include_children is True
 
+
 def test_update_sink_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -5484,6 +5501,7 @@ def test_delete_sink(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_delete_sink_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -5757,6 +5775,7 @@ def test_create_link(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
 
 def test_create_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6060,6 +6079,7 @@ def test_delete_link(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_delete_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -6342,6 +6362,7 @@ def test_list_links(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLinksPager)
     assert response.next_page_token == 'next_page_token_value'
+
 
 def test_list_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6823,6 +6844,7 @@ def test_get_link(request_type, transport: str = 'grpc'):
     assert response.description == 'description_value'
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
 
+
 def test_get_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -7110,6 +7132,7 @@ def test_list_exclusions(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExclusionsPager)
     assert response.next_page_token == 'next_page_token_value'
+
 
 def test_list_exclusions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -7593,6 +7616,7 @@ def test_get_exclusion(request_type, transport: str = 'grpc'):
     assert response.filter == 'filter_value'
     assert response.disabled is True
 
+
 def test_get_exclusion_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -7889,6 +7913,7 @@ def test_create_exclusion(request_type, transport: str = 'grpc'):
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
     assert response.disabled is True
+
 
 def test_create_exclusion_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -8196,6 +8221,7 @@ def test_update_exclusion(request_type, transport: str = 'grpc'):
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
     assert response.disabled is True
+
 
 def test_update_exclusion_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -8505,6 +8531,7 @@ def test_delete_exclusion(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_delete_exclusion_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -8788,6 +8815,7 @@ def test_get_cmek_settings(request_type, transport: str = 'grpc'):
     assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
 
+
 def test_get_cmek_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -9002,6 +9030,7 @@ def test_update_cmek_settings(request_type, transport: str = 'grpc'):
     assert response.kms_key_name == 'kms_key_name_value'
     assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
+
 
 def test_update_cmek_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -9219,6 +9248,7 @@ def test_get_settings(request_type, transport: str = 'grpc'):
     assert response.kms_service_account_id == 'kms_service_account_id_value'
     assert response.storage_location == 'storage_location_value'
     assert response.disable_default_sink is True
+
 
 def test_get_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -9522,6 +9552,7 @@ def test_update_settings(request_type, transport: str = 'grpc'):
     assert response.storage_location == 'storage_location_value'
     assert response.disable_default_sink is True
 
+
 def test_update_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -9822,6 +9853,7 @@ def test_copy_log_entries(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
 
 def test_copy_log_entries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,

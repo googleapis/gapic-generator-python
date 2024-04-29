@@ -783,6 +783,7 @@ def test_delete_log(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_delete_log_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1058,6 +1059,7 @@ def test_write_log_entries(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging.WriteLogEntriesResponse)
 
+
 def test_write_log_entries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1303,6 +1305,7 @@ def test_list_log_entries(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogEntriesPager)
     assert response.next_page_token == 'next_page_token_value'
+
 
 def test_list_log_entries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1734,6 +1737,7 @@ def test_list_monitored_resource_descriptors(request_type, transport: str = 'grp
     assert isinstance(response, pagers.ListMonitoredResourceDescriptorsPager)
     assert response.next_page_token == 'next_page_token_value'
 
+
 def test_list_monitored_resource_descriptors_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2059,6 +2063,7 @@ def test_list_logs(request_type, transport: str = 'grpc'):
     assert isinstance(response, pagers.ListLogsPager)
     assert response.log_names == ['log_names_value']
     assert response.next_page_token == 'next_page_token_value'
+
 
 def test_list_logs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,

@@ -153,7 +153,6 @@ def test_{{ service.client_name|snake_case }}_service_account_always_use_jwt(tra
         use_jwt.assert_not_called()
 
 
-
 @pytest.mark.parametrize("client_class,transport_name", [
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, "grpc"),

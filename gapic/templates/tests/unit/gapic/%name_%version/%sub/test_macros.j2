@@ -121,6 +121,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endif %}
     {% endwith %}{# auto_populated_field_sample_value #}
 
+
 {% if not method.client_streaming %}
 def test_{{ method_name }}_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
