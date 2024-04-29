@@ -825,6 +825,7 @@ def test_get_trigger(request_type, transport: str = 'grpc'):
     assert response.channel == 'channel_value'
     assert response.etag == 'etag_value'
 
+
 def test_get_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1120,6 +1121,7 @@ def test_list_triggers(request_type, transport: str = 'grpc'):
     assert isinstance(response, pagers.ListTriggersPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
+
 
 def test_list_triggers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1601,6 +1603,7 @@ def test_create_trigger(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_create_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -1903,6 +1906,7 @@ def test_update_trigger(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_update_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2200,6 +2204,7 @@ def test_delete_trigger(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
 
 def test_delete_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2507,6 +2512,7 @@ def test_get_channel(request_type, transport: str = 'grpc'):
     assert response.activation_token == 'activation_token_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
 
+
 def test_get_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -2805,6 +2811,7 @@ def test_list_channels(request_type, transport: str = 'grpc'):
     assert isinstance(response, pagers.ListChannelsPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
+
 
 def test_list_channels_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3284,6 +3291,7 @@ def test_create_channel(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_create_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -3586,6 +3594,7 @@ def test_update_channel(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_update_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -3874,6 +3883,7 @@ def test_delete_channel(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_delete_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -4158,6 +4168,7 @@ def test_get_provider(request_type, transport: str = 'grpc'):
     assert isinstance(response, discovery.Provider)
     assert response.name == 'name_value'
     assert response.display_name == 'display_name_value'
+
 
 def test_get_provider_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4445,6 +4456,7 @@ def test_list_providers(request_type, transport: str = 'grpc'):
     assert isinstance(response, pagers.ListProvidersPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
+
 
 def test_list_providers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4935,6 +4947,7 @@ def test_get_channel_connection(request_type, transport: str = 'grpc'):
     assert response.channel == 'channel_value'
     assert response.activation_token == 'activation_token_value'
 
+
 def test_get_channel_connection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -5227,6 +5240,7 @@ def test_list_channel_connections(request_type, transport: str = 'grpc'):
     assert isinstance(response, pagers.ListChannelConnectionsPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
+
 
 def test_list_channel_connections_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5704,6 +5718,7 @@ def test_create_channel_connection(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_create_channel_connection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -6006,6 +6021,7 @@ def test_delete_channel_connection(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
+
 def test_delete_channel_connection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -6290,6 +6306,7 @@ def test_get_google_channel_config(request_type, transport: str = 'grpc'):
     assert isinstance(response, google_channel_config.GoogleChannelConfig)
     assert response.name == 'name_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
+
 
 def test_get_google_channel_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6577,6 +6594,7 @@ def test_update_google_channel_config(request_type, transport: str = 'grpc'):
     assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
     assert response.name == 'name_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
+
 
 def test_update_google_channel_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
