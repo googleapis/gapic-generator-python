@@ -22,9 +22,8 @@ def test_api_version_in_grpc_trailing_metadata(echo):
     if not version_header:
         pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
 
-    # This feature requires version 0.34.0 of `gapic-showcase` or newer which has the
-    # ability to echo request headers in trailing metadata` which was added 
-    # in https://github.com/googleapis/gapic-showcase/pull/1501.
+    # This feature requires version 0.35.0 of `gapic-showcase` or newer which has the
+    # ability to echo request headers
     content = 'The hail in Wales falls mainly on the snails.'
     responses = echo.expand({
         'content': content,
