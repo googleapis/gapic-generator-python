@@ -304,7 +304,7 @@
             version_header = None
 #}
     {% if service.version %}
-        if version_header:  # pragma: no branch
+        if version_header:  # pragma: NO COVER
             metadata = tuple(metadata) + (
                 version_header.to_api_version_header("{{ service.version }}"),
             )
