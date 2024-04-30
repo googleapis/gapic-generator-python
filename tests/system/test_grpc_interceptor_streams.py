@@ -31,7 +31,10 @@ def test_unary_stream(intercepted_echo):
         assert response.content == ground_truth
     assert ground_truth == 'snails.'
 
-    response_metadata = [(metadata.key, metadata.value) for metadata in responses.trailing_metadata()]
+    response_metadata = [
+        (metadata.key, metadata.value)
+        for metadata in responses.trailing_metadata()
+    ]
     assert intercepted_metadata[0] in response_metadata
 
 
@@ -44,5 +47,8 @@ def test_stream_stream(intercepted_echo):
     contents = [response.content for response in responses]
     assert contents == ['hello', 'world!']
 
-    response_metadata = [(metadata.key, metadata.value) for metadata in responses.trailing_metadata()]
+    response_metadata = [
+        (metadata.key, metadata.value)
+        for metadata in responses.trailing_metadata()
+    ]
     assert intercepted_metadata[0] in response_metadata

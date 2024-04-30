@@ -18,9 +18,12 @@ try:
 except ImportError:
     version_header = None
 
+
 def test_api_version_in_grpc_trailing_metadata(echo):
     if not version_header:
-        pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
+        pytest.skip(
+            "google-api-core>=2.19.0 is required for `google.api_core.version_header`"
+        )
 
     # This feature requires version 0.35.0 of `gapic-showcase` or newer which has the
     # ability to echo request headers
@@ -29,7 +32,10 @@ def test_api_version_in_grpc_trailing_metadata(echo):
         'content': content,
     })
     if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
-        response_metadata = [(metadata.key, metadata.value) for metadata in responses.trailing_metadata()]
+        response_metadata = [
+            (metadata.key, metadata.value)
+            for metadata in responses.trailing_metadata()
+        ]
         assert ("x-goog-api-version", "v1_20240408") in response_metadata
     else:
         assert "X-Showcase-Request-X-Goog-Api-Version" in responses._response.headers

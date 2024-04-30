@@ -34,7 +34,10 @@ def test_unary_stream(echo):
         assert response.content == ground_truth
     assert ground_truth == 'snails.'
     if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
-        response_metadata = [(metadata.key, metadata.value) for metadata in responses.trailing_metadata()]
+        response_metadata = [
+            (metadata.key, metadata.value)
+            for metadata in responses.trailing_metadata()
+        ]
         assert metadata[0] in response_metadata
     else:
         showcase_header = f"X-Showcase-Request-{metadata[0][0]}"
@@ -79,7 +82,10 @@ def test_stream_stream(echo):
         contents.append(response.content)
     assert contents == ['hello', 'world!']
 
-    response_metadata = [(metadata.key, metadata.value) for metadata in responses.trailing_metadata()]
+    response_metadata = [
+        (metadata.key, metadata.value)
+        for metadata in responses.trailing_metadata()
+    ]
     assert metadata[0] in response_metadata
 
 
@@ -96,7 +102,10 @@ def test_stream_stream_passing_dict(echo):
         contents.append(response.content)
     assert contents == ['hello', 'world!']
 
-    response_metadata = [(metadata.key, metadata.value) for metadata in responses.trailing_metadata()]
+    response_metadata = [
+        (metadata.key, metadata.value)
+        for metadata in responses.trailing_metadata()
+    ]
     assert metadata[0] in response_metadata
 
 
