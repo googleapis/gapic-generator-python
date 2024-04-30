@@ -29,8 +29,9 @@ from google.oauth2 import service_account              # type: ignore
 
 try:
     from google.api_core import version_header
-except ImportError:
-    version_header = None
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]

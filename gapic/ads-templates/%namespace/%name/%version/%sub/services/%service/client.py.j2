@@ -25,8 +25,9 @@ from google.oauth2 import service_account                         # type: ignore
 
 try:
     from google.api_core import version_header
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = True
 except ImportError:  # pragma: NO COVER
-    version_header = None
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}} import gapic_version as package_version
@@ -490,11 +491,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     generates the following lines:
         try:
             from google.api_core import version_header
+            HAS_GOOGLE_API_CORE_VERSION_HEADER = True
         except ImportError:  # pragma: NO COVER
-            version_header = None
+            HAS_GOOGLE_API_CORE_VERSION_HEADER = False
 #}
     {% if service.version %}
-        if version_header:  # pragma: NO COVER
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
             metadata = tuple(metadata) + (
                 version_header.to_api_version_header("{{ service.version }}"),
             )
