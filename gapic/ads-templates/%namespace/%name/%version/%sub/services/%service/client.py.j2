@@ -25,7 +25,7 @@ from google.oauth2 import service_account                         # type: ignore
 
 try:
     from google.api_core import version_header
-except ImportError:
+except ImportError:  # pragma: NO COVER
     version_header = None
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
@@ -490,11 +490,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     generates the following lines:
         try:
             from google.api_core import version_header
-        except ImportError:
+        except ImportError:  # pragma: NO COVER
             version_header = None
 #}
     {% if service.version %}
-        if version_header:
+        if version_header:  # pragma: no branch
             metadata = tuple(metadata) + (
                 version_header.to_api_version_header("{{ service.version }}"),
             )

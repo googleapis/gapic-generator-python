@@ -254,24 +254,16 @@ def showcase_library(
         session.run(
             *cmd_tup, external=True,
         )
-
-        # Install the generated showcase library.
-        if templates == "DEFAULT":
-            # Use the constraints file for the specific python runtime version.
-            # We do this to make sure that we're testing against the lowest
-            # supported version of a dependency.
-            # This is needed to recreate the issue reported in
-            # https://github.com/googleapis/google-cloud-python/issues/12254
-            constraints_path = str(
-            f"{tmp_dir}/testing/constraints-{session.python}.txt"
-            )
-            # Install the library with a constraints file.
-            session.install("-e", tmp_dir, "-r", constraints_path, "--no-cache-dir")
-        else:
-            # The ads templates do not have constraints files.
-            # See https://github.com/googleapis/gapic-generator-python/issues/1788
-            # Install the library without a constraints file.
-            session.install("-e", tmp_dir, "--no-cache-dir")
+        # Use the constraints file for the specific python runtime version.
+        # We do this to make sure that we're testing against the lowest
+        # supported version of a dependency.
+        # This is needed to recreate the issue reported in
+        # https://github.com/googleapis/google-cloud-python/issues/12254
+        constraints_path = str(
+        f"{tmp_dir}/testing/constraints-{session.python}.txt"
+        )
+        # Install the library with a constraints file.
+        session.install("-e", tmp_dir, "-r", constraints_path, "--no-cache-dir")
         yield tmp_dir
 
 

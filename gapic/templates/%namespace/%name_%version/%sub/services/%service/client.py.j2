@@ -33,7 +33,7 @@ from google.oauth2 import service_account                         # type: ignore
 
 try:
     from google.api_core import version_header
-except ImportError:
+except ImportError:  # pragma: NO COVER
     version_header = None
 
 try:
