@@ -296,8 +296,7 @@
 {% macro add_api_version_header_to_metadata(service) %}
 {#
     Add API Version to metadata as per https://github.com/aip-dev/google.aip.dev/pull/1331.
-    When using this macro, ensure the calling template
-    generates the following lines:
+    When using this macro, ensure the calling template generates the following lines:
         try:
             from google.api_core import version_header
             HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
