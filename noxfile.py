@@ -189,7 +189,7 @@ def showcase_library(
     session.log("-" * 70)
 
     # Install gapic-generator-python
-    session.install("-e", ".", "--no-cache-dir")
+    session.install("-e", ".")
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
