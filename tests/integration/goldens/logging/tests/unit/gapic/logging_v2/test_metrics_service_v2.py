@@ -51,11 +51,6 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
-try:
-    from google.api_core import version_header
-    HAS_GOOGLE_API_CORE_VERSION_HEADER = True
-except ImportError:
-    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
 
 
 def client_cert_source_callback():

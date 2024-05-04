@@ -31,11 +31,6 @@ from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
 
-try:
-    from google.api_core import version_header
-    HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]

@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+{% import "%namespace/%name/%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 from collections import OrderedDict
 import os
@@ -23,12 +24,7 @@ from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
 
-try:
-    from google.api_core import version_header
-    HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
-
+{{ shared_macros.add_google_api_core_version_header_import(service) }}
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}} import gapic_version as package_version
 
@@ -482,43 +478,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             )),
         )
         {% endif %}
-
-{#
-    Add API Version to metadata as per https://github.com/aip-dev/google.aip.dev/pull/1331.
-    When using this macro, ensure the calling template
-    generates the following lines:
-        try:
-            from google.api_core import version_header
-            HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
-        except ImportError:  # pragma: NO COVER
-            HAS_GOOGLE_API_CORE_VERSION_HEADER = False
-#}
-    {% if service.version %}
-        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
-            metadata = tuple(metadata) + (
-                version_header.to_api_version_header("{{ service.version }}"),
-            )
-    {% endif %}{# service.version #}
-{#
-    Automatically populate UUID4 fields according to
-    https://google.aip.dev/client-libraries/4235 when the
-    field satisfies either of:
-    - The field supports explicit presence and has not been set by the user.
-    - The field doesn't support explicit presence, and its value is the empty
-      string (i.e. the default value).
-#}
-{% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-{% if method_settings is not none %}
-{% for auto_populated_field in method_settings.auto_populated_fields %}
-    {% if method.input.fields[auto_populated_field].proto3_optional %}
-        if '{{ auto_populated_field }}' not in request:
-    {% else %}
-        if not request.{{ auto_populated_field }}:
-    {% endif %}
-            request.{{ auto_populated_field }} = str(uuid.uuid4())
-{% endfor %}
-{% endif %}{# if method_settings is not none #}
-{% endwith %}{# method_settings #}
+{{ shared_macros.add_api_version_header_to_metadata(service) }}
+{{ shared_macros.auto_populate_uuid4_fields(api, method) }}
 
         # Send the request.
         {%+ if not method.void %}response = {% endif %}rpc(
