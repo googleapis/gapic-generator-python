@@ -19,14 +19,14 @@ import threading
 from google import showcase
 
 
-metadata = (("showcase-trailer", "hello world"),)
+_METADATA = (("showcase-trailer", "hello world"),)
 
 
 def test_unary_stream(echo):
     content = 'The hail in Wales falls mainly on the snails.'
     responses = echo.expand({
         'content': content,
-    }, metadata=metadata)
+    }, metadata=_METADATA)
 
     # Consume the response and ensure it matches what we expect.
     # with pytest.raises(exceptions.NotFound) as exc:
@@ -38,11 +38,11 @@ def test_unary_stream(echo):
             (metadata.key, metadata.value)
             for metadata in responses.trailing_metadata()
         ]
-        assert metadata[0] in response_metadata
+        assert _METADATA[0] in response_metadata
     else:
-        showcase_header = f"X-Showcase-Request-{metadata[0][0]}"
+        showcase_header = f"X-Showcase-Request-{_METADATA[0][0]}"
         assert showcase_header in responses._response.headers
-        assert responses._response.headers[showcase_header] == metadata[0][1]
+        assert responses._response.headers[showcase_header] == _METADATA[0][1]
 
 
 def test_stream_unary(echo):
@@ -75,7 +75,7 @@ def test_stream_stream(echo):
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
-    responses = echo.chat(iter(requests), metadata=metadata)
+    responses = echo.chat(iter(requests), metadata=_METADATA)
 
     contents = []
     for response in responses:
@@ -86,7 +86,7 @@ def test_stream_stream(echo):
         (metadata.key, metadata.value)
         for metadata in responses.trailing_metadata()
     ]
-    assert metadata[0] in response_metadata
+    assert _METADATA[0] in response_metadata
 
 
 def test_stream_stream_passing_dict(echo):
@@ -95,7 +95,7 @@ def test_stream_stream_passing_dict(echo):
         return
 
     requests = [{'content': 'hello'}, {'content': 'world!'}]
-    responses = echo.chat(iter(requests), metadata=metadata)
+    responses = echo.chat(iter(requests), metadata=_METADATA)
 
     contents = []
     for response in responses:
@@ -106,7 +106,7 @@ def test_stream_stream_passing_dict(echo):
         (metadata.key, metadata.value)
         for metadata in responses.trailing_metadata()
     ]
-    assert metadata[0] in response_metadata
+    assert _METADATA[0] in response_metadata
 
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
@@ -117,7 +117,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         content = 'The hail in Wales falls mainly on the snails.'
         call = await async_echo.expand({
             'content': content,
-        }, metadata=metadata)
+        }, metadata=_METADATA)
 
         # Consume the response and ensure it matches what we expect.
         # with pytest.raises(exceptions.NotFound) as exc:
@@ -127,14 +127,14 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         assert ground_truth == 'snails.'
 
         trailing_metadata = await call.trailing_metadata()
-        assert metadata[0] in trailing_metadata.items()
+        assert _METADATA[0] in trailing_metadata.items()
 
     @pytest.mark.asyncio
     async def test_async_unary_stream_async_generator(async_echo):
         content = 'The hail in Wales falls mainly on the snails.'
         call = await async_echo.expand({
             'content': content,
-        }, metadata=metadata)
+        }, metadata=_METADATA)
 
         # Consume the response and ensure it matches what we expect.
         # with pytest.raises(exceptions.NotFound) as exc:
@@ -145,7 +145,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         assert ground_truth == 'snails.'
 
         trailing_metadata = await call.trailing_metadata()
-        assert metadata[0] in trailing_metadata.items()
+        assert _METADATA[0] in trailing_metadata.items()
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_iterable(async_echo):
@@ -187,7 +187,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_reader_writier(async_echo):
-        call = await async_echo.chat(metadata=metadata)
+        call = await async_echo.chat(metadata=_METADATA)
         await call.write(showcase.EchoRequest(content="hello"))
         await call.write(showcase.EchoRequest(content="world!"))
         await call.done_writing()
@@ -199,7 +199,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         assert contents == ['hello', 'world!']
 
         trailing_metadata = await call.trailing_metadata()
-        assert metadata[0] in trailing_metadata.items()
+        assert _METADATA[0] in trailing_metadata.items()
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_async_generator(async_echo):
@@ -208,7 +208,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             yield showcase.EchoRequest(content="hello")
             yield showcase.EchoRequest(content="world!")
 
-        call = await async_echo.chat(async_generator(), metadata=metadata)
+        call = await async_echo.chat(async_generator(), metadata=_METADATA)
 
         contents = []
         async for response in call:
@@ -221,7 +221,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.mark.asyncio
     async def test_async_stream_stream_passing_dict(async_echo):
         requests = [{'content': 'hello'}, {'content': 'world!'}]
-        call = await async_echo.chat(iter(requests), metadata=metadata)
+        call = await async_echo.chat(iter(requests), metadata=_METADATA)
 
         contents = []
         async for response in call:
@@ -229,4 +229,4 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         assert contents == ['hello', 'world!']
 
         trailing_metadata = await call.trailing_metadata()
-        assert metadata[0] in trailing_metadata.items()
+        assert _METADATA[0] in trailing_metadata.items()
