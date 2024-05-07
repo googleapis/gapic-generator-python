@@ -216,7 +216,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         assert contents == ['hello', 'world!']
 
         trailing_metadata = await call.trailing_metadata()
-        assert metadata[0] in trailing_metadata.items()
+        assert _METADATA[0] in trailing_metadata.items()
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_passing_dict(async_echo):
