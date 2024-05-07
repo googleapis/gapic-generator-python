@@ -38,7 +38,7 @@
 {% endwith %}{# method_settings #}
 {% endmacro %}
 
-{% macro add_google_api_core_version_header_import(service) %}
+{% macro add_google_api_core_version_header_import(service_version) %}
 {#
 The `version_header` module was added to `google-api-core`
 in version 2.19.0.
@@ -46,13 +46,13 @@ https://github.com/googleapis/python-api-core/releases/tag/v2.19.0
 The `try/except` below can be removed once the minimum version of
 `google-api-core` is 2.19.0 or newer.
 #}
-{% if service.version %}
+{% if service_version %}
 try:
     from google.api_core import version_header
     HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_API_CORE_VERSION_HEADER = False
-{% endif %}{# service.version #}
+{% endif %}{# service_version #}
 {% endmacro %}
 {% macro add_api_version_header_to_metadata(service_version) %}
 {#

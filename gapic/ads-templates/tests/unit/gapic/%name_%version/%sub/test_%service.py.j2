@@ -71,7 +71,7 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
-{{ shared_macros.add_google_api_core_version_header_import(service) }}
+{{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 
 
 {% with uuid4_re = "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}" %}
