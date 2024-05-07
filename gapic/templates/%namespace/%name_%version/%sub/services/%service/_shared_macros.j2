@@ -55,16 +55,16 @@ except ImportError:  # pragma: NO COVER
 {% endif %}{# service.version #}
 {% endmacro %}
 
-{% macro add_api_version_header_to_metadata(service) %}
+{% macro add_api_version_header_to_metadata(service_version) %}
 {#
     Add API Version to metadata as per https://github.com/aip-dev/google.aip.dev/pull/1331.
     When using this macro, ensure the calling template also calls macro
     `add_google_api_core_version_header_import` to add the necessary import statements.
 #}
-    {% if service.version %}
+    {% if service_version %}
         if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
             metadata = tuple(metadata) + (
-                version_header.to_api_version_header("{{ service.version }}"),
+                version_header.to_api_version_header("{{ service_version }}"),
             )
-    {% endif %}{# service.version #}
+    {% endif %}{# service_version #}
 {% endmacro %}

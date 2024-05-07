@@ -185,7 +185,7 @@
         )
         {% endif %} {# method.explicit_routing #}
 
-{{ shared_macros.add_api_version_header_to_metadata(service) }}
+{{ shared_macros.add_api_version_header_to_metadata(service.version) }}
 {{ shared_macros.auto_populate_uuid4_fields(api, method) }}
 
         # Validate the universe domain.
