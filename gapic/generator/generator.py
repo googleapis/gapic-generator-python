@@ -116,6 +116,9 @@ class Generator:
             filename = template_name.split("/")[-1]
             if filename.startswith("_") and filename != "__init__.py.j2":
                 continue
+            
+            if "rest_asyncio" in template_name and not api_schema.all_python_library_settings:
+                continue
 
             # Append to the output files dictionary.
             output_files.update(

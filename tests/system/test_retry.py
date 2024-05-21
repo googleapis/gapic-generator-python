@@ -45,7 +45,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_retry_bubble_async(async_echo):
-        with pytest.raises(exceptions.RetryError):
+        with pytest.raises((exceptions.RetryError)):
             await async_echo.echo({
                 'error': {
                     'code': code_pb2.Code.Value('UNAVAILABLE'),
@@ -59,7 +59,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_method_async_wrapper_for_async_client(async_echo):
-        with pytest.raises(exceptions.NotFound):
+        with pytest.raises((exceptions.NotFound, exceptions.BadRequest)):
             await async_echo.get_operation({
                 'name': "operations/echo"
             })

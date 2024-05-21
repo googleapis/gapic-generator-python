@@ -8,7 +8,7 @@
     class _{{ name }}({{service.name}}RestStub):
         async def __call__(self,
             request: {{ sig.request_type }}, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            retry: OptionalRetry=gapic_v1.method_async.DEFAULT,
             timeout: Optional[float]=None,
             metadata: Sequence[Tuple[str, str]]=(),
             ) -> {{ sig.response_type }}:
@@ -64,7 +64,7 @@
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
 
-            response = getattr(self._session, method)(
+            response = await getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
@@ -76,17 +76,15 @@
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
+            if response.status >= 400:
+                raise await core_exceptions.from_http_response_async(response)
             
-            content = await response.read()
-
             {% if sig.response_type == "None" %}
             return self._interceptor.post_{{ name|snake_case }}(None)
             {% else %}
             
             resp = {{ sig.response_type }}()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content.decode("utf-8"), resp)
             resp = self._interceptor.post_{{ name|snake_case }}(resp)
             return resp
             {% endif %}

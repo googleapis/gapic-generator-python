@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+{% import "%namespace/%name_%version/%sub/services/%service/transports/_rest_macros.j2" as macros %}
 
 
 from google.auth.transport._aiohttp_requests import AuthorizedSession  # type: ignore
@@ -9,11 +10,12 @@ import grpc  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
-from google.api_core import rest_streaming
+from google.api_core import rest_streaming_async as rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+from .rest import {{ service.name }}RestInterceptor, DEFAULT_CLIENT_INFO
 
 from google.protobuf import json_format
 {% if service.has_lro %}
@@ -37,9 +39,9 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 
 {# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
@@ -61,96 +63,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 {% endif %}
 
-from .base import {{service.name}}Transport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-
-
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
-    grpc_version=None,
-    rest_version=requests_version,
-)
-
-
-class {{ service.name }}RestInterceptor:
-    """Interceptor for {{ service.name }}.
-
-    Interceptors are used to manipulate requests, request metadata, and responses
-    in arbitrary ways.
-    Example use cases include:
-    * Logging
-    * Verifying requests according to service or custom semantics
-    * Stripping extraneous information from responses
-
-    These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the {{ service.name }}RestAsyncioTransport.
-
-    .. code-block:: python
-        class MyCustom{{ service.name }}Interceptor({{ service.name }}RestInterceptor):
-    {% for _, method in service.methods|dictsort if not method.client_streaming %}
-            def pre_{{ method.name|snake_case }}(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-    {% if not method.void %}
-            def post_{{ method.name|snake_case }}(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-    {% endif %}
-
-{% endfor %}
-        transport = {{ service.name }}RestAsyncioTransport(interceptor=MyCustom{{ service.name }}Interceptor())
-        client = {{ service.client_name }}(transport=transport)
-
-
-    """
-    {% for method in service.methods.values()|sort(attribute="name") if not method.client_streaming and method.http_options %}
-    def pre_{{ method.name|snake_case }}(self, request: {{method.input.ident}}, metadata: Sequence[Tuple[str, str]]) -> Tuple[{{method.input.ident}}, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for {{ method.name|snake_case }}
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the {{ service.name }} server.
-        """
-        return request, metadata
-
-    {% if not method.void %}
-    {% if not method.server_streaming %}
-    def post_{{ method.name|snake_case }}(self, response: {{method.output.ident}}) -> {{method.output.ident}}:
-    {% else %}
-    def post_{{ method.name|snake_case }}(self, response: rest_streaming.ResponseIterator) -> rest_streaming.ResponseIterator:
-    {% endif %}
-        """Post-rpc interceptor for {{ method.name|snake_case }}
-
-        Override in a subclass to manipulate the response
-        after it is returned by the {{ service.name }} server but before
-        it is returned to user code.
-        """
-        return response
-    {% endif %}
-    {% endfor %}
-
-    {% for name, signature in api.mixin_api_signatures.items() %}
-    def pre_{{ name|snake_case }}(
-        self, request: {{signature.request_type}}, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[{{signature.request_type}}, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for {{ name|snake_case }}
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the {{ service.name }} server.
-        """
-        return request, metadata
-
-    def post_{{ name|snake_case }}(
-        self, response: {{signature.response_type}}
-    ) -> {{signature.response_type}}:
-        """Post-rpc interceptor for {{ name|snake_case }}
-
-        Override in a subclass to manipulate the response
-        after it is returned by the {{ service.name }} server but before
-        it is returned to user code.
-        """
-        return response
-    {% endfor %}
-
+from .base import {{service.name}}Transport
 
 @dataclasses.dataclass
 class {{service.name}}RestStub:
@@ -262,6 +175,38 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
 
     {% if service.has_lro %}
 
+    def _prep_wrapped_messages(self, client_info):
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            {% for method in service.methods.values() %}
+            self.{{ method.transport_safe_name|snake_case }}: gapic_v1.method_async.wrap_method(
+                self.{{ method.transport_safe_name|snake_case }},
+                {% if method.retry %}
+                default_retry=retries.AsyncRetry(
+                    {% if method.retry.initial_backoff %}
+                    initial={{ method.retry.initial_backoff }},
+                    {% endif %}
+                    {% if method.retry.max_backoff %}
+                    maximum={{ method.retry.max_backoff }},
+                    {% endif %}
+                    {% if method.retry.backoff_multiplier %}
+                    multiplier={{ method.retry.backoff_multiplier }},
+                    {% endif %}
+                    predicate=retries.if_exception_type(
+                        {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
+                        core_exceptions.{{ ex.__name__ }},
+                        {% endfor %}
+                    ),
+                    deadline={{ method.timeout }},
+                ),
+                {% endif %}
+                default_timeout={{ method.timeout }},
+                client_info=client_info,
+            ),
+            {% endfor %} {# service.methods.values() #}
+        }
+    
+    
     @property
     def operations_client(self) -> operations_v1.AbstractOperationsAsyncClient:
         """Create the client designed to process long-running operations.
@@ -289,7 +234,7 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
             {% endfor %}{# http_options #}
             }
 
-            rest_transport = operations_v1.OperationsRestTransport(
+            rest_transport = operations_v1.OperationsRestAsyncIOTransport(
                     host=self._host,
                     # use the credentials which are saved
                     credentials=self._credentials,
@@ -319,17 +264,16 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
 
 
         @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+        {{ macros.get_unset_required_fields() }}
         {% endif %}{# required fields #}
         {% endif %}{# not method.client_streaming #}
 
         async def __call__(self,
                 request: {{method.input.ident}}, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                retry: OptionalRetry=gapic_v1.method_async.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
-                ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
+                ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseAsyncIterator{% endif %}{% endif %}:
     {% if method.http_options and not method.client_streaming %}
             r"""Call the {{- ' ' -}}
             {{ (method.name|snake_case).replace('_',' ')|wrap(
@@ -415,15 +359,15 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
             if response.status >= 400:
                 raise await core_exceptions.from_http_response_async(response)
             
-            content = await response.read()
 
             {% if not method.void %}
             # Return the response
             {% if method.lro %}
             resp = operations_pb2.Operation()
+            content = await response.read()
             json_format.Parse(content, resp, ignore_unknown_fields=True)
             {% elif method.server_streaming %}
-            resp = rest_streaming.ResponseIterator(response, {{method.output.ident}})
+            resp = rest_streaming.ResponseAsyncIterator(response, {{method.output.ident}})
             {% else %}
             resp = {{method.output.ident}}()
             {% if method.output.ident.is_proto_plus_type %}
@@ -431,7 +375,7 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
             {% else %}
             pb_resp = resp
             {% endif %}
-
+            content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             {% endif %}{# method.lro #}
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
@@ -447,20 +391,15 @@ class {{service.name}}RestAsyncioTransport({{service.name}}Transport):
     {% for method in service.methods.values()|sort(attribute="name") %}
 
     @property
-    def {{method.transport_safe_name|snake_case}}(self) -> Callable[
-            [{{method.input.ident}}],
-            {{method.output.ident}}]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore
+    {{ macros.client_method(method) }}
 
     {% endfor %}
 
-    {% include '%namespace/%name_%version/%sub/services/%service/transports/_rest_mixins.py.j2' %}
+    {% include '%namespace/%name_%version/%sub/services/%service/transports/_rest_mixins_asyncio.py.j2' %}
 
     @property
     def kind(self) -> str:
-        return "rest"
+        return "rest_asyncio"
 
     # async Authorizedsession does not implement close so we add the logic here.
     # Similar to what we do in requests.

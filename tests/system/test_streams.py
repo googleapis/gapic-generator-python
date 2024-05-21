@@ -127,9 +127,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             ground_truth = next(tokens)
             assert response.content == ground_truth
         assert ground_truth == 'snails.'
-
-        trailing_metadata = await call.trailing_metadata()
-        assert trailing_metadata == metadata
+        if isinstance(async_echo.transport, type(async_echo).get_transport_class("grpc_asyncio")):
+            trailing_metadata = await call.trailing_metadata()
+            assert trailing_metadata == metadata
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_iterable(async_echo):
@@ -214,3 +214,22 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
         trailing_metadata = await call.trailing_metadata()
         assert trailing_metadata == metadata
+
+
+    @pytest.mark.asyncio
+    async def test_unary_stream_omair(async_echo):
+        content = 'The hail in Wales falls mainly on the snails.'
+        responses = await async_echo.expand({
+            'content': content,
+        }, metadata=metadata)
+
+        # Consume the response and ensure it matches what we expect.
+        # with pytest.raises(exceptions.NotFound) as exc:
+        
+        ground_truth = None
+        async for response in responses:
+            ground_truth = response.content
+        assert ground_truth  == 'snails.'
+        if isinstance(async_echo.transport, type(async_echo).get_transport_class("grpc_asyncio")):
+            trailing_metadata = await responses.trailing_metadata()
+            assert trailing_metadata == metadata

@@ -1,0 +1,14 @@
+{% macro get_unset_required_fields() %}
+def _get_unset_required_fields(cls, message_dict):
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
+{% endmacro %}
+
+{% macro client_method(method) %}
+def {{method.transport_safe_name|snake_case}}(self) -> Callable[
+            [{{method.input.ident}}],
+            {{method.output.ident}}]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore
+{% endmacro %}
