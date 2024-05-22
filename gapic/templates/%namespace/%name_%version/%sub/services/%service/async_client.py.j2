@@ -2,11 +2,12 @@
 
 {% block content %}
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
 import uuid
 {% endif %}
@@ -24,6 +25,7 @@ from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
+{{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
@@ -54,7 +56,8 @@ from .client import {{ service.client_name }}
 
 {# TODO(yon-mg): handle rest transport async client interaction #}
 class {{ service.async_client_name }}:
-    """{{ service.meta.doc|rst(width=72, indent=4) }}"""
+    """{{ service.meta.doc|rst(width=72, indent=4) }}{% if service.version|length %}
+    This class implements API version {{ service.version }}.{% endif %}"""
 
     _client: {{ service.client_name }}
 
@@ -173,7 +176,7 @@ class {{ service.async_client_name }}:
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, {{ service.name }}Transport] = "grpc_asyncio",
+            transport: Optional[Union[str, {{ service.name }}Transport, Callable[..., {{ service.name }}Transport]]] = "grpc_asyncio",
             client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -185,9 +188,11 @@ class {{ service.async_client_name }}:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.{{ service.name }}Transport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,{{ service.name }}Transport,Callable[..., {{ service.name }}Transport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the {{ service.name }}Transport constructor.
+                If set to None, a transport is chosen automatically.
                 {% if 'rest' in opts.transport and not opts.rest_numeric_enums %}
                 {# TODO (gapic-generator-python/issues/1918): Remove the beta preview comment. #}
                 NOTE: "rest" transport functionality is currently in a
@@ -196,8 +201,8 @@ class {{ service.async_client_name }}:
                 {% endif %}
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
-                
-                1. The ``api_endpoint`` property can be used to override the              
+
+                1. The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client when ``transport`` is
                 not explicitly provided. Only if this property is not set and
                 ``transport`` was not explicitly provided, the endpoint is
@@ -312,8 +317,8 @@ class {{ service.async_client_name }}:
         {% if not method.client_streaming %}
         # Create or coerce a protobuf request object.
         {% if method.flattened_fields %}
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([{{ method.flattened_fields.values()|join(", ", attribute="name") }}])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
@@ -321,14 +326,17 @@ class {{ service.async_client_name }}:
 
         {% endif %}
         {% if method.input.ident.package != method.ident.package %} {# request lives in a different package, so there is no proto wrapper #}
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = {{ method.input.ident }}(**request)
         elif not request:
             request = {{ method.input.ident }}({% if method.flattened_fields %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %})
         {% else %}
-        request = {{ method.input.ident }}(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, {{ method.input.ident }}):
+            request = {{ method.input.ident }}(request)
         {% endif %} {# different request package #}
 
         {# Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
@@ -355,32 +363,9 @@ class {{ service.async_client_name }}:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-
-        
-        if isinstance(self._client._transport, {{ service.name }}GrpcAsyncIOTransport):
-            rpc = gapic_v1.method_async.wrap_method(
-                self._client._transport.{{ method.transport_safe_name|snake_case }},
-                {% if method.retry %}
-                default_retry=retries.AsyncRetry(
-                    {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
-                    {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
-                    {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
-                    predicate=retries.if_exception_type(
-                        {% for ex in method.retry.retryable_exceptions|sort(attribute="__name__") %}
-                        core_exceptions.{{ ex.__name__ }},
-                        {% endfor %}
-                    ),
-                    deadline={{ method.timeout }},
-                ),
-                {% endif %}
-                default_timeout={{ method.timeout }},
-                client_info=DEFAULT_CLIENT_INFO,
-            )
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.{{ method.transport_safe_name|snake_case }}]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.{{ method.transport_safe_name|snake_case }}]
 
         {% if method.field_headers %}
-
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
@@ -394,7 +379,8 @@ class {{ service.async_client_name }}:
         )
         {% endif %}
 
-{{ macros.auto_populate_uuid4_fields(api, method) }}
+{{ shared_macros.add_api_version_header_to_metadata(service.version) }}
+{{ shared_macros.auto_populate_uuid4_fields(api, method) }}
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

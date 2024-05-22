@@ -14,6 +14,8 @@
  # limitations under the License.
 #}
 
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
+
 {% macro client_method(method, name, snippet_index, api, service, full_extended_lro=False) %}
     def {{ name }}(self,
             {% if not method.client_streaming %}
@@ -87,8 +89,8 @@
         {% if not method.client_streaming %}
         # Create or coerce a protobuf request object.
         {% if method.flattened_fields %}
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([{{ method.flattened_fields.values()|join(", ", attribute="name") }}])
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
@@ -97,17 +99,15 @@
         {% endif %}
         {% if method.input.ident.package != method.ident.package %}{# request lives in a different package, so there is no proto wrapper #}
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = {{ method.input.ident }}(**request)
         elif not request:
             # Null request, just make one.
             request = {{ method.input.ident }}()
         {% else %}
-        # Minor optimization to avoid making a copy if the user passes
-        # in a {{ method.input.ident }}.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, {{ method.input.ident }}):
             request = {{ method.input.ident }}(request)
         {% endif %}{# different request package #}
@@ -183,7 +183,8 @@
         )
         {% endif %} {# method.explicit_routing #}
 
-{{ auto_populate_uuid4_fields(api, method) }}
+{{ shared_macros.add_api_version_header_to_metadata(service.version) }}
+{{ shared_macros.auto_populate_uuid4_fields(api, method) }}
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -266,28 +267,4 @@
 {% endmacro %}
 
 {% macro define_extended_operation_subclass(extended_operation) %}
-{% endmacro %}
-
-{% macro auto_populate_uuid4_fields(api, method) %}
-{#
-    Automatically populate UUID4 fields according to
-    https://google.aip.dev/client-libraries/4235 when the
-    field satisfies either of:
-    - The field supports explicit presence and has not been set by the user.
-    - The field doesn't support explicit presence, and its value is the empty
-      string (i.e. the default value).
-    When using this macro, ensure the calling template generates a line `import uuid`
-#}
-{% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-{% if method_settings is not none %}
-{% for auto_populated_field in method_settings.auto_populated_fields %}
-    {% if method.input.fields[auto_populated_field].proto3_optional %}
-        if '{{ auto_populated_field }}' not in request:
-    {% else %}
-        if not request.{{ auto_populated_field }}:
-    {% endif %}
-            request.{{ auto_populated_field }} = str(uuid.uuid4())
-{% endfor %}
-{% endif %}{# if method_settings is not none #}
-{% endwith %}{# method_settings #}
 {% endmacro %}

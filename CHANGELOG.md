@@ -1,6 +1,33 @@
 # Changelog
 
 
+## [1.18.0](https://github.com/googleapis/gapic-generator-python/compare/v1.17.1...v1.18.0) (2024-05-08)
+
+
+### Features
+
+* Add support for reading google.api.api_version ([#1999](https://github.com/googleapis/gapic-generator-python/issues/1999)) ([b2486e5](https://github.com/googleapis/gapic-generator-python/commit/b2486e5630312fb01b9eb5ffb09c9f0328fbce20))
+
+## [1.17.1](https://github.com/googleapis/gapic-generator-python/compare/v1.17.0...v1.17.1) (2024-04-26)
+
+
+### Bug Fixes
+
+* Type error for compute client(s) tests ([#2014](https://github.com/googleapis/gapic-generator-python/issues/2014)) ([61f50f7](https://github.com/googleapis/gapic-generator-python/commit/61f50f76fcbc47ef2d0fd4686f9187d22c2e698e))
+
+## [1.17.0](https://github.com/googleapis/gapic-generator-python/compare/v1.16.1...v1.17.0) (2024-04-18)
+
+
+### Features
+
+* Allow Callables for transport and channel init ([#1699](https://github.com/googleapis/gapic-generator-python/issues/1699)) ([62855c1](https://github.com/googleapis/gapic-generator-python/commit/62855c11570bb3a42cebee43cecd0e59ffb01573))
+
+
+### Bug Fixes
+
+* Set `default` argument of `jinja-filters.map()` when looking up attributes ([#1989](https://github.com/googleapis/gapic-generator-python/issues/1989)) ([3e74a0a](https://github.com/googleapis/gapic-generator-python/commit/3e74a0a3f7f94cf21aaf198ecd55cca419cedbd2))
+* Update the lower bound for `google-apps-card` ([#2012](https://github.com/googleapis/gapic-generator-python/issues/2012)) ([9027a5f](https://github.com/googleapis/gapic-generator-python/commit/9027a5fc83218241981a326984ed1aad3a162a4b))
+
 ## [1.16.1](https://github.com/googleapis/gapic-generator-python/compare/v1.16.0...v1.16.1) (2024-03-22)
 
 
