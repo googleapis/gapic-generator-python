@@ -937,7 +937,7 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                     yield spec
 
 
-def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str = ""):
+def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str = "", seen_messages: List[wrappers.MessageType] = []):
     """Generate dummy input for a given message.
 
     Args:
@@ -951,20 +951,7 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
     """
     request: List[Dict[str, Any]] = []
 
-    request_fields: List[wrappers.Field] = []
-
-    # There is no standard syntax to mark a oneof as "required" in protos.
-    # Assume every oneof is required and pick the first option
-    # in each oneof.
-    selected_oneofs: List[wrappers.Field] = [oneof_fields[0]
-        for oneof_fields in message.oneof_fields().values()]
-
-    # Don't add required fields if they're also marked as oneof
-    required_fields = [
-        field for field in message.required_fields if not field.oneof]
-    request_fields = selected_oneofs + required_fields
-
-    for field in request_fields:
+    for field in message.fields.values():
         # TransformedRequest expects nested fields to be referenced like
         # `destination.input_config.name`
         field_name = ".".join([field_name_prefix, field.name]).lstrip('.')
@@ -985,14 +972,15 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
                 {"field": field_name, "value": field_value})
         else:
             # This is a message type, recurse
-            # TODO(busunkim):  Some real world APIs have
-            # request objects are recursive.
-            # Reference `Field.mock_value` to ensure
-            # this always terminates.
-            request += generate_request_object(
-                api_schema, service, field.type,
-                field_name_prefix=field_name,
-            )
+            if field.type not in seen_messages:
+                request += generate_request_object(
+                    api_schema, service, field.type,
+                    field_name_prefix=field_name,
+                    seen_messages=seen_messages + [field.type]
+                )
+            else:
+                request.append(
+                    {"field": field_name, "value": field.mock_value})
 
     return request
 
