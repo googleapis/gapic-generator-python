@@ -169,7 +169,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
 
         if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
-            credentials = False
+            credentials = None
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
