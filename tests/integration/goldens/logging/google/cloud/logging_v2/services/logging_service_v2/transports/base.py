@@ -87,6 +87,8 @@ class LoggingServiceV2Transport(abc.ABC):
         # Save the scopes.
         self._scopes = scopes
 
+        self._ignore_credentials: bool = False
+
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
@@ -98,7 +100,7 @@ class LoggingServiceV2Transport(abc.ABC):
                                 **scopes_kwargs,
                                 quota_project_id=quota_project_id
                             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
