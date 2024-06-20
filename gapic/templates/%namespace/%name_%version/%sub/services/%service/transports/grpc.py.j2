@@ -137,6 +137,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         if isinstance(channel, grpc.Channel):
             # Ignore credentials if a channel was passed.
+            self._ignore_credentials = True
             credentials = None
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
