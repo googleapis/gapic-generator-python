@@ -22,7 +22,7 @@ import setuptools
 name = "gapic-generator"
 description = "Google API Client Generator for Python"
 url = "https://github.com/googleapis/gapic-generator-python"
-version = "1.18.0"
+version = "1.18.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
@@ -35,7 +35,7 @@ dependencies = [
     # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map
     # https://jinja.palletsprojects.com/en/2.11.x/changelog/#version-2-11-0
     "jinja2 >= 2.11",
-    "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
     "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
