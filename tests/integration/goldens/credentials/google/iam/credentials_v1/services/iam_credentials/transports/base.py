@@ -80,8 +80,8 @@ class IAMCredentialsTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
-
-        self._ignore_credentials: bool = False
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
