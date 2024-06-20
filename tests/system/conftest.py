@@ -166,7 +166,7 @@ def parametrized_echo(use_mtls, channel_creator, transport_name, transport_endpo
 
 @pytest.fixture(params=["grpc", "rest"])
 def echo(use_mtls, request):
-    return construct_client(EchoClient, use_mtls, transport_name=request.param)
+    return construct_client(EchoClient, use_mtls, transport_name=request.param, credentials=ga_credentials.AnonymousCredentials())
 
 
 @pytest.fixture(params=["grpc", "rest"])
@@ -176,12 +176,12 @@ def echo_with_universe_credentials_localhost(use_mtls, request):
 
 @pytest.fixture(params=["grpc", "rest"])
 def identity(use_mtls, request):
-    return construct_client(IdentityClient, use_mtls, transport_name=request.param)
+    return construct_client(IdentityClient, use_mtls, transport_name=request.param, credentials=ga_credentials.AnonymousCredentials())
 
 
 @pytest.fixture(params=["grpc", "rest"])
 def messaging(use_mtls, request):
-    return construct_client(MessagingClient, use_mtls, transport_name=request.param)
+    return construct_client(MessagingClient, use_mtls, transport_name=request.param, credentials=ga_credentials.AnonymousCredentials())
 
 
 class MetadataClientInterceptor(
