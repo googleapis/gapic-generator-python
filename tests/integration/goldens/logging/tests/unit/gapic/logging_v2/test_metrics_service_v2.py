@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import grpc
 from grpc.experimental import aio
 import math
 import pytest
+from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 
@@ -55,12 +56,17 @@ import google.auth
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
-
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
     return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
+
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -76,6 +82,145 @@ def test__get_default_mtls_endpoint():
     assert MetricsServiceV2Client._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
     assert MetricsServiceV2Client._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert MetricsServiceV2Client._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+
+def test__read_environment_variables():
+    assert MetricsServiceV2Client._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert MetricsServiceV2Client._read_environment_variables() == (True, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert MetricsServiceV2Client._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            MetricsServiceV2Client._read_environment_variables()
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        assert MetricsServiceV2Client._read_environment_variables() == (False, "never", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert MetricsServiceV2Client._read_environment_variables() == (False, "always", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert MetricsServiceV2Client._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            MetricsServiceV2Client._read_environment_variables()
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        assert MetricsServiceV2Client._read_environment_variables() == (False, "auto", "foo.com")
+
+def test__get_client_cert_source():
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
+
+    assert MetricsServiceV2Client._get_client_cert_source(None, False) is None
+    assert MetricsServiceV2Client._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert MetricsServiceV2Client._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
+
+    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_default_cert_source):
+            assert MetricsServiceV2Client._get_client_cert_source(None, True) is mock_default_cert_source
+            assert MetricsServiceV2Client._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
+
+@mock.patch.object(MetricsServiceV2Client, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2Client))
+@mock.patch.object(MetricsServiceV2AsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2AsyncClient))
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+    default_universe = MetricsServiceV2Client._DEFAULT_UNIVERSE
+    default_endpoint = MetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = MetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
+    assert MetricsServiceV2Client._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert MetricsServiceV2Client._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert MetricsServiceV2Client._get_api_endpoint(None, None, default_universe, "always") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert MetricsServiceV2Client._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert MetricsServiceV2Client._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        MetricsServiceV2Client._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
+
+def test__get_universe_domain():
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert MetricsServiceV2Client._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert MetricsServiceV2Client._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert MetricsServiceV2Client._get_universe_domain(None, None) == MetricsServiceV2Client._DEFAULT_UNIVERSE
+
+    with pytest.raises(ValueError) as excinfo:
+        MetricsServiceV2Client._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),
+])
+def test__validate_universe_domain(client_class, transport_class, transport_name):
+    client = client_class(
+        transport=transport_class(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+    )
+    assert client._validate_universe_domain() == True
+
+    # Test the case when universe is already validated.
+    assert client._validate_universe_domain() == True
+
+    if transport_name == "grpc":
+        # Test the case where credentials are provided by the
+        # `local_channel_credentials`. The default universes in both match.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        client = client_class(transport=transport_class(channel=channel))
+        assert client._validate_universe_domain() == True
+
+        # Test the case where credentials do not exist: e.g. a transport is provided
+        # with no credentials. Validation should still succeed because there is no
+        # mismatch with non-existent credentials.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        transport=transport_class(channel=channel)
+        transport._credentials = None
+        client = client_class(transport=transport)
+        assert client._validate_universe_domain() == True
+
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor = [int(part) for part in google.auth.__version__.split(".")[0:2]]
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(
+            transport=transport_class(credentials=credentials)
+        )
+        with pytest.raises(ValueError) as excinfo:
+            client._validate_universe_domain()
+        assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class(credentials=ga_credentials.AnonymousCredentials(),))
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize("client_class,transport_name", [
@@ -148,8 +293,8 @@ def test_metrics_service_v2_client_get_transport_class():
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),
     (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
 ])
-@mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
-@mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
+@mock.patch.object(MetricsServiceV2Client, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2Client))
+@mock.patch.object(MetricsServiceV2AsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2AsyncClient))
 def test_metrics_service_v2_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(MetricsServiceV2Client, 'get_transport_class') as gtc:
@@ -190,7 +335,7 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -220,13 +365,15 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -236,7 +383,7 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -252,7 +399,7 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -267,8 +414,8 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc", "false"),
     (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio", "false"),
 ])
-@mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
-@mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
+@mock.patch.object(MetricsServiceV2Client, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2Client))
+@mock.patch.object(MetricsServiceV2AsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2AsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -284,7 +431,7 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -308,7 +455,7 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
             with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
                 with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -337,7 +484,7 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -399,6 +546,77 @@ def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+@pytest.mark.parametrize("client_class", [
+    MetricsServiceV2Client, MetricsServiceV2AsyncClient
+])
+@mock.patch.object(MetricsServiceV2Client, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2Client))
+@mock.patch.object(MetricsServiceV2AsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2AsyncClient))
+def test_metrics_service_v2_client_client_api_endpoint(client_class):
+    mock_client_cert_source = client_cert_source_callback
+    api_override = "foo.com"
+    default_universe = MetricsServiceV2Client._DEFAULT_UNIVERSE
+    default_endpoint = MetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = MetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+    # use ClientOptions.api_endpoint as the api endpoint regardless.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+            assert client.api_endpoint == api_override
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == default_endpoint
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
+    # and ClientOptions.universe_domain="bar.com",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+    options = client_options.ClientOptions()
+    universe_exists = hasattr(options, "universe_domain")
+    if universe_exists:
+        options = client_options.ClientOptions(universe_domain=mock_universe)
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    else:
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
+
+    # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    options = client_options.ClientOptions()
+    if hasattr(options, "universe_domain"):
+        delattr(options, "universe_domain")
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),
@@ -415,7 +633,7 @@ def test_metrics_service_v2_client_client_options_scopes(client_class, transport
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -440,7 +658,7 @@ def test_metrics_service_v2_client_client_options_credentials_file(client_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -484,7 +702,7 @@ def test_metrics_service_v2_client_create_channel_credentials_file(client_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -555,7 +773,8 @@ def test_list_log_metrics(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest()
+        request = logging_metrics.ListLogMetricsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsPager)
@@ -574,10 +793,128 @@ def test_list_log_metrics_empty_call():
     with mock.patch.object(
             type(client.transport.list_log_metrics),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_log_metrics()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.ListLogMetricsRequest()
+
+
+def test_list_log_metrics_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.ListLogMetricsRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_log_metrics),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.list_log_metrics(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.ListLogMetricsRequest(
+            parent='parent_value',
+            page_token='page_token_value',
+        )
+
+def test_list_log_metrics_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2Client(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_log_metrics in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_log_metrics] = mock_rpc
+        request = {}
+        client.list_log_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_log_metrics(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_list_log_metrics_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_log_metrics),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
+            next_page_token='next_page_token_value',
+        ))
+        response = await client.list_log_metrics()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.ListLogMetricsRequest()
+
+@pytest.mark.asyncio
+async def test_list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2AsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.list_log_metrics in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.list_log_metrics] = mock_object
+
+        request = {}
+        await client.list_log_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_log_metrics(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.ListLogMetricsRequest):
@@ -603,7 +940,8 @@ async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_t
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest()
+        request = logging_metrics.ListLogMetricsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsAsyncPager)
@@ -762,7 +1100,7 @@ async def test_list_log_metrics_flattened_error_async():
 
 def test_list_log_metrics_pager(transport_name: str = "grpc"):
     client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -799,15 +1137,15 @@ def test_list_log_metrics_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
         pager = client.list_log_metrics(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -815,7 +1153,7 @@ def test_list_log_metrics_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_log_metrics_pages(transport_name: str = "grpc"):
     client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -858,7 +1196,7 @@ def test_list_log_metrics_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_log_metrics_async_pager():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -907,7 +1245,7 @@ async def test_list_log_metrics_async_pager():
 @pytest.mark.asyncio
 async def test_list_log_metrics_async_pages():
     client = MetricsServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -985,7 +1323,8 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest()
+        request = logging_metrics.GetLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1010,10 +1349,132 @@ def test_get_log_metric_empty_call():
     with mock.patch.object(
             type(client.transport.get_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.GetLogMetricRequest()
+
+
+def test_get_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.GetLogMetricRequest(
+        metric_name='metric_name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_log_metric),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.get_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.GetLogMetricRequest(
+            metric_name='metric_name_value',
+        )
+
+def test_get_log_metric_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2Client(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_log_metric in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_log_metric] = mock_rpc
+        request = {}
+        client.get_log_metric(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_log_metric(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_get_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+            name='name_value',
+            description='description_value',
+            filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
+            value_extractor='value_extractor_value',
+            version=logging_metrics.LogMetric.ApiVersion.V1,
+        ))
+        response = await client.get_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.GetLogMetricRequest()
+
+@pytest.mark.asyncio
+async def test_get_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2AsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_log_metric in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_log_metric] = mock_object
+
+        request = {}
+        await client.get_log_metric(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_log_metric(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.GetLogMetricRequest):
@@ -1045,7 +1506,8 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest()
+        request = logging_metrics.GetLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1241,7 +1703,8 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest()
+        request = logging_metrics.CreateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1266,10 +1729,132 @@ def test_create_log_metric_empty_call():
     with mock.patch.object(
             type(client.transport.create_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.CreateLogMetricRequest()
+
+
+def test_create_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.CreateLogMetricRequest(
+        parent='parent_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_log_metric),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.create_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.CreateLogMetricRequest(
+            parent='parent_value',
+        )
+
+def test_create_log_metric_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2Client(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_log_metric in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_log_metric] = mock_rpc
+        request = {}
+        client.create_log_metric(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_log_metric(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_create_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+            name='name_value',
+            description='description_value',
+            filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
+            value_extractor='value_extractor_value',
+            version=logging_metrics.LogMetric.ApiVersion.V1,
+        ))
+        response = await client.create_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.CreateLogMetricRequest()
+
+@pytest.mark.asyncio
+async def test_create_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2AsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.create_log_metric in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.create_log_metric] = mock_object
+
+        request = {}
+        await client.create_log_metric(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.create_log_metric(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.CreateLogMetricRequest):
@@ -1301,7 +1886,8 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest()
+        request = logging_metrics.CreateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1507,7 +2093,8 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+        request = logging_metrics.UpdateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1532,10 +2119,132 @@ def test_update_log_metric_empty_call():
     with mock.patch.object(
             type(client.transport.update_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.UpdateLogMetricRequest()
+
+
+def test_update_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.UpdateLogMetricRequest(
+        metric_name='metric_name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_log_metric),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.update_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.UpdateLogMetricRequest(
+            metric_name='metric_name_value',
+        )
+
+def test_update_log_metric_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2Client(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_log_metric in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_log_metric] = mock_rpc
+        request = {}
+        client.update_log_metric(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_log_metric(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_update_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
+            name='name_value',
+            description='description_value',
+            filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
+            value_extractor='value_extractor_value',
+            version=logging_metrics.LogMetric.ApiVersion.V1,
+        ))
+        response = await client.update_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+
+@pytest.mark.asyncio
+async def test_update_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2AsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.update_log_metric in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.update_log_metric] = mock_object
+
+        request = {}
+        await client.update_log_metric(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_log_metric(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.UpdateLogMetricRequest):
@@ -1567,7 +2276,8 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest()
+        request = logging_metrics.UpdateLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
@@ -1765,7 +2475,8 @@ def test_delete_log_metric(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+        request = logging_metrics.DeleteLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1783,10 +2494,124 @@ def test_delete_log_metric_empty_call():
     with mock.patch.object(
             type(client.transport.delete_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest()
+
+
+def test_delete_log_metric_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = logging_metrics.DeleteLogMetricRequest(
+        metric_name='metric_name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_log_metric),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.delete_log_metric(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.DeleteLogMetricRequest(
+            metric_name='metric_name_value',
+        )
+
+def test_delete_log_metric_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2Client(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_log_metric in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_log_metric] = mock_rpc
+        request = {}
+        client.delete_log_metric(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_log_metric(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_delete_log_metric_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_log_metric),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_log_metric()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+
+@pytest.mark.asyncio
+async def test_delete_log_metric_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = MetricsServiceV2AsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.delete_log_metric in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_log_metric] = mock_object
+
+        request = {}
+        await client.delete_log_metric(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.delete_log_metric(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.DeleteLogMetricRequest):
@@ -1810,7 +2635,8 @@ async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest()
+        request = logging_metrics.DeleteLogMetricRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2000,7 +2826,7 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = MetricsServiceV2Client(
@@ -2588,7 +3414,7 @@ def test_cancel_operation(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert response is None
 @pytest.mark.asyncio
-async def test_cancel_operation_async(transport: str = "grpc"):
+async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = MetricsServiceV2AsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2717,7 +3543,7 @@ def test_get_operation(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
 @pytest.mark.asyncio
-async def test_get_operation_async(transport: str = "grpc"):
+async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = MetricsServiceV2AsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2846,7 +3672,7 @@ def test_list_operations(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
 @pytest.mark.asyncio
-async def test_list_operations_async(transport: str = "grpc"):
+async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = MetricsServiceV2AsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3002,7 +3828,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

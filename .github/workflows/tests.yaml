@@ -14,48 +14,56 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SHOWCASE_VERSION: 0.28.4
+  SHOWCASE_VERSION: 0.35.0
   PROTOC_VERSION: 3.20.2
 
 jobs:
   docs:
-    # Don't upgrade python version; there's a bug in 3.10 sphinx
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
+        # Use python 3.10 for docs to match the version for the sphinx plugin
+        # https://github.com/googleapis/synthtool/pull/1891
         with:
-          python-version: "3.9"
+          python-version: "3.10"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
       - name: Build the documentation.
         run: nox -s docs
   mypy:
+    strategy:
+      matrix:
+        # Run mypy on all of the supported python versions listed in setup.py
+        # https://github.com/python/mypy/blob/master/setup.py
+        python: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
-        uses: actions/setup-python@v4
+      - name: Set up Python "${{ matrix.python }}"
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "${{ matrix.python }}"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
       - name: Check type annotations.
-        run: nox -s mypy
+        run: nox -s mypy-${{ matrix.python }}
   showcase:
     strategy:
+      # Run showcase tests on the lowest and highest supported runtimes
       matrix:
+        python: ["3.7", "3.12"]
         target: [showcase, showcase_alternative_templates]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
-        uses: actions/setup-python@v4
+      - name: Set up Python "${{ matrix.python }}"
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "${{ matrix.python }}"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -81,7 +89,7 @@ jobs:
             unzip protoc-${PROTOC_VERSION}.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run showcase tests.
-        run: nox -s ${{ matrix.target }}
+        run: nox -s ${{ matrix.target }}-${{ matrix.python }}
   showcase-mtls:
     if: ${{ false }}            # TODO(dovs): reenable when #1218 is fixed
     strategy:
@@ -95,10 +103,10 @@ jobs:
         run: |
           sudo mkdir -p /tmp/workspace/tests/cert/
           sudo chown -R ${USER} /tmp/workspace/
-      - name: Set up Python "3.11"
-        uses: actions/setup-python@v4
+      - name: Set up Python "3.12"
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
@@ -131,13 +139,13 @@ jobs:
   showcase-unit:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python "${{ matrix.python }}"
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "${{ matrix.python }}"
           cache: 'pip'
@@ -161,10 +169,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
-        uses: actions/setup-python@v4
+      - name: Set up Python "3.12"
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -189,10 +197,10 @@ jobs:
         variant: ['', _alternative_templates]
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
-        uses: actions/setup-python@v4
+      - name: Set up Python "3.12"
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -214,10 +222,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
-        uses: actions/setup-python@v4
+      - name: Set up Python "3.12"
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -230,12 +238,12 @@ jobs:
   unit:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
           cache: 'pip'
@@ -251,13 +259,13 @@ jobs:
   fragment:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
         variant: ['', _alternative_templates]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
           cache: 'pip'
@@ -277,7 +285,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Cache Bazel files
         id: cache-bazel
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/bazel
           # Note: if the container is updated, the key needs to be updated as well.
@@ -297,34 +305,57 @@ jobs:
           echo "and it will start over with a clean cache."
           echo "The old one will disappear after 7 days."
       - name: Integration Tests
-        run: bazel test //tests/integration/... --test_output=errors
+        run: bazelisk test //tests/integration/... --test_output=errors
 
   goldens-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Install nox.
         run: |
             python -m pip install nox
       - name: Run blacken and lint on the generated output.
         run: |
-          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
+          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-3.12 blacken lint
+  goldens-prerelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+      - name: Install nox.
+        run: |
+            python -m pip install nox
+      - name: Run the prerelease_deps nox session
+        # Exclude testing for asset which requires dependency google-cloud-org-policy
+        # in order to run unit tests
+        # See https://github.com/googleapis/gapic-generator-python/issues/1806
+        run: |
+          nox -f tests/integration/goldens/credentials/noxfile.py -s prerelease_deps
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s prerelease_deps
+          nox -f tests/integration/goldens/logging/noxfile.py -s prerelease_deps
+          nox -f tests/integration/goldens/redis/noxfile.py -s prerelease_deps
   style-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python "3.11"
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
+          # Do not upgrade this check to python 3.12 until
+          # https://github.com/hhatto/autopep8/issues/712 is fixed
           python-version: "3.11"
           cache: 'pip'
       - name: Install autopep8

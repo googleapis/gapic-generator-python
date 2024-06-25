@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ from google.protobuf import json_format
 import json
 import math
 import pytest
+from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 from requests import Response
@@ -67,12 +68,17 @@ import google.auth
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
-
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
     return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
+
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -88,6 +94,146 @@ def test__get_default_mtls_endpoint():
     assert CloudRedisClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
     assert CloudRedisClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert CloudRedisClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+
+def test__read_environment_variables():
+    assert CloudRedisClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert CloudRedisClient._read_environment_variables() == (True, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert CloudRedisClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            CloudRedisClient._read_environment_variables()
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        assert CloudRedisClient._read_environment_variables() == (False, "never", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert CloudRedisClient._read_environment_variables() == (False, "always", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert CloudRedisClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            CloudRedisClient._read_environment_variables()
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        assert CloudRedisClient._read_environment_variables() == (False, "auto", "foo.com")
+
+def test__get_client_cert_source():
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
+
+    assert CloudRedisClient._get_client_cert_source(None, False) is None
+    assert CloudRedisClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert CloudRedisClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
+
+    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_default_cert_source):
+            assert CloudRedisClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert CloudRedisClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
+
+@mock.patch.object(CloudRedisClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisClient))
+@mock.patch.object(CloudRedisAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisAsyncClient))
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+    default_universe = CloudRedisClient._DEFAULT_UNIVERSE
+    default_endpoint = CloudRedisClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = CloudRedisClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
+    assert CloudRedisClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == CloudRedisClient.DEFAULT_MTLS_ENDPOINT
+    assert CloudRedisClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert CloudRedisClient._get_api_endpoint(None, None, default_universe, "always") == CloudRedisClient.DEFAULT_MTLS_ENDPOINT
+    assert CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == CloudRedisClient.DEFAULT_MTLS_ENDPOINT
+    assert CloudRedisClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert CloudRedisClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        CloudRedisClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
+
+def test__get_universe_domain():
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert CloudRedisClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert CloudRedisClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert CloudRedisClient._get_universe_domain(None, None) == CloudRedisClient._DEFAULT_UNIVERSE
+
+    with pytest.raises(ValueError) as excinfo:
+        CloudRedisClient._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    (CloudRedisClient, transports.CloudRedisGrpcTransport, "grpc"),
+    (CloudRedisClient, transports.CloudRedisRestTransport, "rest"),
+])
+def test__validate_universe_domain(client_class, transport_class, transport_name):
+    client = client_class(
+        transport=transport_class(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+    )
+    assert client._validate_universe_domain() == True
+
+    # Test the case when universe is already validated.
+    assert client._validate_universe_domain() == True
+
+    if transport_name == "grpc":
+        # Test the case where credentials are provided by the
+        # `local_channel_credentials`. The default universes in both match.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        client = client_class(transport=transport_class(channel=channel))
+        assert client._validate_universe_domain() == True
+
+        # Test the case where credentials do not exist: e.g. a transport is provided
+        # with no credentials. Validation should still succeed because there is no
+        # mismatch with non-existent credentials.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        transport=transport_class(channel=channel)
+        transport._credentials = None
+        client = client_class(transport=transport)
+        assert client._validate_universe_domain() == True
+
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor = [int(part) for part in google.auth.__version__.split(".")[0:2]]
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(
+            transport=transport_class(credentials=credentials)
+        )
+        with pytest.raises(ValueError) as excinfo:
+            client._validate_universe_domain()
+        assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class(credentials=ga_credentials.AnonymousCredentials(),))
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize("client_class,transport_name", [
@@ -171,8 +317,8 @@ def test_cloud_redis_client_get_transport_class():
     (CloudRedisAsyncClient, transports.CloudRedisGrpcAsyncIOTransport, "grpc_asyncio"),
     (CloudRedisClient, transports.CloudRedisRestTransport, "rest"),
 ])
-@mock.patch.object(CloudRedisClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisClient))
-@mock.patch.object(CloudRedisAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisAsyncClient))
+@mock.patch.object(CloudRedisClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisClient))
+@mock.patch.object(CloudRedisAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisAsyncClient))
 def test_cloud_redis_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(CloudRedisClient, 'get_transport_class') as gtc:
@@ -213,7 +359,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -243,13 +389,15 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -259,7 +407,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -275,7 +423,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -292,8 +440,8 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
     (CloudRedisClient, transports.CloudRedisRestTransport, "rest", "true"),
     (CloudRedisClient, transports.CloudRedisRestTransport, "rest", "false"),
 ])
-@mock.patch.object(CloudRedisClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisClient))
-@mock.patch.object(CloudRedisAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudRedisAsyncClient))
+@mock.patch.object(CloudRedisClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisClient))
+@mock.patch.object(CloudRedisAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -309,7 +457,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -333,7 +481,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
             with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
                 with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -362,7 +510,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -424,6 +572,77 @@ def test_cloud_redis_client_get_mtls_endpoint_and_cert_source(client_class):
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+@pytest.mark.parametrize("client_class", [
+    CloudRedisClient, CloudRedisAsyncClient
+])
+@mock.patch.object(CloudRedisClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisClient))
+@mock.patch.object(CloudRedisAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisAsyncClient))
+def test_cloud_redis_client_client_api_endpoint(client_class):
+    mock_client_cert_source = client_cert_source_callback
+    api_override = "foo.com"
+    default_universe = CloudRedisClient._DEFAULT_UNIVERSE
+    default_endpoint = CloudRedisClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = CloudRedisClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+    # use ClientOptions.api_endpoint as the api endpoint regardless.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+            assert client.api_endpoint == api_override
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == default_endpoint
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
+    # and ClientOptions.universe_domain="bar.com",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+    options = client_options.ClientOptions()
+    universe_exists = hasattr(options, "universe_domain")
+    if universe_exists:
+        options = client_options.ClientOptions(universe_domain=mock_universe)
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    else:
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
+
+    # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    options = client_options.ClientOptions()
+    if hasattr(options, "universe_domain"):
+        delattr(options, "universe_domain")
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (CloudRedisClient, transports.CloudRedisGrpcTransport, "grpc"),
@@ -441,7 +660,7 @@ def test_cloud_redis_client_client_options_scopes(client_class, transport_class,
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -467,7 +686,7 @@ def test_cloud_redis_client_client_options_credentials_file(client_class, transp
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -511,7 +730,7 @@ def test_cloud_redis_client_create_channel_credentials_file(client_class, transp
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -579,7 +798,8 @@ def test_list_instances(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ListInstancesRequest()
+        request = cloud_redis.ListInstancesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesPager)
@@ -599,10 +819,129 @@ def test_list_instances_empty_call():
     with mock.patch.object(
             type(client.transport.list_instances),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_instances()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ListInstancesRequest()
+
+
+def test_list_instances_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.ListInstancesRequest(
+        parent='parent_value',
+        page_token='page_token_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_instances),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.list_instances(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ListInstancesRequest(
+            parent='parent_value',
+            page_token='page_token_value',
+        )
+
+def test_list_instances_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_instances in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_instances] = mock_rpc
+        request = {}
+        client.list_instances(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_instances(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_list_instances_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_instances),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse(
+            next_page_token='next_page_token_value',
+            unreachable=['unreachable_value'],
+        ))
+        response = await client.list_instances()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ListInstancesRequest()
+
+@pytest.mark.asyncio
+async def test_list_instances_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.list_instances in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.list_instances] = mock_object
+
+        request = {}
+        await client.list_instances(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_instances(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_instances_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ListInstancesRequest):
@@ -629,7 +968,8 @@ async def test_list_instances_async(transport: str = 'grpc_asyncio', request_typ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ListInstancesRequest()
+        request = cloud_redis.ListInstancesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesAsyncPager)
@@ -789,7 +1129,7 @@ async def test_list_instances_flattened_error_async():
 
 def test_list_instances_pager(transport_name: str = "grpc"):
     client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -826,15 +1166,15 @@ def test_list_instances_pager(transport_name: str = "grpc"):
             RuntimeError,
         )
 
-        metadata = ()
-        metadata = tuple(metadata) + (
+        expected_metadata = ()
+        expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
         pager = client.list_instances(request={})
 
-        assert pager._metadata == metadata
+        assert pager._metadata == expected_metadata
 
         results = list(pager)
         assert len(results) == 6
@@ -842,7 +1182,7 @@ def test_list_instances_pager(transport_name: str = "grpc"):
                    for i in results)
 def test_list_instances_pages(transport_name: str = "grpc"):
     client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -885,7 +1225,7 @@ def test_list_instances_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_instances_async_pager():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -934,7 +1274,7 @@ async def test_list_instances_async_pager():
 @pytest.mark.asyncio
 async def test_list_instances_async_pages():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1032,7 +1372,8 @@ def test_get_instance(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceRequest()
+        request = cloud_redis.GetInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.Instance)
@@ -1077,10 +1418,152 @@ def test_get_instance_empty_call():
     with mock.patch.object(
             type(client.transport.get_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.GetInstanceRequest()
+
+
+def test_get_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.GetInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.get_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceRequest(
+            name='name_value',
+        )
+
+def test_get_instance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_instance] = mock_rpc
+        request = {}
+        client.get_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_get_instance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance(
+            name='name_value',
+            display_name='display_name_value',
+            location_id='location_id_value',
+            alternative_location_id='alternative_location_id_value',
+            redis_version='redis_version_value',
+            reserved_ip_range='reserved_ip_range_value',
+            secondary_ip_range='secondary_ip_range_value',
+            host='host_value',
+            port=453,
+            current_location_id='current_location_id_value',
+            state=cloud_redis.Instance.State.CREATING,
+            status_message='status_message_value',
+            tier=cloud_redis.Instance.Tier.BASIC,
+            memory_size_gb=1499,
+            authorized_network='authorized_network_value',
+            persistence_iam_identity='persistence_iam_identity_value',
+            connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+            auth_enabled=True,
+            transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+            replica_count=1384,
+            read_endpoint='read_endpoint_value',
+            read_endpoint_port=1920,
+            read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+            customer_managed_key='customer_managed_key_value',
+            suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+            maintenance_version='maintenance_version_value',
+            available_maintenance_versions=['available_maintenance_versions_value'],
+        ))
+        response = await client.get_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceRequest()
+
+@pytest.mark.asyncio
+async def test_get_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_instance in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_instance] = mock_object
+
+        request = {}
+        await client.get_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceRequest):
@@ -1132,7 +1615,8 @@ async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceRequest()
+        request = cloud_redis.GetInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.Instance)
@@ -1342,7 +1826,8 @@ def test_get_instance_auth_string(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+        request = cloud_redis.GetInstanceAuthStringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.InstanceAuthString)
@@ -1361,10 +1846,126 @@ def test_get_instance_auth_string_empty_call():
     with mock.patch.object(
             type(client.transport.get_instance_auth_string),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_instance_auth_string()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+
+
+def test_get_instance_auth_string_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.GetInstanceAuthStringRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.get_instance_auth_string(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest(
+            name='name_value',
+        )
+
+def test_get_instance_auth_string_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_instance_auth_string in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_instance_auth_string] = mock_rpc
+        request = {}
+        client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_instance_auth_string(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
+            auth_string='auth_string_value',
+        ))
+        response = await client.get_instance_auth_string()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.get_instance_auth_string in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.get_instance_auth_string] = mock_object
+
+        request = {}
+        await client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_instance_auth_string(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceAuthStringRequest):
@@ -1390,7 +1991,8 @@ async def test_get_instance_auth_string_async(transport: str = 'grpc_asyncio', r
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+        request = cloud_redis.GetInstanceAuthStringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.InstanceAuthString)
@@ -1572,7 +2174,8 @@ def test_create_instance(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.CreateInstanceRequest()
+        request = cloud_redis.CreateInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1590,10 +2193,136 @@ def test_create_instance_empty_call():
     with mock.patch.object(
             type(client.transport.create_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.CreateInstanceRequest()
+
+
+def test_create_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.CreateInstanceRequest(
+        parent='parent_value',
+        instance_id='instance_id_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_instance),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.create_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.CreateInstanceRequest(
+            parent='parent_value',
+            instance_id='instance_id_value',
+        )
+
+def test_create_instance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_instance] = mock_rpc
+        request = {}
+        client.create_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_create_instance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.create_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.CreateInstanceRequest()
+
+@pytest.mark.asyncio
+async def test_create_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.create_instance in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.create_instance] = mock_object
+
+        request = {}
+        await client.create_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.create_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.CreateInstanceRequest):
@@ -1619,7 +2348,8 @@ async def test_create_instance_async(transport: str = 'grpc_asyncio', request_ty
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.CreateInstanceRequest()
+        request = cloud_redis.CreateInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1822,7 +2552,8 @@ def test_update_instance(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpdateInstanceRequest()
+        request = cloud_redis.UpdateInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1840,10 +2571,132 @@ def test_update_instance_empty_call():
     with mock.patch.object(
             type(client.transport.update_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.UpdateInstanceRequest()
+
+
+def test_update_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.UpdateInstanceRequest(
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_instance),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.update_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpdateInstanceRequest(
+        )
+
+def test_update_instance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_instance] = mock_rpc
+        request = {}
+        client.update_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_update_instance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.update_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpdateInstanceRequest()
+
+@pytest.mark.asyncio
+async def test_update_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.update_instance in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.update_instance] = mock_object
+
+        request = {}
+        await client.update_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.update_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpdateInstanceRequest):
@@ -1869,7 +2722,8 @@ async def test_update_instance_async(transport: str = 'grpc_asyncio', request_ty
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpdateInstanceRequest()
+        request = cloud_redis.UpdateInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2062,7 +2916,8 @@ def test_upgrade_instance(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpgradeInstanceRequest()
+        request = cloud_redis.UpgradeInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2080,10 +2935,136 @@ def test_upgrade_instance_empty_call():
     with mock.patch.object(
             type(client.transport.upgrade_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.upgrade_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.UpgradeInstanceRequest()
+
+
+def test_upgrade_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.UpgradeInstanceRequest(
+        name='name_value',
+        redis_version='redis_version_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.upgrade_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpgradeInstanceRequest(
+            name='name_value',
+            redis_version='redis_version_value',
+        )
+
+def test_upgrade_instance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.upgrade_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.upgrade_instance] = mock_rpc
+        request = {}
+        client.upgrade_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.upgrade_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.upgrade_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpgradeInstanceRequest()
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.upgrade_instance in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.upgrade_instance] = mock_object
+
+        request = {}
+        await client.upgrade_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.upgrade_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_upgrade_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpgradeInstanceRequest):
@@ -2109,7 +3090,8 @@ async def test_upgrade_instance_async(transport: str = 'grpc_asyncio', request_t
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpgradeInstanceRequest()
+        request = cloud_redis.UpgradeInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2302,7 +3284,8 @@ def test_import_instance(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ImportInstanceRequest()
+        request = cloud_redis.ImportInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2320,10 +3303,134 @@ def test_import_instance_empty_call():
     with mock.patch.object(
             type(client.transport.import_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.import_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ImportInstanceRequest()
+
+
+def test_import_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.ImportInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.import_instance),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.import_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ImportInstanceRequest(
+            name='name_value',
+        )
+
+def test_import_instance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.import_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.import_instance] = mock_rpc
+        request = {}
+        client.import_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.import_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_import_instance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.import_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.import_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ImportInstanceRequest()
+
+@pytest.mark.asyncio
+async def test_import_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.import_instance in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.import_instance] = mock_object
+
+        request = {}
+        await client.import_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.import_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_import_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ImportInstanceRequest):
@@ -2349,7 +3456,8 @@ async def test_import_instance_async(transport: str = 'grpc_asyncio', request_ty
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ImportInstanceRequest()
+        request = cloud_redis.ImportInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2542,7 +3650,8 @@ def test_export_instance(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ExportInstanceRequest()
+        request = cloud_redis.ExportInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2560,10 +3669,134 @@ def test_export_instance_empty_call():
     with mock.patch.object(
             type(client.transport.export_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.export_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ExportInstanceRequest()
+
+
+def test_export_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.ExportInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_instance),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.export_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ExportInstanceRequest(
+            name='name_value',
+        )
+
+def test_export_instance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.export_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_instance] = mock_rpc
+        request = {}
+        client.export_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_export_instance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.export_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ExportInstanceRequest()
+
+@pytest.mark.asyncio
+async def test_export_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.export_instance in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.export_instance] = mock_object
+
+        request = {}
+        await client.export_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.export_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_export_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ExportInstanceRequest):
@@ -2589,7 +3822,8 @@ async def test_export_instance_async(transport: str = 'grpc_asyncio', request_ty
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ExportInstanceRequest()
+        request = cloud_redis.ExportInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2782,7 +4016,8 @@ def test_failover_instance(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.FailoverInstanceRequest()
+        request = cloud_redis.FailoverInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2800,10 +4035,134 @@ def test_failover_instance_empty_call():
     with mock.patch.object(
             type(client.transport.failover_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.failover_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.FailoverInstanceRequest()
+
+
+def test_failover_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.FailoverInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.failover_instance),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.failover_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.FailoverInstanceRequest(
+            name='name_value',
+        )
+
+def test_failover_instance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.failover_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.failover_instance] = mock_rpc
+        request = {}
+        client.failover_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.failover_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_failover_instance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.failover_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.failover_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.FailoverInstanceRequest()
+
+@pytest.mark.asyncio
+async def test_failover_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.failover_instance in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.failover_instance] = mock_object
+
+        request = {}
+        await client.failover_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.failover_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_failover_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.FailoverInstanceRequest):
@@ -2829,7 +4188,8 @@ async def test_failover_instance_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.FailoverInstanceRequest()
+        request = cloud_redis.FailoverInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3022,7 +4382,8 @@ def test_delete_instance(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.DeleteInstanceRequest()
+        request = cloud_redis.DeleteInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3040,10 +4401,134 @@ def test_delete_instance_empty_call():
     with mock.patch.object(
             type(client.transport.delete_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.DeleteInstanceRequest()
+
+
+def test_delete_instance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.DeleteInstanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_instance),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.delete_instance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.DeleteInstanceRequest(
+            name='name_value',
+        )
+
+def test_delete_instance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_instance] = mock_rpc
+        request = {}
+        client.delete_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_delete_instance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.delete_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.DeleteInstanceRequest()
+
+@pytest.mark.asyncio
+async def test_delete_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.delete_instance in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_instance] = mock_object
+
+        request = {}
+        await client.delete_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.delete_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.DeleteInstanceRequest):
@@ -3069,7 +4554,8 @@ async def test_delete_instance_async(transport: str = 'grpc_asyncio', request_ty
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.DeleteInstanceRequest()
+        request = cloud_redis.DeleteInstanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3252,7 +4738,8 @@ def test_reschedule_maintenance(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+        request = cloud_redis.RescheduleMaintenanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3270,10 +4757,134 @@ def test_reschedule_maintenance_empty_call():
     with mock.patch.object(
             type(client.transport.reschedule_maintenance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.reschedule_maintenance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
+
+def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis.RescheduleMaintenanceRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.reschedule_maintenance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest(
+            name='name_value',
+        )
+
+def test_reschedule_maintenance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.reschedule_maintenance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.reschedule_maintenance] = mock_rpc
+        request = {}
+        client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.reschedule_maintenance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.reschedule_maintenance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.reschedule_maintenance in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.reschedule_maintenance] = mock_object
+
+        request = {}
+        await client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.reschedule_maintenance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.RescheduleMaintenanceRequest):
@@ -3299,7 +4910,8 @@ async def test_reschedule_maintenance_async(transport: str = 'grpc_asyncio', req
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+        request = cloud_redis.RescheduleMaintenanceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3498,8 +5110,9 @@ def test_list_instances_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_redis.ListInstancesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_redis.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -3509,6 +5122,39 @@ def test_list_instances_rest(request_type):
     assert isinstance(response, pagers.ListInstancesPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
+
+def test_list_instances_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_instances in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_instances] = mock_rpc
+
+        request = {}
+        client.list_instances(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_instances(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstancesRequest):
@@ -3520,7 +5166,6 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -3569,8 +5214,9 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_redis.ListInstancesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_redis.ListInstancesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -3673,8 +5319,9 @@ def test_list_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_redis.ListInstancesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_redis.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -3814,8 +5461,9 @@ def test_get_instance_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_redis.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_redis.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -3851,6 +5499,39 @@ def test_get_instance_rest(request_type):
     assert response.maintenance_version == 'maintenance_version_value'
     assert response.available_maintenance_versions == ['available_maintenance_versions_value']
 
+def test_get_instance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_instance] = mock_rpc
+
+        request = {}
+        client.get_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceRequest):
     transport_class = transports.CloudRedisRestTransport
@@ -3861,7 +5542,6 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -3908,8 +5588,9 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_redis.Instance.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_redis.Instance.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -4012,8 +5693,9 @@ def test_get_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_redis.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_redis.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -4072,8 +5754,9 @@ def test_get_instance_auth_string_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_redis.InstanceAuthString.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_redis.InstanceAuthString.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -4082,6 +5765,39 @@ def test_get_instance_auth_string_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.InstanceAuthString)
     assert response.auth_string == 'auth_string_value'
+
+def test_get_instance_auth_string_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_instance_auth_string in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_instance_auth_string] = mock_rpc
+
+        request = {}
+        client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_instance_auth_string(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.GetInstanceAuthStringRequest):
@@ -4093,7 +5809,6 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -4140,8 +5855,9 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_redis.InstanceAuthString.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_redis.InstanceAuthString.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -4244,8 +5960,9 @@ def test_get_instance_auth_string_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_redis.InstanceAuthString.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_redis.InstanceAuthString.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -4293,6 +6010,69 @@ def test_create_instance_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
     request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_redis.CreateInstanceRequest.meta.fields["instance"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["instance"][field])):
+                    del request_init["instance"][field][i][subfield]
+            else:
+                del request_init["instance"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4312,6 +6092,43 @@ def test_create_instance_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_create_instance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_instance] = mock_rpc
+
+        request = {}
+        client.create_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateInstanceRequest):
     transport_class = transports.CloudRedisRestTransport
@@ -4323,7 +6140,6 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -4451,7 +6267,6 @@ def test_create_instance_rest_bad_request(transport: str = 'rest', request_type=
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4539,6 +6354,69 @@ def test_update_instance_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
     request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_redis.UpdateInstanceRequest.meta.fields["instance"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["instance"][field])):
+                    del request_init["instance"][field][i][subfield]
+            else:
+                del request_init["instance"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4558,6 +6436,43 @@ def test_update_instance_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_update_instance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_instance] = mock_rpc
+
+        request = {}
+        client.update_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateInstanceRequest):
     transport_class = transports.CloudRedisRestTransport
@@ -4567,7 +6482,6 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -4681,7 +6595,6 @@ def test_update_instance_rest_bad_request(transport: str = 'rest', request_type=
 
     # send a request that will satisfy transcoding
     request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
-    request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4785,6 +6698,43 @@ def test_upgrade_instance_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_upgrade_instance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.upgrade_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.upgrade_instance] = mock_rpc
+
+        request = {}
+        client.upgrade_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.upgrade_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeInstanceRequest):
     transport_class = transports.CloudRedisRestTransport
@@ -4796,7 +6746,6 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -5018,6 +6967,43 @@ def test_import_instance_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_import_instance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.import_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.import_instance] = mock_rpc
+
+        request = {}
+        client.import_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.import_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportInstanceRequest):
     transport_class = transports.CloudRedisRestTransport
@@ -5028,7 +7014,6 @@ def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportIns
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -5247,6 +7232,43 @@ def test_export_instance_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_export_instance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.export_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_instance] = mock_rpc
+
+        request = {}
+        client.export_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportInstanceRequest):
     transport_class = transports.CloudRedisRestTransport
@@ -5257,7 +7279,6 @@ def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportIns
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -5476,6 +7497,43 @@ def test_failover_instance_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_failover_instance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.failover_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.failover_instance] = mock_rpc
+
+        request = {}
+        client.failover_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.failover_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_failover_instance_rest_required_fields(request_type=cloud_redis.FailoverInstanceRequest):
     transport_class = transports.CloudRedisRestTransport
@@ -5486,7 +7544,6 @@ def test_failover_instance_rest_required_fields(request_type=cloud_redis.Failove
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -5705,6 +7762,43 @@ def test_delete_instance_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_delete_instance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_instance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_instance] = mock_rpc
+
+        request = {}
+        client.delete_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_instance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteInstanceRequest):
     transport_class = transports.CloudRedisRestTransport
@@ -5715,7 +7809,6 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -5931,6 +8024,43 @@ def test_reschedule_maintenance_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
+def test_reschedule_maintenance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.reschedule_maintenance in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.reschedule_maintenance] = mock_rpc
+
+        request = {}
+        client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.reschedule_maintenance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
 
 def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.RescheduleMaintenanceRequest):
     transport_class = transports.CloudRedisRestTransport
@@ -5941,7 +8071,6 @@ def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.Re
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -6165,7 +8294,7 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = CloudRedisClient(
@@ -7156,7 +9285,7 @@ def test_delete_operation(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert response is None
 @pytest.mark.asyncio
-async def test_delete_operation_async(transport: str = "grpc"):
+async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7285,7 +9414,7 @@ def test_cancel_operation(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert response is None
 @pytest.mark.asyncio
-async def test_cancel_operation_async(transport: str = "grpc"):
+async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7414,7 +9543,7 @@ def test_get_operation(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
 @pytest.mark.asyncio
-async def test_get_operation_async(transport: str = "grpc"):
+async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7543,7 +9672,7 @@ def test_list_operations(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
 @pytest.mark.asyncio
-async def test_list_operations_async(transport: str = "grpc"):
+async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7672,7 +9801,7 @@ def test_list_locations(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 @pytest.mark.asyncio
-async def test_list_locations_async(transport: str = "grpc"):
+async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7958,7 +10087,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

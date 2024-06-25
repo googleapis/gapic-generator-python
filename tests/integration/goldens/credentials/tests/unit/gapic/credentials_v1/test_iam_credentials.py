@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ from google.protobuf import json_format
 import json
 import math
 import pytest
+from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 from requests import Response
@@ -56,12 +57,17 @@ import google.auth
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
-
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
     return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
+
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -77,6 +83,146 @@ def test__get_default_mtls_endpoint():
     assert IAMCredentialsClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
     assert IAMCredentialsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert IAMCredentialsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+
+def test__read_environment_variables():
+    assert IAMCredentialsClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert IAMCredentialsClient._read_environment_variables() == (True, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert IAMCredentialsClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            IAMCredentialsClient._read_environment_variables()
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        assert IAMCredentialsClient._read_environment_variables() == (False, "never", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert IAMCredentialsClient._read_environment_variables() == (False, "always", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert IAMCredentialsClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            IAMCredentialsClient._read_environment_variables()
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        assert IAMCredentialsClient._read_environment_variables() == (False, "auto", "foo.com")
+
+def test__get_client_cert_source():
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
+
+    assert IAMCredentialsClient._get_client_cert_source(None, False) is None
+    assert IAMCredentialsClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert IAMCredentialsClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
+
+    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
+        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_default_cert_source):
+            assert IAMCredentialsClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert IAMCredentialsClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
+
+@mock.patch.object(IAMCredentialsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsClient))
+@mock.patch.object(IAMCredentialsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsAsyncClient))
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+    default_universe = IAMCredentialsClient._DEFAULT_UNIVERSE
+    default_endpoint = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
+    assert IAMCredentialsClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
+    assert IAMCredentialsClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert IAMCredentialsClient._get_api_endpoint(None, None, default_universe, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
+    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
+    assert IAMCredentialsClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert IAMCredentialsClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
+
+def test__get_universe_domain():
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert IAMCredentialsClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert IAMCredentialsClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert IAMCredentialsClient._get_universe_domain(None, None) == IAMCredentialsClient._DEFAULT_UNIVERSE
+
+    with pytest.raises(ValueError) as excinfo:
+        IAMCredentialsClient._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport, "grpc"),
+    (IAMCredentialsClient, transports.IAMCredentialsRestTransport, "rest"),
+])
+def test__validate_universe_domain(client_class, transport_class, transport_name):
+    client = client_class(
+        transport=transport_class(
+            credentials=ga_credentials.AnonymousCredentials()
+        )
+    )
+    assert client._validate_universe_domain() == True
+
+    # Test the case when universe is already validated.
+    assert client._validate_universe_domain() == True
+
+    if transport_name == "grpc":
+        # Test the case where credentials are provided by the
+        # `local_channel_credentials`. The default universes in both match.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        client = client_class(transport=transport_class(channel=channel))
+        assert client._validate_universe_domain() == True
+
+        # Test the case where credentials do not exist: e.g. a transport is provided
+        # with no credentials. Validation should still succeed because there is no
+        # mismatch with non-existent credentials.
+        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+        transport=transport_class(channel=channel)
+        transport._credentials = None
+        client = client_class(transport=transport)
+        assert client._validate_universe_domain() == True
+
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor = [int(part) for part in google.auth.__version__.split(".")[0:2]]
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(
+            transport=transport_class(credentials=credentials)
+        )
+        with pytest.raises(ValueError) as excinfo:
+            client._validate_universe_domain()
+        assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class(credentials=ga_credentials.AnonymousCredentials(),))
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize("client_class,transport_name", [
@@ -160,8 +306,8 @@ def test_iam_credentials_client_get_transport_class():
     (IAMCredentialsAsyncClient, transports.IAMCredentialsGrpcAsyncIOTransport, "grpc_asyncio"),
     (IAMCredentialsClient, transports.IAMCredentialsRestTransport, "rest"),
 ])
-@mock.patch.object(IAMCredentialsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsClient))
-@mock.patch.object(IAMCredentialsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsAsyncClient))
+@mock.patch.object(IAMCredentialsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsClient))
+@mock.patch.object(IAMCredentialsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsAsyncClient))
 def test_iam_credentials_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(IAMCredentialsClient, 'get_transport_class') as gtc:
@@ -202,7 +348,7 @@ def test_iam_credentials_client_client_options(client_class, transport_class, tr
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -232,13 +378,15 @@ def test_iam_credentials_client_client_options(client_class, transport_class, tr
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -248,7 +396,7 @@ def test_iam_credentials_client_client_options(client_class, transport_class, tr
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -264,7 +412,7 @@ def test_iam_credentials_client_client_options(client_class, transport_class, tr
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -281,8 +429,8 @@ def test_iam_credentials_client_client_options(client_class, transport_class, tr
     (IAMCredentialsClient, transports.IAMCredentialsRestTransport, "rest", "true"),
     (IAMCredentialsClient, transports.IAMCredentialsRestTransport, "rest", "false"),
 ])
-@mock.patch.object(IAMCredentialsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsClient))
-@mock.patch.object(IAMCredentialsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IAMCredentialsAsyncClient))
+@mock.patch.object(IAMCredentialsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsClient))
+@mock.patch.object(IAMCredentialsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -298,7 +446,7 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -322,7 +470,7 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
             with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
                 with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -351,7 +499,7 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -413,6 +561,77 @@ def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        with pytest.raises(ValueError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+
+@pytest.mark.parametrize("client_class", [
+    IAMCredentialsClient, IAMCredentialsAsyncClient
+])
+@mock.patch.object(IAMCredentialsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsClient))
+@mock.patch.object(IAMCredentialsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsAsyncClient))
+def test_iam_credentials_client_client_api_endpoint(client_class):
+    mock_client_cert_source = client_cert_source_callback
+    api_override = "foo.com"
+    default_universe = IAMCredentialsClient._DEFAULT_UNIVERSE
+    default_endpoint = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+    # use ClientOptions.api_endpoint as the api endpoint regardless.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+            assert client.api_endpoint == api_override
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == default_endpoint
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
+    # and ClientOptions.universe_domain="bar.com",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+    options = client_options.ClientOptions()
+    universe_exists = hasattr(options, "universe_domain")
+    if universe_exists:
+        options = client_options.ClientOptions(universe_domain=mock_universe)
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    else:
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
+
+    # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    options = client_options.ClientOptions()
+    if hasattr(options, "universe_domain"):
+        delattr(options, "universe_domain")
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport, "grpc"),
@@ -430,7 +649,7 @@ def test_iam_credentials_client_client_options_scopes(client_class, transport_cl
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -456,7 +675,7 @@ def test_iam_credentials_client_client_options_credentials_file(client_class, tr
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -500,7 +719,7 @@ def test_iam_credentials_client_create_channel_credentials_file(client_class, tr
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -567,7 +786,8 @@ def test_generate_access_token(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateAccessTokenRequest()
+        request = common.GenerateAccessTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
@@ -586,10 +806,126 @@ def test_generate_access_token_empty_call():
     with mock.patch.object(
             type(client.transport.generate_access_token),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.generate_access_token()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateAccessTokenRequest()
+
+
+def test_generate_access_token_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = common.GenerateAccessTokenRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_access_token),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.generate_access_token(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.GenerateAccessTokenRequest(
+            name='name_value',
+        )
+
+def test_generate_access_token_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.generate_access_token in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_access_token] = mock_rpc
+        request = {}
+        client.generate_access_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_access_token(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_generate_access_token_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IAMCredentialsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_access_token),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse(
+            access_token='access_token_value',
+        ))
+        response = await client.generate_access_token()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.GenerateAccessTokenRequest()
+
+@pytest.mark.asyncio
+async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = IAMCredentialsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.generate_access_token in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.generate_access_token] = mock_object
+
+        request = {}
+        await client.generate_access_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.generate_access_token(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_generate_access_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateAccessTokenRequest):
@@ -615,7 +951,8 @@ async def test_generate_access_token_async(transport: str = 'grpc_asyncio', requ
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateAccessTokenRequest()
+        request = common.GenerateAccessTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
@@ -825,7 +1162,8 @@ def test_generate_id_token(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateIdTokenRequest()
+        request = common.GenerateIdTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
@@ -844,10 +1182,128 @@ def test_generate_id_token_empty_call():
     with mock.patch.object(
             type(client.transport.generate_id_token),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.generate_id_token()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateIdTokenRequest()
+
+
+def test_generate_id_token_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = common.GenerateIdTokenRequest(
+        name='name_value',
+        audience='audience_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_id_token),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.generate_id_token(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.GenerateIdTokenRequest(
+            name='name_value',
+            audience='audience_value',
+        )
+
+def test_generate_id_token_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.generate_id_token in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_id_token] = mock_rpc
+        request = {}
+        client.generate_id_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_id_token(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_generate_id_token_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IAMCredentialsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_id_token),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
+            token='token_value',
+        ))
+        response = await client.generate_id_token()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.GenerateIdTokenRequest()
+
+@pytest.mark.asyncio
+async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = IAMCredentialsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.generate_id_token in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.generate_id_token] = mock_object
+
+        request = {}
+        await client.generate_id_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.generate_id_token(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateIdTokenRequest):
@@ -873,7 +1329,8 @@ async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateIdTokenRequest()
+        request = common.GenerateIdTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
@@ -1088,7 +1545,8 @@ def test_sign_blob(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignBlobRequest()
+        request = common.SignBlobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignBlobResponse)
@@ -1108,10 +1566,127 @@ def test_sign_blob_empty_call():
     with mock.patch.object(
             type(client.transport.sign_blob),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.sign_blob()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignBlobRequest()
+
+
+def test_sign_blob_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = common.SignBlobRequest(
+        name='name_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_blob),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.sign_blob(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.SignBlobRequest(
+            name='name_value',
+        )
+
+def test_sign_blob_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.sign_blob in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.sign_blob] = mock_rpc
+        request = {}
+        client.sign_blob(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.sign_blob(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_sign_blob_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IAMCredentialsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_blob),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignBlobResponse(
+            key_id='key_id_value',
+            signed_blob=b'signed_blob_blob',
+        ))
+        response = await client.sign_blob()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.SignBlobRequest()
+
+@pytest.mark.asyncio
+async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = IAMCredentialsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.sign_blob in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.sign_blob] = mock_object
+
+        request = {}
+        await client.sign_blob(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.sign_blob(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=common.SignBlobRequest):
@@ -1138,7 +1713,8 @@ async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=com
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignBlobRequest()
+        request = common.SignBlobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignBlobResponse)
@@ -1344,7 +1920,8 @@ def test_sign_jwt(request_type, transport: str = 'grpc'):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignJwtRequest()
+        request = common.SignJwtRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignJwtResponse)
@@ -1364,10 +1941,129 @@ def test_sign_jwt_empty_call():
     with mock.patch.object(
             type(client.transport.sign_jwt),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.sign_jwt()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignJwtRequest()
+
+
+def test_sign_jwt_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = common.SignJwtRequest(
+        name='name_value',
+        payload='payload_value',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_jwt),
+            '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client.sign_jwt(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.SignJwtRequest(
+            name='name_value',
+            payload='payload_value',
+        )
+
+def test_sign_jwt_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.sign_jwt in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.sign_jwt] = mock_rpc
+        request = {}
+        client.sign_jwt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.sign_jwt(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+@pytest.mark.asyncio
+async def test_sign_jwt_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IAMCredentialsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc_asyncio',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_jwt),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignJwtResponse(
+            key_id='key_id_value',
+            signed_jwt='signed_jwt_value',
+        ))
+        response = await client.sign_jwt()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == common.SignJwtRequest()
+
+@pytest.mark.asyncio
+async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = IAMCredentialsAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._client._transport.sign_jwt in client._client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_object = mock.AsyncMock()
+        client._client._transport._wrapped_methods[client._client._transport.sign_jwt] = mock_object
+
+        request = {}
+        await client.sign_jwt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.sign_jwt(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 @pytest.mark.asyncio
 async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=common.SignJwtRequest):
@@ -1394,7 +2090,8 @@ async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=comm
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignJwtRequest()
+        request = common.SignJwtRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignJwtResponse)
@@ -1596,8 +2293,9 @@ def test_generate_access_token_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = common.GenerateAccessTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = common.GenerateAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -1606,6 +2304,39 @@ def test_generate_access_token_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
     assert response.access_token == 'access_token_value'
+
+def test_generate_access_token_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.generate_access_token in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_access_token] = mock_rpc
+
+        request = {}
+        client.generate_access_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_access_token(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_generate_access_token_rest_required_fields(request_type=common.GenerateAccessTokenRequest):
@@ -1618,7 +2349,6 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -1669,8 +2399,9 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = common.GenerateAccessTokenResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = common.GenerateAccessTokenResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -1776,8 +2507,9 @@ def test_generate_access_token_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = common.GenerateAccessTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = common.GenerateAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -1839,8 +2571,9 @@ def test_generate_id_token_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = common.GenerateIdTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = common.GenerateIdTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -1849,6 +2582,39 @@ def test_generate_id_token_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
     assert response.token == 'token_value'
+
+def test_generate_id_token_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.generate_id_token in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_id_token] = mock_rpc
+
+        request = {}
+        client.generate_id_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_id_token(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTokenRequest):
@@ -1861,7 +2627,6 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -1912,8 +2677,9 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = common.GenerateIdTokenResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = common.GenerateIdTokenResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -2019,8 +2785,9 @@ def test_generate_id_token_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = common.GenerateIdTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = common.GenerateIdTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -2083,8 +2850,9 @@ def test_sign_blob_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = common.SignBlobResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = common.SignBlobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -2094,6 +2862,39 @@ def test_sign_blob_rest(request_type):
     assert isinstance(response, common.SignBlobResponse)
     assert response.key_id == 'key_id_value'
     assert response.signed_blob == b'signed_blob_blob'
+
+def test_sign_blob_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.sign_blob in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.sign_blob] = mock_rpc
+
+        request = {}
+        client.sign_blob(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.sign_blob(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
@@ -2106,7 +2907,6 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -2157,8 +2957,9 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = common.SignBlobResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = common.SignBlobResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -2263,8 +3064,9 @@ def test_sign_blob_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = common.SignBlobResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = common.SignBlobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -2326,8 +3128,9 @@ def test_sign_jwt_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = common.SignJwtResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = common.SignJwtResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -2337,6 +3140,39 @@ def test_sign_jwt_rest(request_type):
     assert isinstance(response, common.SignJwtResponse)
     assert response.key_id == 'key_id_value'
     assert response.signed_jwt == 'signed_jwt_value'
+
+def test_sign_jwt_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = IAMCredentialsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.sign_jwt in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.sign_jwt] = mock_rpc
+
+        request = {}
+        client.sign_jwt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.sign_jwt(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
@@ -2349,7 +3185,6 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -2400,8 +3235,9 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = common.SignJwtResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = common.SignJwtResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
@@ -2506,8 +3342,9 @@ def test_sign_jwt_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = common.SignJwtResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = common.SignJwtResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -2578,7 +3415,7 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = IAMCredentialsClient(
@@ -3223,7 +4060,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

@@ -22,15 +22,20 @@ import setuptools
 name = "gapic-generator"
 description = "Google API Client Generator for Python"
 url = "https://github.com/googleapis/gapic-generator-python"
-version = "1.11.5"
+version = "1.18.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
+    # Ensure that the lower bounds of these dependencies match what we have in the
+    # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
     "click >= 6.7",
-    "google-api-core >= 2.8.0",
+    "google-api-core[grpc] >= 1.34.1, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
     "googleapis-common-protos >= 1.55.0",
     "grpcio >= 1.24.3",
-    "jinja2 >= 2.10",
-    "protobuf >= 3.18.0, < 5.0.0dev",
+    # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`
+    # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map
+    # https://jinja.palletsprojects.com/en/2.11.x/changelog/#version-2-11-0
+    "jinja2 >= 2.11",
+    "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
     "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
@@ -56,7 +61,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    packages=setuptools.find_packages(exclude=["docs", "tests"]),
+    packages=setuptools.find_namespace_packages(exclude=["docs", "tests"]),
     url=url,
     classifiers=[
         release_status,
@@ -70,6 +75,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Operating System :: OS Independent",
         "Topic :: Software Development :: Code Generators",
         "Topic :: Software Development :: Libraries :: Python Modules",

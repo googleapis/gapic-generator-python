@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ class AssetServiceTransport(abc.ABC):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'cloudasset.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -83,6 +83,8 @@ class AssetServiceTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -95,7 +97,7 @@ class AssetServiceTransport(abc.ABC):
                                 **scopes_kwargs,
                                 quota_project_id=quota_project_id
                             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
@@ -113,6 +115,10 @@ class AssetServiceTransport(abc.ABC):
             host += ':443'
         self._host = host
 
+    @property
+    def host(self):
+        return self._host
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
@@ -129,7 +135,10 @@ class AssetServiceTransport(abc.ABC):
             self.batch_get_assets_history: gapic_v1.method.wrap_method(
                 self.batch_get_assets_history,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
@@ -146,7 +155,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.get_feed: gapic_v1.method.wrap_method(
                 self.get_feed,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
@@ -158,7 +170,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.list_feeds: gapic_v1.method.wrap_method(
                 self.list_feeds,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
@@ -175,7 +190,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.delete_feed: gapic_v1.method.wrap_method(
                 self.delete_feed,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
@@ -187,7 +205,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.search_all_resources: gapic_v1.method.wrap_method(
                 self.search_all_resources,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
@@ -199,7 +220,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.search_all_iam_policies: gapic_v1.method.wrap_method(
                 self.search_all_iam_policies,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
@@ -211,7 +235,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.analyze_iam_policy: gapic_v1.method.wrap_method(
                 self.analyze_iam_policy,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=300.0,
