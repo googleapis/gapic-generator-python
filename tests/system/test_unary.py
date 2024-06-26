@@ -123,7 +123,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.mark.asyncio
     async def test_async_unary_error(async_echo):
         message = 'Bad things! Bad things!'
-        with pytest.raises(exceptions.InvalidArgument) as exc:
+        with pytest.raises((exceptions.InvalidArgument, exceptions.BadRequest)) as exc:
             await async_echo.echo({
                 'error': {
                     'code': code_pb2.Code.Value('INVALID_ARGUMENT'),

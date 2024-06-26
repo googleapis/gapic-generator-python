@@ -893,7 +893,7 @@ async def test_list_instances_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1490,7 +1490,7 @@ async def test_get_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1918,7 +1918,7 @@ async def test_get_instance_auth_string_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2271,7 +2271,7 @@ async def test_create_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2645,7 +2645,7 @@ async def test_update_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3013,7 +3013,7 @@ async def test_upgrade_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3379,7 +3379,7 @@ async def test_import_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3745,7 +3745,7 @@ async def test_export_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4111,7 +4111,7 @@ async def test_failover_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4477,7 +4477,7 @@ async def test_delete_instance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4833,7 +4833,7 @@ async def test_reschedule_maintenance_empty_call_async():
     # i.e. request == None and no flattened fields passed, work.
     client = CloudRedisAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
+        transport='rest',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
