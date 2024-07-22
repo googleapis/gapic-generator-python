@@ -85,9 +85,9 @@ class {{ message.name }}({{ p }}.Message):
         """Return True if the backing extended operation is completed, False otherwise."""
         {% if status_field.enum %}
         return self.{{ status_field.name }} == type(self.{{ status_field.name }}).DONE
-        {% elif status_field.is_primitive and status_field.type.python_type == str %}
+        {% elif status_field.is_primitive and status_field.type.python_type|string() == "str" %}
         return self.{{ status_field.name }} == "DONE"
-        {% elif status_field.is_primitive and status_field.type.python_type == bool %}
+        {% elif status_field.is_primitive and status_field.type.python_type|string() == "bool" %}
         return self.{{ status_field.name }}
         {% else %}
         raise ValueError("Unexpected type for field {{ status_field.name }}: {{ status_field.type }}")
