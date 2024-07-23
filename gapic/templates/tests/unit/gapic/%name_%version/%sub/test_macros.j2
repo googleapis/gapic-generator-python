@@ -1378,7 +1378,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     transport_class = transports.{{ service.rest_transport_name }}
 
     request_init = {}
-    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
     {% if req_field.field_pb.type == 9 %}
     request_init["{{ req_field.name }}"] = "{{ req_field.field_pb.default_value }}"
     {% else %}
