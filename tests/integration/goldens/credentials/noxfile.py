@@ -187,7 +187,8 @@ def cover(session):
 def mypy(session):
     """Run the type checker."""
     session.install(
-        'mypy',
+        # Ignore release of mypy 1.11.0 which may have a regression
+        'mypy!=1.11.0',
         'types-requests',
         'types-protobuf'
     )
