@@ -368,8 +368,9 @@ class {{ service.async_client_name }}:
         {% if method.field_headers %}
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata += gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
                 ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
