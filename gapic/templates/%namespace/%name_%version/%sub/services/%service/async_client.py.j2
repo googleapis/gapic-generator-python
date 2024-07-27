@@ -376,8 +376,7 @@ class {{ service.async_client_name }}:
                 ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
                 {% endif %}
                 {% endfor %}
-            )),
-        )
+            ))
         {% endif %}
 
 {{ shared_macros.add_api_version_header_to_metadata(service.version) }}
