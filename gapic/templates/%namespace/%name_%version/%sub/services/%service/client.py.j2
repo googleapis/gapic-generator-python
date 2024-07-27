@@ -700,8 +700,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # add these here.
         metadata = tuple(metadata)
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata(
+                    (("resource", request.resource),)
+                )
             )
 
         # Validate the universe domain.

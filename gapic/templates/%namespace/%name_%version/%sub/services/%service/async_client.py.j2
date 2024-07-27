@@ -370,13 +370,16 @@ class {{ service.async_client_name }}:
         # add these here.
         metadata = tuple(metadata)
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += gapic_v1.routing_header.to_grpc_metadata((
-                {% for field_header in method.field_headers %}
-                {% if not method.client_streaming %}
-                ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
-                {% endif %}
-                {% endfor %}
-            ))
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    {% for field_header in method.field_headers %}
+                    {% if not method.client_streaming %}
+                    ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
+                    {% endif %}
+                    {% endfor %}
+                ))
+            )
         {% endif %}
 
 {{ shared_macros.add_api_version_header_to_metadata(service.version) }}
