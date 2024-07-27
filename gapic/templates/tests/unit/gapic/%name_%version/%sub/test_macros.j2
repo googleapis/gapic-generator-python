@@ -535,7 +535,7 @@ def test_{{ method.name|snake_case }}_routing_header_override():
         {% endif %}
         custom_val = "key=custom"
         override = [('x-goog-request-params', custom_val)]
-        client.{{ method.safe_name|snake_case }}(request, metadata=overrride)
+        client.{{ method.safe_name|snake_case }}(request, metadata=override)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
