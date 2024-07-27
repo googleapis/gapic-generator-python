@@ -417,6 +417,8 @@ class {{ service.async_client_name }}:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
         {% endif %}

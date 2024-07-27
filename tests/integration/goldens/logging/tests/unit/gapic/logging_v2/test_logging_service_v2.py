@@ -36,6 +36,7 @@ from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.logging_v2.services.logging_service_v2 import LoggingServiceV2AsyncClient
@@ -896,11 +897,7 @@ async def test_delete_log_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.delete_log in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.delete_log] = mock_object
 
         request = {}
@@ -1244,11 +1241,7 @@ async def test_write_log_entries_async_use_cached_wrapped_rpc(transport: str = "
         assert client._client._transport.write_log_entries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.write_log_entries] = mock_object
 
         request = {}
@@ -1567,11 +1560,7 @@ async def test_list_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.list_log_entries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.list_log_entries] = mock_object
 
         request = {}
@@ -1765,9 +1754,13 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        pager = client.list_log_entries(request={})
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.list_log_entries(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -2065,11 +2058,7 @@ async def test_list_monitored_resource_descriptors_async_use_cached_wrapped_rpc(
         assert client._client._transport.list_monitored_resource_descriptors in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.list_monitored_resource_descriptors] = mock_object
 
         request = {}
@@ -2161,9 +2150,13 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
         )
 
         expected_metadata = ()
-        pager = client.list_monitored_resource_descriptors(request={})
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.list_monitored_resource_descriptors(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -2466,11 +2459,7 @@ async def test_list_logs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         assert client._client._transport.list_logs in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.list_logs] = mock_object
 
         request = {}
@@ -2709,14 +2698,18 @@ def test_list_logs_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
-        pager = client.list_logs(request={})
+        pager = client.list_logs(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -2945,11 +2938,7 @@ async def test_tail_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.tail_log_entries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-        mock_object = AwaitableMock()
+        mock_object = mock.AsyncMock()
         client._client._transport._wrapped_methods[client._client._transport.tail_log_entries] = mock_object
 
         request = [{}]
