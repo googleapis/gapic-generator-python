@@ -319,11 +319,14 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -445,11 +448,14 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("metric_name", request.metric_name),
-            )),
-        )
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("metric_name", request.metric_name),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -579,11 +585,14 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -712,11 +721,14 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("metric_name", request.metric_name),
-            )),
-        )
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("metric_name", request.metric_name),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -808,11 +820,14 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("metric_name", request.metric_name),
-            )),
-        )
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("metric_name", request.metric_name),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
