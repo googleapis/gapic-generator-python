@@ -230,8 +230,9 @@ def test_{{ method_name }}_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 1
 
         {% if method.lro or method.extended_lro %}
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
         {% endif %}
 
@@ -336,8 +337,9 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
         assert mock_object.call_count == 1
 
         {% if method.lro or method.extended_lro %}
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
         {% endif %}
 
