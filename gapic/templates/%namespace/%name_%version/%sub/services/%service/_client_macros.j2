@@ -170,17 +170,19 @@
             )
 
         {% elif method.field_headers %} {# implicit routing #}
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                {% for field_header in method.field_headers %}
-                {% if not method.client_streaming %}
-                ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
-                {% endif %}
-                {% endfor %}
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    {% for field_header in method.field_headers %}
+                    {% if not method.client_streaming %}
+                    ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
+                    {% endif %}
+                    {% endfor %}
+                ))
+            )
         {% endif %} {# method.explicit_routing #}
 
 {{ shared_macros.add_api_version_header_to_metadata(service.version) }}
