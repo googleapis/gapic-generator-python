@@ -979,6 +979,35 @@ async def test_export_assets_async_from_dict():
     await test_export_assets_async(request_type=dict)
 
 
+def test_export_assets_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.ExportAssetsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_assets),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.export_assets(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_export_assets_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1248,6 +1277,35 @@ async def test_list_assets_async(transport: str = 'grpc_asyncio', request_type=a
 async def test_list_assets_async_from_dict():
     await test_list_assets_async(request_type=dict)
 
+
+def test_list_assets_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.ListAssetsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_assets),
+            '__call__') as call:
+        call.return_value = asset_service.ListAssetsResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_assets(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_assets_field_headers():
     client = AssetServiceClient(
@@ -1790,6 +1848,35 @@ async def test_batch_get_assets_history_async_from_dict():
     await test_batch_get_assets_history_async(request_type=dict)
 
 
+def test_batch_get_assets_history_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.BatchGetAssetsHistoryRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.batch_get_assets_history),
+            '__call__') as call:
+        call.return_value = asset_service.BatchGetAssetsHistoryResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.batch_get_assets_history(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_batch_get_assets_history_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2079,6 +2166,35 @@ async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=a
 async def test_create_feed_async_from_dict():
     await test_create_feed_async(request_type=dict)
 
+
+def test_create_feed_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.CreateFeedRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_feed),
+            '__call__') as call:
+        call.return_value = asset_service.Feed()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_feed(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_create_feed_field_headers():
     client = AssetServiceClient(
@@ -2450,6 +2566,35 @@ async def test_get_feed_async_from_dict():
     await test_get_feed_async(request_type=dict)
 
 
+def test_get_feed_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.GetFeedRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_feed),
+            '__call__') as call:
+        call.return_value = asset_service.Feed()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_feed(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_feed_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2794,6 +2939,35 @@ async def test_list_feeds_async(transport: str = 'grpc_asyncio', request_type=as
 async def test_list_feeds_async_from_dict():
     await test_list_feeds_async(request_type=dict)
 
+
+def test_list_feeds_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.ListFeedsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_feeds),
+            '__call__') as call:
+        call.return_value = asset_service.ListFeedsResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_feeds(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_feeds_field_headers():
     client = AssetServiceClient(
@@ -3163,6 +3337,35 @@ async def test_update_feed_async_from_dict():
     await test_update_feed_async(request_type=dict)
 
 
+def test_update_feed_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.UpdateFeedRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_feed),
+            '__call__') as call:
+        call.return_value = asset_service.Feed()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_feed(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_update_feed_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3504,6 +3707,35 @@ async def test_delete_feed_async(transport: str = 'grpc_asyncio', request_type=a
 async def test_delete_feed_async_from_dict():
     await test_delete_feed_async(request_type=dict)
 
+
+def test_delete_feed_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.DeleteFeedRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_feed),
+            '__call__') as call:
+        call.return_value = None
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_feed(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_delete_feed_field_headers():
     client = AssetServiceClient(
@@ -3860,6 +4092,35 @@ async def test_search_all_resources_async(transport: str = 'grpc_asyncio', reque
 async def test_search_all_resources_async_from_dict():
     await test_search_all_resources_async(request_type=dict)
 
+
+def test_search_all_resources_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.SearchAllResourcesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.search_all_resources),
+            '__call__') as call:
+        call.return_value = asset_service.SearchAllResourcesResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.search_all_resources(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_search_all_resources_field_headers():
     client = AssetServiceClient(
@@ -4433,6 +4694,35 @@ async def test_search_all_iam_policies_async_from_dict():
     await test_search_all_iam_policies_async(request_type=dict)
 
 
+def test_search_all_iam_policies_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.SearchAllIamPoliciesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.search_all_iam_policies),
+            '__call__') as call:
+        call.return_value = asset_service.SearchAllIamPoliciesResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.search_all_iam_policies(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_search_all_iam_policies_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4989,6 +5279,35 @@ async def test_analyze_iam_policy_async_from_dict():
     await test_analyze_iam_policy_async(request_type=dict)
 
 
+def test_analyze_iam_policy_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_iam_policy),
+            '__call__') as call:
+        call.return_value = asset_service.AnalyzeIamPolicyResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.analyze_iam_policy(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_analyze_iam_policy_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5261,6 +5580,35 @@ async def test_analyze_iam_policy_longrunning_async_from_dict():
     await test_analyze_iam_policy_longrunning_async(request_type=dict)
 
 
+def test_analyze_iam_policy_longrunning_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeIamPolicyLongrunningRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_iam_policy_longrunning),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.analyze_iam_policy_longrunning(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_analyze_iam_policy_longrunning_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5525,6 +5873,35 @@ async def test_analyze_move_async(transport: str = 'grpc_asyncio', request_type=
 async def test_analyze_move_async_from_dict():
     await test_analyze_move_async(request_type=dict)
 
+
+def test_analyze_move_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeMoveRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_move),
+            '__call__') as call:
+        call.return_value = asset_service.AnalyzeMoveResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.analyze_move(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_analyze_move_field_headers():
     client = AssetServiceClient(
@@ -5804,6 +6181,35 @@ async def test_query_assets_async(transport: str = 'grpc_asyncio', request_type=
 async def test_query_assets_async_from_dict():
     await test_query_assets_async(request_type=dict)
 
+
+def test_query_assets_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.QueryAssetsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.query_assets),
+            '__call__') as call:
+        call.return_value = asset_service.QueryAssetsResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.query_assets(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_query_assets_field_headers():
     client = AssetServiceClient(
@@ -6089,6 +6495,35 @@ async def test_create_saved_query_async(transport: str = 'grpc_asyncio', request
 async def test_create_saved_query_async_from_dict():
     await test_create_saved_query_async(request_type=dict)
 
+
+def test_create_saved_query_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.CreateSavedQueryRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_saved_query),
+            '__call__') as call:
+        call.return_value = asset_service.SavedQuery()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_saved_query(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_create_saved_query_field_headers():
     client = AssetServiceClient(
@@ -6475,6 +6910,35 @@ async def test_get_saved_query_async_from_dict():
     await test_get_saved_query_async(request_type=dict)
 
 
+def test_get_saved_query_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.GetSavedQueryRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_saved_query),
+            '__call__') as call:
+        call.return_value = asset_service.SavedQuery()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_saved_query(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_saved_query_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6828,6 +7292,35 @@ async def test_list_saved_queries_async(transport: str = 'grpc_asyncio', request
 async def test_list_saved_queries_async_from_dict():
     await test_list_saved_queries_async(request_type=dict)
 
+
+def test_list_saved_queries_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.ListSavedQueriesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        call.return_value = asset_service.ListSavedQueriesResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_saved_queries(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_saved_queries_field_headers():
     client = AssetServiceClient(
@@ -7388,6 +7881,35 @@ async def test_update_saved_query_async_from_dict():
     await test_update_saved_query_async(request_type=dict)
 
 
+def test_update_saved_query_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.UpdateSavedQueryRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_saved_query),
+            '__call__') as call:
+        call.return_value = asset_service.SavedQuery()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_saved_query(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_update_saved_query_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7740,6 +8262,35 @@ async def test_delete_saved_query_async_from_dict():
     await test_delete_saved_query_async(request_type=dict)
 
 
+def test_delete_saved_query_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.DeleteSavedQueryRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
+        call.return_value = None
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_saved_query(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_delete_saved_query_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8085,6 +8636,35 @@ async def test_batch_get_effective_iam_policies_async_from_dict():
     await test_batch_get_effective_iam_policies_async(request_type=dict)
 
 
+def test_batch_get_effective_iam_policies_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.BatchGetEffectiveIamPoliciesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.batch_get_effective_iam_policies),
+            '__call__') as call:
+        call.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.batch_get_effective_iam_policies(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_batch_get_effective_iam_policies_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8358,6 +8938,35 @@ async def test_analyze_org_policies_async(transport: str = 'grpc_asyncio', reque
 async def test_analyze_org_policies_async_from_dict():
     await test_analyze_org_policies_async(request_type=dict)
 
+
+def test_analyze_org_policies_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPoliciesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.analyze_org_policies(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_analyze_org_policies_field_headers():
     client = AssetServiceClient(
@@ -8931,6 +9540,35 @@ async def test_analyze_org_policy_governed_containers_async_from_dict():
     await test_analyze_org_policy_governed_containers_async(request_type=dict)
 
 
+def test_analyze_org_policy_governed_containers_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.analyze_org_policy_governed_containers(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_analyze_org_policy_governed_containers_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9502,6 +10140,35 @@ async def test_analyze_org_policy_governed_assets_async(transport: str = 'grpc_a
 async def test_analyze_org_policy_governed_assets_async_from_dict():
     await test_analyze_org_policy_governed_assets_async(request_type=dict)
 
+
+def test_analyze_org_policy_governed_assets_routing_header_override():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.analyze_org_policy_governed_assets(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_analyze_org_policy_governed_assets_field_headers():
     client = AssetServiceClient(

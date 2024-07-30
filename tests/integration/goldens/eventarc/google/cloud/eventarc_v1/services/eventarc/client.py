@@ -770,13 +770,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_trigger]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -875,13 +877,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_triggers]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1024,13 +1028,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_trigger]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1162,13 +1168,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_trigger]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("trigger.name", request.trigger.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("trigger.name", request.trigger.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1291,13 +1299,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_trigger]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1407,13 +1417,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_channel]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1512,13 +1524,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_channels]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1661,13 +1675,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_channel_]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1791,13 +1807,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_channel]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("channel.name", request.channel.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("channel.name", request.channel.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1912,13 +1930,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_channel]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2022,13 +2042,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_provider]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2127,13 +2149,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_providers]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2245,13 +2269,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_channel_connection]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2351,13 +2377,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_channel_connections]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2500,13 +2528,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_channel_connection]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2619,13 +2649,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_channel_connection]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2735,13 +2767,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_google_channel_config]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2856,13 +2890,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_google_channel_config]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("google_channel_config.name", request.google_channel_config.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("google_channel_config.name", request.google_channel_config.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2928,12 +2964,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2982,12 +3021,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3040,12 +3082,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3093,12 +3138,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3209,12 +3257,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("resource", request.resource),)
+                )
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3330,12 +3381,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("resource", request.resource),)
+                )
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3389,12 +3443,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("resource", request.resource),)
+                )
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3443,12 +3500,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3497,12 +3557,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()

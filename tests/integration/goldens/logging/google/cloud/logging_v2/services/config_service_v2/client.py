@@ -732,13 +732,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_buckets]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -825,13 +827,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_bucket]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -918,13 +922,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_bucket_async]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1021,13 +1027,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_bucket_async]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1114,13 +1122,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_bucket]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1202,13 +1212,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_bucket]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1280,13 +1292,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_bucket]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1352,13 +1366,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.undelete_bucket]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1457,13 +1473,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_views]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1550,13 +1568,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_view]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1634,13 +1654,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_view]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1720,13 +1742,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_view]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1796,13 +1820,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_view]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1904,13 +1930,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_sinks]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2033,13 +2061,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_sink]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("sink_name", request.sink_name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("sink_name", request.sink_name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2170,13 +2200,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_sink]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2334,13 +2366,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_sink]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("sink_name", request.sink_name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("sink_name", request.sink_name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2438,13 +2472,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_sink]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("sink_name", request.sink_name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("sink_name", request.sink_name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2573,13 +2609,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_link]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2701,13 +2739,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_link]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2819,13 +2859,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_links]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2935,13 +2977,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_link]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3047,13 +3091,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_exclusions]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3174,13 +3220,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_exclusion]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3310,13 +3358,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_exclusion]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3460,13 +3510,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_exclusion]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3563,13 +3615,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_exclusion]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3666,13 +3720,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_cmek_settings]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3777,13 +3833,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_cmek_settings]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3911,13 +3969,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_settings]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4055,13 +4115,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_settings]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4219,12 +4281,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4273,12 +4338,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4330,12 +4398,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()

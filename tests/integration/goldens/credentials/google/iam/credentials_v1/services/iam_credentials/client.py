@@ -714,13 +714,15 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.generate_access_token]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -862,13 +864,15 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.generate_id_token]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -996,13 +1000,15 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.sign_blob]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1133,13 +1139,15 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.sign_jwt]
 
-         # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+         # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()

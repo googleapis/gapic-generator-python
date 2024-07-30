@@ -314,8 +314,7 @@ class LoggingServiceV2AsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.delete_log]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
+        # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
@@ -863,8 +862,7 @@ class LoggingServiceV2AsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.list_logs]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
+        # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
@@ -1016,12 +1014,15 @@ class LoggingServiceV2AsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1070,12 +1071,15 @@ class LoggingServiceV2AsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1127,12 +1131,15 @@ class LoggingServiceV2AsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

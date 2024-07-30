@@ -954,6 +954,35 @@ async def test_list_buckets_async_from_dict():
     await test_list_buckets_async(request_type=dict)
 
 
+def test_list_buckets_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.ListBucketsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_buckets),
+            '__call__') as call:
+        call.return_value = logging_config.ListBucketsResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_buckets(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_list_buckets_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1530,6 +1559,35 @@ async def test_get_bucket_async_from_dict():
     await test_get_bucket_async(request_type=dict)
 
 
+def test_get_bucket_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetBucketRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_bucket),
+            '__call__') as call:
+        call.return_value = logging_config.LogBucket()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_bucket(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_bucket_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1804,6 +1862,35 @@ async def test_create_bucket_async_async_from_dict():
     await test_create_bucket_async_async(request_type=dict)
 
 
+def test_create_bucket_async_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateBucketRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_bucket_async),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_bucket_async(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_create_bucket_async_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2075,6 +2162,35 @@ async def test_update_bucket_async_async(transport: str = 'grpc_asyncio', reques
 async def test_update_bucket_async_async_from_dict():
     await test_update_bucket_async_async(request_type=dict)
 
+
+def test_update_bucket_async_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateBucketRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_bucket_async),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_bucket_async(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_update_bucket_async_field_headers():
     client = ConfigServiceV2Client(
@@ -2376,6 +2492,35 @@ async def test_create_bucket_async_from_dict():
     await test_create_bucket_async(request_type=dict)
 
 
+def test_create_bucket_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateBucketRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_bucket),
+            '__call__') as call:
+        call.return_value = logging_config.LogBucket()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_bucket(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_create_bucket_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2674,6 +2819,35 @@ async def test_update_bucket_async_from_dict():
     await test_update_bucket_async(request_type=dict)
 
 
+def test_update_bucket_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateBucketRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_bucket),
+            '__call__') as call:
+        call.return_value = logging_config.LogBucket()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_bucket(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_update_bucket_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2934,6 +3108,35 @@ async def test_delete_bucket_async_from_dict():
     await test_delete_bucket_async(request_type=dict)
 
 
+def test_delete_bucket_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteBucketRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_bucket),
+            '__call__') as call:
+        call.return_value = None
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_bucket(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_delete_bucket_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3193,6 +3396,35 @@ async def test_undelete_bucket_async(transport: str = 'grpc_asyncio', request_ty
 async def test_undelete_bucket_async_from_dict():
     await test_undelete_bucket_async(request_type=dict)
 
+
+def test_undelete_bucket_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UndeleteBucketRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.undelete_bucket),
+            '__call__') as call:
+        call.return_value = None
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.undelete_bucket(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_undelete_bucket_field_headers():
     client = ConfigServiceV2Client(
@@ -3463,6 +3695,35 @@ async def test_list_views_async(transport: str = 'grpc_asyncio', request_type=lo
 async def test_list_views_async_from_dict():
     await test_list_views_async(request_type=dict)
 
+
+def test_list_views_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.ListViewsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_views),
+            '__call__') as call:
+        call.return_value = logging_config.ListViewsResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_views(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_views_field_headers():
     client = ConfigServiceV2Client(
@@ -4020,6 +4281,35 @@ async def test_get_view_async_from_dict():
     await test_get_view_async(request_type=dict)
 
 
+def test_get_view_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetViewRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_view),
+            '__call__') as call:
+        call.return_value = logging_config.LogView()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_view(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_view_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4300,6 +4590,35 @@ async def test_create_view_async_from_dict():
     await test_create_view_async(request_type=dict)
 
 
+def test_create_view_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateViewRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_view),
+            '__call__') as call:
+        call.return_value = logging_config.LogView()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_view(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_create_view_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4578,6 +4897,35 @@ async def test_update_view_async_from_dict():
     await test_update_view_async(request_type=dict)
 
 
+def test_update_view_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateViewRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_view),
+            '__call__') as call:
+        call.return_value = logging_config.LogView()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_view(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_update_view_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4837,6 +5185,35 @@ async def test_delete_view_async(transport: str = 'grpc_asyncio', request_type=l
 async def test_delete_view_async_from_dict():
     await test_delete_view_async(request_type=dict)
 
+
+def test_delete_view_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteViewRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_view),
+            '__call__') as call:
+        call.return_value = None
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_view(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_delete_view_field_headers():
     client = ConfigServiceV2Client(
@@ -5107,6 +5484,35 @@ async def test_list_sinks_async(transport: str = 'grpc_asyncio', request_type=lo
 async def test_list_sinks_async_from_dict():
     await test_list_sinks_async(request_type=dict)
 
+
+def test_list_sinks_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.ListSinksRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_sinks),
+            '__call__') as call:
+        call.return_value = logging_config.ListSinksResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_sinks(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_sinks_field_headers():
     client = ConfigServiceV2Client(
@@ -5689,6 +6095,35 @@ async def test_get_sink_async_from_dict():
     await test_get_sink_async(request_type=dict)
 
 
+def test_get_sink_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetSinkRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_sink),
+            '__call__') as call:
+        call.return_value = logging_config.LogSink()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_sink(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_sink_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6073,6 +6508,35 @@ async def test_create_sink_async(transport: str = 'grpc_asyncio', request_type=l
 async def test_create_sink_async_from_dict():
     await test_create_sink_async(request_type=dict)
 
+
+def test_create_sink_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateSinkRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_sink),
+            '__call__') as call:
+        call.return_value = logging_config.LogSink()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_sink(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_create_sink_field_headers():
     client = ConfigServiceV2Client(
@@ -6469,6 +6933,35 @@ async def test_update_sink_async_from_dict():
     await test_update_sink_async(request_type=dict)
 
 
+def test_update_sink_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateSinkRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_sink),
+            '__call__') as call:
+        call.return_value = logging_config.LogSink()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_sink(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_update_sink_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6831,6 +7324,35 @@ async def test_delete_sink_async_from_dict():
     await test_delete_sink_async(request_type=dict)
 
 
+def test_delete_sink_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteSinkRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_sink),
+            '__call__') as call:
+        call.return_value = None
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_sink(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_delete_sink_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7186,6 +7708,35 @@ async def test_create_link_async(transport: str = 'grpc_asyncio', request_type=l
 async def test_create_link_async_from_dict():
     await test_create_link_async(request_type=dict)
 
+
+def test_create_link_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateLinkRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_link),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_link(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_create_link_field_headers():
     client = ConfigServiceV2Client(
@@ -7563,6 +8114,35 @@ async def test_delete_link_async_from_dict():
     await test_delete_link_async(request_type=dict)
 
 
+def test_delete_link_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteLinkRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_link),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_link(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_delete_link_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7916,6 +8496,35 @@ async def test_list_links_async(transport: str = 'grpc_asyncio', request_type=lo
 async def test_list_links_async_from_dict():
     await test_list_links_async(request_type=dict)
 
+
+def test_list_links_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.ListLinksRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_links),
+            '__call__') as call:
+        call.return_value = logging_config.ListLinksResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_links(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_links_field_headers():
     client = ConfigServiceV2Client(
@@ -8473,6 +9082,35 @@ async def test_get_link_async_from_dict():
     await test_get_link_async(request_type=dict)
 
 
+def test_get_link_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetLinkRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_link),
+            '__call__') as call:
+        call.return_value = logging_config.Link()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_link(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_link_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8824,6 +9462,35 @@ async def test_list_exclusions_async(transport: str = 'grpc_asyncio', request_ty
 async def test_list_exclusions_async_from_dict():
     await test_list_exclusions_async(request_type=dict)
 
+
+def test_list_exclusions_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.ListExclusionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_exclusions),
+            '__call__') as call:
+        call.return_value = logging_config.ListExclusionsResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_exclusions(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_exclusions_field_headers():
     client = ConfigServiceV2Client(
@@ -9386,6 +10053,35 @@ async def test_get_exclusion_async_from_dict():
     await test_get_exclusion_async(request_type=dict)
 
 
+def test_get_exclusion_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetExclusionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_exclusion),
+            '__call__') as call:
+        call.return_value = logging_config.LogExclusion()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_exclusion(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_exclusion_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9750,6 +10446,35 @@ async def test_create_exclusion_async(transport: str = 'grpc_asyncio', request_t
 async def test_create_exclusion_async_from_dict():
     await test_create_exclusion_async(request_type=dict)
 
+
+def test_create_exclusion_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateExclusionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_exclusion),
+            '__call__') as call:
+        call.return_value = logging_config.LogExclusion()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_exclusion(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_create_exclusion_field_headers():
     client = ConfigServiceV2Client(
@@ -10126,6 +10851,35 @@ async def test_update_exclusion_async_from_dict():
     await test_update_exclusion_async(request_type=dict)
 
 
+def test_update_exclusion_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateExclusionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_exclusion),
+            '__call__') as call:
+        call.return_value = logging_config.LogExclusion()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_exclusion(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_update_exclusion_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10487,6 +11241,35 @@ async def test_delete_exclusion_async(transport: str = 'grpc_asyncio', request_t
 async def test_delete_exclusion_async_from_dict():
     await test_delete_exclusion_async(request_type=dict)
 
+
+def test_delete_exclusion_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteExclusionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_exclusion),
+            '__call__') as call:
+        call.return_value = None
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_exclusion(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_delete_exclusion_field_headers():
     client = ConfigServiceV2Client(
@@ -10853,6 +11636,35 @@ async def test_get_cmek_settings_async_from_dict():
     await test_get_cmek_settings_async(request_type=dict)
 
 
+def test_get_cmek_settings_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetCmekSettingsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_cmek_settings),
+            '__call__') as call:
+        call.return_value = logging_config.CmekSettings()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_cmek_settings(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_cmek_settings_field_headers():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11135,6 +11947,35 @@ async def test_update_cmek_settings_async(transport: str = 'grpc_asyncio', reque
 async def test_update_cmek_settings_async_from_dict():
     await test_update_cmek_settings_async(request_type=dict)
 
+
+def test_update_cmek_settings_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateCmekSettingsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_cmek_settings),
+            '__call__') as call:
+        call.return_value = logging_config.CmekSettings()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_cmek_settings(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_update_cmek_settings_field_headers():
     client = ConfigServiceV2Client(
@@ -11423,6 +12264,35 @@ async def test_get_settings_async(transport: str = 'grpc_asyncio', request_type=
 async def test_get_settings_async_from_dict():
     await test_get_settings_async(request_type=dict)
 
+
+def test_get_settings_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetSettingsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_settings),
+            '__call__') as call:
+        call.return_value = logging_config.Settings()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_settings(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_get_settings_field_headers():
     client = ConfigServiceV2Client(
@@ -11793,6 +12663,35 @@ async def test_update_settings_async(transport: str = 'grpc_asyncio', request_ty
 async def test_update_settings_async_from_dict():
     await test_update_settings_async(request_type=dict)
 
+
+def test_update_settings_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateSettingsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_settings),
+            '__call__') as call:
+        call.return_value = logging_config.Settings()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_settings(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_update_settings_field_headers():
     client = ConfigServiceV2Client(

@@ -965,6 +965,35 @@ async def test_generate_access_token_async_from_dict():
     await test_generate_access_token_async(request_type=dict)
 
 
+def test_generate_access_token_routing_header_override():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = common.GenerateAccessTokenRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_access_token),
+            '__call__') as call:
+        call.return_value = common.GenerateAccessTokenResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.generate_access_token(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_generate_access_token_field_headers():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1342,6 +1371,35 @@ async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_
 async def test_generate_id_token_async_from_dict():
     await test_generate_id_token_async(request_type=dict)
 
+
+def test_generate_id_token_routing_header_override():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = common.GenerateIdTokenRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_id_token),
+            '__call__') as call:
+        call.return_value = common.GenerateIdTokenResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.generate_id_token(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_generate_id_token_field_headers():
     client = IAMCredentialsClient(
@@ -1728,6 +1786,35 @@ async def test_sign_blob_async_from_dict():
     await test_sign_blob_async(request_type=dict)
 
 
+def test_sign_blob_routing_header_override():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = common.SignBlobRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_blob),
+            '__call__') as call:
+        call.return_value = common.SignBlobResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.sign_blob(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_sign_blob_field_headers():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2104,6 +2191,35 @@ async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=comm
 async def test_sign_jwt_async_from_dict():
     await test_sign_jwt_async(request_type=dict)
 
+
+def test_sign_jwt_routing_header_override():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = common.SignJwtRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_jwt),
+            '__call__') as call:
+        call.return_value = common.SignJwtResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.sign_jwt(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_sign_jwt_field_headers():
     client = IAMCredentialsClient(
