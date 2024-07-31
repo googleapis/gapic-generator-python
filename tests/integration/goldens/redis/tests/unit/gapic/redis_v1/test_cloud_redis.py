@@ -931,7 +931,7 @@ async def test_list_instances_async_use_cached_wrapped_rpc(transport: str = "grp
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.list_instances] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.list_instances] = mock_rpc
 
         request = {}
         await client.list_instances(request)
@@ -1558,7 +1558,7 @@ async def test_get_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.get_instance] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.get_instance] = mock_rpc
 
         request = {}
         await client.get_instance(request)
@@ -1961,7 +1961,7 @@ async def test_get_instance_auth_string_async_use_cached_wrapped_rpc(transport: 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.get_instance_auth_string] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.get_instance_auth_string] = mock_rpc
 
         request = {}
         await client.get_instance_auth_string(request)
@@ -2316,7 +2316,7 @@ async def test_create_instance_async_use_cached_wrapped_rpc(transport: str = "gr
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.create_instance] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.create_instance] = mock_rpc
 
         request = {}
         await client.create_instance(request)
@@ -2693,7 +2693,7 @@ async def test_update_instance_async_use_cached_wrapped_rpc(transport: str = "gr
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.update_instance] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.update_instance] = mock_rpc
 
         request = {}
         await client.update_instance(request)
@@ -3064,7 +3064,7 @@ async def test_upgrade_instance_async_use_cached_wrapped_rpc(transport: str = "g
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.upgrade_instance] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.upgrade_instance] = mock_rpc
 
         request = {}
         await client.upgrade_instance(request)
@@ -3433,7 +3433,7 @@ async def test_import_instance_async_use_cached_wrapped_rpc(transport: str = "gr
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.import_instance] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.import_instance] = mock_rpc
 
         request = {}
         await client.import_instance(request)
@@ -3802,7 +3802,7 @@ async def test_export_instance_async_use_cached_wrapped_rpc(transport: str = "gr
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.export_instance] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.export_instance] = mock_rpc
 
         request = {}
         await client.export_instance(request)
@@ -4171,7 +4171,7 @@ async def test_failover_instance_async_use_cached_wrapped_rpc(transport: str = "
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.failover_instance] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.failover_instance] = mock_rpc
 
         request = {}
         await client.failover_instance(request)
@@ -4540,7 +4540,7 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(transport: str = "gr
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_instance] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.delete_instance] = mock_rpc
 
         request = {}
         await client.delete_instance(request)
@@ -4899,7 +4899,7 @@ async def test_reschedule_maintenance_async_use_cached_wrapped_rpc(transport: st
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.reschedule_maintenance] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.reschedule_maintenance] = mock_rpc
 
         request = {}
         await client.reschedule_maintenance(request)

@@ -915,7 +915,7 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.generate_access_token] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.generate_access_token] = mock_rpc
 
         request = {}
         await client.generate_access_token(request)
@@ -1294,7 +1294,7 @@ async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.generate_id_token] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.generate_id_token] = mock_rpc
 
         request = {}
         await client.generate_id_token(request)
@@ -1678,7 +1678,7 @@ async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.sign_blob] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.sign_blob] = mock_rpc
 
         request = {}
         await client.sign_blob(request)
@@ -2056,7 +2056,7 @@ async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.sign_jwt] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.sign_jwt] = mock_rpc
 
         request = {}
         await client.sign_jwt(request)

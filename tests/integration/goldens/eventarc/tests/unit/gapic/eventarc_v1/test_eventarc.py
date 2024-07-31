@@ -947,7 +947,7 @@ async def test_get_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.get_trigger] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.get_trigger] = mock_rpc
 
         request = {}
         await client.get_trigger(request)
@@ -1315,7 +1315,7 @@ async def test_list_triggers_async_use_cached_wrapped_rpc(transport: str = "grpc
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.list_triggers] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.list_triggers] = mock_rpc
 
         request = {}
         await client.list_triggers(request)
@@ -1868,7 +1868,7 @@ async def test_create_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.create_trigger] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.create_trigger] = mock_rpc
 
         request = {}
         await client.create_trigger(request)
@@ -2245,7 +2245,7 @@ async def test_update_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.update_trigger] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.update_trigger] = mock_rpc
 
         request = {}
         await client.update_trigger(request)
@@ -2626,7 +2626,7 @@ async def test_delete_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_trigger] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.delete_trigger] = mock_rpc
 
         request = {}
         await client.delete_trigger(request)
@@ -3009,7 +3009,7 @@ async def test_get_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.get_channel] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.get_channel] = mock_rpc
 
         request = {}
         await client.get_channel(request)
@@ -3377,7 +3377,7 @@ async def test_list_channels_async_use_cached_wrapped_rpc(transport: str = "grpc
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.list_channels] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.list_channels] = mock_rpc
 
         request = {}
         await client.list_channels(request)
@@ -3930,7 +3930,7 @@ async def test_create_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.create_channel_] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.create_channel_] = mock_rpc
 
         request = {}
         await client.create_channel(request)
@@ -4307,7 +4307,7 @@ async def test_update_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.update_channel] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.update_channel] = mock_rpc
 
         request = {}
         await client.update_channel(request)
@@ -4676,7 +4676,7 @@ async def test_delete_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_channel] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.delete_channel] = mock_rpc
 
         request = {}
         await client.delete_channel(request)
@@ -5036,7 +5036,7 @@ async def test_get_provider_async_use_cached_wrapped_rpc(transport: str = "grpc_
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.get_provider] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.get_provider] = mock_rpc
 
         request = {}
         await client.get_provider(request)
@@ -5398,7 +5398,7 @@ async def test_list_providers_async_use_cached_wrapped_rpc(transport: str = "grp
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.list_providers] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.list_providers] = mock_rpc
 
         request = {}
         await client.list_providers(request)
@@ -5956,7 +5956,7 @@ async def test_get_channel_connection_async_use_cached_wrapped_rpc(transport: st
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.get_channel_connection] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.get_channel_connection] = mock_rpc
 
         request = {}
         await client.get_channel_connection(request)
@@ -6318,7 +6318,7 @@ async def test_list_channel_connections_async_use_cached_wrapped_rpc(transport: 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.list_channel_connections] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.list_channel_connections] = mock_rpc
 
         request = {}
         await client.list_channel_connections(request)
@@ -6871,7 +6871,7 @@ async def test_create_channel_connection_async_use_cached_wrapped_rpc(transport:
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.create_channel_connection] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.create_channel_connection] = mock_rpc
 
         request = {}
         await client.create_channel_connection(request)
@@ -7250,7 +7250,7 @@ async def test_delete_channel_connection_async_use_cached_wrapped_rpc(transport:
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_channel_connection] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.delete_channel_connection] = mock_rpc
 
         request = {}
         await client.delete_channel_connection(request)
@@ -7610,7 +7610,7 @@ async def test_get_google_channel_config_async_use_cached_wrapped_rpc(transport:
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.get_google_channel_config] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.get_google_channel_config] = mock_rpc
 
         request = {}
         await client.get_google_channel_config(request)
@@ -7964,7 +7964,7 @@ async def test_update_google_channel_config_async_use_cached_wrapped_rpc(transpo
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[client._client._transport.update_google_channel_config] = mock_object
+        client._client._transport._wrapped_methods[client._client._transport.update_google_channel_config] = mock_rpc
 
         request = {}
         await client.update_google_channel_config(request)
