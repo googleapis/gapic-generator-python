@@ -13061,6 +13061,36 @@ async def test_copy_log_entries_async_from_dict():
     await test_copy_log_entries_async(request_type=dict)
 
 
+def test_copy_log_entries_routing_header_override():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CopyLogEntriesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.copy_log_entries),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.copy_log_entries(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ConfigServiceV2GrpcTransport(
