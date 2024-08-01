@@ -582,7 +582,6 @@ async def test_{{ method_name }}_routing_header_override_async():
         args, kw = call.call_args
         assert args[0] == request
 
-    _, _, kw = call.mock_calls[0]
     # enure there is just one x-goog-request-params header
     assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
     # ensure that the custom header is the only one
