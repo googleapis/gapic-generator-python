@@ -144,34 +144,37 @@
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.{{ method.transport_safe_name|snake_case}}]
 
+        metadata = tuple(metadata)
         {% if method.explicit_routing %}
-        header_params = {}
-        {% if not method.client_streaming %}
-        {% for routing_param in method.routing_rule.routing_parameters %}
-        {% if routing_param.path_template %} {# Need to match. #}
+        # Attach routing header to metadata if not already present
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            header_params = {}
+            {% if not method.client_streaming %}
+            {% for routing_param in method.routing_rule.routing_parameters %}
+            {% if routing_param.path_template %} {# Need to match. #}
 
-        routing_param_regex = {{ routing_param.to_regex() }}
-        regex_match = routing_param_regex.match(request.{{ routing_param.field }})
-        if regex_match and regex_match.group("{{ routing_param.key }}"):
-            header_params["{{ routing_param.key }}"] = regex_match.group("{{ routing_param.key }}")
+            routing_param_regex = {{ routing_param.to_regex() }}
+            regex_match = routing_param_regex.match(request.{{ routing_param.field }})
+            if regex_match and regex_match.group("{{ routing_param.key }}"):
+                header_params["{{ routing_param.key }}"] = regex_match.group("{{ routing_param.key }}")
 
-        {% else %}
+            {% else %}
 
-        if request.{{ routing_param.field }}:
-            header_params["{{ routing_param.key }}"] = request.{{ routing_param.field }}
+            if request.{{ routing_param.field }}:
+                header_params["{{ routing_param.key }}"] = request.{{ routing_param.field }}
 
-        {% endif %}
-        {% endfor %} {# method.routing_rule.routing_parameters #}
-        {% endif %} {# if not method.client_streaming #}
+            {% endif %}
+            {% endfor %} {# method.routing_rule.routing_parameters #}
+            {% endif %} {# if not method.client_streaming #}
 
-        if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            if header_params:
+                    metadata = (
+                        *metadata,
+                        gapic_v1.routing_header.to_grpc_metadata(header_params),
+                    )
 
         {% elif method.field_headers %} {# implicit routing #}
         # Attach routing header to metadata if not already present
-        metadata = tuple(metadata)
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
