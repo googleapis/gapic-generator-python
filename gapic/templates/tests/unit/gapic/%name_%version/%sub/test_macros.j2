@@ -547,6 +547,45 @@ def test_{{ method.name|snake_case }}_routing_header_override():
     # ensure that the custom header is the only one
     assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
+@pytest.mark.asyncio
+async def test_{{ method_name }}_routing_header_override_async():
+    client = {{ service.async_client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = {{ method.input.ident }}()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            '__call__') as call:
+        {% if method.void %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        {% elif method.lro %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        {% elif method.server_streaming %}
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
+        {% else %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall({{ method.output.ident }}())
+        {% endif %}
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.{{ method_name }}(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 {% if method.field_headers and not method.client_streaming and not method.explicit_routing %}
 def test_{{ method_name }}_field_headers():
     client = {{ service.client_name }}(
