@@ -547,6 +547,8 @@ def test_{{ method.name|snake_case }}_routing_header_override():
     # ensure that the custom header is the only one
     assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
+
+{% if not full_extended_lro %}
 @pytest.mark.asyncio
 async def test_{{ method_name }}_routing_header_override_async():
     client = {{ service.async_client_name }}(
@@ -585,6 +587,7 @@ async def test_{{ method_name }}_routing_header_override_async():
     assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
     # ensure that the custom header is the only one
     assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+{% endif %}{# full_extended_lro #}
 
 {% if method.field_headers and not method.client_streaming and not method.explicit_routing %}
 def test_{{ method_name }}_field_headers():
