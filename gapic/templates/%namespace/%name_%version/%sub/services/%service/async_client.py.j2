@@ -171,7 +171,7 @@ class {{ service.async_client_name }}:
         """
         return self._client._universe_domain
 
-    get_transport_class = {{ service.client_name }}).get_transport_class
+    get_transport_class = {{ service.client_name }}.get_transport_class
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
