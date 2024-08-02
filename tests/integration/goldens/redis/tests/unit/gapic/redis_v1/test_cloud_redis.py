@@ -1012,6 +1012,36 @@ def test_list_instances_routing_header_override():
     # ensure that the custom header is the only one
     assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
+
+@pytest.mark.asyncio
+async def test_list_instances_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.ListInstancesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_instances),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.list_instances(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_list_instances_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1717,6 +1747,36 @@ def test_get_instance_routing_header_override():
     # ensure that the custom header is the only one
     assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
+
+@pytest.mark.asyncio
+async def test_get_instance_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.GetInstanceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.get_instance(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_instance_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2091,6 +2151,36 @@ def test_get_instance_auth_string_routing_header_override():
         assert args[0] == request
 
     _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.GetInstanceAuthStringRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.get_instance_auth_string(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
     # enure there is just one x-goog-request-params header
     assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
     # ensure that the custom header is the only one
@@ -2476,6 +2566,36 @@ def test_create_instance_routing_header_override():
         assert args[0] == request
 
     _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_create_instance_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.CreateInstanceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_instance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.create_instance(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
     # enure there is just one x-goog-request-params header
     assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
     # ensure that the custom header is the only one
@@ -2884,6 +3004,36 @@ def test_update_instance_routing_header_override():
     # ensure that the custom header is the only one
     assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
+
+@pytest.mark.asyncio
+async def test_update_instance_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.UpdateInstanceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_instance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.update_instance(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_update_instance_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3276,6 +3426,36 @@ def test_upgrade_instance_routing_header_override():
         assert args[0] == request
 
     _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.UpgradeInstanceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.upgrade_instance(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
     # enure there is just one x-goog-request-params header
     assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
     # ensure that the custom header is the only one
@@ -3676,6 +3856,36 @@ def test_import_instance_routing_header_override():
     # ensure that the custom header is the only one
     assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
+
+@pytest.mark.asyncio
+async def test_import_instance_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.ImportInstanceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.import_instance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.import_instance(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_import_instance_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4066,6 +4276,36 @@ def test_export_instance_routing_header_override():
         assert args[0] == request
 
     _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_export_instance_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.ExportInstanceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_instance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.export_instance(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
     # enure there is just one x-goog-request-params header
     assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
     # ensure that the custom header is the only one
@@ -4466,6 +4706,36 @@ def test_failover_instance_routing_header_override():
     # ensure that the custom header is the only one
     assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
+
+@pytest.mark.asyncio
+async def test_failover_instance_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.FailoverInstanceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.failover_instance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.failover_instance(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_failover_instance_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4861,6 +5131,36 @@ def test_delete_instance_routing_header_override():
     # ensure that the custom header is the only one
     assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
+
+@pytest.mark.asyncio
+async def test_delete_instance_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.DeleteInstanceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_instance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.delete_instance(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_delete_instance_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5241,6 +5541,36 @@ def test_reschedule_maintenance_routing_header_override():
         assert args[0] == request
 
     _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_routing_header_override_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.RescheduleMaintenanceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.reschedule_maintenance(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
     # enure there is just one x-goog-request-params header
     assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
     # ensure that the custom header is the only one

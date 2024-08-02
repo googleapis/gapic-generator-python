@@ -732,8 +732,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_buckets]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -827,8 +827,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_bucket]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -922,8 +922,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_bucket_async]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1027,8 +1027,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_bucket_async]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1122,8 +1122,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_bucket]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1212,8 +1212,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_bucket]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1292,8 +1292,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_bucket]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1366,8 +1366,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.undelete_bucket]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1473,8 +1473,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_views]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1568,8 +1568,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_view]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1654,8 +1654,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_view]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1742,8 +1742,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_view]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1820,8 +1820,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_view]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1930,8 +1930,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_sinks]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2061,8 +2061,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_sink]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2200,8 +2200,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_sink]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2366,8 +2366,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_sink]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2472,8 +2472,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_sink]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2609,8 +2609,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_link]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2739,8 +2739,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_link]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2859,8 +2859,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_links]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2977,8 +2977,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_link]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3091,8 +3091,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_exclusions]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3220,8 +3220,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_exclusion]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3358,8 +3358,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_exclusion]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3510,8 +3510,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_exclusion]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3615,8 +3615,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_exclusion]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3720,8 +3720,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_cmek_settings]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3833,8 +3833,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_cmek_settings]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3969,8 +3969,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_settings]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -4115,8 +4115,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_settings]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -4208,6 +4208,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.copy_log_entries]
+
+        metadata = tuple(metadata)
 
         # Validate the universe domain.
         self._validate_universe_domain()

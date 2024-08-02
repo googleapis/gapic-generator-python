@@ -730,8 +730,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.export_assets]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -851,8 +851,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_assets]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -950,8 +950,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.batch_get_assets_history]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1073,8 +1073,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_feed]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1184,8 +1184,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_feed]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1290,8 +1290,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_feeds]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1405,8 +1405,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_feed]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1501,8 +1501,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_feed]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1718,8 +1718,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.search_all_resources]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1910,8 +1910,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.search_all_iam_policies]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2010,8 +2010,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.analyze_iam_policy]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2119,8 +2119,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.analyze_iam_policy_longrunning]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2219,8 +2219,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.analyze_move]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2317,8 +2317,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.query_assets]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2455,8 +2455,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_saved_query]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2562,8 +2562,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_saved_query]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2675,8 +2675,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_saved_queries]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2804,8 +2804,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_saved_query]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2902,8 +2902,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_saved_query]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2985,8 +2985,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.batch_get_effective_iam_policies]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3127,8 +3127,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.analyze_org_policies]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3280,8 +3280,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.analyze_org_policy_governed_containers]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -3462,8 +3462,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.analyze_org_policy_governed_assets]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,

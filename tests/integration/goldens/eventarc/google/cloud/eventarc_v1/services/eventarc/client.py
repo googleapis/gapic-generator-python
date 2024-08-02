@@ -770,8 +770,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_trigger]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -877,8 +877,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_triggers]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1028,8 +1028,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_trigger]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1168,8 +1168,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_trigger]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1299,8 +1299,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_trigger]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1417,8 +1417,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_channel]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1524,8 +1524,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_channels]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1675,8 +1675,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_channel_]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1807,8 +1807,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_channel]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1930,8 +1930,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_channel]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2042,8 +2042,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_provider]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2149,8 +2149,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_providers]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2269,8 +2269,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_channel_connection]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2377,8 +2377,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_channel_connections]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2528,8 +2528,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_channel_connection]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2649,8 +2649,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_channel_connection]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2767,8 +2767,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_google_channel_config]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2890,8 +2890,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_google_channel_config]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,

@@ -657,8 +657,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_log_metrics]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -784,8 +784,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_log_metric]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -919,8 +919,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_log_metric]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1053,8 +1053,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_log_metric]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1150,8 +1150,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_log_metric]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,

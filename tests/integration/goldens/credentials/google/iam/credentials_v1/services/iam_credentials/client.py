@@ -714,8 +714,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.generate_access_token]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -864,8 +864,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.generate_id_token]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1000,8 +1000,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.sign_blob]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1139,8 +1139,8 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.sign_jwt]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,

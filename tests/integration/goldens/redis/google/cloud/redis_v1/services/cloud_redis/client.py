@@ -694,8 +694,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_instances]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -808,8 +808,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_instance]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -914,8 +914,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_instance_auth_string]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1072,8 +1072,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_instance]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1219,8 +1219,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_instance]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1351,8 +1351,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.upgrade_instance]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1493,8 +1493,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.import_instance]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1632,8 +1632,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.export_instance]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1765,8 +1765,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.failover_instance]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -1893,8 +1893,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_instance]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
@@ -2036,8 +2036,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.reschedule_maintenance]
 
-         # Attach routing header to metadata if not already present
         metadata = tuple(metadata)
+        # Attach routing header to metadata if not already present
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
             metadata = (
                 *metadata,
