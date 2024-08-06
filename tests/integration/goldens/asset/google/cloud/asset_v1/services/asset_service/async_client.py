@@ -332,13 +332,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.export_assets]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -452,13 +454,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.list_assets]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -549,13 +553,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_assets_history]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -671,13 +677,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.create_feed]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -781,13 +789,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.get_feed]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -886,13 +896,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.list_feeds]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1000,13 +1012,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.update_feed]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("feed.name", request.feed.name),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("feed.name", request.feed.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1095,13 +1109,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.delete_feed]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1311,13 +1327,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_resources]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("scope", request.scope),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("scope", request.scope),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1502,13 +1520,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_iam_policies]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("scope", request.scope),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("scope", request.scope),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1600,13 +1620,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("analysis_query.scope", request.analysis_query.scope),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("analysis_query.scope", request.analysis_query.scope),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1707,13 +1729,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy_longrunning]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("analysis_query.scope", request.analysis_query.scope),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("analysis_query.scope", request.analysis_query.scope),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1805,13 +1829,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_move]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("resource", request.resource),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("resource", request.resource),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1901,13 +1927,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.query_assets]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2038,13 +2066,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.create_saved_query]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2144,13 +2174,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.get_saved_query]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2256,13 +2288,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.list_saved_queries]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("parent", request.parent),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2384,13 +2418,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.update_saved_query]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("saved_query.name", request.saved_query.name),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("saved_query.name", request.saved_query.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2481,13 +2517,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.delete_saved_query]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("name", request.name),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2562,13 +2600,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_effective_iam_policies]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("scope", request.scope),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("scope", request.scope),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2703,13 +2743,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policies]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("scope", request.scope),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("scope", request.scope),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2855,13 +2897,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_containers]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("scope", request.scope),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("scope", request.scope),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3036,13 +3080,15 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_assets]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("scope", request.scope),
-            )),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    ("scope", request.scope),
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3106,12 +3152,15 @@ class AssetServiceAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        # Attach routing header to metadata if not already present
+        metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata = (
+                *metadata,
+                gapic_v1.routing_header.to_grpc_metadata((
+                    (("name", request.name),)
+                ))
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
