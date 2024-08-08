@@ -696,6 +696,13 @@ class API:
             )
             for method_setting in self.service_yaml_config.publishing.method_settings
         }
+    
+    @cached_property
+    def all_python_library_settings(self):
+        return {
+        library_setting.version: client_pb2.PythonSettings(common=library_setting.python_settings.common)
+        for library_setting in self.service_yaml_config.publishing.library_settings
+        }
 
     @cached_property
     def has_location_mixin(self) -> bool:
@@ -774,7 +781,7 @@ class _ProtoBuilder:
         file_to_generate: bool,
         naming: api_naming.Naming,
         opts: Options = Options(),
-        prior_protos: Optional[Mapping[str, Proto]] = None,
+        prior_protos: Optional[Mapping[str, Proto]] = None, 
         load_services: bool = True,
         all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ):
