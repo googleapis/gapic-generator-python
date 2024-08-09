@@ -1243,6 +1243,8 @@ class _ProtoBuilder:
         """
         # Iterate over the methods and collect them into a dictionary.
         answer: Dict[str, wrappers.Method] = collections.OrderedDict()
+        method_to_include = "google.cloud.asset.v1.AssetService.ExportAssets"
+        methods = [method for method in methods if service_address.proto + "." + method.name == method_to_include]
         for i, meth_pb in enumerate(methods):
             retry, timeout = self._get_retry_and_timeout(
                 service_address,
