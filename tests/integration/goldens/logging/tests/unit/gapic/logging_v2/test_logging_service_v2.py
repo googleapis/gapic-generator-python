@@ -36,6 +36,7 @@ from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.logging_v2.services.logging_service_v2 import LoggingServiceV2AsyncClient
@@ -896,20 +897,21 @@ async def test_delete_log_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.delete_log in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_log] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_log] = mock_rpc
 
         request = {}
         await client.delete_log(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_log(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_log_async(transport: str = 'grpc_asyncio', request_type=logging.DeleteLogRequest):
@@ -1240,20 +1242,21 @@ async def test_write_log_entries_async_use_cached_wrapped_rpc(transport: str = "
         assert client._client._transport.write_log_entries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.write_log_entries] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.write_log_entries] = mock_rpc
 
         request = {}
         await client.write_log_entries(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.write_log_entries(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_write_log_entries_async(transport: str = 'grpc_asyncio', request_type=logging.WriteLogEntriesRequest):
@@ -1559,20 +1562,21 @@ async def test_list_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.list_log_entries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_log_entries] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_log_entries] = mock_rpc
 
         request = {}
         await client.list_log_entries(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_log_entries(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_log_entries_async(transport: str = 'grpc_asyncio', request_type=logging.ListLogEntriesRequest):
@@ -1753,9 +1757,13 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        pager = client.list_log_entries(request={})
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.list_log_entries(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -2053,20 +2061,21 @@ async def test_list_monitored_resource_descriptors_async_use_cached_wrapped_rpc(
         assert client._client._transport.list_monitored_resource_descriptors in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_monitored_resource_descriptors] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_monitored_resource_descriptors] = mock_rpc
 
         request = {}
         await client.list_monitored_resource_descriptors(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_monitored_resource_descriptors(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_monitored_resource_descriptors_async(transport: str = 'grpc_asyncio', request_type=logging.ListMonitoredResourceDescriptorsRequest):
@@ -2145,9 +2154,13 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
         )
 
         expected_metadata = ()
-        pager = client.list_monitored_resource_descriptors(request={})
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.list_monitored_resource_descriptors(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -2450,20 +2463,21 @@ async def test_list_logs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         assert client._client._transport.list_logs in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_logs] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_logs] = mock_rpc
 
         request = {}
         await client.list_logs(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_logs(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_logs_async(transport: str = 'grpc_asyncio', request_type=logging.ListLogsRequest):
@@ -2689,14 +2703,18 @@ def test_list_logs_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ('parent', ''),
             )),
         )
-        pager = client.list_logs(request={})
+        pager = client.list_logs(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -2925,20 +2943,21 @@ async def test_tail_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.tail_log_entries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.tail_log_entries] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.tail_log_entries] = mock_rpc
 
         request = [{}]
         await client.tail_log_entries(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.tail_log_entries(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_tail_log_entries_async(transport: str = 'grpc_asyncio', request_type=logging.TailLogEntriesRequest):

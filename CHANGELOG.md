@@ -1,6 +1,36 @@
 # Changelog
 
 
+## [1.18.5](https://github.com/googleapis/gapic-generator-python/compare/v1.18.4...v1.18.5) (2024-08-06)
+
+
+### Bug Fixes
+
+* Mypy types in get_transport ([#2088](https://github.com/googleapis/gapic-generator-python/issues/2088)) ([f76fdaf](https://github.com/googleapis/gapic-generator-python/commit/f76fdaf1f717e99caef4c0ce217eef3322df9a30))
+* Require google.shopping.type &gt;= 0.1.6 ([#2083](https://github.com/googleapis/gapic-generator-python/issues/2083)) ([1b63310](https://github.com/googleapis/gapic-generator-python/commit/1b63310378692f478ef29734b3cb5fde3d436b22))
+
+## [1.18.4](https://github.com/googleapis/gapic-generator-python/compare/v1.18.3...v1.18.4) (2024-07-26)
+
+
+### Bug Fixes
+
+* Fix AttributeError with AsyncRetry ([#2072](https://github.com/googleapis/gapic-generator-python/issues/2072)) ([dcddac8](https://github.com/googleapis/gapic-generator-python/commit/dcddac803fc5eb58c0d242d88c8b4c419b83fe90))
+
+## [1.18.3](https://github.com/googleapis/gapic-generator-python/compare/v1.18.2...v1.18.3) (2024-07-23)
+
+
+### Bug Fixes
+
+* Allow pyi files to be included in the output of py_gapic_assembly_pkg ([#2036](https://github.com/googleapis/gapic-generator-python/issues/2036)) ([8c517a0](https://github.com/googleapis/gapic-generator-python/commit/8c517a030c88cceb179c6d83ad706b2d7f1eba89))
+* Retry and timeout values do not propagate in requests during pagination ([#2065](https://github.com/googleapis/gapic-generator-python/issues/2065)) ([76aa98e](https://github.com/googleapis/gapic-generator-python/commit/76aa98eda53cfc5c406fb5ed705e894c5c6c2513))
+
+## [1.18.2](https://github.com/googleapis/gapic-generator-python/compare/v1.18.1...v1.18.2) (2024-07-02)
+
+
+### Bug Fixes
+
+* Fix AwaitableMock test coverage ([b48c935](https://github.com/googleapis/gapic-generator-python/commit/b48c935b55b840ad2deff451c5229f32bc386e9c))
+
 ## [1.18.1](https://github.com/googleapis/gapic-generator-python/compare/v1.18.0...v1.18.1) (2024-06-20)
 
 

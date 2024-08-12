@@ -628,7 +628,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
             transport_init: Union[Type[AssetServiceTransport], Callable[..., AssetServiceTransport]] = (
-                type(self).get_transport_class(transport)
+                AssetServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AssetServiceTransport], transport)
             )
@@ -874,6 +874,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1725,6 +1727,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1913,6 +1917,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2662,6 +2668,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3104,6 +3112,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3253,6 +3263,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -3431,6 +3443,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
@@ -178,7 +177,7 @@ class ConfigServiceV2AsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(type(ConfigServiceV2Client).get_transport_class, type(ConfigServiceV2Client))
+    get_transport_class = ConfigServiceV2Client.get_transport_class
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
@@ -363,6 +362,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1087,6 +1088,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1533,6 +1536,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2453,6 +2458,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -2681,6 +2688,8 @@ class ConfigServiceV2AsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

@@ -273,8 +273,6 @@ def showcase_library(
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
 
-        # Remove once https://github.com/googleapis/python-api-core/pull/650 is merged
-        session.install("google-api-core>=2.19.1rc0")
         yield tmp_dir
 
 
@@ -433,8 +431,7 @@ def showcase_mypy(
 ):
     """Perform typecheck analysis on the generated Showcase library."""
 
-    # Install pytest and gapic-generator-python
-    session.install("mypy", "types-pkg-resources", "types-protobuf", "types-requests", "types-dataclasses")
+    session.install("mypy", "types-setuptools", "types-protobuf", "types-requests", "types-dataclasses")
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
