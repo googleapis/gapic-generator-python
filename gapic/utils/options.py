@@ -25,7 +25,8 @@ import yaml
 from gapic.samplegen_utils import utils as samplegen_utils
 
 
-@dataclasses.dataclass(frozen=True)
+# TODO (ohmayr): revert froze=True. Hacking this to test async template generation.
+@dataclasses.dataclass()
 class Options:
     """A representation of CLI options passed through protoc.
 
@@ -50,7 +51,7 @@ class Options:
         default_factory=dict)
     rest_numeric_enums: bool = False
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=('',))
-
+    async_rest: bool = False
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
     OPT_FLAGS: FrozenSet[str] = frozenset((

@@ -116,9 +116,14 @@ class Generator:
             filename = template_name.split("/")[-1]
             if filename.startswith("_") and filename != "__init__.py.j2":
                 continue
-
-            # Append to the output files dictionary.
+            
             output_files.update(
+                self._render_template(
+                    template_name, api_schema=api_schema, opts=opts, snippet_index=snippet_idx)
+            )
+            if "rest.py" in filename:
+                opts.async_rest = True
+                output_files.update(
                 self._render_template(
                     template_name, api_schema=api_schema, opts=opts, snippet_index=snippet_idx)
             )
@@ -334,6 +339,9 @@ class Generator:
         # Determine the target filename.
         fn = self._get_filename(
             template_name, api_schema=api_schema, context=context,)
+        
+        if "rest.py" in fn and opts.async_rest == True:
+            fn = fn.replace("rest.py", "rest_asyncio.py")
 
         # Render the file contents.
         cgr_file = CodeGeneratorResponse.File(

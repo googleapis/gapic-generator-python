@@ -1,12 +1,36 @@
     {% if "rest" in opts.transport %}
 
+    {% set async_prefix = "async " if opts.async_rest else "" %}
+    {% set await_prefix = "await " if opts.async_rest else "" %}
+
     {% for name, sig in api.mixin_api_signatures.items() %} 
     @property
     def {{ name|snake_case }}(self):
         return self._{{ name }}(self._session, self._host, self._interceptor) # type: ignore
     
-    class _{{ name }}({{service.name}}RestStub):
-        def __call__(self,
+    class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{service.name}}RestStub):
+        {% if sig.response_type != 'None' %}
+        {% set body_spec = api.mixin_http_options["{}".format(name)][0].body %}
+        {{async_prefix ~ "def _get_response(self, body, host, metadata, query_params, session, timeout, transcoded_request):" | indent(4)}}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+
+            response = {{ await_prefix }}getattr(self._session, metadata, transcoded_request)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                {% if body_spec %}
+                data=body,
+                {% endif %}
+            )
+            return response
+
+        {% endif %} {# sig.response_type != 'None' #}
+        
+        {{async_prefix ~ "def __call__(self," | indent(4)}}
             request: {{ sig.request_type }}, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
@@ -32,47 +56,20 @@
                 {{ sig.response_type }}: Response from {{ name }} method.
             {% endif %}
             """
-
-            http_options: List[Dict[str, str]] = [
-            {%- for rule in api.mixin_http_options["{}".format(name)] %}{
-                'method': '{{ rule.method }}',
-                'uri': '{{ rule.uri }}',
-                {% if rule.body %}
-                'body': '{{ rule.body }}',
-                {% endif %}{# rule.body #}
-            },
-            {% endfor %}
-            ]
-
+            http_options = _{{ name }}._get_http_options()
             request, metadata = self._interceptor.pre_{{ name|snake_case }}(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = self._get_transcoded_request(http_options, request)
 
             {% set body_spec = api.mixin_http_options["{}".format(name)][0].body %}
             {%- if body_spec %}
-            body = json.dumps(transcoded_request['body'])
-            {%- endif %}
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _get_request_body_json(transcoded_request)
+            {% endif %} {# body_spec #}
 
             # Jsonify the query params
             query_params = json.loads(json.dumps(transcoded_request['query_params']))
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                {% if body_spec %}
-                data=body,
-                {% endif %}
-            )
+            response = {{ await_prefix }}self._get_response(body, self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
