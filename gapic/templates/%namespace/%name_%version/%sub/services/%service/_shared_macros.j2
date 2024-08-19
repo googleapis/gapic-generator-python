@@ -68,3 +68,47 @@ except ImportError:  # pragma: NO COVER
             )
     {% endif %}{# service_version #}
 {% endmacro %}
+
+{% macro operations_mixin_imports(api, service, opts) %}
+{# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
+{% if import_ns is not defined %}
+{% set import_ns = namespace(has_operations_mixin=false) %}
+{% endif %}
+{% if api.has_operations_mixin %}
+{% set import_ns.has_operations_mixin = True %}
+{% endif %}
+
+{% filter sort_lines %}
+{% for method in service.methods.values() %}
+{{method.input.ident.python_import}}
+{% if method.output.ident|string() == "operations_pb2.Operation" %}
+{% set import_ns.has_operations_mixin = True %}
+{% else %}
+{{method.output.ident.python_import}}
+{% endif %}
+{% endfor %}
+{% if opts.add_iam_methods %}
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+{% endif %}
+{% endfilter %}
+{% if import_ns.has_operations_mixin %}
+from google.longrunning import operations_pb2  # type: ignore
+{% endif %}
+{% endmacro %}
+
+{% macro http_options_method(rules) %}
+@staticmethod
+def _get_http_options():
+    http_options: List[Dict[str, str]] = [
+    {%- for rule in rules %}{
+        'method': '{{ rule.method }}',
+        'uri': '{{ rule.uri }}',
+        {% if rule.body %}
+        'body': '{{ rule.body }}',
+        {% endif %}{# rule.body #}
+    },
+    {% endfor %}{# rule in rules #}
+    ]
+    return http_options
+{% endmacro %}
