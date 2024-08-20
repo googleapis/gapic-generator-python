@@ -147,6 +147,7 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
 
         {% set body_spec = method.http_options[0].body %}
         {%- if body_spec %}
+
         @staticmethod
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
@@ -156,15 +157,17 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
                 use_integers_for_enums={{ opts.rest_numeric_enums }}
             )
             return body
+
         {%- endif %}{# body_spec #}
 
-        def _get_query_params_json(self, transcoded_request):
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
                 use_integers_for_enums={{ opts.rest_numeric_enums }},
             ))
             {% if method.input.required_fields %}
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params.update(_Base{{ service.name }}RestTransport._Base{{method.name}}._get_unset_required_fields(query_params))
             {% endif %}{# required fields #}
 
             {% if opts.rest_numeric_enums %}

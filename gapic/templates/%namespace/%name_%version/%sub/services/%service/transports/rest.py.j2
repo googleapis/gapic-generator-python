@@ -10,7 +10,6 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
-from google.api_core import path_template
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
@@ -27,7 +26,6 @@ from google.cloud.location import locations_pb2 # type: ignore
 
 from requests import __version__ as requests_version
 import dataclasses
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -281,31 +279,8 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     class _{{method.name}}(_Base{{ service.name }}RestTransport._Base{{method.name}}, {{service.name}}RestStub):
         {% if method.http_options and not method.client_streaming %}
 
-        def _get_response(self,
-                host,
-                metadata,
-                query_params,
-                session,
-                timeout,
-                transcoded_request,
-                body=None):
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                {% set body_spec = method.http_options[0].body %}
-                {% if body_spec %}
-                data=body,
-                {% endif %}
-                )
-            return response
-
+        {% set body_spec = method.http_options[0].body %}
+        {{ shared_macros.response_method(body_spec)|indent(8) }}
         {% endif %}{# method.http_options and not method.client_streaming #}
 
         def __call__(self,
@@ -337,27 +312,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}
             """
 
-            http_options = _Base{{ service.name }}RestTransport._Base{{method.name}}._get_http_options()
-            request, metadata = self._interceptor.pre_{{ method.name|snake_case }}(request, metadata)
-            transcoded_request = _Base{{ service.name }}RestTransport._Base{{method.name}}._get_transcoded_request(http_options, request)
-
-            {% set body_spec = method.http_options[0].body %}
-            {%- if body_spec %}
-            body = _Base{{ service.name }}RestTransport._Base{{method.name}}._get_request_body_json(transcoded_request)
-            {% endif %} {# body_spec #}
-
-            # Jsonify the query params
-            query_params = self._get_query_params_json(transcoded_request)
-
-            # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = self._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request{% if body_spec %}, body{% endif %})
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
+            {{ shared_macros.rest_call_method_common(body_spec, method.name, service.name)|indent(8) }}
 
             {% if not method.void %}
             # Return the response
