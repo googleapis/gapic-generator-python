@@ -219,6 +219,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience
         )
         self._session = AuthorizedSession(

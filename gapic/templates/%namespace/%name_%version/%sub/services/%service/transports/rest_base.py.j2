@@ -29,20 +29,6 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
     """Base REST backend transport for {{ service.name }}.
     
     Note: This class is not meant to be used directly.
-
-    {{ service.meta.doc|rst(width=72, indent=4) }}
-
-    This class defines the same methods as the primary client, so the
-    primary client can load the underlying transport implementation
-    and call it.
-
-    It sends JSON representations of protocol buffers over HTTP/1.1
-
-    {% if not opts.rest_numeric_enums %}
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
-    {% endif %}
     """
 
 
@@ -56,13 +42,6 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
             api_audience: Optional[str] = None,
             ) -> None:
         """Instantiate the transport.
-
-       {% if not opts.rest_numeric_enums %}
-       NOTE: This REST transport functionality is currently in a beta
-       state (preview). We welcome your feedback via a GitHub issue in
-       this library's repository. Thank you!
-       {% endif %}
-
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
                 {{ ' ' }}The hostname to connect to {% if service.host %}(default: '{{ service.host }}'){% endif %}.
@@ -71,17 +50,6 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
@@ -94,9 +62,6 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
                 "http" can be specified.
         """
         # Run the base constructor
-        # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
-        # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
-        # credentials object
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
             raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
