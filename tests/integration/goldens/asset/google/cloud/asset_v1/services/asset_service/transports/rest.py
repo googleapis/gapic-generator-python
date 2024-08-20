@@ -16,21 +16,18 @@
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
-from google.api_core import path_template
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
 from google.api_core import operations_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,12 +36,15 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+from .rest_base import _BaseAssetServiceRestTransport
+
 
 from google.cloud.asset_v1.types import asset_service
 from google.protobuf import empty_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -632,7 +632,7 @@ class AssetServiceRestStub:
     _interceptor: AssetServiceRestInterceptor
 
 
-class AssetServiceRestTransport(AssetServiceTransport):
+class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
     """REST backend transport for AssetService.
 
     Asset service definition.
@@ -702,19 +702,12 @@ class AssetServiceRestTransport(AssetServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience
         )
         self._session = AuthorizedSession(
@@ -756,16 +749,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _AnalyzeIamPolicy(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("AnalyzeIamPolicy")
+    class _AnalyzeIamPolicy(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "analysisQuery" : {},        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeIamPolicyRequest, *,
@@ -792,34 +798,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{analysis_query.scope=*/*}:analyzeIamPolicy',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_http_options()
             request, metadata = self._interceptor.pre_analyze_iam_policy(request, metadata)
-            pb_request = asset_service.AnalyzeIamPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -834,16 +821,30 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_analyze_iam_policy(resp)
             return resp
 
-    class _AnalyzeIamPolicyLongrunning(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("AnalyzeIamPolicyLongrunning")
+    class _AnalyzeIamPolicyLongrunning(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeIamPolicyLongrunningRequest, *,
@@ -872,42 +873,17 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{analysis_query.scope=*/*}:analyzeIamPolicyLongrunning',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_http_options()
             request, metadata = self._interceptor.pre_analyze_iam_policy_longrunning(request, metadata)
-            pb_request = asset_service.AnalyzeIamPolicyLongrunningRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._AnalyzeIamPolicyLongrunning._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -920,16 +896,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
             return resp
 
-    class _AnalyzeMove(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("AnalyzeMove")
+    class _AnalyzeMove(_BaseAssetServiceRestTransport._BaseAnalyzeMove, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "destinationParent" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeMoveRequest, *,
@@ -956,34 +945,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{resource=*/*}:analyzeMove',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_http_options()
             request, metadata = self._interceptor.pre_analyze_move(request, metadata)
-            pb_request = asset_service.AnalyzeMoveRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeMove._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -998,16 +968,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_analyze_move(resp)
             return resp
 
-    class _AnalyzeOrgPolicies(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("AnalyzeOrgPolicies")
+    class _AnalyzeOrgPolicies(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "constraint" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeOrgPoliciesRequest, *,
@@ -1034,34 +1017,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:analyzeOrgPolicies',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_http_options()
             request, metadata = self._interceptor.pre_analyze_org_policies(request, metadata)
-            pb_request = asset_service.AnalyzeOrgPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeOrgPolicies._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1076,16 +1040,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_analyze_org_policies(resp)
             return resp
 
-    class _AnalyzeOrgPolicyGovernedAssets(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("AnalyzeOrgPolicyGovernedAssets")
+    class _AnalyzeOrgPolicyGovernedAssets(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "constraint" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, *,
@@ -1113,34 +1090,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:analyzeOrgPolicyGovernedAssets',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_http_options()
             request, metadata = self._interceptor.pre_analyze_org_policy_governed_assets(request, metadata)
-            pb_request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeOrgPolicyGovernedAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1155,16 +1113,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
             return resp
 
-    class _AnalyzeOrgPolicyGovernedContainers(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("AnalyzeOrgPolicyGovernedContainers")
+    class _AnalyzeOrgPolicyGovernedContainers(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "constraint" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest, *,
@@ -1192,34 +1163,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:analyzeOrgPolicyGovernedContainers',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_http_options()
             request, metadata = self._interceptor.pre_analyze_org_policy_governed_containers(request, metadata)
-            pb_request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeOrgPolicyGovernedContainers._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1234,16 +1186,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
             return resp
 
-    class _BatchGetAssetsHistory(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("BatchGetAssetsHistory")
+    class _BatchGetAssetsHistory(_BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.BatchGetAssetsHistoryRequest, *,
@@ -1267,34 +1232,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
                     Batch get assets history response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=*/*}:batchGetAssetsHistory',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_http_options()
             request, metadata = self._interceptor.pre_batch_get_assets_history(request, metadata)
-            pb_request = asset_service.BatchGetAssetsHistoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._BatchGetAssetsHistory._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1309,16 +1255,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_batch_get_assets_history(resp)
             return resp
 
-    class _BatchGetEffectiveIamPolicies(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("BatchGetEffectiveIamPolicies")
+    class _BatchGetEffectiveIamPolicies(_BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "names" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.BatchGetEffectiveIamPoliciesRequest, *,
@@ -1346,34 +1305,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}/effectiveIamPolicies:batchGet',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_http_options()
             request, metadata = self._interceptor.pre_batch_get_effective_iam_policies(request, metadata)
-            pb_request = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._BatchGetEffectiveIamPolicies._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1388,16 +1328,30 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
             return resp
 
-    class _CreateFeed(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("CreateFeed")
+    class _CreateFeed(_BaseAssetServiceRestTransport._BaseCreateFeed, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.CreateFeedRequest, *,
@@ -1429,42 +1383,17 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=*/*}/feeds',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseCreateFeed._get_http_options()
             request, metadata = self._interceptor.pre_create_feed(request, metadata)
-            pb_request = asset_service.CreateFeedRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseCreateFeed._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseCreateFeed._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseCreateFeed._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._CreateFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1479,16 +1408,30 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_create_feed(resp)
             return resp
 
-    class _CreateSavedQuery(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("CreateSavedQuery")
+    class _CreateSavedQuery(_BaseAssetServiceRestTransport._BaseCreateSavedQuery, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "savedQueryId" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.CreateSavedQueryRequest, *,
@@ -1514,42 +1457,17 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=*/*}/savedQueries',
-                'body': 'saved_query',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_http_options()
             request, metadata = self._interceptor.pre_create_saved_query(request, metadata)
-            pb_request = asset_service.CreateSavedQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._CreateSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1564,16 +1482,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_create_saved_query(resp)
             return resp
 
-    class _DeleteFeed(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("DeleteFeed")
+    class _DeleteFeed(_BaseAssetServiceRestTransport._BaseDeleteFeed, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.DeleteFeedRequest, *,
@@ -1593,50 +1524,44 @@ class AssetServiceRestTransport(AssetServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=*/*/feeds/*}',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_http_options()
             request, metadata = self._interceptor.pre_delete_feed(request, metadata)
-            pb_request = asset_service.DeleteFeedRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._DeleteFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSavedQuery(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("DeleteSavedQuery")
+    class _DeleteSavedQuery(_BaseAssetServiceRestTransport._BaseDeleteSavedQuery, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.DeleteSavedQueryRequest, *,
@@ -1656,50 +1581,45 @@ class AssetServiceRestTransport(AssetServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=*/*/savedQueries/*}',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_http_options()
             request, metadata = self._interceptor.pre_delete_saved_query(request, metadata)
-            pb_request = asset_service.DeleteSavedQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._DeleteSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ExportAssets(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("ExportAssets")
+    class _ExportAssets(_BaseAssetServiceRestTransport._BaseExportAssets, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.ExportAssetsRequest, *,
@@ -1726,42 +1646,17 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=*/*}:exportAssets',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseExportAssets._get_http_options()
             request, metadata = self._interceptor.pre_export_assets(request, metadata)
-            pb_request = asset_service.ExportAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseExportAssets._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseExportAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseExportAssets._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._ExportAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1774,16 +1669,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_export_assets(resp)
             return resp
 
-    class _GetFeed(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("GetFeed")
+    class _GetFeed(_BaseAssetServiceRestTransport._BaseGetFeed, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.GetFeedRequest, *,
@@ -1815,34 +1723,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=*/*/feeds/*}',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseGetFeed._get_http_options()
             request, metadata = self._interceptor.pre_get_feed(request, metadata)
-            pb_request = asset_service.GetFeedRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetFeed._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseGetFeed._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._GetFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1857,16 +1746,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_get_feed(resp)
             return resp
 
-    class _GetSavedQuery(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("GetSavedQuery")
+    class _GetSavedQuery(_BaseAssetServiceRestTransport._BaseGetSavedQuery, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.GetSavedQueryRequest, *,
@@ -1892,34 +1794,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=*/*/savedQueries/*}',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_http_options()
             request, metadata = self._interceptor.pre_get_saved_query(request, metadata)
-            pb_request = asset_service.GetSavedQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._GetSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1934,16 +1817,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_get_saved_query(resp)
             return resp
 
-    class _ListAssets(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("ListAssets")
+    class _ListAssets(_BaseAssetServiceRestTransport._BaseListAssets, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.ListAssetsRequest, *,
@@ -1967,34 +1863,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
                     ListAssets response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=*/*}/assets',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseListAssets._get_http_options()
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            pb_request = asset_service.ListAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._ListAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2009,16 +1886,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_list_assets(resp)
             return resp
 
-    class _ListFeeds(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("ListFeeds")
+    class _ListFeeds(_BaseAssetServiceRestTransport._BaseListFeeds, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.ListFeedsRequest, *,
@@ -2042,34 +1932,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=*/*}/feeds',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseListFeeds._get_http_options()
             request, metadata = self._interceptor.pre_list_feeds(request, metadata)
-            pb_request = asset_service.ListFeedsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListFeeds._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseListFeeds._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._ListFeeds._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2084,16 +1955,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_list_feeds(resp)
             return resp
 
-    class _ListSavedQueries(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("ListSavedQueries")
+    class _ListSavedQueries(_BaseAssetServiceRestTransport._BaseListSavedQueries, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.ListSavedQueriesRequest, *,
@@ -2117,34 +2001,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
                     Response of listing saved queries.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=*/*}/savedQueries',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_http_options()
             request, metadata = self._interceptor.pre_list_saved_queries(request, metadata)
-            pb_request = asset_service.ListSavedQueriesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._ListSavedQueries._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2159,16 +2024,30 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_list_saved_queries(resp)
             return resp
 
-    class _QueryAssets(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("QueryAssets")
+    class _QueryAssets(_BaseAssetServiceRestTransport._BaseQueryAssets, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.QueryAssetsRequest, *,
@@ -2192,42 +2071,17 @@ class AssetServiceRestTransport(AssetServiceTransport):
                     QueryAssets response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=*/*}:queryAssets',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseQueryAssets._get_http_options()
             request, metadata = self._interceptor.pre_query_assets(request, metadata)
-            pb_request = asset_service.QueryAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseQueryAssets._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseQueryAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseQueryAssets._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._QueryAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2242,16 +2096,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_query_assets(resp)
             return resp
 
-    class _SearchAllIamPolicies(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("SearchAllIamPolicies")
+    class _SearchAllIamPolicies(_BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.SearchAllIamPoliciesRequest, *,
@@ -2275,34 +2142,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
                     Search all IAM policies response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:searchAllIamPolicies',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
             request, metadata = self._interceptor.pre_search_all_iam_policies(request, metadata)
-            pb_request = asset_service.SearchAllIamPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._SearchAllIamPolicies._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2317,16 +2165,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_search_all_iam_policies(resp)
             return resp
 
-    class _SearchAllResources(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("SearchAllResources")
+    class _SearchAllResources(_BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.SearchAllResourcesRequest, *,
@@ -2350,34 +2211,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
                     Search all resources response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:searchAllResources',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
             request, metadata = self._interceptor.pre_search_all_resources(request, metadata)
-            pb_request = asset_service.SearchAllResourcesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._SearchAllResources._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2392,16 +2234,30 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_search_all_resources(resp)
             return resp
 
-    class _UpdateFeed(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("UpdateFeed")
+    class _UpdateFeed(_BaseAssetServiceRestTransport._BaseUpdateFeed, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.UpdateFeedRequest, *,
@@ -2433,42 +2289,17 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{feed.name=*/*/feeds/*}',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_http_options()
             request, metadata = self._interceptor.pre_update_feed(request, metadata)
-            pb_request = asset_service.UpdateFeedRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._UpdateFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2483,16 +2314,30 @@ class AssetServiceRestTransport(AssetServiceTransport):
             resp = self._interceptor.post_update_feed(resp)
             return resp
 
-    class _UpdateSavedQuery(AssetServiceRestStub):
-        def __hash__(self):
-            return hash("UpdateSavedQuery")
+    class _UpdateSavedQuery(_BaseAssetServiceRestTransport._BaseUpdateSavedQuery, AssetServiceRestStub):
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "updateMask" : {},        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.UpdateSavedQueryRequest, *,
@@ -2518,42 +2363,17 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{saved_query.name=*/*/savedQueries/*}',
-                'body': 'saved_query',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_http_options()
             request, metadata = self._interceptor.pre_update_saved_query(request, metadata)
-            pb_request = asset_service.UpdateSavedQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._UpdateSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2756,7 +2576,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _GetOperation(AssetServiceRestStub):
+    class _GetOperation(_BaseAssetServiceRestTransport._BaseGetOperation, AssetServiceRestStub):
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
+
         def __call__(self,
             request: operations_pb2.GetOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
@@ -2779,33 +2621,15 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=*/*/operations/*/**}',
-            },
-            ]
-
+            http_options = _BaseAssetServiceRestTransport._BaseGetOperation._get_http_options()
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = _BaseAssetServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-            )
+            response = AssetServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
