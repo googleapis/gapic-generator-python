@@ -77,6 +77,7 @@ def test_unary_with_dict(echo):
 
 def test_unary_error(echo):
     message = 'Bad things! Bad things!'
+    http_message = 'POST http://localhost:7469/v1beta1/echo:echo: Bad things! Bad things!'
     # Note: InvalidArgument is from gRPC, BadRequest from http (no MTLS), InternalServerError from http (MTLS)
     # TODO: Reduce number of different exception types here.
     with pytest.raises((exceptions.InvalidArgument, exceptions.BadRequest, exceptions.InternalServerError)) as exc:
@@ -86,8 +87,9 @@ def test_unary_error(echo):
                 'message': message,
             },
         })
-        assert exc.value.code == 400
-        assert exc.value.message == message
+    err_message = message if "grpc" in str(echo.transport) else http_message
+    assert exc.value.code == 400
+    assert exc.value.message == err_message
 
     if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
         # Under gRPC, we raise exceptions.InvalidArgument, which is a
@@ -99,8 +101,8 @@ def test_unary_error(echo):
                     'message': message,
                 },
             })
-            assert exc.value.code == 400
-            assert exc.value.message == message
+        assert exc.value.code == 400
+        assert exc.value.message == message
 
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
@@ -130,5 +132,4 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
                     'message': message,
                 },
             })
-            assert exc.value.code == 400
-            assert exc.value.message == message
+        assert exc.value.message == message

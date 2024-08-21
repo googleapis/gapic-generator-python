@@ -54,7 +54,10 @@ def test_bad_request_details(echo):
         _ = echo.echo(showcase.EchoRequest(
             error=status,
         ))
-        assert e.details == [bad_request_details]
+
+    # Note: gRPC errors expose e.value.details.
+    exc_details = e.details if "rest" in str(echo.transport) else e.value.details
+    assert exc_details == [bad_request_details]
 
 
 def test_precondition_failure_details(echo):
@@ -80,8 +83,10 @@ def test_precondition_failure_details(echo):
         _ = echo.echo(showcase.EchoRequest(
             error=status,
         ))
-        assert e.details == [pf_details]
 
+    # Note: gRPC errors expose e.value.details.
+    exc_details = e.details if "rest" in str(echo.transport) else e.value.details
+    assert exc_details == [pf_details]
 
 def test_unknown_details(echo):
     status = create_status()
@@ -89,4 +94,3 @@ def test_unknown_details(echo):
         _ = echo.echo(showcase.EchoRequest(
             error=status,
         ))
-        assert e.details == status.details
