@@ -57,7 +57,8 @@ def test_bad_request_details(echo):
         )
 
     # Note: gRPC errors expose e.value.details.
-    exc_details = e.details if "rest" in str(echo.transport) else e.value.details
+    exc_details = e.details if "rest" in str(
+        echo.transport) else e.value.details
     assert exc_details == [bad_request_details]
 
 
@@ -88,7 +89,8 @@ def test_precondition_failure_details(echo):
         )
 
     # Note: gRPC errors expose e.value.details.
-    exc_details = e.details if "rest" in str(echo.transport) else e.value.details
+    exc_details = e.details if "rest" in str(
+        echo.transport) else e.value.details
     assert exc_details == [pf_details]
 
 
