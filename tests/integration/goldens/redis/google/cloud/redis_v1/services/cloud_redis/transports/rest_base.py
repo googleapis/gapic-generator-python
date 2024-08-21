@@ -15,7 +15,7 @@
 #
 import json  # type: ignore
 from google.api_core import path_template
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core import gapic_v1
 
 from google.protobuf import json_format
 from google.cloud.location import locations_pb2 # type: ignore
