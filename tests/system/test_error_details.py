@@ -107,4 +107,4 @@ def test_unknown_details(echo):
         )
 
     # Note: error details are exposes e.value.details.
-    assert e.value.details == status.details
+    assert e.value.details == list(status.details)
