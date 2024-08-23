@@ -1,3 +1,4 @@
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 {% extends '_base.py.j2' %}
 
 {% block content %}
@@ -36,8 +37,6 @@ except AttributeError:  # pragma: NO COVER
 
 from .rest_base import _Base{{ service.name }}RestTransport
 
-{# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
-{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -148,14 +147,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
-    {% if not opts.rest_numeric_enums %}
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
-    {% endif %}
     """
-
 
     {# TODO(yon-mg): handle mtls stuff if that is relevant for rest transport #}
     def __init__(self, *,

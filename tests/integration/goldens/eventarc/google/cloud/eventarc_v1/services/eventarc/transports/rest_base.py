@@ -28,7 +28,6 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 
-
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel_connection
 from google.cloud.eventarc_v1.types import discovery
@@ -42,7 +41,14 @@ from google.longrunning import operations_pb2  # type: ignore
 class _BaseEventarcRestTransport(EventarcTransport):
     """Base REST backend transport for Eventarc.
 
-    Note: This class is not meant to be used directly.
+    Note: This class is not meant to be used directly. Use its sync and
+    async sub-classes instead.
+
+    This class defines the same methods as the primary client, so the
+    primary client can load the underlying transport implementation
+    and call it.
+
+    It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
     def __init__(self, *,

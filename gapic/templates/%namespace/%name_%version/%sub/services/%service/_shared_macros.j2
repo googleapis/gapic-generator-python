@@ -70,7 +70,7 @@ except ImportError:  # pragma: NO COVER
 {% endmacro %}
 
 {% macro operations_mixin_imports(api, service, opts) %}
-{# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
+{# TODO: åre-add python_import/ python_modules from removed diff/current grpc template code #}
 {% if import_ns is not defined %}
 {% set import_ns = namespace(has_operations_mixin=false) %}
 {% endif %}

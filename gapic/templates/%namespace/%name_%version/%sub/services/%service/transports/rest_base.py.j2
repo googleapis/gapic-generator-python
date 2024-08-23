@@ -1,3 +1,19 @@
+{#
+ # Copyright (C) 2024  Google LLC
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+#}
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 {% extends '_base.py.j2' %}
 
 {% block content %}
@@ -20,19 +36,24 @@ from google.auth import credentials as ga_credentials  # type: ignore
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
-
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
 
 class _Base{{ service.name }}RestTransport({{service.name}}Transport):
     """Base REST backend transport for {{ service.name }}.
     
-    Note: This class is not meant to be used directly.
+    Note: This class is not meant to be used directly. Use its sync and 
+    async sub-classes instead.
+
+    This class defines the same methods as the primary client, so the
+    primary client can load the underlying transport implementation
+    and call it.
+
+    It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
 
-    {# TODO(yon-mg): handle mtls stuff if that is relevant for rest transport #}
+    {# TODO: handle mtls stuff if that is relevant for rest transport #}
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: Optional[ga_credentials.Credentials] = None,

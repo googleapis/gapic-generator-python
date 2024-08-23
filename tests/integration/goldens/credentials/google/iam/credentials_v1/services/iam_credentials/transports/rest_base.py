@@ -25,14 +25,20 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 
-
 from google.iam.credentials_v1.types import common
 
 
 class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
     """Base REST backend transport for IAMCredentials.
 
-    Note: This class is not meant to be used directly.
+    Note: This class is not meant to be used directly. Use its sync and
+    async sub-classes instead.
+
+    This class defines the same methods as the primary client, so the
+    primary client can load the underlying transport implementation
+    and call it.
+
+    It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
     def __init__(self, *,
