@@ -85,9 +85,7 @@ def test_unary_with_dict(echo):
 
 def test_unary_error(echo):
     message = "Bad things! Bad things!"
-    http_message = (
-        "POST http://localhost:7469/v1beta1/echo:echo: Bad things! Bad things!"
-    )
+    http_message = f"POST http://localhost:7469/v1beta1/echo:echo: {message}"
     # Note: InvalidArgument is from gRPC, BadRequest from http (no MTLS), InternalServerError from http (MTLS)
     # TODO: Reduce number of different exception types here.
     with pytest.raises(
