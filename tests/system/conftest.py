@@ -19,6 +19,11 @@ import os
 import pytest
 
 from google.api_core.client_options import ClientOptions  # type: ignore
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError: # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.showcase import EchoClient
@@ -30,6 +35,12 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
+
+    # TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+    def async_anonymous_credentials():
+        if HAS_GOOGLE_AUTH_AIO:
+            return ga_credentials_async.AnonymousCredentials()
+        return ga_credentials.AnonymousCredentials()
 
     _test_event_loop = asyncio.new_event_loop()
     asyncio.set_event_loop(_test_event_loop)
@@ -49,7 +60,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             EchoAsyncClient,
             use_mtls,
             transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel
+            channel_creator=aio.insecure_channel,
+            credentials=async_anonymous_credentials()
         )
 
     @pytest.fixture
@@ -58,7 +70,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             IdentityAsyncClient,
             use_mtls,
             transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel
+            channel_creator=aio.insecure_channel,
+            credentials=async_anonymous_credentials()
         )
 
 
