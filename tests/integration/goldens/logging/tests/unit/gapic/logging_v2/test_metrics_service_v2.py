@@ -64,6 +64,7 @@ def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
 # TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
 def async_anonymous_credentials():
     if HAS_GOOGLE_AUTH_AIO:
         return ga_credentials_async.AnonymousCredentials()
