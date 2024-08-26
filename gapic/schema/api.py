@@ -68,6 +68,14 @@ class MethodSettingsError(ValueError):
     pass
 
 
+class ClientLibrarySettingsError(ValueError):
+    """
+    Raised when `google.api.client_pb2.ClientLibrarySettings` contains
+    an invalid value.
+    """
+    pass
+
+
 @dataclasses.dataclass(frozen=True)
 class Proto:
     """A representation of a particular proto file within an API."""
@@ -669,6 +677,63 @@ class API:
                     all_errors[method_settings.selector] = selector_errors
         if all_errors:
             raise MethodSettingsError(yaml.dump(all_errors))
+
+    @cached_property
+    def all_library_settings(
+        self,
+    ) -> Mapping[str, Sequence[client_pb2.ClientLibrarySettings]]:
+        """Return a map of all `google.api.client.ClientLibrarySettings` to be used
+        when generating client libraries.
+        https://github.com/googleapis/googleapis/blob/master/google/api/client.proto#L130
+
+        Return:
+            Mapping[str, Sequence[client_pb2.ClientLibrarySettings]]: A mapping of all library
+                settings read from the service YAML.
+
+        Raises:
+            gapic.schema.api.ClientLibrarySettingsError: Raised when `google.api.client_pb2.ClientLibrarySettings`
+            contains an invalid value.
+        """
+        self.enforce_valid_library_settings(
+            self.service_yaml_config.publishing.library_settings
+        )
+
+        return {
+            library_setting.version: client_pb2.ClientLibrarySettings(
+                version=library_setting.version,
+                python_settings=library_setting.python_settings,
+            )
+            for library_setting in self.service_yaml_config.publishing.library_settings
+        }
+
+    def enforce_valid_library_settings(
+        self, client_library_settings: Sequence[client_pb2.ClientLibrarySettings]
+    ) -> None:
+        """
+        Checks each `google.api.client.ClientLibrarySettings` provided for validity and
+        raises an exception if invalid values are found.
+
+        Args:
+            client_library_settings (Sequence[client_pb2.ClientLibrarySettings]): Client
+                library settings to be used when generating API methods.
+        Return:
+            None
+        Raises:
+            ClientLibrarySettingsError: if fields in `client_library_settings.experimental_features`
+                are not supported.
+        """
+
+        all_errors: dict = {}
+        versions_seen = []
+        for library_settings in client_library_settings:
+            # Check if this version is defind more than once
+            if library_settings.version in versions_seen:
+                all_errors[library_settings.version] = ["Duplicate version"]
+                continue
+            versions_seen.append(library_settings.version)
+
+        if all_errors:
+            raise ClientLibrarySettingsError(yaml.dump(all_errors))
 
     @cached_property
     def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:
