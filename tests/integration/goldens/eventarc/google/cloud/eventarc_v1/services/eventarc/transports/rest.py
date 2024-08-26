@@ -34,13 +34,6 @@ import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-from .rest_base import _BaseEventarcRestTransport
-
 
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel_connection
@@ -52,7 +45,13 @@ from google.cloud.eventarc_v1.types import trigger
 from google.longrunning import operations_pb2  # type: ignore
 
 
+from .rest_base import _BaseEventarcRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -705,7 +704,7 @@ class EventarcRestStub:
 
 
 class EventarcRestTransport(_BaseEventarcRestTransport):
-    """REST backend transport for Eventarc.
+    """REST backend synchronous transport for Eventarc.
 
     Eventarc allows users to subscribe to various events that are
     provided by Google Cloud services and forward them to supported
@@ -840,7 +839,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _CreateChannel(_BaseEventarcRestTransport._BaseCreateChannel, EventarcRestStub):
         def __hash__(self):
-            return hash("CreateChannel")
+            return hash("EventarcRestTransport.CreateChannel")
 
         @staticmethod
         def _get_response(
@@ -916,7 +915,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _CreateChannelConnection(_BaseEventarcRestTransport._BaseCreateChannelConnection, EventarcRestStub):
         def __hash__(self):
-            return hash("CreateChannelConnection")
+            return hash("EventarcRestTransport.CreateChannelConnection")
 
         @staticmethod
         def _get_response(
@@ -992,7 +991,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _CreateTrigger(_BaseEventarcRestTransport._BaseCreateTrigger, EventarcRestStub):
         def __hash__(self):
-            return hash("CreateTrigger")
+            return hash("EventarcRestTransport.CreateTrigger")
 
         @staticmethod
         def _get_response(
@@ -1068,7 +1067,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _DeleteChannel(_BaseEventarcRestTransport._BaseDeleteChannel, EventarcRestStub):
         def __hash__(self):
-            return hash("DeleteChannel")
+            return hash("EventarcRestTransport.DeleteChannel")
 
         @staticmethod
         def _get_response(
@@ -1141,7 +1140,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _DeleteChannelConnection(_BaseEventarcRestTransport._BaseDeleteChannelConnection, EventarcRestStub):
         def __hash__(self):
-            return hash("DeleteChannelConnection")
+            return hash("EventarcRestTransport.DeleteChannelConnection")
 
         @staticmethod
         def _get_response(
@@ -1214,7 +1213,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _DeleteTrigger(_BaseEventarcRestTransport._BaseDeleteTrigger, EventarcRestStub):
         def __hash__(self):
-            return hash("DeleteTrigger")
+            return hash("EventarcRestTransport.DeleteTrigger")
 
         @staticmethod
         def _get_response(
@@ -1287,7 +1286,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _GetChannel(_BaseEventarcRestTransport._BaseGetChannel, EventarcRestStub):
         def __hash__(self):
-            return hash("GetChannel")
+            return hash("EventarcRestTransport.GetChannel")
 
         @staticmethod
         def _get_response(
@@ -1367,7 +1366,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _GetChannelConnection(_BaseEventarcRestTransport._BaseGetChannelConnection, EventarcRestStub):
         def __hash__(self):
-            return hash("GetChannelConnection")
+            return hash("EventarcRestTransport.GetChannelConnection")
 
         @staticmethod
         def _get_response(
@@ -1446,7 +1445,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _GetGoogleChannelConfig(_BaseEventarcRestTransport._BaseGetGoogleChannelConfig, EventarcRestStub):
         def __hash__(self):
-            return hash("GetGoogleChannelConfig")
+            return hash("EventarcRestTransport.GetGoogleChannelConfig")
 
         @staticmethod
         def _get_response(
@@ -1526,7 +1525,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _GetProvider(_BaseEventarcRestTransport._BaseGetProvider, EventarcRestStub):
         def __hash__(self):
-            return hash("GetProvider")
+            return hash("EventarcRestTransport.GetProvider")
 
         @staticmethod
         def _get_response(
@@ -1600,7 +1599,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _GetTrigger(_BaseEventarcRestTransport._BaseGetTrigger, EventarcRestStub):
         def __hash__(self):
-            return hash("GetTrigger")
+            return hash("EventarcRestTransport.GetTrigger")
 
         @staticmethod
         def _get_response(
@@ -1674,7 +1673,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _ListChannelConnections(_BaseEventarcRestTransport._BaseListChannelConnections, EventarcRestStub):
         def __hash__(self):
-            return hash("ListChannelConnections")
+            return hash("EventarcRestTransport.ListChannelConnections")
 
         @staticmethod
         def _get_response(
@@ -1748,7 +1747,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _ListChannels(_BaseEventarcRestTransport._BaseListChannels, EventarcRestStub):
         def __hash__(self):
-            return hash("ListChannels")
+            return hash("EventarcRestTransport.ListChannels")
 
         @staticmethod
         def _get_response(
@@ -1820,7 +1819,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _ListProviders(_BaseEventarcRestTransport._BaseListProviders, EventarcRestStub):
         def __hash__(self):
-            return hash("ListProviders")
+            return hash("EventarcRestTransport.ListProviders")
 
         @staticmethod
         def _get_response(
@@ -1892,7 +1891,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _ListTriggers(_BaseEventarcRestTransport._BaseListTriggers, EventarcRestStub):
         def __hash__(self):
-            return hash("ListTriggers")
+            return hash("EventarcRestTransport.ListTriggers")
 
         @staticmethod
         def _get_response(
@@ -1964,7 +1963,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _UpdateChannel(_BaseEventarcRestTransport._BaseUpdateChannel, EventarcRestStub):
         def __hash__(self):
-            return hash("UpdateChannel")
+            return hash("EventarcRestTransport.UpdateChannel")
 
         @staticmethod
         def _get_response(
@@ -2040,7 +2039,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _UpdateGoogleChannelConfig(_BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig, EventarcRestStub):
         def __hash__(self):
-            return hash("UpdateGoogleChannelConfig")
+            return hash("EventarcRestTransport.UpdateGoogleChannelConfig")
 
         @staticmethod
         def _get_response(
@@ -2124,7 +2123,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     class _UpdateTrigger(_BaseEventarcRestTransport._BaseUpdateTrigger, EventarcRestStub):
         def __hash__(self):
-            return hash("UpdateTrigger")
+            return hash("EventarcRestTransport.UpdateTrigger")
 
         @staticmethod
         def _get_response(

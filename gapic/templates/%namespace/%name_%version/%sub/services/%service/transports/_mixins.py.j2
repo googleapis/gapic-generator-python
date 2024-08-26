@@ -1,3 +1,4 @@
+    {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
     {% if "grpc" in opts.transport %}
 
     {% if api.has_operations_mixin %}

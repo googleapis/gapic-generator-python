@@ -32,19 +32,18 @@ import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-from .rest_base import _BaseCloudRedisRestTransport
-
 
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2  # type: ignore
 
 
+from .rest_base import _BaseCloudRedisRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -469,7 +468,7 @@ class CloudRedisRestStub:
 
 
 class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
-    """REST backend transport for CloudRedis.
+    """REST backend synchronous transport for CloudRedis.
 
     Configures and manages Cloud Memorystore for Redis instances
 
@@ -621,7 +620,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _CreateInstance(_BaseCloudRedisRestTransport._BaseCreateInstance, CloudRedisRestStub):
         def __hash__(self):
-            return hash("CreateInstance")
+            return hash("CloudRedisRestTransport.CreateInstance")
 
         @staticmethod
         def _get_response(
@@ -697,7 +696,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _DeleteInstance(_BaseCloudRedisRestTransport._BaseDeleteInstance, CloudRedisRestStub):
         def __hash__(self):
-            return hash("DeleteInstance")
+            return hash("CloudRedisRestTransport.DeleteInstance")
 
         @staticmethod
         def _get_response(
@@ -770,7 +769,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _ExportInstance(_BaseCloudRedisRestTransport._BaseExportInstance, CloudRedisRestStub):
         def __hash__(self):
-            return hash("ExportInstance")
+            return hash("CloudRedisRestTransport.ExportInstance")
 
         @staticmethod
         def _get_response(
@@ -846,7 +845,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, CloudRedisRestStub):
         def __hash__(self):
-            return hash("FailoverInstance")
+            return hash("CloudRedisRestTransport.FailoverInstance")
 
         @staticmethod
         def _get_response(
@@ -922,7 +921,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _GetInstance(_BaseCloudRedisRestTransport._BaseGetInstance, CloudRedisRestStub):
         def __hash__(self):
-            return hash("GetInstance")
+            return hash("CloudRedisRestTransport.GetInstance")
 
         @staticmethod
         def _get_response(
@@ -994,7 +993,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, CloudRedisRestStub):
         def __hash__(self):
-            return hash("GetInstanceAuthString")
+            return hash("CloudRedisRestTransport.GetInstanceAuthString")
 
         @staticmethod
         def _get_response(
@@ -1066,7 +1065,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, CloudRedisRestStub):
         def __hash__(self):
-            return hash("ImportInstance")
+            return hash("CloudRedisRestTransport.ImportInstance")
 
         @staticmethod
         def _get_response(
@@ -1142,7 +1141,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _ListInstances(_BaseCloudRedisRestTransport._BaseListInstances, CloudRedisRestStub):
         def __hash__(self):
-            return hash("ListInstances")
+            return hash("CloudRedisRestTransport.ListInstances")
 
         @staticmethod
         def _get_response(
@@ -1216,7 +1215,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, CloudRedisRestStub):
         def __hash__(self):
-            return hash("RescheduleMaintenance")
+            return hash("CloudRedisRestTransport.RescheduleMaintenance")
 
         @staticmethod
         def _get_response(
@@ -1292,7 +1291,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _UpdateInstance(_BaseCloudRedisRestTransport._BaseUpdateInstance, CloudRedisRestStub):
         def __hash__(self):
-            return hash("UpdateInstance")
+            return hash("CloudRedisRestTransport.UpdateInstance")
 
         @staticmethod
         def _get_response(
@@ -1368,7 +1367,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, CloudRedisRestStub):
         def __hash__(self):
-            return hash("UpgradeInstance")
+            return hash("CloudRedisRestTransport.UpgradeInstance")
 
         @staticmethod
         def _get_response(

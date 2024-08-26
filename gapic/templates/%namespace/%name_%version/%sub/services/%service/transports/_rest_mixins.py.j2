@@ -1,3 +1,4 @@
+    {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
     {% if "rest" in opts.transport %}
 
     {% for name, sig in api.mixin_api_signatures.items() %} 
