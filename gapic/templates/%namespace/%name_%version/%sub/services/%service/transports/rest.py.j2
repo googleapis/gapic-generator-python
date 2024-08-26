@@ -270,6 +270,8 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     {% endif %}{# service.has_lro #}
     {% for method in service.methods.values()|sort(attribute="name") %}
     class _{{method.name}}(_Base{{ service.name }}RestTransport._Base{{method.name}}, {{service.name}}RestStub):
+        def __hash__(self):
+            return hash("{{method.name}}")
         {% if method.http_options and not method.client_streaming %}
 
         {% set body_spec = method.http_options[0].body %}

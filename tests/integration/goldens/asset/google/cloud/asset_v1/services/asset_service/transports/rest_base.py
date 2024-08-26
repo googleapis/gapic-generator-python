@@ -90,7 +90,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseAnalyzeIamPolicy:
         def __hash__(self):
-            return hash("AnalyzeIamPolicy")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "analysisQuery" : {},        }
@@ -126,7 +126,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseAnalyzeIamPolicyLongrunning:
         def __hash__(self):
-            return hash("AnalyzeIamPolicyLongrunning")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -172,7 +172,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseAnalyzeMove:
         def __hash__(self):
-            return hash("AnalyzeMove")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "destinationParent" : "",        }
@@ -208,7 +208,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseAnalyzeOrgPolicies:
         def __hash__(self):
-            return hash("AnalyzeOrgPolicies")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "constraint" : "",        }
@@ -244,7 +244,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseAnalyzeOrgPolicyGovernedAssets:
         def __hash__(self):
-            return hash("AnalyzeOrgPolicyGovernedAssets")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "constraint" : "",        }
@@ -280,7 +280,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseAnalyzeOrgPolicyGovernedContainers:
         def __hash__(self):
-            return hash("AnalyzeOrgPolicyGovernedContainers")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "constraint" : "",        }
@@ -316,7 +316,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseBatchGetAssetsHistory:
         def __hash__(self):
-            return hash("BatchGetAssetsHistory")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -352,7 +352,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseBatchGetEffectiveIamPolicies:
         def __hash__(self):
-            return hash("BatchGetEffectiveIamPolicies")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "names" : "",        }
@@ -388,7 +388,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseCreateFeed:
         def __hash__(self):
-            return hash("CreateFeed")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -434,7 +434,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseCreateSavedQuery:
         def __hash__(self):
-            return hash("CreateSavedQuery")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "savedQueryId" : "",        }
@@ -480,7 +480,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseDeleteFeed:
         def __hash__(self):
-            return hash("DeleteFeed")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -516,7 +516,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseDeleteSavedQuery:
         def __hash__(self):
-            return hash("DeleteSavedQuery")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -552,7 +552,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseExportAssets:
         def __hash__(self):
-            return hash("ExportAssets")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -598,7 +598,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseGetFeed:
         def __hash__(self):
-            return hash("GetFeed")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -634,7 +634,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseGetSavedQuery:
         def __hash__(self):
-            return hash("GetSavedQuery")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -670,7 +670,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseListAssets:
         def __hash__(self):
-            return hash("ListAssets")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -706,7 +706,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseListFeeds:
         def __hash__(self):
-            return hash("ListFeeds")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -742,7 +742,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseListSavedQueries:
         def __hash__(self):
-            return hash("ListSavedQueries")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -778,7 +778,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseQueryAssets:
         def __hash__(self):
-            return hash("QueryAssets")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -824,7 +824,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseSearchAllIamPolicies:
         def __hash__(self):
-            return hash("SearchAllIamPolicies")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -860,7 +860,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseSearchAllResources:
         def __hash__(self):
-            return hash("SearchAllResources")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -896,7 +896,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseUpdateFeed:
         def __hash__(self):
-            return hash("UpdateFeed")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -942,7 +942,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
     class _BaseUpdateSavedQuery:
         def __hash__(self):
-            return hash("UpdateSavedQuery")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "updateMask" : {},        }

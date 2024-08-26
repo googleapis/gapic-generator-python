@@ -1,6 +1,6 @@
 
 transport inheritance structure
-_____________________________
+_______________________________
 
 `MetricsServiceV2Transport` is the ABC for all transports.
 - public child `MetricsServiceV2GrpcTransport` for sync gRPC transport (defined in `grpc.py`).

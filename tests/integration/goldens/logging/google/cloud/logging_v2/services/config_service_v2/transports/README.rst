@@ -1,6 +1,6 @@
 
 transport inheritance structure
-_____________________________
+_______________________________
 
 `ConfigServiceV2Transport` is the ABC for all transports.
 - public child `ConfigServiceV2GrpcTransport` for sync gRPC transport (defined in `grpc.py`).

@@ -746,6 +746,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
         return self._operations_client
 
     class _AnalyzeIamPolicy(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("AnalyzeIamPolicy")
 
         @staticmethod
         def _get_response(
@@ -818,6 +820,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _AnalyzeIamPolicyLongrunning(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("AnalyzeIamPolicyLongrunning")
 
         @staticmethod
         def _get_response(
@@ -893,6 +897,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _AnalyzeMove(_BaseAssetServiceRestTransport._BaseAnalyzeMove, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("AnalyzeMove")
 
         @staticmethod
         def _get_response(
@@ -965,6 +971,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _AnalyzeOrgPolicies(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("AnalyzeOrgPolicies")
 
         @staticmethod
         def _get_response(
@@ -1037,6 +1045,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _AnalyzeOrgPolicyGovernedAssets(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("AnalyzeOrgPolicyGovernedAssets")
 
         @staticmethod
         def _get_response(
@@ -1110,6 +1120,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _AnalyzeOrgPolicyGovernedContainers(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("AnalyzeOrgPolicyGovernedContainers")
 
         @staticmethod
         def _get_response(
@@ -1183,6 +1195,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _BatchGetAssetsHistory(_BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("BatchGetAssetsHistory")
 
         @staticmethod
         def _get_response(
@@ -1252,6 +1266,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _BatchGetEffectiveIamPolicies(_BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("BatchGetEffectiveIamPolicies")
 
         @staticmethod
         def _get_response(
@@ -1325,6 +1341,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _CreateFeed(_BaseAssetServiceRestTransport._BaseCreateFeed, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("CreateFeed")
 
         @staticmethod
         def _get_response(
@@ -1405,6 +1423,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _CreateSavedQuery(_BaseAssetServiceRestTransport._BaseCreateSavedQuery, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("CreateSavedQuery")
 
         @staticmethod
         def _get_response(
@@ -1479,6 +1499,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _DeleteFeed(_BaseAssetServiceRestTransport._BaseDeleteFeed, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteFeed")
 
         @staticmethod
         def _get_response(
@@ -1536,6 +1558,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
     class _DeleteSavedQuery(_BaseAssetServiceRestTransport._BaseDeleteSavedQuery, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteSavedQuery")
 
         @staticmethod
         def _get_response(
@@ -1593,6 +1617,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
     class _ExportAssets(_BaseAssetServiceRestTransport._BaseExportAssets, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("ExportAssets")
 
         @staticmethod
         def _get_response(
@@ -1666,6 +1692,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _GetFeed(_BaseAssetServiceRestTransport._BaseGetFeed, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("GetFeed")
 
         @staticmethod
         def _get_response(
@@ -1743,6 +1771,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _GetSavedQuery(_BaseAssetServiceRestTransport._BaseGetSavedQuery, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("GetSavedQuery")
 
         @staticmethod
         def _get_response(
@@ -1814,6 +1844,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _ListAssets(_BaseAssetServiceRestTransport._BaseListAssets, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("ListAssets")
 
         @staticmethod
         def _get_response(
@@ -1883,6 +1915,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _ListFeeds(_BaseAssetServiceRestTransport._BaseListFeeds, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("ListFeeds")
 
         @staticmethod
         def _get_response(
@@ -1952,6 +1986,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _ListSavedQueries(_BaseAssetServiceRestTransport._BaseListSavedQueries, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("ListSavedQueries")
 
         @staticmethod
         def _get_response(
@@ -2021,6 +2057,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _QueryAssets(_BaseAssetServiceRestTransport._BaseQueryAssets, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("QueryAssets")
 
         @staticmethod
         def _get_response(
@@ -2093,6 +2131,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _SearchAllIamPolicies(_BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("SearchAllIamPolicies")
 
         @staticmethod
         def _get_response(
@@ -2162,6 +2202,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _SearchAllResources(_BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("SearchAllResources")
 
         @staticmethod
         def _get_response(
@@ -2231,6 +2273,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _UpdateFeed(_BaseAssetServiceRestTransport._BaseUpdateFeed, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateFeed")
 
         @staticmethod
         def _get_response(
@@ -2311,6 +2355,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     class _UpdateSavedQuery(_BaseAssetServiceRestTransport._BaseUpdateSavedQuery, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateSavedQuery")
 
         @staticmethod
         def _get_response(

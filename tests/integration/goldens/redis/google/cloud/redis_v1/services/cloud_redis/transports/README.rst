@@ -1,6 +1,6 @@
 
 transport inheritance structure
-_____________________________
+_______________________________
 
 `CloudRedisTransport` is the ABC for all transports.
 - public child `CloudRedisGrpcTransport` for sync gRPC transport (defined in `grpc.py`).

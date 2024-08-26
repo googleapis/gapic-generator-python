@@ -1,6 +1,6 @@
 
 transport inheritance structure
-_____________________________
+_______________________________
 
 `IAMCredentialsTransport` is the ABC for all transports.
 - public child `IAMCredentialsGrpcTransport` for sync gRPC transport (defined in `grpc.py`).

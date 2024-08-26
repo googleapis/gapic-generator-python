@@ -1,6 +1,6 @@
 
 transport inheritance structure
-_____________________________
+_______________________________
 
 `AssetServiceTransport` is the ABC for all transports.
 - public child `AssetServiceGrpcTransport` for sync gRPC transport (defined in `grpc.py`).

@@ -267,6 +267,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
         self._prep_wrapped_messages(client_info)
 
     class _GenerateAccessToken(_BaseIAMCredentialsRestTransport._BaseGenerateAccessToken, IAMCredentialsRestStub):
+        def __hash__(self):
+            return hash("GenerateAccessToken")
 
         @staticmethod
         def _get_response(
@@ -339,6 +341,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             return resp
 
     class _GenerateIdToken(_BaseIAMCredentialsRestTransport._BaseGenerateIdToken, IAMCredentialsRestStub):
+        def __hash__(self):
+            return hash("GenerateIdToken")
 
         @staticmethod
         def _get_response(
@@ -411,6 +415,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             return resp
 
     class _SignBlob(_BaseIAMCredentialsRestTransport._BaseSignBlob, IAMCredentialsRestStub):
+        def __hash__(self):
+            return hash("SignBlob")
 
         @staticmethod
         def _get_response(
@@ -483,6 +489,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             return resp
 
     class _SignJwt(_BaseIAMCredentialsRestTransport._BaseSignJwt, IAMCredentialsRestStub):
+        def __hash__(self):
+            return hash("SignJwt")
 
         @staticmethod
         def _get_response(

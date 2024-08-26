@@ -1,6 +1,6 @@
 
 transport inheritance structure
-_____________________________
+_______________________________
 
 `LoggingServiceV2Transport` is the ABC for all transports.
 - public child `LoggingServiceV2GrpcTransport` for sync gRPC transport (defined in `grpc.py`).

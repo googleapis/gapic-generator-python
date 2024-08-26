@@ -1,6 +1,6 @@
 
 transport inheritance structure
-_____________________________
+_______________________________
 
 `EventarcTransport` is the ABC for all transports.
 - public child `EventarcGrpcTransport` for sync gRPC transport (defined in `grpc.py`).

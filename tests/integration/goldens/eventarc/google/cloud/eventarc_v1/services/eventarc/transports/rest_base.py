@@ -98,7 +98,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseCreateChannel:
         def __hash__(self):
-            return hash("CreateChannel")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "channelId" : "",            "validateOnly" : False,        }
@@ -144,7 +144,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseCreateChannelConnection:
         def __hash__(self):
-            return hash("CreateChannelConnection")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "channelConnectionId" : "",        }
@@ -190,7 +190,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseCreateTrigger:
         def __hash__(self):
-            return hash("CreateTrigger")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "triggerId" : "",            "validateOnly" : False,        }
@@ -236,7 +236,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseDeleteChannel:
         def __hash__(self):
-            return hash("DeleteChannel")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "validateOnly" : False,        }
@@ -272,7 +272,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseDeleteChannelConnection:
         def __hash__(self):
-            return hash("DeleteChannelConnection")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -308,7 +308,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseDeleteTrigger:
         def __hash__(self):
-            return hash("DeleteTrigger")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "validateOnly" : False,        }
@@ -344,7 +344,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseGetChannel:
         def __hash__(self):
-            return hash("GetChannel")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -380,7 +380,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseGetChannelConnection:
         def __hash__(self):
-            return hash("GetChannelConnection")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -416,7 +416,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseGetGoogleChannelConfig:
         def __hash__(self):
-            return hash("GetGoogleChannelConfig")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -452,7 +452,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseGetProvider:
         def __hash__(self):
-            return hash("GetProvider")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -488,7 +488,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseGetTrigger:
         def __hash__(self):
-            return hash("GetTrigger")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -524,7 +524,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseListChannelConnections:
         def __hash__(self):
-            return hash("ListChannelConnections")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -560,7 +560,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseListChannels:
         def __hash__(self):
-            return hash("ListChannels")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -596,7 +596,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseListProviders:
         def __hash__(self):
-            return hash("ListProviders")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -632,7 +632,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseListTriggers:
         def __hash__(self):
-            return hash("ListTriggers")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -668,7 +668,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseUpdateChannel:
         def __hash__(self):
-            return hash("UpdateChannel")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "validateOnly" : False,        }
@@ -714,7 +714,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseUpdateGoogleChannelConfig:
         def __hash__(self):
-            return hash("UpdateGoogleChannelConfig")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -760,7 +760,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
     class _BaseUpdateTrigger:
         def __hash__(self):
-            return hash("UpdateTrigger")
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "validateOnly" : False,        }
