@@ -97,7 +97,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         )
 
     class _BaseCreateChannel:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -143,7 +143,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseCreateChannelConnection:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -189,7 +189,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseCreateTrigger:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -235,7 +235,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseDeleteChannel:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -271,7 +271,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseDeleteChannelConnection:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -307,7 +307,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseDeleteTrigger:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -343,7 +343,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseGetChannel:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -379,7 +379,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseGetChannelConnection:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -415,7 +415,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseGetGoogleChannelConfig:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -451,7 +451,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseGetProvider:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -487,7 +487,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseGetTrigger:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -523,7 +523,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseListChannelConnections:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -559,7 +559,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseListChannels:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -595,7 +595,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseListProviders:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -631,7 +631,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseListTriggers:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -667,7 +667,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseUpdateChannel:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -713,7 +713,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseUpdateGoogleChannelConfig:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
@@ -759,7 +759,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseUpdateTrigger:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {

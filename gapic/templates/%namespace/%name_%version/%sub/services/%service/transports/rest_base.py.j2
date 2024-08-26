@@ -101,7 +101,7 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
 
     {% for method in service.methods.values()|sort(attribute="name") %}
     class _Base{{method.name}}:
-        def __hash__(self):
+        def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         {% if method.http_options and not method.client_streaming %}
