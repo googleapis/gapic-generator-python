@@ -29,6 +29,12 @@ from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError: # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import future
@@ -57,6 +63,13 @@ import google.auth
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
@@ -867,7 +880,7 @@ async def test_list_buckets_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -890,7 +903,7 @@ async def test_list_buckets_async_use_cached_wrapped_rpc(transport: str = "grpc_
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -902,25 +915,26 @@ async def test_list_buckets_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert client._client._transport.list_buckets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_buckets] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_buckets] = mock_rpc
 
         request = {}
         await client.list_buckets(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_buckets(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_buckets_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListBucketsRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -988,7 +1002,7 @@ def test_list_buckets_field_headers():
 @pytest.mark.asyncio
 async def test_list_buckets_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1059,7 +1073,7 @@ def test_list_buckets_flattened_error():
 @pytest.mark.asyncio
 async def test_list_buckets_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1087,7 +1101,7 @@ async def test_list_buckets_flattened_async():
 @pytest.mark.asyncio
 async def test_list_buckets_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1201,7 +1215,7 @@ def test_list_buckets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_buckets_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1250,7 +1264,7 @@ async def test_list_buckets_async_pager():
 @pytest.mark.asyncio
 async def test_list_buckets_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1425,7 +1439,7 @@ async def test_get_bucket_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -1454,7 +1468,7 @@ async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_as
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1466,25 +1480,26 @@ async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.get_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_bucket] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.get_bucket] = mock_rpc
 
         request = {}
         await client.get_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_bucket(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetBucketRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1564,7 +1579,7 @@ def test_get_bucket_field_headers():
 @pytest.mark.asyncio
 async def test_get_bucket_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1699,8 +1714,9 @@ def test_create_bucket_async_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.create_bucket_async(request)
@@ -1714,7 +1730,7 @@ async def test_create_bucket_async_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -1737,7 +1753,7 @@ async def test_create_bucket_async_async_use_cached_wrapped_rpc(transport: str =
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1749,29 +1765,31 @@ async def test_create_bucket_async_async_use_cached_wrapped_rpc(transport: str =
         assert client._client._transport.create_bucket_async in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_bucket_async] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.create_bucket_async] = mock_rpc
 
         request = {}
         await client.create_bucket_async(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.create_bucket_async(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_bucket_async_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateBucketRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1838,7 +1856,7 @@ def test_create_bucket_async_field_headers():
 @pytest.mark.asyncio
 async def test_create_bucket_async_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1971,8 +1989,9 @@ def test_update_bucket_async_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.update_bucket_async(request)
@@ -1986,7 +2005,7 @@ async def test_update_bucket_async_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2009,7 +2028,7 @@ async def test_update_bucket_async_async_use_cached_wrapped_rpc(transport: str =
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2021,29 +2040,31 @@ async def test_update_bucket_async_async_use_cached_wrapped_rpc(transport: str =
         assert client._client._transport.update_bucket_async in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_bucket_async] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.update_bucket_async] = mock_rpc
 
         request = {}
         await client.update_bucket_async(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.update_bucket_async(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_bucket_async_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateBucketRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2110,7 +2131,7 @@ def test_update_bucket_async_field_headers():
 @pytest.mark.asyncio
 async def test_update_bucket_async_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2271,7 +2292,7 @@ async def test_create_bucket_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2300,7 +2321,7 @@ async def test_create_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2312,25 +2333,26 @@ async def test_create_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.create_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_bucket] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.create_bucket] = mock_rpc
 
         request = {}
         await client.create_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.create_bucket(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateBucketRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2410,7 +2432,7 @@ def test_create_bucket_field_headers():
 @pytest.mark.asyncio
 async def test_create_bucket_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2569,7 +2591,7 @@ async def test_update_bucket_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2598,7 +2620,7 @@ async def test_update_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2610,25 +2632,26 @@ async def test_update_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.update_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_bucket] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.update_bucket] = mock_rpc
 
         request = {}
         await client.update_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_bucket(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateBucketRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2708,7 +2731,7 @@ def test_update_bucket_field_headers():
 @pytest.mark.asyncio
 async def test_update_bucket_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2852,7 +2875,7 @@ async def test_delete_bucket_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2873,7 +2896,7 @@ async def test_delete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2885,25 +2908,26 @@ async def test_delete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.delete_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_bucket] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_bucket] = mock_rpc
 
         request = {}
         await client.delete_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_bucket(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteBucketRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2968,7 +2992,7 @@ def test_delete_bucket_field_headers():
 @pytest.mark.asyncio
 async def test_delete_bucket_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3112,7 +3136,7 @@ async def test_undelete_bucket_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -3133,7 +3157,7 @@ async def test_undelete_bucket_async_use_cached_wrapped_rpc(transport: str = "gr
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3145,25 +3169,26 @@ async def test_undelete_bucket_async_use_cached_wrapped_rpc(transport: str = "gr
         assert client._client._transport.undelete_bucket in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.undelete_bucket] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.undelete_bucket] = mock_rpc
 
         request = {}
         await client.undelete_bucket(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.undelete_bucket(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_undelete_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.UndeleteBucketRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3228,7 +3253,7 @@ def test_undelete_bucket_field_headers():
 @pytest.mark.asyncio
 async def test_undelete_bucket_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3377,7 +3402,7 @@ async def test_list_views_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -3400,7 +3425,7 @@ async def test_list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_as
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3412,25 +3437,26 @@ async def test_list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.list_views in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_views] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_views] = mock_rpc
 
         request = {}
         await client.list_views(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_views(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_views_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListViewsRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3498,7 +3524,7 @@ def test_list_views_field_headers():
 @pytest.mark.asyncio
 async def test_list_views_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3569,7 +3595,7 @@ def test_list_views_flattened_error():
 @pytest.mark.asyncio
 async def test_list_views_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3597,7 +3623,7 @@ async def test_list_views_flattened_async():
 @pytest.mark.asyncio
 async def test_list_views_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3711,7 +3737,7 @@ def test_list_views_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_views_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3760,7 +3786,7 @@ async def test_list_views_async_pager():
 @pytest.mark.asyncio
 async def test_list_views_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3927,7 +3953,7 @@ async def test_get_view_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -3952,7 +3978,7 @@ async def test_get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3964,25 +3990,26 @@ async def test_get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.get_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_view] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.get_view] = mock_rpc
 
         request = {}
         await client.get_view(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_view(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetViewRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4054,7 +4081,7 @@ def test_get_view_field_headers():
 @pytest.mark.asyncio
 async def test_get_view_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4207,7 +4234,7 @@ async def test_create_view_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -4232,7 +4259,7 @@ async def test_create_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4244,25 +4271,26 @@ async def test_create_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.create_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_view] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.create_view] = mock_rpc
 
         request = {}
         await client.create_view(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.create_view(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateViewRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4334,7 +4362,7 @@ def test_create_view_field_headers():
 @pytest.mark.asyncio
 async def test_create_view_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4485,7 +4513,7 @@ async def test_update_view_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -4510,7 +4538,7 @@ async def test_update_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4522,25 +4550,26 @@ async def test_update_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.update_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_view] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.update_view] = mock_rpc
 
         request = {}
         await client.update_view(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_view(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateViewRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4612,7 +4641,7 @@ def test_update_view_field_headers():
 @pytest.mark.asyncio
 async def test_update_view_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4756,7 +4785,7 @@ async def test_delete_view_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -4777,7 +4806,7 @@ async def test_delete_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4789,25 +4818,26 @@ async def test_delete_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.delete_view in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_view] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_view] = mock_rpc
 
         request = {}
         await client.delete_view(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_view(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteViewRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4872,7 +4902,7 @@ def test_delete_view_field_headers():
 @pytest.mark.asyncio
 async def test_delete_view_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5021,7 +5051,7 @@ async def test_list_sinks_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -5044,7 +5074,7 @@ async def test_list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5056,25 +5086,26 @@ async def test_list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.list_sinks in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_sinks] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_sinks] = mock_rpc
 
         request = {}
         await client.list_sinks(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_sinks(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_sinks_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListSinksRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5142,7 +5173,7 @@ def test_list_sinks_field_headers():
 @pytest.mark.asyncio
 async def test_list_sinks_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5213,7 +5244,7 @@ def test_list_sinks_flattened_error():
 @pytest.mark.asyncio
 async def test_list_sinks_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5241,7 +5272,7 @@ async def test_list_sinks_flattened_async():
 @pytest.mark.asyncio
 async def test_list_sinks_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5355,7 +5386,7 @@ def test_list_sinks_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_sinks_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5404,7 +5435,7 @@ async def test_list_sinks_async_pager():
 @pytest.mark.asyncio
 async def test_list_sinks_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5581,7 +5612,7 @@ async def test_get_sink_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -5611,7 +5642,7 @@ async def test_get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5623,25 +5654,26 @@ async def test_get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.get_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_sink] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.get_sink] = mock_rpc
 
         request = {}
         await client.get_sink(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_sink(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetSinkRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5723,7 +5755,7 @@ def test_get_sink_field_headers():
 @pytest.mark.asyncio
 async def test_get_sink_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5794,7 +5826,7 @@ def test_get_sink_flattened_error():
 @pytest.mark.asyncio
 async def test_get_sink_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5822,7 +5854,7 @@ async def test_get_sink_flattened_async():
 @pytest.mark.asyncio
 async def test_get_sink_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5966,7 +5998,7 @@ async def test_create_sink_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -5996,7 +6028,7 @@ async def test_create_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6008,25 +6040,26 @@ async def test_create_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.create_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_sink] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.create_sink] = mock_rpc
 
         request = {}
         await client.create_sink(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.create_sink(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateSinkRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6108,7 +6141,7 @@ def test_create_sink_field_headers():
 @pytest.mark.asyncio
 async def test_create_sink_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6184,7 +6217,7 @@ def test_create_sink_flattened_error():
 @pytest.mark.asyncio
 async def test_create_sink_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6216,7 +6249,7 @@ async def test_create_sink_flattened_async():
 @pytest.mark.asyncio
 async def test_create_sink_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6361,7 +6394,7 @@ async def test_update_sink_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -6391,7 +6424,7 @@ async def test_update_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6403,25 +6436,26 @@ async def test_update_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.update_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_sink] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.update_sink] = mock_rpc
 
         request = {}
         await client.update_sink(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_sink(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateSinkRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6503,7 +6537,7 @@ def test_update_sink_field_headers():
 @pytest.mark.asyncio
 async def test_update_sink_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6584,7 +6618,7 @@ def test_update_sink_flattened_error():
 @pytest.mark.asyncio
 async def test_update_sink_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6620,7 +6654,7 @@ async def test_update_sink_flattened_async():
 @pytest.mark.asyncio
 async def test_update_sink_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6749,7 +6783,7 @@ async def test_delete_sink_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -6770,7 +6804,7 @@ async def test_delete_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6782,25 +6816,26 @@ async def test_delete_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.delete_sink in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_sink] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_sink] = mock_rpc
 
         request = {}
         await client.delete_sink(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_sink(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteSinkRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6865,7 +6900,7 @@ def test_delete_sink_field_headers():
 @pytest.mark.asyncio
 async def test_delete_sink_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6936,7 +6971,7 @@ def test_delete_sink_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_sink_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6964,7 +6999,7 @@ async def test_delete_sink_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_sink_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7082,8 +7117,9 @@ def test_create_link_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.create_link(request)
@@ -7097,7 +7133,7 @@ async def test_create_link_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -7120,7 +7156,7 @@ async def test_create_link_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7132,29 +7168,31 @@ async def test_create_link_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.create_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_link] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.create_link] = mock_rpc
 
         request = {}
         await client.create_link(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.create_link(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_link_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateLinkRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7221,7 +7259,7 @@ def test_create_link_field_headers():
 @pytest.mark.asyncio
 async def test_create_link_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7302,7 +7340,7 @@ def test_create_link_flattened_error():
 @pytest.mark.asyncio
 async def test_create_link_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7340,7 +7378,7 @@ async def test_create_link_flattened_async():
 @pytest.mark.asyncio
 async def test_create_link_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7458,8 +7496,9 @@ def test_delete_link_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.delete_link(request)
@@ -7473,7 +7512,7 @@ async def test_delete_link_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -7496,7 +7535,7 @@ async def test_delete_link_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7508,29 +7547,31 @@ async def test_delete_link_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.delete_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_link] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_link] = mock_rpc
 
         request = {}
         await client.delete_link(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.delete_link(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_link_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteLinkRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7597,7 +7638,7 @@ def test_delete_link_field_headers():
 @pytest.mark.asyncio
 async def test_delete_link_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7668,7 +7709,7 @@ def test_delete_link_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_link_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7698,7 +7739,7 @@ async def test_delete_link_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_link_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7830,7 +7871,7 @@ async def test_list_links_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -7853,7 +7894,7 @@ async def test_list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_as
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7865,25 +7906,26 @@ async def test_list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.list_links in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_links] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_links] = mock_rpc
 
         request = {}
         await client.list_links(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_links(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_links_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListLinksRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7951,7 +7993,7 @@ def test_list_links_field_headers():
 @pytest.mark.asyncio
 async def test_list_links_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8022,7 +8064,7 @@ def test_list_links_flattened_error():
 @pytest.mark.asyncio
 async def test_list_links_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8050,7 +8092,7 @@ async def test_list_links_flattened_async():
 @pytest.mark.asyncio
 async def test_list_links_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8164,7 +8206,7 @@ def test_list_links_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_links_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8213,7 +8255,7 @@ async def test_list_links_async_pager():
 @pytest.mark.asyncio
 async def test_list_links_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8380,7 +8422,7 @@ async def test_get_link_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -8405,7 +8447,7 @@ async def test_get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8417,25 +8459,26 @@ async def test_get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.get_link in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_link] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.get_link] = mock_rpc
 
         request = {}
         await client.get_link(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_link(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_link_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetLinkRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8507,7 +8550,7 @@ def test_get_link_field_headers():
 @pytest.mark.asyncio
 async def test_get_link_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8578,7 +8621,7 @@ def test_get_link_flattened_error():
 @pytest.mark.asyncio
 async def test_get_link_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8606,7 +8649,7 @@ async def test_get_link_flattened_async():
 @pytest.mark.asyncio
 async def test_get_link_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8738,7 +8781,7 @@ async def test_list_exclusions_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -8761,7 +8804,7 @@ async def test_list_exclusions_async_use_cached_wrapped_rpc(transport: str = "gr
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8773,25 +8816,26 @@ async def test_list_exclusions_async_use_cached_wrapped_rpc(transport: str = "gr
         assert client._client._transport.list_exclusions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_exclusions] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_exclusions] = mock_rpc
 
         request = {}
         await client.list_exclusions(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_exclusions(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_exclusions_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListExclusionsRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8859,7 +8903,7 @@ def test_list_exclusions_field_headers():
 @pytest.mark.asyncio
 async def test_list_exclusions_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8930,7 +8974,7 @@ def test_list_exclusions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_exclusions_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8958,7 +9002,7 @@ async def test_list_exclusions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_exclusions_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9072,7 +9116,7 @@ def test_list_exclusions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_exclusions_async_pager():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9121,7 +9165,7 @@ async def test_list_exclusions_async_pager():
 @pytest.mark.asyncio
 async def test_list_exclusions_async_pages():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9290,7 +9334,7 @@ async def test_get_exclusion_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -9316,7 +9360,7 @@ async def test_get_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9328,25 +9372,26 @@ async def test_get_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.get_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_exclusion] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.get_exclusion] = mock_rpc
 
         request = {}
         await client.get_exclusion(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_exclusion(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetExclusionRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9420,7 +9465,7 @@ def test_get_exclusion_field_headers():
 @pytest.mark.asyncio
 async def test_get_exclusion_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9491,7 +9536,7 @@ def test_get_exclusion_flattened_error():
 @pytest.mark.asyncio
 async def test_get_exclusion_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9519,7 +9564,7 @@ async def test_get_exclusion_flattened_async():
 @pytest.mark.asyncio
 async def test_get_exclusion_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9655,7 +9700,7 @@ async def test_create_exclusion_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -9681,7 +9726,7 @@ async def test_create_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9693,25 +9738,26 @@ async def test_create_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.create_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_exclusion] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.create_exclusion] = mock_rpc
 
         request = {}
         await client.create_exclusion(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.create_exclusion(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateExclusionRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9785,7 +9831,7 @@ def test_create_exclusion_field_headers():
 @pytest.mark.asyncio
 async def test_create_exclusion_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9861,7 +9907,7 @@ def test_create_exclusion_flattened_error():
 @pytest.mark.asyncio
 async def test_create_exclusion_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9893,7 +9939,7 @@ async def test_create_exclusion_flattened_async():
 @pytest.mark.asyncio
 async def test_create_exclusion_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10030,7 +10076,7 @@ async def test_update_exclusion_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -10056,7 +10102,7 @@ async def test_update_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10068,25 +10114,26 @@ async def test_update_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.update_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_exclusion] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.update_exclusion] = mock_rpc
 
         request = {}
         await client.update_exclusion(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_exclusion(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateExclusionRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10160,7 +10207,7 @@ def test_update_exclusion_field_headers():
 @pytest.mark.asyncio
 async def test_update_exclusion_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10241,7 +10288,7 @@ def test_update_exclusion_flattened_error():
 @pytest.mark.asyncio
 async def test_update_exclusion_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10277,7 +10324,7 @@ async def test_update_exclusion_flattened_async():
 @pytest.mark.asyncio
 async def test_update_exclusion_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10406,7 +10453,7 @@ async def test_delete_exclusion_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -10427,7 +10474,7 @@ async def test_delete_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10439,25 +10486,26 @@ async def test_delete_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.delete_exclusion in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_exclusion] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_exclusion] = mock_rpc
 
         request = {}
         await client.delete_exclusion(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_exclusion(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteExclusionRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10522,7 +10570,7 @@ def test_delete_exclusion_field_headers():
 @pytest.mark.asyncio
 async def test_delete_exclusion_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10593,7 +10641,7 @@ def test_delete_exclusion_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_exclusion_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10621,7 +10669,7 @@ async def test_delete_exclusion_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_exclusion_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10757,7 +10805,7 @@ async def test_get_cmek_settings_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -10783,7 +10831,7 @@ async def test_get_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10795,25 +10843,26 @@ async def test_get_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "
         assert client._client._transport.get_cmek_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_cmek_settings] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.get_cmek_settings] = mock_rpc
 
         request = {}
         await client.get_cmek_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_cmek_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_cmek_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetCmekSettingsRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10887,7 +10936,7 @@ def test_get_cmek_settings_field_headers():
 @pytest.mark.asyncio
 async def test_get_cmek_settings_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11040,7 +11089,7 @@ async def test_update_cmek_settings_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -11066,7 +11115,7 @@ async def test_update_cmek_settings_async_use_cached_wrapped_rpc(transport: str 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11078,25 +11127,26 @@ async def test_update_cmek_settings_async_use_cached_wrapped_rpc(transport: str 
         assert client._client._transport.update_cmek_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_cmek_settings] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.update_cmek_settings] = mock_rpc
 
         request = {}
         await client.update_cmek_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_cmek_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_cmek_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateCmekSettingsRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11170,7 +11220,7 @@ def test_update_cmek_settings_field_headers():
 @pytest.mark.asyncio
 async def test_update_cmek_settings_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11325,7 +11375,7 @@ async def test_get_settings_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -11352,7 +11402,7 @@ async def test_get_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11364,25 +11414,26 @@ async def test_get_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert client._client._transport.get_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_settings] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.get_settings] = mock_rpc
 
         request = {}
         await client.get_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetSettingsRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11458,7 +11509,7 @@ def test_get_settings_field_headers():
 @pytest.mark.asyncio
 async def test_get_settings_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11529,7 +11580,7 @@ def test_get_settings_flattened_error():
 @pytest.mark.asyncio
 async def test_get_settings_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11557,7 +11608,7 @@ async def test_get_settings_flattened_async():
 @pytest.mark.asyncio
 async def test_get_settings_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11695,7 +11746,7 @@ async def test_update_settings_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -11722,7 +11773,7 @@ async def test_update_settings_async_use_cached_wrapped_rpc(transport: str = "gr
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11734,25 +11785,26 @@ async def test_update_settings_async_use_cached_wrapped_rpc(transport: str = "gr
         assert client._client._transport.update_settings in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_settings] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.update_settings] = mock_rpc
 
         request = {}
         await client.update_settings(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_settings(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateSettingsRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11828,7 +11880,7 @@ def test_update_settings_field_headers():
 @pytest.mark.asyncio
 async def test_update_settings_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11904,7 +11956,7 @@ def test_update_settings_flattened_error():
 @pytest.mark.asyncio
 async def test_update_settings_flattened_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11936,7 +11988,7 @@ async def test_update_settings_flattened_async():
 @pytest.mark.asyncio
 async def test_update_settings_flattened_error_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12057,8 +12109,9 @@ def test_copy_log_entries_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.copy_log_entries(request)
@@ -12072,7 +12125,7 @@ async def test_copy_log_entries_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -12095,7 +12148,7 @@ async def test_copy_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConfigServiceV2AsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12107,29 +12160,31 @@ async def test_copy_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
         assert client._client._transport.copy_log_entries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.copy_log_entries] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.copy_log_entries] = mock_rpc
 
         request = {}
         await client.copy_log_entries(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.copy_log_entries(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_copy_log_entries_async(transport: str = 'grpc_asyncio', request_type=logging_config.CopyLogEntriesRequest):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12936,7 +12991,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
@@ -12969,7 +13024,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13017,7 +13072,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13058,7 +13113,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -13098,7 +13153,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13146,7 +13201,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13187,7 +13242,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -13227,7 +13282,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13275,7 +13330,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13316,7 +13371,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = ConfigServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:

@@ -36,6 +36,12 @@ from requests import Request, PreparedRequest
 from requests.sessions import Session
 from google.protobuf import json_format
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError: # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import future
@@ -67,6 +73,13 @@ import google.auth
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
@@ -874,8 +887,9 @@ def test_export_assets_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.export_assets(request)
@@ -889,7 +903,7 @@ async def test_export_assets_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -912,7 +926,7 @@ async def test_export_assets_async_use_cached_wrapped_rpc(transport: str = "grpc
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -924,29 +938,31 @@ async def test_export_assets_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert client._client._transport.export_assets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.export_assets] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.export_assets] = mock_rpc
 
         request = {}
         await client.export_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.export_assets(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_export_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.ExportAssetsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1013,7 +1029,7 @@ def test_export_assets_field_headers():
 @pytest.mark.asyncio
 async def test_export_assets_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1162,7 +1178,7 @@ async def test_list_assets_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -1185,7 +1201,7 @@ async def test_list_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1197,25 +1213,26 @@ async def test_list_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.list_assets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_assets] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_assets] = mock_rpc
 
         request = {}
         await client.list_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_assets(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListAssetsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1283,7 +1300,7 @@ def test_list_assets_field_headers():
 @pytest.mark.asyncio
 async def test_list_assets_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1354,7 +1371,7 @@ def test_list_assets_flattened_error():
 @pytest.mark.asyncio
 async def test_list_assets_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1382,7 +1399,7 @@ async def test_list_assets_flattened_async():
 @pytest.mark.asyncio
 async def test_list_assets_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1496,7 +1513,7 @@ def test_list_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_assets_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1545,7 +1562,7 @@ async def test_list_assets_async_pager():
 @pytest.mark.asyncio
 async def test_list_assets_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1706,7 +1723,7 @@ async def test_batch_get_assets_history_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -1728,7 +1745,7 @@ async def test_batch_get_assets_history_async_use_cached_wrapped_rpc(transport: 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1740,25 +1757,26 @@ async def test_batch_get_assets_history_async_use_cached_wrapped_rpc(transport: 
         assert client._client._transport.batch_get_assets_history in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.batch_get_assets_history] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.batch_get_assets_history] = mock_rpc
 
         request = {}
         await client.batch_get_assets_history(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.batch_get_assets_history(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_async(transport: str = 'grpc_asyncio', request_type=asset_service.BatchGetAssetsHistoryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1824,7 +1842,7 @@ def test_batch_get_assets_history_field_headers():
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1981,7 +1999,7 @@ async def test_create_feed_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2008,7 +2026,7 @@ async def test_create_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2020,25 +2038,26 @@ async def test_create_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.create_feed in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_feed] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.create_feed] = mock_rpc
 
         request = {}
         await client.create_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.create_feed(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.CreateFeedRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2114,7 +2133,7 @@ def test_create_feed_field_headers():
 @pytest.mark.asyncio
 async def test_create_feed_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2185,7 +2204,7 @@ def test_create_feed_flattened_error():
 @pytest.mark.asyncio
 async def test_create_feed_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2213,7 +2232,7 @@ async def test_create_feed_flattened_async():
 @pytest.mark.asyncio
 async def test_create_feed_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2351,7 +2370,7 @@ async def test_get_feed_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2378,7 +2397,7 @@ async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2390,25 +2409,26 @@ async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.get_feed in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_feed] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.get_feed] = mock_rpc
 
         request = {}
         await client.get_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_feed(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.GetFeedRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2484,7 +2504,7 @@ def test_get_feed_field_headers():
 @pytest.mark.asyncio
 async def test_get_feed_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2555,7 +2575,7 @@ def test_get_feed_flattened_error():
 @pytest.mark.asyncio
 async def test_get_feed_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2583,7 +2603,7 @@ async def test_get_feed_flattened_async():
 @pytest.mark.asyncio
 async def test_get_feed_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2711,7 +2731,7 @@ async def test_list_feeds_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -2733,7 +2753,7 @@ async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_as
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2745,25 +2765,26 @@ async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert client._client._transport.list_feeds in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_feeds] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_feeds] = mock_rpc
 
         request = {}
         await client.list_feeds(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_feeds(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_feeds_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListFeedsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2829,7 +2850,7 @@ def test_list_feeds_field_headers():
 @pytest.mark.asyncio
 async def test_list_feeds_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2900,7 +2921,7 @@ def test_list_feeds_flattened_error():
 @pytest.mark.asyncio
 async def test_list_feeds_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2928,7 +2949,7 @@ async def test_list_feeds_flattened_async():
 @pytest.mark.asyncio
 async def test_list_feeds_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3064,7 +3085,7 @@ async def test_update_feed_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -3091,7 +3112,7 @@ async def test_update_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3103,25 +3124,26 @@ async def test_update_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.update_feed in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_feed] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.update_feed] = mock_rpc
 
         request = {}
         await client.update_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_feed(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.UpdateFeedRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3197,7 +3219,7 @@ def test_update_feed_field_headers():
 @pytest.mark.asyncio
 async def test_update_feed_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3268,7 +3290,7 @@ def test_update_feed_flattened_error():
 @pytest.mark.asyncio
 async def test_update_feed_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3296,7 +3318,7 @@ async def test_update_feed_flattened_async():
 @pytest.mark.asyncio
 async def test_update_feed_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3423,7 +3445,7 @@ async def test_delete_feed_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -3444,7 +3466,7 @@ async def test_delete_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3456,25 +3478,26 @@ async def test_delete_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert client._client._transport.delete_feed in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_feed] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_feed] = mock_rpc
 
         request = {}
         await client.delete_feed(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_feed(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_feed_async(transport: str = 'grpc_asyncio', request_type=asset_service.DeleteFeedRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3539,7 +3562,7 @@ def test_delete_feed_field_headers():
 @pytest.mark.asyncio
 async def test_delete_feed_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3610,7 +3633,7 @@ def test_delete_feed_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_feed_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3638,7 +3661,7 @@ async def test_delete_feed_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_feed_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3774,7 +3797,7 @@ async def test_search_all_resources_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -3797,7 +3820,7 @@ async def test_search_all_resources_async_use_cached_wrapped_rpc(transport: str 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3809,25 +3832,26 @@ async def test_search_all_resources_async_use_cached_wrapped_rpc(transport: str 
         assert client._client._transport.search_all_resources in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.search_all_resources] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.search_all_resources] = mock_rpc
 
         request = {}
         await client.search_all_resources(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.search_all_resources(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_search_all_resources_async(transport: str = 'grpc_asyncio', request_type=asset_service.SearchAllResourcesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3895,7 +3919,7 @@ def test_search_all_resources_field_headers():
 @pytest.mark.asyncio
 async def test_search_all_resources_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3976,7 +4000,7 @@ def test_search_all_resources_flattened_error():
 @pytest.mark.asyncio
 async def test_search_all_resources_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4012,7 +4036,7 @@ async def test_search_all_resources_flattened_async():
 @pytest.mark.asyncio
 async def test_search_all_resources_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4128,7 +4152,7 @@ def test_search_all_resources_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4177,7 +4201,7 @@ async def test_search_all_resources_async_pager():
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4346,7 +4370,7 @@ async def test_search_all_iam_policies_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -4369,7 +4393,7 @@ async def test_search_all_iam_policies_async_use_cached_wrapped_rpc(transport: s
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4381,25 +4405,26 @@ async def test_search_all_iam_policies_async_use_cached_wrapped_rpc(transport: s
         assert client._client._transport.search_all_iam_policies in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.search_all_iam_policies] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.search_all_iam_policies] = mock_rpc
 
         request = {}
         await client.search_all_iam_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.search_all_iam_policies(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.SearchAllIamPoliciesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4467,7 +4492,7 @@ def test_search_all_iam_policies_field_headers():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4543,7 +4568,7 @@ def test_search_all_iam_policies_flattened_error():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4575,7 +4600,7 @@ async def test_search_all_iam_policies_flattened_async():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4690,7 +4715,7 @@ def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4739,7 +4764,7 @@ async def test_search_all_iam_policies_async_pager():
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4902,7 +4927,7 @@ async def test_analyze_iam_policy_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -4925,7 +4950,7 @@ async def test_analyze_iam_policy_async_use_cached_wrapped_rpc(transport: str = 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4937,25 +4962,26 @@ async def test_analyze_iam_policy_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.analyze_iam_policy in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy] = mock_rpc
 
         request = {}
         await client.analyze_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.analyze_iam_policy(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeIamPolicyRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5023,7 +5049,7 @@ def test_analyze_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5156,8 +5182,9 @@ def test_analyze_iam_policy_longrunning_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.analyze_iam_policy_longrunning(request)
@@ -5171,7 +5198,7 @@ async def test_analyze_iam_policy_longrunning_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -5194,7 +5221,7 @@ async def test_analyze_iam_policy_longrunning_async_use_cached_wrapped_rpc(trans
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5206,29 +5233,31 @@ async def test_analyze_iam_policy_longrunning_async_use_cached_wrapped_rpc(trans
         assert client._client._transport.analyze_iam_policy_longrunning in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy_longrunning] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_iam_policy_longrunning] = mock_rpc
 
         request = {}
         await client.analyze_iam_policy_longrunning(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.analyze_iam_policy_longrunning(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5295,7 +5324,7 @@ def test_analyze_iam_policy_longrunning_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5442,7 +5471,7 @@ async def test_analyze_move_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -5464,7 +5493,7 @@ async def test_analyze_move_async_use_cached_wrapped_rpc(transport: str = "grpc_
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5476,25 +5505,26 @@ async def test_analyze_move_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert client._client._transport.analyze_move in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.analyze_move] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_move] = mock_rpc
 
         request = {}
         await client.analyze_move(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.analyze_move(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_analyze_move_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeMoveRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5560,7 +5590,7 @@ def test_analyze_move_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_move_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5715,7 +5745,7 @@ async def test_query_assets_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -5739,7 +5769,7 @@ async def test_query_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5751,25 +5781,26 @@ async def test_query_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert client._client._transport.query_assets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.query_assets] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.query_assets] = mock_rpc
 
         request = {}
         await client.query_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.query_assets(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_query_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.QueryAssetsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5839,7 +5870,7 @@ def test_query_assets_field_headers():
 @pytest.mark.asyncio
 async def test_query_assets_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5994,7 +6025,7 @@ async def test_create_saved_query_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -6020,7 +6051,7 @@ async def test_create_saved_query_async_use_cached_wrapped_rpc(transport: str = 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6032,25 +6063,26 @@ async def test_create_saved_query_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.create_saved_query in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.create_saved_query] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.create_saved_query] = mock_rpc
 
         request = {}
         await client.create_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.create_saved_query(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_create_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.CreateSavedQueryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6124,7 +6156,7 @@ def test_create_saved_query_field_headers():
 @pytest.mark.asyncio
 async def test_create_saved_query_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6205,7 +6237,7 @@ def test_create_saved_query_flattened_error():
 @pytest.mark.asyncio
 async def test_create_saved_query_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6241,7 +6273,7 @@ async def test_create_saved_query_flattened_async():
 @pytest.mark.asyncio
 async def test_create_saved_query_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6379,7 +6411,7 @@ async def test_get_saved_query_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -6405,7 +6437,7 @@ async def test_get_saved_query_async_use_cached_wrapped_rpc(transport: str = "gr
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6417,25 +6449,26 @@ async def test_get_saved_query_async_use_cached_wrapped_rpc(transport: str = "gr
         assert client._client._transport.get_saved_query in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.get_saved_query] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.get_saved_query] = mock_rpc
 
         request = {}
         await client.get_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_saved_query(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_get_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.GetSavedQueryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6509,7 +6542,7 @@ def test_get_saved_query_field_headers():
 @pytest.mark.asyncio
 async def test_get_saved_query_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6580,7 +6613,7 @@ def test_get_saved_query_flattened_error():
 @pytest.mark.asyncio
 async def test_get_saved_query_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6608,7 +6641,7 @@ async def test_get_saved_query_flattened_async():
 @pytest.mark.asyncio
 async def test_get_saved_query_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6742,7 +6775,7 @@ async def test_list_saved_queries_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -6765,7 +6798,7 @@ async def test_list_saved_queries_async_use_cached_wrapped_rpc(transport: str = 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6777,25 +6810,26 @@ async def test_list_saved_queries_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.list_saved_queries in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.list_saved_queries] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.list_saved_queries] = mock_rpc
 
         request = {}
         await client.list_saved_queries(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_saved_queries(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_list_saved_queries_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListSavedQueriesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6863,7 +6897,7 @@ def test_list_saved_queries_field_headers():
 @pytest.mark.asyncio
 async def test_list_saved_queries_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6934,7 +6968,7 @@ def test_list_saved_queries_flattened_error():
 @pytest.mark.asyncio
 async def test_list_saved_queries_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6962,7 +6996,7 @@ async def test_list_saved_queries_flattened_async():
 @pytest.mark.asyncio
 async def test_list_saved_queries_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7076,7 +7110,7 @@ def test_list_saved_queries_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7125,7 +7159,7 @@ async def test_list_saved_queries_async_pager():
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7292,7 +7326,7 @@ async def test_update_saved_query_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -7318,7 +7352,7 @@ async def test_update_saved_query_async_use_cached_wrapped_rpc(transport: str = 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7330,25 +7364,26 @@ async def test_update_saved_query_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.update_saved_query in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.update_saved_query] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.update_saved_query] = mock_rpc
 
         request = {}
         await client.update_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_saved_query(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_update_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.UpdateSavedQueryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7422,7 +7457,7 @@ def test_update_saved_query_field_headers():
 @pytest.mark.asyncio
 async def test_update_saved_query_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7498,7 +7533,7 @@ def test_update_saved_query_flattened_error():
 @pytest.mark.asyncio
 async def test_update_saved_query_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7530,7 +7565,7 @@ async def test_update_saved_query_flattened_async():
 @pytest.mark.asyncio
 async def test_update_saved_query_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7658,7 +7693,7 @@ async def test_delete_saved_query_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -7679,7 +7714,7 @@ async def test_delete_saved_query_async_use_cached_wrapped_rpc(transport: str = 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7691,25 +7726,26 @@ async def test_delete_saved_query_async_use_cached_wrapped_rpc(transport: str = 
         assert client._client._transport.delete_saved_query in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.delete_saved_query] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.delete_saved_query] = mock_rpc
 
         request = {}
         await client.delete_saved_query(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_saved_query(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_delete_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.DeleteSavedQueryRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7774,7 +7810,7 @@ def test_delete_saved_query_field_headers():
 @pytest.mark.asyncio
 async def test_delete_saved_query_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7845,7 +7881,7 @@ def test_delete_saved_query_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_saved_query_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7873,7 +7909,7 @@ async def test_delete_saved_query_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_saved_query_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8001,7 +8037,7 @@ async def test_batch_get_effective_iam_policies_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -8023,7 +8059,7 @@ async def test_batch_get_effective_iam_policies_async_use_cached_wrapped_rpc(tra
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8035,25 +8071,26 @@ async def test_batch_get_effective_iam_policies_async_use_cached_wrapped_rpc(tra
         assert client._client._transport.batch_get_effective_iam_policies in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.batch_get_effective_iam_policies] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.batch_get_effective_iam_policies] = mock_rpc
 
         request = {}
         await client.batch_get_effective_iam_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.batch_get_effective_iam_policies(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_batch_get_effective_iam_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8119,7 +8156,7 @@ def test_batch_get_effective_iam_policies_field_headers():
 @pytest.mark.asyncio
 async def test_batch_get_effective_iam_policies_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8272,7 +8309,7 @@ async def test_analyze_org_policies_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -8295,7 +8332,7 @@ async def test_analyze_org_policies_async_use_cached_wrapped_rpc(transport: str 
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8307,25 +8344,26 @@ async def test_analyze_org_policies_async_use_cached_wrapped_rpc(transport: str 
         assert client._client._transport.analyze_org_policies in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.analyze_org_policies] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_org_policies] = mock_rpc
 
         request = {}
         await client.analyze_org_policies(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.analyze_org_policies(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPoliciesRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8393,7 +8431,7 @@ def test_analyze_org_policies_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8474,7 +8512,7 @@ def test_analyze_org_policies_flattened_error():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8510,7 +8548,7 @@ async def test_analyze_org_policies_flattened_async():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8626,7 +8664,7 @@ def test_analyze_org_policies_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8675,7 +8713,7 @@ async def test_analyze_org_policies_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8844,7 +8882,7 @@ async def test_analyze_org_policy_governed_containers_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -8867,7 +8905,7 @@ async def test_analyze_org_policy_governed_containers_async_use_cached_wrapped_r
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8879,25 +8917,26 @@ async def test_analyze_org_policy_governed_containers_async_use_cached_wrapped_r
         assert client._client._transport.analyze_org_policy_governed_containers in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_containers] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_containers] = mock_rpc
 
         request = {}
         await client.analyze_org_policy_governed_containers(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.analyze_org_policy_governed_containers(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8965,7 +9004,7 @@ def test_analyze_org_policy_governed_containers_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9046,7 +9085,7 @@ def test_analyze_org_policy_governed_containers_flattened_error():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9082,7 +9121,7 @@ async def test_analyze_org_policy_governed_containers_flattened_async():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9198,7 +9237,7 @@ def test_analyze_org_policy_governed_containers_pages(transport_name: str = "grp
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9247,7 +9286,7 @@ async def test_analyze_org_policy_governed_containers_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9416,7 +9455,7 @@ async def test_analyze_org_policy_governed_assets_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport='grpc_asyncio',
     )
 
@@ -9439,7 +9478,7 @@ async def test_analyze_org_policy_governed_assets_async_use_cached_wrapped_rpc(t
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AssetServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9451,25 +9490,26 @@ async def test_analyze_org_policy_governed_assets_async_use_cached_wrapped_rpc(t
         assert client._client._transport.analyze_org_policy_governed_assets in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_assets] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.analyze_org_policy_governed_assets] = mock_rpc
 
         request = {}
         await client.analyze_org_policy_governed_assets(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.analyze_org_policy_governed_assets(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9537,7 +9577,7 @@ def test_analyze_org_policy_governed_assets_field_headers():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9618,7 +9658,7 @@ def test_analyze_org_policy_governed_assets_flattened_error():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_flattened_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9654,7 +9694,7 @@ async def test_analyze_org_policy_governed_assets_flattened_async():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_flattened_error_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9770,7 +9810,7 @@ def test_analyze_org_policy_governed_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_pager():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9819,7 +9859,7 @@ async def test_analyze_org_policy_governed_assets_async_pager():
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_pages():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17117,7 +17157,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
@@ -17198,7 +17238,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -17246,7 +17286,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17287,7 +17327,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
