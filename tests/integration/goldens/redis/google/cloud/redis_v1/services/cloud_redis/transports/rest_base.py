@@ -89,8 +89,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         )
 
     class _BaseCreateInstance:
-        def __hash__(self):
-            return hash("CreateInstance")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "instanceId" : "",        }
@@ -135,8 +135,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseDeleteInstance:
-        def __hash__(self):
-            return hash("DeleteInstance")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -171,8 +171,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseExportInstance:
-        def __hash__(self):
-            return hash("ExportInstance")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -217,8 +217,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseFailoverInstance:
-        def __hash__(self):
-            return hash("FailoverInstance")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -263,8 +263,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseGetInstance:
-        def __hash__(self):
-            return hash("GetInstance")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -299,8 +299,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseGetInstanceAuthString:
-        def __hash__(self):
-            return hash("GetInstanceAuthString")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -335,8 +335,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseImportInstance:
-        def __hash__(self):
-            return hash("ImportInstance")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -381,8 +381,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseListInstances:
-        def __hash__(self):
-            return hash("ListInstances")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -417,8 +417,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseRescheduleMaintenance:
-        def __hash__(self):
-            return hash("RescheduleMaintenance")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -463,8 +463,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseUpdateInstance:
-        def __hash__(self):
-            return hash("UpdateInstance")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
             "updateMask" : {},        }
@@ -509,8 +509,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseUpgradeInstance:
-        def __hash__(self):
-            return hash("UpgradeInstance")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }

@@ -30,18 +30,19 @@ import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
+
+from google.iam.credentials_v1.types import common
+
+
+from .rest_base import _BaseIAMCredentialsRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 from .rest_base import _BaseIAMCredentialsRestTransport
-
-
-from google.iam.credentials_v1.types import common
-
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -177,7 +178,7 @@ class IAMCredentialsRestStub:
 
 
 class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
-    """REST backend transport for IAMCredentials.
+    """REST backend synchronous transport for IAMCredentials.
 
     A service account is a special type of Google account that
     belongs to your application or a virtual machine (VM), instead
@@ -267,6 +268,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
         self._prep_wrapped_messages(client_info)
 
     class _GenerateAccessToken(_BaseIAMCredentialsRestTransport._BaseGenerateAccessToken, IAMCredentialsRestStub):
+        def __hash__(self):
+            return hash("IAMCredentialsRestTransport.GenerateAccessToken")
 
         @staticmethod
         def _get_response(
@@ -339,6 +342,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             return resp
 
     class _GenerateIdToken(_BaseIAMCredentialsRestTransport._BaseGenerateIdToken, IAMCredentialsRestStub):
+        def __hash__(self):
+            return hash("IAMCredentialsRestTransport.GenerateIdToken")
 
         @staticmethod
         def _get_response(
@@ -411,6 +416,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             return resp
 
     class _SignBlob(_BaseIAMCredentialsRestTransport._BaseSignBlob, IAMCredentialsRestStub):
+        def __hash__(self):
+            return hash("IAMCredentialsRestTransport.SignBlob")
 
         @staticmethod
         def _get_response(
@@ -483,6 +490,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             return resp
 
     class _SignJwt(_BaseIAMCredentialsRestTransport._BaseSignJwt, IAMCredentialsRestStub):
+        def __hash__(self):
+            return hash("IAMCredentialsRestTransport.SignJwt")
 
         @staticmethod
         def _get_response(

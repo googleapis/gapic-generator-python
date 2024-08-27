@@ -30,17 +30,17 @@ import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
+{{ shared_macros.operations_mixin_imports(api, service, opts) }}
+
+from .rest_base import _Base{{ service.name }}RestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 from .rest_base import _Base{{ service.name }}RestTransport
-
-{{ shared_macros.operations_mixin_imports(api, service, opts) }}
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -138,7 +138,7 @@ class {{service.name}}RestStub:
 
 
 class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
-    """REST backend transport for {{ service.name }}.
+    """REST backend synchronous transport for {{ service.name }}.
 
     {{ service.meta.doc|rst(width=72, indent=4) }}
 
@@ -270,6 +270,8 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     {% endif %}{# service.has_lro #}
     {% for method in service.methods.values()|sort(attribute="name") %}
     class _{{method.name}}(_Base{{ service.name }}RestTransport._Base{{method.name}}, {{service.name}}RestStub):
+        def __hash__(self):
+            return hash("{{service.name}}RestTransport.{{method.name}}")
         {% if method.http_options and not method.client_streaming %}
 
         {% set body_spec = method.http_options[0].body %}

@@ -87,8 +87,8 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         )
 
     class _BaseGenerateAccessToken:
-        def __hash__(self):
-            return hash("GenerateAccessToken")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -133,8 +133,8 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             return query_params
 
     class _BaseGenerateIdToken:
-        def __hash__(self):
-            return hash("GenerateIdToken")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -179,8 +179,8 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             return query_params
 
     class _BaseSignBlob:
-        def __hash__(self):
-            return hash("SignBlob")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
@@ -225,8 +225,8 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             return query_params
 
     class _BaseSignJwt:
-        def __hash__(self):
-            return hash("SignJwt")
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         }
