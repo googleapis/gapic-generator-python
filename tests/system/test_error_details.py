@@ -56,7 +56,7 @@ def test_bad_request_details(echo):
             )
         )
 
-    # Note: error details are exposes e.value.details.
+    # Note: error details are exposed as e.value.details.
     assert e.value.details == [bad_request_details]
 
 
@@ -86,7 +86,7 @@ def test_precondition_failure_details(echo):
             )
         )
 
-    # Note: error details are exposes e.value.details.
+    # Note: error details are exposed as e.value.details.
     assert e.value.details == [pf_details]
 
 
@@ -106,5 +106,5 @@ def test_unknown_details(echo):
             )
         )
 
-    # Note: error details are exposes e.value.details.
+    # Note: error details are exposed as e.value.details.
     assert e.value.details == list(status.details)
