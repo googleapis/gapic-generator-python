@@ -38,11 +38,12 @@ def rst(text: str, width: int = 72, indent: int = 0, nl: Optional[bool] = None,
     Returns:
         str: The same text, in RST format.
     """
-    answer = wrap(text,
-                  indent=indent,
-                  offset=indent + 3,
-                  width=width - indent,
-             )
+    answer = wrap(
+        text,
+        indent=indent,
+        offset=indent + 3,
+        width=width - indent,
+    )
 
     # Add a newline to the end of the document if any line breaks are
     # already present.
