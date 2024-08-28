@@ -161,7 +161,7 @@ def _get_response(
 {% endmacro %}
 
 
-{% macro prep_wrapped_messages_method(service, is_async=True) %}
+{% macro prep_wrapped_messages_method(service) %}
 def _prep_wrapped_messages(self, client_info):
     """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
     self._wrapped_methods = {
