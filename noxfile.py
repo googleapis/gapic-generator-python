@@ -273,6 +273,8 @@ def showcase_library(
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
 
+        breakpoint()
+
         yield tmp_dir
 
 

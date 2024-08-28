@@ -62,6 +62,7 @@ from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 {% endif %}
 {% if 'rest' in opts.transport %}
 from .transports.rest import {{ service.name }}RestTransport
+from .transports.rest_asyncio import Async{{ service.name }}RestTransport
 {% endif %}
 
 
@@ -79,6 +80,7 @@ class {{ service.client_name }}Meta(type):
     {% endif %}
     {% if "rest" in opts.transport %}
     _transport_registry["rest"] = {{ service.name }}RestTransport
+    _transport_registry["rest_asyncio"] = Async{{ service.name }}RestTransport
     {% endif %}
 
     def get_transport_class(cls,

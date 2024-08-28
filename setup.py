@@ -28,9 +28,8 @@ dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
     # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
     "click >= 6.7",
-    "google-api-core[grpc] >= 1.34.1, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
     "googleapis-common-protos >= 1.55.0",
-    "grpcio >= 1.24.3",
+    "grpcio >= 1.24.3", # TODO (ohmayr): File a bug for removing grpc from setup.py
     # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`
     # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map
     # https://jinja.palletsprojects.com/en/2.11.x/changelog/#version-2-11-0
@@ -41,6 +40,8 @@ dependencies = [
     "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
     "libcst >= 0.4.9, < 2.0.0dev",
     "inflection >= 0.5.1, < 1.0.0dev",
+    "google-auth @ git+ssh://git@github.com/googleapis/google-auth-library-python@8833ad6f92c3300d6645355994c7db2356bd30ad",
+    "google-api-core @ git+ssh://git@github.com/googleapis/python-api-core@29d662b586b4b70348da28c3559364789d2c5855"
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))

@@ -28,6 +28,7 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 import google.auth
 from google.auth import credentials as ga_credentials
+from google.auth.aio import credentials as ga_credentials_async
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
@@ -57,8 +58,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     def event_loop():
         return asyncio.get_event_loop()
 
-    @pytest.fixture
-    def async_echo(use_mtls, event_loop):
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    def async_echo(use_mtls, request, event_loop):
         return construct_client(
             EchoAsyncClient,
             use_mtls,
@@ -67,8 +68,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             credentials=async_anonymous_credentials(),
         )
 
-    @pytest.fixture
-    def async_identity(use_mtls, event_loop):
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    def async_identity(use_mtls, request, event_loop):
         return construct_client(
             IdentityAsyncClient,
             use_mtls,
@@ -135,8 +136,10 @@ def construct_client(
                 credentials=credentials,
                 channel=channel_creator(transport_endpoint),
             )
-        elif transport_name == "rest":
+        elif transport_name in ["rest", "rest_asyncio"]:
             # The custom host explicitly bypasses https.
+            if transport_name == "rest_asyncio":
+                credentials = ga_credentials_async.AnonymousCredentials()
             transport = transport_cls(
                 credentials=credentials,
                 host=transport_endpoint,

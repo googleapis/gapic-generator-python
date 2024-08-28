@@ -123,6 +123,8 @@ def test_unary_error(echo):
         assert exc.value.message == message
 
 
+# TODO (ohmayr): File an issue to move async tests into a separate file.
+# Note: Ads doesn't have async support.
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
 

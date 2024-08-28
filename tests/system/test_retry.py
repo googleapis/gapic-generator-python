@@ -59,7 +59,11 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_method_async_wrapper_for_async_client(async_echo):
-        with pytest.raises(exceptions.NotFound):
-            await async_echo.get_operation({
-                'name': "operations/echo"
-            })
+        
+        # TODO (ohmayr): LROs are currently not supported in async rest.
+        # Remove this guard once implemented.
+        if "grpc" in str(async_echo.transport).lower():
+            with pytest.raises(exceptions.NotFound):
+                await async_echo.get_operation({
+                    'name': "operations/echo"
+                })

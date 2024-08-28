@@ -44,8 +44,6 @@ except ImportError: # pragma: NO COVER
 {% filter sort_lines %}
 import google.auth
 from google.auth import credentials as ga_credentials
-
-
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
@@ -200,7 +198,7 @@ def test__get_api_endpoint():
 {% for mode in ["", "async"] %}
 {% if mode == "async" %}
 async def test_{{ method_name }}_api_version_header_async(transport_name="grpc"):
-    client = {{ service.async_client_name }}(credentials=async_anonymous_credentials(), transport=transport_name)
+    client = {{ service.async_client_name }}(credentials=ga_credentials_async.AnonymousCredentials(), transport=transport_name)
 {% else %}
 @pytest.mark.parametrize("transport_name", [
     {% if 'grpc' in opts.transport %}
@@ -1672,7 +1670,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = {{ service.async_client_name }}(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials_async.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:

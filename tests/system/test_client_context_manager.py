@@ -47,10 +47,29 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             })
             assert response.content == 'hello'
 
+    # rest pagination is waiting for the entire response which
+    # isn't correct.
     @pytest.mark.asyncio
     async def test_client_destroyed_async(async_echo):
+        # if "rest" in str(async_echo.transport).lower():
+        #     AuthorizedSession = async_echo.transport._session
+        #     auth_request = AuthorizedSession._auth_request
+            
+        #     # Default session is none until the first call is made.
+        #     assert auth_request.session == None
+        #     await async_echo.echo({
+        #         'content': 'hello'
+        #     })
+        #     assert auth_request.session is not None
+        #     await async_echo.__aexit__(None, None, None)
+        #     assert auth_request.session.closed == True
+        #     result = await async_echo.echo({
+        #         'content': 'hello'
+        #     })
+        #     print(result)
+        # else:
         await async_echo.__aexit__(None, None, None)
-        with pytest.raises(grpc._cython.cygrpc.UsageError):
+        with pytest.raises((grpc._cython.cygrpc.UsageError, ValueError)):
             await async_echo.echo({
                 'content': 'hello'
             })
