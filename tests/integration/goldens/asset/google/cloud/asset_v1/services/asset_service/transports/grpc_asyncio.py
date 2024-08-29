@@ -228,8 +228,8 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
-        self._prep_wrapped_messages(client_info)
         self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        self._prep_wrapped_messages(client_info)
 
     @property
     def grpc_channel(self) -> aio.Channel:
