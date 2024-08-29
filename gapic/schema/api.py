@@ -582,7 +582,7 @@ class API:
     def all_methods(self) -> Mapping[str, MethodDescriptorProto]:
         """Return a map of all methods for the API.
 
-        Return:
+        Returns:
             Mapping[str, MethodDescriptorProto]: A mapping of MethodDescriptorProto
                 values for the API.
         """
@@ -615,7 +615,7 @@ class API:
         Args:
             service_method_settings (Sequence[client_pb2.MethodSettings]): Method
                 settings to be used when generating API methods.
-        Return:
+        Returns:
             None
         Raises:
             MethodSettingsError: if fields in `method_settings.auto_populated_fields`
@@ -686,7 +686,7 @@ class API:
         when generating client libraries.
         https://github.com/googleapis/googleapis/blob/master/google/api/client.proto#L130
 
-        Return:
+        Returns:
             Mapping[str, Sequence[client_pb2.ClientLibrarySettings]]: A mapping of all library
                 settings read from the service YAML.
 
@@ -716,7 +716,7 @@ class API:
         Args:
             client_library_settings (Sequence[client_pb2.ClientLibrarySettings]): Client
                 library settings to be used when generating API methods.
-        Return:
+        Returns:
             None
         Raises:
             ClientLibrarySettingsError: if fields in `client_library_settings.experimental_features`
@@ -741,7 +741,7 @@ class API:
         when generating methods.
         https://github.com/googleapis/googleapis/blob/7dab3de7ec79098bb367b6b2ac3815512a49dd56/google/api/client.proto#L325
 
-        Return:
+        Returns:
             Mapping[str, Sequence[client_pb2.MethodSettings]]: A mapping of all method
                 settings read from the service YAML.
 
@@ -1018,7 +1018,7 @@ class _ProtoBuilder:
                 used to correspond to documentation in
                 ``SourceCodeInfo.Location`` in ``descriptor.proto``.
 
-        Return:
+        Returns:
             Mapping[str, Union[~.MessageType, ~.Service, ~.EnumType]]: A
                 sequence of the objects that were loaded.
         """

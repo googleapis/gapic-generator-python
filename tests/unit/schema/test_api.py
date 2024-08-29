@@ -2621,7 +2621,7 @@ def get_file_descriptor_proto_for_tests(
             `descriptor_pb2.FileDescriptorProto` should use client streaming.
         server_streaming (bool): Whether the methods in the return object
             `descriptor_pb2.FileDescriptorProto` should use server streaming.
-    Return:
+    Returns:
         descriptor_pb2.FileDescriptorProto: Returns an object describing the API.
     """
 
