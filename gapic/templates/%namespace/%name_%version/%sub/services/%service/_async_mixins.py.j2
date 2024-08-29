@@ -50,13 +50,16 @@
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
-
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
     {% endif %}
 
     {% if "GetOperation" in api.mixin_api_methods %}
@@ -107,12 +110,16 @@
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
     {% endif %}
 
     {% if "DeleteOperation" in api.mixin_api_methods %}
@@ -280,12 +287,16 @@
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
     {% endif %}
     {% endif %} {# LRO #}
     
@@ -407,12 +418,16 @@
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
     {% endif %}
 
     {% if "GetIamPolicy" in api.mixin_api_methods %}
@@ -530,12 +545,16 @@
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
     {% endif %}
 
     {% if "TestIamPermissions" in api.mixin_api_methods %}
@@ -591,12 +610,16 @@
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
     {% endif %}
     {% endif %}
 
@@ -651,12 +674,16 @@
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
     {% endif %}
 
     {% if "ListLocations" in api.mixin_api_methods %}
@@ -707,12 +734,16 @@
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
     {% endif %}
     {% endif %}
 

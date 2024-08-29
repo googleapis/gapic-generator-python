@@ -5,6 +5,8 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 from collections import OrderedDict
+from http import HTTPStatus
+import json
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
@@ -541,11 +543,15 @@ class {{ service.async_client_name }}:
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
 
     async def get_iam_policy(
         self,
@@ -660,11 +666,15 @@ class {{ service.async_client_name }}:
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
 
     async def test_iam_permissions(
         self,
@@ -717,11 +727,15 @@ class {{ service.async_client_name }}:
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            e = self._client._add_cred_info_for_auth_errors(e)
+            raise e
     {% endif %}
 
     async def __aenter__(self) -> "{{ service.async_client_name }}":
