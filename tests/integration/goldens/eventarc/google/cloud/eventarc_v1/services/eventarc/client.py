@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+from http import HTTPStatus
+import json
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
@@ -544,6 +546,26 @@ class EventarcClient(metaclass=EventarcClientMeta):
         self._is_universe_domain_valid = (self._is_universe_domain_valid or
             EventarcClient._compare_universes(self.universe_domain, self.transport._credentials))
         return self._is_universe_domain_valid
+
+    def _add_cred_info_for_auth_errors(
+        self,
+        error: core_exceptions.GoogleAPICallError
+    ) -> None:
+        """Adds credential info string to error details for 401/403/404 errors.
+
+        Args:
+            error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
+        """
+        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
+            return
+
+        cred = self._transport._credentials
+        if not hasattr(cred, "get_cred_info"):
+            return
+
+        cred_info = cred.get_cred_info()  # type: ignore
+        if cred_info and hasattr(error._details, "append"):
+            error._details.append(json.dumps(cred_info))
 
     @property
     def api_endpoint(self):
@@ -2938,12 +2960,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        # Send the request.
-        response = rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
     def get_operation(
         self,
@@ -2992,12 +3018,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        # Send the request.
-        response = rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
     def delete_operation(
         self,
@@ -3219,12 +3249,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        # Send the request.
-        response = rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
     def get_iam_policy(
         self,
@@ -3340,12 +3374,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        # Send the request.
-        response = rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
     def test_iam_permissions(
         self,
@@ -3399,12 +3437,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        # Send the request.
-        response = rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
     def get_location(
         self,
@@ -3453,12 +3495,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        # Send the request.
-        response = rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
     def list_locations(
         self,
@@ -3507,12 +3553,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        # Send the request.
-        response = rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+        try:
+            # Send the request.
+            response = rpc(
+                request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Done; return the response.
-        return response
+            # Done; return the response.
+            return response
+        except core_exceptions.GoogleAPICallError as e:
+            self._add_cred_info_for_auth_errors(e)
+            raise e
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
