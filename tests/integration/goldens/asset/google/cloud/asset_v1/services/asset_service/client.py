@@ -50,6 +50,7 @@ from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AssetServiceGrpcTransport
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
 from .transports.rest import AssetServiceRestTransport
+from .transports.rest_asyncio import AsyncAssetServiceRestTransport
 
 
 class AssetServiceClientMeta(type):
@@ -63,6 +64,7 @@ class AssetServiceClientMeta(type):
     _transport_registry["grpc"] = AssetServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AssetServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = AssetServiceRestTransport
+    _transport_registry["rest_asyncio"] = AsyncAssetServiceRestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,

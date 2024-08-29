@@ -81,6 +81,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_crud_with_request_async(async_identity):
+        # Async REST does not support client-side streaming.
+        if "rest" in str(async_identity.transport).lower():
+            return
         pager = await async_identity.list_users()
         count = len(pager.users)
         user = await async_identity.create_user(request={'user': {
@@ -100,6 +103,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_crud_flattened_async(async_identity):
+        # Async REST does not support client-side streaming.
+        if "rest" in str(async_identity.transport).lower():
+            return
         count = len((await async_identity.list_users()).users)
         user = await async_identity.create_user(
             display_name='Monty Python',
@@ -114,6 +120,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             await async_identity.delete_user(name=user.name)
 
     def test_path_methods_async(async_identity):
+        # Async REST does not support client-side streaming.
+        if "rest" in str(async_identity.transport).lower():
+            return
         expected = "users/bdfl"
         actual = async_identity.user_path("bdfl")
         assert expected == actual

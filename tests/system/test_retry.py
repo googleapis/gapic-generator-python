@@ -45,6 +45,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_retry_bubble_async(async_echo):
+        # Async REST does not support retries.
+        if "rest" in str(async_echo.transport).lower():
+            return
         with pytest.raises(exceptions.RetryError):
             await async_echo.echo({
                 'error': {
@@ -59,6 +62,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_method_async_wrapper_for_async_client(async_echo):
+        # Async REST does not support LROs
+        if "rest" in str(async_echo.transport).lower():
+            return
         with pytest.raises(exceptions.NotFound):
             await async_echo.get_operation({
                 'name': "operations/echo"

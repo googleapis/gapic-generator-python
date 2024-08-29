@@ -128,6 +128,11 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_unary_with_request_object(async_echo):
+        # TODO (ohmayr): Remove this guard once callables for
+        # service methods are implemented in async REST transport
+        # Googlers, see internal tracking issue: b/362949446.
+        if "rest" in str(async_echo.transport).lower():
+            return
         response = await async_echo.echo(
             showcase.EchoRequest(
                 content="The hail in Wales falls mainly on the snails.",
@@ -138,6 +143,11 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_unary_with_dict(async_echo):
+        # TODO (ohmayr): Remove this guard once callables for
+        # service methods are implemented in async REST transport.
+        # Googlers, see internal tracking issue: b/362949446.
+        if "rest" in str(async_echo.transport).lower():
+            return
         response = await async_echo.echo(
             {
                 "content": "The hail in Wales falls mainly on the snails.",
@@ -147,6 +157,11 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_unary_error(async_echo):
+        # TODO (ohmayr): Remove this guard once handling response errors
+        # is implemented in an async rest call.
+        # Googlers, see internal tracking issue: b/362950286
+        if "rest" in str(async_echo.transport).lower():
+            return
         message = "Bad things! Bad things!"
         with pytest.raises(exceptions.InvalidArgument) as exc:
             await async_echo.echo(

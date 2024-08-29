@@ -114,6 +114,11 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_unary_stream_reader(async_echo):
+        # TODO (ohmayr): Remove this guard once server-side
+        # streaming is supported for an async REST call.
+        # Googlers, see internal tracking issue: b/362949166.
+        if "rest" in str(async_echo.transport).lower():
+            return
         content = 'The hail in Wales falls mainly on the snails.'
         call = await async_echo.expand({
             'content': content,
@@ -131,6 +136,11 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_unary_stream_async_generator(async_echo):
+        # TODO (ohmayr): Remove this guard once server-side
+        # streaming is supported for an async REST call.
+        # Googlers, see internal tracking issue: b/362949166.
+        if "rest" in str(async_echo.transport).lower():
+            return
         content = 'The hail in Wales falls mainly on the snails.'
         call = await async_echo.expand({
             'content': content,
@@ -149,6 +159,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_iterable(async_echo):
+        # Note: Async REST does not support client-side streaming.
+        if "rest" in str(async_echo.transport).lower():
+            return
         requests = []
         requests.append(showcase.EchoRequest(content="hello"))
         requests.append(showcase.EchoRequest(content="world!"))
@@ -159,7 +172,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_async_generator(async_echo):
-
+        # Note: Async REST does not support client-side streaming.
+        if "rest" in str(async_echo.transport).lower():
+            return
         async def async_generator():
             yield showcase.EchoRequest(content="hello")
             yield showcase.EchoRequest(content="world!")
@@ -170,6 +185,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_writer(async_echo):
+        # Note: Async REST does not support client-side streaming.
+        if "rest" in str(async_echo.transport).lower():
+            return
         call = await async_echo.collect()
         await call.write(showcase.EchoRequest(content="hello"))
         await call.write(showcase.EchoRequest(content="world!"))
@@ -180,6 +198,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_passing_dict(async_echo):
+        # Note: Async REST does not support client-side streaming.
+        if "rest" in str(async_echo.transport).lower():
+            return
         requests = [{'content': 'hello'}, {'content': 'world!'}]
         call = await async_echo.collect(iter(requests))
         response = await call
@@ -187,6 +208,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_reader_writier(async_echo):
+        # Note: Async REST does not support client-side streaming.
+        if "rest" in str(async_echo.transport).lower():
+            return
         call = await async_echo.chat(metadata=_METADATA)
         await call.write(showcase.EchoRequest(content="hello"))
         await call.write(showcase.EchoRequest(content="world!"))
@@ -203,7 +227,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_async_generator(async_echo):
-
+        # Note: Async REST does not support client-side streaming.
+        if "rest" in str(async_echo.transport).lower():
+            return
         async def async_generator():
             yield showcase.EchoRequest(content="hello")
             yield showcase.EchoRequest(content="world!")
@@ -220,6 +246,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_passing_dict(async_echo):
+        # Note: Async REST does not support client-side streaming.
+        if "rest" in str(async_echo.transport).lower():
+            return
         requests = [{'content': 'hello'}, {'content': 'world!'}]
         call = await async_echo.chat(iter(requests), metadata=_METADATA)
 
