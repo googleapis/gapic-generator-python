@@ -623,13 +623,13 @@ class API:
         """
 
         all_errors: dict = {}
-        selectors_seen = []
+        selectors_seen: set = set()
         for method_settings in service_method_settings:
             # Check if this selector is defind more than once
             if method_settings.selector in selectors_seen:
                 all_errors[method_settings.selector] = ["Duplicate selector"]
                 continue
-            selectors_seen.append(method_settings.selector)
+            selectors_seen.add(method_settings.selector)
 
             method_descriptor = self.all_methods.get(method_settings.selector)
             # Check if this selector can be mapped to a method in the API.
@@ -724,13 +724,13 @@ class API:
         """
 
         all_errors: dict = {}
-        versions_seen = []
+        versions_seen: set = set()
         for library_settings in client_library_settings:
             # Check if this version is defind more than once
             if library_settings.version in versions_seen:
                 all_errors[library_settings.version] = ["Duplicate version"]
                 continue
-            versions_seen.append(library_settings.version)
+            versions_seen.add(library_settings.version)
 
         if all_errors:
             raise ClientLibrarySettingsError(yaml.dump(all_errors))
