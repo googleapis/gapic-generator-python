@@ -161,7 +161,7 @@ def _get_response(
 {% endmacro %}
 
 
-{% macro prep_wrapped_messages_method(service) %}
+{% macro prep_wrapped_messages_async_method(service) %}
 def _prep_wrapped_messages(self, client_info):
     """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
     self._wrapped_methods = {
@@ -194,9 +194,15 @@ def _prep_wrapped_messages(self, client_info):
     }
 {% endmacro %}
 
-{# TODO: This helper logic to check if `kind` needs to be configured in wrap_method
-can be removed once we required the correct version of the google-api-core dependency. #}
-{% macro wrap_method_macro() %}
+{# TODO: This helper logic to check whether `kind` needs to be configured in wrap_method
+can be removed once we require the correct version of the google-api-core dependency to
+avoid having a gRPC code path in an async REST call.
+See related issue: https://github.com/googleapis/python-api-core/issues/661.
+In the meantime, if an older version of the dependency is installed (which has a wrap_method with
+no kind parameter), then an async gRPC call will work correctly and async REST transport
+will not be available as a transport.
+See related issue: https://github.com/googleapis/gapic-generator-python/issues/2119. #}
+{% macro wrap_async_method_macro() %}
 def _wrap_method(self, func, *args, **kwargs):
     {# TODO: Remove `pragma: NO COVER` once https://github.com/googleapis/python-api-core/pull/688 is merged. #}
     if self._wrap_with_kind:  # pragma: NO COVER
