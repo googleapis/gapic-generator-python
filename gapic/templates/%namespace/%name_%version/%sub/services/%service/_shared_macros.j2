@@ -155,6 +155,7 @@ def _get_http_options():
 
     http_options = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_http_options()
     {% if not is_async %}
+    {# TODO (ohmayr): Make this unconditional once REST interceptors are supported for async. See issue: b/362949568 #}
     request, metadata = self._interceptor.pre_{{ method_name|snake_case }}(request, metadata)
     {% endif %}
     transcoded_request = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_transcoded_request(http_options, request)
@@ -172,6 +173,10 @@ def _get_http_options():
     # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
     # subclass.
     if response.status_code >= 400:
+        {# Note: format_http_response_error takes in more parameters than from_http_response and the 
+        latter only supports a response of type requests.Response. 
+        TODO: Clean up the sync response error handling and use format_http_response_error.
+        See issue: https://github.com/googleapis/gapic-generator-python/issues/2116. #}
         {% if is_async %}
         content = await response.read()
         payload = json.loads(content.decode('utf-8'))
