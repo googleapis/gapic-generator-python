@@ -146,11 +146,9 @@ def _get_http_options():
         body_spec (str): The http options body i.e. method.http_options[0].body
         method_name (str): The method name.
         service_name (str): The service name.
-        is_async (bool): Used to determine the code path i.e. whether for sync or async call.
-#}
+        is_async (bool): Used to determine the code path i.e. whether for sync or async call. #}
 {% macro rest_call_method_common(body_spec, method_name, service_name, is_async=False) %}
 {% set await_prefix = "await " if is_async else "" %}
-{% set async_prefix = "async " if is_async else "" %}
 {% set async_class_prefix = "Async" if is_async else "" %}
 
     http_options = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_http_options()
