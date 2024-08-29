@@ -229,6 +229,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
 
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
 
     @property
     def grpc_channel(self) -> aio.Channel:
@@ -942,17 +943,17 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.export_assets: self._wrap_method_with_kind(
+            self.export_assets: self._wrap_method(
                 self.export_assets,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_assets: self._wrap_method_with_kind(
+            self.list_assets: self._wrap_method(
                 self.list_assets,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.batch_get_assets_history: self._wrap_method_with_kind(
+            self.batch_get_assets_history: self._wrap_method(
                 self.batch_get_assets_history,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -967,12 +968,12 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_feed: self._wrap_method_with_kind(
+            self.create_feed: self._wrap_method(
                 self.create_feed,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_feed: self._wrap_method_with_kind(
+            self.get_feed: self._wrap_method(
                 self.get_feed,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -987,7 +988,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_feeds: self._wrap_method_with_kind(
+            self.list_feeds: self._wrap_method(
                 self.list_feeds,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1002,12 +1003,12 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_feed: self._wrap_method_with_kind(
+            self.update_feed: self._wrap_method(
                 self.update_feed,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_feed: self._wrap_method_with_kind(
+            self.delete_feed: self._wrap_method(
                 self.delete_feed,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1022,7 +1023,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.search_all_resources: self._wrap_method_with_kind(
+            self.search_all_resources: self._wrap_method(
                 self.search_all_resources,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1037,7 +1038,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 default_timeout=15.0,
                 client_info=client_info,
             ),
-            self.search_all_iam_policies: self._wrap_method_with_kind(
+            self.search_all_iam_policies: self._wrap_method(
                 self.search_all_iam_policies,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1052,7 +1053,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 default_timeout=15.0,
                 client_info=client_info,
             ),
-            self.analyze_iam_policy: self._wrap_method_with_kind(
+            self.analyze_iam_policy: self._wrap_method(
                 self.analyze_iam_policy,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1066,70 +1067,70 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.analyze_iam_policy_longrunning: self._wrap_method_with_kind(
+            self.analyze_iam_policy_longrunning: self._wrap_method(
                 self.analyze_iam_policy_longrunning,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.analyze_move: self._wrap_method_with_kind(
+            self.analyze_move: self._wrap_method(
                 self.analyze_move,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.query_assets: self._wrap_method_with_kind(
+            self.query_assets: self._wrap_method(
                 self.query_assets,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_saved_query: self._wrap_method_with_kind(
+            self.create_saved_query: self._wrap_method(
                 self.create_saved_query,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_saved_query: self._wrap_method_with_kind(
+            self.get_saved_query: self._wrap_method(
                 self.get_saved_query,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_saved_queries: self._wrap_method_with_kind(
+            self.list_saved_queries: self._wrap_method(
                 self.list_saved_queries,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_saved_query: self._wrap_method_with_kind(
+            self.update_saved_query: self._wrap_method(
                 self.update_saved_query,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_saved_query: self._wrap_method_with_kind(
+            self.delete_saved_query: self._wrap_method(
                 self.delete_saved_query,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.batch_get_effective_iam_policies: self._wrap_method_with_kind(
+            self.batch_get_effective_iam_policies: self._wrap_method(
                 self.batch_get_effective_iam_policies,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.analyze_org_policies: self._wrap_method_with_kind(
+            self.analyze_org_policies: self._wrap_method(
                 self.analyze_org_policies,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.analyze_org_policy_governed_containers: self._wrap_method_with_kind(
+            self.analyze_org_policy_governed_containers: self._wrap_method(
                 self.analyze_org_policy_governed_containers,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.analyze_org_policy_governed_assets: self._wrap_method_with_kind(
+            self.analyze_org_policy_governed_assets: self._wrap_method(
                 self.analyze_org_policy_governed_assets,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
-    def _wrap_method_with_kind(self, func, *args, **kwargs):
-        if "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters:  # pragma: NO COVER
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 

@@ -166,7 +166,7 @@ def _prep_wrapped_messages(self, client_info):
     """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
     self._wrapped_methods = {
         {% for method in service.methods.values() %}
-        self.{{ method.transport_safe_name|snake_case }}: self._wrap_method_with_kind(
+        self.{{ method.transport_safe_name|snake_case }}: self._wrap_method(
             self.{{ method.transport_safe_name|snake_case }},
             {% if method.retry %}
             default_retry=retries.AsyncRetry(
@@ -194,10 +194,12 @@ def _prep_wrapped_messages(self, client_info):
     }
 {% endmacro %}
 
+{# TODO: This helper logic to check if `kind` needs to be configured in wrap_method
+can be removed once we required the correct version of the google-api-core dependency. #}
 {% macro wrap_method_macro() %}
-def _wrap_method_with_kind(self, func, *args, **kwargs):
+def _wrap_method(self, func, *args, **kwargs):
     {# TODO: Remove `pragma: NO COVER` once https://github.com/googleapis/python-api-core/pull/688 is merged. #}
-    if "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters:  # pragma: NO COVER
+    if self._wrap_with_kind:  # pragma: NO COVER
         kwargs["kind"] = self.kind
     return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 {% endmacro %}

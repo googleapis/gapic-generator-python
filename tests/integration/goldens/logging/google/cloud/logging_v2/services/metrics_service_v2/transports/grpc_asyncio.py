@@ -226,6 +226,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -371,7 +372,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_log_metrics: self._wrap_method_with_kind(
+            self.list_log_metrics: self._wrap_method(
                 self.list_log_metrics,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -387,7 +388,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_log_metric: self._wrap_method_with_kind(
+            self.get_log_metric: self._wrap_method(
                 self.get_log_metric,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -403,12 +404,12 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_log_metric: self._wrap_method_with_kind(
+            self.create_log_metric: self._wrap_method(
                 self.create_log_metric,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_log_metric: self._wrap_method_with_kind(
+            self.update_log_metric: self._wrap_method(
                 self.update_log_metric,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -424,7 +425,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_log_metric: self._wrap_method_with_kind(
+            self.delete_log_metric: self._wrap_method(
                 self.delete_log_metric,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -442,8 +443,8 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
             ),
         }
 
-    def _wrap_method_with_kind(self, func, *args, **kwargs):
-        if "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters:  # pragma: NO COVER
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 

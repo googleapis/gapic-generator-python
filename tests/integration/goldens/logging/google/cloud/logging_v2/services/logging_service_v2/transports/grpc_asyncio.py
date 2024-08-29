@@ -226,6 +226,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -416,7 +417,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.delete_log: self._wrap_method_with_kind(
+            self.delete_log: self._wrap_method(
                 self.delete_log,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -432,7 +433,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.write_log_entries: self._wrap_method_with_kind(
+            self.write_log_entries: self._wrap_method(
                 self.write_log_entries,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -448,7 +449,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_log_entries: self._wrap_method_with_kind(
+            self.list_log_entries: self._wrap_method(
                 self.list_log_entries,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -464,7 +465,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_monitored_resource_descriptors: self._wrap_method_with_kind(
+            self.list_monitored_resource_descriptors: self._wrap_method(
                 self.list_monitored_resource_descriptors,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -480,7 +481,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_logs: self._wrap_method_with_kind(
+            self.list_logs: self._wrap_method(
                 self.list_logs,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -496,7 +497,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.tail_log_entries: self._wrap_method_with_kind(
+            self.tail_log_entries: self._wrap_method(
                 self.tail_log_entries,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -514,8 +515,8 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
             ),
         }
 
-    def _wrap_method_with_kind(self, func, *args, **kwargs):
-        if "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters:  # pragma: NO COVER
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 

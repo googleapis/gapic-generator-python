@@ -228,6 +228,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1192,72 +1193,72 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_buckets: self._wrap_method_with_kind(
+            self.list_buckets: self._wrap_method(
                 self.list_buckets,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_bucket: self._wrap_method_with_kind(
+            self.get_bucket: self._wrap_method(
                 self.get_bucket,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_bucket_async: self._wrap_method_with_kind(
+            self.create_bucket_async: self._wrap_method(
                 self.create_bucket_async,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_bucket_async: self._wrap_method_with_kind(
+            self.update_bucket_async: self._wrap_method(
                 self.update_bucket_async,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_bucket: self._wrap_method_with_kind(
+            self.create_bucket: self._wrap_method(
                 self.create_bucket,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_bucket: self._wrap_method_with_kind(
+            self.update_bucket: self._wrap_method(
                 self.update_bucket,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_bucket: self._wrap_method_with_kind(
+            self.delete_bucket: self._wrap_method(
                 self.delete_bucket,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.undelete_bucket: self._wrap_method_with_kind(
+            self.undelete_bucket: self._wrap_method(
                 self.undelete_bucket,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_views: self._wrap_method_with_kind(
+            self.list_views: self._wrap_method(
                 self.list_views,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_view: self._wrap_method_with_kind(
+            self.get_view: self._wrap_method(
                 self.get_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_view: self._wrap_method_with_kind(
+            self.create_view: self._wrap_method(
                 self.create_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_view: self._wrap_method_with_kind(
+            self.update_view: self._wrap_method(
                 self.update_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_view: self._wrap_method_with_kind(
+            self.delete_view: self._wrap_method(
                 self.delete_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_sinks: self._wrap_method_with_kind(
+            self.list_sinks: self._wrap_method(
                 self.list_sinks,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1273,7 +1274,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_sink: self._wrap_method_with_kind(
+            self.get_sink: self._wrap_method(
                 self.get_sink,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1289,12 +1290,12 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_sink: self._wrap_method_with_kind(
+            self.create_sink: self._wrap_method(
                 self.create_sink,
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.update_sink: self._wrap_method_with_kind(
+            self.update_sink: self._wrap_method(
                 self.update_sink,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1310,7 +1311,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_sink: self._wrap_method_with_kind(
+            self.delete_sink: self._wrap_method(
                 self.delete_sink,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1326,27 +1327,27 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_link: self._wrap_method_with_kind(
+            self.create_link: self._wrap_method(
                 self.create_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_link: self._wrap_method_with_kind(
+            self.delete_link: self._wrap_method(
                 self.delete_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_links: self._wrap_method_with_kind(
+            self.list_links: self._wrap_method(
                 self.list_links,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_link: self._wrap_method_with_kind(
+            self.get_link: self._wrap_method(
                 self.get_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_exclusions: self._wrap_method_with_kind(
+            self.list_exclusions: self._wrap_method(
                 self.list_exclusions,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1362,7 +1363,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_exclusion: self._wrap_method_with_kind(
+            self.get_exclusion: self._wrap_method(
                 self.get_exclusion,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1378,17 +1379,17 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_exclusion: self._wrap_method_with_kind(
+            self.create_exclusion: self._wrap_method(
                 self.create_exclusion,
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.update_exclusion: self._wrap_method_with_kind(
+            self.update_exclusion: self._wrap_method(
                 self.update_exclusion,
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.delete_exclusion: self._wrap_method_with_kind(
+            self.delete_exclusion: self._wrap_method(
                 self.delete_exclusion,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1404,35 +1405,35 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_cmek_settings: self._wrap_method_with_kind(
+            self.get_cmek_settings: self._wrap_method(
                 self.get_cmek_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_cmek_settings: self._wrap_method_with_kind(
+            self.update_cmek_settings: self._wrap_method(
                 self.update_cmek_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_settings: self._wrap_method_with_kind(
+            self.get_settings: self._wrap_method(
                 self.get_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_settings: self._wrap_method_with_kind(
+            self.update_settings: self._wrap_method(
                 self.update_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.copy_log_entries: self._wrap_method_with_kind(
+            self.copy_log_entries: self._wrap_method(
                 self.copy_log_entries,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
-    def _wrap_method_with_kind(self, func, *args, **kwargs):
-        if "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters:  # pragma: NO COVER
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
