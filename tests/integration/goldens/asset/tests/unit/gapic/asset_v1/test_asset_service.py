@@ -16418,6 +16418,7 @@ def test_transport_kind(transport_name):
 
 @pytest.mark.parametrize("transport_name", [
     "grpc_asyncio",
+    "rest_asyncio",
 ])
 @pytest.mark.asyncio
 async def test_transport_kind_async(transport_name):
