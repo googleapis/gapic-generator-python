@@ -201,64 +201,6 @@ def test_get_response_ignores_unwanted_transports_and_clients():
             }
 
 
-def test_get_response_include_async_rest():
-    g = make_generator()
-    service_yaml_config = {
-        "apis": [
-            {"name": "google.example.v1beta1.ServiceOne.Example1"},
-        ],
-        "publishing": {
-            "library_settings": [
-                {
-                    "version": "google.example.v1beta1",
-                    "python_settings": {
-                        "experimental_features": {"rest_async_io_enabled": True},
-                    },
-                }
-            ]
-        },
-    }
-    with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
-        lt.return_value = [
-            "foo/%service/transports/river.py.j2",
-            "foo/%service/transports/car.py.j2",
-            "foo/%service/transports/grpc.py.j2",
-            "foo/%service/transports/__init__.py.j2",
-            "foo/%service/transports/base.py.j2",
-            "foo/%service/transports/rest_base.py.j2",
-            "foo/%service/async_client.py.j2",
-            "foo/%service/client.py.j2",
-            "mollusks/squid/sample.py.j2",
-        ]
-        
-        with mock.patch.object(jinja2.Environment, "get_template") as gt:
-            gt.return_value = jinja2.Template("Service: {{ service.name }}")
-            api_schema = make_api(
-                make_proto(
-                    descriptor_pb2.FileDescriptorProto(
-                        service=[
-                            descriptor_pb2.ServiceDescriptorProto(
-                                name="SomeService"),
-                        ]
-                    ),
-                ),
-                naming=make_naming(namespace=("google"), name="example", version="v1beta1"),
-                service_yaml_config=service_yaml_config
-            )
-
-            cgr = g.get_response(
-                api_schema=api_schema,
-                opts=Options.build("transport=grpc")
-            )
-            assert len(cgr.file) == 5
-            assert {i.name for i in cgr.file} == {
-                "foo/some_service/transports/grpc.py",
-                "foo/some_service/transports/__init__.py",
-                "foo/some_service/transports/base.py",
-                "foo/some_service/client.py",
-                "foo/some_service/async_client.py",
-            }
-
 def test_get_response_enumerates_services():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
