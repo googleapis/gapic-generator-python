@@ -1041,9 +1041,9 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-{{ test_macros.transport_kind_test(service, opts) }}
+{{ test_macros.transport_kind_test(service, api, opts) }}
 
-{{ test_macros.transport_kind_test(service, opts, is_async=True) }}
+{{ test_macros.transport_kind_test(service, api, opts, is_async=True) }}
 
 {% if 'grpc' in opts.transport %}
 def test_transport_grpc_default():
