@@ -53,7 +53,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     async def test_pagination_async(async_echo):
         # TODO (ohmayr): Remove this once close is implemented
         # on asynchronous.
-        # See related issue: 
+        # See related issue:
         if "rest" in str(async_echo.transport).lower():
             return
         text = 'The hail in Wales falls mainly on the snails.'
@@ -72,7 +72,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     async def test_pagination_pages_async(async_echo):
         # TODO (ohmayr): Remove this once close is implemented
         # on asynchronous.
-        # See related issue: 
+        # See related issue:
         if "rest" in str(async_echo.transport).lower():
             return
         text = "The hail in Wales falls mainly on the snails."
