@@ -5,15 +5,11 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 import json  # type: ignore
 from google.auth.aio import credentials as ga_credentials_async  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry_async as retries_async
-from google.api_core import rest_helpers
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
 
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
-import warnings
+from typing import Optional
 
 from .rest_base import _Base{{ service.name }}RestTransport
 

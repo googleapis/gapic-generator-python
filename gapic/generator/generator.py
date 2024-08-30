@@ -285,6 +285,9 @@ class Generator:
 
         # If this template should be rendered once per service, iterate
         # over all services to be rendered.
+        python_settings = api_schema.all_library_settings[api_schema.naming.proto_package].python_settings
+        rest_async_io_enabled = python_settings.get('experimental_features', None)
+        # rest_async_io_enabled = python_settings.experimental_features.rest_async_io_enabled
         if "%service" in template_name:
             for service in api_schema.services.values():
                 if (
@@ -294,9 +297,11 @@ class Generator:
                         ('transport' in template_name
                          and not self._is_desired_transport(template_name, opts))
                         or
-                        # TODO(yon-mg) - remove when rest async implementation resolved
-                        # temporarily stop async client gen while rest async is unkown
-                        ('async' in template_name and 'grpc' not in opts.transport)
+                        # TODO: remove when rest async implementation resolved
+                        # temporarily stop async client gen while rest async is unknown
+                        ('rest_asyncio' in template_name and not rest_async_io_enabled)
+                        or
+                        ('async_client' in template_name and ('grpc' not in opts.transport and not rest_async_io_enabled))
                         or
                         ('rest_base' in template_name and 'rest' not in opts.transport)
                 ):
