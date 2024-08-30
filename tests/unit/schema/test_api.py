@@ -2737,6 +2737,10 @@ def test_read_empty_python_settings_from_service_yaml():
     api_schema = api.API.build(fd, "google.example.v1beta1", opts=cli_options)
     assert api_schema.all_library_settings["google.example.v1beta1"].python_settings \
         == client_pb2.PythonSettings()
+    assert api_schema.all_library_settings["google.example.v1beta1"].python_settings.experimental_features \
+        == client_pb2.PythonSettings.ExperimentalFeatures()
+    assert api_schema.all_library_settings["google.example.v1beta1"].python_settings.experimental_features.rest_async_io_enabled \
+        == False
 
 
 def test_python_settings_duplicate_version_raises_error():
