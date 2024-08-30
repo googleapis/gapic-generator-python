@@ -238,6 +238,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -740,100 +741,100 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.get_trigger: self._wrap_method_with_kind(
+            self.get_trigger: self._wrap_method(
                 self.get_trigger,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_triggers: self._wrap_method_with_kind(
+            self.list_triggers: self._wrap_method(
                 self.list_triggers,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_trigger: self._wrap_method_with_kind(
+            self.create_trigger: self._wrap_method(
                 self.create_trigger,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_trigger: self._wrap_method_with_kind(
+            self.update_trigger: self._wrap_method(
                 self.update_trigger,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_trigger: self._wrap_method_with_kind(
+            self.delete_trigger: self._wrap_method(
                 self.delete_trigger,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_channel: self._wrap_method_with_kind(
+            self.get_channel: self._wrap_method(
                 self.get_channel,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_channels: self._wrap_method_with_kind(
+            self.list_channels: self._wrap_method(
                 self.list_channels,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_channel_: self._wrap_method_with_kind(
+            self.create_channel_: self._wrap_method(
                 self.create_channel_,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_channel: self._wrap_method_with_kind(
+            self.update_channel: self._wrap_method(
                 self.update_channel,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_channel: self._wrap_method_with_kind(
+            self.delete_channel: self._wrap_method(
                 self.delete_channel,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_provider: self._wrap_method_with_kind(
+            self.get_provider: self._wrap_method(
                 self.get_provider,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_providers: self._wrap_method_with_kind(
+            self.list_providers: self._wrap_method(
                 self.list_providers,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_channel_connection: self._wrap_method_with_kind(
+            self.get_channel_connection: self._wrap_method(
                 self.get_channel_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_channel_connections: self._wrap_method_with_kind(
+            self.list_channel_connections: self._wrap_method(
                 self.list_channel_connections,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_channel_connection: self._wrap_method_with_kind(
+            self.create_channel_connection: self._wrap_method(
                 self.create_channel_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_channel_connection: self._wrap_method_with_kind(
+            self.delete_channel_connection: self._wrap_method(
                 self.delete_channel_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_google_channel_config: self._wrap_method_with_kind(
+            self.get_google_channel_config: self._wrap_method(
                 self.get_google_channel_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_google_channel_config: self._wrap_method_with_kind(
+            self.update_google_channel_config: self._wrap_method(
                 self.update_google_channel_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
-    def _wrap_method_with_kind(self, func, *args, **kwargs):
-        if "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters:  # pragma: NO COVER
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
