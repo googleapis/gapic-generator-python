@@ -51,4 +51,4 @@ publishing:
   - version: 'google.cloud.asset.v1'
     python_settings:
       experimental_features:
-        rest_asyncio_enabled: "True"
+        rest_async_io_enabled: true
