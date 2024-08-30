@@ -286,8 +286,8 @@ class Generator:
         # If this template should be rendered once per service, iterate
         # over all services to be rendered.
         python_settings = api_schema.all_library_settings[api_schema.naming.proto_package].python_settings
-        rest_async_io_enabled = python_settings.get('experimental_features', None)
-        # rest_async_io_enabled = python_settings.experimental_features.rest_async_io_enabled
+        rest_async_io_enabled = getattr(getattr(python_settings, 'experimental_features', None), 'rest_async_io_enabled', False)
+        # årest_async_io_enabled = python_settings.experimental_features.rest_async_io_enabled
         if "%service" in template_name:
             for service in api_schema.services.values():
                 if (
