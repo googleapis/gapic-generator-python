@@ -177,14 +177,18 @@ def test_get_response_ignores_unwanted_transports_and_clients():
                 api_schema=api_schema,
                 opts=Options.build("transport=river+car")
             )
-            assert len(cgr.file) == 5
+            assert len(cgr.file) == 6
             assert {i.name for i in cgr.file} == {
                 "foo/some_service/transports/river.py",
                 "foo/some_service/transports/car.py",
                 "foo/some_service/transports/__init__.py",
                 "foo/some_service/transports/base.py",
-                # Only generate async client with grpc transport
+                # Note: Since the condition is now moved to within
+                # the template file itself, the current set up for tests will
+                # generate the async client unconditionally because the templates
+                # are mocked within this test case.
                 "foo/some_service/client.py",
+                "foo/some_service/async_client.py",
             }
 
             cgr = g.get_response(
