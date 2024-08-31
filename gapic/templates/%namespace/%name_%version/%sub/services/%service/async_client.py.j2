@@ -1,3 +1,10 @@
+{# TODO: Remove the following condition for async client once support for async rest transport is GA:
+ # {% if rest_async_io_enabled and is_grpc_transport %}
+ # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
+#}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% set is_grpc_transport = True if 'grpc' in opts.transport else False %}
+{% if rest_async_io_enabled or is_grpc_transport %}
 {% extends "_base.py.j2" %}
 
 {% block content %}
@@ -737,3 +744,4 @@ __all__ = (
     "{{ service.async_client_name }}",
 )
 {% endblock %}
+{% endif %}{# if rest_async_io_enabled and is_grpc_transport #}

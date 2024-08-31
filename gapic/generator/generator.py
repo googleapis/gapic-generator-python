@@ -294,10 +294,6 @@ class Generator:
                         ('transport' in template_name
                          and not self._is_desired_transport(template_name, opts))
                         or
-                        # TODO(yon-mg) - remove when rest async implementation resolved
-                        # temporarily stop async client gen while rest async is unkown
-                        ('async' in template_name and 'grpc' not in opts.transport)
-                        or
                         ('rest_base' in template_name and 'rest' not in opts.transport)
                 ):
                     continue
