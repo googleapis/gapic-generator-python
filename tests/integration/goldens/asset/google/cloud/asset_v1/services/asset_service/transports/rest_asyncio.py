@@ -99,6 +99,3 @@ class AsyncAssetServiceRestTransport(_BaseAssetServiceRestTransport):
     @property
     def kind(self) -> str:
         return "rest_asyncio"
-
-    async def close(self):
-        raise NotImplementedError("close must be implemented.")

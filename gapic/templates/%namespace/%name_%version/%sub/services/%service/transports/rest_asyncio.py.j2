@@ -96,7 +96,5 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     def kind(self) -> str:
         return "rest_asyncio"
 
-    async def close(self):
-        raise NotImplementedError("close must be implemented.")
 
 {% endblock %}
