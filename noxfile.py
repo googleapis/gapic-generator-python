@@ -211,9 +211,10 @@ def showcase_library(
         if include_service_yaml:
             session.run(
                 "curl",
-                "https://github.com/googleapis/gapic-showcase/releases/"
-                f"download/v{showcase_version}/"
-                f"showcase_v1beta1.yaml",
+                "https://raw.githubusercontent.com/googleapis/gapic-showcase/add-optional-feature-python/schema/google/showcase/v1beta1/showcase_v1beta1.yaml",
+                #"https://github.com/googleapis/gapic-showcase/releases/"
+                # f"download/v{showcase_version}/"
+                #f"showcase_v1beta1.yaml",
                 "-L",
                 "--output",
                 path.join(tmp_dir, "showcase_v1beta1.yaml"),
@@ -274,7 +275,6 @@ def showcase_library(
             session.install("-e", tmp_dir)
 
         yield tmp_dir
-
 
 @nox.session(python=ALL_PYTHON)
 def showcase(
