@@ -815,20 +815,21 @@ def test_export_assets(request_type, transport: str = 'grpc'):
     assert isinstance(response, future.Future)
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_export_assets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.export_assets),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.export_assets()
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.export_assets(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ExportAssetsRequest()
@@ -898,13 +899,12 @@ def test_export_assets_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_export_assets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -915,7 +915,9 @@ async def test_export_assets_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        await client.export_assets()
+        await client.export_assets(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ExportAssetsRequest()
@@ -1094,20 +1096,21 @@ def test_list_assets(request_type, transport: str = 'grpc'):
     assert response.next_page_token == 'next_page_token_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_assets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.list_assets),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.list_assets()
+        call.return_value = asset_service.ListAssetsResponse()
+        client.list_assets(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListAssetsRequest()
@@ -1174,13 +1177,12 @@ def test_list_assets_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_list_assets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1191,7 +1193,9 @@ async def test_list_assets_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListAssetsResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.list_assets()
+        await client.list_assets(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListAssetsRequest()
@@ -1642,20 +1646,21 @@ def test_batch_get_assets_history(request_type, transport: str = 'grpc'):
     assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_batch_get_assets_history_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.batch_get_assets_history),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.batch_get_assets_history()
+        call.return_value = asset_service.BatchGetAssetsHistoryResponse()
+        client.batch_get_assets_history(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetAssetsHistoryRequest()
@@ -1720,13 +1725,12 @@ def test_batch_get_assets_history_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1736,7 +1740,9 @@ async def test_batch_get_assets_history_empty_call_async():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetAssetsHistoryResponse(
         ))
-        await client.batch_get_assets_history()
+        await client.batch_get_assets_history(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetAssetsHistoryRequest()
@@ -1917,20 +1923,21 @@ def test_create_feed(request_type, transport: str = 'grpc'):
     assert response.relationship_types == ['relationship_types_value']
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_feed_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.create_feed),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.create_feed()
+        call.return_value = asset_service.Feed()
+        client.create_feed(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateFeedRequest()
@@ -1997,13 +2004,12 @@ def test_create_feed_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_create_feed_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2018,7 +2024,9 @@ async def test_create_feed_empty_call_async():
             content_type=asset_service.ContentType.RESOURCE,
             relationship_types=['relationship_types_value'],
         ))
-        await client.create_feed()
+        await client.create_feed(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateFeedRequest()
@@ -2291,20 +2299,21 @@ def test_get_feed(request_type, transport: str = 'grpc'):
     assert response.relationship_types == ['relationship_types_value']
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_feed_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.get_feed),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.get_feed()
+        call.return_value = asset_service.Feed()
+        client.get_feed(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetFeedRequest()
@@ -2369,13 +2378,12 @@ def test_get_feed_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_get_feed_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2390,7 +2398,9 @@ async def test_get_feed_empty_call_async():
             content_type=asset_service.ContentType.RESOURCE,
             relationship_types=['relationship_types_value'],
         ))
-        await client.get_feed()
+        await client.get_feed(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetFeedRequest()
@@ -2653,20 +2663,21 @@ def test_list_feeds(request_type, transport: str = 'grpc'):
     assert isinstance(response, asset_service.ListFeedsResponse)
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_feeds_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.list_feeds),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.list_feeds()
+        call.return_value = asset_service.ListFeedsResponse()
+        client.list_feeds(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListFeedsRequest()
@@ -2731,13 +2742,12 @@ def test_list_feeds_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_list_feeds_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2747,7 +2757,9 @@ async def test_list_feeds_empty_call_async():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListFeedsResponse(
         ))
-        await client.list_feeds()
+        await client.list_feeds(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListFeedsRequest()
@@ -3010,20 +3022,21 @@ def test_update_feed(request_type, transport: str = 'grpc'):
     assert response.relationship_types == ['relationship_types_value']
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_update_feed_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.update_feed),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.update_feed()
+        call.return_value = asset_service.Feed()
+        client.update_feed(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateFeedRequest()
@@ -3086,13 +3099,12 @@ def test_update_feed_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_update_feed_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3107,7 +3119,9 @@ async def test_update_feed_empty_call_async():
             content_type=asset_service.ContentType.RESOURCE,
             relationship_types=['relationship_types_value'],
         ))
-        await client.update_feed()
+        await client.update_feed(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateFeedRequest()
@@ -3369,20 +3383,21 @@ def test_delete_feed(request_type, transport: str = 'grpc'):
     assert response is None
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_delete_feed_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_feed),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.delete_feed()
+        call.return_value = None
+        client.delete_feed(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest()
@@ -3447,13 +3462,12 @@ def test_delete_feed_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_delete_feed_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3462,7 +3476,9 @@ async def test_delete_feed_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_feed()
+        await client.delete_feed(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest()
@@ -3716,20 +3732,21 @@ def test_search_all_resources(request_type, transport: str = 'grpc'):
     assert response.next_page_token == 'next_page_token_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_search_all_resources_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.search_all_resources),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.search_all_resources()
+        call.return_value = asset_service.SearchAllResourcesResponse()
+        client.search_all_resources(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllResourcesRequest()
@@ -3800,13 +3817,12 @@ def test_search_all_resources_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_search_all_resources_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3817,7 +3833,9 @@ async def test_search_all_resources_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllResourcesResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.search_all_resources()
+        await client.search_all_resources(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllResourcesRequest()
@@ -4290,20 +4308,21 @@ def test_search_all_iam_policies(request_type, transport: str = 'grpc'):
     assert response.next_page_token == 'next_page_token_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_search_all_iam_policies_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.search_all_iam_policies),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.search_all_iam_policies()
+        call.return_value = asset_service.SearchAllIamPoliciesResponse()
+        client.search_all_iam_policies(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllIamPoliciesRequest()
@@ -4374,13 +4393,12 @@ def test_search_all_iam_policies_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4391,7 +4409,9 @@ async def test_search_all_iam_policies_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllIamPoliciesResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.search_all_iam_policies()
+        await client.search_all_iam_policies(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllIamPoliciesRequest()
@@ -4854,20 +4874,21 @@ def test_analyze_iam_policy(request_type, transport: str = 'grpc'):
     assert response.fully_explored is True
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_analyze_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.analyze_iam_policy),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.analyze_iam_policy()
+        call.return_value = asset_service.AnalyzeIamPolicyResponse()
+        client.analyze_iam_policy(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyRequest()
@@ -4932,13 +4953,12 @@ def test_analyze_iam_policy_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4949,7 +4969,9 @@ async def test_analyze_iam_policy_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeIamPolicyResponse(
             fully_explored=True,
         ))
-        await client.analyze_iam_policy()
+        await client.analyze_iam_policy(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyRequest()
@@ -5121,20 +5143,21 @@ def test_analyze_iam_policy_longrunning(request_type, transport: str = 'grpc'):
     assert isinstance(response, future.Future)
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_analyze_iam_policy_longrunning_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.analyze_iam_policy_longrunning),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.analyze_iam_policy_longrunning()
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.analyze_iam_policy_longrunning(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest()
@@ -5204,13 +5227,12 @@ def test_analyze_iam_policy_longrunning_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5221,7 +5243,9 @@ async def test_analyze_iam_policy_longrunning_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        await client.analyze_iam_policy_longrunning()
+        await client.analyze_iam_policy_longrunning(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest()
@@ -5398,20 +5422,21 @@ def test_analyze_move(request_type, transport: str = 'grpc'):
     assert isinstance(response, asset_service.AnalyzeMoveResponse)
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_analyze_move_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.analyze_move),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.analyze_move()
+        call.return_value = asset_service.AnalyzeMoveResponse()
+        client.analyze_move(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeMoveRequest()
@@ -5478,13 +5503,12 @@ def test_analyze_move_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_analyze_move_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5494,7 +5518,9 @@ async def test_analyze_move_empty_call_async():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeMoveResponse(
         ))
-        await client.analyze_move()
+        await client.analyze_move(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeMoveRequest()
@@ -5669,20 +5695,21 @@ def test_query_assets(request_type, transport: str = 'grpc'):
     assert response.done is True
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_query_assets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.query_assets),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.query_assets()
+        call.return_value = asset_service.QueryAssetsResponse()
+        client.query_assets(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.QueryAssetsRequest()
@@ -5753,13 +5780,12 @@ def test_query_assets_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_query_assets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5771,7 +5797,9 @@ async def test_query_assets_empty_call_async():
             job_reference='job_reference_value',
             done=True,
         ))
-        await client.query_assets()
+        await client.query_assets(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.QueryAssetsRequest()
@@ -5954,20 +5982,21 @@ def test_create_saved_query(request_type, transport: str = 'grpc'):
     assert response.last_updater == 'last_updater_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_saved_query_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.create_saved_query),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.create_saved_query()
+        call.return_value = asset_service.SavedQuery()
+        client.create_saved_query(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateSavedQueryRequest()
@@ -6034,13 +6063,12 @@ def test_create_saved_query_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_create_saved_query_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6054,7 +6082,9 @@ async def test_create_saved_query_empty_call_async():
             creator='creator_value',
             last_updater='last_updater_value',
         ))
-        await client.create_saved_query()
+        await client.create_saved_query(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateSavedQueryRequest()
@@ -6343,20 +6373,21 @@ def test_get_saved_query(request_type, transport: str = 'grpc'):
     assert response.last_updater == 'last_updater_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_saved_query_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.get_saved_query),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.get_saved_query()
+        call.return_value = asset_service.SavedQuery()
+        client.get_saved_query(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetSavedQueryRequest()
@@ -6421,13 +6452,12 @@ def test_get_saved_query_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_get_saved_query_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6441,7 +6471,9 @@ async def test_get_saved_query_empty_call_async():
             creator='creator_value',
             last_updater='last_updater_value',
         ))
-        await client.get_saved_query()
+        await client.get_saved_query(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetSavedQueryRequest()
@@ -6704,20 +6736,21 @@ def test_list_saved_queries(request_type, transport: str = 'grpc'):
     assert response.next_page_token == 'next_page_token_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_saved_queries_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.list_saved_queries),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.list_saved_queries()
+        call.return_value = asset_service.ListSavedQueriesResponse()
+        client.list_saved_queries(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListSavedQueriesRequest()
@@ -6786,13 +6819,12 @@ def test_list_saved_queries_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_list_saved_queries_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6803,7 +6835,9 @@ async def test_list_saved_queries_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.list_saved_queries()
+        await client.list_saved_queries(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListSavedQueriesRequest()
@@ -7262,20 +7296,21 @@ def test_update_saved_query(request_type, transport: str = 'grpc'):
     assert response.last_updater == 'last_updater_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_update_saved_query_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.update_saved_query),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.update_saved_query()
+        call.return_value = asset_service.SavedQuery()
+        client.update_saved_query(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateSavedQueryRequest()
@@ -7338,13 +7373,12 @@ def test_update_saved_query_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_update_saved_query_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7358,7 +7392,9 @@ async def test_update_saved_query_empty_call_async():
             creator='creator_value',
             last_updater='last_updater_value',
         ))
-        await client.update_saved_query()
+        await client.update_saved_query(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateSavedQueryRequest()
@@ -7628,20 +7664,21 @@ def test_delete_saved_query(request_type, transport: str = 'grpc'):
     assert response is None
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_delete_saved_query_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.delete_saved_query),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.delete_saved_query()
+        call.return_value = None
+        client.delete_saved_query(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteSavedQueryRequest()
@@ -7706,13 +7743,12 @@ def test_delete_saved_query_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_delete_saved_query_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7721,7 +7757,9 @@ async def test_delete_saved_query_empty_call_async():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_saved_query()
+        await client.delete_saved_query(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteSavedQueryRequest()
@@ -7973,20 +8011,21 @@ def test_batch_get_effective_iam_policies(request_type, transport: str = 'grpc')
     assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_batch_get_effective_iam_policies_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.batch_get_effective_iam_policies),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.batch_get_effective_iam_policies()
+        call.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+        client.batch_get_effective_iam_policies(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
@@ -8051,13 +8090,12 @@ def test_batch_get_effective_iam_policies_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_batch_get_effective_iam_policies_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8067,7 +8105,9 @@ async def test_batch_get_effective_iam_policies_empty_call_async():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetEffectiveIamPoliciesResponse(
         ))
-        await client.batch_get_effective_iam_policies()
+        await client.batch_get_effective_iam_policies(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
@@ -8240,20 +8280,21 @@ def test_analyze_org_policies(request_type, transport: str = 'grpc'):
     assert response.next_page_token == 'next_page_token_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_analyze_org_policies_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.analyze_org_policies),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.analyze_org_policies()
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        client.analyze_org_policies(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
@@ -8324,13 +8365,12 @@ def test_analyze_org_policies_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_analyze_org_policies_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8341,7 +8381,9 @@ async def test_analyze_org_policies_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.analyze_org_policies()
+        await client.analyze_org_policies(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
@@ -8814,20 +8856,21 @@ def test_analyze_org_policy_governed_containers(request_type, transport: str = '
     assert response.next_page_token == 'next_page_token_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_analyze_org_policy_governed_containers_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.analyze_org_policy_governed_containers),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.analyze_org_policy_governed_containers()
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        client.analyze_org_policy_governed_containers(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
@@ -8898,13 +8941,12 @@ def test_analyze_org_policy_governed_containers_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_containers_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8915,7 +8957,9 @@ async def test_analyze_org_policy_governed_containers_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.analyze_org_policy_governed_containers()
+        await client.analyze_org_policy_governed_containers(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
@@ -9388,20 +9432,21 @@ def test_analyze_org_policy_governed_assets(request_type, transport: str = 'grpc
     assert response.next_page_token == 'next_page_token_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_analyze_org_policy_governed_assets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.analyze_org_policy_governed_assets),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.analyze_org_policy_governed_assets()
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        client.analyze_org_policy_governed_assets(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
@@ -9472,13 +9517,12 @@ def test_analyze_org_policy_governed_assets_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9489,7 +9533,9 @@ async def test_analyze_org_policy_governed_assets_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.analyze_org_policy_governed_assets()
+        await client.analyze_org_policy_governed_assets(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()

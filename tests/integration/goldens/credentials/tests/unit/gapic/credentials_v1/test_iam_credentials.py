@@ -808,20 +808,21 @@ def test_generate_access_token(request_type, transport: str = 'grpc'):
     assert response.access_token == 'access_token_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_generate_access_token_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.generate_access_token),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.generate_access_token()
+        call.return_value = common.GenerateAccessTokenResponse()
+        client.generate_access_token(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateAccessTokenRequest()
@@ -886,13 +887,12 @@ def test_generate_access_token_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_generate_access_token_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -903,7 +903,9 @@ async def test_generate_access_token_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse(
             access_token='access_token_value',
         ))
-        await client.generate_access_token()
+        await client.generate_access_token(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateAccessTokenRequest()
@@ -1186,20 +1188,21 @@ def test_generate_id_token(request_type, transport: str = 'grpc'):
     assert response.token == 'token_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_generate_id_token_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.generate_id_token),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.generate_id_token()
+        call.return_value = common.GenerateIdTokenResponse()
+        client.generate_id_token(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateIdTokenRequest()
@@ -1266,13 +1269,12 @@ def test_generate_id_token_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_generate_id_token_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1283,7 +1285,9 @@ async def test_generate_id_token_empty_call_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
             token='token_value',
         ))
-        await client.generate_id_token()
+        await client.generate_id_token(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateIdTokenRequest()
@@ -1572,20 +1576,21 @@ def test_sign_blob(request_type, transport: str = 'grpc'):
     assert response.signed_blob == b'signed_blob_blob'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_sign_blob_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.sign_blob),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.sign_blob()
+        call.return_value = common.SignBlobResponse()
+        client.sign_blob(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignBlobRequest()
@@ -1650,13 +1655,12 @@ def test_sign_blob_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_sign_blob_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1668,7 +1672,9 @@ async def test_sign_blob_empty_call_async():
             key_id='key_id_value',
             signed_blob=b'signed_blob_blob',
         ))
-        await client.sign_blob()
+        await client.sign_blob(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignBlobRequest()
@@ -1949,20 +1955,21 @@ def test_sign_jwt(request_type, transport: str = 'grpc'):
     assert response.signed_jwt == 'signed_jwt_value'
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_sign_jwt_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.sign_jwt),
             '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.sign_jwt()
+        call.return_value = common.SignJwtResponse()
+        client.sign_jwt(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignJwtRequest()
@@ -2029,13 +2036,12 @@ def test_sign_jwt_use_cached_wrapped_rpc():
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_sign_jwt_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
-        transport='grpc_asyncio',
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2047,7 +2053,9 @@ async def test_sign_jwt_empty_call_async():
             key_id='key_id_value',
             signed_jwt='signed_jwt_value',
         ))
-        await client.sign_jwt()
+        await client.sign_jwt(request=None)
+
+        # Establish that the underlying gRPC stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignJwtRequest()
