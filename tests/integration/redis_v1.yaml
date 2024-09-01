@@ -68,3 +68,10 @@ authentication:
     oauth:
       canonical_scopes: |-
         https://www.googleapis.com/auth/cloud-platform
+
+publishing:
+  library_settings:
+  - version: 'google.cloud.redis.v1'
+    python_settings:
+      experimental_features:
+        rest_async_io_enabled: true

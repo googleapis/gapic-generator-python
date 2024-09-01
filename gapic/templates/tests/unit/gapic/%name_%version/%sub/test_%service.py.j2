@@ -1,3 +1,8 @@
+{# TODO: Remove the following condition for async rest transport once support for it is GA:
+ # {% if rest_async_io_enabled %}
+ # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
+#}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 {% extends "_base.py.j2" %}
 
 {% block content %}
@@ -1041,9 +1046,21 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-{{ test_macros.transport_kind_test(service, opts) }}
+{% set configs = [] %}
+{% for transport_name in opts.transport %}
+    {% do configs.append({'service':service, 'transport_name':transport_name,'credentials':'ga_credentials.AnonymousCredentials()'}) %}
+{# TODO: Remove the following guard once support for async REST is GA.
+ # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
+#}
+{% if 'grpc' in transport_name or rest_async_io_enabled %}
+    {% do configs.append({'service':service, 'transport_name':transport_name + "_asyncio",'credentials':'async_anonymous_credentials()'}) %}
+{% endif %}
+{% endfor %}
 
-{{ test_macros.transport_kind_test(service, opts, is_async=True) }}
+{% for conf in configs %}
+{{ test_macros.transport_kind_test(**conf) }}
+
+{% endfor %}
 
 {% if 'grpc' in opts.transport %}
 def test_transport_grpc_default():
