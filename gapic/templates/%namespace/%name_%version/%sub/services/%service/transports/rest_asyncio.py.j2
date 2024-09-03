@@ -2,8 +2,6 @@
  # {% if rest_async_io_enabled %}
  # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
 #}
-{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
-{% if rest_async_io_enabled %}
 {% extends '_base.py.j2' %}
 
 {% block content %}
@@ -82,4 +80,3 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         return "rest_asyncio"
 
 {% endblock %}
-{% endif %}{# if rest_async_io_enabled #}

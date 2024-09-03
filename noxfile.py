@@ -288,7 +288,7 @@ def showcase_library(
         session.run(
             *cmd_tup, external=True,
         )
-
+        breakpoint()
         # Install the generated showcase library.
         if templates == "DEFAULT":
             # Use the constraints file for the specific python runtime version.
