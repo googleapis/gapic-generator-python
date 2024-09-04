@@ -242,7 +242,7 @@ def showcase_library(
             # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): The section below updates the showcase service yaml
             # to test experimental async rest transport. It must be removed once support for async rest is GA.
             if rest_async_io_enabled:
-                # Install pyYAML for yaml
+                # Install pyYAML for yaml.
                 session.install("pyYAML")
 
                 python_settings = [
@@ -257,6 +257,7 @@ def showcase_library(
                 ]
                 update_service_yaml = _add_python_settings(tmp_dir, python_settings)
                 session.run("python", "-c" f"{update_service_yaml}")
+            # END TODO section to remove.
         if retry_config:
             session.run(
                 "curl",

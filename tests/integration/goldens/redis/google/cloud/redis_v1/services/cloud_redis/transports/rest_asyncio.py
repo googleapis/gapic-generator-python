@@ -83,7 +83,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you are developing
                 your own client library.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
+            url_scheme (str): the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
         """
