@@ -1877,23 +1877,18 @@ def test_{{ method_name }}_empty_call():
         assert args[0] == {{ method.input.ident }}()
 {% endmacro %}
 
+{% macro get_credentials(is_async=False) %}
+{{-'async_anonymous_credentials()' if is_async else 'ga_credentials.AnonymousCredentials()'-}}
+{% endmacro %}
 
-{% macro transport_kind_test(service, transport_name) %}
-{%- set named_clients = {
-    'rest': service.client_name,
-    'grpc': service.client_name,
-    'grpc_asyncio': service.async_client_name,
-    'rest_asyncio': service.async_client_name}
--%}
-{%- set named_credentials = {
-    'rest': 'ga_credentials.AnonymousCredentials()',
-    'grpc': 'ga_credentials.AnonymousCredentials()',
-    'grpc_asyncio': 'async_anonymous_credentials()',
-    'rest_asyncio': 'async_anonymous_credentials()'}
--%}
+{% macro get_client(service, is_async) %}
+{{-service.async_client_name if is_async else service.client_name-}}
+{% endmacro %}
+
+{% macro transport_kind_test(service, transport_name, is_async) %}
 def test_transport_kind_{{transport_name}}():
-    transport = {{ named_clients[transport_name] }}.get_transport_class("{{transport_name}}")(
-        credentials={{named_credentials[transport_name]}}
+    transport = {{ get_client(service, is_async) }}.get_transport_class("{{transport_name}}")(
+        credentials={{get_credentials(is_async)}}
     )
     assert transport.kind == "{{ transport_name }}"
 {% endmacro %}

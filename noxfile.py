@@ -188,6 +188,7 @@ with temp_file_path.open('w') as file:
     yaml.safe_dump(data, file, default_flow_style=False, sort_keys=False)
 """
 
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): `rest_async_io_enabled` must be removed once async rest is GA.
 @contextmanager
 def showcase_library(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
@@ -234,10 +235,8 @@ def showcase_library(
                 external=True,
                 silent=True,
             )
-            # TODO: The below section updates the showcase service yaml
-            # to test experimental async rest transport. It must be
-            # removed once support for async rest is GA.
-            # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
+            # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): The section below updates the showcase service yaml
+            # to test experimental async rest transport. It must be removed once support for async rest is GA.
             if rest_async_io_enabled:
                 # Install pyYAML for yaml
                 session.install("pyYAML")

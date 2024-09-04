@@ -1,7 +1,4 @@
-{# TODO: Remove the following condition for async rest transport once support for it is GA:
- # {% if rest_async_io_enabled %}
- # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
-#}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
 {% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 {% extends "_base.py.j2" %}
 
@@ -1048,12 +1045,10 @@ def test_transport_adc(transport_class):
 
 {% set configs = [] %}
 {% for transport_name in opts.transport %}
-    {% do configs.append({'service':service, 'transport_name':transport_name}) %}
-{# TODO: Remove the following guard once support for async REST is GA.
- # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
-#}
+    {% do configs.append({'service':service, 'transport_name':transport_name, 'is_async':false}) %}
+{# TODO(#2121): Remove this condition when async rest is GA #}
 {% if 'grpc' in transport_name or rest_async_io_enabled %}
-    {% do configs.append({'service':service, 'transport_name':transport_name + "_asyncio"}) %}
+    {% do configs.append({'service':service, 'transport_name':transport_name + "_asyncio", 'is_async':true}) %}
 {% endif %}
 {% endfor %}
 
