@@ -1044,11 +1044,11 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 {% set configs = [] %}
-{% for transport_name in opts.transport %}
-    {% do configs.append({'service':service, 'transport_name':transport_name, 'is_async':false}) %}
+{% for transport in opts.transport %}
+    {% do configs.append({'service':service, 'transport':transport, 'is_async':false}) %}
 {# TODO(#2121): Remove this condition when async rest is GA. #}
-{% if 'grpc' in transport_name or rest_async_io_enabled %}
-    {% do configs.append({'service':service, 'transport_name':transport_name + "_asyncio", 'is_async':true}) %}
+{% if 'grpc' in transport or rest_async_io_enabled %}
+    {% do configs.append({'service':service, 'transport':transport, 'is_async':true}) %}
 {% endif %}
 {% endfor %}
 {% for conf in configs %}

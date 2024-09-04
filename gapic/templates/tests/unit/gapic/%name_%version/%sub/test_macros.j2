@@ -1878,16 +1878,21 @@ def test_{{ method_name }}_empty_call():
 {% endmacro %}
 
 {% macro get_credentials(is_async=False) %}
-{{-'async_anonymous_credentials()' if is_async else 'ga_credentials.AnonymousCredentials()'-}}
+{{- 'async_anonymous_credentials()' if is_async else 'ga_credentials.AnonymousCredentials()' -}}
 {% endmacro %}
 
 {% macro get_client(service, is_async) %}
-{{-service.async_client_name if is_async else service.client_name-}}
+{{- service.async_client_name if is_async else service.client_name -}}
 {% endmacro %}
 
-{% macro transport_kind_test(service, transport_name, is_async) %}
-def test_transport_kind_{{transport_name}}():
-    transport = {{ get_client(service, is_async) }}.get_transport_class("{{transport_name}}")(
+{% macro get_transport_name(transport, is_async=False)%}
+{{- transport + "_asyncio" if is_async else transport -}}
+{% endmacro %}
+
+{% macro transport_kind_test(service, transport, is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+def test_transport_kind_{{ transport_name }}():
+    transport = {{ get_client(service, is_async) }}.get_transport_class("{{ transport_name }}")(
         credentials={{get_credentials(is_async)}}
     )
     assert transport.kind == "{{ transport_name }}"
