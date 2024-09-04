@@ -8403,13 +8403,11 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-
 def test_transport_kind_grpc():
     transport = CloudRedisClient.get_transport_class("grpc")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "grpc"
-
 
 def test_transport_kind_grpc_asyncio():
     transport = CloudRedisAsyncClient.get_transport_class("grpc_asyncio")(
@@ -8417,13 +8415,11 @@ def test_transport_kind_grpc_asyncio():
     )
     assert transport.kind == "grpc_asyncio"
 
-
 def test_transport_kind_rest():
     transport = CloudRedisClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
-
 
 def test_transport_kind_rest_asyncio():
     transport = CloudRedisAsyncClient.get_transport_class("rest_asyncio")(

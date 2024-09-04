@@ -3099,7 +3099,6 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-
 def test_transport_kind_grpc():
     transport = LoggingServiceV2Client.get_transport_class("grpc")(
         credentials=ga_credentials.AnonymousCredentials()

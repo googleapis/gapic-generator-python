@@ -1046,15 +1046,13 @@ def test_transport_adc(transport_class):
 {% set configs = [] %}
 {% for transport_name in opts.transport %}
     {% do configs.append({'service':service, 'transport_name':transport_name, 'is_async':false}) %}
-{# TODO(#2121): Remove this condition when async rest is GA #}
+{# TODO(#2121): Remove this condition when async rest is GA. #}
 {% if 'grpc' in transport_name or rest_async_io_enabled %}
     {% do configs.append({'service':service, 'transport_name':transport_name + "_asyncio", 'is_async':true}) %}
 {% endif %}
 {% endfor %}
-
 {% for conf in configs %}
 {{ test_macros.transport_kind_test(**conf) }}
-
 {% endfor %}
 
 {% if 'grpc' in opts.transport %}
