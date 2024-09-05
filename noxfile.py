@@ -174,8 +174,8 @@ def fragment(session, use_ads_templates=False):
 def fragment_alternative_templates(session):
     fragment(session, use_ads_templates=True)
 
-# `_add_python_settings` consumes a path to a temporary directory (str) i.e. tmp_dir and 
-# python settings i.e. python_settings (Dict) and modifies the service yaml within 
+# `_add_python_settings` consumes a path to a temporary directory (str; i.e. tmp_dir) and 
+# python settings (Dict; i.e. python settings) and modifies the service yaml within 
 # tmp_dir to include python settings. The primary purpose of this function is to modify 
 # the service yaml and include `rest_async_io_enabled=True` to test the async rest
 # optional feature.

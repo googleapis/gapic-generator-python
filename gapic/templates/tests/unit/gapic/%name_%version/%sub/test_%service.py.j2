@@ -1046,7 +1046,7 @@ def test_transport_adc(transport_class):
 {% set configs = [] %}
 {% for transport in opts.transport %}
     {% do configs.append({'service':service, 'transport':transport, 'is_async':false}) %}
-{# TODO(#2121): Remove this condition when async rest is GA. #}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
 {% if 'grpc' in transport or rest_async_io_enabled %}
     {% do configs.append({'service':service, 'transport':transport, 'is_async':true}) %}
 {% endif %}
