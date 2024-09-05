@@ -13,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+try:
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
+except ImportError as e:  # pragma: NO COVER
+    raise ImportError("async rest transport requires google.auth >= 2.x.x") from e
+
+from google.auth.aio import credentials as ga_credentials_async  # type: ignore
+
 from google.api_core import gapic_v1
 
 from typing import Any, Optional
@@ -60,7 +67,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     """
     def __init__(self, *,
             host: str = 'redis.googleapis.com',
-            credentials: Optional[Any] = None,
+            credentials: Optional[ga_credentials_async.Credentials] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             url_scheme: str = 'https',
             ) -> None:
@@ -73,7 +80,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         Args:
             host (Optional[str]):
                  The hostname to connect to (default: 'redis.googleapis.com').
-            credentials (Optional[Any]): The
+            credentials (Optional[google.auth.aio.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
@@ -96,7 +103,11 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             url_scheme=url_scheme,
             api_audience=None
         )
+        self._session = AsyncAuthorizedSession(self._credentials)
 
     @property
     def kind(self) -> str:
         return "rest_asyncio"
+
+    async def close(self):
+        await self._session.close()

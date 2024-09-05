@@ -38,6 +38,10 @@ from google.protobuf import json_format
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
+    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
+    {% if rest_async_io_enabled %}
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
+    {% endif %}
     HAS_GOOGLE_AUTH_AIO = True
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
@@ -1054,7 +1058,10 @@ def test_transport_adc(transport_class):
 {% for conf in configs %}
 {{ test_macros.transport_kind_test(**conf) }}
 {% endfor %}
-
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the below macro when async rest is GA. #}
+{% if rest_async_io_enabled %}
+{{ test_macros.async_rest_unsupported_params_test(service) }}
+{% endif %}
 {% if 'grpc' in opts.transport %}
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
@@ -1668,40 +1675,11 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-{% if 'grpc' in opts.transport %}
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = {{ service.async_client_name }}(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-{% endif %}
-
 {% include 'tests/unit/gapic/%name_%version/%sub/_test_mixins.py.j2' %}
 
-def test_transport_close():
-    transports = {
-        {% if 'rest' in opts.transport %}
-        "rest": "_session",
-        {% endif %}
-        {% if 'grpc' in opts.transport %}
-        "grpc": "_grpc_channel",
-        {% endif %}
-    }
-
-    for transport, close_name in transports.items():
-        client = {{ service.client_name }}(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport
-        )
-        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+{% for conf in configs %}
+{{ test_macros.transport_close_test(**conf) }}
+{% endfor %}
 
 def test_client_ctx():
     transports = [

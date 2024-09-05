@@ -14681,17 +14681,6 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = EventarcAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
 
 def test_get_location_rest_bad_request(transport: str = 'rest', request_type=locations_pb2.GetLocationRequest):
     client = EventarcClient(
@@ -16357,21 +16346,43 @@ async def test_test_iam_permissions_from_dict_async():
         )
         call.assert_called()
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
 
-    for transport, close_name in transports.items():
-        client = EventarcClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport
-        )
-        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_grpc():
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
 
 def test_client_ctx():
     transports = [

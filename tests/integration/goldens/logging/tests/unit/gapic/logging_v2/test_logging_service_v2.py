@@ -3607,17 +3607,6 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = LoggingServiceV2AsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
 
 def test_cancel_operation(transport: str = "grpc"):
     client = LoggingServiceV2Client(
@@ -4006,20 +3995,30 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
 
-    for transport, close_name in transports.items():
-        client = LoggingServiceV2Client(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport
-        )
-        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+
+    client = LoggingServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
 
 def test_client_ctx():
     transports = [
