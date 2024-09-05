@@ -1819,7 +1819,7 @@ def test_{{ method_name }}_rest_no_http_options():
 {% if is_async %}
 @pytest.mark.asyncio
 {% endif %}{# is_async #}
-{{ async_method_prefix }}def test_{{ method.name }}_{{ test_name }}{{ async_method_suffix }}():
+{{ async_method_prefix }}def test_{{ method.safe_name|snake_case }}_{{ test_name }}{{ async_method_suffix }}():
 {% if is_async %}
     client = {{ service.async_client_name }}(
         credentials=async_anonymous_credentials(),
@@ -1858,7 +1858,7 @@ def test_{{ method_name }}_rest_no_http_options():
             {% endfor %}
         ))
         {% endif %}{# method.void #}
-        await client.{{ method.name }}(request={{ request }})
+        await client.{{ method.safe_name|snake_case }}(request={{ request }})
         {% else %}{# if not is_async #}
         {% if method.void %}
         call.return_value = None
@@ -1869,7 +1869,7 @@ def test_{{ method_name }}_rest_no_http_options():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
-        client.{{ method.name }}(request={{ request }})
+        client.{{ method.safe_name|snake_case }}(request={{ request }})
         {% endif %}{# is_async #}
 
         # Establish that the underlying gRPC stub method was called.
