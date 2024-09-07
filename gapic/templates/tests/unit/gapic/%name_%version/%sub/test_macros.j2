@@ -1821,16 +1821,9 @@ def test_{{ method_name }}_rest_no_http_options():
 @pytest.mark.asyncio
 {% endif %}{# is_async #}
 {{ async_method_prefix }}def test_{{ method_name }}_{{ test_name }}{{ async_method_suffix }}():
-{% if is_async %}
-    client = {{ service.async_client_name }}(
-        credentials=async_anonymous_credentials(),
+    client = {{ get_client(service=service, is_async=is_async) }}(
+        credentials={{ get_credentials(is_async=is_async) }},
     )
-{% else %}
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-{% endif %}{# is_async #}
-
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.{{ method.transport_safe_name|snake_case }}),
