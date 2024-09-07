@@ -1813,13 +1813,14 @@ def test_{{ method_name }}_rest_no_http_options():
 
 
 {% macro method_call_test(test_name, method, service, api, uuid4_re, request, is_async=False) %}
+{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
 {% set await_prefix = "await " if is_async else "" %}
 {% set async_method_prefix = "async " if is_async else "" %}
 {% set async_method_suffix = "_async" if is_async else "" %}
 {% if is_async %}
 @pytest.mark.asyncio
 {% endif %}{# is_async #}
-{{ async_method_prefix }}def test_{{ method.safe_name|snake_case }}_{{ test_name }}{{ async_method_suffix }}():
+{{ async_method_prefix }}def test_{{ method_name }}_{{ test_name }}{{ async_method_suffix }}():
 {% if is_async %}
     client = {{ service.async_client_name }}(
         credentials=async_anonymous_credentials(),
@@ -1858,7 +1859,7 @@ def test_{{ method_name }}_rest_no_http_options():
             {% endfor %}
         ))
         {% endif %}{# method.void #}
-        await client.{{ method.safe_name|snake_case }}(request={{ request }})
+        await client.{{ method_name }}(request={{ request }})
         {% else %}{# if not is_async #}
         {% if method.void %}
         call.return_value = None
@@ -1869,7 +1870,7 @@ def test_{{ method_name }}_rest_no_http_options():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
-        client.{{ method.safe_name|snake_case }}(request={{ request }})
+        client.{{ method_name }}(request={{ request }})
         {% endif %}{# is_async #}
 
         # Establish that the underlying gRPC stub method was called.
@@ -1890,6 +1891,7 @@ def test_{{ method_name }}_rest_no_http_options():
         {% else %}
         assert args[0] == {{ method.input.ident }}()
         {% endif %}{# request #}
+{% endwith %}{# method_name #}
 {% endmacro %}
 
 
