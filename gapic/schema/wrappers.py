@@ -1067,6 +1067,66 @@ class RoutingRule:
         params = [RoutingParameter(x.field, x.path_template) for x in params]
         return cls(params)
 
+    @classmethod
+    def resolve(cls, routing_rule: routing_pb2.RoutingRule, request: Union[dict, str]) -> dict:
+        """Resolves the routing header which should be sent along with the request.
+        This function performs dynamic header resolution, identical to what's in `client.py.j2`.
+        The routing header is determined based on the given routing rule and request.
+        See the following link for more information on explicit routing headers:
+        https://google.aip.dev/client-libraries/4222#explicit-routing-headers-googleapirouting
+
+        Args:
+            routing_rule(routing_pb2.RoutingRule): A collection of Routing Parameter specifications
+                defined by `routing_pb2.RoutingRule`.
+                See https://github.com/googleapis/googleapis/blob/cb39bdd75da491466f6c92bc73cd46b0fbd6ba9a/google/api/routing.proto#L391
+            request(Union[dict, str]): The request for which the routine rule should be resolved.
+                The format can be either a dictionary or json string representing the request.
+
+        Returns(dict):
+            A dictionary containing the resolved routing header to the sent along with the given request.
+        """
+
+        def _get_field(request, field_path: str):
+            segments = field_path.split(".")
+
+            # Either json string or dictionary is supported
+            if isinstance(request, str):
+                current = json.loads(request)
+            else:
+                current = request
+
+            # This is to cater for the case where the `field_path` contains a
+            # dot-separated path of field names leading to a field in a sub-message.
+            for x in segments:
+                current = current.get(x, None)
+                # Break if the sub-message does not exist
+                if current is None:
+                    break
+            return current
+
+        header_params = {}
+        for routing_param in routing_rule.routing_parameters:
+            request_field_value = _get_field(request, routing_param.field)
+            # Only resolve the header for routing parameter fields which are populated in the request
+            if request_field_value is not None:
+                # If there is a path_template for a given routing parameter field, the value of the field must match
+                # If multiple Routing Parameters describe the same key
+                # (via the `path_template` field or via the `field` field when
+                # `path_template` is not provided), "last one wins" rule
+                # determines which Parameter gets used.
+                if routing_param.path_template:
+                    routing_param_regex = routing_param.to_regex()
+                    regex_match = routing_param_regex.match(
+                        request_field_value
+                    )
+                    if regex_match:
+                        header_params[routing_param.key] = regex_match.group(
+                            routing_param.key
+                        )
+                else:  # No need to match
+                    header_params[routing_param.key] = request_field_value
+        return header_params
+
 
 @dataclasses.dataclass(frozen=True)
 class HttpRule:
