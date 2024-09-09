@@ -1801,7 +1801,6 @@ def test_{{ method_name }}_rest_no_http_options():
 
 {% macro method_call_test(test_name, method, service, api, request, is_async=False) %}
 {% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
-{% set await_prefix = "await " if is_async else "" %}
 {% set async_method_prefix = "async " if is_async else "" %}
 {% set async_method_suffix = "_async" if is_async else "" %}
 {% if is_async %}
