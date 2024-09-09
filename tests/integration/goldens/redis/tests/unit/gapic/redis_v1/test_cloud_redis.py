@@ -7937,8 +7937,11 @@ def test_list_instances_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ListInstancesRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ListInstancesRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -7956,8 +7959,11 @@ def test_get_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -7975,8 +7981,11 @@ def test_get_instance_auth_string_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceAuthStringRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -7994,8 +8003,11 @@ def test_create_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.CreateInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.CreateInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8013,8 +8025,11 @@ def test_update_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpdateInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.UpdateInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8032,8 +8047,11 @@ def test_upgrade_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpgradeInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.UpgradeInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8051,8 +8069,11 @@ def test_import_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ImportInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ImportInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8070,8 +8091,11 @@ def test_export_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ExportInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ExportInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8089,8 +8113,11 @@ def test_failover_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.FailoverInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.FailoverInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8108,8 +8135,11 @@ def test_delete_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.DeleteInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.DeleteInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8127,8 +8157,10 @@ def test_reschedule_maintenance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.RescheduleMaintenanceRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_kind_grpc_asyncio():
@@ -8159,8 +8191,11 @@ async def test_list_instances_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ListInstancesRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ListInstancesRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8208,8 +8243,11 @@ async def test_get_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8231,8 +8269,11 @@ async def test_get_instance_auth_string_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceAuthStringRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8254,8 +8295,11 @@ async def test_create_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.CreateInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.CreateInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8277,8 +8321,11 @@ async def test_update_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpdateInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.UpdateInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8300,8 +8347,11 @@ async def test_upgrade_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpgradeInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.UpgradeInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8323,8 +8373,11 @@ async def test_import_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ImportInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ImportInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8346,8 +8399,11 @@ async def test_export_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ExportInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ExportInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8369,8 +8425,11 @@ async def test_failover_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.FailoverInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.FailoverInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8392,8 +8451,11 @@ async def test_delete_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.DeleteInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.DeleteInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8415,8 +8477,10 @@ async def test_reschedule_maintenance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.RescheduleMaintenanceRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_kind_rest():
@@ -8442,8 +8506,11 @@ def test_list_instances_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ListInstancesRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ListInstancesRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8461,8 +8528,11 @@ def test_get_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8480,8 +8550,11 @@ def test_get_instance_auth_string_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceAuthStringRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8499,8 +8572,11 @@ def test_create_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.CreateInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.CreateInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8518,8 +8594,11 @@ def test_update_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpdateInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.UpdateInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8537,8 +8616,11 @@ def test_upgrade_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpgradeInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.UpgradeInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8556,8 +8638,11 @@ def test_import_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ImportInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ImportInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8575,8 +8660,11 @@ def test_export_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ExportInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ExportInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8594,8 +8682,11 @@ def test_failover_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.FailoverInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.FailoverInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8613,8 +8704,11 @@ def test_delete_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.DeleteInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.DeleteInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8632,8 +8726,10 @@ def test_reschedule_maintenance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.RescheduleMaintenanceRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_kind_rest_asyncio():
@@ -8664,8 +8760,11 @@ async def test_list_instances_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ListInstancesRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ListInstancesRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8713,8 +8812,11 @@ async def test_get_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8736,8 +8838,11 @@ async def test_get_instance_auth_string_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceAuthStringRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8759,8 +8864,11 @@ async def test_create_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.CreateInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.CreateInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8782,8 +8890,11 @@ async def test_update_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpdateInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.UpdateInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8805,8 +8916,11 @@ async def test_upgrade_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpgradeInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.UpgradeInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8828,8 +8942,11 @@ async def test_import_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ImportInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ImportInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8851,8 +8968,11 @@ async def test_export_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ExportInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.ExportInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8874,8 +8994,11 @@ async def test_failover_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.FailoverInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.FailoverInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8897,8 +9020,11 @@ async def test_delete_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.DeleteInstanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.DeleteInstanceRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -8920,8 +9046,10 @@ async def test_reschedule_maintenance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_redis.RescheduleMaintenanceRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():

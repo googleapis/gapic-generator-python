@@ -3343,8 +3343,11 @@ def test_generate_access_token_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateAccessTokenRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3362,8 +3365,11 @@ def test_generate_id_token_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateIdTokenRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.GenerateIdTokenRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3381,8 +3387,11 @@ def test_sign_blob_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignBlobRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.SignBlobRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3400,8 +3409,10 @@ def test_sign_jwt_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignJwtRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.SignJwtRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_kind_grpc_asyncio():
@@ -3431,8 +3442,11 @@ async def test_generate_access_token_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateAccessTokenRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3454,8 +3468,11 @@ async def test_generate_id_token_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateIdTokenRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.GenerateIdTokenRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3478,8 +3495,11 @@ async def test_sign_blob_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignBlobRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.SignBlobRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3502,8 +3522,10 @@ async def test_sign_jwt_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignJwtRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.SignJwtRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_kind_rest():
@@ -3529,8 +3551,11 @@ def test_generate_access_token_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateAccessTokenRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3548,8 +3573,11 @@ def test_generate_id_token_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateIdTokenRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.GenerateIdTokenRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3567,8 +3595,11 @@ def test_sign_blob_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignBlobRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.SignBlobRequest()
+
+        assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3586,8 +3617,10 @@ def test_sign_jwt_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignJwtRequest()
+        _, args, kw = call.mock_calls[0]
+        request_msg = common.SignJwtRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
