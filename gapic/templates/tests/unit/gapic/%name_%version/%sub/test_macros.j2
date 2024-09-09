@@ -1,6 +1,5 @@
 {% macro grpc_required_tests(method, service, api, full_extended_lro=False) %}
 {% with method_name = method.safe_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.safe_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}
-{% with uuid4_re = "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}" %}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
   dict,
@@ -123,11 +122,6 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
 
 
 {% if not method.client_streaming %}
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-{{ method_call_test("empty_call", method, service, api, uuid4_re, request=None)}}
-
-
 def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -157,7 +151,7 @@ def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        assert re.match(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
 {% endfor %}
@@ -220,12 +214,6 @@ def test_{{ method_name }}_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 {% if not full_extended_lro %}
-{% if not method.client_streaming %}
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-{{ method_call_test("empty_call", method, service, api, uuid4_re, request=None, is_async=True) }}
-{% endif %}
-
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1048,7 +1036,6 @@ def test_{{ method_name }}_raw_page_lro():
     response = {{ method.lro.response_type.ident }}()
     assert response.raw_page is response
 {% endif %}{# method.paged_result_field #}{% endwith %}
-{% endwith %}{# uuid4_re #}
 {% endmacro %}
 
 {% macro rest_required_tests(method, service, numeric_enums=False, full_extended_lro=False) %}
@@ -1812,7 +1799,7 @@ def test_{{ method_name }}_rest_no_http_options():
 {% endmacro %}
 
 
-{% macro method_call_test(test_name, method, service, api, uuid4_re, request, is_async=False) %}
+{% macro method_call_test(test_name, method, service, api, request, is_async=False) %}
 {% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
 {% set await_prefix = "await " if is_async else "" %}
 {% set async_method_prefix = "async " if is_async else "" %}
@@ -1874,7 +1861,7 @@ def test_{{ method_name }}_rest_no_http_options():
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        assert re.match(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
         {% endfor %}{# for auto_populated_field in method_settings.auto_populated_fields #}
@@ -1900,7 +1887,7 @@ def test_{{ method_name }}_rest_no_http_options():
 {{- transport + ("_asyncio" if is_async else "") -}}
 {% endmacro %}
 
-{% macro transport_kind_test(service, transport, is_async) %}
+{% macro transport_kind_test(service, api, transport, is_async) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
 def test_transport_kind_{{ transport_name }}():
     transport = {{ get_client(service, is_async) }}.get_transport_class("{{ transport_name }}")(
@@ -1908,4 +1895,18 @@ def test_transport_kind_{{ transport_name }}():
     )
     assert transport.kind == "{{ transport_name }}"
 
-{% endmacro %}
+{% endmacro %}{# transport_kind_test #}
+
+{% macro empty_call_test(service, api, transport, is_async) %}
+{% for method in service.methods.values() %}{# method #}
+{% if not method.client_streaming %}
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+{{ method_call_test("empty_call", method, service, api, request=None, is_async=is_async) }}
+{% endif %}{# not method.client_streaming #}
+{% endfor %}{# method in service.methods.values() #}
+{% endmacro %}{# empty_call_test #}
+
+{% macro get_uuid4_re() -%}
+[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}
+{%- endmacro %}{# uuid_re #}
