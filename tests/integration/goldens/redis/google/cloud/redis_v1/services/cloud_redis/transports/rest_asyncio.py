@@ -32,7 +32,6 @@ from google.api_core import rest_helpers
 
 from google.protobuf import json_format
 
-import inspect
 import json  # type: ignore
 import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
@@ -131,7 +130,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             api_audience=None
         )
         self._session = AsyncAuthorizedSession(self._credentials)
-        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
 
     def _prep_wrapped_messages(self, client_info):
