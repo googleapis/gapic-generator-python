@@ -1522,33 +1522,6 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
 {% endif %}{# streaming #}
 
 
-def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_type={{ method.input.ident }}):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {{ method.http_options[0].sample_request(method) }}
-    request = request_type(**request_init)
-    {% if method.client_streaming %}
-    requests = [request]
-    {% endif %}
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        {% if method.client_streaming %}
-        client.{{ method_name }}(iter(requests))
-        {% else %}
-        client.{{ method_name }}(request)
-        {% endif %}
-
-
 {% if method.flattened_fields and not method.client_streaming %}
 def test_{{ method_name }}_rest_flattened():
     client = {{ service.client_name }}(
@@ -1755,25 +1728,6 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-
-{%- else %}{# paged_result_field #}
-
-def test_{{ method_name }}_rest_error():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-    {%- if not method.http_options %}
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.{{ method_name }}({})
-    assert (
-        "Method {{ method.name }} is not available over REST transport"
-        in str(not_implemented_error.value)
-    )
-
-    {%- endif %}{# not method.http_options #}
 {% endif %}{# flattened_fields #}
 
 {% else %}{# this is an lro or streaming method #}
@@ -1952,14 +1906,48 @@ def test_unsupported_parameter_rest_asyncio():
 {% endmacro %}
 
 
-{% macro rest_call_method_test(service, transport, is_async) %}
+{# is_rest_unsupported_method renders:
+ # 'True' if transport is async REST and method is any of [client streaming, server streaming, lro, extended lro, pager] method. 
+ # 'True' if transport is sync REST and method is a client streaming method.
+ # 'False' otherwise.
+#}
+{% macro is_rest_unsupported_method(method, is_async) %}
+{%- if method.client_streaming or 
+(is_async and (method.server_streaming or method.lro or method.extended_lro or method.paged_result_field)) -%}
+{{'True'}}
+{%- else -%}
+{{'False'}}
+{%- endif -%}
+{% endmacro %}
+
+{% macro rest_transport_specific_tests(service, transport, is_async) %}
+{% if 'rest' in transport %}
+{### Test syntax configuration begins ###}
 {% set await_prefix = "await " if is_async else "" %}
 {% set async_prefix = "async " if is_async else "" %}
 {% set async_decorator = "@pytest.mark.asyncio " if is_async else "" %}
 {% set transport_name = get_transport_name(transport, is_async) %}
-
-{% for method in service.methods.values() if 'rest' in transport and not (method.client_streaming or method.server_streaming or method.lro or method.extended_lro or method.paged_result_field) and method.http_options %}
+{### Test syntax configuration ends ###}
+{### Test generation for all methods begins ###}
+{% for method in service.methods.values() %}
 {% set method_name = method.name|snake_case %}
+{### test cases begin ###}
+{% if is_rest_unsupported_method(method, is_async) == 'False' and method.http_options %}
+{% if is_async %}{# rest_call_method_test is disabled until supported methods for sync == async. #}
+{{ rest_call_method_test(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async)}}
+{% endif %}
+{{ rest_method_bad_request_test(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async) }}
+{% else %}
+{{ rest_method_not_implemented_error(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async) }}
+{% endif %}{# is_rest_unsupported_method(method, is_async) == 'False' and method.http_options #}
+{### test cases end ###}
+{% endfor %}
+{### Test generation for all methods ends ###}
+{% endif %}{# if 'rest' in transport #}
+{% endmacro %}
+
+
+{% macro rest_call_method_test(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async) %}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
   dict,
@@ -2008,7 +1996,6 @@ def test_unsupported_parameter_rest_asyncio():
         response_value.status_code = 200
         {% if method.void %}
         json_return_value = ''
-        {# Add a case for LRO here. #}
         {% else %}{# method.void #}
         {% if method.output.ident.is_proto_plus_type %}
         # Convert return value to protobuf type
@@ -2016,38 +2003,58 @@ def test_unsupported_parameter_rest_asyncio():
         {% endif %}{# method.output.ident.is_proto_plus_type #}
         json_return_value = json_format.MessageToJson(return_value)
         {% endif %}{# method.void #}
-
-        {# Add a case for streaming here. #}
         {% if is_async %}
         response_value.read = mock.AsyncMock(return_value=b'{}')
         {% else %}{# is_async #}
         response_value.content = json_return_value.encode('UTF-8')
         {% endif %}
         req.return_value = response_value
-        {# add a case for streaming here. #}
         response = {{ await_prefix }}client.{{ method_name }}(request)
-
-    {# Add an assert for streaming here. #}
-
     # Establish that the response is the type that we expect.
     {% if method.void %}
     assert response is None
-    {# Add an assert for LRO here. #}
-    {# Add an assert for extended LRO and full extended LRO here. #}
     {% else %}
     assert isinstance(response, {{ method.client_output.ident }})
     {% endif %}
-{% endfor %}
 {% endmacro %}
 
-{% macro test_rest_error(service, transport, is_async) %}
-{% set await_prefix = "await " if is_async else "" %}
-{% set async_prefix = "async " if is_async else "" %}
-{% set async_decorator = "@pytest.mark.asyncio " if is_async else "" %}
-{% set transport_name = get_transport_name(transport, is_async) %}
-{% if is_async %}
-{% for method in service.methods.values() if 'rest' in transport and (method.client_streaming or method.server_streaming or method.lro or method.extended_lro or method.paged_result_field) %}
+{% macro rest_method_bad_request_test(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async) %}
+{% set mocked_session = "AsyncAuthorizedSession" if is_async else "Session" %}
+{{ async_decorator }}
+{{ async_prefix }}def test_{{ method_name }}_{{transport_name}}_bad_request(request_type={{ method.input.ident }}):
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_GOOGLE_AUTH_AIO:
+        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    {% endif %}
 
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {{ method.http_options[0].sample_request(method) }}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object({{mocked_session}}, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        {% if is_async %}
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        {% else %}
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        {% endif %}{# if is_async #}
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        {{ await_prefix }}client.{{ method_name }}(request)
+{% endmacro %}
+
+{% macro rest_method_not_implemented_error(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async) %}
+{% if is_async %}
 {% set method_name = method.name|snake_case %}
 {{async_decorator}}
 {{async_prefix}}def test_{{ method_name }}_{{transport_name}}_error():
@@ -2070,46 +2077,5 @@ def test_unsupported_parameter_rest_asyncio():
         "Method {{ method.name }} is not available over REST transport"
         in str(not_implemented_error.value)
     )
-
-{% endfor %}
-{% endif %}
-{% endmacro %}
-
-
-{% macro rest_bad_request_test(service, transport, is_async) %}
-{% set await_prefix = "await " if is_async else "" %}
-{% set async_prefix = "async " if is_async else "" %}
-{% set async_decorator = "@pytest.mark.asyncio " if is_async else "" %}
-{% set transport_name = get_transport_name(transport, is_async) %}
-{% if is_async %}
-{% for method in service.methods.values() if 'rest' in transport and not (method.client_streaming or method.server_streaming or method.lro or method.extended_lro or method.paged_result_field) %}
-{% set method_name = method.name|snake_case %}
-{{ async_decorator }}
-{{ async_prefix }}def test_{{ method_name }}_{{transport_name}}_bad_request(request_type={{ method.input.ident }}):
-    {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
-        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
-    {% endif %}
-
-    client = {{ get_client(service, is_async) }}(
-        credentials={{get_credentials(is_async)}},
-        transport="{{transport_name}}"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {{ method.http_options[0].sample_request(method) }}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.read = mock.AsyncMock(return_value=b'{}')
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        {{ await_prefix }}client.{{ method_name }}(request)
-{% endfor %}
 {% endif %}
 {% endmacro %}
