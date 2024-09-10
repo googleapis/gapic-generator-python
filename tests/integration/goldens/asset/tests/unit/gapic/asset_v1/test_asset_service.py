@@ -17367,7 +17367,6 @@ async def test_get_operation_from_dict_async():
 
 
 def test_transport_close_grpc():
-
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc"
@@ -17380,7 +17379,6 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio"
@@ -17392,7 +17390,6 @@ async def test_transport_close_grpc_asyncio():
 
 
 def test_transport_close_rest():
-
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest"

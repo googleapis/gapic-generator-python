@@ -3996,7 +3996,6 @@ async def test_list_operations_from_dict_async():
 
 
 def test_transport_close_grpc():
-
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc"
@@ -4009,7 +4008,6 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio"

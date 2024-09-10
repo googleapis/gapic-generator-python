@@ -1915,7 +1915,6 @@ def test_transport_kind_{{ transport_name }}():
 -%}
 {{async_decorator}}
 {{async_prefix}}def test_transport_close_{{transport_name}}():
-
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_GOOGLE_AUTH_AIO:
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
@@ -1939,14 +1938,11 @@ def test_unsupported_parameter_rest_asyncio():
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
     options = client_options.ClientOptions(quota_project_id="octopus")
-    with pytest.raises(NotImplementedError) as exc:
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:
         client = {{ get_client(service, True) }}(
             credentials={{get_credentials(True)}},
             transport="rest_asyncio",
             client_options=options
-        )
-    exc.match(
-        "The following provided parameters are not supported for `transport=rest_asyncio`: google.api_core.client_options.ClientOptions.quota_project_id"
     )
 
 {% endmacro %}

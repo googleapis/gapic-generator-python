@@ -593,9 +593,6 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             )
 
             if "rest_asyncio" in str(transport_init):
-                # Note: The following parameters are not support in async rest:
-                # credentials_file, scopes, client_cert_source_for_mtls, quota_project_id
-                # always_use_jwt_access, api_audience.
                 unsupported_params = {
                     "google.api_core.client_options.ClientOptions.credentials_file": self._client_options.credentials_file,
                     "google.api_core.client_options.ClientOptions.scopes": self._client_options.scopes,
@@ -606,7 +603,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 }
                 provided_unsupported_params = [name for name, value in unsupported_params.items() if value is not None]
                 if provided_unsupported_params:
-                    raise NotImplementedError(
+                    raise core_exceptions.AsyncRestUnsupportedParameterError(
                         f"The following provided parameters are not supported for `transport=rest_asyncio`: {', '.join(provided_unsupported_params)}"
                     )
                 self._transport = transport_init(

@@ -8438,14 +8438,11 @@ def test_unsupported_parameter_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
     options = client_options.ClientOptions(quota_project_id="octopus")
-    with pytest.raises(NotImplementedError) as exc:
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:
         client = CloudRedisAsyncClient(
             credentials=async_anonymous_credentials(),
             transport="rest_asyncio",
             client_options=options
-        )
-    exc.match(
-        "The following provided parameters are not supported for `transport=rest_asyncio`: google.api_core.client_options.ClientOptions.quota_project_id"
     )
 
 
@@ -10118,7 +10115,6 @@ async def test_get_location_from_dict_async():
 
 
 def test_transport_close_grpc():
-
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc"
@@ -10131,7 +10127,6 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio"
@@ -10143,7 +10138,6 @@ async def test_transport_close_grpc_asyncio():
 
 
 def test_transport_close_rest():
-
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest"
@@ -10156,7 +10150,6 @@ def test_transport_close_rest():
 
 @pytest.mark.asyncio
 async def test_transport_close_rest_asyncio():
-
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
     client = CloudRedisAsyncClient(

@@ -16348,7 +16348,6 @@ async def test_test_iam_permissions_from_dict_async():
 
 
 def test_transport_close_grpc():
-
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc"
@@ -16361,7 +16360,6 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio"
@@ -16373,7 +16371,6 @@ async def test_transport_close_grpc_asyncio():
 
 
 def test_transport_close_rest():
-
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest"
