@@ -13886,13 +13886,13 @@ def test_get_trigger_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = trigger.Trigger.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.get_trigger(request)
 
@@ -13928,13 +13928,13 @@ def test_get_channel_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = channel.Channel.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.get_channel(request)
 
@@ -13965,13 +13965,13 @@ def test_get_provider_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = discovery.Provider.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.get_provider(request)
 
@@ -14004,13 +14004,13 @@ def test_get_channel_connection_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = channel_connection.ChannelConnection.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.get_channel_connection(request)
 
@@ -14041,13 +14041,13 @@ def test_get_google_channel_config_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.get_google_channel_config(request)
 
@@ -14078,13 +14078,13 @@ def test_update_google_channel_config_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.update_google_channel_config(request)
 

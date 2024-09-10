@@ -2004,7 +2004,7 @@ def test_unsupported_parameter_rest_asyncio():
         {% endif %}{# method.void #}
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         {% if method.void %}
         json_return_value = ''
@@ -2018,8 +2018,11 @@ def test_unsupported_parameter_rest_asyncio():
         {% endif %}{# method.void #}
 
         {# Add a case for streaming here. #}
-
-        response_value._content = json_return_value.encode('UTF-8')
+        {% if is_async %}
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        {% else %}{# is_async #}
+        response_value.content = json_return_value.encode('UTF-8')
+        {% endif %}
         req.return_value = response_value
         {# add a case for streaming here. #}
         response = {{ await_prefix }}client.{{ method_name }}(request)

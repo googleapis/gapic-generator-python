@@ -162,7 +162,8 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% else %}
             pb_resp = resp
             {% endif %}
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            content = await response.read()
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             {# TODO(): Add a post call for interceptor. #}
             return resp
 

@@ -16449,13 +16449,13 @@ def test_batch_get_assets_history_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.batch_get_assets_history(request)
 
@@ -16489,13 +16489,13 @@ def test_create_feed_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.Feed.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.create_feed(request)
 
@@ -16529,13 +16529,13 @@ def test_get_feed_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.Feed.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.get_feed(request)
 
@@ -16564,13 +16564,13 @@ def test_list_feeds_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.ListFeedsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.list_feeds(request)
 
@@ -16604,13 +16604,13 @@ def test_update_feed_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.Feed.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.update_feed(request)
 
@@ -16638,11 +16638,11 @@ def test_delete_feed_call_rest(request_type):
         return_value = None
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = ''
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.delete_feed(request)
 
@@ -16672,13 +16672,13 @@ def test_analyze_iam_policy_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.analyze_iam_policy(request)
 
@@ -16707,13 +16707,13 @@ def test_analyze_move_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.analyze_move(request)
 
@@ -16744,13 +16744,13 @@ def test_query_assets_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.QueryAssetsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.query_assets(request)
 
@@ -16783,13 +16783,13 @@ def test_create_saved_query_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.SavedQuery.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.create_saved_query(request)
 
@@ -16822,13 +16822,13 @@ def test_get_saved_query_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.SavedQuery.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.get_saved_query(request)
 
@@ -16861,13 +16861,13 @@ def test_update_saved_query_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.SavedQuery.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.update_saved_query(request)
 
@@ -16895,11 +16895,11 @@ def test_delete_saved_query_call_rest(request_type):
         return_value = None
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = ''
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.delete_saved_query(request)
 
@@ -16928,13 +16928,13 @@ def test_batch_get_effective_iam_policies_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.batch_get_effective_iam_policies(request)
 

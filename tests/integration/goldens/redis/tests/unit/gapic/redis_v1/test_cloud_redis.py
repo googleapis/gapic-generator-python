@@ -8476,13 +8476,13 @@ def test_get_instance_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = cloud_redis.Instance.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.get_instance(request)
 
@@ -8512,13 +8512,13 @@ def test_get_instance_auth_string_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = cloud_redis.InstanceAuthString.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.get_instance_auth_string(request)
 
@@ -8587,13 +8587,13 @@ async def test_get_instance_call_rest_asyncio(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = cloud_redis.Instance.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.read = mock.AsyncMock(return_value=b'{}')
         req.return_value = response_value
         response = await client.get_instance(request)
 
@@ -8625,13 +8625,13 @@ async def test_get_instance_auth_string_call_rest_asyncio(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = cloud_redis.InstanceAuthString.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.read = mock.AsyncMock(return_value=b'{}')
         req.return_value = response_value
         response = await client.get_instance_auth_string(request)
 

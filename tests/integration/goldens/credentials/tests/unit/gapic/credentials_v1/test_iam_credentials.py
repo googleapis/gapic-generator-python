@@ -3535,13 +3535,13 @@ def test_generate_access_token_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = common.GenerateAccessTokenResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.generate_access_token(request)
 
@@ -3571,13 +3571,13 @@ def test_generate_id_token_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = common.GenerateIdTokenResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.generate_id_token(request)
 
@@ -3608,13 +3608,13 @@ def test_sign_blob_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = common.SignBlobResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.sign_blob(request)
 
@@ -3645,13 +3645,13 @@ def test_sign_jwt_call_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         # Convert return value to protobuf type
         return_value = common.SignJwtResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
-        response_value._content = json_return_value.encode('UTF-8')
+        response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.sign_jwt(request)
 

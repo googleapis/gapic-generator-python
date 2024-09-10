@@ -325,7 +325,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = cloud_redis.Instance()
             pb_resp = cloud_redis.Instance.pb(resp)
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            content = await response.read()
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             return resp
 
     class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub):
@@ -398,7 +399,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = cloud_redis.InstanceAuthString()
             pb_resp = cloud_redis.InstanceAuthString.pb(resp)
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            content = await response.read()
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             return resp
 
     class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub):
