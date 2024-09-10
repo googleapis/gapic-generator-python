@@ -1971,6 +1971,7 @@ def test_unsupported_parameter_rest_asyncio():
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
     {% endif %}
+
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
         transport="{{transport_name}}"
@@ -2052,6 +2053,7 @@ def test_unsupported_parameter_rest_asyncio():
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
     {% endif %}
+
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
         transport="{{transport_name}}"
@@ -2086,6 +2088,7 @@ def test_unsupported_parameter_rest_asyncio():
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
     {% endif %}
+
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
         transport="{{transport_name}}"
