@@ -181,7 +181,7 @@ def _get_http_options():
         payload = json.loads(content.decode('utf-8'))
         request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
         method = transcoded_request['method']
-        raise core_exceptions.format_http_response_error(response, method, request_url, payload)
+        raise format_http_response_error(response, method, request_url, payload)
         {% else %}
         raise core_exceptions.from_http_response(response)
         {% endif %}{# is_async #}
