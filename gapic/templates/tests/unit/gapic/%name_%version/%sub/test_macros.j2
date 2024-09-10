@@ -1958,7 +1958,7 @@ def test_unsupported_parameter_rest_asyncio():
 {% set async_decorator = "@pytest.mark.asyncio " if is_async else "" %}
 {% set transport_name = get_transport_name(transport, is_async) %}
 
-{% for method in service.methods.values() if 'rest' in transport and not (method.client_streaming or method.server_streaming or method.lro or method.extended_lro or method.paged_result_field) %}
+{% for method in service.methods.values() if 'rest' in transport and not (method.client_streaming or method.server_streaming or method.lro or method.extended_lro or method.paged_result_field) and method.http_options %}
 {% set method_name = method.name|snake_case %}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
