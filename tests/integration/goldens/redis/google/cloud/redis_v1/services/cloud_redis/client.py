@@ -603,7 +603,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 }
                 provided_unsupported_params = [name for name, value in unsupported_params.items() if value is not None]
                 if provided_unsupported_params:
-                    raise core_exceptions.AsyncRestUnsupportedParameterError(
+                    raise core_exceptions.AsyncRestUnsupportedParameterError(  # type: ignore
                         f"The following provided parameters are not supported for `transport=rest_asyncio`: {', '.join(provided_unsupported_params)}"
                     )
                 self._transport = transport_init(

@@ -8438,7 +8438,7 @@ def test_unsupported_parameter_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
     options = client_options.ClientOptions(quota_project_id="octopus")
-    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
         client = CloudRedisAsyncClient(
             credentials=async_anonymous_credentials(),
             transport="rest_asyncio",
