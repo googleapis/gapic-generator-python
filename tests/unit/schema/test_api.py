@@ -2792,6 +2792,31 @@ def test_python_settings_selective_gapic_nonexistent_method_raises_error():
         api_schema.enforce_valid_library_settings(client_library_settings)
 
 
+def test_python_settings_selective_gapic_version_mismatch_method_raises_error():
+    """
+    Test that `ClientLibrarySettingsError` is raised when there are nonexistent methods in
+    `client_pb2.ClientLibrarySettings.PythonSettings.CommonSettings.SelectiveGapicGeneration`.
+    """
+    client_library_settings = [
+        client_pb2.ClientLibrarySettings(
+            version="google.example.v2beta2",
+            python_settings=client_pb2.PythonSettings(
+                common=client_pb2.CommonLanguageSettings(
+                    selective_gapic_generation=client_pb2.SelectiveGapicGeneration(
+                        methods=["google.example.v1beta1.ServiceOne.Example1"]
+                    )
+                )
+            )
+        )
+    ]
+    fd = get_file_descriptor_proto_for_tests(fields=[])
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    with pytest.raises(
+        api.ClientLibrarySettingsError, match="(?i)google.example.v1beta1.ServiceOne.Example1: Mismatched version for method."
+    ):
+        api_schema.enforce_valid_library_settings(client_library_settings)
+
+
 def test_read_empty_python_settings_from_service_yaml():
     service_yaml_config = {
         "apis": [
