@@ -736,14 +736,60 @@ class API:
         all_errors: dict = {}
         versions_seen: set = set()
         for library_settings in client_library_settings:
-            # Check if this version is defind more than once
+            # Check if this version is defined more than once
             if library_settings.version in versions_seen:
                 all_errors[library_settings.version] = ["Duplicate version"]
                 continue
             versions_seen.add(library_settings.version)
 
+            # Check to see if selective gapic generation methods are valid.
+            selective_gapic_methods = self._get_selective_gapic_methods(library_settings)
+            if selective_gapic_methods:
+                selective_gapic_errors = {}
+                for method_name in library_settings.python_settings.common.selective_gapic_generation.methods:
+                    if method_name not in self.all_methods:
+                        selective_gapic_errors[method_name] = "Method does not exist."
+
+                if selective_gapic_errors:
+                    all_errors[library_settings.version] = [
+                        {
+                            "selective_gapic_generation": selective_gapic_errors,
+                        }
+                    ]
+
         if all_errors:
             raise ClientLibrarySettingsError(yaml.dump(all_errors))
+    
+    @cached_property
+    def selective_gapic_methods(self) -> Mapping[str, MethodDescriptorProto]:
+        """Return a map of all methods described in selective_gapic_generation for the API, if applicable.
+
+        Returns:
+            Mapping[str, MethodDescriptorProto]: A mapping of MethodDescriptorProto
+                values for the API.
+        """
+        return {
+            method_name: self.all_methods[method_name]
+            for method_name in [
+                self._get_selective_gapic_methods(setting)
+                for setting in self.all_library_settings.values()
+            ]
+        }
+
+    @cached_property
+    def has_selective_gapic_generation(self) -> bool:
+        return any(
+            self._get_selective_gapic_methods(setting)
+            for setting in self.all_library_settings.values()
+        )
+
+    def _get_selective_gapic_methods(self, library_settings: client_pb2.ClientLibrarySettings) -> list[str]:
+        if library_settings.python_settings and \
+           library_settings.python_settings.common and \
+           library_settings.python_settings.common.selective_gapic_generation:
+            return library_settings.python_settings.common.selective_gapic_generation.methods
+        return []
+
 
     @cached_property
     def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:

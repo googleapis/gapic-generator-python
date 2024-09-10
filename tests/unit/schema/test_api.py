@@ -2726,6 +2726,72 @@ def test_read_python_settings_from_service_yaml():
     }
 
 
+def test_read_selective_gapic_methods_from_service_yaml():
+    service_yaml_config = {
+        "apis": [
+            {"name": "google.example.v1beta1.ServiceOne.Example1"},
+        ],
+        "publishing": {
+            "library_settings": [
+                {
+                    "version": "google.example.v1beta1",
+                    "python_settings": {
+                        "experimental_features": {"rest_async_io_enabled": True},
+                        "common": {
+                            "selective_gapic_generation": {
+                                "methods": ["google.example.v1beta1.ServiceOne.Example1"]
+                            }
+                        }
+                    },
+                }
+            ]
+        },
+    }
+    cli_options = Options(service_yaml_config=service_yaml_config)
+    fd = get_file_descriptor_proto_for_tests(fields=[])
+    api_schema = api.API.build(fd, "google.example.v1beta1", opts=cli_options)
+    assert api_schema.all_library_settings == {
+        "google.example.v1beta1": client_pb2.ClientLibrarySettings(
+            version="google.example.v1beta1",
+            python_settings=client_pb2.PythonSettings(
+                experimental_features=client_pb2.PythonSettings.ExperimentalFeatures(
+                    rest_async_io_enabled=True
+                ),
+                common=client_pb2.CommonLanguageSettings(
+                    selective_gapic_generation=client_pb2.SelectiveGapicGeneration(
+                        methods=["google.example.v1beta1.ServiceOne.Example1"]
+                    )
+                )
+            ),
+        )
+    }
+
+
+def test_python_settings_selective_gapic_nonexistent_method_raises_error():
+    """
+    Test that `ClientLibrarySettingsError` is raised when there are nonexistent methods in
+    `client_pb2.ClientLibrarySettings.PythonSettings.CommonSettings.SelectiveGapicGeneration`.
+    """
+    client_library_settings = [
+        client_pb2.ClientLibrarySettings(
+            version="google.example.v1beta1",
+            python_settings=client_pb2.PythonSettings(
+                common=client_pb2.CommonLanguageSettings(
+                    selective_gapic_generation=client_pb2.SelectiveGapicGeneration(
+                        methods=["google.example.v1beta1.ServiceOne.DoesNotExist"]
+                    )
+                )
+            )
+        )
+    ]
+    fd = get_file_descriptor_proto_for_tests(fields=[])
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    with pytest.raises(
+        api.ClientLibrarySettingsError, match="(?i)google.example.v1beta1.ServiceOne.DoesNotExist: Method does not exist"
+    ):
+        api_schema.enforce_valid_library_settings(client_library_settings)
+
+
 def test_read_empty_python_settings_from_service_yaml():
     service_yaml_config = {
         "apis": [
