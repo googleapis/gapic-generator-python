@@ -38,6 +38,7 @@ from google.protobuf import json_format
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
     HAS_GOOGLE_AUTH_AIO = True
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
@@ -8425,10 +8426,24 @@ def test_transport_kind_rest():
 
 
 def test_transport_kind_rest_asyncio():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
     transport = CloudRedisAsyncClient.get_transport_class("rest_asyncio")(
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "rest_asyncio"
+
+
+def test_unsupported_parameter_rest_asyncio():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    options = client_options.ClientOptions(quota_project_id="octopus")
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
+        client = CloudRedisAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport="rest_asyncio",
+            client_options=options
+    )
 
 
 def test_transport_grpc_default():
@@ -9041,17 +9056,6 @@ def test_client_with_default_client_info():
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
-
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
 
 
 def test_get_location_rest_bad_request(transport: str = 'rest', request_type=locations_pb2.GetLocationRequest):
@@ -10110,21 +10114,53 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = CloudRedisClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport
-        )
-        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_rest_asyncio():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
 
 def test_client_ctx():
     transports = [
