@@ -1966,7 +1966,11 @@ def test_unsupported_parameter_rest_asyncio():
 ])
 {{async_decorator}}
 {{async_prefix}}def test_{{method_name}}_call_{{transport_name}}(request_type):
-
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_GOOGLE_AUTH_AIO:
+        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
         transport="{{transport_name}}"
@@ -2043,6 +2047,11 @@ def test_unsupported_parameter_rest_asyncio():
 {% set method_name = method.name|snake_case %}
 {{async_decorator}}
 {{async_prefix}}def test_{{ method_name }}_{{transport_name}}_error():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_GOOGLE_AUTH_AIO:
+        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
         transport="{{transport_name}}"
@@ -2072,6 +2081,11 @@ def test_unsupported_parameter_rest_asyncio():
 {% set method_name = method.name|snake_case %}
 {{ async_decorator }}
 {{ async_prefix }}def test_{{ method_name }}_{{transport_name}}_bad_request(request_type={{ method.input.ident }}):
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_GOOGLE_AUTH_AIO:
+        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
         transport="{{transport_name}}"
