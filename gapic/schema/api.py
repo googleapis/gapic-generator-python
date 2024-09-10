@@ -783,7 +783,7 @@ class API:
             for setting in self.all_library_settings.values()
         )
 
-    def _get_selective_gapic_methods(self, library_settings: client_pb2.ClientLibrarySettings) -> list[str]:
+    def _get_selective_gapic_methods(self, library_settings: client_pb2.ClientLibrarySettings) -> Sequence[str]:
         if library_settings.python_settings and \
            library_settings.python_settings.common and \
            library_settings.python_settings.common.selective_gapic_generation:
