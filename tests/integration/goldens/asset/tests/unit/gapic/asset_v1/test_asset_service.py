@@ -10133,13 +10133,6 @@ def test_export_assets_rest_bad_request(transport: str = 'rest', request_type=as
         client.export_assets(request)
 
 
-def test_export_assets_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.ListAssetsRequest,
     dict,
@@ -10671,13 +10664,6 @@ def test_batch_get_assets_history_rest_bad_request(transport: str = 'rest', requ
         client.batch_get_assets_history(request)
 
 
-def test_batch_get_assets_history_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.CreateFeedRequest,
     dict,
@@ -10951,13 +10937,6 @@ def test_create_feed_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_create_feed_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.GetFeedRequest,
     dict,
@@ -11226,13 +11205,6 @@ def test_get_feed_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_get_feed_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.ListFeedsRequest,
     dict,
@@ -11489,13 +11461,6 @@ def test_list_feeds_rest_flattened_error(transport: str = 'rest'):
             asset_service.ListFeedsRequest(),
             parent='parent_value',
         )
-
-
-def test_list_feeds_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -11762,13 +11727,6 @@ def test_update_feed_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_update_feed_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.DeleteFeedRequest,
     dict,
@@ -12012,13 +11970,6 @@ def test_delete_feed_rest_flattened_error(transport: str = 'rest'):
             asset_service.DeleteFeedRequest(),
             name='name_value',
         )
-
-
-def test_delete_feed_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -12879,13 +12830,6 @@ def test_analyze_iam_policy_rest_bad_request(transport: str = 'rest', request_ty
         client.analyze_iam_policy(request)
 
 
-def test_analyze_iam_policy_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.AnalyzeIamPolicyLongrunningRequest,
     dict,
@@ -13084,13 +13028,6 @@ def test_analyze_iam_policy_longrunning_rest_bad_request(transport: str = 'rest'
         response_value.request = Request()
         req.return_value = response_value
         client.analyze_iam_policy_longrunning(request)
-
-
-def test_analyze_iam_policy_longrunning_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -13311,13 +13248,6 @@ def test_analyze_move_rest_bad_request(transport: str = 'rest', request_type=ass
         client.analyze_move(request)
 
 
-def test_analyze_move_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.QueryAssetsRequest,
     dict,
@@ -13526,13 +13456,6 @@ def test_query_assets_rest_bad_request(transport: str = 'rest', request_type=ass
         response_value.request = Request()
         req.return_value = response_value
         client.query_assets(request)
-
-
-def test_query_assets_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -13883,13 +13806,6 @@ def test_create_saved_query_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_create_saved_query_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.GetSavedQueryRequest,
     dict,
@@ -14154,13 +14070,6 @@ def test_get_saved_query_rest_flattened_error(transport: str = 'rest'):
             asset_service.GetSavedQueryRequest(),
             name='name_value',
         )
-
-
-def test_get_saved_query_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -14817,13 +14726,6 @@ def test_update_saved_query_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_update_saved_query_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.DeleteSavedQueryRequest,
     dict,
@@ -15069,13 +14971,6 @@ def test_delete_saved_query_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_delete_saved_query_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.BatchGetEffectiveIamPoliciesRequest,
     dict,
@@ -15292,13 +15187,6 @@ def test_batch_get_effective_iam_policies_rest_bad_request(transport: str = 'res
         response_value.request = Request()
         req.return_value = response_value
         client.batch_get_effective_iam_policies(request)
-
-
-def test_batch_get_effective_iam_policies_rest_error():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -16424,6 +16312,13 @@ def test_transport_kind_rest():
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
+
+
+def test_rest_initialize_client():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
 
 
 def test_transport_grpc_default():

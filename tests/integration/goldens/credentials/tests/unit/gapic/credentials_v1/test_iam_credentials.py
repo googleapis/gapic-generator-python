@@ -2562,13 +2562,6 @@ def test_generate_access_token_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_generate_access_token_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     common.GenerateIdTokenRequest,
     dict,
@@ -2838,13 +2831,6 @@ def test_generate_id_token_rest_flattened_error(transport: str = 'rest'):
             audience='audience_value',
             include_email=True,
         )
-
-
-def test_generate_id_token_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -3118,13 +3104,6 @@ def test_sign_blob_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_sign_blob_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     common.SignJwtRequest,
     dict,
@@ -3396,13 +3375,6 @@ def test_sign_jwt_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_sign_jwt_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.IAMCredentialsGrpcTransport(
@@ -3509,6 +3481,13 @@ def test_transport_kind_rest():
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
+
+
+def test_rest_initialize_client():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
 
 
 def test_transport_grpc_default():

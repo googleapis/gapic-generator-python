@@ -1756,25 +1756,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-{%- else %}{# paged_result_field #}
-
-def test_{{ method_name }}_rest_error():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-    {%- if not method.http_options %}
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.{{ method_name }}({})
-    assert (
-        "Method {{ method.name }} is not available over REST transport"
-        in str(not_implemented_error.value)
-    )
-
-    {%- endif %}{# not method.http_options #}
-{% endif %}{# flattened_fields #}
+{%- endif %}
 
 {% else %}{# this is an lro or streaming method #}
 def test_{{ method_name }}_rest_unimplemented():
@@ -1944,6 +1926,94 @@ def test_unsupported_parameter_rest_asyncio():
             credentials={{get_credentials(True)}},
             transport="rest_asyncio",
             client_options=options
+    )
+
+{% endmacro %}
+
+{# is_rest_unsupported_method renders:
+ # 'True' if transport is async REST.
+ # 'True' if transport is sync REST and method is a client streaming method.
+ # 'False' otherwise.
+#}
+{# NOTE: We will keep updating this method as we add support for methods in async REST. #}
+{% macro is_rest_unsupported_method(method, is_async) %}
+{%- if method.client_streaming or is_async -%}
+{{'True'}}
+{%- else -%}
+{{'False'}}
+{%- endif -%}
+{% endmacro %}
+
+{# rest_transport_specific_tests generates all the rest specific tests for both
+# sync and async transport. It refactors the test cases in macro::rest_required_tests
+# and should replace it once we cover all the test cases in it here.
+#}
+{% macro rest_transport_specific_tests(service, transport, is_async) %}
+{% if 'rest' in transport %}
+{### Test syntax configuration begins ###}
+{% set await_prefix = "await " if is_async else "" %}
+{% set async_prefix = "async " if is_async else "" %}
+{% set async_decorator = "@pytest.mark.asyncio " if is_async else "" %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{### Test syntax configuration ends ###}
+{### Test generation for all methods begins ###}
+{% for method in service.methods.values() %}
+{% set method_name = method.name|snake_case %}
+{### test cases section begin ###}
+{% if is_rest_unsupported_method(method, is_async) == 'True' or not method.http_options %}
+{{ rest_method_not_implemented_error(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async) }}
+{% endif %}{# is_rest_unsupported_method(method, is_async) == 'False' and method.http_options #}
+{### test cases section ends ###}
+{% endfor %}
+{### Test generation for all methods ends ###}
+{{ rest_method_initialize_client_test(service, transport_name, is_async) }}
+{% endif %}{# if 'rest' in transport #}
+{% endmacro %}
+
+{# rest_method_not_implemented_error generates tests for methods
+ # which are not supported for rest transport.
+#}
+{% macro rest_method_not_implemented_error(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async) %}
+{% if not is_async %}{# TODO(b/362949446): Remove this guard once a not implemented __call__ method is added to async rest for all methods. #}
+{{async_decorator}}
+{{async_prefix}}def test_{{ method_name }}_{{transport_name}}_error():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_GOOGLE_AUTH_AIO:
+        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    {% endif %}
+
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        {{await_prefix}}client.{{ method_name }}({})
+    assert (
+        "Method {{ method.name }} is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+{% endif %}{# if is_async #}
+{% endmacro %}
+
+{# rest_method_initialize_client_test adds coverage for rest transport clients.
+ # Note: Unlike before, this test case is needed because we aren't unconditionally 
+ # generating the not implemented coverage test for every client.
+#}
+{% macro rest_method_initialize_client_test(service, transport_name, is_async) %}
+def test_{{transport_name}}_initialize_client():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_GOOGLE_AUTH_AIO:
+        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    {% endif %}
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}"
     )
 
 {% endmacro %}

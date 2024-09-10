@@ -5780,13 +5780,6 @@ def test_get_instance_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_get_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     cloud_redis.GetInstanceAuthStringRequest,
     dict,
@@ -6045,13 +6038,6 @@ def test_get_instance_auth_string_rest_flattened_error(transport: str = 'rest'):
             cloud_redis.GetInstanceAuthStringRequest(),
             name='name_value',
         )
-
-
-def test_get_instance_auth_string_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -6391,13 +6377,6 @@ def test_create_instance_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_create_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     cloud_redis.UpdateInstanceRequest,
     dict,
@@ -6717,13 +6696,6 @@ def test_update_instance_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_update_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     cloud_redis.UpgradeInstanceRequest,
     dict,
@@ -6986,13 +6958,6 @@ def test_upgrade_instance_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_upgrade_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     cloud_redis.ImportInstanceRequest,
     dict,
@@ -7249,13 +7214,6 @@ def test_import_instance_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
             input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
         )
-
-
-def test_import_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -7516,13 +7474,6 @@ def test_export_instance_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_export_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     cloud_redis.FailoverInstanceRequest,
     dict,
@@ -7781,13 +7732,6 @@ def test_failover_instance_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_failover_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     cloud_redis.DeleteInstanceRequest,
     dict,
@@ -8041,13 +7985,6 @@ def test_delete_instance_rest_flattened_error(transport: str = 'rest'):
             cloud_redis.DeleteInstanceRequest(),
             name='name_value',
         )
-
-
-def test_delete_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -8310,13 +8247,6 @@ def test_reschedule_maintenance_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_reschedule_maintenance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudRedisGrpcTransport(
@@ -8425,6 +8355,13 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
+def test_rest_initialize_client():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+
 def test_transport_kind_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
@@ -8432,6 +8369,15 @@ def test_transport_kind_rest_asyncio():
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "rest_asyncio"
+
+
+def test_rest_asyncio_initialize_client():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
 
 
 def test_unsupported_parameter_rest_asyncio():
