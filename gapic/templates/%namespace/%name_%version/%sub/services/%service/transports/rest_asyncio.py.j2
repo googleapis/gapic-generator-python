@@ -1,3 +1,4 @@
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
 {% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 {% extends '_base.py.j2' %}
@@ -5,16 +6,21 @@
 {% block content %}
 
 try:
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession  # type: ignore
 except ImportError as e:  # pragma: NO COVER
     {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
     raise ImportError("async rest transport requires google.auth >= 2.x.x") from e
 
 from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core import retry_async as retries
 
-from typing import Any, Optional
+
+from typing import Any, Callable, Tuple, Optional, Sequence, Union
+
+{{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
 from .rest_base import _Base{{ service.name }}RestTransport
 
@@ -79,6 +85,24 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             api_audience=None
         )
         self._session = AsyncAuthorizedSession(self._credentials)
+        self._wrap_with_kind = True
+        self._prep_wrapped_messages(client_info)
+
+    {{ shared_macros.prep_wrapped_messages_async_method(service)|indent(4) }}
+
+    {{ shared_macros.wrap_async_method_macro()|indent(4) }}
+
+    {% for method in service.methods.values()|sort(attribute="name") %}
+
+    {# TODO(b/362949446) Return a callable once implemented and remove `type:  ignore`. #}
+    @property
+    def {{method.transport_safe_name|snake_case}}(self) -> Callable[
+            [{{method.input.ident}}],
+            {{method.output.ident}}]:
+        
+        return  # type: ignore
+
+    {% endfor %}
 
     @property
     def kind(self) -> str:
