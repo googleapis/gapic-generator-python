@@ -39,6 +39,7 @@ from google.protobuf import json_format
 try:
     from google.auth.aio import credentials as ga_credentials_async
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession
+    from google.auth.aio.transport import Response as AsyncRestResponse, Request as AsyncRestRequest
     HAS_GOOGLE_AUTH_AIO = True
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
@@ -8425,6 +8426,106 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceRequest,
+  dict,
+])
+
+def test_get_instance_call_rest(request_type):
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.Instance(
+              name='name_value',
+              display_name='display_name_value',
+              location_id='location_id_value',
+              alternative_location_id='alternative_location_id_value',
+              redis_version='redis_version_value',
+              reserved_ip_range='reserved_ip_range_value',
+              secondary_ip_range='secondary_ip_range_value',
+              host='host_value',
+              port=453,
+              current_location_id='current_location_id_value',
+              state=cloud_redis.Instance.State.CREATING,
+              status_message='status_message_value',
+              tier=cloud_redis.Instance.Tier.BASIC,
+              memory_size_gb=1499,
+              authorized_network='authorized_network_value',
+              persistence_iam_identity='persistence_iam_identity_value',
+              connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+              auth_enabled=True,
+              transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+              replica_count=1384,
+              read_endpoint='read_endpoint_value',
+              read_endpoint_port=1920,
+              read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+              customer_managed_key='customer_managed_key_value',
+              suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+              maintenance_version='maintenance_version_value',
+              available_maintenance_versions=['available_maintenance_versions_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.Instance)
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceAuthStringRequest,
+  dict,
+])
+
+def test_get_instance_auth_string_call_rest(request_type):
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.InstanceAuthString(
+              auth_string='auth_string_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis.InstanceAuthString.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_instance_auth_string(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.InstanceAuthString)
+
+
 def test_transport_kind_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
@@ -8433,6 +8534,300 @@ def test_transport_kind_rest_asyncio():
     )
     assert transport.kind == "rest_asyncio"
 
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceRequest,
+  dict,
+])
+@pytest.mark.asyncio
+async def test_get_instance_call_rest_asyncio(request_type):
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.Instance(
+              name='name_value',
+              display_name='display_name_value',
+              location_id='location_id_value',
+              alternative_location_id='alternative_location_id_value',
+              redis_version='redis_version_value',
+              reserved_ip_range='reserved_ip_range_value',
+              secondary_ip_range='secondary_ip_range_value',
+              host='host_value',
+              port=453,
+              current_location_id='current_location_id_value',
+              state=cloud_redis.Instance.State.CREATING,
+              status_message='status_message_value',
+              tier=cloud_redis.Instance.Tier.BASIC,
+              memory_size_gb=1499,
+              authorized_network='authorized_network_value',
+              persistence_iam_identity='persistence_iam_identity_value',
+              connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+              auth_enabled=True,
+              transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+              replica_count=1384,
+              read_endpoint='read_endpoint_value',
+              read_endpoint_port=1920,
+              read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+              customer_managed_key='customer_managed_key_value',
+              suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+              maintenance_version='maintenance_version_value',
+              available_maintenance_versions=['available_maintenance_versions_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = await client.get_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.Instance)
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceAuthStringRequest,
+  dict,
+])
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_call_rest_asyncio(request_type):
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.InstanceAuthString(
+              auth_string='auth_string_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis.InstanceAuthString.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = await client.get_instance_auth_string(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.InstanceAuthString)
+
+
+@pytest.mark.asyncio
+async def test_list_instances_rest_asyncio_error():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.list_instances({})
+    assert (
+        "Method ListInstances is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_create_instance_rest_asyncio_error():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.create_instance({})
+    assert (
+        "Method CreateInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_update_instance_rest_asyncio_error():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.update_instance({})
+    assert (
+        "Method UpdateInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_rest_asyncio_error():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.upgrade_instance({})
+    assert (
+        "Method UpgradeInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_import_instance_rest_asyncio_error():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.import_instance({})
+    assert (
+        "Method ImportInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_export_instance_rest_asyncio_error():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.export_instance({})
+    assert (
+        "Method ExportInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_failover_instance_rest_asyncio_error():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.failover_instance({})
+    assert (
+        "Method FailoverInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_delete_instance_rest_asyncio_error():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.delete_instance({})
+    assert (
+        "Method DeleteInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_rest_asyncio_error():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.reschedule_maintenance({})
+    assert (
+        "Method RescheduleMaintenance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_get_instance_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceRequest):
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.get_instance(request)
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.get_instance_auth_string(request)
 
 def test_unsupported_parameter_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:

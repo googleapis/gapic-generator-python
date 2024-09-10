@@ -27,6 +27,7 @@ from google.api_core import rest_helpers
 
 from google.protobuf import json_format
 
+import inspect
 import json  # type: ignore
 import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
@@ -125,33 +126,77 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             api_audience=None
         )
         self._session = AsyncAuthorizedSession(self._credentials)
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        self._prep_wrapped_messages(client_info)
+
+    def _prep_wrapped_messages(self, client_info):
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.list_instances: self._wrap_method(
+                self.list_instances,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_instance: self._wrap_method(
+                self.get_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_instance_auth_string: self._wrap_method(
+                self.get_instance_auth_string,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.create_instance: self._wrap_method(
+                self.create_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.update_instance: self._wrap_method(
+                self.update_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.upgrade_instance: self._wrap_method(
+                self.upgrade_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.import_instance: self._wrap_method(
+                self.import_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.export_instance: self._wrap_method(
+                self.export_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.failover_instance: self._wrap_method(
+                self.failover_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.delete_instance: self._wrap_method(
+                self.delete_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.reschedule_maintenance: self._wrap_method(
+                self.reschedule_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     class _CreateInstance(_BaseCloudRedisRestTransport._BaseCreateInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.CreateInstance")
-
-        @staticmethod
-        async def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
 
         async def __call__(self,
                 request: cloud_redis.CreateInstanceRequest, *,
@@ -167,28 +212,6 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.DeleteInstance")
 
-        @staticmethod
-        async def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
-
         async def __call__(self,
                 request: cloud_redis.DeleteInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
@@ -203,29 +226,6 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ExportInstance")
 
-        @staticmethod
-        async def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
-
         async def __call__(self,
                 request: cloud_redis.ExportInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
@@ -239,29 +239,6 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.FailoverInstance")
-
-        @staticmethod
-        async def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
 
         async def __call__(self,
                 request: cloud_redis.FailoverInstanceRequest, *,
@@ -423,29 +400,6 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ImportInstance")
 
-        @staticmethod
-        async def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
-
         async def __call__(self,
                 request: cloud_redis.ImportInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
@@ -460,103 +414,19 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ListInstances")
 
-        @staticmethod
-        async def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
-
         async def __call__(self,
                 request: cloud_redis.ListInstancesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, str]]=(),
                 ) -> cloud_redis.ListInstancesResponse:
-            r"""Call the list instances method over HTTP.
-
-            Args:
-                request (~.cloud_redis.ListInstancesRequest):
-                    The request object. Request for
-                [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.cloud_redis.ListInstancesResponse:
-                    Response for
-                [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
-
-            """
-
-            http_options = _BaseCloudRedisRestTransport._BaseListInstances._get_http_options()
-            transcoded_request = _BaseCloudRedisRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
-
-            # Send the request
-            response = await AsyncCloudRedisRestTransport._ListInstances._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)
-
-            # Return the response
-            resp = cloud_redis.ListInstancesResponse()
-            pb_resp = cloud_redis.ListInstancesResponse.pb(resp)
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            return resp
+            raise NotImplementedError(
+                "Method ListInstances is not available over REST transport"
+            )
 
     class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, AsyncCloudRedisRestStub):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.RescheduleMaintenance")
-
-        @staticmethod
-        async def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
 
         async def __call__(self,
                 request: cloud_redis.RescheduleMaintenanceRequest, *,
@@ -572,29 +442,6 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.UpdateInstance")
 
-        @staticmethod
-        async def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
-
         async def __call__(self,
                 request: cloud_redis.UpdateInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
@@ -608,29 +455,6 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.UpgradeInstance")
-
-        @staticmethod
-        async def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
 
         async def __call__(self,
                 request: cloud_redis.UpgradeInstanceRequest, *,
@@ -648,7 +472,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateInstance(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateInstance(self._session, self._host) # type: ignore
 
     @property
     def delete_instance(self) -> Callable[
@@ -656,7 +480,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteInstance(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteInstance(self._session, self._host) # type: ignore
 
     @property
     def export_instance(self) -> Callable[
@@ -664,7 +488,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExportInstance(self._session, self._host, self._interceptor) # type: ignore
+        return self._ExportInstance(self._session, self._host) # type: ignore
 
     @property
     def failover_instance(self) -> Callable[
@@ -672,7 +496,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FailoverInstance(self._session, self._host, self._interceptor) # type: ignore
+        return self._FailoverInstance(self._session, self._host) # type: ignore
 
     @property
     def get_instance(self) -> Callable[
@@ -680,7 +504,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             cloud_redis.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetInstance(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetInstance(self._session, self._host) # type: ignore
 
     @property
     def get_instance_auth_string(self) -> Callable[
@@ -688,7 +512,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             cloud_redis.InstanceAuthString]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetInstanceAuthString(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetInstanceAuthString(self._session, self._host) # type: ignore
 
     @property
     def import_instance(self) -> Callable[
@@ -696,7 +520,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ImportInstance(self._session, self._host, self._interceptor) # type: ignore
+        return self._ImportInstance(self._session, self._host) # type: ignore
 
     @property
     def list_instances(self) -> Callable[
@@ -704,7 +528,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             cloud_redis.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInstances(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListInstances(self._session, self._host) # type: ignore
 
     @property
     def reschedule_maintenance(self) -> Callable[
@@ -712,7 +536,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RescheduleMaintenance(self._session, self._host, self._interceptor) # type: ignore
+        return self._RescheduleMaintenance(self._session, self._host) # type: ignore
 
     @property
     def update_instance(self) -> Callable[
@@ -720,7 +544,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateInstance(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpdateInstance(self._session, self._host) # type: ignore
 
     @property
     def upgrade_instance(self) -> Callable[
@@ -728,7 +552,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpgradeInstance(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpgradeInstance(self._session, self._host) # type: ignore
 
     @property
     def kind(self) -> str:
