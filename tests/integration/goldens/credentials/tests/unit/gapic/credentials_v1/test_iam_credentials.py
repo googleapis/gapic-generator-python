@@ -3511,6 +3511,154 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
+@pytest.mark.parametrize("request_type", [
+  common.GenerateAccessTokenRequest,
+  dict,
+])
+
+def test_generate_access_token_call_rest(request_type):
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.GenerateAccessTokenResponse(
+              access_token='access_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = common.GenerateAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.generate_access_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.GenerateAccessTokenResponse)
+@pytest.mark.parametrize("request_type", [
+  common.GenerateIdTokenRequest,
+  dict,
+])
+
+def test_generate_id_token_call_rest(request_type):
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.GenerateIdTokenResponse(
+              token='token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = common.GenerateIdTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.generate_id_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.GenerateIdTokenResponse)
+@pytest.mark.parametrize("request_type", [
+  common.SignBlobRequest,
+  dict,
+])
+
+def test_sign_blob_call_rest(request_type):
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.SignBlobResponse(
+              key_id='key_id_value',
+              signed_blob=b'signed_blob_blob',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = common.SignBlobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.sign_blob(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.SignBlobResponse)
+@pytest.mark.parametrize("request_type", [
+  common.SignJwtRequest,
+  dict,
+])
+
+def test_sign_jwt_call_rest(request_type):
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.SignJwtResponse(
+              key_id='key_id_value',
+              signed_jwt='signed_jwt_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = common.SignJwtResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.sign_jwt(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.SignJwtResponse)
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = IAMCredentialsClient(

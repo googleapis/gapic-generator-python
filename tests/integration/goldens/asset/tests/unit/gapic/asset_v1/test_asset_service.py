@@ -16426,6 +16426,522 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
+@pytest.mark.parametrize("request_type", [
+  asset_service.BatchGetAssetsHistoryRequest,
+  dict,
+])
+
+def test_batch_get_assets_history_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.BatchGetAssetsHistoryResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.batch_get_assets_history(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
+@pytest.mark.parametrize("request_type", [
+  asset_service.CreateFeedRequest,
+  dict,
+])
+
+def test_create_feed_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.Feed(
+              name='name_value',
+              asset_names=['asset_names_value'],
+              asset_types=['asset_types_value'],
+              content_type=asset_service.ContentType.RESOURCE,
+              relationship_types=['relationship_types_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_feed(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.Feed)
+@pytest.mark.parametrize("request_type", [
+  asset_service.GetFeedRequest,
+  dict,
+])
+
+def test_get_feed_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/feeds/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.Feed(
+              name='name_value',
+              asset_names=['asset_names_value'],
+              asset_types=['asset_types_value'],
+              content_type=asset_service.ContentType.RESOURCE,
+              relationship_types=['relationship_types_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_feed(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.Feed)
+@pytest.mark.parametrize("request_type", [
+  asset_service.ListFeedsRequest,
+  dict,
+])
+
+def test_list_feeds_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.ListFeedsResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.ListFeedsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_feeds(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.ListFeedsResponse)
+@pytest.mark.parametrize("request_type", [
+  asset_service.UpdateFeedRequest,
+  dict,
+])
+
+def test_update_feed_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'feed': {'name': 'sample1/sample2/feeds/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.Feed(
+              name='name_value',
+              asset_names=['asset_names_value'],
+              asset_types=['asset_types_value'],
+              content_type=asset_service.ContentType.RESOURCE,
+              relationship_types=['relationship_types_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.Feed.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_feed(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.Feed)
+@pytest.mark.parametrize("request_type", [
+  asset_service.DeleteFeedRequest,
+  dict,
+])
+
+def test_delete_feed_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/feeds/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_feed(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeIamPolicyRequest,
+  dict,
+])
+
+def test_analyze_iam_policy_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeIamPolicyResponse(
+              fully_explored=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeMoveRequest,
+  dict,
+])
+
+def test_analyze_move_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'resource': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeMoveResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_move(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.AnalyzeMoveResponse)
+@pytest.mark.parametrize("request_type", [
+  asset_service.QueryAssetsRequest,
+  dict,
+])
+
+def test_query_assets_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.QueryAssetsResponse(
+              job_reference='job_reference_value',
+              done=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.QueryAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.query_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.QueryAssetsResponse)
+@pytest.mark.parametrize("request_type", [
+  asset_service.CreateSavedQueryRequest,
+  dict,
+])
+
+def test_create_saved_query_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery(
+              name='name_value',
+              description='description_value',
+              creator='creator_value',
+              last_updater='last_updater_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+@pytest.mark.parametrize("request_type", [
+  asset_service.GetSavedQueryRequest,
+  dict,
+])
+
+def test_get_saved_query_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery(
+              name='name_value',
+              description='description_value',
+              creator='creator_value',
+              last_updater='last_updater_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+@pytest.mark.parametrize("request_type", [
+  asset_service.UpdateSavedQueryRequest,
+  dict,
+])
+
+def test_update_saved_query_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery(
+              name='name_value',
+              description='description_value',
+              creator='creator_value',
+              last_updater='last_updater_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+@pytest.mark.parametrize("request_type", [
+  asset_service.DeleteSavedQueryRequest,
+  dict,
+])
+
+def test_delete_saved_query_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+@pytest.mark.parametrize("request_type", [
+  asset_service.BatchGetEffectiveIamPoliciesRequest,
+  dict,
+])
+
+def test_batch_get_effective_iam_policies_call_rest(request_type):
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.batch_get_effective_iam_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = AssetServiceClient(

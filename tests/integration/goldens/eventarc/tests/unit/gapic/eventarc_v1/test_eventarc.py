@@ -13858,6 +13858,240 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetTriggerRequest,
+  dict,
+])
+
+def test_get_trigger_call_rest(request_type):
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/triggers/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = trigger.Trigger(
+              name='name_value',
+              uid='uid_value',
+              service_account='service_account_value',
+              channel='channel_value',
+              etag='etag_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = trigger.Trigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, trigger.Trigger)
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetChannelRequest,
+  dict,
+])
+
+def test_get_channel_call_rest(request_type):
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/channels/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = channel.Channel(
+              name='name_value',
+              uid='uid_value',
+              provider='provider_value',
+              state=channel.Channel.State.PENDING,
+              activation_token='activation_token_value',
+              crypto_key_name='crypto_key_name_value',
+            pubsub_topic='pubsub_topic_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = channel.Channel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_channel(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel.Channel)
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetProviderRequest,
+  dict,
+])
+
+def test_get_provider_call_rest(request_type):
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/providers/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = discovery.Provider(
+              name='name_value',
+              display_name='display_name_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = discovery.Provider.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_provider(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, discovery.Provider)
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetChannelConnectionRequest,
+  dict,
+])
+
+def test_get_channel_connection_call_rest(request_type):
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/channelConnections/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = channel_connection.ChannelConnection(
+              name='name_value',
+              uid='uid_value',
+              channel='channel_value',
+              activation_token='activation_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = channel_connection.ChannelConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_channel_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel_connection.ChannelConnection)
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetGoogleChannelConfigRequest,
+  dict,
+])
+
+def test_get_google_channel_config_call_rest(request_type):
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = google_channel_config.GoogleChannelConfig(
+              name='name_value',
+              crypto_key_name='crypto_key_name_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_google_channel_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, google_channel_config.GoogleChannelConfig)
+@pytest.mark.parametrize("request_type", [
+  eventarc.UpdateGoogleChannelConfigRequest,
+  dict,
+])
+
+def test_update_google_channel_config_call_rest(request_type):
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gce_google_channel_config.GoogleChannelConfig(
+              name='name_value',
+              crypto_key_name='crypto_key_name_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_google_channel_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = EventarcClient(
