@@ -442,7 +442,7 @@ def showcase_unit_w_rest_async(
         session.chdir(lib)
         # Note: google-api-core and google-auth are re-installed here to override the version installed in constraints.
         # TODO(https://github.com/googleapis/python-api-core/pull/686): Update the version of google-api-core once the linked PR is merged.
-        session.install("google-api-core[grpc]@git+https://github.com/googleapis/python-api-core.git@bc811e5c88d2f7fc9e086b61f1896b249d3ca869")
+        session.install('--no-cache-dir', '--force-reinstall', 'google-api-core[grpc]@git+https://github.com/googleapis/python-api-core.git@cabb33865c5c5e79415350cc930cddf9606d8ded')
         # TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged.
         session.install('--no-cache-dir', '--force-reinstall', "google-auth@git+https://github.com/googleapis/google-auth-library-python.git@add-support-for-async-authorized-session-api")
         session.install("aiohttp")

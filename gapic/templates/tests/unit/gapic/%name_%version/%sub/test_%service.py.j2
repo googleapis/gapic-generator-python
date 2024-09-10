@@ -41,6 +41,7 @@ try:
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
     {% if rest_async_io_enabled %}
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession
+    from google.auth.aio.transport import Response as AsyncRestResponse, Request as AsyncRestRequest
     {% endif %}
     HAS_GOOGLE_AUTH_AIO = True
 except ImportError: # pragma: NO COVER
@@ -1057,6 +1058,9 @@ def test_transport_adc(transport_class):
 {% endfor %}
 {% for conf in configs %}
 {{ test_macros.transport_kind_test(**conf) }}
+{{ test_macros.rest_call_method_test(**conf) }}
+{{ test_macros.test_rest_error(**conf) }}
+{{ test_macros.rest_bad_request_test(**conf) }}
 {% endfor %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the below macro when async rest is GA. #}
 {% if rest_async_io_enabled %}
