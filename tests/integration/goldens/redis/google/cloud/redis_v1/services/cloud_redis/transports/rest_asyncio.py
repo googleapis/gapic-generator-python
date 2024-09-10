@@ -20,6 +20,11 @@ except ImportError as e:  # pragma: NO COVER
 
 from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
+try:
+    from google.api_core.exceptions import format_http_response_error
+except ImportError as e:  # pragma: NO COVER
+    raise ImportError("async rest transport requires google-api-core >= 2.x.x") from e
+
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
