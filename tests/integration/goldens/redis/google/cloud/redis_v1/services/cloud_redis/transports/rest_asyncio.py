@@ -27,6 +27,7 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming_async  # type: ignore
 
 try:
     from google.api_core import rest_streaming_async # type: ignore
