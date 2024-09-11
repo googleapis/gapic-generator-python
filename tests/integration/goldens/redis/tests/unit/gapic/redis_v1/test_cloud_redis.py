@@ -8388,6 +8388,204 @@ def test_transport_kind_rest_asyncio():
     assert transport.kind == "rest_asyncio"
 
 
+@pytest.mark.asyncio
+async def test_list_instances_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.list_instances({})
+    assert (
+        "Method ListInstances is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_get_instance_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.get_instance({})
+    assert (
+        "Method GetInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.get_instance_auth_string({})
+    assert (
+        "Method GetInstanceAuthString is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_create_instance_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.create_instance({})
+    assert (
+        "Method CreateInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_update_instance_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.update_instance({})
+    assert (
+        "Method UpdateInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.upgrade_instance({})
+    assert (
+        "Method UpgradeInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_import_instance_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.import_instance({})
+    assert (
+        "Method ImportInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_export_instance_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.export_instance({})
+    assert (
+        "Method ExportInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_failover_instance_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.failover_instance({})
+    assert (
+        "Method FailoverInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_delete_instance_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.delete_instance({})
+    assert (
+        "Method DeleteInstance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_rest_asyncio_error():
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        await client.reschedule_maintenance({})
+    assert (
+        "Method RescheduleMaintenance is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
 def test_initialize_client_w_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
