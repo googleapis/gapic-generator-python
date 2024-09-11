@@ -23,7 +23,11 @@ from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
+from google.api_core import rest_helpers
 
+from google.protobuf import json_format
+
+import json  # type: ignore
 import dataclasses
 from typing import Any, Callable, Tuple, Optional, Sequence, Union
 
@@ -200,7 +204,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
+                    ) -> operations_pb2.Operation:
                 raise NotImplementedError(
                     "Method CreateInstance is not available over REST transport"
                 )
@@ -214,7 +218,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
+                    ) -> operations_pb2.Operation:
                 raise NotImplementedError(
                     "Method DeleteInstance is not available over REST transport"
                 )
@@ -228,7 +232,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
+                    ) -> operations_pb2.Operation:
                 raise NotImplementedError(
                     "Method ExportInstance is not available over REST transport"
                 )
@@ -242,7 +246,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
+                    ) -> operations_pb2.Operation:
                 raise NotImplementedError(
                     "Method FailoverInstance is not available over REST transport"
                 )
@@ -251,29 +255,149 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.GetInstance")
 
+        @staticmethod
+        async def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = await getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
+
         async def __call__(self,
                     request: cloud_redis.GetInstanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
-                raise NotImplementedError(
-                    "Method GetInstance is not available over REST transport"
-                )
+                    ) -> cloud_redis.Instance:
+            r"""Call the get instance method over HTTP.
+
+            Args:
+                request (~.cloud_redis.GetInstanceRequest):
+                    The request object. Request for
+                [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
+                retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_redis.Instance:
+                    A Memorystore for Redis instance.
+            """
+
+            http_options = _BaseCloudRedisRestTransport._BaseGetInstance._get_http_options()
+            transcoded_request = _BaseCloudRedisRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
+
+            # Send the request
+            response = await AsyncCloudRedisRestTransport._GetInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                content = await response.read()
+                payload = json.loads(content.decode('utf-8'))
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+
+            # Return the response
+            resp = cloud_redis.Instance()
+            pb_resp = cloud_redis.Instance.pb(resp)
+            content = await response.read()
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            return resp
 
     class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.GetInstanceAuthString")
+
+        @staticmethod
+        async def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = await getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         async def __call__(self,
                     request: cloud_redis.GetInstanceAuthStringRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
-                raise NotImplementedError(
-                    "Method GetInstanceAuthString is not available over REST transport"
-                )
+                    ) -> cloud_redis.InstanceAuthString:
+            r"""Call the get instance auth string method over HTTP.
+
+            Args:
+                request (~.cloud_redis.GetInstanceAuthStringRequest):
+                    The request object. Request for
+                [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
+                retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_redis.InstanceAuthString:
+                    Instance AUTH string details.
+            """
+
+            http_options = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_http_options()
+            transcoded_request = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_query_params_json(transcoded_request)
+
+            # Send the request
+            response = await AsyncCloudRedisRestTransport._GetInstanceAuthString._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                content = await response.read()
+                payload = json.loads(content.decode('utf-8'))
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+
+            # Return the response
+            resp = cloud_redis.InstanceAuthString()
+            pb_resp = cloud_redis.InstanceAuthString.pb(resp)
+            content = await response.read()
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            return resp
 
     class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
@@ -284,7 +408,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
+                    ) -> operations_pb2.Operation:
                 raise NotImplementedError(
                     "Method ImportInstance is not available over REST transport"
                 )
@@ -298,7 +422,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
+                    ) -> cloud_redis.ListInstancesResponse:
                 raise NotImplementedError(
                     "Method ListInstances is not available over REST transport"
                 )
@@ -312,7 +436,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
+                    ) -> operations_pb2.Operation:
                 raise NotImplementedError(
                     "Method RescheduleMaintenance is not available over REST transport"
                 )
@@ -326,7 +450,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
+                    ) -> operations_pb2.Operation:
                 raise NotImplementedError(
                     "Method UpdateInstance is not available over REST transport"
                 )
@@ -340,7 +464,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> None:
+                    ) -> operations_pb2.Operation:
                 raise NotImplementedError(
                     "Method UpgradeInstance is not available over REST transport"
                 )

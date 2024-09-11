@@ -1940,7 +1940,7 @@ def test_unsupported_parameter_rest_asyncio():
  # There are no plans to add support for client streaming.
 #}
 {% macro is_rest_unsupported_method(method, is_async) %}
-{%- if method.client_streaming or is_async -%}
+{%- if method.client_streaming or (is_async and (method.server_streaming or method.lro or method.extended_lro or method.paged_result_field)) -%}
 {{'True'}}
 {%- else -%}
 {{'False'}}
@@ -2230,10 +2230,10 @@ def test_initialize_client_w_{{transport_name}}():
         json_return_value = json_format.MessageToJson(return_value)
         {% endif %}{# method.void #}
         {% if is_async %}
-        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         {% else %}{# is_async #}
         response_value.content = json_return_value.encode('UTF-8')
-        {% endif %}
+        {% endif %}{# is_async #}
         req.return_value = response_value
         response = {{ await_prefix }}client.{{ method_name }}(request)
 
