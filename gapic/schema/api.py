@@ -736,11 +736,26 @@ class API:
         all_errors: dict = {}
         versions_seen: set = set()
         for library_settings in client_library_settings:
-            # Check if this version is defind more than once
+            # Check if this version is defined more than once
             if library_settings.version in versions_seen:
                 all_errors[library_settings.version] = ["Duplicate version"]
                 continue
             versions_seen.add(library_settings.version)
+
+            # Check to see if selective gapic generation methods are valid.
+            selective_gapic_errors = {}
+            for method_name in library_settings.python_settings.common.selective_gapic_generation.methods:
+                if method_name not in self.all_methods:
+                    selective_gapic_errors[method_name] = "Method does not exist."
+                elif not method_name.startswith(library_settings.version):
+                    selective_gapic_errors[method_name] = "Mismatched version for method."
+
+            if selective_gapic_errors:
+                all_errors[library_settings.version] = [
+                    {
+                        "selective_gapic_generation": selective_gapic_errors,
+                    }
+                ]
 
         if all_errors:
             raise ClientLibrarySettingsError(yaml.dump(all_errors))
