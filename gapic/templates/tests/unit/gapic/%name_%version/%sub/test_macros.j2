@@ -1522,33 +1522,6 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
 {% endif %}{# streaming #}
 
 
-def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_type={{ method.input.ident }}):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {{ method.http_options[0].sample_request(method) }}
-    request = request_type(**request_init)
-    {% if method.client_streaming %}
-    requests = [request]
-    {% endif %}
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        {% if method.client_streaming %}
-        client.{{ method_name }}(iter(requests))
-        {% else %}
-        client.{{ method_name }}(request)
-        {% endif %}
-
-
 {% if method.flattened_fields and not method.client_streaming %}
 def test_{{ method_name }}_rest_flattened():
     client = {{ service.client_name }}(
@@ -1979,6 +1952,8 @@ def test_unsupported_parameter_rest_asyncio():
 {% for method in service.methods.values() %}
 {% if is_rest_unsupported_method(method, is_async) == 'True' or not method.http_options %}
 {{ rest_method_not_implemented_error(service, method, transport, is_async) }}
+{% else %}
+{{ rest_method_bad_request_test(service, method, transport, is_async) }}
 {% endif %}{# is_rest_unsupported_method(method, is_async) == 'False' and method.http_options #}
 {% endfor %}
 {% endif %}{# if 'rest' in transport #}
@@ -2033,5 +2008,48 @@ def test_initialize_client_w_{{transport_name}}():
         transport="{{transport_name}}"
     )
     assert client is not None
+
+{% endmacro %}
+
+{# rest_method_bad_request_test generates tests for rest methods
+ # which raise a google.api.core.exceptions.BadRequest error.
+#}
+{% macro rest_method_bad_request_test(service, method, transport, is_async) %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = method.name|snake_case %}
+{% set mocked_session = "AsyncAuthorizedSession" if is_async else "Session" %}
+{{ async_decorator }}
+{{ async_prefix }}def test_{{ method_name }}_{{transport_name}}_bad_request(request_type={{ method.input.ident }}):
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_GOOGLE_AUTH_AIO:
+        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
+        pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+
+    {% endif %}
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {{ method.http_options[0].sample_request(method) }}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object({{mocked_session}}, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        {% if is_async %}
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        {% else %}
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        {% endif %}{# if is_async #}
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        {{ await_prefix }}client.{{ method_name }}(request)
 
 {% endmacro %}

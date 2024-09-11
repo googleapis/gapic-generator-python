@@ -2483,26 +2483,6 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_generate_access_token_rest_bad_request(transport: str = 'rest', request_type=common.GenerateAccessTokenRequest):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_access_token(request)
-
-
 def test_generate_access_token_rest_flattened():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2752,26 +2732,6 @@ def test_generate_id_token_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_generate_id_token_rest_bad_request(transport: str = 'rest', request_type=common.GenerateIdTokenRequest):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_id_token(request)
 
 
 def test_generate_id_token_rest_flattened():
@@ -3027,26 +2987,6 @@ def test_sign_blob_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_sign_blob_rest_bad_request(transport: str = 'rest', request_type=common.SignBlobRequest):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.sign_blob(request)
-
-
 def test_sign_blob_rest_flattened():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3298,26 +3238,6 @@ def test_sign_jwt_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_sign_jwt_rest_bad_request(transport: str = 'rest', request_type=common.SignJwtRequest):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.sign_jwt(request)
-
-
 def test_sign_jwt_rest_flattened():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3497,6 +3417,90 @@ def test_transport_kind_rest():
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
+
+
+def test_generate_access_token_rest_bad_request(request_type=common.GenerateAccessTokenRequest):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.generate_access_token(request)
+
+
+def test_generate_id_token_rest_bad_request(request_type=common.GenerateIdTokenRequest):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.generate_id_token(request)
+
+
+def test_sign_blob_rest_bad_request(request_type=common.SignBlobRequest):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.sign_blob(request)
+
+
+def test_sign_jwt_rest_bad_request(request_type=common.SignJwtRequest):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.sign_jwt(request)
 
 
 def test_initialize_client_w_rest():

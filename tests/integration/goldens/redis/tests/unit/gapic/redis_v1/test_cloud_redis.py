@@ -5333,26 +5333,6 @@ def test_list_instances_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_instances_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.ListInstancesRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_instances(request)
-
-
 def test_list_instances_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5707,26 +5687,6 @@ def test_get_instance_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.GetInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_instance(request)
-
-
 def test_get_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5965,26 +5925,6 @@ def test_get_instance_auth_string_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_get_instance_auth_string_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.GetInstanceAuthStringRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_instance_auth_string(request)
 
 
 def test_get_instance_auth_string_rest_flattened():
@@ -6302,26 +6242,6 @@ def test_create_instance_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.CreateInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_instance(request)
-
-
 def test_create_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6623,26 +6543,6 @@ def test_update_instance_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.UpdateInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_instance(request)
-
-
 def test_update_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6885,26 +6785,6 @@ def test_upgrade_instance_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_upgrade_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.UpgradeInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.upgrade_instance(request)
-
-
 def test_upgrade_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7141,26 +7021,6 @@ def test_import_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_import_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.ImportInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.import_instance(request)
 
 
 def test_import_instance_rest_flattened():
@@ -7401,26 +7261,6 @@ def test_export_instance_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_export_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.ExportInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_instance(request)
-
-
 def test_export_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7657,26 +7497,6 @@ def test_failover_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_failover_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.FailoverInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.failover_instance(request)
 
 
 def test_failover_instance_rest_flattened():
@@ -7916,26 +7736,6 @@ def test_delete_instance_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_delete_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.DeleteInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_instance(request)
-
-
 def test_delete_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8172,26 +7972,6 @@ def test_reschedule_maintenance_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_reschedule_maintenance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.RescheduleMaintenanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.reschedule_maintenance(request)
-
-
 def test_reschedule_maintenance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8369,6 +8149,237 @@ def test_transport_kind_rest():
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
+
+
+def test_list_instances_rest_bad_request(request_type=cloud_redis.ListInstancesRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_instances(request)
+
+
+def test_get_instance_rest_bad_request(request_type=cloud_redis.GetInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_instance(request)
+
+
+def test_get_instance_auth_string_rest_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_instance_auth_string(request)
+
+
+def test_create_instance_rest_bad_request(request_type=cloud_redis.CreateInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_instance(request)
+
+
+def test_update_instance_rest_bad_request(request_type=cloud_redis.UpdateInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_instance(request)
+
+
+def test_upgrade_instance_rest_bad_request(request_type=cloud_redis.UpgradeInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.upgrade_instance(request)
+
+
+def test_import_instance_rest_bad_request(request_type=cloud_redis.ImportInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.import_instance(request)
+
+
+def test_export_instance_rest_bad_request(request_type=cloud_redis.ExportInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.export_instance(request)
+
+
+def test_failover_instance_rest_bad_request(request_type=cloud_redis.FailoverInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.failover_instance(request)
+
+
+def test_delete_instance_rest_bad_request(request_type=cloud_redis.DeleteInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_instance(request)
+
+
+def test_reschedule_maintenance_rest_bad_request(request_type=cloud_redis.RescheduleMaintenanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.reschedule_maintenance(request)
 
 
 def test_initialize_client_w_rest():
