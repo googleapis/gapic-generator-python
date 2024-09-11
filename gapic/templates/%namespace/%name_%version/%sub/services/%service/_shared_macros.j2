@@ -110,9 +110,11 @@ def _get_http_options():
     return http_options
 {% endmacro %}
 
-{% macro response_method(body_spec) %}
+{% macro response_method(body_spec, is_async=False) %}
+{% set async_prefix = "async " if is_async else "" %}
+{% set await_prefix = "await " if is_async else "" %}
 @staticmethod
-def _get_response(
+{{ async_prefix }}def _get_response(
     host,
     metadata,
     query_params,
@@ -125,7 +127,7 @@ def _get_response(
     method = transcoded_request['method']
     headers = dict(metadata)
     headers['Content-Type'] = 'application/json'
-    response = getattr(session, method)(
+    response = {{ await_prefix }}getattr(session, method)(
         "{host}{uri}".format(host=host, uri=uri),
         timeout=timeout,
         headers=headers,
@@ -137,25 +139,101 @@ def _get_response(
     return response
 {% endmacro %}
 
-{% macro rest_call_method_common(body_spec, method_name, service_name) %}
+{# rest_call_method_common includes the common code for a rest __call__ method to be
+    re-used for sync REST, async REST, and mixins __call__ implementation.
+
+    Args:
+        body_spec (str): The http options body i.e. method.http_options[0].body
+        method_name (str): The method name.
+        service_name (str): The service name.
+        is_async (bool): Used to determine the code path i.e. whether for sync or async call. #}
+{% macro rest_call_method_common(body_spec, method_name, service_name, is_async=False) %}
+{% set await_prefix = "await " if is_async else "" %}
+{% set async_class_prefix = "Async" if is_async else "" %}
 
     http_options = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_http_options()
+    {% if not is_async %}
+    {# TODO (ohmayr): Make this unconditional once REST interceptors are supported for async. Googlers,
+        see internal tracking issue: b/362949568. #}
     request, metadata = self._interceptor.pre_{{ method_name|snake_case }}(request, metadata)
+    {% endif %}
     transcoded_request = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_transcoded_request(http_options, request)
 
     {% if body_spec %}
     body = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_request_body_json(transcoded_request)
-    {% endif %} {# body_spec #}
+    {% endif %}{# body_spec #}
 
     # Jsonify the query params
     query_params = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_query_params_json(transcoded_request)
 
     # Send the request
-    response = {{ service_name }}RestTransport._{{method_name}}._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request{% if body_spec %}, body{% endif %})
+    response = {{ await_prefix }}{{ async_class_prefix }}{{ service_name }}RestTransport._{{method_name}}._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request{% if body_spec %}, body{% endif %})
 
     # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
     # subclass.
     if response.status_code >= 400:
+        {# Note: format_http_response_error takes in more parameters than from_http_response and the 
+        latter only supports a response of type requests.Response. 
+        TODO: Clean up the sync response error handling and use format_http_response_error.
+        See issue: https://github.com/googleapis/gapic-generator-python/issues/2116. #}
+        {% if is_async %}
+        content = await response.read()
+        payload = json.loads(content.decode('utf-8'))
+        request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+        method = transcoded_request['method']
+        raise core_exceptions.format_http_response_error(response, method, request_url, payload)
+        {% else %}
         raise core_exceptions.from_http_response(response)
+        {% endif %}{# is_async #}
 
+{% endmacro %}
+
+
+{% macro prep_wrapped_messages_async_method(service) %}
+def _prep_wrapped_messages(self, client_info):
+    """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+    self._wrapped_methods = {
+        {% for method in service.methods.values() %}
+        self.{{ method.transport_safe_name|snake_case }}: self._wrap_method(
+            self.{{ method.transport_safe_name|snake_case }},
+            {% if method.retry %}
+            default_retry=retries.AsyncRetry(
+                {% if method.retry.initial_backoff %}
+                initial={{ method.retry.initial_backoff }},
+                {% endif %}
+                {% if method.retry.max_backoff %}
+                maximum={{ method.retry.max_backoff }},
+                {% endif %}
+                {% if method.retry.backoff_multiplier %}
+                multiplier={{ method.retry.backoff_multiplier }},
+                {% endif %}
+                predicate=retries.if_exception_type(
+                    {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
+                    core_exceptions.{{ ex.__name__ }},
+                    {% endfor %}
+                ),
+                deadline={{ method.timeout }},
+            ),
+            {% endif %}
+            default_timeout={{ method.timeout }},
+            client_info=client_info,
+        ),
+        {% endfor %}{# service.methods.values() #}
+    }
+{% endmacro %}
+
+{# TODO: This helper logic to check whether `kind` needs to be configured in wrap_method
+can be removed once we require the correct version of the google-api-core dependency to
+avoid having a gRPC code path in an async REST call.
+See related issue: https://github.com/googleapis/python-api-core/issues/661.
+In the meantime, if an older version of the dependency is installed (which has a wrap_method with
+no kind parameter), then an async gRPC call will work correctly and async REST transport
+will not be available as a transport.
+See related issue: https://github.com/googleapis/gapic-generator-python/issues/2119. #}
+{% macro wrap_async_method_macro() %}
+def _wrap_method(self, func, *args, **kwargs):
+    {# TODO: Remove `pragma: NO COVER` once https://github.com/googleapis/python-api-core/pull/688 is merged. #}
+    if self._wrap_with_kind:  # pragma: NO COVER
+        kwargs["kind"] = self.kind
+    return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 {% endmacro %}
