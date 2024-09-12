@@ -14,15 +14,22 @@
 # limitations under the License.
 #
 try:
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession  # type: ignore
 except ImportError as e:  # pragma: NO COVER
     raise ImportError("async rest transport requires google.auth >= 2.x.x") from e
 
 from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core import retry_async as retries
 
-from typing import Any, Optional
+from typing import Any, Callable, Tuple, Optional, Sequence, Union
+
+
+from google.cloud.redis_v1.types import cloud_redis
+from google.longrunning import operations_pb2  # type: ignore
+
 
 from .rest_base import _BaseCloudRedisRestTransport
 
@@ -104,6 +111,139 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             api_audience=None
         )
         self._session = AsyncAuthorizedSession(self._credentials)
+        self._wrap_with_kind = True
+        self._prep_wrapped_messages(client_info)
+
+    def _prep_wrapped_messages(self, client_info):
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.list_instances: self._wrap_method(
+                self.list_instances,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_instance: self._wrap_method(
+                self.get_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_instance_auth_string: self._wrap_method(
+                self.get_instance_auth_string,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.create_instance: self._wrap_method(
+                self.create_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.update_instance: self._wrap_method(
+                self.update_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.upgrade_instance: self._wrap_method(
+                self.upgrade_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.import_instance: self._wrap_method(
+                self.import_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.export_instance: self._wrap_method(
+                self.export_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.failover_instance: self._wrap_method(
+                self.failover_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.delete_instance: self._wrap_method(
+                self.delete_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.reschedule_maintenance: self._wrap_method(
+                self.reschedule_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
+    @property
+    def create_instance(self) -> Callable[
+            [cloud_redis.CreateInstanceRequest],
+            operations_pb2.Operation]:
+        return  # type: ignore
+
+    @property
+    def delete_instance(self) -> Callable[
+            [cloud_redis.DeleteInstanceRequest],
+            operations_pb2.Operation]:
+        return  # type: ignore
+
+    @property
+    def export_instance(self) -> Callable[
+            [cloud_redis.ExportInstanceRequest],
+            operations_pb2.Operation]:
+        return  # type: ignore
+
+    @property
+    def failover_instance(self) -> Callable[
+            [cloud_redis.FailoverInstanceRequest],
+            operations_pb2.Operation]:
+        return  # type: ignore
+
+    @property
+    def get_instance(self) -> Callable[
+            [cloud_redis.GetInstanceRequest],
+            cloud_redis.Instance]:
+        return  # type: ignore
+
+    @property
+    def get_instance_auth_string(self) -> Callable[
+            [cloud_redis.GetInstanceAuthStringRequest],
+            cloud_redis.InstanceAuthString]:
+        return  # type: ignore
+
+    @property
+    def import_instance(self) -> Callable[
+            [cloud_redis.ImportInstanceRequest],
+            operations_pb2.Operation]:
+        return  # type: ignore
+
+    @property
+    def list_instances(self) -> Callable[
+            [cloud_redis.ListInstancesRequest],
+            cloud_redis.ListInstancesResponse]:
+        return  # type: ignore
+
+    @property
+    def reschedule_maintenance(self) -> Callable[
+            [cloud_redis.RescheduleMaintenanceRequest],
+            operations_pb2.Operation]:
+        return  # type: ignore
+
+    @property
+    def update_instance(self) -> Callable[
+            [cloud_redis.UpdateInstanceRequest],
+            operations_pb2.Operation]:
+        return  # type: ignore
+
+    @property
+    def upgrade_instance(self) -> Callable[
+            [cloud_redis.UpgradeInstanceRequest],
+            operations_pb2.Operation]:
+        return  # type: ignore
 
     @property
     def kind(self) -> str:
