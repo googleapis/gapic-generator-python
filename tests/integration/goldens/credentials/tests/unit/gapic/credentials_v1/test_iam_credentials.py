@@ -2562,13 +2562,6 @@ def test_generate_access_token_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_generate_access_token_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     common.GenerateIdTokenRequest,
     dict,
@@ -2838,13 +2831,6 @@ def test_generate_id_token_rest_flattened_error(transport: str = 'rest'):
             audience='audience_value',
             include_email=True,
         )
-
-
-def test_generate_id_token_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -3118,13 +3104,6 @@ def test_sign_blob_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_sign_blob_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     common.SignJwtRequest,
     dict,
@@ -3396,13 +3375,6 @@ def test_sign_jwt_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_sign_jwt_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.IAMCredentialsGrpcTransport(
@@ -3497,6 +3469,14 @@ def test_transport_kind_grpc():
     assert transport.kind == "grpc"
 
 
+def test_initialize_client_w_grpc():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    assert client is not None
+
+
 def test_transport_kind_grpc_asyncio():
     transport = IAMCredentialsAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -3504,11 +3484,27 @@ def test_transport_kind_grpc_asyncio():
     assert transport.kind == "grpc_asyncio"
 
 
+def test_initialize_client_w_grpc_asyncio():
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
 def test_transport_kind_rest():
     transport = IAMCredentialsClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
+
+
+def test_initialize_client_w_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    assert client is not None
 
 
 def test_transport_grpc_default():

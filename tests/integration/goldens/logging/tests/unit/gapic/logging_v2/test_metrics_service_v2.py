@@ -2913,11 +2913,27 @@ def test_transport_kind_grpc():
     assert transport.kind == "grpc"
 
 
+def test_initialize_client_w_grpc():
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    assert client is not None
+
+
 def test_transport_kind_grpc_asyncio():
     transport = MetricsServiceV2AsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = MetricsServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    assert client is not None
 
 
 def test_transport_grpc_default():

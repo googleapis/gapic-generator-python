@@ -8471,13 +8471,6 @@ def test_get_trigger_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_get_trigger_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     eventarc.ListTriggersRequest,
     dict,
@@ -9152,13 +9145,6 @@ def test_create_trigger_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_create_trigger_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     eventarc.UpdateTriggerRequest,
     dict,
@@ -9492,13 +9478,6 @@ def test_update_trigger_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_update_trigger_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     eventarc.DeleteTriggerRequest,
     dict,
@@ -9767,13 +9746,6 @@ def test_delete_trigger_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
             allow_missing=True,
         )
-
-
-def test_delete_trigger_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -10045,13 +10017,6 @@ def test_get_channel_rest_flattened_error(transport: str = 'rest'):
             eventarc.GetChannelRequest(),
             name='name_value',
         )
-
-
-def test_get_channel_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -10728,13 +10693,6 @@ def test_create_channel_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_create_channel_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     eventarc.UpdateChannelRequest,
     dict,
@@ -11066,13 +11024,6 @@ def test_update_channel_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_update_channel_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     eventarc.DeleteChannelRequest,
     dict,
@@ -11341,13 +11292,6 @@ def test_delete_channel_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-def test_delete_channel_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     eventarc.GetProviderRequest,
     dict,
@@ -11608,13 +11552,6 @@ def test_get_provider_rest_flattened_error(transport: str = 'rest'):
             eventarc.GetProviderRequest(),
             name='name_value',
         )
-
-
-def test_get_provider_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -12207,13 +12144,6 @@ def test_get_channel_connection_rest_flattened_error(transport: str = 'rest'):
             eventarc.GetChannelConnectionRequest(),
             name='name_value',
         )
-
-
-def test_get_channel_connection_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -12879,13 +12809,6 @@ def test_create_channel_connection_rest_flattened_error(transport: str = 'rest')
         )
 
 
-def test_create_channel_connection_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 @pytest.mark.parametrize("request_type", [
     eventarc.DeleteChannelConnectionRequest,
     dict,
@@ -13139,13 +13062,6 @@ def test_delete_channel_connection_rest_flattened_error(transport: str = 'rest')
             eventarc.DeleteChannelConnectionRequest(),
             name='name_value',
         )
-
-
-def test_delete_channel_connection_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -13408,13 +13324,6 @@ def test_get_google_channel_config_rest_flattened_error(transport: str = 'rest')
             eventarc.GetGoogleChannelConfigRequest(),
             name='name_value',
         )
-
-
-def test_get_google_channel_config_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 @pytest.mark.parametrize("request_type", [
@@ -13743,13 +13652,6 @@ def test_update_google_channel_config_rest_flattened_error(transport: str = 'res
         )
 
 
-def test_update_google_channel_config_rest_error():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EventarcGrpcTransport(
@@ -13844,6 +13746,14 @@ def test_transport_kind_grpc():
     assert transport.kind == "grpc"
 
 
+def test_initialize_client_w_grpc():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    assert client is not None
+
+
 def test_transport_kind_grpc_asyncio():
     transport = EventarcAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -13851,11 +13761,27 @@ def test_transport_kind_grpc_asyncio():
     assert transport.kind == "grpc_asyncio"
 
 
+def test_initialize_client_w_grpc_asyncio():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
 def test_transport_kind_rest():
     transport = EventarcClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
+
+
+def test_initialize_client_w_rest():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    assert client is not None
 
 
 def test_transport_grpc_default():
