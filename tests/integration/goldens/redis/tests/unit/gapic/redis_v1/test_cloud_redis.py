@@ -8341,11 +8341,27 @@ def test_transport_kind_grpc():
     assert transport.kind == "grpc"
 
 
+def test_initialize_client_w_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    assert client is not None
+
+
 def test_transport_kind_grpc_asyncio():
     transport = CloudRedisAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    assert client is not None
 
 
 def test_transport_kind_rest():
@@ -8355,11 +8371,12 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
-def test_rest_initialize_client():
+def test_initialize_client_w_rest():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest"
     )
+    assert client is not None
 
 
 def test_transport_kind_rest_asyncio():
@@ -8371,13 +8388,14 @@ def test_transport_kind_rest_asyncio():
     assert transport.kind == "rest_asyncio"
 
 
-def test_rest_asyncio_initialize_client():
+def test_initialize_client_w_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
     )
+    assert client is not None
 
 
 def test_unsupported_parameter_rest_asyncio():

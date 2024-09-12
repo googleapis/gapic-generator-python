@@ -1756,7 +1756,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-{%- endif %}
+{%- endif %}{# paged_result_field #}
 
 {% else %}{# this is an lro or streaming method #}
 def test_{{ method_name }}_rest_unimplemented():
@@ -1888,8 +1888,8 @@ def test_transport_kind_{{ transport_name }}():
 
 
 {% macro transport_close_test(service, transport, is_async) %}
-{% set async_prefix = "async " if is_async else "" %}
-{% set async_decorator = "@pytest.mark.asyncio " if is_async else "" %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
 {% set close_session = {
     'rest': "_session",
@@ -1930,12 +1930,35 @@ def test_unsupported_parameter_rest_asyncio():
 
 {% endmacro %}
 
+{# get_await_prefix sets an "await" keyword
+ # to a method call if is_async=True.
+#}
+{% macro get_await_prefix(is_async) %}
+{{- "await " if is_async else "" -}}
+{% endmacro %}
+
+{# get_async_prefix sets an "async" keyword
+ # to a method definition if is_async=True.
+#}
+{% macro get_async_prefix(is_async) %}
+{{- "async " if is_async else "" -}}
+{% endmacro %}
+
+{# get_async_decorator sets a "@pytest.mark.asyncio" decorator
+ # to an async test method if is_async=True.
+#}
+{% macro get_async_decorator(is_async) %}
+{{- "@pytest.mark.asyncio " if is_async else "" -}}
+{% endmacro %}
+
 {# is_rest_unsupported_method renders:
  # 'True' if transport is async REST.
  # 'True' if transport is sync REST and method is a client streaming method.
  # 'False' otherwise.
 #}
-{# NOTE: We will keep updating this method as we add support for methods in async REST. #}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2152): Update this method as we add support for methods in async REST.
+ # There are no plans to add support for client streaming.
+#}
 {% macro is_rest_unsupported_method(method, is_async) %}
 {%- if method.client_streaming or is_async -%}
 {{'True'}}
@@ -1944,37 +1967,34 @@ def test_unsupported_parameter_rest_asyncio():
 {%- endif -%}
 {% endmacro %}
 
-{# rest_transport_specific_tests generates all the rest specific tests for both
-# sync and async transport. It refactors the test cases in macro::rest_required_tests
-# and should replace it once we cover all the test cases in it here.
+{# transport_specific_tests generates all the rest specific tests for both
+# sync and async transport.
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2142): Continue migrating the test cases
+# in macro::transport_specific_tests into here, and then delete that macro in favor of this one.
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2153): As a follow up, migrate gRPC test cases
+# into `transport_specific_tests` and make any of the rest specific specific macros which are called within more generic. 
 #}
-{% macro rest_transport_specific_tests(service, transport, is_async) %}
+{% macro transport_specific_tests(service, transport, is_async) %}
 {% if 'rest' in transport %}
-{### Test syntax configuration begins ###}
-{% set await_prefix = "await " if is_async else "" %}
-{% set async_prefix = "async " if is_async else "" %}
-{% set async_decorator = "@pytest.mark.asyncio " if is_async else "" %}
-{% set transport_name = get_transport_name(transport, is_async) %}
-{### Test syntax configuration ends ###}
-{### Test generation for all methods begins ###}
 {% for method in service.methods.values() %}
-{% set method_name = method.name|snake_case %}
-{### test cases section begin ###}
 {% if is_rest_unsupported_method(method, is_async) == 'True' or not method.http_options %}
-{{ rest_method_not_implemented_error(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async) }}
+{{ rest_method_not_implemented_error(service, method, transport, is_async) }}
 {% endif %}{# is_rest_unsupported_method(method, is_async) == 'False' and method.http_options #}
-{### test cases section ends ###}
 {% endfor %}
-{### Test generation for all methods ends ###}
-{{ rest_method_initialize_client_test(service, transport_name, is_async) }}
 {% endif %}{# if 'rest' in transport #}
+{{ initialize_client_with_transport_test(service, transport, is_async) }}
 {% endmacro %}
 
 {# rest_method_not_implemented_error generates tests for methods
  # which are not supported for rest transport.
 #}
-{% macro rest_method_not_implemented_error(service, method, method_name, transport_name, async_prefix, await_prefix, async_decorator, is_async) %}
-{% if not is_async %}{# TODO(b/362949446): Remove this guard once a not implemented __call__ method is added to async rest for all methods. #}
+{% macro rest_method_not_implemented_error(service, method, transport, is_async) %}
+{% if not is_async %}{# TODO(b/362949446): Remove this guard once a not implemented __call__ class method is added to async rest for every wrapper.Method. #}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = method.name|snake_case %}
 {{async_decorator}}
 {{async_prefix}}def test_{{ method_name }}_{{transport_name}}_error():
     {% if transport_name == 'rest_asyncio' %}
@@ -1988,8 +2008,6 @@ def test_unsupported_parameter_rest_asyncio():
         transport="{{transport_name}}"
     )
 
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
     with pytest.raises(NotImplementedError) as not_implemented_error:
         {{await_prefix}}client.{{ method_name }}({})
     assert (
@@ -2000,12 +2018,13 @@ def test_unsupported_parameter_rest_asyncio():
 {% endif %}{# if is_async #}
 {% endmacro %}
 
-{# rest_method_initialize_client_test adds coverage for rest transport clients.
- # Note: Unlike before, this test case is needed because we aren't unconditionally 
+{# initialize_client_with_transport_test adds coverage for transport clients.
+ # Note: This test case is needed because we aren't unconditionally 
  # generating the not implemented coverage test for every client.
 #}
-{% macro rest_method_initialize_client_test(service, transport_name, is_async) %}
-def test_{{transport_name}}_initialize_client():
+{% macro initialize_client_with_transport_test(service, transport, is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+def test_initialize_client_w_{{transport_name}}():
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_GOOGLE_AUTH_AIO:
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
@@ -2015,5 +2034,6 @@ def test_{{transport_name}}_initialize_client():
         credentials={{get_credentials(is_async)}},
         transport="{{transport_name}}"
     )
+    assert client is not None
 
 {% endmacro %}

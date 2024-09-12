@@ -13746,11 +13746,27 @@ def test_transport_kind_grpc():
     assert transport.kind == "grpc"
 
 
+def test_initialize_client_w_grpc():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    assert client is not None
+
+
 def test_transport_kind_grpc_asyncio():
     transport = EventarcAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    assert client is not None
 
 
 def test_transport_kind_rest():
@@ -13760,11 +13776,12 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
-def test_rest_initialize_client():
+def test_initialize_client_w_rest():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest"
     )
+    assert client is not None
 
 
 def test_transport_grpc_default():
