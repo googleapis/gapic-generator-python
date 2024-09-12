@@ -24,7 +24,6 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 
-
 from typing import Any, Callable, Tuple, Optional, Sequence, Union
 
 
@@ -184,77 +183,66 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     def create_instance(self) -> Callable[
             [cloud_redis.CreateInstanceRequest],
             operations_pb2.Operation]:
-
         return  # type: ignore
 
     @property
     def delete_instance(self) -> Callable[
             [cloud_redis.DeleteInstanceRequest],
             operations_pb2.Operation]:
-
         return  # type: ignore
 
     @property
     def export_instance(self) -> Callable[
             [cloud_redis.ExportInstanceRequest],
             operations_pb2.Operation]:
-
         return  # type: ignore
 
     @property
     def failover_instance(self) -> Callable[
             [cloud_redis.FailoverInstanceRequest],
             operations_pb2.Operation]:
-
         return  # type: ignore
 
     @property
     def get_instance(self) -> Callable[
             [cloud_redis.GetInstanceRequest],
             cloud_redis.Instance]:
-
         return  # type: ignore
 
     @property
     def get_instance_auth_string(self) -> Callable[
             [cloud_redis.GetInstanceAuthStringRequest],
             cloud_redis.InstanceAuthString]:
-
         return  # type: ignore
 
     @property
     def import_instance(self) -> Callable[
             [cloud_redis.ImportInstanceRequest],
             operations_pb2.Operation]:
-
         return  # type: ignore
 
     @property
     def list_instances(self) -> Callable[
             [cloud_redis.ListInstancesRequest],
             cloud_redis.ListInstancesResponse]:
-
         return  # type: ignore
 
     @property
     def reschedule_maintenance(self) -> Callable[
             [cloud_redis.RescheduleMaintenanceRequest],
             operations_pb2.Operation]:
-
         return  # type: ignore
 
     @property
     def update_instance(self) -> Callable[
             [cloud_redis.UpdateInstanceRequest],
             operations_pb2.Operation]:
-
         return  # type: ignore
 
     @property
     def upgrade_instance(self) -> Callable[
             [cloud_redis.UpgradeInstanceRequest],
             operations_pb2.Operation]:
-
         return  # type: ignore
 
     @property

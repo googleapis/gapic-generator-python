@@ -17,7 +17,6 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 
-
 from typing import Any, Callable, Tuple, Optional, Sequence, Union
 
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
@@ -100,7 +99,6 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     def {{method.transport_safe_name|snake_case}}(self) -> Callable[
             [{{method.input.ident}}],
             {{method.output.ident}}]:
-        
         return  # type: ignore
 
     {% endfor %}
