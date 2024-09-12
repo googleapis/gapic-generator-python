@@ -1967,14 +1967,14 @@ def test_unsupported_parameter_rest_asyncio():
 {%- endif -%}
 {% endmacro %}
 
-{# transport_specific_tests generates all the rest specific tests for both
+{# run_transport_tests_for_config generates all the rest specific tests for both
 # sync and async transport.
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2142): Continue migrating the test cases
-# in macro::transport_specific_tests into here, and then delete that macro in favor of this one.
+# in macro::run_transport_tests_for_config into here, and then delete that macro in favor of this one.
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2153): As a follow up, migrate gRPC test cases
-# into `transport_specific_tests` and make any of the rest specific specific macros which are called within more generic. 
+# into `run_transport_tests_for_config` and make any of the rest specific specific macros which are called within more generic. 
 #}
-{% macro transport_specific_tests(service, transport, is_async) %}
+{% macro run_transport_tests_for_config(service, transport, is_async) %}
 {% if 'rest' in transport %}
 {% for method in service.methods.values() %}
 {% if is_rest_unsupported_method(method, is_async) == 'True' or not method.http_options %}
