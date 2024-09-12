@@ -9074,47 +9074,6 @@ def test_export_assets_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent", "outputConfig", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_assets_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_export_assets") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_export_assets") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.ExportAssetsRequest.pb(asset_service.ExportAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = asset_service.ExportAssetsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.ListAssetsRequest,
     dict,
@@ -9263,46 +9222,6 @@ def test_list_assets_rest_unset_required_fields():
 
     unset_fields = transport.list_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", "relationshipTypes", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_assets_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_assets") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_assets") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.ListAssetsRequest.pb(asset_service.ListAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.ListAssetsResponse.to_json(asset_service.ListAssetsResponse())
-
-        request = asset_service.ListAssetsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.ListAssetsResponse()
-
-        client.list_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_list_assets_rest_flattened():
@@ -9533,46 +9452,6 @@ def test_batch_get_assets_history_rest_unset_required_fields():
     assert set(unset_fields) == (set(("assetNames", "contentType", "readTimeWindow", "relationshipTypes", )) & set(("parent", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_get_assets_history_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_assets_history") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_assets_history") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.BatchGetAssetsHistoryRequest.pb(asset_service.BatchGetAssetsHistoryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.BatchGetAssetsHistoryResponse.to_json(asset_service.BatchGetAssetsHistoryResponse())
-
-        request = asset_service.BatchGetAssetsHistoryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.BatchGetAssetsHistoryResponse()
-
-        client.batch_get_assets_history(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_create_feed_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9687,46 +9566,6 @@ def test_create_feed_rest_unset_required_fields():
 
     unset_fields = transport.create_feed._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent", "feedId", "feed", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_feed_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_feed") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_feed") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.CreateFeedRequest.pb(asset_service.CreateFeedRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.Feed.to_json(asset_service.Feed())
-
-        request = asset_service.CreateFeedRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.Feed()
-
-        client.create_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_create_feed_rest_flattened():
@@ -9893,46 +9732,6 @@ def test_get_feed_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_feed_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_feed") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_feed") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.GetFeedRequest.pb(asset_service.GetFeedRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.Feed.to_json(asset_service.Feed())
-
-        request = asset_service.GetFeedRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.Feed()
-
-        client.get_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_get_feed_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10097,46 +9896,6 @@ def test_list_feeds_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_feeds_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_feeds") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_feeds") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.ListFeedsRequest.pb(asset_service.ListFeedsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.ListFeedsResponse.to_json(asset_service.ListFeedsResponse())
-
-        request = asset_service.ListFeedsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.ListFeedsResponse()
-
-        client.list_feeds(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_list_feeds_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10295,46 +10054,6 @@ def test_update_feed_rest_unset_required_fields():
 
     unset_fields = transport.update_feed._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("feed", "updateMask", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_feed_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_feed") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_feed") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.UpdateFeedRequest.pb(asset_service.UpdateFeedRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.Feed.to_json(asset_service.Feed())
-
-        request = asset_service.UpdateFeedRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.Feed()
-
-        client.update_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_update_feed_rest_flattened():
@@ -10496,41 +10215,6 @@ def test_delete_feed_rest_unset_required_fields():
 
     unset_fields = transport.delete_feed._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_feed_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_delete_feed") as pre:
-        pre.assert_not_called()
-        pb_message = asset_service.DeleteFeedRequest.pb(asset_service.DeleteFeedRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = asset_service.DeleteFeedRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
 
 
 def test_delete_feed_rest_flattened():
@@ -10732,46 +10416,6 @@ def test_search_all_resources_rest_unset_required_fields():
 
     unset_fields = transport.search_all_resources._get_unset_required_fields({})
     assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", "readMask", )) & set(("scope", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_all_resources_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_resources") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_resources") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.SearchAllResourcesRequest.pb(asset_service.SearchAllResourcesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SearchAllResourcesResponse.to_json(asset_service.SearchAllResourcesResponse())
-
-        request = asset_service.SearchAllResourcesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SearchAllResourcesResponse()
-
-        client.search_all_resources(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_search_all_resources_rest_flattened():
@@ -11043,46 +10687,6 @@ def test_search_all_iam_policies_rest_unset_required_fields():
     assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", )) & set(("scope", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_all_iam_policies_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_iam_policies") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_iam_policies") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.SearchAllIamPoliciesRequest.pb(asset_service.SearchAllIamPoliciesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SearchAllIamPoliciesResponse.to_json(asset_service.SearchAllIamPoliciesResponse())
-
-        request = asset_service.SearchAllIamPoliciesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SearchAllIamPoliciesResponse()
-
-        client.search_all_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_search_all_iam_policies_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11308,46 +10912,6 @@ def test_analyze_iam_policy_rest_unset_required_fields():
     assert set(unset_fields) == (set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", )) & set(("analysisQuery", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeIamPolicyRequest.pb(asset_service.AnalyzeIamPolicyRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeIamPolicyResponse.to_json(asset_service.AnalyzeIamPolicyResponse())
-
-        request = asset_service.AnalyzeIamPolicyRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeIamPolicyResponse()
-
-        client.analyze_iam_policy(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.AnalyzeIamPolicyLongrunningRequest,
     dict,
@@ -11487,47 +11051,6 @@ def test_analyze_iam_policy_longrunning_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("analysisQuery", "outputConfig", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy_longrunning") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy_longrunning") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeIamPolicyLongrunningRequest.pb(asset_service.AnalyzeIamPolicyLongrunningRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = asset_service.AnalyzeIamPolicyLongrunningRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.analyze_iam_policy_longrunning(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_analyze_move_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11652,46 +11175,6 @@ def test_analyze_move_rest_unset_required_fields():
     assert set(unset_fields) == (set(("destinationParent", "view", )) & set(("resource", "destinationParent", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_move_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_move") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_move") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeMoveRequest.pb(asset_service.AnalyzeMoveRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeMoveResponse.to_json(asset_service.AnalyzeMoveResponse())
-
-        request = asset_service.AnalyzeMoveRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeMoveResponse()
-
-        client.analyze_move(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_query_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11802,46 +11285,6 @@ def test_query_assets_rest_unset_required_fields():
 
     unset_fields = transport.query_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_query_assets_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_query_assets") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_query_assets") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.QueryAssetsRequest.pb(asset_service.QueryAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.QueryAssetsResponse.to_json(asset_service.QueryAssetsResponse())
-
-        request = asset_service.QueryAssetsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.QueryAssetsResponse()
-
-        client.query_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_create_saved_query_rest_use_cached_wrapped_rpc():
@@ -11967,46 +11410,6 @@ def test_create_saved_query_rest_unset_required_fields():
 
     unset_fields = transport.create_saved_query._get_unset_required_fields({})
     assert set(unset_fields) == (set(("savedQueryId", )) & set(("parent", "savedQuery", "savedQueryId", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_saved_query_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_saved_query") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_saved_query") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.CreateSavedQueryRequest.pb(asset_service.CreateSavedQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
-
-        request = asset_service.CreateSavedQueryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SavedQuery()
-
-        client.create_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_create_saved_query_rest_flattened():
@@ -12175,46 +11578,6 @@ def test_get_saved_query_rest_unset_required_fields():
 
     unset_fields = transport.get_saved_query._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_saved_query_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_saved_query") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_saved_query") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.GetSavedQueryRequest.pb(asset_service.GetSavedQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
-
-        request = asset_service.GetSavedQueryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SavedQuery()
-
-        client.get_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_get_saved_query_rest_flattened():
@@ -12418,46 +11781,6 @@ def test_list_saved_queries_rest_unset_required_fields():
 
     unset_fields = transport.list_saved_queries._get_unset_required_fields({})
     assert set(unset_fields) == (set(("filter", "pageSize", "pageToken", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_saved_queries_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_saved_queries") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_saved_queries") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.ListSavedQueriesRequest.pb(asset_service.ListSavedQueriesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.ListSavedQueriesResponse.to_json(asset_service.ListSavedQueriesResponse())
-
-        request = asset_service.ListSavedQueriesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.ListSavedQueriesResponse()
-
-        client.list_saved_queries(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_list_saved_queries_rest_flattened():
@@ -12684,46 +12007,6 @@ def test_update_saved_query_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask", )) & set(("savedQuery", "updateMask", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_saved_query_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_saved_query") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_saved_query") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.UpdateSavedQueryRequest.pb(asset_service.UpdateSavedQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
-
-        request = asset_service.UpdateSavedQueryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.SavedQuery()
-
-        client.update_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_update_saved_query_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12885,41 +12168,6 @@ def test_delete_saved_query_rest_unset_required_fields():
 
     unset_fields = transport.delete_saved_query._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_saved_query_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_delete_saved_query") as pre:
-        pre.assert_not_called()
-        pb_message = asset_service.DeleteSavedQueryRequest.pb(asset_service.DeleteSavedQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = asset_service.DeleteSavedQueryRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
 
 
 def test_delete_saved_query_rest_flattened():
@@ -13097,46 +12345,6 @@ def test_batch_get_effective_iam_policies_rest_unset_required_fields():
     assert set(unset_fields) == (set(("names", )) & set(("scope", "names", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_effective_iam_policies") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_effective_iam_policies") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(asset_service.BatchGetEffectiveIamPoliciesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(asset_service.BatchGetEffectiveIamPoliciesResponse())
-
-        request = asset_service.BatchGetEffectiveIamPoliciesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
-
-        client.batch_get_effective_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 @pytest.mark.parametrize("request_type", [
     asset_service.AnalyzeOrgPoliciesRequest,
     dict,
@@ -13296,46 +12504,6 @@ def test_analyze_org_policies_rest_unset_required_fields():
 
     unset_fields = transport.analyze_org_policies._get_unset_required_fields({})
     assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_org_policies_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policies") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policies") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeOrgPoliciesRequest.pb(asset_service.AnalyzeOrgPoliciesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeOrgPoliciesResponse.to_json(asset_service.AnalyzeOrgPoliciesResponse())
-
-        request = asset_service.AnalyzeOrgPoliciesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeOrgPoliciesResponse()
-
-        client.analyze_org_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_analyze_org_policies_rest_flattened():
@@ -13618,46 +12786,6 @@ def test_analyze_org_policy_governed_containers_rest_unset_required_fields():
     assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_org_policy_governed_containers_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_containers") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_containers") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(asset_service.AnalyzeOrgPolicyGovernedContainersRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
-
-        request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
-
-        client.analyze_org_policy_governed_containers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_analyze_org_policy_governed_containers_rest_flattened():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13936,46 +13064,6 @@ def test_analyze_org_policy_governed_assets_rest_unset_required_fields():
 
     unset_fields = transport.analyze_org_policy_governed_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
-    transport = transports.AssetServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
-        )
-    client = AssetServiceClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_assets") as post, \
-         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_assets") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(asset_service.AnalyzeOrgPolicyGovernedAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
-
-        request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
-
-        client.analyze_org_policy_governed_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_analyze_org_policy_governed_assets_rest_flattened():
@@ -15360,6 +14448,48 @@ def test_export_assets_rest_bad_request(request_type=asset_service.ExportAssetsR
         client.export_assets(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_export_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_export_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.ExportAssetsRequest.pb(asset_service.ExportAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = asset_service.ExportAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_list_assets_rest_bad_request(request_type=asset_service.ListAssetsRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15379,6 +14509,47 @@ def test_list_assets_rest_bad_request(request_type=asset_service.ListAssetsReque
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.list_assets(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.ListAssetsRequest.pb(asset_service.ListAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.ListAssetsResponse.to_json(asset_service.ListAssetsResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.ListAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.ListAssetsResponse()
+
+        client.list_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_batch_get_assets_history_rest_bad_request(request_type=asset_service.BatchGetAssetsHistoryRequest):
@@ -15435,6 +14606,47 @@ def test_batch_get_assets_history_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_get_assets_history_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_assets_history") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_assets_history") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.BatchGetAssetsHistoryRequest.pb(asset_service.BatchGetAssetsHistoryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.BatchGetAssetsHistoryResponse.to_json(asset_service.BatchGetAssetsHistoryResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.BatchGetAssetsHistoryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.BatchGetAssetsHistoryResponse()
+
+        client.batch_get_assets_history(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_create_feed_rest_bad_request(request_type=asset_service.CreateFeedRequest):
@@ -15503,6 +14715,47 @@ def test_create_feed_rest_call_success(request_type):
     assert response.relationship_types == ['relationship_types_value']
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_feed_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_feed") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_feed") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.CreateFeedRequest.pb(asset_service.CreateFeedRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.Feed.to_json(asset_service.Feed())
+        req.return_value.content = return_value
+
+        request = asset_service.CreateFeedRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.Feed()
+
+        client.create_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_feed_rest_bad_request(request_type=asset_service.GetFeedRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15569,6 +14822,47 @@ def test_get_feed_rest_call_success(request_type):
     assert response.relationship_types == ['relationship_types_value']
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_feed_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_feed") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_feed") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.GetFeedRequest.pb(asset_service.GetFeedRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.Feed.to_json(asset_service.Feed())
+        req.return_value.content = return_value
+
+        request = asset_service.GetFeedRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.Feed()
+
+        client.get_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_list_feeds_rest_bad_request(request_type=asset_service.ListFeedsRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15623,6 +14917,47 @@ def test_list_feeds_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.ListFeedsResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_feeds_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_feeds") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_feeds") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.ListFeedsRequest.pb(asset_service.ListFeedsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.ListFeedsResponse.to_json(asset_service.ListFeedsResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.ListFeedsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.ListFeedsResponse()
+
+        client.list_feeds(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_update_feed_rest_bad_request(request_type=asset_service.UpdateFeedRequest):
@@ -15691,6 +15026,47 @@ def test_update_feed_rest_call_success(request_type):
     assert response.relationship_types == ['relationship_types_value']
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_feed_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_feed") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_feed") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.UpdateFeedRequest.pb(asset_service.UpdateFeedRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.Feed.to_json(asset_service.Feed())
+        req.return_value.content = return_value
+
+        request = asset_service.UpdateFeedRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.Feed()
+
+        client.update_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_feed_rest_bad_request(request_type=asset_service.DeleteFeedRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15743,6 +15119,41 @@ def test_delete_feed_rest_call_success(request_type):
     assert response is None
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_feed_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_delete_feed") as pre:
+        pre.assert_not_called()
+        pb_message = asset_service.DeleteFeedRequest.pb(asset_service.DeleteFeedRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = asset_service.DeleteFeedRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+
+
 def test_search_all_resources_rest_bad_request(request_type=asset_service.SearchAllResourcesRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15764,6 +15175,47 @@ def test_search_all_resources_rest_bad_request(request_type=asset_service.Search
         client.search_all_resources(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_all_resources_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_resources") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_resources") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.SearchAllResourcesRequest.pb(asset_service.SearchAllResourcesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SearchAllResourcesResponse.to_json(asset_service.SearchAllResourcesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.SearchAllResourcesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SearchAllResourcesResponse()
+
+        client.search_all_resources(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_search_all_iam_policies_rest_bad_request(request_type=asset_service.SearchAllIamPoliciesRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15783,6 +15235,47 @@ def test_search_all_iam_policies_rest_bad_request(request_type=asset_service.Sea
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.search_all_iam_policies(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_all_iam_policies_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_iam_policies") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_iam_policies") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.SearchAllIamPoliciesRequest.pb(asset_service.SearchAllIamPoliciesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SearchAllIamPoliciesResponse.to_json(asset_service.SearchAllIamPoliciesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.SearchAllIamPoliciesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SearchAllIamPoliciesResponse()
+
+        client.search_all_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_analyze_iam_policy_rest_bad_request(request_type=asset_service.AnalyzeIamPolicyRequest):
@@ -15843,6 +15336,47 @@ def test_analyze_iam_policy_rest_call_success(request_type):
     assert response.fully_explored is True
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeIamPolicyRequest.pb(asset_service.AnalyzeIamPolicyRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeIamPolicyResponse.to_json(asset_service.AnalyzeIamPolicyResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeIamPolicyRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeIamPolicyResponse()
+
+        client.analyze_iam_policy(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_analyze_iam_policy_longrunning_rest_bad_request(request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15862,6 +15396,48 @@ def test_analyze_iam_policy_longrunning_rest_bad_request(request_type=asset_serv
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.analyze_iam_policy_longrunning(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy_longrunning") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy_longrunning") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeIamPolicyLongrunningRequest.pb(asset_service.AnalyzeIamPolicyLongrunningRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeIamPolicyLongrunningRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.analyze_iam_policy_longrunning(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_analyze_move_rest_bad_request(request_type=asset_service.AnalyzeMoveRequest):
@@ -15918,6 +15494,47 @@ def test_analyze_move_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_move_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_move") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_move") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeMoveRequest.pb(asset_service.AnalyzeMoveRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeMoveResponse.to_json(asset_service.AnalyzeMoveResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeMoveRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeMoveResponse()
+
+        client.analyze_move(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_query_assets_rest_bad_request(request_type=asset_service.QueryAssetsRequest):
@@ -15978,6 +15595,47 @@ def test_query_assets_rest_call_success(request_type):
     assert isinstance(response, asset_service.QueryAssetsResponse)
     assert response.job_reference == 'job_reference_value'
     assert response.done is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_query_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_query_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_query_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.QueryAssetsRequest.pb(asset_service.QueryAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.QueryAssetsResponse.to_json(asset_service.QueryAssetsResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.QueryAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.QueryAssetsResponse()
+
+        client.query_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_create_saved_query_rest_bad_request(request_type=asset_service.CreateSavedQueryRequest):
@@ -16108,6 +15766,47 @@ def test_create_saved_query_rest_call_success(request_type):
     assert response.last_updater == 'last_updater_value'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_saved_query") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_saved_query") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.CreateSavedQueryRequest.pb(asset_service.CreateSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
+        req.return_value.content = return_value
+
+        request = asset_service.CreateSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SavedQuery()
+
+        client.create_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_saved_query_rest_bad_request(request_type=asset_service.GetSavedQueryRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16172,6 +15871,47 @@ def test_get_saved_query_rest_call_success(request_type):
     assert response.last_updater == 'last_updater_value'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_saved_query") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_saved_query") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.GetSavedQueryRequest.pb(asset_service.GetSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
+        req.return_value.content = return_value
+
+        request = asset_service.GetSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SavedQuery()
+
+        client.get_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_list_saved_queries_rest_bad_request(request_type=asset_service.ListSavedQueriesRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16191,6 +15931,47 @@ def test_list_saved_queries_rest_bad_request(request_type=asset_service.ListSave
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.list_saved_queries(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_saved_queries_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_saved_queries") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_saved_queries") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.ListSavedQueriesRequest.pb(asset_service.ListSavedQueriesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.ListSavedQueriesResponse.to_json(asset_service.ListSavedQueriesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.ListSavedQueriesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.ListSavedQueriesResponse()
+
+        client.list_saved_queries(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_update_saved_query_rest_bad_request(request_type=asset_service.UpdateSavedQueryRequest):
@@ -16321,6 +16102,47 @@ def test_update_saved_query_rest_call_success(request_type):
     assert response.last_updater == 'last_updater_value'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_saved_query") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_saved_query") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.UpdateSavedQueryRequest.pb(asset_service.UpdateSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
+        req.return_value.content = return_value
+
+        request = asset_service.UpdateSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SavedQuery()
+
+        client.update_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_saved_query_rest_bad_request(request_type=asset_service.DeleteSavedQueryRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16371,6 +16193,41 @@ def test_delete_saved_query_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_delete_saved_query") as pre:
+        pre.assert_not_called()
+        pb_message = asset_service.DeleteSavedQueryRequest.pb(asset_service.DeleteSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = asset_service.DeleteSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
 
 
 def test_batch_get_effective_iam_policies_rest_bad_request(request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
@@ -16429,6 +16286,47 @@ def test_batch_get_effective_iam_policies_rest_call_success(request_type):
     assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_effective_iam_policies") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_effective_iam_policies") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(asset_service.BatchGetEffectiveIamPoliciesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(asset_service.BatchGetEffectiveIamPoliciesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.BatchGetEffectiveIamPoliciesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+
+        client.batch_get_effective_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_analyze_org_policies_rest_bad_request(request_type=asset_service.AnalyzeOrgPoliciesRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16448,6 +16346,47 @@ def test_analyze_org_policies_rest_bad_request(request_type=asset_service.Analyz
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.analyze_org_policies(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_org_policies_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policies") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policies") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeOrgPoliciesRequest.pb(asset_service.AnalyzeOrgPoliciesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeOrgPoliciesResponse.to_json(asset_service.AnalyzeOrgPoliciesResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeOrgPoliciesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+
+        client.analyze_org_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_analyze_org_policy_governed_containers_rest_bad_request(request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
@@ -16471,6 +16410,47 @@ def test_analyze_org_policy_governed_containers_rest_bad_request(request_type=as
         client.analyze_org_policy_governed_containers(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_org_policy_governed_containers_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_containers") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_containers") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(asset_service.AnalyzeOrgPolicyGovernedContainersRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+
+        client.analyze_org_policy_governed_containers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_analyze_org_policy_governed_assets_rest_bad_request(request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16491,6 +16471,46 @@ def test_analyze_org_policy_governed_assets_rest_bad_request(request_type=asset_
         req.return_value = response_value
         client.analyze_org_policy_governed_assets(request)
 
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(asset_service.AnalyzeOrgPolicyGovernedAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
+        req.return_value.content = return_value
+
+        request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+
+        client.analyze_org_policy_governed_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 def test_initialize_client_w_rest():
     client = AssetServiceClient(

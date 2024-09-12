@@ -1419,71 +1419,6 @@ def test_{{ method_name }}_rest_unset_required_fields():
     {% endif %}{# required_fields #}
 
 
-{% if not method.client_streaming %}
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_{{ method_name }}_rest_interceptors(null_interceptor):
-    transport = transports.{{ service.name }}RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.{{ service.name}}RestInterceptor(),
-        )
-    client = {{ service.client_name }}(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         {% if method.lro %}
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         {% endif %}
-         {% if not method.void %}
-         mock.patch.object(transports.{{ service.name }}RestInterceptor, "post_{{method.name|snake_case}}") as post, \
-         {% endif %}
-         mock.patch.object(transports.{{ service.name }}RestInterceptor, "pre_{{ method.name|snake_case }}") as pre:
-        pre.assert_not_called()
-        {% if not method.void %}
-        post.assert_not_called()
-        {% endif %}
-        {% if method.input.ident.is_proto_plus_type %}
-        pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
-        {% else %}
-        pb_message = {{ method.input.ident }}()
-        {% endif %}
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        {% if not method.void %}
-        req.return_value._content = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
-
-        {% if method.server_streaming %}
-        req.return_value._content = "[{}]".format(req.return_value._content)
-        {% endif %}
-
-        {% endif %}
-
-        request = {{ method.input.ident }}()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        {% if not method.void %}
-        post.return_value = {{ method.output.ident }}()
-        {% endif %}
-
-        client.{{ method_name }}(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        {% if not method.void %}
-        post.assert_called_once()
-        {% endif %}
-
-{% endif %}{# streaming #}
-
-
 {% if method.flattened_fields and not method.client_streaming %}
 def test_{{ method_name }}_rest_flattened():
     client = {{ service.client_name }}(
@@ -1943,6 +1878,7 @@ def test_unsupported_parameter_rest_asyncio():
 {% if 'rest' in transport %}
 {{ bad_request_test(service, method, transport, is_async) }}
 {{ call_success_test(service, method, transport, is_async) }}
+{{ inteceptor_class_test(service, method, transport, is_async) }}
 {% endif %}{# if 'rest' in transport #}
 {% endif %}{# is_rest_unsupported_method(method, is_async) == 'False' and method.http_options #}
 {% endfor %}{# for method in service.methods.values() #}
@@ -2325,3 +2261,89 @@ def test_initialize_client_w_{{transport_name}}():
 {% endfor %}{# method in service.methods.values() #}
 {% endif %}
 {% endmacro %}{# routing_parameter_test #}
+
+{# inteceptor_class_test generates tests for rest interceptors. #}
+{% macro inteceptor_class_test(service, method, transport, is_async) %}
+{% if not is_async %}{# TODO: Remove this guard once support for async rest interceptors is added. #}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = method.name|snake_case %}
+{% set async_method_prefix = "Async" if is_async else "" %}
+{{async_decorator}}
+@pytest.mark.parametrize("null_interceptor", [True, False])
+{{async_prefix}}def test_{{ method_name }}_{{transport_name}}_interceptors(null_interceptor):
+{% if 'grpc' in transport %}
+    raise NotImplementedError("gRPC is currently not supported for this test case.")
+{% else %}{# 'rest' in transport #}
+    transport = transports.{{async_method_prefix}}{{ service.name }}RestTransport(
+        credentials={{get_credentials(is_async)}},
+        interceptor=None if null_interceptor else transports.{{async_method_prefix}}{{ service.name}}RestInterceptor(),
+        )
+    client = {{ get_client(service, is_async) }}(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        {% if method.lro %}
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        {% endif %}
+        {% if not method.void %}
+        mock.patch.object(transports.{{async_method_prefix}}{{ service.name }}RestInterceptor, "post_{{method.name|snake_case}}") as post, \
+        {% endif %}
+        mock.patch.object(transports.{{async_method_prefix}}{{ service.name }}RestInterceptor, "pre_{{ method.name|snake_case }}") as pre:
+        pre.assert_not_called()
+        {% if not method.void %}
+        post.assert_not_called()
+        {% endif %}
+        {% if method.input.ident.is_proto_plus_type %}
+        pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
+        {% else %}
+        pb_message = {{ method.input.ident }}()
+        {% endif %}{# if method.input.ident.is_proto_plus_type #}
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        {% if not method.void %}
+        return_value = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
+
+        {% if method.server_streaming %}
+        {% if is_async %}
+        req.return_value.content.return_value = mock_async_gen(return_value)
+        {% else %}{# not is_async #}
+        req.return_value.iter_content = mock.Mock(return_value=iter(return_value))
+        {% endif %}{# end is_async #}
+        {% else %}{# not method.server_streaming #}
+        {% if is_async %}
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+        {% else %}{# not is_async #}
+        req.return_value.content = return_value
+        {% endif %}{# end is_async #}
+        {% endif %}{# end method.server_streaming #}
+        {% endif %}{# end not method.void #}
+
+        request = {{ method.input.ident }}()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        {% if not method.void %}
+        post.return_value = {{ method.output.ident }}()
+        {% endif %}
+
+        {{await_prefix}}client.{{ method_name }}(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        {% if not method.void %}
+        post.assert_called_once()
+        {% endif %}
+{% endif %}{# end 'grpc' in transport #}
+{% endif %}{# end not is_async #}
+{% endmacro%}
