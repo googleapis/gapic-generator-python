@@ -8634,6 +8634,54 @@ async def test_get_instance_rest_asyncio_call_success(request_type):
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
+    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
+        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_get_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.Instance.to_json(cloud_redis.Instance())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.GetInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.Instance()
+
+        await client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
 async def test_get_instance_auth_string_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
@@ -8704,6 +8752,54 @@ async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
     assert isinstance(response, cloud_redis.InstanceAuthString)
     assert response.auth_string == 'auth_string_value'
 
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_get_instance_auth_string_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
+    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
+        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance_auth_string") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_get_instance_auth_string") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.GetInstanceAuthStringRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.InstanceAuthString()
+
+        await client.get_instance_auth_string(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_create_instance_rest_asyncio_error():
