@@ -3296,7 +3296,6 @@ def test_generate_access_token_rest_bad_request(request_type=common.GenerateAcce
   common.GenerateAccessTokenRequest,
   dict,
 ])
-
 def test_generate_access_token_rest_call_success(request_type):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3323,6 +3322,7 @@ def test_generate_access_token_rest_call_success(request_type):
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.generate_access_token(request)
+
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
     assert response.access_token == 'access_token_value'
@@ -3353,7 +3353,6 @@ def test_generate_id_token_rest_bad_request(request_type=common.GenerateIdTokenR
   common.GenerateIdTokenRequest,
   dict,
 ])
-
 def test_generate_id_token_rest_call_success(request_type):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3380,6 +3379,7 @@ def test_generate_id_token_rest_call_success(request_type):
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.generate_id_token(request)
+
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
     assert response.token == 'token_value'
@@ -3410,7 +3410,6 @@ def test_sign_blob_rest_bad_request(request_type=common.SignBlobRequest):
   common.SignBlobRequest,
   dict,
 ])
-
 def test_sign_blob_rest_call_success(request_type):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3438,6 +3437,7 @@ def test_sign_blob_rest_call_success(request_type):
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.sign_blob(request)
+
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignBlobResponse)
     assert response.key_id == 'key_id_value'
@@ -3470,7 +3470,6 @@ def test_sign_jwt_rest_bad_request(request_type=common.SignJwtRequest):
   common.SignJwtRequest,
   dict,
 ])
-
 def test_sign_jwt_rest_call_success(request_type):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3498,6 +3497,7 @@ def test_sign_jwt_rest_call_success(request_type):
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         response = client.sign_jwt(request)
+
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignJwtResponse)
     assert response.key_id == 'key_id_value'
