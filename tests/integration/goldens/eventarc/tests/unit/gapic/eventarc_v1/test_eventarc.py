@@ -8398,26 +8398,6 @@ def test_get_trigger_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_trigger_rest_bad_request(transport: str = 'rest', request_type=eventarc.GetTriggerRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/triggers/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_trigger(request)
-
-
 def test_get_trigger_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8660,26 +8640,6 @@ def test_list_triggers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_list_triggers_rest_bad_request(transport: str = 'rest', request_type=eventarc.ListTriggersRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_triggers(request)
 
 
 def test_list_triggers_rest_flattened():
@@ -9070,26 +9030,6 @@ def test_create_trigger_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_trigger_rest_bad_request(transport: str = 'rest', request_type=eventarc.CreateTriggerRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_trigger(request)
-
-
 def test_create_trigger_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9403,26 +9343,6 @@ def test_update_trigger_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_trigger_rest_bad_request(transport: str = 'rest', request_type=eventarc.UpdateTriggerRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'trigger': {'name': 'projects/sample1/locations/sample2/triggers/sample3'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_trigger(request)
-
-
 def test_update_trigger_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9673,26 +9593,6 @@ def test_delete_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_delete_trigger_rest_bad_request(transport: str = 'rest', request_type=eventarc.DeleteTriggerRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/triggers/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_trigger(request)
 
 
 def test_delete_trigger_rest_flattened():
@@ -9946,26 +9846,6 @@ def test_get_channel_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_channel_rest_bad_request(transport: str = 'rest', request_type=eventarc.GetChannelRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/channels/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_channel(request)
-
-
 def test_get_channel_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10208,26 +10088,6 @@ def test_list_channels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_list_channels_rest_bad_request(transport: str = 'rest', request_type=eventarc.ListChannelsRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_channels(request)
 
 
 def test_list_channels_rest_flattened():
@@ -10618,26 +10478,6 @@ def test_create_channel_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_channel_rest_bad_request(transport: str = 'rest', request_type=eventarc.CreateChannelRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_channel(request)
-
-
 def test_create_channel_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10951,26 +10791,6 @@ def test_update_channel_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_channel_rest_bad_request(transport: str = 'rest', request_type=eventarc.UpdateChannelRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'channel': {'name': 'projects/sample1/locations/sample2/channels/sample3'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_channel(request)
-
-
 def test_update_channel_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11221,26 +11041,6 @@ def test_delete_channel_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_delete_channel_rest_bad_request(transport: str = 'rest', request_type=eventarc.DeleteChannelRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/channels/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_channel(request)
-
-
 def test_delete_channel_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11479,26 +11279,6 @@ def test_get_provider_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_get_provider_rest_bad_request(transport: str = 'rest', request_type=eventarc.GetProviderRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/providers/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_provider(request)
 
 
 def test_get_provider_rest_flattened():
@@ -11743,26 +11523,6 @@ def test_list_providers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_list_providers_rest_bad_request(transport: str = 'rest', request_type=eventarc.ListProvidersRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_providers(request)
 
 
 def test_list_providers_rest_flattened():
@@ -12073,26 +11833,6 @@ def test_get_channel_connection_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_channel_connection_rest_bad_request(transport: str = 'rest', request_type=eventarc.GetChannelConnectionRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/channelConnections/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_channel_connection(request)
-
-
 def test_get_channel_connection_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12335,26 +12075,6 @@ def test_list_channel_connections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_list_channel_connections_rest_bad_request(transport: str = 'rest', request_type=eventarc.ListChannelConnectionsRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_channel_connections(request)
 
 
 def test_list_channel_connections_rest_flattened():
@@ -12734,26 +12454,6 @@ def test_create_channel_connection_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_channel_connection_rest_bad_request(transport: str = 'rest', request_type=eventarc.CreateChannelConnectionRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_channel_connection(request)
-
-
 def test_create_channel_connection_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12991,26 +12691,6 @@ def test_delete_channel_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_delete_channel_connection_rest_bad_request(transport: str = 'rest', request_type=eventarc.DeleteChannelConnectionRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/channelConnections/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_channel_connection(request)
 
 
 def test_delete_channel_connection_rest_flattened():
@@ -13251,26 +12931,6 @@ def test_get_google_channel_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
-
-
-def test_get_google_channel_config_rest_bad_request(transport: str = 'rest', request_type=eventarc.GetGoogleChannelConfigRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_google_channel_config(request)
 
 
 def test_get_google_channel_config_rest_flattened():
@@ -13577,26 +13237,6 @@ def test_update_google_channel_config_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_google_channel_config_rest_bad_request(transport: str = 'rest', request_type=eventarc.UpdateGoogleChannelConfigRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_google_channel_config(request)
-
-
 def test_update_google_channel_config_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13774,6 +13414,384 @@ def test_transport_kind_rest():
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
+
+
+def test_get_trigger_rest_bad_request(request_type=eventarc.GetTriggerRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/triggers/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_trigger(request)
+
+
+def test_list_triggers_rest_bad_request(request_type=eventarc.ListTriggersRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_triggers(request)
+
+
+def test_create_trigger_rest_bad_request(request_type=eventarc.CreateTriggerRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_trigger(request)
+
+
+def test_update_trigger_rest_bad_request(request_type=eventarc.UpdateTriggerRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'trigger': {'name': 'projects/sample1/locations/sample2/triggers/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_trigger(request)
+
+
+def test_delete_trigger_rest_bad_request(request_type=eventarc.DeleteTriggerRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/triggers/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_trigger(request)
+
+
+def test_get_channel_rest_bad_request(request_type=eventarc.GetChannelRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/channels/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_channel(request)
+
+
+def test_list_channels_rest_bad_request(request_type=eventarc.ListChannelsRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_channels(request)
+
+
+def test_create_channel_rest_bad_request(request_type=eventarc.CreateChannelRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_channel(request)
+
+
+def test_update_channel_rest_bad_request(request_type=eventarc.UpdateChannelRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'channel': {'name': 'projects/sample1/locations/sample2/channels/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_channel(request)
+
+
+def test_delete_channel_rest_bad_request(request_type=eventarc.DeleteChannelRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/channels/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_channel(request)
+
+
+def test_get_provider_rest_bad_request(request_type=eventarc.GetProviderRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/providers/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_provider(request)
+
+
+def test_list_providers_rest_bad_request(request_type=eventarc.ListProvidersRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_providers(request)
+
+
+def test_get_channel_connection_rest_bad_request(request_type=eventarc.GetChannelConnectionRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/channelConnections/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_channel_connection(request)
+
+
+def test_list_channel_connections_rest_bad_request(request_type=eventarc.ListChannelConnectionsRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_channel_connections(request)
+
+
+def test_create_channel_connection_rest_bad_request(request_type=eventarc.CreateChannelConnectionRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_channel_connection(request)
+
+
+def test_delete_channel_connection_rest_bad_request(request_type=eventarc.DeleteChannelConnectionRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/channelConnections/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_channel_connection(request)
+
+
+def test_get_google_channel_config_rest_bad_request(request_type=eventarc.GetGoogleChannelConfigRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_google_channel_config(request)
+
+
+def test_update_google_channel_config_rest_bad_request(request_type=eventarc.UpdateGoogleChannelConfigRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_google_channel_config(request)
 
 
 def test_initialize_client_w_rest():

@@ -55,7 +55,8 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
-    def __init__(self, *,
+    def __init__(self,
+            *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: Optional[ga_credentials_async.Credentials] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
