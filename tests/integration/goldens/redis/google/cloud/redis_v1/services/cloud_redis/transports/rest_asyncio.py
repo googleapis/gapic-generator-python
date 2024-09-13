@@ -83,7 +83,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
-    def __init__(self, *,
+    def __init__(self,
+            *,
             host: str = 'redis.googleapis.com',
             credentials: Optional[ga_credentials_async.Credentials] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
