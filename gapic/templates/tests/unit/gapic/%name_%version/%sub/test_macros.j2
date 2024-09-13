@@ -1989,7 +1989,6 @@ def test_unsupported_parameter_rest_asyncio():
  # which are not supported for rest transport.
 #}
 {% macro rest_method_not_implemented_error(service, method, transport, is_async) %}
-{% if not is_async %}{# TODO(b/362949446): Remove this guard once a not implemented __call__ class method is added to async rest for every wrapper.Method. #}
 {% set await_prefix = get_await_prefix(is_async) %}
 {% set async_prefix = get_async_prefix(is_async) %}
 {% set async_decorator = get_async_decorator(is_async) %}
@@ -2015,7 +2014,6 @@ def test_unsupported_parameter_rest_asyncio():
         in str(not_implemented_error.value)
     )
 
-{% endif %}{# if is_async #}
 {% endmacro %}
 
 {# initialize_client_with_transport_test adds coverage for transport clients.

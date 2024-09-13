@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 try:
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession  # type: ignore
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
 except ImportError as e:  # pragma: NO COVER
     raise ImportError("async rest transport requires google.auth >= 2.x.x") from e
 
@@ -24,6 +24,7 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 
+import dataclasses
 from typing import Any, Callable, Tuple, Optional, Sequence, Union
 
 
@@ -35,11 +36,21 @@ from .rest_base import _BaseCloudRedisRestTransport
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
+try:
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
+
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
     rest_version=None,
 )
+
+@dataclasses.dataclass
+class AsyncCloudRedisRestStub:
+    _session: AsyncAuthorizedSession
+    _host: str
 
 class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     """Asynchronous REST backend transport for CloudRedis.
@@ -179,71 +190,225 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
+    class _CreateInstance(_BaseCloudRedisRestTransport._BaseCreateInstance, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.CreateInstance")
+
+        async def __call__(self,
+                    request: cloud_redis.CreateInstanceRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method CreateInstance is not available over REST transport"
+                )
+
+    class _DeleteInstance(_BaseCloudRedisRestTransport._BaseDeleteInstance, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.DeleteInstance")
+
+        async def __call__(self,
+                    request: cloud_redis.DeleteInstanceRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method DeleteInstance is not available over REST transport"
+                )
+
+    class _ExportInstance(_BaseCloudRedisRestTransport._BaseExportInstance, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.ExportInstance")
+
+        async def __call__(self,
+                    request: cloud_redis.ExportInstanceRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method ExportInstance is not available over REST transport"
+                )
+
+    class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.FailoverInstance")
+
+        async def __call__(self,
+                    request: cloud_redis.FailoverInstanceRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method FailoverInstance is not available over REST transport"
+                )
+
+    class _GetInstance(_BaseCloudRedisRestTransport._BaseGetInstance, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.GetInstance")
+
+        async def __call__(self,
+                    request: cloud_redis.GetInstanceRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method GetInstance is not available over REST transport"
+                )
+
+    class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.GetInstanceAuthString")
+
+        async def __call__(self,
+                    request: cloud_redis.GetInstanceAuthStringRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method GetInstanceAuthString is not available over REST transport"
+                )
+
+    class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.ImportInstance")
+
+        async def __call__(self,
+                    request: cloud_redis.ImportInstanceRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method ImportInstance is not available over REST transport"
+                )
+
+    class _ListInstances(_BaseCloudRedisRestTransport._BaseListInstances, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.ListInstances")
+
+        async def __call__(self,
+                    request: cloud_redis.ListInstancesRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method ListInstances is not available over REST transport"
+                )
+
+    class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.RescheduleMaintenance")
+
+        async def __call__(self,
+                    request: cloud_redis.RescheduleMaintenanceRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method RescheduleMaintenance is not available over REST transport"
+                )
+
+    class _UpdateInstance(_BaseCloudRedisRestTransport._BaseUpdateInstance, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.UpdateInstance")
+
+        async def __call__(self,
+                    request: cloud_redis.UpdateInstanceRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method UpdateInstance is not available over REST transport"
+                )
+
+    class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, AsyncCloudRedisRestStub):
+        def __hash__(self):
+            return hash("AsyncCloudRedisRestTransport.UpgradeInstance")
+
+        async def __call__(self,
+                    request: cloud_redis.UpgradeInstanceRequest, *,
+                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                    timeout: Optional[float]=None,
+                    metadata: Sequence[Tuple[str, str]]=(),
+                    ) -> None:
+                raise NotImplementedError(
+                    "Method UpgradeInstance is not available over REST transport"
+                )
+
     @property
     def create_instance(self) -> Callable[
             [cloud_redis.CreateInstanceRequest],
             operations_pb2.Operation]:
-        return  # type: ignore
+        return self._CreateInstance(self._session, self._host)  # type: ignore
 
     @property
     def delete_instance(self) -> Callable[
             [cloud_redis.DeleteInstanceRequest],
             operations_pb2.Operation]:
-        return  # type: ignore
+        return self._DeleteInstance(self._session, self._host)  # type: ignore
 
     @property
     def export_instance(self) -> Callable[
             [cloud_redis.ExportInstanceRequest],
             operations_pb2.Operation]:
-        return  # type: ignore
+        return self._ExportInstance(self._session, self._host)  # type: ignore
 
     @property
     def failover_instance(self) -> Callable[
             [cloud_redis.FailoverInstanceRequest],
             operations_pb2.Operation]:
-        return  # type: ignore
+        return self._FailoverInstance(self._session, self._host)  # type: ignore
 
     @property
     def get_instance(self) -> Callable[
             [cloud_redis.GetInstanceRequest],
             cloud_redis.Instance]:
-        return  # type: ignore
+        return self._GetInstance(self._session, self._host)  # type: ignore
 
     @property
     def get_instance_auth_string(self) -> Callable[
             [cloud_redis.GetInstanceAuthStringRequest],
             cloud_redis.InstanceAuthString]:
-        return  # type: ignore
+        return self._GetInstanceAuthString(self._session, self._host)  # type: ignore
 
     @property
     def import_instance(self) -> Callable[
             [cloud_redis.ImportInstanceRequest],
             operations_pb2.Operation]:
-        return  # type: ignore
+        return self._ImportInstance(self._session, self._host)  # type: ignore
 
     @property
     def list_instances(self) -> Callable[
             [cloud_redis.ListInstancesRequest],
             cloud_redis.ListInstancesResponse]:
-        return  # type: ignore
+        return self._ListInstances(self._session, self._host)  # type: ignore
 
     @property
     def reschedule_maintenance(self) -> Callable[
             [cloud_redis.RescheduleMaintenanceRequest],
             operations_pb2.Operation]:
-        return  # type: ignore
+        return self._RescheduleMaintenance(self._session, self._host)  # type: ignore
 
     @property
     def update_instance(self) -> Callable[
             [cloud_redis.UpdateInstanceRequest],
             operations_pb2.Operation]:
-        return  # type: ignore
+        return self._UpdateInstance(self._session, self._host)  # type: ignore
 
     @property
     def upgrade_instance(self) -> Callable[
             [cloud_redis.UpgradeInstanceRequest],
             operations_pb2.Operation]:
-        return  # type: ignore
+        return self._UpgradeInstance(self._session, self._host)  # type: ignore
 
     @property
     def kind(self) -> str:
