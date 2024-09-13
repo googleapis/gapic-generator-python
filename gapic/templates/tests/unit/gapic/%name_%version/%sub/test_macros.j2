@@ -2013,6 +2013,7 @@ def test_initialize_client_w_{{transport_name}}():
 
 {# rest_method_bad_request_test generates tests for rest methods
  # which raise a google.api.core.exceptions.BadRequest error.
+ # TODO(https://github.com/googleapis/gapic-generator-python/issues/2157): Refactor this macro to include `gRPC` coverage.
 #}
 {% macro rest_method_bad_request_test(service, method, transport, is_async) %}
 {% set await_prefix = get_await_prefix(is_async) %}
