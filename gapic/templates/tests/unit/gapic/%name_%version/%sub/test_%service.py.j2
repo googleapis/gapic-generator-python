@@ -1053,6 +1053,7 @@ def test_transport_adc(transport_class):
 {% endfor %}
 {% for conf in configs %}
 {{ test_macros.transport_kind_test(**conf) }}
+
 {{ test_macros.empty_call_test(**conf) }}
 {% endfor %}
 
