@@ -30,6 +30,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import copy
 import dataclasses
+import functools
 import json
 import keyword
 import re
@@ -52,6 +53,12 @@ from google.protobuf.json_format import MessageToDict  # type: ignore
 from gapic import utils
 from gapic.schema import metadata
 from gapic.utils import uri_sample
+
+
+# This is the value for the `maxsize` argument of @functools.lru_cache
+# https://docs.python.org/3/library/functools.html#functools.lru_cache
+# This represents the number of recent function calls to store.
+ROUTING_PARAM_REGEX_CACHE_SIZE = 32
 
 
 @dataclasses.dataclass(frozen=True)
@@ -1035,6 +1042,8 @@ class RoutingParameter:
         """
         return re.compile(f"^{self._convert_to_regex(path_template)}$")
 
+    # Use caching to avoid repeated computation
+    @functools.lru_cache(maxsize=ROUTING_PARAM_REGEX_CACHE_SIZE)
     def to_regex(self) -> Pattern:
         return self._to_regex(self.path_template)
 
@@ -1114,17 +1123,18 @@ class RoutingRule:
                 # (via the `path_template` field or via the `field` field when
                 # `path_template` is not provided), the "last one wins" rule
                 # determines which parameter gets used. See https://google.aip.dev/client-libraries/4222.
+                routing_parameter_key = routing_param.key
                 if routing_param.path_template:
                     routing_param_regex = routing_param.to_regex()
                     regex_match = routing_param_regex.match(
                         request_field_value
                     )
                     if regex_match:
-                        header_params[routing_param.key] = regex_match.group(
-                            routing_param.key
+                        header_params[routing_parameter_key] = regex_match.group(
+                            routing_parameter_key
                         )
                 else:  # No need to match
-                    header_params[routing_param.key] = request_field_value
+                    header_params[routing_parameter_key] = request_field_value
         return header_params
 
 
