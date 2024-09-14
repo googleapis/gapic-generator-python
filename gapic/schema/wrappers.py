@@ -1110,10 +1110,10 @@ class RoutingRule:
             # Only resolve the header for routing parameter fields which are populated in the request
             if request_field_value is not None:
                 # If there is a path_template for a given routing parameter field, the value of the field must match
-                # If multiple Routing Parameters describe the same key
+                # If multiple `routing_param`s describe the same key
                 # (via the `path_template` field or via the `field` field when
-                # `path_template` is not provided), "last one wins" rule
-                # determines which Parameter gets used.
+                # `path_template` is not provided), the "last one wins" rule
+                # determines which parameter gets used. See https://google.aip.dev/client-libraries/4222.
                 if routing_param.path_template:
                     routing_param_regex = routing_param.to_regex()
                     regex_match = routing_param_regex.match(
