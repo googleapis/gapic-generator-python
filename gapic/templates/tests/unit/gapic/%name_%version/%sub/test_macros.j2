@@ -1799,7 +1799,7 @@ def test_{{ method_name }}_rest_no_http_options():
 {% endmacro %}
 
 
-{% macro method_call_test(test_name, method, service, api, transport, request, is_async=False) %}
+{% macro method_call_test_generic(test_name, method, service, api, transport, request, is_async=False) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
 {% with method_name = (method.name + ("_unary" if method.operation_service else "")) | snake_case %}
 {% set async_method_prefix = "async " if is_async else "" %}
@@ -1905,7 +1905,7 @@ def test_transport_kind_{{ transport_name }}():
 {% if not method.client_streaming %}
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-{{ method_call_test("empty_call", method, service, api, transport, request=None, is_async=is_async) }}
+{{ method_call_test_generic("empty_call", method, service, api, transport, request=None, is_async=is_async) }}
 {% endif %}{# not method.client_streaming #}
 {% endfor %}{# method in service.methods.values() #}
 {% endif %}{# 'rest' not in transport #}
