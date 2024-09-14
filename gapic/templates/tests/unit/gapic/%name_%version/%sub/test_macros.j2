@@ -2083,8 +2083,8 @@ def test_initialize_client_w_{{transport_name}}():
  # (method.extended_lro and not full_extended_lro)
 #}
 {% set method_output = method.output %}
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2143): Update the guard below as support we add for each method. Remove it once we have
- # all the methods supported in async rest transport that are supported in sync rest transport.
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2143): Update the guard below as we add support for each method, and keep it in sync with the guard in
+ # `rest_required_tests`, which should be the exact opposite. Remove it once we have all the methods supported in async rest transport that are supported in sync rest transport.
  #}
 {% if not (method.server_streaming or method.lro or method.extended_lro or method.paged_result_field)%}
 {{async_decorator}}
