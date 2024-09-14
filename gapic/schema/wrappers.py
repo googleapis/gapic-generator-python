@@ -1043,6 +1043,9 @@ class RoutingParameter:
         return self._to_regex(self.path_template)
 
     @property
+    # Use caching to avoid repeated computation
+    # https://docs.python.org/3/library/functools.html#functools.cache
+    @functools.cache
     def key(self) -> Union[str, None]:
         if self.path_template == "":
             return self.field
