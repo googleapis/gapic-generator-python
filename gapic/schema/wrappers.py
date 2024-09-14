@@ -1077,7 +1077,8 @@ class RoutingRule:
     @classmethod
     def resolve(cls, routing_rule: routing_pb2.RoutingRule, request: Union[dict, str]) -> dict:
         """Resolves the routing header which should be sent along with the request.
-        This function performs dynamic header resolution, identical to what's in `client.py.j2`.
+        This function performs dynamic header resolution, identical to what's in `_client_macros.j2`.
+        https://github.com/googleapis/gapic-generator-python/blob/4c5de8791795f8101f6ec66f80b8a8e5e9a21822/gapic/templates/%25namespace/%25name_%25version/%25sub/services/%25service/_client_macros.j2#L150-L164
         The routing header is determined based on the given routing rule and request.
         See the following link for more information on explicit routing headers:
         https://google.aip.dev/client-libraries/4222#explicit-routing-headers-googleapirouting
