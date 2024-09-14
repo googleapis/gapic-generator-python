@@ -55,12 +55,6 @@ from gapic.schema import metadata
 from gapic.utils import uri_sample
 
 
-# This is the value for the `maxsize` argument of @functools.lru_cache
-# https://docs.python.org/3/library/functools.html#functools.lru_cache
-# This represents the number of recent function calls to store.
-ROUTING_PARAM_REGEX_CACHE_SIZE = 32
-
-
 @dataclasses.dataclass(frozen=True)
 class Field:
     """Description of a field."""
@@ -1043,7 +1037,8 @@ class RoutingParameter:
         return re.compile(f"^{self._convert_to_regex(path_template)}$")
 
     # Use caching to avoid repeated computation
-    @functools.lru_cache(maxsize=ROUTING_PARAM_REGEX_CACHE_SIZE)
+    # https://docs.python.org/3/library/functools.html#functools.cache
+    @functools.cache
     def to_regex(self) -> Pattern:
         return self._to_regex(self.path_template)
 
