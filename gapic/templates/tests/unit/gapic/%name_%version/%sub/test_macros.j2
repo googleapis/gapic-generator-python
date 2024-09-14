@@ -1799,6 +1799,12 @@ def test_{{ method_name }}_rest_no_http_options():
 {% endmacro %}
 
 
+{#
+    This is a generic macro for testing method calls. Ideally this macro can be used to avoid duplication
+    in Jinja templates. If this macro cannot be custimized for a specific method call test, consider
+    creating a new macro with the name `method_call_test_<with_customization>` for the macro which supports
+    a more customized method call.
+#}
 {% macro method_call_test_generic(test_name, method, service, api, transport, request, is_async=False) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
 {% with method_name = (method.name + ("_unary" if method.operation_service else "")) | snake_case %}
