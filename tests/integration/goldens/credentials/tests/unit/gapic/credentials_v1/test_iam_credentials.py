@@ -3316,6 +3316,7 @@ def test_generate_access_token_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = common.GenerateAccessTokenResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -3373,6 +3374,7 @@ def test_generate_id_token_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = common.GenerateIdTokenResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -3431,6 +3433,7 @@ def test_sign_blob_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = common.SignBlobResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -3441,7 +3444,6 @@ def test_sign_blob_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignBlobResponse)
     assert response.key_id == 'key_id_value'
-
     assert response.signed_blob == b'signed_blob_blob'
 
 
@@ -3491,6 +3493,7 @@ def test_sign_jwt_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = common.SignJwtResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -3501,7 +3504,6 @@ def test_sign_jwt_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignJwtResponse)
     assert response.key_id == 'key_id_value'
-
     assert response.signed_jwt == 'signed_jwt_value'
 
 
