@@ -10940,7 +10940,7 @@ def test_transport_kind_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_buckets_empty_call():
+def test_list_buckets_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -10959,7 +10959,7 @@ def test_list_buckets_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_bucket_empty_call():
+def test_get_bucket_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -10978,7 +10978,7 @@ def test_get_bucket_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_bucket_async_empty_call():
+def test_create_bucket_async_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -10997,7 +10997,7 @@ def test_create_bucket_async_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_bucket_async_empty_call():
+def test_update_bucket_async_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11016,7 +11016,7 @@ def test_update_bucket_async_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_bucket_empty_call():
+def test_create_bucket_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11035,7 +11035,7 @@ def test_create_bucket_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_bucket_empty_call():
+def test_update_bucket_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11054,7 +11054,7 @@ def test_update_bucket_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_bucket_empty_call():
+def test_delete_bucket_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11073,7 +11073,7 @@ def test_delete_bucket_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_undelete_bucket_empty_call():
+def test_undelete_bucket_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11092,7 +11092,7 @@ def test_undelete_bucket_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_views_empty_call():
+def test_list_views_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11111,7 +11111,7 @@ def test_list_views_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_view_empty_call():
+def test_get_view_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11130,7 +11130,7 @@ def test_get_view_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_view_empty_call():
+def test_create_view_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11149,7 +11149,7 @@ def test_create_view_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_view_empty_call():
+def test_update_view_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11168,7 +11168,7 @@ def test_update_view_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_view_empty_call():
+def test_delete_view_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11187,7 +11187,7 @@ def test_delete_view_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_sinks_empty_call():
+def test_list_sinks_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11206,7 +11206,7 @@ def test_list_sinks_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_sink_empty_call():
+def test_get_sink_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11225,7 +11225,7 @@ def test_get_sink_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_sink_empty_call():
+def test_create_sink_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11244,7 +11244,7 @@ def test_create_sink_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_sink_empty_call():
+def test_update_sink_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11263,7 +11263,7 @@ def test_update_sink_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_sink_empty_call():
+def test_delete_sink_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11282,7 +11282,7 @@ def test_delete_sink_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_link_empty_call():
+def test_create_link_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11301,7 +11301,7 @@ def test_create_link_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_link_empty_call():
+def test_delete_link_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11320,7 +11320,7 @@ def test_delete_link_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_links_empty_call():
+def test_list_links_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11339,7 +11339,7 @@ def test_list_links_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_link_empty_call():
+def test_get_link_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11358,7 +11358,7 @@ def test_get_link_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_exclusions_empty_call():
+def test_list_exclusions_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11377,7 +11377,7 @@ def test_list_exclusions_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_exclusion_empty_call():
+def test_get_exclusion_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11396,7 +11396,7 @@ def test_get_exclusion_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_exclusion_empty_call():
+def test_create_exclusion_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11415,7 +11415,7 @@ def test_create_exclusion_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_exclusion_empty_call():
+def test_update_exclusion_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11434,7 +11434,7 @@ def test_update_exclusion_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_exclusion_empty_call():
+def test_delete_exclusion_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11453,7 +11453,7 @@ def test_delete_exclusion_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_cmek_settings_empty_call():
+def test_get_cmek_settings_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11472,7 +11472,7 @@ def test_get_cmek_settings_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_cmek_settings_empty_call():
+def test_update_cmek_settings_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11491,7 +11491,7 @@ def test_update_cmek_settings_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_settings_empty_call():
+def test_get_settings_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11510,7 +11510,7 @@ def test_get_settings_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_settings_empty_call():
+def test_update_settings_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11529,7 +11529,7 @@ def test_update_settings_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_copy_log_entries_empty_call():
+def test_copy_log_entries_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -11557,7 +11557,7 @@ def test_transport_kind_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_buckets_empty_call_async():
+async def test_list_buckets_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11580,7 +11580,7 @@ async def test_list_buckets_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_bucket_empty_call_async():
+async def test_get_bucket_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11609,7 +11609,7 @@ async def test_get_bucket_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_bucket_async_empty_call_async():
+async def test_create_bucket_async_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11632,7 +11632,7 @@ async def test_create_bucket_async_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_bucket_async_empty_call_async():
+async def test_update_bucket_async_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11655,7 +11655,7 @@ async def test_update_bucket_async_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_bucket_empty_call_async():
+async def test_create_bucket_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11684,7 +11684,7 @@ async def test_create_bucket_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_bucket_empty_call_async():
+async def test_update_bucket_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11713,7 +11713,7 @@ async def test_update_bucket_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_bucket_empty_call_async():
+async def test_delete_bucket_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11734,7 +11734,7 @@ async def test_delete_bucket_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_undelete_bucket_empty_call_async():
+async def test_undelete_bucket_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11755,7 +11755,7 @@ async def test_undelete_bucket_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_views_empty_call_async():
+async def test_list_views_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11778,7 +11778,7 @@ async def test_list_views_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_view_empty_call_async():
+async def test_get_view_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11803,7 +11803,7 @@ async def test_get_view_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_view_empty_call_async():
+async def test_create_view_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11828,7 +11828,7 @@ async def test_create_view_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_view_empty_call_async():
+async def test_update_view_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11853,7 +11853,7 @@ async def test_update_view_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_view_empty_call_async():
+async def test_delete_view_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11874,7 +11874,7 @@ async def test_delete_view_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_sinks_empty_call_async():
+async def test_list_sinks_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11897,7 +11897,7 @@ async def test_list_sinks_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_sink_empty_call_async():
+async def test_get_sink_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11927,7 +11927,7 @@ async def test_get_sink_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_sink_empty_call_async():
+async def test_create_sink_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11957,7 +11957,7 @@ async def test_create_sink_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_sink_empty_call_async():
+async def test_update_sink_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -11987,7 +11987,7 @@ async def test_update_sink_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_sink_empty_call_async():
+async def test_delete_sink_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12008,7 +12008,7 @@ async def test_delete_sink_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_link_empty_call_async():
+async def test_create_link_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12031,7 +12031,7 @@ async def test_create_link_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_link_empty_call_async():
+async def test_delete_link_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12054,7 +12054,7 @@ async def test_delete_link_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_links_empty_call_async():
+async def test_list_links_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12077,7 +12077,7 @@ async def test_list_links_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_link_empty_call_async():
+async def test_get_link_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12102,7 +12102,7 @@ async def test_get_link_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_exclusions_empty_call_async():
+async def test_list_exclusions_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12125,7 +12125,7 @@ async def test_list_exclusions_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_exclusion_empty_call_async():
+async def test_get_exclusion_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12151,7 +12151,7 @@ async def test_get_exclusion_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_exclusion_empty_call_async():
+async def test_create_exclusion_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12177,7 +12177,7 @@ async def test_create_exclusion_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_exclusion_empty_call_async():
+async def test_update_exclusion_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12203,7 +12203,7 @@ async def test_update_exclusion_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_exclusion_empty_call_async():
+async def test_delete_exclusion_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12224,7 +12224,7 @@ async def test_delete_exclusion_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_cmek_settings_empty_call_async():
+async def test_get_cmek_settings_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12250,7 +12250,7 @@ async def test_get_cmek_settings_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_cmek_settings_empty_call_async():
+async def test_update_cmek_settings_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12276,7 +12276,7 @@ async def test_update_cmek_settings_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_settings_empty_call_async():
+async def test_get_settings_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12303,7 +12303,7 @@ async def test_get_settings_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_settings_empty_call_async():
+async def test_update_settings_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -12330,7 +12330,7 @@ async def test_update_settings_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_copy_log_entries_empty_call_async():
+async def test_copy_log_entries_empty_call_grpc_asyncio():
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )

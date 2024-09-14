@@ -2899,7 +2899,7 @@ def test_transport_kind_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_log_empty_call():
+def test_delete_log_empty_call_grpc():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -2918,7 +2918,7 @@ def test_delete_log_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_write_log_entries_empty_call():
+def test_write_log_entries_empty_call_grpc():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -2937,7 +2937,7 @@ def test_write_log_entries_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_log_entries_empty_call():
+def test_list_log_entries_empty_call_grpc():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -2956,7 +2956,7 @@ def test_list_log_entries_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_monitored_resource_descriptors_empty_call():
+def test_list_monitored_resource_descriptors_empty_call_grpc():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -2975,7 +2975,7 @@ def test_list_monitored_resource_descriptors_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_logs_empty_call():
+def test_list_logs_empty_call_grpc():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -3003,7 +3003,7 @@ def test_transport_kind_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_log_empty_call_async():
+async def test_delete_log_empty_call_grpc_asyncio():
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -3024,7 +3024,7 @@ async def test_delete_log_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_write_log_entries_empty_call_async():
+async def test_write_log_entries_empty_call_grpc_asyncio():
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -3046,7 +3046,7 @@ async def test_write_log_entries_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_log_entries_empty_call_async():
+async def test_list_log_entries_empty_call_grpc_asyncio():
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -3069,7 +3069,7 @@ async def test_list_log_entries_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_monitored_resource_descriptors_empty_call_async():
+async def test_list_monitored_resource_descriptors_empty_call_grpc_asyncio():
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -3092,7 +3092,7 @@ async def test_list_monitored_resource_descriptors_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_logs_empty_call_async():
+async def test_list_logs_empty_call_grpc_asyncio():
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )

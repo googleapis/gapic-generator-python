@@ -2689,7 +2689,7 @@ def test_transport_kind_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_log_metrics_empty_call():
+def test_list_log_metrics_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -2708,7 +2708,7 @@ def test_list_log_metrics_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_log_metric_empty_call():
+def test_get_log_metric_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -2727,7 +2727,7 @@ def test_get_log_metric_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_log_metric_empty_call():
+def test_create_log_metric_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -2746,7 +2746,7 @@ def test_create_log_metric_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_log_metric_empty_call():
+def test_update_log_metric_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -2765,7 +2765,7 @@ def test_update_log_metric_empty_call():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_log_metric_empty_call():
+def test_delete_log_metric_empty_call_grpc():
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -2793,7 +2793,7 @@ def test_transport_kind_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_log_metrics_empty_call_async():
+async def test_list_log_metrics_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -2816,7 +2816,7 @@ async def test_list_log_metrics_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_log_metric_empty_call_async():
+async def test_get_log_metric_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -2845,7 +2845,7 @@ async def test_get_log_metric_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_log_metric_empty_call_async():
+async def test_create_log_metric_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -2874,7 +2874,7 @@ async def test_create_log_metric_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_log_metric_empty_call_async():
+async def test_update_log_metric_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -2903,7 +2903,7 @@ async def test_update_log_metric_empty_call_async():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_log_metric_empty_call_async():
+async def test_delete_log_metric_empty_call_grpc_asyncio():
     client = MetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
     )

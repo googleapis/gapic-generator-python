@@ -1799,14 +1799,14 @@ def test_{{ method_name }}_rest_no_http_options():
 {% endmacro %}
 
 
-{% macro method_call_test(test_name, method, service, api, request, is_async=False) %}
+{% macro method_call_test(test_name, method, service, api, transport, request, is_async=False) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
 {% with method_name = (method.name + ("_unary" if method.operation_service else "")) | snake_case %}
 {% set async_method_prefix = "async " if is_async else "" %}
-{% set async_method_suffix = "_async" if is_async else "" %}
 {% if is_async %}
 @pytest.mark.asyncio
 {% endif %}{# is_async #}
-{{ async_method_prefix }}def test_{{ method_name }}_{{ test_name }}{{ async_method_suffix }}():
+{{ async_method_prefix }}def test_{{ method_name }}_{{ test_name }}_{{transport_name}}():
     client = {{ get_client(service=service, is_async=is_async) }}(
         credentials={{ get_credentials(is_async=is_async) }},
     )
@@ -1896,13 +1896,19 @@ def test_transport_kind_{{ transport_name }}():
 {% endmacro %}{# transport_kind_test #}
 
 {% macro empty_call_test(service, api, transport, is_async) %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2159): 
+  Currently this macro only supports gRPC. It should be updated to support REST
+  transport as well.
+#}
+{% if 'rest' not in transport %}
 {% for method in service.methods.values() %}{# method #}
 {% if not method.client_streaming %}
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-{{ method_call_test("empty_call", method, service, api, request=None, is_async=is_async) }}
+{{ method_call_test("empty_call", method, service, api, transport, request=None, is_async=is_async) }}
 {% endif %}{# not method.client_streaming #}
 {% endfor %}{# method in service.methods.values() #}
+{% endif %}{# 'rest' not in transport #}
 {% endmacro %}{# empty_call_test #}
 
 {% macro get_uuid4_re() -%}
