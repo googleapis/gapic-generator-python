@@ -937,7 +937,6 @@ async def test_generate_access_token_async(transport: str = 'grpc_asyncio', requ
 async def test_generate_access_token_async_from_dict():
     await test_generate_access_token_async(request_type=dict)
 
-
 def test_generate_access_token_field_headers():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1274,7 +1273,6 @@ async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_
 @pytest.mark.asyncio
 async def test_generate_id_token_async_from_dict():
     await test_generate_id_token_async(request_type=dict)
-
 
 def test_generate_id_token_field_headers():
     client = IAMCredentialsClient(
@@ -1619,7 +1617,6 @@ async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=com
 async def test_sign_blob_async_from_dict():
     await test_sign_blob_async(request_type=dict)
 
-
 def test_sign_blob_field_headers():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1954,7 +1951,6 @@ async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=comm
 @pytest.mark.asyncio
 async def test_sign_jwt_async_from_dict():
     await test_sign_jwt_async(request_type=dict)
-
 
 def test_sign_jwt_field_headers():
     client = IAMCredentialsClient(
@@ -3348,6 +3344,7 @@ def test_generate_access_token_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_generate_id_token_empty_call_grpc():
@@ -3369,6 +3366,7 @@ def test_generate_id_token_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_sign_blob_empty_call_grpc():
@@ -3389,6 +3387,7 @@ def test_sign_blob_empty_call_grpc():
         request_msg = common.SignBlobRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3444,6 +3443,7 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -3468,6 +3468,7 @@ async def test_generate_id_token_empty_call_grpc_asyncio():
         request_msg = common.GenerateIdTokenRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3494,6 +3495,7 @@ async def test_sign_blob_empty_call_grpc_asyncio():
         request_msg = common.SignBlobRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.

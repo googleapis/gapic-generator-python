@@ -920,7 +920,6 @@ async def test_delete_log_async(transport: str = 'grpc_asyncio', request_type=lo
 async def test_delete_log_async_from_dict():
     await test_delete_log_async(request_type=dict)
 
-
 def test_delete_log_field_headers():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2327,7 +2326,6 @@ async def test_list_logs_async(transport: str = 'grpc_asyncio', request_type=log
 async def test_list_logs_async_from_dict():
     await test_list_logs_async(request_type=dict)
 
-
 def test_list_logs_field_headers():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2918,6 +2916,7 @@ def test_delete_log_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_write_log_entries_empty_call_grpc():
@@ -2938,6 +2937,7 @@ def test_write_log_entries_empty_call_grpc():
         request_msg = logging.WriteLogEntriesRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2960,6 +2960,7 @@ def test_list_log_entries_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_list_monitored_resource_descriptors_empty_call_grpc():
@@ -2980,6 +2981,7 @@ def test_list_monitored_resource_descriptors_empty_call_grpc():
         request_msg = logging.ListMonitoredResourceDescriptorsRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3033,6 +3035,7 @@ async def test_delete_log_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -3056,6 +3059,7 @@ async def test_write_log_entries_empty_call_grpc_asyncio():
         request_msg = logging.WriteLogEntriesRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -3082,6 +3086,7 @@ async def test_list_log_entries_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -3106,6 +3111,7 @@ async def test_list_monitored_resource_descriptors_empty_call_grpc_asyncio():
         request_msg = logging.ListMonitoredResourceDescriptorsRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.

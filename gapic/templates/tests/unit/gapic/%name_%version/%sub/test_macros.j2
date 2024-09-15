@@ -1766,7 +1766,7 @@ def test_{{ method_name }}_rest_no_http_options():
     creating a new macro with the name `method_call_test_<with_customization>` for the macro which supports
     a more customized method call.
 #}
-{% macro method_call_test_generic(test_name, method, service, api, transport, request_dict, is_async=False) %}
+{% macro method_call_test_generic(test_name, method, service, api, transport, request_dict, is_async=False, routing_param=None) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
 {% with method_name = (method.name + ("_unary" if method.operation_service else "")) | snake_case %}
 {% set async_method_prefix = "async " if is_async else "" %}
@@ -1839,6 +1839,11 @@ def test_{{ method_name }}_rest_no_http_options():
         request_msg = {{ method.input.ident }}()
         {% endif %}{# request_dict #}      
         assert args[0] == request_msg
+
+        {% if routing_param %}
+        expected_headers = {{ method.routing_rule.resolve(method.routing_rule, routing_param.sample_request) }}
+        assert gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw['metadata']
+        {% endif %}
 {% endwith %}{# method_name #}
 {% endmacro %}
 
@@ -1889,7 +1894,7 @@ def test_transport_kind_{{ transport_name }}():
 {# Any value that is part of the HTTP/1.1 URI should be sent as #}
 {# a field header. Set these to a non-empty value. #}
 {% for routing_param in method.routing_rule.routing_parameters %}
-{{ method_call_test_generic("routing_parameters_request_" + loop.index|string, method, service, api, transport, request_dict=routing_param.sample_request,is_async=is_async) }}
+{{ method_call_test_generic("routing_parameters_request_" + loop.index|string, method, service, api, transport, request_dict=routing_param.sample_request,is_async=is_async, routing_param=routing_param) }}
 {% endfor %}{# routing_param in method.routing_rule.routing_parameters #}
 {% endif %}{# method.explicit_routing #}
 {% endfor %}{# method in service.methods.values() #}

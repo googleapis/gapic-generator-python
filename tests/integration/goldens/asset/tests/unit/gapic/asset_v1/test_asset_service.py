@@ -953,7 +953,6 @@ async def test_export_assets_async(transport: str = 'grpc_asyncio', request_type
 async def test_export_assets_async_from_dict():
     await test_export_assets_async(request_type=dict)
 
-
 def test_export_assets_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1182,7 +1181,6 @@ async def test_list_assets_async(transport: str = 'grpc_asyncio', request_type=a
 @pytest.mark.asyncio
 async def test_list_assets_async_from_dict():
     await test_list_assets_async(request_type=dict)
-
 
 def test_list_assets_field_headers():
     client = AssetServiceClient(
@@ -1685,7 +1683,6 @@ async def test_batch_get_assets_history_async(transport: str = 'grpc_asyncio', r
 async def test_batch_get_assets_history_async_from_dict():
     await test_batch_get_assets_history_async(request_type=dict)
 
-
 def test_batch_get_assets_history_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1930,7 +1927,6 @@ async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=a
 @pytest.mark.asyncio
 async def test_create_feed_async_from_dict():
     await test_create_feed_async(request_type=dict)
-
 
 def test_create_feed_field_headers():
     client = AssetServiceClient(
@@ -2257,7 +2253,6 @@ async def test_get_feed_async(transport: str = 'grpc_asyncio', request_type=asse
 async def test_get_feed_async_from_dict():
     await test_get_feed_async(request_type=dict)
 
-
 def test_get_feed_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2562,7 +2557,6 @@ async def test_list_feeds_async(transport: str = 'grpc_asyncio', request_type=as
 @pytest.mark.asyncio
 async def test_list_feeds_async_from_dict():
     await test_list_feeds_async(request_type=dict)
-
 
 def test_list_feeds_field_headers():
     client = AssetServiceClient(
@@ -2887,7 +2881,6 @@ async def test_update_feed_async(transport: str = 'grpc_asyncio', request_type=a
 async def test_update_feed_async_from_dict():
     await test_update_feed_async(request_type=dict)
 
-
 def test_update_feed_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3190,7 +3183,6 @@ async def test_delete_feed_async(transport: str = 'grpc_asyncio', request_type=a
 @pytest.mark.asyncio
 async def test_delete_feed_async_from_dict():
     await test_delete_feed_async(request_type=dict)
-
 
 def test_delete_feed_field_headers():
     client = AssetServiceClient(
@@ -3506,7 +3498,6 @@ async def test_search_all_resources_async(transport: str = 'grpc_asyncio', reque
 @pytest.mark.asyncio
 async def test_search_all_resources_async_from_dict():
     await test_search_all_resources_async(request_type=dict)
-
 
 def test_search_all_resources_field_headers():
     client = AssetServiceClient(
@@ -4039,7 +4030,6 @@ async def test_search_all_iam_policies_async(transport: str = 'grpc_asyncio', re
 async def test_search_all_iam_policies_async_from_dict():
     await test_search_all_iam_policies_async(request_type=dict)
 
-
 def test_search_all_iam_policies_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4555,7 +4545,6 @@ async def test_analyze_iam_policy_async(transport: str = 'grpc_asyncio', request
 async def test_analyze_iam_policy_async_from_dict():
     await test_analyze_iam_policy_async(request_type=dict)
 
-
 def test_analyze_iam_policy_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4789,7 +4778,6 @@ async def test_analyze_iam_policy_longrunning_async(transport: str = 'grpc_async
 async def test_analyze_iam_policy_longrunning_async_from_dict():
     await test_analyze_iam_policy_longrunning_async(request_type=dict)
 
-
 def test_analyze_iam_policy_longrunning_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5014,7 +5002,6 @@ async def test_analyze_move_async(transport: str = 'grpc_asyncio', request_type=
 @pytest.mark.asyncio
 async def test_analyze_move_async_from_dict():
     await test_analyze_move_async(request_type=dict)
-
 
 def test_analyze_move_field_headers():
     client = AssetServiceClient(
@@ -5252,7 +5239,6 @@ async def test_query_assets_async(transport: str = 'grpc_asyncio', request_type=
 @pytest.mark.asyncio
 async def test_query_assets_async_from_dict():
     await test_query_assets_async(request_type=dict)
-
 
 def test_query_assets_field_headers():
     client = AssetServiceClient(
@@ -5494,7 +5480,6 @@ async def test_create_saved_query_async(transport: str = 'grpc_asyncio', request
 @pytest.mark.asyncio
 async def test_create_saved_query_async_from_dict():
     await test_create_saved_query_async(request_type=dict)
-
 
 def test_create_saved_query_field_headers():
     client = AssetServiceClient(
@@ -5837,7 +5822,6 @@ async def test_get_saved_query_async(transport: str = 'grpc_asyncio', request_ty
 async def test_get_saved_query_async_from_dict():
     await test_get_saved_query_async(request_type=dict)
 
-
 def test_get_saved_query_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6150,7 +6134,6 @@ async def test_list_saved_queries_async(transport: str = 'grpc_asyncio', request
 @pytest.mark.asyncio
 async def test_list_saved_queries_async_from_dict():
     await test_list_saved_queries_async(request_type=dict)
-
 
 def test_list_saved_queries_field_headers():
     client = AssetServiceClient(
@@ -6667,7 +6650,6 @@ async def test_update_saved_query_async(transport: str = 'grpc_asyncio', request
 async def test_update_saved_query_async_from_dict():
     await test_update_saved_query_async(request_type=dict)
 
-
 def test_update_saved_query_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6981,7 +6963,6 @@ async def test_delete_saved_query_async(transport: str = 'grpc_asyncio', request
 async def test_delete_saved_query_async_from_dict():
     await test_delete_saved_query_async(request_type=dict)
 
-
 def test_delete_saved_query_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7287,7 +7268,6 @@ async def test_batch_get_effective_iam_policies_async(transport: str = 'grpc_asy
 async def test_batch_get_effective_iam_policies_async_from_dict():
     await test_batch_get_effective_iam_policies_async(request_type=dict)
 
-
 def test_batch_get_effective_iam_policies_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7520,7 +7500,6 @@ async def test_analyze_org_policies_async(transport: str = 'grpc_asyncio', reque
 @pytest.mark.asyncio
 async def test_analyze_org_policies_async_from_dict():
     await test_analyze_org_policies_async(request_type=dict)
-
 
 def test_analyze_org_policies_field_headers():
     client = AssetServiceClient(
@@ -8053,7 +8032,6 @@ async def test_analyze_org_policy_governed_containers_async(transport: str = 'gr
 async def test_analyze_org_policy_governed_containers_async_from_dict():
     await test_analyze_org_policy_governed_containers_async(request_type=dict)
 
-
 def test_analyze_org_policy_governed_containers_field_headers():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8584,7 +8562,6 @@ async def test_analyze_org_policy_governed_assets_async(transport: str = 'grpc_a
 @pytest.mark.asyncio
 async def test_analyze_org_policy_governed_assets_async_from_dict():
     await test_analyze_org_policy_governed_assets_async(request_type=dict)
-
 
 def test_analyze_org_policy_governed_assets_field_headers():
     client = AssetServiceClient(
@@ -15453,6 +15430,7 @@ def test_export_assets_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_list_assets_empty_call_grpc():
@@ -15473,6 +15451,7 @@ def test_list_assets_empty_call_grpc():
         request_msg = asset_service.ListAssetsRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15495,6 +15474,7 @@ def test_batch_get_assets_history_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_create_feed_empty_call_grpc():
@@ -15515,6 +15495,7 @@ def test_create_feed_empty_call_grpc():
         request_msg = asset_service.CreateFeedRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15537,6 +15518,7 @@ def test_get_feed_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_list_feeds_empty_call_grpc():
@@ -15557,6 +15539,7 @@ def test_list_feeds_empty_call_grpc():
         request_msg = asset_service.ListFeedsRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15579,6 +15562,7 @@ def test_update_feed_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_delete_feed_empty_call_grpc():
@@ -15599,6 +15583,7 @@ def test_delete_feed_empty_call_grpc():
         request_msg = asset_service.DeleteFeedRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15621,6 +15606,7 @@ def test_search_all_resources_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_search_all_iam_policies_empty_call_grpc():
@@ -15641,6 +15627,7 @@ def test_search_all_iam_policies_empty_call_grpc():
         request_msg = asset_service.SearchAllIamPoliciesRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15663,6 +15650,7 @@ def test_analyze_iam_policy_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_analyze_iam_policy_longrunning_empty_call_grpc():
@@ -15683,6 +15671,7 @@ def test_analyze_iam_policy_longrunning_empty_call_grpc():
         request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15705,6 +15694,7 @@ def test_analyze_move_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_query_assets_empty_call_grpc():
@@ -15725,6 +15715,7 @@ def test_query_assets_empty_call_grpc():
         request_msg = asset_service.QueryAssetsRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15747,6 +15738,7 @@ def test_create_saved_query_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_get_saved_query_empty_call_grpc():
@@ -15767,6 +15759,7 @@ def test_get_saved_query_empty_call_grpc():
         request_msg = asset_service.GetSavedQueryRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15789,6 +15782,7 @@ def test_list_saved_queries_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_update_saved_query_empty_call_grpc():
@@ -15809,6 +15803,7 @@ def test_update_saved_query_empty_call_grpc():
         request_msg = asset_service.UpdateSavedQueryRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15831,6 +15826,7 @@ def test_delete_saved_query_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_batch_get_effective_iam_policies_empty_call_grpc():
@@ -15851,6 +15847,7 @@ def test_batch_get_effective_iam_policies_empty_call_grpc():
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15873,6 +15870,7 @@ def test_analyze_org_policies_empty_call_grpc():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_analyze_org_policy_governed_containers_empty_call_grpc():
@@ -15893,6 +15891,7 @@ def test_analyze_org_policy_governed_containers_empty_call_grpc():
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -15948,6 +15947,7 @@ async def test_export_assets_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -15973,6 +15973,7 @@ async def test_list_assets_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -15996,6 +15997,7 @@ async def test_batch_get_assets_history_empty_call_grpc_asyncio():
         request_msg = asset_service.BatchGetAssetsHistoryRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -16026,6 +16028,7 @@ async def test_create_feed_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16055,6 +16058,7 @@ async def test_get_feed_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16078,6 +16082,7 @@ async def test_list_feeds_empty_call_grpc_asyncio():
         request_msg = asset_service.ListFeedsRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -16108,6 +16113,7 @@ async def test_update_feed_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16130,6 +16136,7 @@ async def test_delete_feed_empty_call_grpc_asyncio():
         request_msg = asset_service.DeleteFeedRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -16156,6 +16163,7 @@ async def test_search_all_resources_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16180,6 +16188,7 @@ async def test_search_all_iam_policies_empty_call_grpc_asyncio():
         request_msg = asset_service.SearchAllIamPoliciesRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -16206,6 +16215,7 @@ async def test_analyze_iam_policy_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16231,6 +16241,7 @@ async def test_analyze_iam_policy_longrunning_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16254,6 +16265,7 @@ async def test_analyze_move_empty_call_grpc_asyncio():
         request_msg = asset_service.AnalyzeMoveRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -16280,6 +16292,7 @@ async def test_query_assets_empty_call_grpc_asyncio():
         request_msg = asset_service.QueryAssetsRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -16309,6 +16322,7 @@ async def test_create_saved_query_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16337,6 +16351,7 @@ async def test_get_saved_query_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16361,6 +16376,7 @@ async def test_list_saved_queries_empty_call_grpc_asyncio():
         request_msg = asset_service.ListSavedQueriesRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -16390,6 +16406,7 @@ async def test_update_saved_query_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16412,6 +16429,7 @@ async def test_delete_saved_query_empty_call_grpc_asyncio():
         request_msg = asset_service.DeleteSavedQueryRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -16436,6 +16454,7 @@ async def test_batch_get_effective_iam_policies_empty_call_grpc_asyncio():
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -16462,6 +16481,7 @@ async def test_analyze_org_policies_empty_call_grpc_asyncio():
 
         assert args[0] == request_msg
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
@@ -16486,6 +16506,7 @@ async def test_analyze_org_policy_governed_containers_empty_call_grpc_asyncio():
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
         assert args[0] == request_msg
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
