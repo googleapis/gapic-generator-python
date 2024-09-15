@@ -1890,7 +1890,7 @@ def test_transport_kind_{{ transport_name }}():
 {# Any value that is part of the HTTP/1.1 URI should be sent as #}
 {# a field header. Set these to a non-empty value. #}
 {% for routing_param in method.routing_rule.routing_parameters %}
-{{ method_call_test("routing_parameters_request_" + loop.index|string, method, service, api, request_dict=routing_param.sample_request,is_async=is_async) }}
+{{ method_call_test_generic("routing_parameters_request_" + loop.index|string, method, service, api, transport, request_dict=routing_param.sample_request,is_async=is_async) }}
 {% endfor %}{# routing_param in method.routing_rule.routing_parameters #}
 {% endif %}{# method.explicit_routing #}
 {% endfor %}{# method in service.methods.values() #}
