@@ -15434,7 +15434,7 @@ def test_transport_kind_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_export_assets_empty_call():
+def test_export_assets_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15448,15 +15448,12 @@ def test_export_assets_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ExportAssetsRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ExportAssetsRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_assets_empty_call():
+def test_list_assets_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15470,15 +15467,12 @@ def test_list_assets_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ListAssetsRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListAssetsRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_batch_get_assets_history_empty_call():
+def test_batch_get_assets_history_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15492,15 +15486,12 @@ def test_batch_get_assets_history_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.BatchGetAssetsHistoryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.BatchGetAssetsHistoryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_feed_empty_call():
+def test_create_feed_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15514,15 +15505,12 @@ def test_create_feed_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.CreateFeedRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateFeedRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_feed_empty_call():
+def test_get_feed_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15536,15 +15524,12 @@ def test_get_feed_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.GetFeedRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetFeedRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_feeds_empty_call():
+def test_list_feeds_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15558,15 +15543,12 @@ def test_list_feeds_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ListFeedsRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListFeedsRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_feed_empty_call():
+def test_update_feed_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15580,15 +15562,12 @@ def test_update_feed_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.UpdateFeedRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateFeedRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_feed_empty_call():
+def test_delete_feed_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15602,15 +15581,12 @@ def test_delete_feed_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.DeleteFeedRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteFeedRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_search_all_resources_empty_call():
+def test_search_all_resources_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15624,15 +15600,12 @@ def test_search_all_resources_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.SearchAllResourcesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.SearchAllResourcesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_search_all_iam_policies_empty_call():
+def test_search_all_iam_policies_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15646,15 +15619,12 @@ def test_search_all_iam_policies_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.SearchAllIamPoliciesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.SearchAllIamPoliciesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_analyze_iam_policy_empty_call():
+def test_analyze_iam_policy_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15668,15 +15638,12 @@ def test_analyze_iam_policy_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeIamPolicyRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeIamPolicyRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_analyze_iam_policy_longrunning_empty_call():
+def test_analyze_iam_policy_longrunning_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15690,15 +15657,12 @@ def test_analyze_iam_policy_longrunning_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_analyze_move_empty_call():
+def test_analyze_move_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15712,15 +15676,12 @@ def test_analyze_move_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeMoveRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeMoveRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_query_assets_empty_call():
+def test_query_assets_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15734,15 +15695,12 @@ def test_query_assets_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.QueryAssetsRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.QueryAssetsRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_saved_query_empty_call():
+def test_create_saved_query_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15756,15 +15714,12 @@ def test_create_saved_query_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.CreateSavedQueryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateSavedQueryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_saved_query_empty_call():
+def test_get_saved_query_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15778,15 +15733,12 @@ def test_get_saved_query_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.GetSavedQueryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetSavedQueryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_saved_queries_empty_call():
+def test_list_saved_queries_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15800,15 +15752,12 @@ def test_list_saved_queries_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ListSavedQueriesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListSavedQueriesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_saved_query_empty_call():
+def test_update_saved_query_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15822,15 +15771,12 @@ def test_update_saved_query_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.UpdateSavedQueryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateSavedQueryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_saved_query_empty_call():
+def test_delete_saved_query_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15844,15 +15790,12 @@ def test_delete_saved_query_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.DeleteSavedQueryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteSavedQueryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_batch_get_effective_iam_policies_empty_call():
+def test_batch_get_effective_iam_policies_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15866,15 +15809,12 @@ def test_batch_get_effective_iam_policies_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_analyze_org_policies_empty_call():
+def test_analyze_org_policies_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15888,15 +15828,12 @@ def test_analyze_org_policies_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeOrgPoliciesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_analyze_org_policy_governed_containers_empty_call():
+def test_analyze_org_policy_governed_containers_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15910,15 +15847,12 @@ def test_analyze_org_policy_governed_containers_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_analyze_org_policy_governed_assets_empty_call():
+def test_analyze_org_policy_governed_assets_empty_call_grpc():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -15932,10 +15866,8 @@ def test_analyze_org_policy_governed_assets_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-
-        assert args[0] == request_msg
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
 
 
 def test_transport_kind_grpc_asyncio():
@@ -15948,7 +15880,7 @@ def test_transport_kind_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_export_assets_empty_call_async():
+async def test_export_assets_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -15965,16 +15897,13 @@ async def test_export_assets_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ExportAssetsRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ExportAssetsRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_assets_empty_call_async():
+async def test_list_assets_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -15991,16 +15920,13 @@ async def test_list_assets_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ListAssetsRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListAssetsRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_batch_get_assets_history_empty_call_async():
+async def test_batch_get_assets_history_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16016,16 +15942,13 @@ async def test_batch_get_assets_history_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.BatchGetAssetsHistoryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.BatchGetAssetsHistoryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_feed_empty_call_async():
+async def test_create_feed_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16046,16 +15969,13 @@ async def test_create_feed_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.CreateFeedRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateFeedRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_feed_empty_call_async():
+async def test_get_feed_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16076,16 +15996,13 @@ async def test_get_feed_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.GetFeedRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetFeedRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_feeds_empty_call_async():
+async def test_list_feeds_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16101,16 +16018,13 @@ async def test_list_feeds_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ListFeedsRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListFeedsRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_feed_empty_call_async():
+async def test_update_feed_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16131,16 +16045,13 @@ async def test_update_feed_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.UpdateFeedRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateFeedRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_feed_empty_call_async():
+async def test_delete_feed_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16155,16 +16066,13 @@ async def test_delete_feed_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.DeleteFeedRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteFeedRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_search_all_resources_empty_call_async():
+async def test_search_all_resources_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16181,16 +16089,13 @@ async def test_search_all_resources_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.SearchAllResourcesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.SearchAllResourcesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_search_all_iam_policies_empty_call_async():
+async def test_search_all_iam_policies_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16207,16 +16112,13 @@ async def test_search_all_iam_policies_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.SearchAllIamPoliciesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.SearchAllIamPoliciesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_analyze_iam_policy_empty_call_async():
+async def test_analyze_iam_policy_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16233,16 +16135,13 @@ async def test_analyze_iam_policy_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeIamPolicyRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeIamPolicyRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_analyze_iam_policy_longrunning_empty_call_async():
+async def test_analyze_iam_policy_longrunning_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16259,16 +16158,13 @@ async def test_analyze_iam_policy_longrunning_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_analyze_move_empty_call_async():
+async def test_analyze_move_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16284,16 +16180,13 @@ async def test_analyze_move_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeMoveRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeMoveRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_query_assets_empty_call_async():
+async def test_query_assets_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16311,16 +16204,13 @@ async def test_query_assets_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.QueryAssetsRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.QueryAssetsRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_saved_query_empty_call_async():
+async def test_create_saved_query_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16340,16 +16230,13 @@ async def test_create_saved_query_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.CreateSavedQueryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateSavedQueryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_saved_query_empty_call_async():
+async def test_get_saved_query_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16369,16 +16256,13 @@ async def test_get_saved_query_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.GetSavedQueryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetSavedQueryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_saved_queries_empty_call_async():
+async def test_list_saved_queries_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16395,16 +16279,13 @@ async def test_list_saved_queries_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ListSavedQueriesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListSavedQueriesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_saved_query_empty_call_async():
+async def test_update_saved_query_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16424,16 +16305,13 @@ async def test_update_saved_query_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.UpdateSavedQueryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateSavedQueryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_saved_query_empty_call_async():
+async def test_delete_saved_query_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16448,16 +16326,13 @@ async def test_delete_saved_query_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.DeleteSavedQueryRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteSavedQueryRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_batch_get_effective_iam_policies_empty_call_async():
+async def test_batch_get_effective_iam_policies_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16473,16 +16348,13 @@ async def test_batch_get_effective_iam_policies_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_analyze_org_policies_empty_call_async():
+async def test_analyze_org_policies_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16499,16 +16371,13 @@ async def test_analyze_org_policies_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeOrgPoliciesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_analyze_org_policy_governed_containers_empty_call_async():
+async def test_analyze_org_policy_governed_containers_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16525,16 +16394,13 @@ async def test_analyze_org_policy_governed_containers_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_analyze_org_policy_governed_assets_empty_call_async():
+async def test_analyze_org_policy_governed_assets_empty_call_grpc_asyncio():
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -16551,10 +16417,8 @@ async def test_analyze_org_policy_governed_assets_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-
-        assert args[0] == request_msg
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
 
 
 def test_transport_kind_rest():
@@ -16562,512 +16426,6 @@ def test_transport_kind_rest():
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_export_assets_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.export_assets),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.export_assets(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ExportAssetsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_list_assets_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.list_assets),
-            '__call__') as call:
-        call.return_value = asset_service.ListAssetsResponse()
-        client.list_assets(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ListAssetsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_batch_get_assets_history_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.batch_get_assets_history),
-            '__call__') as call:
-        call.return_value = asset_service.BatchGetAssetsHistoryResponse()
-        client.batch_get_assets_history(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.BatchGetAssetsHistoryRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_create_feed_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.create_feed),
-            '__call__') as call:
-        call.return_value = asset_service.Feed()
-        client.create_feed(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.CreateFeedRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_feed_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_feed),
-            '__call__') as call:
-        call.return_value = asset_service.Feed()
-        client.get_feed(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.GetFeedRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_list_feeds_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.list_feeds),
-            '__call__') as call:
-        call.return_value = asset_service.ListFeedsResponse()
-        client.list_feeds(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ListFeedsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_update_feed_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.update_feed),
-            '__call__') as call:
-        call.return_value = asset_service.Feed()
-        client.update_feed(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.UpdateFeedRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_delete_feed_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.delete_feed),
-            '__call__') as call:
-        call.return_value = None
-        client.delete_feed(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.DeleteFeedRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_search_all_resources_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.search_all_resources),
-            '__call__') as call:
-        call.return_value = asset_service.SearchAllResourcesResponse()
-        client.search_all_resources(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.SearchAllResourcesRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_search_all_iam_policies_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.search_all_iam_policies),
-            '__call__') as call:
-        call.return_value = asset_service.SearchAllIamPoliciesResponse()
-        client.search_all_iam_policies(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.SearchAllIamPoliciesRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_analyze_iam_policy_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.analyze_iam_policy),
-            '__call__') as call:
-        call.return_value = asset_service.AnalyzeIamPolicyResponse()
-        client.analyze_iam_policy(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeIamPolicyRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_analyze_iam_policy_longrunning_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.analyze_iam_policy_longrunning),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.analyze_iam_policy_longrunning(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_analyze_move_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.analyze_move),
-            '__call__') as call:
-        call.return_value = asset_service.AnalyzeMoveResponse()
-        client.analyze_move(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeMoveRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_query_assets_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.query_assets),
-            '__call__') as call:
-        call.return_value = asset_service.QueryAssetsResponse()
-        client.query_assets(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.QueryAssetsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_create_saved_query_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.create_saved_query),
-            '__call__') as call:
-        call.return_value = asset_service.SavedQuery()
-        client.create_saved_query(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.CreateSavedQueryRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_saved_query_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_saved_query),
-            '__call__') as call:
-        call.return_value = asset_service.SavedQuery()
-        client.get_saved_query(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.GetSavedQueryRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_list_saved_queries_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.list_saved_queries),
-            '__call__') as call:
-        call.return_value = asset_service.ListSavedQueriesResponse()
-        client.list_saved_queries(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.ListSavedQueriesRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_update_saved_query_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.update_saved_query),
-            '__call__') as call:
-        call.return_value = asset_service.SavedQuery()
-        client.update_saved_query(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.UpdateSavedQueryRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_delete_saved_query_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.delete_saved_query),
-            '__call__') as call:
-        call.return_value = None
-        client.delete_saved_query(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.DeleteSavedQueryRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_batch_get_effective_iam_policies_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.batch_get_effective_iam_policies),
-            '__call__') as call:
-        call.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
-        client.batch_get_effective_iam_policies(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_analyze_org_policies_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.analyze_org_policies),
-            '__call__') as call:
-        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
-        client.analyze_org_policies(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeOrgPoliciesRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_analyze_org_policy_governed_containers_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.analyze_org_policy_governed_containers),
-            '__call__') as call:
-        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
-        client.analyze_org_policy_governed_containers(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_analyze_org_policy_governed_assets_empty_call():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.analyze_org_policy_governed_assets),
-            '__call__') as call:
-        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
-        client.analyze_org_policy_governed_assets(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-
-        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():

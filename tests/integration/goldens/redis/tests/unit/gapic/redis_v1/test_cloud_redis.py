@@ -7923,7 +7923,7 @@ def test_transport_kind_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_instances_empty_call():
+def test_list_instances_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -7937,15 +7937,12 @@ def test_list_instances_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ListInstancesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ListInstancesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_instance_empty_call():
+def test_get_instance_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -7959,15 +7956,12 @@ def test_get_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.GetInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_instance_auth_string_empty_call():
+def test_get_instance_auth_string_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -7981,15 +7975,12 @@ def test_get_instance_auth_string_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.GetInstanceAuthStringRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_instance_empty_call():
+def test_create_instance_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -8003,15 +7994,12 @@ def test_create_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.CreateInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.CreateInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_instance_empty_call():
+def test_update_instance_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -8025,15 +8013,12 @@ def test_update_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.UpdateInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpdateInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_upgrade_instance_empty_call():
+def test_upgrade_instance_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -8047,15 +8032,12 @@ def test_upgrade_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.UpgradeInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpgradeInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_import_instance_empty_call():
+def test_import_instance_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -8069,15 +8051,12 @@ def test_import_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ImportInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ImportInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_export_instance_empty_call():
+def test_export_instance_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -8091,15 +8070,12 @@ def test_export_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ExportInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ExportInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_failover_instance_empty_call():
+def test_failover_instance_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -8113,15 +8089,12 @@ def test_failover_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.FailoverInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.FailoverInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_instance_empty_call():
+def test_delete_instance_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -8135,15 +8108,12 @@ def test_delete_instance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.DeleteInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.DeleteInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_reschedule_maintenance_empty_call():
+def test_reschedule_maintenance_empty_call_grpc():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -8157,10 +8127,8 @@ def test_reschedule_maintenance_empty_call():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.RescheduleMaintenanceRequest()
-
-        assert args[0] == request_msg
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
 
 
 def test_transport_kind_grpc_asyncio():
@@ -8173,7 +8141,7 @@ def test_transport_kind_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_instances_empty_call_async():
+async def test_list_instances_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8191,16 +8159,13 @@ async def test_list_instances_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ListInstancesRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ListInstancesRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_instance_empty_call_async():
+async def test_get_instance_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8243,16 +8208,13 @@ async def test_get_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.GetInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_instance_auth_string_empty_call_async():
+async def test_get_instance_auth_string_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8269,16 +8231,13 @@ async def test_get_instance_auth_string_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.GetInstanceAuthStringRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_instance_empty_call_async():
+async def test_create_instance_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8295,16 +8254,13 @@ async def test_create_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.CreateInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.CreateInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_instance_empty_call_async():
+async def test_update_instance_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8321,16 +8277,13 @@ async def test_update_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.UpdateInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpdateInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_upgrade_instance_empty_call_async():
+async def test_upgrade_instance_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8347,16 +8300,13 @@ async def test_upgrade_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.UpgradeInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.UpgradeInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_import_instance_empty_call_async():
+async def test_import_instance_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8373,16 +8323,13 @@ async def test_import_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ImportInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ImportInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_export_instance_empty_call_async():
+async def test_export_instance_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8399,16 +8346,13 @@ async def test_export_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ExportInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.ExportInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_failover_instance_empty_call_async():
+async def test_failover_instance_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8425,16 +8369,13 @@ async def test_failover_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.FailoverInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.FailoverInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_instance_empty_call_async():
+async def test_delete_instance_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8451,16 +8392,13 @@ async def test_delete_instance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.DeleteInstanceRequest()
-
-        assert args[0] == request_msg
-
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.DeleteInstanceRequest()
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_reschedule_maintenance_empty_call_async():
+async def test_reschedule_maintenance_empty_call_grpc_asyncio():
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
     )
@@ -8477,10 +8415,8 @@ async def test_reschedule_maintenance_empty_call_async():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.RescheduleMaintenanceRequest()
-
-        assert args[0] == request_msg
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
 
 
 def test_transport_kind_rest():
@@ -8490,566 +8426,11 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_list_instances_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.list_instances),
-            '__call__') as call:
-        call.return_value = cloud_redis.ListInstancesResponse()
-        client.list_instances(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ListInstancesRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_instance_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_instance),
-            '__call__') as call:
-        call.return_value = cloud_redis.Instance()
-        client.get_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.GetInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_instance_auth_string_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_instance_auth_string),
-            '__call__') as call:
-        call.return_value = cloud_redis.InstanceAuthString()
-        client.get_instance_auth_string(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.GetInstanceAuthStringRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_create_instance_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.create_instance),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.create_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.CreateInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_update_instance_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.update_instance),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.update_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.UpdateInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_upgrade_instance_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.upgrade_instance),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.upgrade_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.UpgradeInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_import_instance_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.import_instance),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.import_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ImportInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_export_instance_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.export_instance),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.export_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ExportInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_failover_instance_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.failover_instance),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.failover_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.FailoverInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_delete_instance_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.delete_instance),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.delete_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.DeleteInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_reschedule_maintenance_empty_call():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.reschedule_maintenance),
-            '__call__') as call:
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        client.reschedule_maintenance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.RescheduleMaintenanceRequest()
-
-        assert args[0] == request_msg
-
-
 def test_transport_kind_rest_asyncio():
     transport = CloudRedisAsyncClient.get_transport_class("rest_asyncio")(
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "rest_asyncio"
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_list_instances_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.list_instances),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
-        ))
-        await client.list_instances(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ListInstancesRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_get_instance_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance(
-            name='name_value',
-            display_name='display_name_value',
-            location_id='location_id_value',
-            alternative_location_id='alternative_location_id_value',
-            redis_version='redis_version_value',
-            reserved_ip_range='reserved_ip_range_value',
-            secondary_ip_range='secondary_ip_range_value',
-            host='host_value',
-            port=453,
-            current_location_id='current_location_id_value',
-            state=cloud_redis.Instance.State.CREATING,
-            status_message='status_message_value',
-            tier=cloud_redis.Instance.Tier.BASIC,
-            memory_size_gb=1499,
-            authorized_network='authorized_network_value',
-            persistence_iam_identity='persistence_iam_identity_value',
-            connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
-            auth_enabled=True,
-            transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
-            replica_count=1384,
-            read_endpoint='read_endpoint_value',
-            read_endpoint_port=1920,
-            read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
-            customer_managed_key='customer_managed_key_value',
-            suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
-            maintenance_version='maintenance_version_value',
-            available_maintenance_versions=['available_maintenance_versions_value'],
-        ))
-        await client.get_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.GetInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_get_instance_auth_string_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_instance_auth_string),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
-            auth_string='auth_string_value',
-        ))
-        await client.get_instance_auth_string(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.GetInstanceAuthStringRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_create_instance_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.create_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        await client.create_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.CreateInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_update_instance_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.update_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        await client.update_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.UpdateInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_upgrade_instance_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.upgrade_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        await client.upgrade_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.UpgradeInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_import_instance_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.import_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        await client.import_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ImportInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_export_instance_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.export_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        await client.export_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.ExportInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_failover_instance_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.failover_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        await client.failover_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.FailoverInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_delete_instance_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.delete_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        await client.delete_instance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.DeleteInstanceRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_reschedule_maintenance_empty_call_async():
-    client = CloudRedisAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.reschedule_maintenance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        await client.reschedule_maintenance(request=None)
-
-        # Establish that the underlying gRPC stub method was called.
-        call.assert_called()
-        _, args, kw = call.mock_calls[0]
-        request_msg = cloud_redis.RescheduleMaintenanceRequest()
-
-        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
