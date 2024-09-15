@@ -1889,6 +1889,11 @@ def test_transport_kind_{{ transport_name }}():
 {%- endmacro %}{# uuid_re #}
 
 {% macro routing_parameter_test(service, api, transport, is_async) %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2159):
+  Currently this macro only supports gRPC. It should be updated to support REST
+  transport as well.
+#}
+{% if 'rest' not in transport %}
 {% for method in service.methods.values() %}{# method #}
 {% if method.explicit_routing %}
 {# Any value that is part of the HTTP/1.1 URI should be sent as #}
@@ -1898,4 +1903,5 @@ def test_transport_kind_{{ transport_name }}():
 {% endfor %}{# routing_param in method.routing_rule.routing_parameters #}
 {% endif %}{# method.explicit_routing #}
 {% endfor %}{# method in service.methods.values() #}
+{% endif %}
 {% endmacro %}{# routing_parameter_test #}
