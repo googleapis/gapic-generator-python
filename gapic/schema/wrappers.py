@@ -30,6 +30,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import copy
 import dataclasses
+import functools
 import json
 import keyword
 import re
@@ -1035,10 +1036,20 @@ class RoutingParameter:
         """
         return re.compile(f"^{self._convert_to_regex(path_template)}$")
 
+    # Use caching to avoid repeated computation
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
+    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
+    # https://docs.python.org/3/library/functools.html#functools.cache
+    @functools.lru_cache(maxsize=None)
     def to_regex(self) -> Pattern:
         return self._to_regex(self.path_template)
 
     @property
+    # Use caching to avoid repeated computation
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
+    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
+    # https://docs.python.org/3/library/functools.html#functools.cache
+    @functools.lru_cache(maxsize=None)
     def key(self) -> Union[str, None]:
         if self.path_template == "":
             return self.field
@@ -1070,7 +1081,8 @@ class RoutingRule:
     @classmethod
     def resolve(cls, routing_rule: routing_pb2.RoutingRule, request: Union[dict, str]) -> dict:
         """Resolves the routing header which should be sent along with the request.
-        This function performs dynamic header resolution, identical to what's in `client.py.j2`.
+        This function performs dynamic header resolution, identical to what's in `_client_macros.j2`.
+        https://github.com/googleapis/gapic-generator-python/blob/4c5de8791795f8101f6ec66f80b8a8e5e9a21822/gapic/templates/%25namespace/%25name_%25version/%25sub/services/%25service/_client_macros.j2#L150-L164
         The routing header is determined based on the given routing rule and request.
         See the following link for more information on explicit routing headers:
         https://google.aip.dev/client-libraries/4222#explicit-routing-headers-googleapirouting
@@ -1110,21 +1122,22 @@ class RoutingRule:
             # Only resolve the header for routing parameter fields which are populated in the request
             if request_field_value is not None:
                 # If there is a path_template for a given routing parameter field, the value of the field must match
-                # If multiple Routing Parameters describe the same key
+                # If multiple `routing_param`s describe the same key
                 # (via the `path_template` field or via the `field` field when
-                # `path_template` is not provided), "last one wins" rule
-                # determines which Parameter gets used.
+                # `path_template` is not provided), the "last one wins" rule
+                # determines which parameter gets used. See https://google.aip.dev/client-libraries/4222.
+                routing_parameter_key = routing_param.key
                 if routing_param.path_template:
                     routing_param_regex = routing_param.to_regex()
                     regex_match = routing_param_regex.match(
                         request_field_value
                     )
                     if regex_match:
-                        header_params[routing_param.key] = regex_match.group(
-                            routing_param.key
+                        header_params[routing_parameter_key] = regex_match.group(
+                            routing_parameter_key
                         )
                 else:  # No need to match
-                    header_params[routing_param.key] = request_field_value
+                    header_params[routing_parameter_key] = request_field_value
         return header_params
 
 
