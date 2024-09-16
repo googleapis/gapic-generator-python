@@ -8203,50 +8203,6 @@ async def test_update_google_channel_config_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    eventarc.GetTriggerRequest,
-    dict,
-])
-def test_get_trigger_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/triggers/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = trigger.Trigger(
-              name='name_value',
-              uid='uid_value',
-              service_account='service_account_value',
-              channel='channel_value',
-              etag='etag_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = trigger.Trigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_trigger(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, trigger.Trigger)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.service_account == 'service_account_value'
-    assert response.channel == 'channel_value'
-    assert response.etag == 'etag_value'
-
 def test_get_trigger_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -8476,6 +8432,7 @@ def test_list_triggers_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = eventarc.ListTriggersResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -9648,53 +9605,6 @@ def test_delete_trigger_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    eventarc.GetChannelRequest,
-    dict,
-])
-def test_get_channel_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/channels/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = channel.Channel(
-              name='name_value',
-              uid='uid_value',
-              provider='provider_value',
-              state=channel.Channel.State.PENDING,
-              activation_token='activation_token_value',
-              crypto_key_name='crypto_key_name_value',
-            pubsub_topic='pubsub_topic_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = channel.Channel.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_channel(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, channel.Channel)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.provider == 'provider_value'
-    assert response.state == channel.Channel.State.PENDING
-    assert response.activation_token == 'activation_token_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
-
 def test_get_channel_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9924,6 +9834,7 @@ def test_list_channels_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = eventarc.ListChannelsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -11092,44 +11003,6 @@ def test_delete_channel_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    eventarc.GetProviderRequest,
-    dict,
-])
-def test_get_provider_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/providers/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = discovery.Provider(
-              name='name_value',
-              display_name='display_name_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = discovery.Provider.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_provider(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, discovery.Provider)
-    assert response.name == 'name_value'
-    assert response.display_name == 'display_name_value'
-
 def test_get_provider_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11359,6 +11232,7 @@ def test_list_providers_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = eventarc.ListProvidersResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -11640,48 +11514,6 @@ def test_list_providers_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [
-    eventarc.GetChannelConnectionRequest,
-    dict,
-])
-def test_get_channel_connection_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/channelConnections/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = channel_connection.ChannelConnection(
-              name='name_value',
-              uid='uid_value',
-              channel='channel_value',
-              activation_token='activation_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = channel_connection.ChannelConnection.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_channel_connection(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, channel_connection.ChannelConnection)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.channel == 'channel_value'
-    assert response.activation_token == 'activation_token_value'
-
 def test_get_channel_connection_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11911,6 +11743,7 @@ def test_list_channel_connections_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -12744,44 +12577,6 @@ def test_delete_channel_connection_rest_flattened_error(transport: str = 'rest')
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    eventarc.GetGoogleChannelConfigRequest,
-    dict,
-])
-def test_get_google_channel_config_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = google_channel_config.GoogleChannelConfig(
-              name='name_value',
-              crypto_key_name='crypto_key_name_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_google_channel_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, google_channel_config.GoogleChannelConfig)
-    assert response.name == 'name_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
-
 def test_get_google_channel_config_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12985,108 +12780,6 @@ def test_get_google_channel_config_rest_flattened_error(transport: str = 'rest')
             name='name_value',
         )
 
-
-@pytest.mark.parametrize("request_type", [
-    eventarc.UpdateGoogleChannelConfigRequest,
-    dict,
-])
-def test_update_google_channel_config_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
-    request_init["google_channel_config"] = {'name': 'projects/sample1/locations/sample2/googleChannelConfig', 'update_time': {'seconds': 751, 'nanos': 543}, 'crypto_key_name': 'crypto_key_name_value'}
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["google_channel_config"].items(): # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["google_channel_config"][field])):
-                    del request_init["google_channel_config"][field][i][subfield]
-            else:
-                del request_init["google_channel_config"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gce_google_channel_config.GoogleChannelConfig(
-              name='name_value',
-              crypto_key_name='crypto_key_name_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.update_google_channel_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
-    assert response.name == 'name_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
 
 def test_update_google_channel_config_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -13437,6 +13130,51 @@ def test_get_trigger_rest_bad_request(request_type=eventarc.GetTriggerRequest):
         client.get_trigger(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetTriggerRequest,
+  dict,
+])
+def test_get_trigger_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/triggers/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = trigger.Trigger(
+              name='name_value',
+              uid='uid_value',
+              service_account='service_account_value',
+              channel='channel_value',
+              etag='etag_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = trigger.Trigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, trigger.Trigger)
+    assert response.name == 'name_value'
+    assert response.uid == 'uid_value'
+    assert response.service_account == 'service_account_value'
+    assert response.channel == 'channel_value'
+    assert response.etag == 'etag_value'
+
+
 def test_list_triggers_rest_bad_request(request_type=eventarc.ListTriggersRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13540,6 +13278,54 @@ def test_get_channel_rest_bad_request(request_type=eventarc.GetChannelRequest):
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.get_channel(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetChannelRequest,
+  dict,
+])
+def test_get_channel_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/channels/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = channel.Channel(
+              name='name_value',
+              uid='uid_value',
+              provider='provider_value',
+              state=channel.Channel.State.PENDING,
+              activation_token='activation_token_value',
+              crypto_key_name='crypto_key_name_value',
+            pubsub_topic='pubsub_topic_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = channel.Channel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_channel(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel.Channel)
+    assert response.name == 'name_value'
+    assert response.uid == 'uid_value'
+    assert response.provider == 'provider_value'
+    assert response.state == channel.Channel.State.PENDING
+    assert response.activation_token == 'activation_token_value'
+    assert response.crypto_key_name == 'crypto_key_name_value'
 
 
 def test_list_channels_rest_bad_request(request_type=eventarc.ListChannelsRequest):
@@ -13647,6 +13433,45 @@ def test_get_provider_rest_bad_request(request_type=eventarc.GetProviderRequest)
         client.get_provider(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetProviderRequest,
+  dict,
+])
+def test_get_provider_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/providers/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = discovery.Provider(
+              name='name_value',
+              display_name='display_name_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = discovery.Provider.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_provider(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, discovery.Provider)
+    assert response.name == 'name_value'
+    assert response.display_name == 'display_name_value'
+
+
 def test_list_providers_rest_bad_request(request_type=eventarc.ListProvidersRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13687,6 +13512,49 @@ def test_get_channel_connection_rest_bad_request(request_type=eventarc.GetChanne
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.get_channel_connection(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetChannelConnectionRequest,
+  dict,
+])
+def test_get_channel_connection_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/channelConnections/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = channel_connection.ChannelConnection(
+              name='name_value',
+              uid='uid_value',
+              channel='channel_value',
+              activation_token='activation_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = channel_connection.ChannelConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_channel_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel_connection.ChannelConnection)
+    assert response.name == 'name_value'
+    assert response.uid == 'uid_value'
+    assert response.channel == 'channel_value'
+    assert response.activation_token == 'activation_token_value'
 
 
 def test_list_channel_connections_rest_bad_request(request_type=eventarc.ListChannelConnectionsRequest):
@@ -13773,6 +13641,45 @@ def test_get_google_channel_config_rest_bad_request(request_type=eventarc.GetGoo
         client.get_google_channel_config(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetGoogleChannelConfigRequest,
+  dict,
+])
+def test_get_google_channel_config_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = google_channel_config.GoogleChannelConfig(
+              name='name_value',
+              crypto_key_name='crypto_key_name_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_google_channel_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, google_channel_config.GoogleChannelConfig)
+    assert response.name == 'name_value'
+    assert response.crypto_key_name == 'crypto_key_name_value'
+
+
 def test_update_google_channel_config_rest_bad_request(request_type=eventarc.UpdateGoogleChannelConfigRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13792,6 +13699,109 @@ def test_update_google_channel_config_rest_bad_request(request_type=eventarc.Upd
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.update_google_channel_config(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  eventarc.UpdateGoogleChannelConfigRequest,
+  dict,
+])
+def test_update_google_channel_config_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'google_channel_config': {'name': 'projects/sample1/locations/sample2/googleChannelConfig'}}
+    request_init["google_channel_config"] = {'name': 'projects/sample1/locations/sample2/googleChannelConfig', 'update_time': {'seconds': 751, 'nanos': 543}, 'crypto_key_name': 'crypto_key_name_value'}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["google_channel_config"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["google_channel_config"][field])):
+                    del request_init["google_channel_config"][field][i][subfield]
+            else:
+                del request_init["google_channel_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gce_google_channel_config.GoogleChannelConfig(
+              name='name_value',
+              crypto_key_name='crypto_key_name_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_google_channel_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
+    assert response.name == 'name_value'
+    assert response.crypto_key_name == 'crypto_key_name_value'
 
 
 def test_initialize_client_w_rest():
