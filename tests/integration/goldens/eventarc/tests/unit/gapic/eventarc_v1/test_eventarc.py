@@ -13087,6 +13087,22 @@ def test_initialize_client_w_grpc():
     assert client is not None
 
 
+def test_eventarc_rest_lro_client():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
 def test_transport_kind_grpc_asyncio():
     transport = EventarcAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -13101,6 +13117,22 @@ def test_initialize_client_w_grpc_asyncio():
     )
     assert client is not None
 
+
+def test_eventarc_rest_lro_client():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 def test_transport_kind_rest():
     transport = EventarcClient.get_transport_class("rest")(
@@ -13812,6 +13844,22 @@ def test_initialize_client_w_rest():
     assert client is not None
 
 
+def test_eventarc_rest_lro_client():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = EventarcClient(
@@ -14062,23 +14110,6 @@ def test_eventarc_http_transport_client_cert_source_for_mtls():
             client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_eventarc_rest_lro_client():
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize("transport_name", [

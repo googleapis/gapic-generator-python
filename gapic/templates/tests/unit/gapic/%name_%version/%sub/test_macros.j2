@@ -1866,6 +1866,27 @@ def test_transport_kind_{{ transport_name }}():
 
 {% endmacro %}
 
+{% macro lro_client_test(service, transport, is_async) %}
+{% if 'rest' in transport %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+def test_{{ service.name|snake_case }}_{{ transport_name }}_lro_client():
+    client = {{ service.async_client_name }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{ transport_name }}",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        {% if is_async %}operations_v1.AbstractOperationsAsyncClient{% else %}operations_v1.AbstractOperationsClient{% endif %},
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+{% endif %}{# 'rest' in transport #}
+{% endmacro %}{# lro_client_test #}
+
 
 {% macro transport_close_test(service, transport, is_async) %}
 {% set async_prefix = get_async_prefix(is_async) %}

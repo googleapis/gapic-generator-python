@@ -8006,6 +8006,22 @@ def test_initialize_client_w_grpc():
     assert client is not None
 
 
+def test_cloud_redis_rest_lro_client():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
 def test_transport_kind_grpc_asyncio():
     transport = CloudRedisAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -8020,6 +8036,22 @@ def test_initialize_client_w_grpc_asyncio():
     )
     assert client is not None
 
+
+def test_cloud_redis_rest_lro_client():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 def test_transport_kind_rest():
     transport = CloudRedisClient.get_transport_class("rest")(
@@ -8393,6 +8425,22 @@ def test_initialize_client_w_rest():
     assert client is not None
 
 
+def test_cloud_redis_rest_lro_client():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
 def test_transport_kind_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
@@ -8609,6 +8657,22 @@ def test_initialize_client_w_rest_asyncio():
     )
     assert client is not None
 
+
+def test_cloud_redis_rest_lro_client():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 def test_unsupported_parameter_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
@@ -8862,23 +8926,6 @@ def test_cloud_redis_http_transport_client_cert_source_for_mtls():
             client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_cloud_redis_rest_lro_client():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize("transport_name", [

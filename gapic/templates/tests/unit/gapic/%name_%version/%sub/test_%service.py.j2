@@ -1058,6 +1058,9 @@ def test_transport_adc(transport_class):
 {% for conf in configs %}
 {{ test_macros.transport_kind_test(**conf) }}
 {{ test_macros.run_transport_tests_for_config(**conf) }}
+{% if service.has_lro %}
+{{ test_macros.lro_client_test(**conf) }}
+{% endif %}{# service.has_lro #}
 {% endfor %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the below macro when async rest is GA. #}
 {% if rest_async_io_enabled %}
@@ -1365,26 +1368,6 @@ def test_{{ service.name|snake_case }}_http_transport_client_cert_source_for_mtl
             client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-{% if service.has_lro -%}
-def test_{{ service.name|snake_case }}_rest_lro_client():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
-{%- endif %}
-
 
 {% endif %} {# rest #}
 

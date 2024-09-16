@@ -22,6 +22,7 @@ from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core import operations_v1
 from google.api_core import retry_async as retries
 
 import dataclasses
@@ -344,6 +345,56 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 raise NotImplementedError(
                     "Method UpgradeInstance is not available over REST transport"
                 )
+
+    @property
+    def operations_client(self) -> operations_v1.AbstractOperationsAsyncClient:
+        """Create the async client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            http_options: Dict[str, List[Dict[str, str]]] = {
+                'google.longrunning.Operations.CancelOperation': [
+                    {
+                        'method': 'post',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
+                    },
+                ],
+                'google.longrunning.Operations.DeleteOperation': [
+                    {
+                        'method': 'delete',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                    },
+                ],
+                'google.longrunning.Operations.GetOperation': [
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                    },
+                ],
+                'google.longrunning.Operations.ListOperations': [
+                    {
+                        'method': 'get',
+                        'uri': '/v1/{name=projects/*/locations/*}/operations',
+                    },
+                ],
+            }
+
+            rest_transport = operations_v1.OperationsRestAsyncTransport(
+                    host=self._host,
+                    # use the credentials which are saved
+                    credentials=self._credentials,
+                    scopes=self._scopes,
+                    http_options=http_options,
+                    path_prefix="v1"
+            )
+
+            self._operations_client = operations_v1.AbstractOperationsAsyncClient(transport=rest_transport)
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def create_instance(self) -> Callable[

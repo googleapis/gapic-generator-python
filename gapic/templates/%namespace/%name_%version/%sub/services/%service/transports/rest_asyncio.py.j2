@@ -15,6 +15,9 @@ from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+{% if service.has_lro %}
+from google.api_core import operations_v1
+{% endif %}{# service.has_lro #}
 from google.api_core import retry_async as retries
 
 import dataclasses
@@ -121,6 +124,51 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 )
 
     {% endfor %}
+
+    {% if service.has_lro %}
+
+    @property
+    def operations_client(self) -> operations_v1.AbstractOperationsAsyncClient:
+        """Create the async client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            http_options: Dict[str, List[Dict[str, str]]] = {
+            {% for selector, rules in api.http_options.items() %}
+            {% if selector.startswith('google.longrunning.Operations') %}
+                '{{ selector }}': [
+                    {% for rule in rules %}
+                    {
+                        'method': '{{ rule.method }}',
+                        'uri': '{{ rule.uri }}',
+                        {% if rule.body %}
+                        'body': '{{ rule.body }}',
+                        {% endif %}{# rule.body #}
+                    },
+                    {% endfor %}{# rules #}
+                ],
+            {% endif %}{# selector.startswith Operations #}
+            {% endfor %}{# http_options #}
+            }
+
+            rest_transport = operations_v1.OperationsRestAsyncTransport(
+                    host=self._host,
+                    # use the credentials which are saved
+                    credentials=self._credentials,
+                    scopes=self._scopes,
+                    http_options=http_options,
+                    path_prefix="{{ service.client_package_version }}"
+            )
+
+            self._operations_client = operations_v1.AbstractOperationsAsyncClient(transport=rest_transport)
+
+        # Return the client from cache.
+        return self._operations_client
+    {% endif %}
+
     {% for method in service.methods.values()|sort(attribute="name") %}
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2154): Remove `type:  ignore`. #}
     @property
