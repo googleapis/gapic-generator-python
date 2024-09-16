@@ -974,6 +974,65 @@ async def test_get_trigger_async_from_dict():
     await test_get_trigger_async(request_type=dict)
 
 
+def test_get_trigger_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetTriggerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_trigger),
+            '__call__') as call:
+        call.return_value = trigger.Trigger()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_trigger(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_get_trigger_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetTriggerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_trigger),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(trigger.Trigger())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.get_trigger(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_trigger_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1293,6 +1352,65 @@ async def test_list_triggers_async(transport: str = 'grpc_asyncio', request_type
 async def test_list_triggers_async_from_dict():
     await test_list_triggers_async(request_type=dict)
 
+
+def test_list_triggers_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListTriggersRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_triggers),
+            '__call__') as call:
+        call.return_value = eventarc.ListTriggersResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_triggers(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_list_triggers_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListTriggersRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_triggers),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListTriggersResponse())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.list_triggers(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_triggers_field_headers():
     client = EventarcClient(
@@ -1808,6 +1926,65 @@ async def test_create_trigger_async_from_dict():
     await test_create_trigger_async(request_type=dict)
 
 
+def test_create_trigger_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateTriggerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_trigger),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_trigger(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_create_trigger_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateTriggerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_trigger),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.create_trigger(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_create_trigger_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2143,6 +2320,65 @@ async def test_update_trigger_async(transport: str = 'grpc_asyncio', request_typ
 async def test_update_trigger_async_from_dict():
     await test_update_trigger_async(request_type=dict)
 
+
+def test_update_trigger_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.UpdateTriggerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_trigger),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_trigger(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_update_trigger_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.UpdateTriggerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_trigger),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.update_trigger(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_update_trigger_field_headers():
     client = EventarcClient(
@@ -2483,6 +2719,65 @@ async def test_delete_trigger_async(transport: str = 'grpc_asyncio', request_typ
 async def test_delete_trigger_async_from_dict():
     await test_delete_trigger_async(request_type=dict)
 
+
+def test_delete_trigger_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteTriggerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_trigger),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_trigger(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_delete_trigger_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteTriggerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_trigger),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.delete_trigger(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_delete_trigger_field_headers():
     client = EventarcClient(
@@ -2827,6 +3122,65 @@ async def test_get_channel_async_from_dict():
     await test_get_channel_async(request_type=dict)
 
 
+def test_get_channel_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetChannelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel),
+            '__call__') as call:
+        call.return_value = channel.Channel()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_channel(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_get_channel_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetChannelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel.Channel())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.get_channel(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_channel_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3144,6 +3498,65 @@ async def test_list_channels_async(transport: str = 'grpc_asyncio', request_type
 async def test_list_channels_async_from_dict():
     await test_list_channels_async(request_type=dict)
 
+
+def test_list_channels_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListChannelsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channels),
+            '__call__') as call:
+        call.return_value = eventarc.ListChannelsResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_channels(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_list_channels_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListChannelsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channels),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelsResponse())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.list_channels(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_channels_field_headers():
     client = EventarcClient(
@@ -3659,6 +4072,65 @@ async def test_create_channel_async_from_dict():
     await test_create_channel_async(request_type=dict)
 
 
+def test_create_channel_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateChannelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_channel(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_create_channel_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateChannelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.create_channel(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_create_channel_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3995,6 +4467,65 @@ async def test_update_channel_async_from_dict():
     await test_update_channel_async(request_type=dict)
 
 
+def test_update_channel_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.UpdateChannelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_channel),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_channel(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_update_channel_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.UpdateChannelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_channel),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.update_channel(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_update_channel_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4323,6 +4854,65 @@ async def test_delete_channel_async_from_dict():
     await test_delete_channel_async(request_type=dict)
 
 
+def test_delete_channel_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteChannelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_channel(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteChannelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.delete_channel(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_delete_channel_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4638,6 +5228,65 @@ async def test_get_provider_async(transport: str = 'grpc_asyncio', request_type=
 async def test_get_provider_async_from_dict():
     await test_get_provider_async(request_type=dict)
 
+
+def test_get_provider_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetProviderRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_provider),
+            '__call__') as call:
+        call.return_value = discovery.Provider()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_provider(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_get_provider_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetProviderRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_provider),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(discovery.Provider())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.get_provider(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_get_provider_field_headers():
     client = EventarcClient(
@@ -4958,6 +5607,65 @@ async def test_list_providers_async(transport: str = 'grpc_asyncio', request_typ
 async def test_list_providers_async_from_dict():
     await test_list_providers_async(request_type=dict)
 
+
+def test_list_providers_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListProvidersRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_providers),
+            '__call__') as call:
+        call.return_value = eventarc.ListProvidersResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_providers(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_list_providers_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListProvidersRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_providers),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListProvidersResponse())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.list_providers(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_providers_field_headers():
     client = EventarcClient(
@@ -5477,6 +6185,65 @@ async def test_get_channel_connection_async_from_dict():
     await test_get_channel_connection_async(request_type=dict)
 
 
+def test_get_channel_connection_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetChannelConnectionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel_connection),
+            '__call__') as call:
+        call.return_value = channel_connection.ChannelConnection()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_channel_connection(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_get_channel_connection_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetChannelConnectionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_channel_connection),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel_connection.ChannelConnection())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.get_channel_connection(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_channel_connection_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5792,6 +6559,65 @@ async def test_list_channel_connections_async(transport: str = 'grpc_asyncio', r
 async def test_list_channel_connections_async_from_dict():
     await test_list_channel_connections_async(request_type=dict)
 
+
+def test_list_channel_connections_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListChannelConnectionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channel_connections),
+            '__call__') as call:
+        call.return_value = eventarc.ListChannelConnectionsResponse()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.list_channel_connections(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListChannelConnectionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_channel_connections),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelConnectionsResponse())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.list_channel_connections(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_list_channel_connections_field_headers():
     client = EventarcClient(
@@ -6307,6 +7133,65 @@ async def test_create_channel_connection_async_from_dict():
     await test_create_channel_connection_async(request_type=dict)
 
 
+def test_create_channel_connection_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateChannelConnectionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_connection),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.create_channel_connection(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_create_channel_connection_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateChannelConnectionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_channel_connection),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.create_channel_connection(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_create_channel_connection_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6645,6 +7530,65 @@ async def test_delete_channel_connection_async_from_dict():
     await test_delete_channel_connection_async(request_type=dict)
 
 
+def test_delete_channel_connection_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteChannelConnectionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel_connection),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.delete_channel_connection(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_connection_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteChannelConnectionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_channel_connection),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.delete_channel_connection(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_delete_channel_connection_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6961,6 +7905,65 @@ async def test_get_google_channel_config_async_from_dict():
     await test_get_google_channel_config_async(request_type=dict)
 
 
+def test_get_google_channel_config_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetGoogleChannelConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_google_channel_config),
+            '__call__') as call:
+        call.return_value = google_channel_config.GoogleChannelConfig()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.get_google_channel_config(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_get_google_channel_config_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetGoogleChannelConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_google_channel_config),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(google_channel_config.GoogleChannelConfig())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.get_google_channel_config(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
 def test_get_google_channel_config_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7272,6 +8275,65 @@ async def test_update_google_channel_config_async(transport: str = 'grpc_asyncio
 async def test_update_google_channel_config_async_from_dict():
     await test_update_google_channel_config_async(request_type=dict)
 
+
+def test_update_google_channel_config_routing_header_override():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.UpdateGoogleChannelConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_google_channel_config),
+            '__call__') as call:
+        call.return_value = gce_google_channel_config.GoogleChannelConfig()
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        client.update_google_channel_config(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
+
+
+@pytest.mark.asyncio
+async def test_update_google_channel_config_routing_header_override_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.UpdateGoogleChannelConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_google_channel_config),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gce_google_channel_config.GoogleChannelConfig())
+        custom_val = "key=custom"
+        override = [('x-goog-request-params', custom_val)]
+        await client.update_google_channel_config(request, metadata=override)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert call.call_count == 1
+        args, kw = call.call_args
+        assert args[0] == request
+
+    # enure there is just one x-goog-request-params header
+    assert len([x for x in kw["metadata"] if x[0] == "x-goog-request-params"]) == 1
+    # ensure that the custom header is the only one
+    assert [x for x in kw["metadata"] if x[0] == "x-goog-request-params"][0][1] == custom_val
 
 def test_update_google_channel_config_field_headers():
     client = EventarcClient(
