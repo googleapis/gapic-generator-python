@@ -86,11 +86,11 @@ except ImportError:  # pragma: NO COVER
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
-                {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
+                {% for field_header in method.field_headers %}
                 ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
-                {% endif %}
-                {% endfor %}
+                {% endfor %}{# for field_header in method.field_headers #}
+                {% endif %}{# not method.client_streaming #}
             )),
         )
     {% endif %}{# method.explicit_routing #}
