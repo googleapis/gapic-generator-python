@@ -92,7 +92,7 @@ class CloudRedisClientMeta(type):
         # If a specific transport is requested, return that one.
         if label == "rest_asyncio" and not HAS_GOOGLE_AUTH_AIO:  # pragma: NO COVER
             raise GOOGLE_AUTH_AIO_EXCEPTION
-        elif label == "rest_asyncio" and not HAS_AIOHTTP_INSTALLED:
+        elif label == "rest_asyncio" and not HAS_AIOHTTP_INSTALLED:  # pragma: NO COVER
             raise ImportError("async rest transport requires aiohttp external package.")
         if label:
             return cls._transport_registry[label]
