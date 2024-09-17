@@ -10946,16 +10946,11 @@ def test_initialize_client_w_grpc():
     assert client is not None
 
 
-def test_transport_kind_grpc_asyncio():
-    transport = ConfigServiceV2AsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_list_buckets_empty_call_grpc():
     client = ConfigServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
-
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11565,6 +11560,14 @@ def test_transport_kind_grpc_asyncio():
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = ConfigServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    assert client is not None
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
@@ -12362,14 +12365,6 @@ async def test_copy_log_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CopyLogEntriesRequest()
-
-
-def test_initialize_client_w_grpc_asyncio():
-    client = ConfigServiceV2AsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio"
-    )
-    assert client is not None
 
 
 def test_transport_grpc_default():

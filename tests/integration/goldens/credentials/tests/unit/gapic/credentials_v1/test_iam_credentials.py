@@ -3078,6 +3078,7 @@ def test_initialize_client_w_grpc():
     )
     assert client is not None
 
+
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_generate_access_token_empty_call_grpc():
@@ -3168,6 +3169,7 @@ def test_initialize_client_w_grpc_asyncio():
         transport="grpc_asyncio"
     )
     assert client is not None
+
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.

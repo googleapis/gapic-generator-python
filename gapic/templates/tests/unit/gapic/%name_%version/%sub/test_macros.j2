@@ -1874,7 +1874,7 @@ def test_transport_kind_{{ transport_name }}():
 {% endmacro %}
 
 
-{% macro transport_close_test(service, transport, is_async) %}
+{% macro transport_close_test(service, api, transport, is_async) %}
 {% set async_prefix = get_async_prefix(is_async) %}
 {% set async_decorator = get_async_decorator(is_async) %}
 {% set transport_name = get_transport_name(transport, is_async) %}
