@@ -14,6 +14,12 @@
 # limitations under the License.
 #
 try:
+    import aiohttp # type: ignore
+except ImportError as e:  # pragma: NO COVER
+    raise ImportError("async rest transport requires aiohttp external package.") from e
+
+import google.auth
+try:
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
 except ImportError as e:  # pragma: NO COVER
     raise ImportError("async rest transport requires google.auth >= 2.x.x") from e
@@ -48,7 +54,7 @@ except AttributeError:  # pragma: NO COVER
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=None,
+    rest_version=google.auth.__version__
 )
 
 @dataclasses.dataclass

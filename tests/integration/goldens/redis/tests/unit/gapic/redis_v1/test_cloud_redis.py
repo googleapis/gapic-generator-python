@@ -31,6 +31,11 @@ import pytest
 from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+try:
+    import aiohttp  # type: ignore
+    HAS_AIOHTTP_INSTALLED = True
+except ImportError: # pragma: NO COVER
+    HAS_AIOHTTP_INSTALLED = False
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -8396,6 +8401,8 @@ def test_initialize_client_w_rest():
 def test_transport_kind_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     transport = CloudRedisAsyncClient.get_transport_class("rest_asyncio")(
         credentials=async_anonymous_credentials()
     )
@@ -8406,6 +8413,8 @@ def test_transport_kind_rest_asyncio():
 async def test_list_instances_rest_asyncio_error():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8424,7 +8433,8 @@ async def test_list_instances_rest_asyncio_error():
 async def test_get_instance_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceRequest):
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
-
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -8452,6 +8462,8 @@ async def test_get_instance_rest_asyncio_bad_request(request_type=cloud_redis.Ge
 async def test_get_instance_rest_asyncio_call_success(request_type):
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8541,7 +8553,8 @@ async def test_get_instance_rest_asyncio_call_success(request_type):
 async def test_get_instance_auth_string_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
-
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -8569,6 +8582,8 @@ async def test_get_instance_auth_string_rest_asyncio_bad_request(request_type=cl
 async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8606,6 +8621,8 @@ async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
 async def test_create_instance_rest_asyncio_error():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8624,6 +8641,8 @@ async def test_create_instance_rest_asyncio_error():
 async def test_update_instance_rest_asyncio_error():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8642,6 +8661,8 @@ async def test_update_instance_rest_asyncio_error():
 async def test_upgrade_instance_rest_asyncio_error():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8660,6 +8681,8 @@ async def test_upgrade_instance_rest_asyncio_error():
 async def test_import_instance_rest_asyncio_error():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8678,6 +8701,8 @@ async def test_import_instance_rest_asyncio_error():
 async def test_export_instance_rest_asyncio_error():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8696,6 +8721,8 @@ async def test_export_instance_rest_asyncio_error():
 async def test_failover_instance_rest_asyncio_error():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8714,6 +8741,8 @@ async def test_failover_instance_rest_asyncio_error():
 async def test_delete_instance_rest_asyncio_error():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8732,6 +8761,8 @@ async def test_delete_instance_rest_asyncio_error():
 async def test_reschedule_maintenance_rest_asyncio_error():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8749,6 +8780,8 @@ async def test_reschedule_maintenance_rest_asyncio_error():
 def test_initialize_client_w_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -8759,6 +8792,8 @@ def test_initialize_client_w_rest_asyncio():
 def test_unsupported_parameter_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     options = client_options.ClientOptions(quota_project_id="octopus")
     with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
         client = CloudRedisAsyncClient(
@@ -10474,6 +10509,8 @@ def test_transport_close_rest():
 async def test_transport_close_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"

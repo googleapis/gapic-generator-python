@@ -81,6 +81,12 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_crud_with_request_async(async_identity):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2171): Add test for async rest pagers.
+        if "rest" in str(async_identity.transport).lower():
+            with pytest.raises(NotImplementedError):
+                await async_identity.list_users()
+            return
+
         pager = await async_identity.list_users()
         count = len(pager.users)
         user = await async_identity.create_user(request={'user': {
@@ -100,6 +106,12 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_crud_flattened_async(async_identity):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2171): Add test for async rest pagers.
+        if "rest" in str(async_identity.transport).lower():
+            with pytest.raises(NotImplementedError):
+                await async_identity.list_users()
+            return
+
         count = len((await async_identity.list_users()).users)
         user = await async_identity.create_user(
             display_name='Monty Python',

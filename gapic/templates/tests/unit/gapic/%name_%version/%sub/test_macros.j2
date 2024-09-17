@@ -1861,6 +1861,8 @@ def test_transport_kind_{{ transport_name }}():
     if not HAS_GOOGLE_AUTH_AIO:
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     {% endif %}
     transport = {{ get_client(service, is_async) }}.get_transport_class("{{ transport_name }}")(
         credentials={{get_credentials(is_async)}}
@@ -1884,6 +1886,8 @@ def test_transport_kind_{{ transport_name }}():
     if not HAS_GOOGLE_AUTH_AIO:
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -1902,6 +1906,8 @@ def test_unsupported_parameter_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     options = client_options.ClientOptions(quota_project_id="octopus")
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2137): Remove `type: ignore` once we add a version check for google-api-core. #}
     with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
@@ -1987,6 +1993,8 @@ def test_unsupported_parameter_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     {% endif %}
 
     client = {{ get_client(service, is_async) }}(
@@ -2015,6 +2023,8 @@ def test_initialize_client_w_{{transport_name}}():
     if not HAS_GOOGLE_AUTH_AIO:
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -2044,7 +2054,8 @@ def test_initialize_client_w_{{transport_name}}():
     if not HAS_GOOGLE_AUTH_AIO:
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
-
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -2110,6 +2121,8 @@ def test_initialize_client_w_{{transport_name}}():
     if not HAS_GOOGLE_AUTH_AIO:
         {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth > 2.x.x is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
 
     {% endif %}
     client = {{ get_client(service, is_async) }}(
