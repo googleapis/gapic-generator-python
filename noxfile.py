@@ -444,7 +444,7 @@ def showcase_unit_w_rest_async(
         # TODO(https://github.com/googleapis/python-api-core/pull/694): Update the version of google-api-core once the linked PR is merged.
         session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]@git+https://github.com/googleapis/python-api-core.git@7dea20d73878eca93b61bb82ae6ddf335fb3a8ca")
         # TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged.
-        session.install('--no-cache-dir', '--force-reinstall', "google-auth@git+https://github.com/googleapis/google-auth-library-python.git@add-support-for-async-authorized-session-api")
+        session.install('--no-cache-dir', '--force-reinstall', "google-auth@git+https://github.com/googleapis/google-auth-library-python.git")
         session.install("aiohttp")
         run_showcase_unit_tests(session)
 
