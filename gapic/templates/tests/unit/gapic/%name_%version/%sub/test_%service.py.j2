@@ -1069,8 +1069,8 @@ def test_transport_adc(transport_class):
 {{ test_macros.run_transport_tests_for_config(**conf) }}
 {{ test_macros.empty_call_test(**conf) }}
 {% endfor %}
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the below macro when async rest is GA. #}
 {% if rest_async_io_enabled %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the below macro when async rest is GA and supports all required parameters. #}
 {{ test_macros.async_rest_unsupported_params_test(service) }}
 {% endif %}
 {% if 'grpc' in opts.transport %}
