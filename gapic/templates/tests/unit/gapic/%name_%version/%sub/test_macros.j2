@@ -1861,7 +1861,6 @@ def test_{{ method_name }}_rest_no_http_options():
 def test_transport_kind_{{ transport_name }}():
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_GOOGLE_AUTH_AIO:
-        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
     elif not HAS_AIOHTTP_INSTALLED:
         pytest.skip("aiohttp is required for async rest transport.")
@@ -1886,7 +1885,6 @@ def test_transport_kind_{{ transport_name }}():
 {{async_prefix}}def test_transport_close_{{transport_name}}():
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_GOOGLE_AUTH_AIO:
-        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
     elif not HAS_AIOHTTP_INSTALLED:
         pytest.skip("aiohttp is required for async rest transport.")
@@ -1906,7 +1904,6 @@ def test_transport_kind_{{ transport_name }}():
 {% macro async_rest_unsupported_params_test(service) %}
 def test_unsupported_parameter_rest_asyncio():
     if not HAS_GOOGLE_AUTH_AIO:
-        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
     elif not HAS_AIOHTTP_INSTALLED:
         pytest.skip("aiohttp is required for async rest transport.")
@@ -1993,7 +1990,6 @@ def test_unsupported_parameter_rest_asyncio():
 {{async_prefix}}def test_{{ method_name }}_{{transport_name}}_error():
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_GOOGLE_AUTH_AIO:
-        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
     elif not HAS_AIOHTTP_INSTALLED:
         pytest.skip("aiohttp is required for async rest transport.")
@@ -2023,7 +2019,6 @@ def test_unsupported_parameter_rest_asyncio():
 def test_initialize_client_w_{{transport_name}}():
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_GOOGLE_AUTH_AIO:
-        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
     elif not HAS_AIOHTTP_INSTALLED:
         pytest.skip("aiohttp is required for async rest transport.")
@@ -2054,7 +2049,6 @@ def test_initialize_client_w_{{transport_name}}():
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_GOOGLE_AUTH_AIO:
-        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
     elif not HAS_AIOHTTP_INSTALLED:
         pytest.skip("aiohttp is required for async rest transport.")
@@ -2121,7 +2115,6 @@ def test_initialize_client_w_{{transport_name}}():
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_GOOGLE_AUTH_AIO:
-        {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
         pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
     elif not HAS_AIOHTTP_INSTALLED:
         pytest.skip("aiohttp is required for async rest transport.")
