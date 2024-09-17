@@ -59,7 +59,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_method_async_wrapper_for_async_client(async_echo):
-        with pytest.raises(exceptions.NotFound):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2152): Add test for retrying LRO.
+        with pytest.raises((exceptions.NotFound, NotImplementedError)):
             await async_echo.get_operation({
                 'name': "operations/echo"
             })

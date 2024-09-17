@@ -341,6 +341,39 @@ def showcase(
             env=env,
         )
 
+@nox.session(python=ALL_PYTHON)
+def showcase_w_rest_async(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = {},
+):
+    """Run the Showcase test suite."""
+
+    with showcase_library(session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True):
+        session.install("aiohttp")
+        session.install("pytest", "pytest-asyncio")
+        test_directory = Path("tests", "system")
+        ignore_file = env.get("IGNORE_FILE")
+        pytest_command = [
+            "py.test",
+            "--quiet",
+            *(session.posargs or [str(test_directory)]),
+        ]
+        if ignore_file:
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
+
+        # Note: google-api-core and google-auth are re-installed here to override the version installed in constraints.
+        # TODO(https://github.com/googleapis/python-api-core/pull/694): Update the version of google-api-core once the linked PR is merged.
+        session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]@git+https://github.com/googleapis/python-api-core.git@7dea20d73878eca93b61bb82ae6ddf335fb3a8ca")
+        # TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged.
+        session.install('--no-cache-dir', '--force-reinstall', "google-auth@git+https://github.com/googleapis/google-auth-library-python.git")
+        session.run(
+            *pytest_command,
+            env=env,
+        )
+
 
 @nox.session(python=NEWEST_PYTHON)
 def showcase_mtls(

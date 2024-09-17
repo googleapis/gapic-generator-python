@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import google.auth
 try:
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
 except ImportError as e:  # pragma: NO COVER
@@ -48,7 +49,7 @@ except AttributeError:  # pragma: NO COVER
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=None,
+    rest_version=google.auth.__version__
 )
 
 @dataclasses.dataclass
