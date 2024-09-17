@@ -38,10 +38,15 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
     try:
-        import google.showcase.transports.rest_asyncio
-        SHOWCASE_ASYNC_TRANSPORTS = ["grpc_asyncio", "rest_asyncio"]
+        from google.showcase_v1beta1.services.echo.transports import AsyncEchoRestTransport
+        HAS_ASYNC_REST_ECHO_TRANSPORT = True
     except:
-        SHOWCASE_ASYNC_TRANSPORTS = ["grpc_asyncio"]
+        HAS_ASYNC_REST_ECHO_TRANSPORT = False
+    try:
+        from google.showcase_v1beta1.services.identity.transports import AsyncIdentityRestTransport
+        HAS_ASYNC_REST_IDENTITY_TRANSPORT = True
+    except:
+        HAS_ASYNC_REST_IDENTITY_TRANSPORT = False
 
     # TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
     # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
@@ -62,22 +67,28 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     def event_loop():
         return asyncio.get_event_loop()
 
-    @pytest.fixture(params=SHOWCASE_ASYNC_TRANSPORTS)
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
     def async_echo(use_mtls, request, event_loop):
+        transport = request.param
+        if transport == "rest_asyncio" and not HAS_ASYNC_REST_ECHO_TRANSPORT:
+            pytest.skip("Skipping test with async rest.")
         return construct_client(
             EchoAsyncClient,
             use_mtls,
-            transport_name=request.param,
+            transport_name=transport,
             channel_creator=aio.insecure_channel if request.param == "grpc_asyncio" else None,
             credentials=async_anonymous_credentials(),
         )
 
-    @pytest.fixture(params=SHOWCASE_ASYNC_TRANSPORTS)
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
     def async_identity(use_mtls, request, event_loop):
+        transport = request.param
+        if transport == "rest_asyncio" and not HAS_ASYNC_REST_IDENTITY_TRANSPORT:
+            pytest.skip("Skipping test with async rest.")
         return construct_client(
             IdentityAsyncClient,
             use_mtls,
-            transport_name=request.param,
+            transport_name=transport,
             channel_creator=aio.insecure_channel if request.param == "grpc_asyncio" else None,
             credentials=async_anonymous_credentials(),
         )
