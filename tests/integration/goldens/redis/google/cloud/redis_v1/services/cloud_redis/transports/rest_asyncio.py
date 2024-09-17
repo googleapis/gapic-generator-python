@@ -13,16 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-try:
-    import aiohttp # type: ignore
-except ImportError as e:  # pragma: NO COVER
-    raise ImportError("async rest transport requires aiohttp external package.") from e
 
 import google.auth
 try:
+    import aiohttp # type: ignore
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
 except ImportError as e:  # pragma: NO COVER
-    raise ImportError("async rest transport requires google.auth >= 2.x.x") from e
+    raise ImportError("async rest transport requires google.auth >= 2.35.0 with aiohttp extra. Install google-auth with the aiohttp extra using `pip install google-auth[aiohttp]==2.35.0`.") from e
 
 from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
