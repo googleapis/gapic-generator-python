@@ -5,9 +5,16 @@
 
 {% block content %}
 
+try:
+    import aiohttp # type: ignore
+{# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
+except ImportError as e:  # pragma: NO COVER
+    raise ImportError("async rest transport requires aiohttp external package.") from e
+
 import google.auth
 try:
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
+{# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
 except ImportError as e:  # pragma: NO COVER
     {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
     raise ImportError("async rest transport requires google.auth >= 2.x.x") from e

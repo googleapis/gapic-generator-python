@@ -51,7 +51,7 @@ def test_pagination_pages(echo):
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.mark.asyncio
     async def test_pagination_async(async_echo):
-        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2152): Add test for async rest pagers.
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2171): Add test for async rest pagers.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
                 await async_echo.paged_expand()
@@ -71,7 +71,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_pagination_pages_async(async_echo):
-        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2152): Add test for async rest pagers.
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2171): Add test for async rest pagers.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
                 await async_echo.paged_expand()

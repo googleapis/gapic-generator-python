@@ -114,7 +114,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_unary_stream_reader(async_echo):
-        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2152): Add test for async rest server-streaming.
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2168): Add test for async rest server-streaming.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
                 call = await async_echo.expand()
@@ -137,7 +137,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_unary_stream_async_generator(async_echo):
-        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2152): Add test for async rest server-streaming.
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2168): Add test for async rest server-streaming.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
                 call = await async_echo.expand()
@@ -161,6 +161,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_iterable(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
         # NOTE: There are currently no plans for supporting async rest client-streaming.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
@@ -177,6 +178,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_async_generator(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
         # NOTE: There are currently no plans for supporting async rest client-streaming.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
@@ -193,6 +195,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_writer(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
         # NOTE: There are currently no plans for supporting async rest client-streaming.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
@@ -208,6 +211,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_unary_passing_dict(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
         # NOTE: There are currently no plans for supporting async rest client-streaming.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
@@ -221,6 +225,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_reader_writier(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
         # NOTE: There are currently no plans for supporting async rest client-streaming.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
@@ -243,6 +248,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_async_generator(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
         # NOTE: There are currently no plans for supporting async rest client-streaming.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):
@@ -265,6 +271,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_async_stream_stream_passing_dict(async_echo):
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Add test for async rest client-streaming.
         # NOTE: There are currently no plans for supporting async rest client-streaming.
         if "rest" in str(async_echo.transport).lower():
             with pytest.raises(NotImplementedError):

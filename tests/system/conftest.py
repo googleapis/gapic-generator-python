@@ -24,6 +24,7 @@ try:
     from google.auth.aio import credentials as ga_credentials_async
 
     HAS_GOOGLE_AUTH_AIO = True
+# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined.
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 import google.auth

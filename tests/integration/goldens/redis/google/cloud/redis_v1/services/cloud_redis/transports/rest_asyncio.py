@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+try:
+    import aiohttp # type: ignore
+except ImportError as e:  # pragma: NO COVER
+    raise ImportError("async rest transport requires aiohttp external package.") from e
+
 import google.auth
 try:
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
