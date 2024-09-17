@@ -113,6 +113,10 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         def __hash__(self):
             return hash("Async{{service.name}}RestTransport.{{method.name}}")
 
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2168): Implement server streaming method. #}
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Implement client streaming method. #}
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2170): Implement long running operation method. #}
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2171): Implement pager method. #}
         {% if method.http_options and not method.client_streaming and not method.server_streaming and not method.lro and not method.extended_lro and not method.paged_result_field %}
         {% set body_spec = method.http_options[0].body %}
         {{ shared_macros.response_method(body_spec, is_async=True)|indent(8) }}
@@ -123,8 +127,15 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    {# TODO(b/362949446): Update the return type as we implement this for different method types. #}
+                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2168): Update return type for server streaming method. #}
+                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Update return type for client streaming method. #}
+                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2170): Update the return type for long running operation method. #}
+                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2171): Update the return type for pager method. #}
                     ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}None{% endif %}{% endif %}:
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2168): Implement server streaming method. #}
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Implement client streaming method. #}
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2170): Implement long running operation method. #}
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2171): Implement pager method. #}
          {% if method.http_options and not method.client_streaming and not method.server_streaming and not method.lro and not method.extended_lro and not method.paged_result_field %}
             r"""Call the {{- ' ' -}}
             {{ (method.name|snake_case).replace('_',' ')|wrap(
