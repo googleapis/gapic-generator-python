@@ -51,16 +51,10 @@ from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .transports.rest import CloudRedisRestTransport
 try:
     from .transports.rest_asyncio import AsyncCloudRedisRestTransport
-    HAS_GOOGLE_AUTH_AIO = True
+    HAS_ASYNC_REST_DEPENDENCIES = True
 except ImportError as e: # pragma: NO COVER
-    HAS_GOOGLE_AUTH_AIO = False
-    GOOGLE_AUTH_AIO_EXCEPTION = e
-
-try:
-    import aiohttp  # type: ignore
-    HAS_AIOHTTP_INSTALLED = True
-except ImportError as e: # pragma: NO COVER
-    HAS_AIOHTTP_INSTALLED = False
+    HAS_ASYNC_REST_DEPENDENCIES = False
+    ASYNC_REST_EXCEPTION = e
 
 
 class CloudRedisClientMeta(type):
@@ -74,7 +68,7 @@ class CloudRedisClientMeta(type):
     _transport_registry["grpc"] = CloudRedisGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
     _transport_registry["rest"] = CloudRedisRestTransport
-    if HAS_GOOGLE_AUTH_AIO and HAS_AIOHTTP_INSTALLED:  # pragma: NO COVER
+    if HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
         _transport_registry["rest_asyncio"] = AsyncCloudRedisRestTransport
 
     def get_transport_class(cls,
@@ -90,10 +84,8 @@ class CloudRedisClientMeta(type):
             The transport class to use.
         """
         # If a specific transport is requested, return that one.
-        if label == "rest_asyncio" and not HAS_GOOGLE_AUTH_AIO:  # pragma: NO COVER
-            raise GOOGLE_AUTH_AIO_EXCEPTION
-        elif label == "rest_asyncio" and not HAS_AIOHTTP_INSTALLED:  # pragma: NO COVER
-            raise ImportError("async rest transport requires aiohttp external package.")
+        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
+            raise ASYNC_REST_EXCEPTION
         if label:
             return cls._transport_registry[label]
 

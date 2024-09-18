@@ -65,8 +65,8 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
                 {{ ' ' }}The hostname to connect to {% if service.host %}(default: '{{ service.host }}'){% endif %}.
-            {# Note: Type hint for credentials is set to `Any` to support
-             # async and sync credential types in the parent rest transport classes. 
+            {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2173): Type hint for credentials is
+             # set to `Any` to support async and sync credential types in the parent rest transport classes. 
              # However, we should have a stronger type here such as an abstract base credentials
              # class leveraged by sync and async credential classes.
             #}
