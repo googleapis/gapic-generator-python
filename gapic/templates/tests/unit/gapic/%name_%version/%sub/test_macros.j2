@@ -1822,7 +1822,7 @@ def test_{{ method_name }}_rest_no_http_options():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, {% if routing_param %}kw{% else %}_{% endif %} = call.mock_calls[0]
         {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}

@@ -2698,7 +2698,7 @@ def test_list_log_metrics_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.ListLogMetricsRequest()
 
         assert args[0] == request_msg
@@ -2720,7 +2720,7 @@ def test_get_log_metric_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.GetLogMetricRequest()
 
         assert args[0] == request_msg
@@ -2742,7 +2742,7 @@ def test_create_log_metric_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.CreateLogMetricRequest()
 
         assert args[0] == request_msg
@@ -2764,7 +2764,7 @@ def test_update_log_metric_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.UpdateLogMetricRequest()
 
         assert args[0] == request_msg
@@ -2786,7 +2786,7 @@ def test_delete_log_metric_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.DeleteLogMetricRequest()
 
         assert args[0] == request_msg
@@ -2819,7 +2819,7 @@ async def test_list_log_metrics_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.ListLogMetricsRequest()
 
         assert args[0] == request_msg
@@ -2851,7 +2851,7 @@ async def test_get_log_metric_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.GetLogMetricRequest()
 
         assert args[0] == request_msg
@@ -2883,7 +2883,7 @@ async def test_create_log_metric_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.CreateLogMetricRequest()
 
         assert args[0] == request_msg
@@ -2915,7 +2915,7 @@ async def test_update_log_metric_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.UpdateLogMetricRequest()
 
         assert args[0] == request_msg
@@ -2939,7 +2939,7 @@ async def test_delete_log_metric_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.DeleteLogMetricRequest()
 
         assert args[0] == request_msg

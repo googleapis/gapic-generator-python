@@ -15425,7 +15425,7 @@ def test_export_assets_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ExportAssetsRequest()
 
         assert args[0] == request_msg
@@ -15447,7 +15447,7 @@ def test_list_assets_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListAssetsRequest()
 
         assert args[0] == request_msg
@@ -15469,7 +15469,7 @@ def test_batch_get_assets_history_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetAssetsHistoryRequest()
 
         assert args[0] == request_msg
@@ -15491,7 +15491,7 @@ def test_create_feed_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
 
         assert args[0] == request_msg
@@ -15513,7 +15513,7 @@ def test_get_feed_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
 
         assert args[0] == request_msg
@@ -15535,7 +15535,7 @@ def test_list_feeds_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
 
         assert args[0] == request_msg
@@ -15557,7 +15557,7 @@ def test_update_feed_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
 
         assert args[0] == request_msg
@@ -15579,7 +15579,7 @@ def test_delete_feed_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
 
         assert args[0] == request_msg
@@ -15601,7 +15601,7 @@ def test_search_all_resources_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllResourcesRequest()
 
         assert args[0] == request_msg
@@ -15623,7 +15623,7 @@ def test_search_all_iam_policies_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllIamPoliciesRequest()
 
         assert args[0] == request_msg
@@ -15645,7 +15645,7 @@ def test_analyze_iam_policy_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyRequest()
 
         assert args[0] == request_msg
@@ -15667,7 +15667,7 @@ def test_analyze_iam_policy_longrunning_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
 
         assert args[0] == request_msg
@@ -15689,7 +15689,7 @@ def test_analyze_move_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeMoveRequest()
 
         assert args[0] == request_msg
@@ -15711,7 +15711,7 @@ def test_query_assets_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.QueryAssetsRequest()
 
         assert args[0] == request_msg
@@ -15733,7 +15733,7 @@ def test_create_saved_query_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateSavedQueryRequest()
 
         assert args[0] == request_msg
@@ -15755,7 +15755,7 @@ def test_get_saved_query_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetSavedQueryRequest()
 
         assert args[0] == request_msg
@@ -15777,7 +15777,7 @@ def test_list_saved_queries_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListSavedQueriesRequest()
 
         assert args[0] == request_msg
@@ -15799,7 +15799,7 @@ def test_update_saved_query_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateSavedQueryRequest()
 
         assert args[0] == request_msg
@@ -15821,7 +15821,7 @@ def test_delete_saved_query_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteSavedQueryRequest()
 
         assert args[0] == request_msg
@@ -15843,7 +15843,7 @@ def test_batch_get_effective_iam_policies_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
 
         assert args[0] == request_msg
@@ -15865,7 +15865,7 @@ def test_analyze_org_policies_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPoliciesRequest()
 
         assert args[0] == request_msg
@@ -15887,7 +15887,7 @@ def test_analyze_org_policy_governed_containers_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
         assert args[0] == request_msg
@@ -15909,7 +15909,7 @@ def test_analyze_org_policy_governed_assets_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
 
         assert args[0] == request_msg
@@ -15942,7 +15942,7 @@ async def test_export_assets_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ExportAssetsRequest()
 
         assert args[0] == request_msg
@@ -15968,7 +15968,7 @@ async def test_list_assets_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListAssetsRequest()
 
         assert args[0] == request_msg
@@ -15993,7 +15993,7 @@ async def test_batch_get_assets_history_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetAssetsHistoryRequest()
 
         assert args[0] == request_msg
@@ -16023,7 +16023,7 @@ async def test_create_feed_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
 
         assert args[0] == request_msg
@@ -16053,7 +16053,7 @@ async def test_get_feed_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
 
         assert args[0] == request_msg
@@ -16078,7 +16078,7 @@ async def test_list_feeds_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
 
         assert args[0] == request_msg
@@ -16108,7 +16108,7 @@ async def test_update_feed_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
 
         assert args[0] == request_msg
@@ -16132,7 +16132,7 @@ async def test_delete_feed_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
 
         assert args[0] == request_msg
@@ -16158,7 +16158,7 @@ async def test_search_all_resources_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllResourcesRequest()
 
         assert args[0] == request_msg
@@ -16184,7 +16184,7 @@ async def test_search_all_iam_policies_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllIamPoliciesRequest()
 
         assert args[0] == request_msg
@@ -16210,7 +16210,7 @@ async def test_analyze_iam_policy_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyRequest()
 
         assert args[0] == request_msg
@@ -16236,7 +16236,7 @@ async def test_analyze_iam_policy_longrunning_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
 
         assert args[0] == request_msg
@@ -16261,7 +16261,7 @@ async def test_analyze_move_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeMoveRequest()
 
         assert args[0] == request_msg
@@ -16288,7 +16288,7 @@ async def test_query_assets_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.QueryAssetsRequest()
 
         assert args[0] == request_msg
@@ -16317,7 +16317,7 @@ async def test_create_saved_query_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateSavedQueryRequest()
 
         assert args[0] == request_msg
@@ -16346,7 +16346,7 @@ async def test_get_saved_query_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetSavedQueryRequest()
 
         assert args[0] == request_msg
@@ -16372,7 +16372,7 @@ async def test_list_saved_queries_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListSavedQueriesRequest()
 
         assert args[0] == request_msg
@@ -16401,7 +16401,7 @@ async def test_update_saved_query_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateSavedQueryRequest()
 
         assert args[0] == request_msg
@@ -16425,7 +16425,7 @@ async def test_delete_saved_query_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteSavedQueryRequest()
 
         assert args[0] == request_msg
@@ -16450,7 +16450,7 @@ async def test_batch_get_effective_iam_policies_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
 
         assert args[0] == request_msg
@@ -16476,7 +16476,7 @@ async def test_analyze_org_policies_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPoliciesRequest()
 
         assert args[0] == request_msg
@@ -16502,7 +16502,7 @@ async def test_analyze_org_policy_governed_containers_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
         assert args[0] == request_msg
@@ -16528,7 +16528,7 @@ async def test_analyze_org_policy_governed_assets_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
 
         assert args[0] == request_msg

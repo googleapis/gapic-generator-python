@@ -3339,7 +3339,7 @@ def test_generate_access_token_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
 
         assert args[0] == request_msg
@@ -3361,7 +3361,7 @@ def test_generate_id_token_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
 
         assert args[0] == request_msg
@@ -3383,7 +3383,7 @@ def test_sign_blob_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
 
         assert args[0] == request_msg
@@ -3405,7 +3405,7 @@ def test_sign_jwt_empty_call_grpc():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
 
         assert args[0] == request_msg
@@ -3438,7 +3438,7 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
 
         assert args[0] == request_msg
@@ -3464,7 +3464,7 @@ async def test_generate_id_token_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
 
         assert args[0] == request_msg
@@ -3491,7 +3491,7 @@ async def test_sign_blob_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
 
         assert args[0] == request_msg
@@ -3518,7 +3518,7 @@ async def test_sign_jwt_empty_call_grpc_asyncio():
 
         # Establish that the underlying gRPC stub method was called.
         call.assert_called()
-        _, args, kw = call.mock_calls[0]
+        _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
 
         assert args[0] == request_msg
