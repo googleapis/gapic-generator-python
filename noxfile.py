@@ -364,10 +364,8 @@ def showcase_w_rest_async(
             pytest_command.extend(["--ignore", str(ignore_path)])
 
         # Note: google-api-core and google-auth are re-installed here to override the version installed in constraints.
-        # TODO(https://github.com/googleapis/python-api-core/pull/694): Update the version of google-api-core once the linked PR is merged.
-        session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]@git+https://github.com/googleapis/python-api-core.git@7dea20d73878eca93b61bb82ae6ddf335fb3a8ca")
-        # TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged.
-        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0rc0")
+        session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]==2.20.0")
+        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0")
         session.run(
             *pytest_command,
             env=env,
@@ -473,10 +471,8 @@ def showcase_unit_w_rest_async(
     with showcase_library(session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True) as lib:
         session.chdir(lib)
         # Note: google-api-core and google-auth are re-installed here to override the version installed in constraints.
-        # TODO(https://github.com/googleapis/python-api-core/pull/694): Update the version of google-api-core once the linked PR is merged and released.
-        session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]@git+https://github.com/googleapis/python-api-core.git@7dea20d73878eca93b61bb82ae6ddf335fb3a8ca")
-        # TODO(https://github.com/googleapis/google-auth-library-python/pull/1592): Update the version of google-auth to `2.35.0` once released.
-        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0rc0")
+        session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]==2.20.0")
+        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0")
         run_showcase_unit_tests(session)
 
 

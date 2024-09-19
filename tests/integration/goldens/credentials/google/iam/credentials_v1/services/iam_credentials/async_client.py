@@ -15,7 +15,7 @@
 #
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Generic, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, TypeVar, Union
 
 from google.iam.credentials_v1 import gapic_version as package_version
 
@@ -31,6 +31,12 @@ try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async  # type: ignore
+    CredentialsType = Union[ga_credentials.Credentials, ga_credentials_async.Credentials]  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CredentialsType = Union[ga_credentials.Credentials, object, None]  # type: ignore
 
 from google.iam.credentials_v1.types import common
 from google.protobuf import duration_pb2  # type: ignore
@@ -173,7 +179,7 @@ class IAMCredentialsAsyncClient:
     get_transport_class = IAMCredentialsClient.get_transport_class
 
     def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials: Optional[CredentialsType] = None,
             transport: Optional[Union[str, IAMCredentialsTransport, Callable[..., IAMCredentialsTransport]]] = "grpc_asyncio",
             client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -181,7 +187,7 @@ class IAMCredentialsAsyncClient:
         """Instantiates the iam credentials async client.
 
         Args:
-            credentials (Optional[google.auth.credentials.Credentials]): The
+            credentials (Optional[google.auth.credentials.Credentials, google.auth.aio.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the

@@ -1,4 +1,6 @@
 {% extends "_base.py.j2" %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 
 {% block content %}
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
@@ -6,7 +8,7 @@
 
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Generic, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, TypeVar, Union
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
 import uuid
 {% endif %}
@@ -29,6 +31,12 @@ try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async  # type: ignore
+    CredentialsType = Union[ga_credentials.Credentials, ga_credentials_async.Credentials]  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CredentialsType = Union[ga_credentials.Credentials, object, None]  # type: ignore
 
 {% filter sort_lines %}
 {% for method in service.methods.values() %}
@@ -174,7 +182,7 @@ class {{ service.async_client_name }}:
     get_transport_class = {{ service.client_name }}.get_transport_class
 
     def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials: Optional[CredentialsType] = None,
             transport: Optional[Union[str, {{ service.name }}Transport, Callable[..., {{ service.name }}Transport]]] = "grpc_asyncio",
             client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -182,7 +190,7 @@ class {{ service.async_client_name }}:
         """Instantiates the {{ (service.async_client_name|snake_case).replace("_", " ") }}.
 
         Args:
-            credentials (Optional[google.auth.credentials.Credentials]): The
+            credentials (Optional[google.auth.credentials.Credentials, google.auth.aio.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
