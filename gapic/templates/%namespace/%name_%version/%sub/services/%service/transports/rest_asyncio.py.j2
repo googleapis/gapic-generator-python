@@ -181,6 +181,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             resp = rest_streaming_async.AsyncResponseIterator(response, {{method.output.ident}})
             {% else %}
             resp = {{method.output.ident}}()
+            {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2189): Investigate if the proto-plus conversion below is needed for a streaming response. #}
             {% if method.output.ident.is_proto_plus_type %}
             pb_resp = {{method.output.ident}}.pb(resp)
             {% else %}
