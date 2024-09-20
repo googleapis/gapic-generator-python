@@ -1068,6 +1068,8 @@ def test_transport_adc(transport_class):
 {{ test_macros.transport_kind_test(**conf) }}
 {{ test_macros.run_transport_tests_for_config(**conf) }}
 {{ test_macros.empty_call_test(**conf) }}
+
+{{ test_macros.routing_parameter_test(**conf) }}
 {% endfor %}
 {% if rest_async_io_enabled %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the below macro when async rest is GA and supports all required parameters. #}
