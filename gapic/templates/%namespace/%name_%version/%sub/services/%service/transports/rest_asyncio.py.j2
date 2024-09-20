@@ -7,13 +7,14 @@
 
 
 import google.auth
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2187): Add an `async_rest` extra for GAPICs and update the error message to include that the extra needs to be installed. #}
 try:
     import aiohttp # type: ignore
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
 {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
 except ImportError as e:  # pragma: NO COVER
     {# TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged. #}
-    raise ImportError("async rest transport requires google.auth >= 2.35.0 with aiohttp extra. Install google-auth with the aiohttp extra using `pip install google-auth[aiohttp]==2.35.0`.") from e
+    raise ImportError("async rest transport requires google-auth >= 2.35.0 with aiohttp extra. Install google-auth with the aiohttp extra using `pip install google-auth[aiohttp]==2.35.0`.") from e
 
 from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
@@ -21,6 +22,13 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
+
+try:
+    from google.api_core import rest_streaming_async # type: ignore
+    HAS_ASYNC_REST_SUPPORT_IN_CORE = True
+{# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
+except ImportError as e:  # pragma: NO COVER
+    raise ImportError("async rest transport requires google-api-core >= 2.20.0. Install google-api-core using `pip install google-api-core==2.35.0`.") from e
 
 from google.protobuf import json_format
 
@@ -103,7 +111,11 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             url_scheme=url_scheme,
             api_audience=None
         )
-        self._session = AsyncAuthorizedSession(self._credentials)
+        {# Note: Type for creds is ignored because of incorrect type hint for creds in the client layer.
+         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2177): Remove `# type: ignore` once
+         # we update the type hints for credentials to include asynchronous credentials in the client layer.
+        #}
+        self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
 

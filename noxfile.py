@@ -363,11 +363,8 @@ def showcase_w_rest_async(
             ignore_path = test_directory / ignore_file
             pytest_command.extend(["--ignore", str(ignore_path)])
 
-        # Note: google-api-core and google-auth are re-installed here to override the version installed in constraints.
-        # TODO(https://github.com/googleapis/python-api-core/pull/694): Update the version of google-api-core once the linked PR is merged.
-        session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]@git+https://github.com/googleapis/python-api-core.git@7dea20d73878eca93b61bb82ae6ddf335fb3a8ca")
-        # TODO(https://github.com/googleapis/google-auth-library-python/pull/1577): Update the version of google-auth once the linked PR is merged.
-        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0rc0")
+        # Note: google-auth is re-installed here with aiohttp option to override the version installed in constraints.
+        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]")
         session.run(
             *pytest_command,
             env=env,
@@ -425,7 +422,7 @@ def showcase_mtls_alternative_templates(session):
     )
 
 
-def run_showcase_unit_tests(session, fail_under=100):
+def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
     session.install(
         "coverage",
         "pytest",
@@ -434,22 +431,38 @@ def run_showcase_unit_tests(session, fail_under=100):
         "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
     )
-
     # Run the tests.
-    session.run(
-        "py.test",
-        *(
-            session.posargs
-            or [
-                "-n=auto",
-                "--quiet",
-                "--cov=google",
-                "--cov-append",
-                f"--cov-fail-under={str(fail_under)}",
-                path.join("tests", "unit"),
-            ]
-        ),
-    )
+    # NOTE: async rest is not supported against the minimum supported version of google-api-core.
+    # Therefore, we ignore the coverage requirement in this case.
+    if session.python == "3.7" and rest_async_io_enabled:
+        session.run(
+            "py.test",
+            *(
+                session.posargs
+                or [
+                    "-n=auto",
+                    "--quiet",
+                    "--cov=google",
+                    "--cov-append",
+                    path.join("tests", "unit"),
+                ]
+            ),
+        )
+    else:
+        session.run(
+            "py.test",
+            *(
+                session.posargs
+                or [
+                    "-n=auto",
+                    "--quiet",
+                    "--cov=google",
+                    "--cov-append",
+                    f"--cov-fail-under={str(fail_under)}",
+                    path.join("tests", "unit"),
+                ]
+            ),
+        )
 
 
 @nox.session(python=ALL_PYTHON)
@@ -472,12 +485,9 @@ def showcase_unit_w_rest_async(
     """Run the generated unit tests with async rest transport against the Showcase library."""
     with showcase_library(session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True) as lib:
         session.chdir(lib)
-        # Note: google-api-core and google-auth are re-installed here to override the version installed in constraints.
-        # TODO(https://github.com/googleapis/python-api-core/pull/694): Update the version of google-api-core once the linked PR is merged and released.
-        session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]@git+https://github.com/googleapis/python-api-core.git@7dea20d73878eca93b61bb82ae6ddf335fb3a8ca")
-        # TODO(https://github.com/googleapis/google-auth-library-python/pull/1592): Update the version of google-auth to `2.35.0` once released.
-        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0rc0")
-        run_showcase_unit_tests(session)
+        # Note: google-auth is re-installed here with aiohttp option to override the version installed in constraints.
+        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]")
+        run_showcase_unit_tests(session, rest_async_io_enabled=True)
 
 
 @nox.session(python=ALL_PYTHON)
