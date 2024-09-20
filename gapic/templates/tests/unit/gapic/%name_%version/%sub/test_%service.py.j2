@@ -20,7 +20,7 @@ except ImportError:  # pragma: NO COVER
 import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 import json
 {% endif %}
@@ -113,6 +113,11 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 {{ shared_macros.add_google_api_core_version_header_import(service.version) }}
+
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
