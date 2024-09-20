@@ -7,6 +7,7 @@
 
 
 import google.auth
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2187): Add an `async_rest` extra for GAPICs and update the error message to include that the extra needs to be installed. #}
 try:
     import aiohttp # type: ignore
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
