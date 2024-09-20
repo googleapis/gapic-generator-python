@@ -371,3 +371,61 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
     {% endfor %}
     {% endif %}
 {% endmacro %}
+
+{% macro generate_mixin_call_method(service, api, name, sig, is_async) %}
+{% set async_prefix = "async " if is_async else "" %}
+{% set async_method_name_prefix = "Async" if is_async else "" %}
+{% set async_suffix = "_async" if is_async else "" %}
+{% set await_prefix = "await " if is_async else "" %}
+
+@property
+def {{ name|snake_case }}(self):
+    return self._{{ name }}(self._session, self._host, self._interceptor) # type: ignore
+
+class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_method_name_prefix }}{{service.name}}RestStub):
+    {% set body_spec = api.mixin_http_options["{}".format(name)][0].body %}
+    {{ response_method(body_spec) | indent(4) }}
+    
+    {{ async_prefix }}def __call__(self,
+        request: {{ sig.request_type }}, *,
+        retry: OptionalRetry=gapic_v1.method.DEFAULT,
+        timeout: Optional[float]=None,
+        metadata: Sequence[Tuple[str, str]]=(),
+        ) -> {{ sig.response_type }}:
+
+        r"""Call the {{- ' ' -}}
+        {{ (name|snake_case).replace('_',' ')|wrap(
+                width=70, offset=45, indent=8) }}
+        {{- ' ' -}} method over HTTP.
+
+        Args:
+            request ({{ sig.request_type }}):
+                The request object for {{ name }} method.
+            retry (google.api_core.retry{{ async_suffix }}.{{ async_method_name_prefix }}Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        {% if sig.response_type != 'None' %}
+
+        Returns:
+            {{ sig.response_type }}: Response from {{ name }} method.
+        {% endif %}
+        """
+        {{ rest_call_method_common(body_spec, name, service.name, is_async)|indent(4) }}
+        
+        {% if sig.response_type == "None" %}
+        return {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(None)
+        {% else %}
+        {% if is_async %}
+        content = await response.read()
+        {% else %}
+        content = response.content.decode("utf-8")
+        {% endif %}
+        resp = {{ sig.response_type }}()
+        resp = json_format.Parse(content, resp)
+        resp = {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(resp)
+        return resp
+        {% endif %}
+
+{% endmacro %}

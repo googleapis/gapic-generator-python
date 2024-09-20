@@ -2405,8 +2405,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -2474,8 +2475,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -2543,8 +2545,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -2615,8 +2618,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -2687,8 +2691,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = iam_policy_pb2.TestIamPermissionsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
@@ -2885,8 +2890,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -2954,8 +2960,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

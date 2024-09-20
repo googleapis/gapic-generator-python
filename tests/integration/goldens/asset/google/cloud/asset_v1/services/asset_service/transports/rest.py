@@ -2677,8 +2677,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
