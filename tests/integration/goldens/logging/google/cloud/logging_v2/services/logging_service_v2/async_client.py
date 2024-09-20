@@ -15,7 +15,7 @@
 #
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, AsyncIterable, Awaitable, AsyncIterator, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Generic, Mapping, MutableMapping, MutableSequence, Optional, AsyncIterable, Awaitable, AsyncIterator, Sequence, Tuple, Type, TypeVar, Union
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
@@ -31,6 +31,12 @@ try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async  # type: ignore
+    CredentialsType = Union[ga_credentials.Credentials, ga_credentials_async.Credentials]  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CredentialsType = Union[ga_credentials.Credentials, object, None]  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
@@ -165,7 +171,7 @@ class LoggingServiceV2AsyncClient:
     get_transport_class = LoggingServiceV2Client.get_transport_class
 
     def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials: Optional[CredentialsType] = None,
             transport: Optional[Union[str, LoggingServiceV2Transport, Callable[..., LoggingServiceV2Transport]]] = "grpc_asyncio",
             client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -173,7 +179,7 @@ class LoggingServiceV2AsyncClient:
         """Instantiates the logging service v2 async client.
 
         Args:
-            credentials (Optional[google.auth.credentials.Credentials]): The
+            credentials (Optional[google.auth.credentials.Credentials, google.auth.aio.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
