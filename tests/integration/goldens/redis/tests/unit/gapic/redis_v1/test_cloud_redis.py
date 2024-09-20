@@ -8487,6 +8487,37 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         client.get_location(request)
 
 
+@pytest.mark.parametrize("request_type", [
+    locations_pb2.GetLocationRequest,
+    dict,
+])
+def test_get_location_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
 def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocationsRequest):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8505,6 +8536,37 @@ def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocation
         response_value.request = Request()
         req.return_value = response_value
         client.list_locations(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    locations_pb2.ListLocationsRequest,
+    dict,
+])
+def test_list_locations_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
 
 
 def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOperationRequest):
@@ -8527,6 +8589,37 @@ def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOpe
         client.cancel_operation(request)
 
 
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.CancelOperationRequest,
+    dict,
+])
+def test_cancel_operation_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = '{}'
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
 def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOperationRequest):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8545,6 +8638,37 @@ def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOpe
         response_value.request = Request()
         req.return_value = response_value
         client.delete_operation(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.DeleteOperationRequest,
+    dict,
+])
+def test_delete_operation_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = '{}'
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
 
 
 def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
@@ -8567,6 +8691,37 @@ def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperation
         client.get_operation(request)
 
 
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.GetOperationRequest,
+    dict,
+])
+def test_get_operation_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
 def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8585,6 +8740,37 @@ def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperat
         response_value.request = Request()
         req.return_value = response_value
         client.list_operations(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.ListOperationsRequest,
+    dict,
+])
+def test_list_operations_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 def test_initialize_client_w_rest():
     client = CloudRedisClient(
@@ -9737,181 +9923,6 @@ def test_client_with_default_client_info():
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
-
-
-@pytest.mark.parametrize("request_type", [
-    locations_pb2.GetLocationRequest,
-    dict,
-])
-def test_get_location_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-@pytest.mark.parametrize("request_type", [
-    locations_pb2.ListLocationsRequest,
-    dict,
-])
-def test_list_locations_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-@pytest.mark.parametrize("request_type", [
-    operations_pb2.CancelOperationRequest,
-    dict,
-])
-def test_cancel_operation_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = '{}'
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-@pytest.mark.parametrize("request_type", [
-    operations_pb2.DeleteOperationRequest,
-    dict,
-])
-def test_delete_operation_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = '{}'
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-@pytest.mark.parametrize("request_type", [
-    operations_pb2.GetOperationRequest,
-    dict,
-])
-def test_get_operation_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-@pytest.mark.parametrize("request_type", [
-    operations_pb2.ListOperationsRequest,
-    dict,
-])
-def test_list_operations_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 
 def test_delete_operation(transport: str = "grpc"):
