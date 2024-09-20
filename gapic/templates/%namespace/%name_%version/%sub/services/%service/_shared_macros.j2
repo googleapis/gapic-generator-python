@@ -353,8 +353,6 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
     {% endif %}{# if (not is_async) or (is_async and not method.lro and not method.extended_lro and not method.paged_result_field) #}
     {% endfor %}
 
-    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2148): Remove the condition below once mixins are supported for async rest transport. #}
-    {% if not is_async %}
     {% for name, signature in api.mixin_api_signatures.items() %}
     {{ async_prefix }}def pre_{{ name|snake_case }}(
         self, request: {{signature.request_type}}, metadata: Sequence[Tuple[str, str]]
@@ -377,7 +375,6 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
         """
         return response
     {% endfor %}
-    {% endif %}
 {% endmacro %}
 
 {% macro generate_mixin_call_method(service, api, name, sig, is_async) %}
