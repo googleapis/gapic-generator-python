@@ -422,7 +422,7 @@ def showcase_mtls_alternative_templates(session):
     )
 
 
-def run_showcase_unit_tests(session, fail_under=100):
+def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
     session.install(
         "coverage",
         "pytest",
@@ -431,22 +431,38 @@ def run_showcase_unit_tests(session, fail_under=100):
         "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
     )
-
     # Run the tests.
-    session.run(
-        "py.test",
-        *(
-            session.posargs
-            or [
-                "-n=auto",
-                "--quiet",
-                "--cov=google",
-                "--cov-append",
-                f"--cov-fail-under={str(fail_under)}",
-                path.join("tests", "unit"),
-            ]
-        ),
-    )
+    # NOTE: async rest is not supported against the minimum supported version of google-api-core.
+    # Therefore, we ignore the coverage requirement in this case.
+    if session.python == "3.7" and rest_async_io_enabled:
+        session.run(
+            "py.test",
+            *(
+                session.posargs
+                or [
+                    "-n=auto",
+                    "--quiet",
+                    "--cov=google",
+                    "--cov-append",
+                    path.join("tests", "unit"),
+                ]
+            ),
+        )
+    else:
+        session.run(
+            "py.test",
+            *(
+                session.posargs
+                or [
+                    "-n=auto",
+                    "--quiet",
+                    "--cov=google",
+                    "--cov-append",
+                    f"--cov-fail-under={str(fail_under)}",
+                    path.join("tests", "unit"),
+                ]
+            ),
+        )
 
 
 @nox.session(python=ALL_PYTHON)
@@ -471,7 +487,7 @@ def showcase_unit_w_rest_async(
         session.chdir(lib)
         # Note: google-auth is re-installed here with aiohttp option to override the version installed in constraints.
         session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]")
-        run_showcase_unit_tests(session)
+        run_showcase_unit_tests(session, rest_async_io_enabled=True)
 
 
 @nox.session(python=ALL_PYTHON)
