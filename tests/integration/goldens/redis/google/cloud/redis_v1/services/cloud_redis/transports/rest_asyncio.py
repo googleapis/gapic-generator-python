@@ -129,7 +129,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             url_scheme=url_scheme,
             api_audience=None
         )
-        self._session = AsyncAuthorizedSession(self._credentials)
+        self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
 

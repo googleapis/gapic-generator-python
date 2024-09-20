@@ -103,7 +103,11 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             url_scheme=url_scheme,
             api_audience=None
         )
-        self._session = AsyncAuthorizedSession(self._credentials)
+        {# Note: Type for creds is ignored because of incorrect type hint for creds in the client layer.
+         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2177): Remove `# type: ignore` once
+         # we update the type hints for credentials to include asynchronous credentials in the client layer.
+        #}
+        self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
 
