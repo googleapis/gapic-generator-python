@@ -1,24 +1,6 @@
 {% if 'rest' in opts.transport %}
 {% for name, sig in api.mixin_api_signatures.items() %}
 
-def test_{{ name|snake_case }}_rest_bad_request(transport: str = 'rest', request_type={{ sig.request_type }}):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({{ api.mixin_http_options["{}".format(name)][0].sample_request }}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.{{ name|snake_case }}(request)
-
 @pytest.mark.parametrize("request_type", [
     {{ sig.request_type }},
     dict,

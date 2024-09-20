@@ -13916,6 +13916,186 @@ def test_update_google_channel_config_rest_interceptors(null_interceptor):
         pre.assert_called_once()
         post.assert_called_once()
 
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocationsRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+def test_get_iam_policy_rest_bad_request(request_type=iam_policy_pb2.GetIamPolicyRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'resource': 'projects/sample1/locations/sample2/triggers/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+def test_set_iam_policy_rest_bad_request(request_type=iam_policy_pb2.SetIamPolicyRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'resource': 'projects/sample1/locations/sample2/triggers/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+def test_test_iam_permissions_rest_bad_request(request_type=iam_policy_pb2.TestIamPermissionsRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'resource': 'projects/sample1/locations/sample2/triggers/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOperationRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOperationRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
 def test_initialize_client_w_rest():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14748,24 +14928,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-def test_get_location_rest_bad_request(transport: str = 'rest', request_type=locations_pb2.GetLocationRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
 @pytest.mark.parametrize("request_type", [
     locations_pb2.GetLocationRequest,
     dict,
@@ -14794,24 +14956,6 @@ def test_get_location_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.Location)
-
-def test_list_locations_rest_bad_request(transport: str = 'rest', request_type=locations_pb2.ListLocationsRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
 
 @pytest.mark.parametrize("request_type", [
     locations_pb2.ListLocationsRequest,
@@ -14842,24 +14986,6 @@ def test_list_locations_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 
-def test_get_iam_policy_rest_bad_request(transport: str = 'rest', request_type=iam_policy_pb2.GetIamPolicyRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'resource': 'projects/sample1/locations/sample2/triggers/sample3'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_iam_policy(request)
-
 @pytest.mark.parametrize("request_type", [
     iam_policy_pb2.GetIamPolicyRequest,
     dict,
@@ -14888,24 +15014,6 @@ def test_get_iam_policy_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
-
-def test_set_iam_policy_rest_bad_request(transport: str = 'rest', request_type=iam_policy_pb2.SetIamPolicyRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'resource': 'projects/sample1/locations/sample2/triggers/sample3'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_iam_policy(request)
 
 @pytest.mark.parametrize("request_type", [
     iam_policy_pb2.SetIamPolicyRequest,
@@ -14936,24 +15044,6 @@ def test_set_iam_policy_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
 
-def test_test_iam_permissions_rest_bad_request(transport: str = 'rest', request_type=iam_policy_pb2.TestIamPermissionsRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'resource': 'projects/sample1/locations/sample2/triggers/sample3'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.test_iam_permissions(request)
-
 @pytest.mark.parametrize("request_type", [
     iam_policy_pb2.TestIamPermissionsRequest,
     dict,
@@ -14982,24 +15072,6 @@ def test_test_iam_permissions_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-
-def test_cancel_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.CancelOperationRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
 
 @pytest.mark.parametrize("request_type", [
     operations_pb2.CancelOperationRequest,
@@ -15030,24 +15102,6 @@ def test_cancel_operation_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response is None
 
-def test_delete_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.DeleteOperationRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
 @pytest.mark.parametrize("request_type", [
     operations_pb2.DeleteOperationRequest,
     dict,
@@ -15077,24 +15131,6 @@ def test_delete_operation_rest(request_type):
     # Establish that the response is the type that we expect.
     assert response is None
 
-def test_get_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.GetOperationRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
 @pytest.mark.parametrize("request_type", [
     operations_pb2.GetOperationRequest,
     dict,
@@ -15123,24 +15159,6 @@ def test_get_operation_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
-
-def test_list_operations_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.ListOperationsRequest):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
 
 @pytest.mark.parametrize("request_type", [
     operations_pb2.ListOperationsRequest,
