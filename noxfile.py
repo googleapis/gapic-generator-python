@@ -363,9 +363,6 @@ def showcase_w_rest_async(
             ignore_path = test_directory / ignore_file
             pytest_command.extend(["--ignore", str(ignore_path)])
 
-        # Note: google-api-core and google-auth are re-installed here to override the version installed in constraints.
-        session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]==2.20.0")
-        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0")
         session.run(
             *pytest_command,
             env=env,
@@ -470,9 +467,6 @@ def showcase_unit_w_rest_async(
     """Run the generated unit tests with async rest transport against the Showcase library."""
     with showcase_library(session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True) as lib:
         session.chdir(lib)
-        # Note: google-api-core and google-auth are re-installed here to override the version installed in constraints.
-        session.install('--no-cache-dir', '--force-reinstall', "google-api-core[grpc]==2.20.0")
-        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0")
         run_showcase_unit_tests(session)
 
 
