@@ -2238,46 +2238,6 @@ def test_generate_access_token_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", "scope", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_access_token_rest_interceptors(null_interceptor):
-    transport = transports.IAMCredentialsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
-        )
-    client = IAMCredentialsClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_access_token") as post, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_access_token") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = common.GenerateAccessTokenRequest.pb(common.GenerateAccessTokenRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.GenerateAccessTokenResponse.to_json(common.GenerateAccessTokenResponse())
-
-        request = common.GenerateAccessTokenRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.GenerateAccessTokenResponse()
-
-        client.generate_access_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_generate_access_token_rest_flattened():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2451,46 +2411,6 @@ def test_generate_id_token_rest_unset_required_fields():
 
     unset_fields = transport.generate_id_token._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "audience", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_id_token_rest_interceptors(null_interceptor):
-    transport = transports.IAMCredentialsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
-        )
-    client = IAMCredentialsClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_id_token") as post, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_id_token") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = common.GenerateIdTokenRequest.pb(common.GenerateIdTokenRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.GenerateIdTokenResponse.to_json(common.GenerateIdTokenResponse())
-
-        request = common.GenerateIdTokenRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.GenerateIdTokenResponse()
-
-        client.generate_id_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_generate_id_token_rest_flattened():
@@ -2668,46 +2588,6 @@ def test_sign_blob_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", "payload", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_sign_blob_rest_interceptors(null_interceptor):
-    transport = transports.IAMCredentialsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
-        )
-    client = IAMCredentialsClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_blob") as post, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_blob") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = common.SignBlobRequest.pb(common.SignBlobRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.SignBlobResponse.to_json(common.SignBlobResponse())
-
-        request = common.SignBlobRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.SignBlobResponse()
-
-        client.sign_blob(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_sign_blob_rest_flattened():
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2879,46 +2759,6 @@ def test_sign_jwt_rest_unset_required_fields():
 
     unset_fields = transport.sign_jwt._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "payload", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_sign_jwt_rest_interceptors(null_interceptor):
-    transport = transports.IAMCredentialsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
-        )
-    client = IAMCredentialsClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_jwt") as post, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_jwt") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = common.SignJwtRequest.pb(common.SignJwtRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.SignJwtResponse.to_json(common.SignJwtResponse())
-
-        request = common.SignJwtRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.SignJwtResponse()
-
-        client.sign_jwt(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_sign_jwt_rest_flattened():
@@ -3354,6 +3194,47 @@ def test_generate_access_token_rest_call_success(request_type):
     assert response.access_token == 'access_token_value'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_access_token_rest_interceptors(null_interceptor):
+    transport = transports.IAMCredentialsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
+        )
+    client = IAMCredentialsClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_access_token") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_access_token") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = common.GenerateAccessTokenRequest.pb(common.GenerateAccessTokenRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common.GenerateAccessTokenResponse.to_json(common.GenerateAccessTokenResponse())
+        req.return_value.content = return_value
+
+        request = common.GenerateAccessTokenRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.GenerateAccessTokenResponse()
+
+        client.generate_access_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_generate_id_token_rest_bad_request(request_type=common.GenerateIdTokenRequest):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3410,6 +3291,47 @@ def test_generate_id_token_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
     assert response.token == 'token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_id_token_rest_interceptors(null_interceptor):
+    transport = transports.IAMCredentialsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
+        )
+    client = IAMCredentialsClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_id_token") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_id_token") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = common.GenerateIdTokenRequest.pb(common.GenerateIdTokenRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common.GenerateIdTokenResponse.to_json(common.GenerateIdTokenResponse())
+        req.return_value.content = return_value
+
+        request = common.GenerateIdTokenRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.GenerateIdTokenResponse()
+
+        client.generate_id_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_sign_blob_rest_bad_request(request_type=common.SignBlobRequest):
@@ -3472,6 +3394,47 @@ def test_sign_blob_rest_call_success(request_type):
     assert response.signed_blob == b'signed_blob_blob'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_sign_blob_rest_interceptors(null_interceptor):
+    transport = transports.IAMCredentialsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
+        )
+    client = IAMCredentialsClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_blob") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_blob") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = common.SignBlobRequest.pb(common.SignBlobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common.SignBlobResponse.to_json(common.SignBlobResponse())
+        req.return_value.content = return_value
+
+        request = common.SignBlobRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.SignBlobResponse()
+
+        client.sign_blob(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_sign_jwt_rest_bad_request(request_type=common.SignJwtRequest):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3531,6 +3494,46 @@ def test_sign_jwt_rest_call_success(request_type):
     assert response.key_id == 'key_id_value'
     assert response.signed_jwt == 'signed_jwt_value'
 
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_sign_jwt_rest_interceptors(null_interceptor):
+    transport = transports.IAMCredentialsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
+        )
+    client = IAMCredentialsClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_jwt") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_jwt") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = common.SignJwtRequest.pb(common.SignJwtRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common.SignJwtResponse.to_json(common.SignJwtResponse())
+        req.return_value.content = return_value
+
+        request = common.SignJwtRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.SignJwtResponse()
+
+        client.sign_jwt(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 def test_initialize_client_w_rest():
     client = IAMCredentialsClient(

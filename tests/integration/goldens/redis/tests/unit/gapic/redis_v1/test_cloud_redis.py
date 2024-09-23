@@ -4810,46 +4810,6 @@ def test_list_instances_rest_unset_required_fields():
     assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_instances_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_list_instances") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_list_instances") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cloud_redis.ListInstancesResponse.to_json(cloud_redis.ListInstancesResponse())
-
-        request = cloud_redis.ListInstancesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = cloud_redis.ListInstancesResponse()
-
-        client.list_instances(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_list_instances_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5076,46 +5036,6 @@ def test_get_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cloud_redis.Instance.to_json(cloud_redis.Instance())
-
-        request = cloud_redis.GetInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = cloud_redis.Instance()
-
-        client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_get_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5278,46 +5198,6 @@ def test_get_instance_auth_string_rest_unset_required_fields():
 
     unset_fields = transport.get_instance_auth_string._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_instance_auth_string_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance_auth_string") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance_auth_string") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
-
-        request = cloud_redis.GetInstanceAuthStringRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = cloud_redis.InstanceAuthString()
-
-        client.get_instance_auth_string(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_get_instance_auth_string_rest_flattened():
@@ -5594,47 +5474,6 @@ def test_create_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(("instanceId", )) & set(("parent", "instanceId", "instance", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_create_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_create_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.CreateInstanceRequest.pb(cloud_redis.CreateInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.CreateInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_create_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5895,47 +5734,6 @@ def test_update_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask", )) & set(("updateMask", "instance", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_update_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_update_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.UpdateInstanceRequest.pb(cloud_redis.UpdateInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.UpdateInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_update_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6137,47 +5935,6 @@ def test_upgrade_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", "redisVersion", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_upgrade_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_upgrade_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_upgrade_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.UpgradeInstanceRequest.pb(cloud_redis.UpgradeInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.UpgradeInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.upgrade_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_upgrade_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6373,47 +6130,6 @@ def test_import_instance_rest_unset_required_fields():
 
     unset_fields = transport.import_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "inputConfig", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_import_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_import_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_import_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.ImportInstanceRequest.pb(cloud_redis.ImportInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.ImportInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.import_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_import_instance_rest_flattened():
@@ -6613,47 +6329,6 @@ def test_export_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", "outputConfig", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_export_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_export_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.ExportInstanceRequest.pb(cloud_redis.ExportInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.ExportInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_export_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6849,47 +6524,6 @@ def test_failover_instance_rest_unset_required_fields():
 
     unset_fields = transport.failover_instance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_failover_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_failover_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_failover_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.FailoverInstanceRequest.pb(cloud_redis.FailoverInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.FailoverInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.failover_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_failover_instance_rest_flattened():
@@ -7088,47 +6722,6 @@ def test_delete_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_delete_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_delete_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.DeleteInstanceRequest.pb(cloud_redis.DeleteInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.DeleteInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_delete_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7322,47 +6915,6 @@ def test_reschedule_maintenance_rest_unset_required_fields():
 
     unset_fields = transport.reschedule_maintenance._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "rescheduleType", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_reschedule_maintenance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_reschedule_maintenance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_reschedule_maintenance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.RescheduleMaintenanceRequest.pb(cloud_redis.RescheduleMaintenanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.RescheduleMaintenanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.reschedule_maintenance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_reschedule_maintenance_rest_flattened():
@@ -8120,6 +7672,47 @@ def test_list_instances_rest_bad_request(request_type=cloud_redis.ListInstancesR
         client.list_instances(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_instances_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_list_instances") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_list_instances") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.ListInstancesResponse.to_json(cloud_redis.ListInstancesResponse())
+        req.return_value.content = return_value
+
+        request = cloud_redis.ListInstancesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.ListInstancesResponse()
+
+        client.list_instances(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_instance_rest_bad_request(request_type=cloud_redis.GetInstanceRequest):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8230,6 +7823,47 @@ def test_get_instance_rest_call_success(request_type):
     assert response.available_maintenance_versions == ['available_maintenance_versions_value']
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.Instance.to_json(cloud_redis.Instance())
+        req.return_value.content = return_value
+
+        request = cloud_redis.GetInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.Instance()
+
+        client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_instance_auth_string_rest_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8288,6 +7922,47 @@ def test_get_instance_auth_string_rest_call_success(request_type):
     assert response.auth_string == 'auth_string_value'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_instance_auth_string_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance_auth_string") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance_auth_string") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
+        req.return_value.content = return_value
+
+        request = cloud_redis.GetInstanceAuthStringRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.InstanceAuthString()
+
+        client.get_instance_auth_string(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_create_instance_rest_bad_request(request_type=cloud_redis.CreateInstanceRequest):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8307,6 +7982,48 @@ def test_create_instance_rest_bad_request(request_type=cloud_redis.CreateInstanc
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.create_instance(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_create_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_create_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.CreateInstanceRequest.pb(cloud_redis.CreateInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.CreateInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_update_instance_rest_bad_request(request_type=cloud_redis.UpdateInstanceRequest):
@@ -8330,6 +8047,48 @@ def test_update_instance_rest_bad_request(request_type=cloud_redis.UpdateInstanc
         client.update_instance(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_update_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_update_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.UpdateInstanceRequest.pb(cloud_redis.UpdateInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.UpdateInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_upgrade_instance_rest_bad_request(request_type=cloud_redis.UpgradeInstanceRequest):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8349,6 +8108,48 @@ def test_upgrade_instance_rest_bad_request(request_type=cloud_redis.UpgradeInsta
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.upgrade_instance(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_upgrade_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_upgrade_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_upgrade_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.UpgradeInstanceRequest.pb(cloud_redis.UpgradeInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.UpgradeInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.upgrade_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_import_instance_rest_bad_request(request_type=cloud_redis.ImportInstanceRequest):
@@ -8372,6 +8173,48 @@ def test_import_instance_rest_bad_request(request_type=cloud_redis.ImportInstanc
         client.import_instance(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_import_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_import_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.ImportInstanceRequest.pb(cloud_redis.ImportInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.ImportInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_export_instance_rest_bad_request(request_type=cloud_redis.ExportInstanceRequest):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8391,6 +8234,48 @@ def test_export_instance_rest_bad_request(request_type=cloud_redis.ExportInstanc
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.export_instance(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_export_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_export_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.ExportInstanceRequest.pb(cloud_redis.ExportInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.ExportInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_failover_instance_rest_bad_request(request_type=cloud_redis.FailoverInstanceRequest):
@@ -8414,6 +8299,48 @@ def test_failover_instance_rest_bad_request(request_type=cloud_redis.FailoverIns
         client.failover_instance(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_failover_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_failover_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_failover_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.FailoverInstanceRequest.pb(cloud_redis.FailoverInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.FailoverInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.failover_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_instance_rest_bad_request(request_type=cloud_redis.DeleteInstanceRequest):
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8433,6 +8360,48 @@ def test_delete_instance_rest_bad_request(request_type=cloud_redis.DeleteInstanc
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.delete_instance(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_delete_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_delete_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.DeleteInstanceRequest.pb(cloud_redis.DeleteInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.DeleteInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_reschedule_maintenance_rest_bad_request(request_type=cloud_redis.RescheduleMaintenanceRequest):
@@ -8455,6 +8424,47 @@ def test_reschedule_maintenance_rest_bad_request(request_type=cloud_redis.Resche
         req.return_value = response_value
         client.reschedule_maintenance(request)
 
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_reschedule_maintenance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_reschedule_maintenance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_reschedule_maintenance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.RescheduleMaintenanceRequest.pb(cloud_redis.RescheduleMaintenanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.RescheduleMaintenanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.reschedule_maintenance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 def test_initialize_client_w_rest():
     client = CloudRedisClient(

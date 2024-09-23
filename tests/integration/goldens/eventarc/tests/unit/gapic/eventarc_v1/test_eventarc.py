@@ -7526,46 +7526,6 @@ def test_get_trigger_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_trigger_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_get_trigger") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_get_trigger") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.GetTriggerRequest.pb(eventarc.GetTriggerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = trigger.Trigger.to_json(trigger.Trigger())
-
-        request = eventarc.GetTriggerRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = trigger.Trigger()
-
-        client.get_trigger(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_get_trigger_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7769,46 +7729,6 @@ def test_list_triggers_rest_unset_required_fields():
 
     unset_fields = transport.list_triggers._get_unset_required_fields({})
     assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_triggers_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_list_triggers") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_list_triggers") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.ListTriggersRequest.pb(eventarc.ListTriggersRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = eventarc.ListTriggersResponse.to_json(eventarc.ListTriggersResponse())
-
-        request = eventarc.ListTriggersRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = eventarc.ListTriggersResponse()
-
-        client.list_triggers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_list_triggers_rest_flattened():
@@ -8158,47 +8078,6 @@ def test_create_trigger_rest_unset_required_fields():
     assert set(unset_fields) == (set(("triggerId", "validateOnly", )) & set(("parent", "trigger", "triggerId", "validateOnly", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_trigger_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_create_trigger") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_create_trigger") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.CreateTriggerRequest.pb(eventarc.CreateTriggerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = eventarc.CreateTriggerRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_trigger(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_create_trigger_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8471,47 +8350,6 @@ def test_update_trigger_rest_unset_required_fields():
     assert set(unset_fields) == (set(("allowMissing", "updateMask", "validateOnly", )) & set(("validateOnly", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_trigger_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_update_trigger") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_update_trigger") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.UpdateTriggerRequest.pb(eventarc.UpdateTriggerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = eventarc.UpdateTriggerRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_trigger(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_update_trigger_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8723,47 +8561,6 @@ def test_delete_trigger_rest_unset_required_fields():
     assert set(unset_fields) == (set(("allowMissing", "etag", "validateOnly", )) & set(("name", "validateOnly", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_trigger_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_delete_trigger") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_delete_trigger") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.DeleteTriggerRequest.pb(eventarc.DeleteTriggerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = eventarc.DeleteTriggerRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_trigger(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_delete_trigger_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8926,46 +8723,6 @@ def test_get_channel_rest_unset_required_fields():
 
     unset_fields = transport.get_channel._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_channel_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_get_channel") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_get_channel") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.GetChannelRequest.pb(eventarc.GetChannelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = channel.Channel.to_json(channel.Channel())
-
-        request = eventarc.GetChannelRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = channel.Channel()
-
-        client.get_channel(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_get_channel_rest_flattened():
@@ -9171,46 +8928,6 @@ def test_list_channels_rest_unset_required_fields():
 
     unset_fields = transport.list_channels._get_unset_required_fields({})
     assert set(unset_fields) == (set(("orderBy", "pageSize", "pageToken", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_channels_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_list_channels") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_list_channels") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.ListChannelsRequest.pb(eventarc.ListChannelsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = eventarc.ListChannelsResponse.to_json(eventarc.ListChannelsResponse())
-
-        request = eventarc.ListChannelsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = eventarc.ListChannelsResponse()
-
-        client.list_channels(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_list_channels_rest_flattened():
@@ -9560,47 +9277,6 @@ def test_create_channel_rest_unset_required_fields():
     assert set(unset_fields) == (set(("channelId", "validateOnly", )) & set(("parent", "channel", "channelId", "validateOnly", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_channel_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_create_channel") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_create_channel") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.CreateChannelRequest.pb(eventarc.CreateChannelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = eventarc.CreateChannelRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_channel(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_create_channel_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9873,47 +9549,6 @@ def test_update_channel_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask", "validateOnly", )) & set(("validateOnly", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_channel_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_update_channel") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_update_channel") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.UpdateChannelRequest.pb(eventarc.UpdateChannelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = eventarc.UpdateChannelRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_channel(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_update_channel_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10123,47 +9758,6 @@ def test_delete_channel_rest_unset_required_fields():
     assert set(unset_fields) == (set(("validateOnly", )) & set(("name", "validateOnly", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_channel_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_delete_channel") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_delete_channel") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.DeleteChannelRequest.pb(eventarc.DeleteChannelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = eventarc.DeleteChannelRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_channel(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_delete_channel_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10324,46 +9918,6 @@ def test_get_provider_rest_unset_required_fields():
 
     unset_fields = transport.get_provider._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_provider_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_get_provider") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_get_provider") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.GetProviderRequest.pb(eventarc.GetProviderRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = discovery.Provider.to_json(discovery.Provider())
-
-        request = eventarc.GetProviderRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = discovery.Provider()
-
-        client.get_provider(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_get_provider_rest_flattened():
@@ -10569,46 +10123,6 @@ def test_list_providers_rest_unset_required_fields():
 
     unset_fields = transport.list_providers._get_unset_required_fields({})
     assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_providers_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_list_providers") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_list_providers") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.ListProvidersRequest.pb(eventarc.ListProvidersRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = eventarc.ListProvidersResponse.to_json(eventarc.ListProvidersResponse())
-
-        request = eventarc.ListProvidersRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = eventarc.ListProvidersResponse()
-
-        client.list_providers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_list_providers_rest_flattened():
@@ -10837,46 +10351,6 @@ def test_get_channel_connection_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_channel_connection_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_get_channel_connection") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_get_channel_connection") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.GetChannelConnectionRequest.pb(eventarc.GetChannelConnectionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = channel_connection.ChannelConnection.to_json(channel_connection.ChannelConnection())
-
-        request = eventarc.GetChannelConnectionRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = channel_connection.ChannelConnection()
-
-        client.get_channel_connection(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_get_channel_connection_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11080,46 +10554,6 @@ def test_list_channel_connections_rest_unset_required_fields():
 
     unset_fields = transport.list_channel_connections._get_unset_required_fields({})
     assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_channel_connections_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_list_channel_connections") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_list_channel_connections") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.ListChannelConnectionsRequest.pb(eventarc.ListChannelConnectionsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = eventarc.ListChannelConnectionsResponse.to_json(eventarc.ListChannelConnectionsResponse())
-
-        request = eventarc.ListChannelConnectionsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = eventarc.ListChannelConnectionsResponse()
-
-        client.list_channel_connections(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_list_channel_connections_rest_flattened():
@@ -11458,47 +10892,6 @@ def test_create_channel_connection_rest_unset_required_fields():
     assert set(unset_fields) == (set(("channelConnectionId", )) & set(("parent", "channelConnection", "channelConnectionId", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_channel_connection_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_create_channel_connection") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_create_channel_connection") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.CreateChannelConnectionRequest.pb(eventarc.CreateChannelConnectionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = eventarc.CreateChannelConnectionRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_channel_connection(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_create_channel_connection_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11697,47 +11090,6 @@ def test_delete_channel_connection_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_channel_connection_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_delete_channel_connection") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_delete_channel_connection") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.DeleteChannelConnectionRequest.pb(eventarc.DeleteChannelConnectionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = eventarc.DeleteChannelConnectionRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_channel_connection(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_delete_channel_connection_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11900,46 +11252,6 @@ def test_get_google_channel_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_google_channel_config_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_get_google_channel_config") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_get_google_channel_config") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.GetGoogleChannelConfigRequest.pb(eventarc.GetGoogleChannelConfigRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = google_channel_config.GoogleChannelConfig.to_json(google_channel_config.GoogleChannelConfig())
-
-        request = eventarc.GetGoogleChannelConfigRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = google_channel_config.GoogleChannelConfig()
-
-        client.get_google_channel_config(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
 def test_get_google_channel_config_rest_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12100,46 +11412,6 @@ def test_update_google_channel_config_rest_unset_required_fields():
 
     unset_fields = transport.update_google_channel_config._get_unset_required_fields({})
     assert set(unset_fields) == (set(("updateMask", )) & set(("googleChannelConfig", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_google_channel_config_rest_interceptors(null_interceptor):
-    transport = transports.EventarcRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
-        )
-    client = EventarcClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.EventarcRestInterceptor, "post_update_google_channel_config") as post, \
-         mock.patch.object(transports.EventarcRestInterceptor, "pre_update_google_channel_config") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = eventarc.UpdateGoogleChannelConfigRequest.pb(eventarc.UpdateGoogleChannelConfigRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gce_google_channel_config.GoogleChannelConfig.to_json(gce_google_channel_config.GoogleChannelConfig())
-
-        request = eventarc.UpdateGoogleChannelConfigRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gce_google_channel_config.GoogleChannelConfig()
-
-        client.update_google_channel_config(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
 
 
 def test_update_google_channel_config_rest_flattened():
@@ -13270,6 +12542,47 @@ def test_get_trigger_rest_call_success(request_type):
     assert response.etag == 'etag_value'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_trigger_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_get_trigger") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_get_trigger") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.GetTriggerRequest.pb(eventarc.GetTriggerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = trigger.Trigger.to_json(trigger.Trigger())
+        req.return_value.content = return_value
+
+        request = eventarc.GetTriggerRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = trigger.Trigger()
+
+        client.get_trigger(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_list_triggers_rest_bad_request(request_type=eventarc.ListTriggersRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13289,6 +12602,47 @@ def test_list_triggers_rest_bad_request(request_type=eventarc.ListTriggersReques
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.list_triggers(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_triggers_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_list_triggers") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_list_triggers") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.ListTriggersRequest.pb(eventarc.ListTriggersRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = eventarc.ListTriggersResponse.to_json(eventarc.ListTriggersResponse())
+        req.return_value.content = return_value
+
+        request = eventarc.ListTriggersRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = eventarc.ListTriggersResponse()
+
+        client.list_triggers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_create_trigger_rest_bad_request(request_type=eventarc.CreateTriggerRequest):
@@ -13312,6 +12666,48 @@ def test_create_trigger_rest_bad_request(request_type=eventarc.CreateTriggerRequ
         client.create_trigger(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_trigger_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_create_trigger") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_create_trigger") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.CreateTriggerRequest.pb(eventarc.CreateTriggerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = eventarc.CreateTriggerRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_trigger(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_update_trigger_rest_bad_request(request_type=eventarc.UpdateTriggerRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13333,6 +12729,48 @@ def test_update_trigger_rest_bad_request(request_type=eventarc.UpdateTriggerRequ
         client.update_trigger(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_trigger_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_update_trigger") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_update_trigger") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.UpdateTriggerRequest.pb(eventarc.UpdateTriggerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = eventarc.UpdateTriggerRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_trigger(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_trigger_rest_bad_request(request_type=eventarc.DeleteTriggerRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13352,6 +12790,48 @@ def test_delete_trigger_rest_bad_request(request_type=eventarc.DeleteTriggerRequ
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.delete_trigger(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_trigger_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_delete_trigger") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_delete_trigger") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.DeleteTriggerRequest.pb(eventarc.DeleteTriggerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = eventarc.DeleteTriggerRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_trigger(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_get_channel_rest_bad_request(request_type=eventarc.GetChannelRequest):
@@ -13423,6 +12903,47 @@ def test_get_channel_rest_call_success(request_type):
     assert response.crypto_key_name == 'crypto_key_name_value'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_channel_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_get_channel") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_get_channel") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.GetChannelRequest.pb(eventarc.GetChannelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = channel.Channel.to_json(channel.Channel())
+        req.return_value.content = return_value
+
+        request = eventarc.GetChannelRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = channel.Channel()
+
+        client.get_channel(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_list_channels_rest_bad_request(request_type=eventarc.ListChannelsRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13442,6 +12963,47 @@ def test_list_channels_rest_bad_request(request_type=eventarc.ListChannelsReques
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.list_channels(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_channels_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_list_channels") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_list_channels") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.ListChannelsRequest.pb(eventarc.ListChannelsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = eventarc.ListChannelsResponse.to_json(eventarc.ListChannelsResponse())
+        req.return_value.content = return_value
+
+        request = eventarc.ListChannelsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = eventarc.ListChannelsResponse()
+
+        client.list_channels(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_create_channel_rest_bad_request(request_type=eventarc.CreateChannelRequest):
@@ -13465,6 +13027,48 @@ def test_create_channel_rest_bad_request(request_type=eventarc.CreateChannelRequ
         client.create_channel(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_channel_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_create_channel") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_create_channel") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.CreateChannelRequest.pb(eventarc.CreateChannelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = eventarc.CreateChannelRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_channel(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_update_channel_rest_bad_request(request_type=eventarc.UpdateChannelRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13486,6 +13090,48 @@ def test_update_channel_rest_bad_request(request_type=eventarc.UpdateChannelRequ
         client.update_channel(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_channel_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_update_channel") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_update_channel") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.UpdateChannelRequest.pb(eventarc.UpdateChannelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = eventarc.UpdateChannelRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_channel(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_channel_rest_bad_request(request_type=eventarc.DeleteChannelRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13505,6 +13151,48 @@ def test_delete_channel_rest_bad_request(request_type=eventarc.DeleteChannelRequ
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.delete_channel(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_channel_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_delete_channel") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_delete_channel") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.DeleteChannelRequest.pb(eventarc.DeleteChannelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = eventarc.DeleteChannelRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_channel(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_get_provider_rest_bad_request(request_type=eventarc.GetProviderRequest):
@@ -13567,6 +13255,47 @@ def test_get_provider_rest_call_success(request_type):
     assert response.display_name == 'display_name_value'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_provider_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_get_provider") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_get_provider") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.GetProviderRequest.pb(eventarc.GetProviderRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = discovery.Provider.to_json(discovery.Provider())
+        req.return_value.content = return_value
+
+        request = eventarc.GetProviderRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = discovery.Provider()
+
+        client.get_provider(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_list_providers_rest_bad_request(request_type=eventarc.ListProvidersRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13586,6 +13315,47 @@ def test_list_providers_rest_bad_request(request_type=eventarc.ListProvidersRequ
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.list_providers(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_providers_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_list_providers") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_list_providers") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.ListProvidersRequest.pb(eventarc.ListProvidersRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = eventarc.ListProvidersResponse.to_json(eventarc.ListProvidersResponse())
+        req.return_value.content = return_value
+
+        request = eventarc.ListProvidersRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = eventarc.ListProvidersResponse()
+
+        client.list_providers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_get_channel_connection_rest_bad_request(request_type=eventarc.GetChannelConnectionRequest):
@@ -13652,6 +13422,47 @@ def test_get_channel_connection_rest_call_success(request_type):
     assert response.activation_token == 'activation_token_value'
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_channel_connection_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_get_channel_connection") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_get_channel_connection") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.GetChannelConnectionRequest.pb(eventarc.GetChannelConnectionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = channel_connection.ChannelConnection.to_json(channel_connection.ChannelConnection())
+        req.return_value.content = return_value
+
+        request = eventarc.GetChannelConnectionRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = channel_connection.ChannelConnection()
+
+        client.get_channel_connection(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_list_channel_connections_rest_bad_request(request_type=eventarc.ListChannelConnectionsRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13671,6 +13482,47 @@ def test_list_channel_connections_rest_bad_request(request_type=eventarc.ListCha
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.list_channel_connections(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_channel_connections_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_list_channel_connections") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_list_channel_connections") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.ListChannelConnectionsRequest.pb(eventarc.ListChannelConnectionsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = eventarc.ListChannelConnectionsResponse.to_json(eventarc.ListChannelConnectionsResponse())
+        req.return_value.content = return_value
+
+        request = eventarc.ListChannelConnectionsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = eventarc.ListChannelConnectionsResponse()
+
+        client.list_channel_connections(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_create_channel_connection_rest_bad_request(request_type=eventarc.CreateChannelConnectionRequest):
@@ -13694,6 +13546,48 @@ def test_create_channel_connection_rest_bad_request(request_type=eventarc.Create
         client.create_channel_connection(request)
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_channel_connection_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_create_channel_connection") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_create_channel_connection") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.CreateChannelConnectionRequest.pb(eventarc.CreateChannelConnectionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = eventarc.CreateChannelConnectionRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_channel_connection(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_channel_connection_rest_bad_request(request_type=eventarc.DeleteChannelConnectionRequest):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13713,6 +13607,48 @@ def test_delete_channel_connection_rest_bad_request(request_type=eventarc.Delete
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.delete_channel_connection(request)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_channel_connection_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_delete_channel_connection") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_delete_channel_connection") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.DeleteChannelConnectionRequest.pb(eventarc.DeleteChannelConnectionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = eventarc.DeleteChannelConnectionRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_channel_connection(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_get_google_channel_config_rest_bad_request(request_type=eventarc.GetGoogleChannelConfigRequest):
@@ -13773,6 +13709,47 @@ def test_get_google_channel_config_rest_call_success(request_type):
     assert isinstance(response, google_channel_config.GoogleChannelConfig)
     assert response.name == 'name_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_google_channel_config_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_get_google_channel_config") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_get_google_channel_config") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.GetGoogleChannelConfigRequest.pb(eventarc.GetGoogleChannelConfigRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = google_channel_config.GoogleChannelConfig.to_json(google_channel_config.GoogleChannelConfig())
+        req.return_value.content = return_value
+
+        request = eventarc.GetGoogleChannelConfigRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = google_channel_config.GoogleChannelConfig()
+
+        client.get_google_channel_config(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_update_google_channel_config_rest_bad_request(request_type=eventarc.UpdateGoogleChannelConfigRequest):
@@ -13898,6 +13875,46 @@ def test_update_google_channel_config_rest_call_success(request_type):
     assert response.name == 'name_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
 
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_google_channel_config_rest_interceptors(null_interceptor):
+    transport = transports.EventarcRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.EventarcRestInterceptor(),
+        )
+    client = EventarcClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.EventarcRestInterceptor, "post_update_google_channel_config") as post, \
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_update_google_channel_config") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = eventarc.UpdateGoogleChannelConfigRequest.pb(eventarc.UpdateGoogleChannelConfigRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gce_google_channel_config.GoogleChannelConfig.to_json(gce_google_channel_config.GoogleChannelConfig())
+        req.return_value.content = return_value
+
+        request = eventarc.UpdateGoogleChannelConfigRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gce_google_channel_config.GoogleChannelConfig()
+
+        client.update_google_channel_config(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 def test_initialize_client_w_rest():
     client = EventarcClient(
