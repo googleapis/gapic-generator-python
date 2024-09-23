@@ -394,8 +394,7 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
         ) -> {{ sig.response_type }}:
 
         r"""Call the {{- ' ' -}}
-        {{ (name|snake_case).replace('_',' ')|wrap(
-                width=70, offset=45, indent=8) }}
+        {{ (name|snake_case).replace('_',' ')|wrap(width=70, offset=45, indent=8) }}
         {{- ' ' -}} method over HTTP.
 
         Args:
