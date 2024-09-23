@@ -1534,9 +1534,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetLocation(_BaseCloudRedisRestTransport._BaseGetLocation, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.GetLocation")
-
         @staticmethod
         def _get_response(
             host,
@@ -1607,9 +1604,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListLocations(_BaseCloudRedisRestTransport._BaseListLocations, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.ListLocations")
-
         @staticmethod
         def _get_response(
             host,
@@ -1680,9 +1674,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _CancelOperation(_BaseCloudRedisRestTransport._BaseCancelOperation, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.CancelOperation")
-
         @staticmethod
         def _get_response(
             host,
@@ -1746,9 +1737,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _DeleteOperation(_BaseCloudRedisRestTransport._BaseDeleteOperation, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.DeleteOperation")
-
         @staticmethod
         def _get_response(
             host,
@@ -1812,9 +1800,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetOperation(_BaseCloudRedisRestTransport._BaseGetOperation, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.GetOperation")
-
         @staticmethod
         def _get_response(
             host,
@@ -1885,9 +1870,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListOperations(_BaseCloudRedisRestTransport._BaseListOperations, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.ListOperations")
-
         @staticmethod
         def _get_response(
             host,
