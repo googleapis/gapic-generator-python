@@ -986,6 +986,8 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
             return query_params
 
     class _BaseGetOperation:
+        def __hash__(self):
+            return hash("AssetServiceRestTransport.GetOperation")
 
         @staticmethod
         def _get_http_options():
