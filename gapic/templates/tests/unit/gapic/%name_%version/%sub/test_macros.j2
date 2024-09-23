@@ -1882,6 +1882,14 @@ def test_unsupported_parameter_rest_asyncio():
 {% endif %}{# if 'rest' in transport #}
 {% endif %}{# is_rest_unsupported_method(method, is_async) == 'False' and method.http_options #}
 {% endfor %}{# for method in service.methods.values() #}
+{% for name, sig in api.mixin_api_signatures.items() %}
+{% if 'rest' in transport %}
+{# TODO: Remove the following condition as we implement async mixins #}
+{% if not is_async %}
+{{ bad_request_mixins_test(service, api, name, sig, transport, is_async) }}
+{% endif %}{# if not is_async #}
+{% endif %}{# if 'rest' in transport #}
+{% endfor %}
 {{ initialize_client_with_transport_test(service, transport, is_async) }}
 {% endmacro %}
 
@@ -1991,6 +1999,60 @@ def test_initialize_client_w_{{transport_name}}():
         req.return_value = response_value
         {{ await_prefix }}client.{{ method_name }}(request)
 
+{% endif %}{# if 'grpc' in transport #}
+{% endmacro %}
+
+{# bad_request_mixins_test generates tests for rest mixin methods
+ # which raise a google.api.core.exceptions.BadRequest error.
+#}
+{% macro bad_request_mixins_test(service, api, name, sig, transport, is_async=False) %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_prefix = get_async_prefix(is_async) %}
+{% set async_decorator = get_async_decorator(is_async) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% set method_name = name|snake_case %}
+{% set mocked_session = "AsyncAuthorizedSession" if is_async else "Session" %}
+{{ async_decorator }}
+{{ async_prefix }}def test_{{ method_name }}_{{ transport_name }}_bad_request(request_type={{ sig.request_type }}):
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2157): Refactor this macro to include `gRPC` coverage. #}
+{% if 'grpc' in transport %}
+    raise NotImplementedError("gRPC is currently not supported for this test case.")
+{% else %}{# 'rest' in transport #}
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
+    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
+        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+
+    {% endif %}
+    client = {{ get_client(service, is_async) }}(
+        credentials={{get_credentials(is_async)}},
+        transport="{{transport_name}}",
+    )
+    request = request_type()
+    request = json_format.ParseDict({{ api.mixin_http_options["{}".format(name)][0].sample_request }}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object({{mocked_session}}, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        {% if is_async %}
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        {% else %}
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        {% endif %}{# if is_async #}
+        response_value.status_code = 400
+        {% if is_async %}
+        response_value.request = mock.Mock()
+        {% else %}
+        response_value.request = Request()
+        {% endif %}
+        req.return_value = response_value
+        {{ await_prefix }}client.{{ method_name }}(request)
 {% endif %}{# if 'grpc' in transport #}
 {% endmacro %}
 

@@ -16512,6 +16512,26 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
         pre.assert_called_once()
         post.assert_called_once()
 
+
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'sample1/sample2/operations/sample3/sample4'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
 def test_initialize_client_w_rest():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17282,24 +17302,6 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-
-def test_get_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.GetOperationRequest):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'sample1/sample2/operations/sample3/sample4'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
 
 @pytest.mark.parametrize("request_type", [
     operations_pb2.GetOperationRequest,
