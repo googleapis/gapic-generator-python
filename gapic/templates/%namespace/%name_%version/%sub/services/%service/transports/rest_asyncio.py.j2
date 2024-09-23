@@ -33,6 +33,16 @@ except ImportError as e:  # pragma: NO COVER
     raise ImportError("async rest transport requires google-api-core >= 2.20.0. Install google-api-core using `pip install google-api-core==2.35.0`.") from e
 
 from google.protobuf import json_format
+{% if service.has_lro %}
+from google.api_core import operations_v1
+{% endif %}
+{% if opts.add_iam_methods or api.has_iam_mixin %}
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+{% endif %}
+{% if api.has_location_mixin %}
+from google.cloud.location import locations_pb2 # type: ignore
+{% endif %}
 
 import json  # type: ignore
 import dataclasses
@@ -55,11 +65,13 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=google.auth.__version__
 )
 
-{# TODO: Add an `_interceptor` property once implemented #}
+{{ shared_macros.create_interceptor_class(api, service, method, is_async=True) }}
+
 @dataclasses.dataclass
 class Async{{service.name}}RestStub:
     _session: AsyncAuthorizedSession
     _host: str
+    _interceptor: Async{{service.name}}RestInterceptor
 
 class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     """Asynchronous REST backend transport for {{ service.name }}.
@@ -78,6 +90,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             credentials: Optional[ga_credentials_async.Credentials] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             url_scheme: str = 'https',
+            interceptor: Optional[Async{{ service.name }}RestInterceptor] = None,
             ) -> None:
         """Instantiate the transport.
 
@@ -118,6 +131,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
          # we update the type hints for credentials to include asynchronous credentials in the client layer.
         #}
         self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
+        self._interceptor = interceptor or Async{{ service.name }}RestInterceptor()
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
 
@@ -190,6 +204,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             {% endif %}{# if method.server_streaming #}
+            resp = await self._interceptor.post_{{ method.name|snake_case }}(resp)
             return resp
 
             {% endif %}{# method.void #}
@@ -207,7 +222,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     def {{method.transport_safe_name|snake_case}}(self) -> Callable[
             [{{method.input.ident}}],
             {{method.output.ident}}]:
-        return self._{{method.name}}(self._session, self._host)  # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor)  # type: ignore
 
     {% endfor %}
 

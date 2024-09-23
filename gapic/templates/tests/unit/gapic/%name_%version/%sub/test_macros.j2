@@ -2264,7 +2264,6 @@ def test_initialize_client_w_{{transport_name}}():
 
 {# inteceptor_class_test generates tests for rest interceptors. #}
 {% macro inteceptor_class_test(service, method, transport, is_async) %}
-{% if not is_async %}{# TODO: Remove this guard once support for async rest interceptors is added. #}
 {% set await_prefix = get_await_prefix(is_async) %}
 {% set async_prefix = get_async_prefix(is_async) %}
 {% set async_decorator = get_async_decorator(is_async) %}
@@ -2275,8 +2274,21 @@ def test_initialize_client_w_{{transport_name}}():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 {{async_prefix}}def test_{{ method_name }}_{{transport_name}}_interceptors(null_interceptor):
 {% if 'grpc' in transport %}
+    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2191):
+     # Currently this macro only supports REST. It should be updated to support gRPC
+     # transport as well.
+    #}
     raise NotImplementedError("gRPC is currently not supported for this test case.")
 {% else %}{# 'rest' in transport #}
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_GOOGLE_AUTH_AIO:
+        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
+    elif not HAS_AIOHTTP_INSTALLED:
+        pytest.skip("aiohttp is required for async rest transport.")
+    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
+        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+
+    {% endif %}
     transport = transports.{{async_method_prefix}}{{ service.name }}RestTransport(
         credentials={{get_credentials(is_async)}},
         interceptor=None if null_interceptor else transports.{{async_method_prefix}}{{ service.name}}RestInterceptor(),
@@ -2345,5 +2357,4 @@ def test_initialize_client_w_{{transport_name}}():
         post.assert_called_once()
         {% endif %}
 {% endif %}{# end 'grpc' in transport #}
-{% endif %}{# end not is_async #}
 {% endmacro%}

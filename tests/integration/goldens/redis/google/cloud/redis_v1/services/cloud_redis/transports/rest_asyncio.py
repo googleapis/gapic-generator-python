@@ -36,6 +36,8 @@ except ImportError as e:  # pragma: NO COVER
     raise ImportError("async rest transport requires google-api-core >= 2.20.0. Install google-api-core using `pip install google-api-core==2.35.0`.") from e
 
 from google.protobuf import json_format
+from google.api_core import operations_v1
+from google.cloud.location import locations_pb2 # type: ignore
 
 import json  # type: ignore
 import dataclasses
@@ -61,10 +63,154 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=google.auth.__version__
 )
 
+
+class AsyncCloudRedisRestInterceptor:
+    """Asynchronous Interceptor for CloudRedis.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the AsyncCloudRedisRestTransport.
+
+    .. code-block:: python
+        class MyCustomCloudRedisInterceptor(CloudRedisRestInterceptor):
+            async def pre_create_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_create_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_delete_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_delete_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_export_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_export_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_failover_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_failover_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_get_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_get_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_get_instance_auth_string(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_get_instance_auth_string(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_import_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_import_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_list_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_list_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_reschedule_maintenance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_reschedule_maintenance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_update_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_update_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            async def pre_upgrade_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            async def post_upgrade_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+        transport = AsyncCloudRedisRestTransport(interceptor=MyCustomCloudRedisInterceptor())
+        client = async CloudRedisClient(transport=transport)
+
+
+    """
+    async def pre_get_instance(self, request: cloud_redis.GetInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_instance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    async def post_get_instance(self, response: cloud_redis.Instance) -> cloud_redis.Instance:
+        """Post-rpc interceptor for get_instance
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+    async def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_instance_auth_string
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    async def post_get_instance_auth_string(self, response: cloud_redis.InstanceAuthString) -> cloud_redis.InstanceAuthString:
+        """Post-rpc interceptor for get_instance_auth_string
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class AsyncCloudRedisRestStub:
     _session: AsyncAuthorizedSession
     _host: str
+    _interceptor: AsyncCloudRedisRestInterceptor
 
 class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     """Asynchronous REST backend transport for CloudRedis.
@@ -103,6 +249,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             credentials: Optional[ga_credentials_async.Credentials] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             url_scheme: str = 'https',
+            interceptor: Optional[AsyncCloudRedisRestInterceptor] = None,
             ) -> None:
         """Instantiate the transport.
 
@@ -137,6 +284,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             api_audience=None
         )
         self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
+        self._interceptor = interceptor or AsyncCloudRedisRestInterceptor()
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
 
@@ -311,6 +459,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetInstance._get_http_options()
+            request, metadata = await self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
@@ -333,6 +482,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             pb_resp = cloud_redis.Instance.pb(resp)
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            resp = await self._interceptor.post_get_instance(resp)
             return resp
 
     class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub):
@@ -385,6 +535,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_http_options()
+            request, metadata = await self._interceptor.pre_get_instance_auth_string(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
@@ -407,6 +558,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             pb_resp = cloud_redis.InstanceAuthString.pb(resp)
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            resp = await self._interceptor.post_get_instance_auth_string(resp)
             return resp
 
     class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub):
@@ -483,67 +635,67 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     def create_instance(self) -> Callable[
             [cloud_redis.CreateInstanceRequest],
             operations_pb2.Operation]:
-        return self._CreateInstance(self._session, self._host)  # type: ignore
+        return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_instance(self) -> Callable[
             [cloud_redis.DeleteInstanceRequest],
             operations_pb2.Operation]:
-        return self._DeleteInstance(self._session, self._host)  # type: ignore
+        return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def export_instance(self) -> Callable[
             [cloud_redis.ExportInstanceRequest],
             operations_pb2.Operation]:
-        return self._ExportInstance(self._session, self._host)  # type: ignore
+        return self._ExportInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def failover_instance(self) -> Callable[
             [cloud_redis.FailoverInstanceRequest],
             operations_pb2.Operation]:
-        return self._FailoverInstance(self._session, self._host)  # type: ignore
+        return self._FailoverInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_instance(self) -> Callable[
             [cloud_redis.GetInstanceRequest],
             cloud_redis.Instance]:
-        return self._GetInstance(self._session, self._host)  # type: ignore
+        return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_instance_auth_string(self) -> Callable[
             [cloud_redis.GetInstanceAuthStringRequest],
             cloud_redis.InstanceAuthString]:
-        return self._GetInstanceAuthString(self._session, self._host)  # type: ignore
+        return self._GetInstanceAuthString(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def import_instance(self) -> Callable[
             [cloud_redis.ImportInstanceRequest],
             operations_pb2.Operation]:
-        return self._ImportInstance(self._session, self._host)  # type: ignore
+        return self._ImportInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_instances(self) -> Callable[
             [cloud_redis.ListInstancesRequest],
             cloud_redis.ListInstancesResponse]:
-        return self._ListInstances(self._session, self._host)  # type: ignore
+        return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def reschedule_maintenance(self) -> Callable[
             [cloud_redis.RescheduleMaintenanceRequest],
             operations_pb2.Operation]:
-        return self._RescheduleMaintenance(self._session, self._host)  # type: ignore
+        return self._RescheduleMaintenance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_instance(self) -> Callable[
             [cloud_redis.UpdateInstanceRequest],
             operations_pb2.Operation]:
-        return self._UpdateInstance(self._session, self._host)  # type: ignore
+        return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def upgrade_instance(self) -> Callable[
             [cloud_redis.UpgradeInstanceRequest],
             operations_pb2.Operation]:
-        return self._UpgradeInstance(self._session, self._host)  # type: ignore
+        return self._UpgradeInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:
