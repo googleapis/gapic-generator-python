@@ -7579,45 +7579,6 @@ def test_get_trigger_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    eventarc.ListTriggersRequest,
-    dict,
-])
-def test_list_triggers_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = eventarc.ListTriggersResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = eventarc.ListTriggersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_triggers(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListTriggersPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
-
 def test_list_triggers_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -8778,45 +8739,6 @@ def test_get_channel_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    eventarc.ListChannelsRequest,
-    dict,
-])
-def test_list_channels_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = eventarc.ListChannelsResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = eventarc.ListChannelsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_channels(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListChannelsPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
-
 def test_list_channels_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9973,45 +9895,6 @@ def test_get_provider_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    eventarc.ListProvidersRequest,
-    dict,
-])
-def test_list_providers_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = eventarc.ListProvidersResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = eventarc.ListProvidersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_providers(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListProvidersPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
-
 def test_list_providers_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -10403,45 +10286,6 @@ def test_get_channel_connection_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
         )
 
-
-@pytest.mark.parametrize("request_type", [
-    eventarc.ListChannelConnectionsRequest,
-    dict,
-])
-def test_list_channel_connections_rest(request_type):
-    client = EventarcClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = eventarc.ListChannelConnectionsResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_channel_connections(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListChannelConnectionsPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
 
 def test_list_channel_connections_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -12604,6 +12448,45 @@ def test_list_triggers_rest_bad_request(request_type=eventarc.ListTriggersReques
         client.list_triggers(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListTriggersRequest,
+  dict,
+])
+def test_list_triggers_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = eventarc.ListTriggersResponse(
+              next_page_token='next_page_token_value',
+              unreachable=['unreachable_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = eventarc.ListTriggersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_triggers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTriggersPager)
+    assert response.next_page_token == 'next_page_token_value'
+    assert response.unreachable == ['unreachable_value']
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_triggers_rest_interceptors(null_interceptor):
     transport = transports.EventarcRestTransport(
@@ -12965,6 +12848,45 @@ def test_list_channels_rest_bad_request(request_type=eventarc.ListChannelsReques
         client.list_channels(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListChannelsRequest,
+  dict,
+])
+def test_list_channels_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = eventarc.ListChannelsResponse(
+              next_page_token='next_page_token_value',
+              unreachable=['unreachable_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = eventarc.ListChannelsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_channels(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelsPager)
+    assert response.next_page_token == 'next_page_token_value'
+    assert response.unreachable == ['unreachable_value']
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_channels_rest_interceptors(null_interceptor):
     transport = transports.EventarcRestTransport(
@@ -13317,6 +13239,45 @@ def test_list_providers_rest_bad_request(request_type=eventarc.ListProvidersRequ
         client.list_providers(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListProvidersRequest,
+  dict,
+])
+def test_list_providers_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = eventarc.ListProvidersResponse(
+              next_page_token='next_page_token_value',
+              unreachable=['unreachable_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = eventarc.ListProvidersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_providers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProvidersPager)
+    assert response.next_page_token == 'next_page_token_value'
+    assert response.unreachable == ['unreachable_value']
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_providers_rest_interceptors(null_interceptor):
     transport = transports.EventarcRestTransport(
@@ -13482,6 +13443,45 @@ def test_list_channel_connections_rest_bad_request(request_type=eventarc.ListCha
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.list_channel_connections(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListChannelConnectionsRequest,
+  dict,
+])
+def test_list_channel_connections_rest_call_success(request_type):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = eventarc.ListChannelConnectionsResponse(
+              next_page_token='next_page_token_value',
+              unreachable=['unreachable_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_channel_connections(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelConnectionsPager)
+    assert response.next_page_token == 'next_page_token_value'
+    assert response.unreachable == ['unreachable_value']
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

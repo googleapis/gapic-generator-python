@@ -9074,43 +9074,6 @@ def test_export_assets_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent", "outputConfig", )))
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.ListAssetsRequest,
-    dict,
-])
-def test_list_assets_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.ListAssetsResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = asset_service.ListAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_assets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAssetsPager)
-    assert response.next_page_token == 'next_page_token_value'
-
 def test_list_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -10268,43 +10231,6 @@ def test_delete_feed_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.SearchAllResourcesRequest,
-    dict,
-])
-def test_search_all_resources_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.SearchAllResourcesResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.search_all_resources(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchAllResourcesPager)
-    assert response.next_page_token == 'next_page_token_value'
-
 def test_search_all_resources_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -10536,43 +10462,6 @@ def test_search_all_resources_rest_pager(transport: str = 'rest'):
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.SearchAllIamPoliciesRequest,
-    dict,
-])
-def test_search_all_iam_policies_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.SearchAllIamPoliciesResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.search_all_iam_policies(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchAllIamPoliciesPager)
-    assert response.next_page_token == 'next_page_token_value'
 
 def test_search_all_iam_policies_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -11633,43 +11522,6 @@ def test_get_saved_query_rest_flattened_error(transport: str = 'rest'):
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.ListSavedQueriesRequest,
-    dict,
-])
-def test_list_saved_queries_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.ListSavedQueriesResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_saved_queries(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSavedQueriesPager)
-    assert response.next_page_token == 'next_page_token_value'
-
 def test_list_saved_queries_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12345,43 +12197,6 @@ def test_batch_get_effective_iam_policies_rest_unset_required_fields():
     assert set(unset_fields) == (set(("names", )) & set(("scope", "names", )))
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeOrgPoliciesRequest,
-    dict,
-])
-def test_analyze_org_policies_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.AnalyzeOrgPoliciesResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_org_policies(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
-    assert response.next_page_token == 'next_page_token_value'
-
 def test_analyze_org_policies_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12625,43 +12440,6 @@ def test_analyze_org_policies_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
-    dict,
-])
-def test_analyze_org_policy_governed_containers_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_org_policy_governed_containers(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
-    assert response.next_page_token == 'next_page_token_value'
-
 def test_analyze_org_policy_governed_containers_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12904,43 +12682,6 @@ def test_analyze_org_policy_governed_containers_rest_pager(transport: str = 'res
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
-    dict,
-])
-def test_analyze_org_policy_governed_assets_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'scope': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_org_policy_governed_assets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
-    assert response.next_page_token == 'next_page_token_value'
 
 def test_analyze_org_policy_governed_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -14511,6 +14252,43 @@ def test_list_assets_rest_bad_request(request_type=asset_service.ListAssetsReque
         client.list_assets(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  asset_service.ListAssetsRequest,
+  dict,
+])
+def test_list_assets_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.ListAssetsResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.ListAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAssetsPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_assets_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
@@ -15175,6 +14953,43 @@ def test_search_all_resources_rest_bad_request(request_type=asset_service.Search
         client.search_all_resources(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  asset_service.SearchAllResourcesRequest,
+  dict,
+])
+def test_search_all_resources_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SearchAllResourcesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.search_all_resources(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchAllResourcesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_search_all_resources_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
@@ -15235,6 +15050,43 @@ def test_search_all_iam_policies_rest_bad_request(request_type=asset_service.Sea
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.search_all_iam_policies(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.SearchAllIamPoliciesRequest,
+  dict,
+])
+def test_search_all_iam_policies_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SearchAllIamPoliciesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.search_all_iam_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchAllIamPoliciesPager)
+    assert response.next_page_token == 'next_page_token_value'
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15933,6 +15785,43 @@ def test_list_saved_queries_rest_bad_request(request_type=asset_service.ListSave
         client.list_saved_queries(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  asset_service.ListSavedQueriesRequest,
+  dict,
+])
+def test_list_saved_queries_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.ListSavedQueriesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_saved_queries(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSavedQueriesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_saved_queries_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
@@ -16348,6 +16237,43 @@ def test_analyze_org_policies_rest_bad_request(request_type=asset_service.Analyz
         client.analyze_org_policies(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeOrgPoliciesRequest,
+  dict,
+])
+def test_analyze_org_policies_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPoliciesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_org_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_analyze_org_policies_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
@@ -16410,6 +16336,43 @@ def test_analyze_org_policy_governed_containers_rest_bad_request(request_type=as
         client.analyze_org_policy_governed_containers(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+  dict,
+])
+def test_analyze_org_policy_governed_containers_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_org_policy_governed_containers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_analyze_org_policy_governed_containers_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
@@ -16470,6 +16433,43 @@ def test_analyze_org_policy_governed_assets_rest_bad_request(request_type=asset_
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.analyze_org_policy_governed_assets(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+  dict,
+])
+def test_analyze_org_policy_governed_assets_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_org_policy_governed_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
+    assert response.next_page_token == 'next_page_token_value'
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
