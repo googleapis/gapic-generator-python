@@ -986,6 +986,8 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
             return query_params
 
     class _BaseGetOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
 
         @staticmethod
         def _get_http_options():

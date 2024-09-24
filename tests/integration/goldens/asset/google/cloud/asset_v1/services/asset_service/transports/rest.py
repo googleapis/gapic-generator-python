@@ -2618,6 +2618,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
         return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetOperation(_BaseAssetServiceRestTransport._BaseGetOperation, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("AssetServiceRestTransport.GetOperation")
+
         @staticmethod
         def _get_response(
             host,
