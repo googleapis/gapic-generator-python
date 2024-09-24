@@ -8930,37 +8930,6 @@ async def test_analyze_org_policy_governed_assets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [
-    asset_service.ExportAssetsRequest,
-    dict,
-])
-def test_export_assets_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'sample1/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.export_assets(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
 def test_export_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -10800,37 +10769,6 @@ def test_analyze_iam_policy_rest_unset_required_fields():
     unset_fields = transport.analyze_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", )) & set(("analysisQuery", )))
 
-
-@pytest.mark.parametrize("request_type", [
-    asset_service.AnalyzeIamPolicyLongrunningRequest,
-    dict,
-])
-def test_analyze_iam_policy_longrunning_rest(request_type):
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.analyze_iam_policy_longrunning(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 def test_analyze_iam_policy_longrunning_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -14189,6 +14127,37 @@ def test_export_assets_rest_bad_request(request_type=asset_service.ExportAssetsR
         client.export_assets(request)
 
 
+@pytest.mark.parametrize("request_type", [
+  asset_service.ExportAssetsRequest,
+  dict,
+])
+def test_export_assets_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.export_assets(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_export_assets_rest_interceptors(null_interceptor):
     transport = transports.AssetServiceRestTransport(
@@ -15248,6 +15217,37 @@ def test_analyze_iam_policy_longrunning_rest_bad_request(request_type=asset_serv
         response_value.request = mock.Mock()
         req.return_value = response_value
         client.analyze_iam_policy_longrunning(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeIamPolicyLongrunningRequest,
+  dict,
+])
+def test_analyze_iam_policy_longrunning_rest_call_success(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'analysis_query': {'scope': 'sample1/sample2'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_iam_policy_longrunning(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16571,6 +16571,22 @@ def test_initialize_client_w_rest():
     assert client is not None
 
 
+def test_asset_service_rest_lro_client():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = AssetServiceClient(
@@ -16818,23 +16834,6 @@ def test_asset_service_http_transport_client_cert_source_for_mtls():
             client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_asset_service_rest_lro_client():
-    client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize("transport_name", [
