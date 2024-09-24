@@ -2346,6 +2346,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetLocation(_BaseEventarcRestTransport._BaseGetLocation, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetLocation")
+
         @staticmethod
         def _get_response(
             host,
@@ -2416,6 +2419,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListLocations(_BaseEventarcRestTransport._BaseListLocations, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.ListLocations")
+
         @staticmethod
         def _get_response(
             host,
@@ -2486,6 +2492,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._GetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetIamPolicy(_BaseEventarcRestTransport._BaseGetIamPolicy, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetIamPolicy")
+
         @staticmethod
         def _get_response(
             host,
@@ -2556,6 +2565,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._SetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
 
     class _SetIamPolicy(_BaseEventarcRestTransport._BaseSetIamPolicy, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.SetIamPolicy")
+
         @staticmethod
         def _get_response(
             host,
@@ -2629,6 +2641,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._TestIamPermissions(self._session, self._host, self._interceptor) # type: ignore
 
     class _TestIamPermissions(_BaseEventarcRestTransport._BaseTestIamPermissions, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.TestIamPermissions")
+
         @staticmethod
         def _get_response(
             host,
@@ -2702,6 +2717,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _CancelOperation(_BaseEventarcRestTransport._BaseCancelOperation, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.CancelOperation")
+
         @staticmethod
         def _get_response(
             host,
@@ -2768,6 +2786,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _DeleteOperation(_BaseEventarcRestTransport._BaseDeleteOperation, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.DeleteOperation")
+
         @staticmethod
         def _get_response(
             host,
@@ -2831,6 +2852,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetOperation(_BaseEventarcRestTransport._BaseGetOperation, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetOperation")
+
         @staticmethod
         def _get_response(
             host,
@@ -2901,6 +2925,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListOperations(_BaseEventarcRestTransport._BaseListOperations, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.ListOperations")
+
         @staticmethod
         def _get_response(
             host,

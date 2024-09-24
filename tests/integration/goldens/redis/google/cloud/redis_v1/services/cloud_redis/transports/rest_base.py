@@ -554,8 +554,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseGetLocation:
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.GetLocation")
 
         @staticmethod
         def _get_http_options():
@@ -579,8 +577,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseListLocations:
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.ListLocations")
 
         @staticmethod
         def _get_http_options():
@@ -604,8 +600,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseCancelOperation:
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.CancelOperation")
 
         @staticmethod
         def _get_http_options():
@@ -629,8 +623,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseDeleteOperation:
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.DeleteOperation")
 
         @staticmethod
         def _get_http_options():
@@ -654,8 +646,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseGetOperation:
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.GetOperation")
 
         @staticmethod
         def _get_http_options():
@@ -679,8 +669,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             return query_params
 
     class _BaseListOperations:
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.ListOperations")
 
         @staticmethod
         def _get_http_options():

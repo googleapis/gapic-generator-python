@@ -804,8 +804,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseGetLocation:
-        def __hash__(self):
-            return hash("EventarcRestTransport.GetLocation")
 
         @staticmethod
         def _get_http_options():
@@ -829,8 +827,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseListLocations:
-        def __hash__(self):
-            return hash("EventarcRestTransport.ListLocations")
 
         @staticmethod
         def _get_http_options():
@@ -854,8 +850,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseGetIamPolicy:
-        def __hash__(self):
-            return hash("EventarcRestTransport.GetIamPolicy")
 
         @staticmethod
         def _get_http_options():
@@ -887,8 +881,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseSetIamPolicy:
-        def __hash__(self):
-            return hash("EventarcRestTransport.SetIamPolicy")
 
         @staticmethod
         def _get_http_options():
@@ -927,8 +919,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseTestIamPermissions:
-        def __hash__(self):
-            return hash("EventarcRestTransport.TestIamPermissions")
 
         @staticmethod
         def _get_http_options():
@@ -967,8 +957,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseCancelOperation:
-        def __hash__(self):
-            return hash("EventarcRestTransport.CancelOperation")
 
         @staticmethod
         def _get_http_options():
@@ -997,8 +985,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseDeleteOperation:
-        def __hash__(self):
-            return hash("EventarcRestTransport.DeleteOperation")
 
         @staticmethod
         def _get_http_options():
@@ -1022,8 +1008,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseGetOperation:
-        def __hash__(self):
-            return hash("EventarcRestTransport.GetOperation")
 
         @staticmethod
         def _get_http_options():
@@ -1047,8 +1031,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return query_params
 
     class _BaseListOperations:
-        def __hash__(self):
-            return hash("EventarcRestTransport.ListOperations")
 
         @staticmethod
         def _get_http_options():
