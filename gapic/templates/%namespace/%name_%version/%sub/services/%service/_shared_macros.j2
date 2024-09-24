@@ -228,7 +228,7 @@ def _get_http_options():
 {% endmacro %}
 
 
-{% macro prep_wrapped_messages_async_method(service) %}
+{% macro prep_wrapped_messages_async_method(api, service) %}
 def _prep_wrapped_messages(self, client_info):
     """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
     self._wrapped_methods = {
@@ -258,6 +258,13 @@ def _prep_wrapped_messages(self, client_info):
             client_info=client_info,
         ),
         {% endfor %}{# service.methods.values() #}
+        {% for method_name in api.mixin_api_methods.keys() %}
+        self.{{ method_name|snake_case }}: self._wrap_method(
+            self.{{ method_name|snake_case }},
+            default_timeout=None,
+            client_info=client_info,
+        ),
+        {% endfor %}{# method_name in api.mixin_api_methods.keys() #}
     }
 {% endmacro %}
 
