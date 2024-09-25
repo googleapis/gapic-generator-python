@@ -29,6 +29,7 @@ except ImportError:  # pragma: NO COVER
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.showcase import EchoClient
+from google.showcase import SequenceServiceClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
 
@@ -37,6 +38,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
+    from google.showcase import SequenceServiceAsyncClient
 
     # TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
     # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
@@ -75,6 +77,15 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             transport_name="grpc_asyncio",
             channel_creator=aio.insecure_channel,
             credentials=async_anonymous_credentials(),
+        )
+
+    @pytest.fixture
+    def async_sequence(use_mtls, event_loop):
+        return construct_client(
+            SequenceServiceAsyncClient,
+            use_mtls,
+            transport_name="grpc_asyncio",
+            channel_creator=aio.insecure_channel
         )
 
 
