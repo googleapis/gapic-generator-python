@@ -9,7 +9,10 @@
 # Then this file should have google-cloud-foo==1.14.0
 {% if rest_async_io_enabled %}
 google-api-core==2.20.0
-google-auth[aiohttp]==2.35.0
+google-auth==2.35.0
+# from google-auth[aiohttp]
+aiohttp==3.6.2
+requests==2.20.0
 {% else %}
 google-api-core==1.34.1
 google-auth==2.14.1

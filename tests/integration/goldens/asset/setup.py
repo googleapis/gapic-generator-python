@@ -49,6 +49,12 @@ dependencies = [
     "google-cloud-os-config >= 1.0.0, <2.0.0dev",
     "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
 ]
+extras = {
+    "async_rest": [
+        "google-api-core[grpc] >= 2.20.0, < 3.0.0dev",
+        "google-auth[aiohttp] >= 2.35.0, <3.0.0dev"
+    ],
+}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset"
 
 package_root = os.path.abspath(os.path.dirname(__file__))

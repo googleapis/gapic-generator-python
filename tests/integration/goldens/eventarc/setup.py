@@ -47,6 +47,12 @@ dependencies = [
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
 ]
+extras = {
+    "async_rest": [
+        "google-api-core[grpc] >= 2.20.0, < 3.0.0dev",
+        "google-auth[aiohttp] >= 2.35.0, <3.0.0dev"
+    ],
+}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
