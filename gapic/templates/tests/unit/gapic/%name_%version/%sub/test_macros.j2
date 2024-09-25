@@ -2241,7 +2241,9 @@ def test_initialize_client_w_{{transport_name}}():
         req.return_value = response_value
         response = {{ await_prefix }}client.{{ method_name }}(request)
     {% if "next_page_token" in method_output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
-    {# Cheeser assertion to force code coverage for bad paginated methods #}
+    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2199): The following assert statement is added to force
+     # code coverage for bad paginated methods. Investigate what bad paginated methods are, and follow up on why this assertion is required.
+    #}
 
     assert response.raw_page is response
     {% endif %}
