@@ -16,8 +16,8 @@
 
 import google.auth
 try:
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
     import aiohttp # type: ignore
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
     from google.api_core import rest_streaming_async # type: ignore
 except ImportError as e:  # pragma: NO COVER
     raise ImportError("`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install <library_name>[async_rest]") from e

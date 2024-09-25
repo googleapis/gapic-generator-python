@@ -8,8 +8,8 @@
 
 import google.auth
 try:
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
     import aiohttp # type: ignore
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
     from google.api_core import rest_streaming_async # type: ignore
 {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
 except ImportError as e:  # pragma: NO COVER
