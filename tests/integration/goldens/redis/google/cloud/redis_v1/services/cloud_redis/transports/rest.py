@@ -177,6 +177,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_delete_instance(self, request: cloud_redis.DeleteInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.DeleteInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_instance
 
@@ -193,6 +194,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_export_instance(self, request: cloud_redis.ExportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ExportInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for export_instance
 
@@ -209,6 +211,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_failover_instance(self, request: cloud_redis.FailoverInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.FailoverInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for failover_instance
 
@@ -225,6 +228,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_instance(self, request: cloud_redis.GetInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -241,6 +245,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_instance_auth_string
 
@@ -257,6 +262,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_import_instance(self, request: cloud_redis.ImportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for import_instance
 
@@ -273,6 +279,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_instances(self, request: cloud_redis.ListInstancesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ListInstancesRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_instances
 
@@ -289,6 +296,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_reschedule_maintenance(self, request: cloud_redis.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.RescheduleMaintenanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for reschedule_maintenance
 
@@ -305,6 +313,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_update_instance(self, request: cloud_redis.UpdateInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_instance
 
@@ -321,6 +330,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_upgrade_instance(self, request: cloud_redis.UpgradeInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.UpgradeInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for upgrade_instance
 

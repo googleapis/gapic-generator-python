@@ -259,6 +259,9 @@ def _prep_wrapped_messages(self, client_info):
         ),
         {% endfor %}{# service.methods.values() #}
         {% for method_name in api.mixin_api_methods.keys() %}
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2197): Use `transport_safe_name` similar
+         # to what we do for non-mixin methods above.
+        #}
         self.{{ method_name|snake_case }}: self._wrap_method(
             self.{{ method_name|snake_case }},
             default_timeout=None,
@@ -349,6 +352,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
         it is returned to user code.
         """
         return response
+
     {% endif %}
     {% endif %}{# if (not is_async) or (is_async and not method.lro and not method.extended_lro and not method.paged_result_field) #}
     {% endfor %}
@@ -378,6 +382,10 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
 {% endmacro %}
 
 {% macro generate_mixin_call_method(service, api, name, sig, is_async) %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2198): generate _Mixin classes
+ # and @property methods into separate macros so that _Method and _Mixin classes can be defined all
+ # together and the @property methods for each can be defined after the class definitions.
+#}
 {% set async_prefix = "async " if is_async else "" %}
 {% set async_method_name_prefix = "Async" if is_async else "" %}
 {% set async_suffix = "_async" if is_async else "" %}

@@ -370,7 +370,7 @@
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
 
         # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling
+        # and friendly error handling.
         rpc = self.transport._wrapped_methods[self._client._transport.set_iam_policy]
 
         # Certain fields should be provided within the metadata header;
@@ -604,7 +604,6 @@
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self.transport._wrapped_methods[self._client._transport.get_location]
-        
 
         # Certain fields should be provided within the metadata header;
         # add these here.
