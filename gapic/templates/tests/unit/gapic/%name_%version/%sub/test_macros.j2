@@ -1761,12 +1761,8 @@ def test_{{ method_name }}_rest_no_http_options():
 {% set transport_name = get_transport_name(transport, is_async) %}
 def test_transport_kind_{{ transport_name }}():
     {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     {% endif %}
     transport = {{ get_client(service, is_async) }}.get_transport_class("{{ transport_name }}")(
         credentials={{get_credentials(is_async)}}
@@ -1787,12 +1783,8 @@ def test_transport_kind_{{ transport_name }}():
 {{async_decorator}}
 {{async_prefix}}def test_transport_close_{{transport_name}}():
     {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -1808,12 +1800,8 @@ def test_transport_kind_{{ transport_name }}():
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove / Update this test macro when async rest is GA. #}
 {% macro async_rest_unsupported_params_test(service) %}
 def test_unsupported_parameter_rest_asyncio():
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     options = client_options.ClientOptions(quota_project_id="octopus")
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2137): Remove `type: ignore` once we add a version check for google-api-core. #}
     with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
@@ -1903,12 +1891,8 @@ def test_unsupported_parameter_rest_asyncio():
 {{async_decorator}}
 {{async_prefix}}def test_{{ method_name }}_{{transport_name}}_error():
     {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     {% endif %}
 
     client = {{ get_client(service, is_async) }}(
@@ -1934,12 +1918,8 @@ def test_unsupported_parameter_rest_asyncio():
 {% set transport_name = get_transport_name(transport, is_async) %}
 def test_initialize_client_w_{{transport_name}}():
     {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -1966,12 +1946,8 @@ def test_initialize_client_w_{{transport_name}}():
     raise NotImplementedError("gRPC is currently not supported for this test case.")
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -2016,13 +1992,8 @@ def test_initialize_client_w_{{transport_name}}():
     raise NotImplementedError("gRPC is currently not supported for this test case.")
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
-
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -2086,13 +2057,8 @@ def test_initialize_client_w_{{transport_name}}():
     raise NotImplementedError("gRPC is currently not supported for this test case.")
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
-
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -2314,13 +2280,8 @@ def test_initialize_client_w_{{transport_name}}():
     raise NotImplementedError("gRPC is currently not supported for this test case.")
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
-
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -2422,13 +2383,8 @@ def test_initialize_client_w_{{transport_name}}():
     raise NotImplementedError("gRPC is currently not supported for this test case.")
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
-    if not HAS_GOOGLE_AUTH_AIO:
-        pytest.skip("google-auth >= 2.35.0 is required for async rest transport.")
-    elif not HAS_AIOHTTP_INSTALLED:
-        pytest.skip("aiohttp is required for async rest transport.")
-    elif not HAS_ASYNC_REST_SUPPORT_IN_CORE:
-        pytest.skip("google-api-core >= 2.20.0 is required for async rest transport.")
-
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
     {% endif %}
     transport = transports.{{async_method_prefix}}{{ service.name }}RestTransport(
         credentials={{get_credentials(is_async)}},
