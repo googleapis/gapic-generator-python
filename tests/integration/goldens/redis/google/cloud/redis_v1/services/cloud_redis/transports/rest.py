@@ -368,6 +368,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_locations(
         self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
@@ -388,6 +389,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_cancel_operation(
         self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
@@ -408,6 +410,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_delete_operation(
         self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
@@ -428,6 +431,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_operation(
         self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
@@ -448,6 +452,7 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_operations(
         self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:

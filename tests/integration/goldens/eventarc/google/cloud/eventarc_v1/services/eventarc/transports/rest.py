@@ -551,6 +551,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_locations(
         self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
@@ -571,6 +572,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_iam_policy(
         self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
@@ -591,6 +593,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_set_iam_policy(
         self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
@@ -611,6 +614,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_test_iam_permissions(
         self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
@@ -631,6 +635,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_cancel_operation(
         self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
@@ -651,6 +656,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_delete_operation(
         self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
@@ -671,6 +677,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_get_operation(
         self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
@@ -691,6 +698,7 @@ class EventarcRestInterceptor:
         it is returned to user code.
         """
         return response
+
     def pre_list_operations(
         self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:

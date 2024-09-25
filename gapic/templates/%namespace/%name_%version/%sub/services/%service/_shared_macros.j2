@@ -320,6 +320,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
             {{ async_prefix }}def post_{{ method.name|snake_case }}(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
     {% endif %}
 
     {% endfor %}
@@ -378,6 +379,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
         it is returned to user code.
         """
         return response
+
     {% endfor %}
 {% endmacro %}
 
