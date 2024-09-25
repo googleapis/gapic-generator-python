@@ -1884,11 +1884,8 @@ def test_unsupported_parameter_rest_asyncio():
 {% endfor %}{# for method in service.methods.values() #}
 {% for name, sig in api.mixin_api_signatures.items() %}
 {% if 'rest' in transport %}
-{# TODO: Remove the following condition as we implement async mixins #}
-{% if not is_async %}
 {{ bad_request_mixins_test(service, api, name, sig, transport, is_async) }}
 {{ call_success_mixins_test(service, api, name, sig, transport, is_async) }}
-{% endif %}{# if not is_async #}
 {% endif %}{# if 'rest' in transport #}
 {% endfor %}
 {{ initialize_client_with_transport_test(service, transport, is_async) }}

@@ -228,7 +228,7 @@ def _get_http_options():
 {% endmacro %}
 
 
-{% macro prep_wrapped_messages_async_method(service) %}
+{% macro prep_wrapped_messages_async_method(api, service) %}
 def _prep_wrapped_messages(self, client_info):
     """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
     self._wrapped_methods = {
@@ -258,6 +258,16 @@ def _prep_wrapped_messages(self, client_info):
             client_info=client_info,
         ),
         {% endfor %}{# service.methods.values() #}
+        {% for method_name in api.mixin_api_methods.keys() %}
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2197): Use `transport_safe_name` similar
+         # to what we do for non-mixin methods above.
+        #}
+        self.{{ method_name|snake_case }}: self._wrap_method(
+            self.{{ method_name|snake_case }},
+            default_timeout=None,
+            client_info=client_info,
+        ),
+        {% endfor %}{# method_name in api.mixin_api_methods.keys() #}
     }
 {% endmacro %}
 
@@ -310,6 +320,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
             {{ async_prefix }}def post_{{ method.name|snake_case }}(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
     {% endif %}
 
     {% endfor %}
@@ -342,12 +353,11 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
         it is returned to user code.
         """
         return response
+
     {% endif %}
     {% endif %}{# if (not is_async) or (is_async and not method.lro and not method.extended_lro and not method.paged_result_field) #}
     {% endfor %}
 
-    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2148): Remove the condition below once mixins are supported for async rest transport. #}
-    {% if not is_async %}
     {% for name, signature in api.mixin_api_signatures.items() %}
     {{ async_prefix }}def pre_{{ name|snake_case }}(
         self, request: {{signature.request_type}}, metadata: Sequence[Tuple[str, str]]
@@ -369,11 +379,15 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
         it is returned to user code.
         """
         return response
+
     {% endfor %}
-    {% endif %}
 {% endmacro %}
 
 {% macro generate_mixin_call_method(service, api, name, sig, is_async) %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2198): generate _Mixin classes
+ # and @property methods into separate macros so that _Method and _Mixin classes can be defined all
+ # together and the @property methods for each can be defined after the class definitions.
+#}
 {% set async_prefix = "async " if is_async else "" %}
 {% set async_method_name_prefix = "Async" if is_async else "" %}
 {% set async_suffix = "_async" if is_async else "" %}

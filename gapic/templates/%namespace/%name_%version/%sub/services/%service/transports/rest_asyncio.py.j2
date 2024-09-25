@@ -135,7 +135,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
 
-    {{ shared_macros.prep_wrapped_messages_async_method(service)|indent(4) }}
+    {{ shared_macros.prep_wrapped_messages_async_method(api, service)|indent(4) }}
 
     {{ shared_macros.wrap_async_method_macro()|indent(4) }}
 
@@ -224,6 +224,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {{method.output.ident}}]:
         return self._{{method.name}}(self._session, self._host, self._interceptor)  # type: ignore
 
+    {% endfor %}
+    {% for name, sig in api.mixin_api_signatures.items() %} 
+    {{ shared_macros.generate_mixin_call_method(service, api, name, sig, is_async=True) | indent(4) }}
     {% endfor %}
 
     @property
