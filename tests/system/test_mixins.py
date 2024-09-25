@@ -29,11 +29,13 @@ def test_list_operations(echo):
 
 
 def test_delete_operation(echo):
-    echo.delete_operation({"name": "operations/name"})
+    response = echo.delete_operation({"name": "operations/name"})
+    assert response is None
 
 
 def test_cancel_operation(echo):
-    echo.cancel_operation({"name": "operations/name"})
+    response = echo.cancel_operation({"name": "operations/name"})
+    assert response is None
 
 
 def test_set_iam_policy(echo):
@@ -123,7 +125,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
                 "resource": "users/user",
             }
         )
-        policy.version == 20240920
+        assert policy.version == 20240920
 
     @pytest.mark.asyncio
     async def test_test_iam_permissions_async(async_echo):
