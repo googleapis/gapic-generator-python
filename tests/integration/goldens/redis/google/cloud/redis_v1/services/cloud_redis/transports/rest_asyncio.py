@@ -206,6 +206,23 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
+    async def pre_list_instances(self, request: cloud_redis.ListInstancesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    async def post_list_instances(self, response: cloud_redis.ListInstancesResponse) -> cloud_redis.ListInstancesResponse:
+        """Post-rpc interceptor for list_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+
     async def pre_get_location(
         self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
@@ -736,15 +753,79 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ListInstances")
 
+        @staticmethod
+        async def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = await getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
+
         async def __call__(self,
                     request: cloud_redis.ListInstancesRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
                     ) -> cloud_redis.ListInstancesResponse:
-                raise NotImplementedError(
-                    "Method ListInstances is not available over REST transport"
-                )
+            r"""Call the list instances method over HTTP.
+
+            Args:
+                request (~.cloud_redis.ListInstancesRequest):
+                    The request object. Request for
+                [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
+                retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_redis.ListInstancesResponse:
+                    Response for
+                [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
+
+            """
+
+            http_options = _BaseCloudRedisRestTransport._BaseListInstances._get_http_options()
+            request, metadata = await self._interceptor.pre_list_instances(request, metadata)
+            transcoded_request = _BaseCloudRedisRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
+
+            # Send the request
+            response = await AsyncCloudRedisRestTransport._ListInstances._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                content = await response.read()
+                payload = json.loads(content.decode('utf-8'))
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+
+            # Return the response
+            resp = cloud_redis.ListInstancesResponse()
+            pb_resp = cloud_redis.ListInstancesResponse.pb(resp)
+            content = await response.read()
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            resp = await self._interceptor.post_list_instances(resp)
+            return resp
 
     class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, AsyncCloudRedisRestStub):
         def __hash__(self):

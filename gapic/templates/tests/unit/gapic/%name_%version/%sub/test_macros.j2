@@ -1005,12 +1005,11 @@ def test_{{ method_name }}_raw_page_lro():
 {# TODO(kbandes): remove this if condition when lro and client streaming are supported. #}
 {% if not method.client_streaming %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2170): Remove unit test for long running operation method. #}
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2171): Remove unit test for pager method. #}
 {# NOTE: This guard is added to avoid generating duplicate tests for methods which are tested elsewhere. As we implement each of the api methods
  # in the `macro::call_success_test`, the case will be removed from this condition below.
  # TODO(https://github.com/googleapis/gapic-generator-python/issues/2143): Remove the test `test_{{ method_name }}_rest` from here once the linked issue is resolved.
 #}
-{% if method.lro or method.extended_lro or method.paged_result_field %}
+{% if method.lro or method.extended_lro %}
 @pytest.mark.parametrize("request_type", [
     {{ method.input.ident }},
     dict,
@@ -1848,7 +1847,7 @@ def test_unsupported_parameter_rest_asyncio():
 {% endmacro %}
 
 {# is_rest_unsupported_method renders:
- # 'True' if transport is async REST and method is one of [client_streaming, lro, extended_lro, paged_result_field].
+ # 'True' if transport is async REST and method is one of [client_streaming, lro, extended_lro].
  # 'True' if transport is sync REST and method is a client_streaming method.
  # 'False' otherwise.
 #}
@@ -1856,7 +1855,7 @@ def test_unsupported_parameter_rest_asyncio():
  # There are no plans to add support for client streaming.
 #}
 {% macro is_rest_unsupported_method(method, is_async) %}
-{%- if method.client_streaming or (is_async and (method.lro or method.extended_lro or method.paged_result_field)) -%}
+{%- if method.client_streaming or (is_async and (method.lro or method.extended_lro)) -%}
 {{'True'}}
 {%- else -%}
 {{'False'}}
@@ -2072,11 +2071,10 @@ def test_initialize_client_w_{{transport_name}}():
 #}
 {% set method_output = method.output %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2170): Add unit test for long running operation method. #}
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2171): Add unit test for pager method. #}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2143): Update the guard below as we add support for each method, and keep it in sync with the guard in
  # `rest_required_tests`, which should be the exact opposite. Remove it once we have all the methods supported in async rest transport that are supported in sync rest transport.
  #}
-{% if not (method.lro or method.extended_lro or method.paged_result_field)%}
+{% if not (method.lro or method.extended_lro)%}
 {{ async_decorator }}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
@@ -2242,6 +2240,13 @@ def test_initialize_client_w_{{transport_name}}():
         {% endif %}{# method.server_streaming #}
         req.return_value = response_value
         response = {{ await_prefix }}client.{{ method_name }}(request)
+    {% if "next_page_token" in method_output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
+    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2199): The following assert statement is added to force
+     # code coverage for bad paginated methods. Investigate what bad paginated methods are, and follow up on why this assertion is required.
+    #}
+
+    assert response.raw_page is response
+    {% endif %}
     
     {% if method.server_streaming %}
     {% if is_async %}
@@ -2257,7 +2262,11 @@ def test_initialize_client_w_{{transport_name}}():
     {% if method.void %}
     assert response is None
     {% else %}
+    {% if is_async %}
+    assert isinstance(response, {{ method.client_output_async.ident }})
+    {% else %}
     assert isinstance(response, {{ method.client_output.ident }})
+    {% endif %}
     {% for field in method_output.fields.values() | rejectattr('message') %}
     {% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
