@@ -205,6 +205,7 @@ class AsyncCloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+
     async def pre_list_instances(self, request: cloud_redis.ListInstancesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ListInstancesRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_instances
 
