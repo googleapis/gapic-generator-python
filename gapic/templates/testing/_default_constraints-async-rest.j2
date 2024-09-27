@@ -1,7 +1,14 @@
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% if rest_async_io_enabled %}
 {% from '_pypi_packages.j2' import pypi_packages %}
 # This constraints file is required for unit tests.
 # List all library dependencies and extras in this file.
 google-api-core
+google-auth
+# from google-auth[aiohttp]
+aiohttp
+requests
 proto-plus
 protobuf
 {% for package_tuple, package_info in pypi_packages.items() %}
@@ -12,3 +19,4 @@ protobuf
 {% endif %}
 {% endif %}
 {% endfor %}
+{% endif %}{# if rest_async_io_enabled #}
