@@ -304,7 +304,9 @@ def showcase_library(
             f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
             # Install the library with a constraints file.
-            if session.python != "3.7":
+            if session.python == "3.7":
+                session.install("-e", tmp_dir, "-r", constraints_path)
+            else:
                 session.install("-e", tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""), "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.

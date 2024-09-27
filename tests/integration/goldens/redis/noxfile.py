@@ -65,7 +65,9 @@ def unit(session, protobuf_implementation):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
-    if session.python != "3.7":
+    if session.python == "3.7":
+        session.install("-e", ".", "-c", f"testing/constraints-{session.python}.txt")
+    else:
         session.install("-e", ".[async_rest]", "-c", f"testing/constraints-{session.python}.txt")
 
     # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
