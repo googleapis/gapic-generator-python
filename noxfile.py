@@ -300,9 +300,8 @@ def showcase_library(
             # supported version of a dependency.
             # This is needed to recreate the issue reported in
             # https://github.com/googleapis/google-cloud-python/issues/12254
-            constraints_type = "async-rest-" if rest_async_io_enabled else ""
             constraints_path = str(
-            f"{tmp_dir}/testing/constraints-{constraints_type}{session.python}.txt"
+            f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
             # Install the library with a constraints file.
             session.install("-e", tmp_dir, "-r", constraints_path)

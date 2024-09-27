@@ -1,8 +1,0 @@
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
-{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
-{% if rest_async_io_enabled %}
-# -*- coding: utf-8 -*-
-{% block constraints %}
-{% include "testing/_default_constraints-async-rest.j2" %}
-{% endblock %}
-{% endif %}{# if rest_async_io_enabled #}
