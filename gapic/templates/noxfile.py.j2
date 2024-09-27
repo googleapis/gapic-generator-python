@@ -57,7 +57,8 @@ def unit(session, protobuf_implementation):
 
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
     {% if rest_async_io_enabled %}
-    session.install("-e", ".[async_rest]", "-c", f"testing/constraints-{session.python}.txt")
+    if session.python != "3.7":
+        session.install("-e", ".[async_rest]", "-c", f"testing/constraints-{session.python}.txt")
     {% else %}
     session.install('-e', '.', "-c", f"testing/constraints-{session.python}.txt")
     {% endif %}

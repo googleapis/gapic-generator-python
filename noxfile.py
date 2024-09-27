@@ -208,7 +208,7 @@ def showcase_library(
     session.log("-" * 70)
 
     # Install gapic-generator-python
-    session.install("-e", "." + ("[async_rest]" if rest_async_io_enabled else ""))
+    session.install("-e", ".")
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
@@ -304,7 +304,8 @@ def showcase_library(
             f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
             # Install the library with a constraints file.
-            session.install("-e", tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""), "-r", constraints_path)
+            if session.python != "3.7":
+                session.install("-e", tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""), "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
