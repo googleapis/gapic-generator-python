@@ -1,5 +1,3 @@
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
-{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 {% extends "_base.py.j2" %}
 
 {% block content %}
@@ -56,14 +54,7 @@ def unit(session, protobuf_implementation):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
-    {% if rest_async_io_enabled %}
-    if session.python == "3.7":
-        session.install("-e", ".", "-c", f"testing/constraints-{session.python}.txt")
-    else:
-        session.install("-e", ".[async_rest]", "-c", f"testing/constraints-{session.python}.txt")
-    {% else %}
     session.install('-e', '.', "-c", f"testing/constraints-{session.python}.txt")
-    {% endif %}
 
     # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
     # The 'cpp' implementation requires Protobuf<4.
@@ -83,6 +74,7 @@ def unit(session, protobuf_implementation):
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
     )
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2201) Add a `unit_rest_async` nox session to run tests with [async_rest] extra installed. #}
 
 @nox.session(python=ALL_PYTHON[-1])
 @nox.parametrize(

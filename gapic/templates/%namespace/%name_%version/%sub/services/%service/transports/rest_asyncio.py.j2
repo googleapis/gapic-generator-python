@@ -12,6 +12,7 @@ try:
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
     from google.api_core import rest_streaming_async # type: ignore
 {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2200): Add coverage for ImportError. #}
 except ImportError as e:  # pragma: NO COVER
     raise ImportError("`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install {{ api.naming.warehouse_package_name }}[async_rest]`") from e
 
