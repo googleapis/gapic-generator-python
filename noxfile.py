@@ -304,7 +304,16 @@ def showcase_library(
             f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
             # Install the library with a constraints file.
-            session.install("-e", tmp_dir, "-r", constraints_path)
+            if session.python == "3.7":
+                session.install("-e", tmp_dir, "-r", constraints_path)
+                if rest_async_io_enabled:
+                    # NOTE: We re-install `google-api-core` and `google-auth` to override the respective
+                    # versions for each specified in constraints-3.7.txt. This is needed because async REST
+                    # is not supported with the minimum version of `google-api-core` and `google-auth`.
+                    session.install('--no-cache-dir', '--force-reinstall', "google-api-core==2.20.0")
+                    session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0")
+            else:
+                session.install("-e", tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""), "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
@@ -363,8 +372,6 @@ def showcase_w_rest_async(
             ignore_path = test_directory / ignore_file
             pytest_command.extend(["--ignore", str(ignore_path)])
 
-        # Note: google-auth is re-installed here with aiohttp option to override the version installed in constraints.
-        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]")
         session.run(
             *pytest_command,
             env=env,
@@ -485,8 +492,6 @@ def showcase_unit_w_rest_async(
     """Run the generated unit tests with async rest transport against the Showcase library."""
     with showcase_library(session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True) as lib:
         session.chdir(lib)
-        # Note: google-auth is re-installed here with aiohttp option to override the version installed in constraints.
-        session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]")
         run_showcase_unit_tests(session, rest_async_io_enabled=True)
 
 

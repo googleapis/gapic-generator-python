@@ -33,10 +33,12 @@ from proto.marshal.rules import wrappers
 {% if rest_async_io_enabled %}
 try:
     import aiohttp  # type: ignore
-    HAS_AIOHTTP_INSTALLED = True
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
+    from google.api_core import rest_streaming_async
+    HAS_ASYNC_REST_EXTRA = True
 {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
 except ImportError: # pragma: NO COVER
-    HAS_AIOHTTP_INSTALLED = False
+    HAS_ASYNC_REST_EXTRA = False
 {% endif %}{# if rest_async_io_enabled #}
 from requests import Response
 from requests import Request, PreparedRequest
@@ -46,24 +48,10 @@ from google.protobuf import json_format
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
-    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
-    {% if rest_async_io_enabled %}
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
-    {% endif %}
     HAS_GOOGLE_AUTH_AIO = True
 {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
-{% if rest_async_io_enabled %}
-
-try:
-    from google.api_core import rest_streaming_async
-    HAS_ASYNC_REST_SUPPORT_IN_CORE = True
-{# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
-except ImportError: # pragma: NO COVER
-    HAS_ASYNC_REST_SUPPORT_IN_CORE = False
-{% endif %}
 
 {# Import the service itself as well as every proto module that it imports. #}
 {% filter sort_lines %}

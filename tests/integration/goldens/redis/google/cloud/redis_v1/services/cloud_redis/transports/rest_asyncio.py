@@ -18,8 +18,9 @@ import google.auth
 try:
     import aiohttp # type: ignore
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
+    from google.api_core import rest_streaming_async # type: ignore
 except ImportError as e:  # pragma: NO COVER
-    raise ImportError("async rest transport requires google-auth >= 2.35.0 with aiohttp extra. Install google-auth with the aiohttp extra using `pip install google-auth[aiohttp]==2.35.0`.") from e
+    raise ImportError("`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install google-cloud-redis[async_rest]`") from e
 
 from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
@@ -29,11 +30,6 @@ from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
 
-try:
-    from google.api_core import rest_streaming_async # type: ignore
-    HAS_ASYNC_REST_SUPPORT_IN_CORE = True
-except ImportError as e:  # pragma: NO COVER
-    raise ImportError("async rest transport requires google-api-core >= 2.20.0. Install google-api-core using `pip install google-api-core==2.35.0`.") from e
 
 from google.protobuf import json_format
 from google.api_core import operations_v1
