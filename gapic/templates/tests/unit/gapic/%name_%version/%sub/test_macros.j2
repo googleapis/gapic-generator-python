@@ -1762,7 +1762,7 @@ def test_{{ method_name }}_rest_no_http_options():
 def test_transport_kind_{{ transport_name }}():
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     {% endif %}
     transport = {{ get_client(service, is_async) }}.get_transport_class("{{ transport_name }}")(
         credentials={{get_credentials(is_async)}}
@@ -1784,7 +1784,7 @@ def test_transport_kind_{{ transport_name }}():
 {{async_prefix}}def test_transport_close_{{transport_name}}():
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -1801,7 +1801,7 @@ def test_transport_kind_{{ transport_name }}():
 {% macro async_rest_unsupported_params_test(service) %}
 def test_unsupported_parameter_rest_asyncio():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     options = client_options.ClientOptions(quota_project_id="octopus")
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2137): Remove `type: ignore` once we add a version check for google-api-core. #}
     with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
@@ -1892,7 +1892,7 @@ def test_unsupported_parameter_rest_asyncio():
 {{async_prefix}}def test_{{ method_name }}_{{transport_name}}_error():
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     {% endif %}
 
     client = {{ get_client(service, is_async) }}(
@@ -1919,7 +1919,7 @@ def test_unsupported_parameter_rest_asyncio():
 def test_initialize_client_w_{{transport_name}}():
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -1947,7 +1947,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -1993,7 +1993,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -2058,7 +2058,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -2281,7 +2281,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     {% endif %}
     client = {{ get_client(service, is_async) }}(
         credentials={{get_credentials(is_async)}},
@@ -2384,7 +2384,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% else %}{# 'rest' in transport #}
     {% if transport_name == 'rest_asyncio' %}
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     {% endif %}
     transport = transports.{{async_method_prefix}}{{ service.name }}RestTransport(
         credentials={{get_credentials(is_async)}},

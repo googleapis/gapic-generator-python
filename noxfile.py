@@ -310,8 +310,8 @@ def showcase_library(
                     # NOTE: We re-install `google-api-core` and `google-auth` to override the respective
                     # versions for each specified in constraints-3.7.txt. This is needed because async REST
                     # is not supported with the minimum version of `google-api-core` and `google-auth`.
-                    session.install('--no-cache-dir', '--force-reinstall', "google-api-core")
-                    session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]")
+                    session.install('--no-cache-dir', '--force-reinstall', "google-api-core==2.20.0")
+                    session.install('--no-cache-dir', '--force-reinstall', "google-auth[aiohttp]==2.35.0")
             else:
                 session.install("-e", tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""), "-r", constraints_path)
         else:

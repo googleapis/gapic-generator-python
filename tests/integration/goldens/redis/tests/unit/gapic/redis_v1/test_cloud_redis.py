@@ -8777,7 +8777,7 @@ def test_initialize_client_w_rest():
 
 def test_transport_kind_rest_asyncio():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     transport = CloudRedisAsyncClient.get_transport_class("rest_asyncio")(
         credentials=async_anonymous_credentials()
     )
@@ -8787,7 +8787,7 @@ def test_transport_kind_rest_asyncio():
 @pytest.mark.asyncio
 async def test_list_instances_rest_asyncio_bad_request(request_type=cloud_redis.ListInstancesRequest):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -8814,7 +8814,7 @@ async def test_list_instances_rest_asyncio_bad_request(request_type=cloud_redis.
 ])
 async def test_list_instances_rest_asyncio_call_success(request_type):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -8853,7 +8853,7 @@ async def test_list_instances_rest_asyncio_call_success(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 async def test_list_instances_rest_asyncio_interceptors(null_interceptor):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     transport = transports.AsyncCloudRedisRestTransport(
         credentials=async_anonymous_credentials(),
         interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
@@ -8895,7 +8895,7 @@ async def test_list_instances_rest_asyncio_interceptors(null_interceptor):
 @pytest.mark.asyncio
 async def test_get_instance_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceRequest):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -8922,7 +8922,7 @@ async def test_get_instance_rest_asyncio_bad_request(request_type=cloud_redis.Ge
 ])
 async def test_get_instance_rest_asyncio_call_success(request_type):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -9011,7 +9011,7 @@ async def test_get_instance_rest_asyncio_call_success(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     transport = transports.AsyncCloudRedisRestTransport(
         credentials=async_anonymous_credentials(),
         interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
@@ -9053,7 +9053,7 @@ async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -9080,7 +9080,7 @@ async def test_get_instance_auth_string_rest_asyncio_bad_request(request_type=cl
 ])
 async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -9117,7 +9117,7 @@ async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 async def test_get_instance_auth_string_rest_asyncio_interceptors(null_interceptor):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     transport = transports.AsyncCloudRedisRestTransport(
         credentials=async_anonymous_credentials(),
         interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
@@ -9159,7 +9159,7 @@ async def test_get_instance_auth_string_rest_asyncio_interceptors(null_intercept
 @pytest.mark.asyncio
 async def test_create_instance_rest_asyncio_error():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9177,7 +9177,7 @@ async def test_create_instance_rest_asyncio_error():
 @pytest.mark.asyncio
 async def test_update_instance_rest_asyncio_error():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9195,7 +9195,7 @@ async def test_update_instance_rest_asyncio_error():
 @pytest.mark.asyncio
 async def test_upgrade_instance_rest_asyncio_error():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9213,7 +9213,7 @@ async def test_upgrade_instance_rest_asyncio_error():
 @pytest.mark.asyncio
 async def test_import_instance_rest_asyncio_error():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9231,7 +9231,7 @@ async def test_import_instance_rest_asyncio_error():
 @pytest.mark.asyncio
 async def test_export_instance_rest_asyncio_error():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9249,7 +9249,7 @@ async def test_export_instance_rest_asyncio_error():
 @pytest.mark.asyncio
 async def test_failover_instance_rest_asyncio_error():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9267,7 +9267,7 @@ async def test_failover_instance_rest_asyncio_error():
 @pytest.mark.asyncio
 async def test_delete_instance_rest_asyncio_error():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9285,7 +9285,7 @@ async def test_delete_instance_rest_asyncio_error():
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_rest_asyncio_error():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
 
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9303,7 +9303,7 @@ async def test_reschedule_maintenance_rest_asyncio_error():
 @pytest.mark.asyncio
 async def test_get_location_rest_asyncio_bad_request(request_type=locations_pb2.GetLocationRequest):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9328,7 +9328,7 @@ async def test_get_location_rest_asyncio_bad_request(request_type=locations_pb2.
 ])
 async def test_get_location_rest_asyncio(request_type):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9357,7 +9357,7 @@ async def test_get_location_rest_asyncio(request_type):
 @pytest.mark.asyncio
 async def test_list_locations_rest_asyncio_bad_request(request_type=locations_pb2.ListLocationsRequest):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9382,7 +9382,7 @@ async def test_list_locations_rest_asyncio_bad_request(request_type=locations_pb
 ])
 async def test_list_locations_rest_asyncio(request_type):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9411,7 +9411,7 @@ async def test_list_locations_rest_asyncio(request_type):
 @pytest.mark.asyncio
 async def test_cancel_operation_rest_asyncio_bad_request(request_type=operations_pb2.CancelOperationRequest):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9436,7 +9436,7 @@ async def test_cancel_operation_rest_asyncio_bad_request(request_type=operations
 ])
 async def test_cancel_operation_rest_asyncio(request_type):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9465,7 +9465,7 @@ async def test_cancel_operation_rest_asyncio(request_type):
 @pytest.mark.asyncio
 async def test_delete_operation_rest_asyncio_bad_request(request_type=operations_pb2.DeleteOperationRequest):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9490,7 +9490,7 @@ async def test_delete_operation_rest_asyncio_bad_request(request_type=operations
 ])
 async def test_delete_operation_rest_asyncio(request_type):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9519,7 +9519,7 @@ async def test_delete_operation_rest_asyncio(request_type):
 @pytest.mark.asyncio
 async def test_get_operation_rest_asyncio_bad_request(request_type=operations_pb2.GetOperationRequest):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9544,7 +9544,7 @@ async def test_get_operation_rest_asyncio_bad_request(request_type=operations_pb
 ])
 async def test_get_operation_rest_asyncio(request_type):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9573,7 +9573,7 @@ async def test_get_operation_rest_asyncio(request_type):
 @pytest.mark.asyncio
 async def test_list_operations_rest_asyncio_bad_request(request_type=operations_pb2.ListOperationsRequest):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9598,7 +9598,7 @@ async def test_list_operations_rest_asyncio_bad_request(request_type=operations_
 ])
 async def test_list_operations_rest_asyncio(request_type):
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -9626,7 +9626,7 @@ async def test_list_operations_rest_asyncio(request_type):
 
 def test_initialize_client_w_rest_asyncio():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
@@ -9636,7 +9636,7 @@ def test_initialize_client_w_rest_asyncio():
 
 def test_unsupported_parameter_rest_asyncio():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     options = client_options.ClientOptions(quota_project_id="octopus")
     with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
         client = CloudRedisAsyncClient(
@@ -11068,7 +11068,7 @@ def test_transport_close_rest():
 @pytest.mark.asyncio
 async def test_transport_close_rest_asyncio():
     if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with `async_rest` extra to use this feature.")
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio"
