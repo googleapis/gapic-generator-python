@@ -1,0 +1,2 @@
+recursive-include google/showcase *.py
+recursive-include google/showcase_v1beta1 *.py
