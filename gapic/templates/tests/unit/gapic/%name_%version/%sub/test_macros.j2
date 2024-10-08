@@ -1579,7 +1579,7 @@ def test_{{ service.name|snake_case }}_{{ transport_name }}_lro_client():
     )
     transport = client.transport
 
-    # Ensure that we have a api-core operations client.
+    # Ensure that we have an api-core operations client.
     assert isinstance(
         transport.operations_client,
         {% if is_async %}operations_v1.AsyncOperationsRestClient{% else %}operations_v1.AbstractOperationsClient{% endif %},
@@ -1654,12 +1654,9 @@ def test_unsupported_parameter_rest_asyncio():
 {% endmacro %}
 
 {# is_rest_unsupported_method renders:
- # 'True' if transport is async REST and method is one of [client_streaming].
- # 'True' if transport is sync REST and method is a client_streaming method.
+ # 'True' if transport is REST (sync or async) and method is a client_streaming method.
  # 'False' otherwise.
-#}
-{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2152): Update this method as we add support for methods in async REST.
- # There are no plans to add support for client streaming.
+ # NOTE: There are no plans to add support for client streaming.
 #}
 {% macro is_rest_unsupported_method(method, is_async) %}
 {%- if method.client_streaming -%}
