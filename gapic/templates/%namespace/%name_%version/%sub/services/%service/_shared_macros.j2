@@ -331,7 +331,6 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
     """
     {% for method in service.methods.values()|sort(attribute="name") if not method.client_streaming and method.http_options %}
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2147): Remove the condition below once async rest transport supports the guarded methods. #}
-    {% if (not is_async) or (is_async and not method.lro and not method.extended_lro) %}
     {{ async_prefix }}def pre_{{ method.name|snake_case }}(self, request: {{method.input.ident}}, metadata: Sequence[Tuple[str, str]]) -> Tuple[{{method.input.ident}}, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for {{ method.name|snake_case }}
 
@@ -355,7 +354,6 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
         return response
 
     {% endif %}
-    {% endif %}{# if (not is_async) or (is_async and not method.lro and not method.extended_lro) #}
     {% endfor %}
 
     {% for name, signature in api.mixin_api_signatures.items() %}

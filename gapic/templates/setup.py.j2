@@ -51,7 +51,8 @@ dependencies = [
 extras = {
 {% if rest_async_io_enabled %}
     "async_rest": [
-        "google-api-core[grpc] >= 2.20.0, < 3.0.0dev",
+        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2208): Update the minimum supported version of api-core to `2.21.0` when released. #}
+        "google-api-core[grpc] >= 2.21.0rc0, < 3.0.0dev",
         "google-auth[aiohttp] >= 2.35.0, <3.0.0dev"
     ],
 {% endif %}
