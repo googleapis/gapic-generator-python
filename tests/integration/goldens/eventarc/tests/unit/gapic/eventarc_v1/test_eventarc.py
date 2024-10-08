@@ -14390,7 +14390,7 @@ def test_eventarc_rest_lro_client():
     )
     transport = client.transport
 
-    # Ensure that we have a api-core operations client.
+    # Ensure that we have an api-core operations client.
     assert isinstance(
         transport.operations_client,
 operations_v1.AbstractOperationsClient,
