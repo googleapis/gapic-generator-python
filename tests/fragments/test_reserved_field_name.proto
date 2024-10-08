@@ -34,6 +34,7 @@ message MethodRequest {
   string any = 4;
   string license = 5;
   string type = 6;
+  string self = 7;
 }
 
 message MethodResponse {
