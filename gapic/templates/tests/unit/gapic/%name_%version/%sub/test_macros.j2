@@ -2193,7 +2193,7 @@ def test_initialize_client_w_{{transport_name}}():
 {# Any value that is part of the HTTP/1.1 URI should be sent as #}
 {# a field header. Set these to a non-empty value. #}
 {% for routing_param in method.routing_rule.routing_parameters %}
-{{ method_call_test_generic("routing_parameters_request_" + loop.index|string, method, service, api, transport, request_dict=routing_param.sample_request,is_async=is_async, routing_param=routing_param) }}
+{{ method_call_test_generic("routing_parameters_request_" + loop.index|string, method, service, api, transport, request_dict=routing_param.sample_request, is_async=is_async, routing_param=routing_param) }}
 {% endfor %}{# routing_param in method.routing_rule.routing_parameters #}
 {% endif %}{# method.explicit_routing #}
 {% endfor %}{# method in service.methods.values() #}
