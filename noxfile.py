@@ -167,6 +167,9 @@ def fragment(session, use_ads_templates=False):
     else:
         tester = FragTester(session, use_ads_templates)
         for frag in frag_files:
+            # if you run a fragment test, you need to restore
+            # the dependencies for the generator.
+            session.install("-e", ".", "--ignore-installed")
             session.log(tester(frag))
 
 
