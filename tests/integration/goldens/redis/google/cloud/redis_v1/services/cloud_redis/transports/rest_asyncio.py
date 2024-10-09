@@ -1585,7 +1585,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             rest_transport = operations_v1.AsyncOperationsRestTransport(  # type: ignore
                     host=self._host,
                     # use the credentials which are saved
-                    credentials=self._credentials,
+                    credentials=self._credentials,  # type: ignore
                     http_options=http_options,
                     path_prefix="v1"
             )
