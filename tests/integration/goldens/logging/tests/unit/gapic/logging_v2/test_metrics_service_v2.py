@@ -2710,8 +2710,6 @@ def test_list_log_metrics_empty_call_grpc():
         call.return_value = logging_metrics.ListLogMetricsResponse()
         client.list_log_metrics(request=None)
 
-        client.list_log_metrics(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2733,8 +2731,6 @@ def test_get_log_metric_empty_call_grpc():
             type(client.transport.get_log_metric),
             '__call__') as call:
         call.return_value = logging_metrics.LogMetric()
-        client.get_log_metric(request=None)
-
         client.get_log_metric(request=None)
 
         # Establish that the underlying stub method was called.
@@ -2760,8 +2756,6 @@ def test_create_log_metric_empty_call_grpc():
         call.return_value = logging_metrics.LogMetric()
         client.create_log_metric(request=None)
 
-        client.create_log_metric(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2785,8 +2779,6 @@ def test_update_log_metric_empty_call_grpc():
         call.return_value = logging_metrics.LogMetric()
         client.update_log_metric(request=None)
 
-        client.update_log_metric(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2808,8 +2800,6 @@ def test_delete_log_metric_empty_call_grpc():
             type(client.transport.delete_log_metric),
             '__call__') as call:
         call.return_value = None
-        client.delete_log_metric(request=None)
-
         client.delete_log_metric(request=None)
 
         # Establish that the underlying stub method was called.
@@ -2854,8 +2844,6 @@ async def test_list_log_metrics_empty_call_grpc_asyncio():
         ))
         await client.list_log_metrics(request=None)
 
-        await client.list_log_metrics(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2887,8 +2875,6 @@ async def test_get_log_metric_empty_call_grpc_asyncio():
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
-        await client.get_log_metric(request=None)
-
         await client.get_log_metric(request=None)
 
         # Establish that the underlying stub method was called.
@@ -2924,8 +2910,6 @@ async def test_create_log_metric_empty_call_grpc_asyncio():
         ))
         await client.create_log_metric(request=None)
 
-        await client.create_log_metric(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2959,8 +2943,6 @@ async def test_update_log_metric_empty_call_grpc_asyncio():
         ))
         await client.update_log_metric(request=None)
 
-        await client.update_log_metric(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2984,8 +2966,6 @@ async def test_delete_log_metric_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_log_metric(request=None)
-
         await client.delete_log_metric(request=None)
 
         # Establish that the underlying stub method was called.

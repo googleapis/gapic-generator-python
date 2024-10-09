@@ -1504,7 +1504,6 @@ def test_{{ method_name }}_rest_no_http_options():
             {% endfor %}
         ))
         {% endif %}{# method.void #}
-        await client.{{ method_name }}(request={{ request_dict }})
         {% else %}{# if not is_async #}
         {% if method.void %}
         call.return_value = None
@@ -1515,10 +1514,8 @@ def test_{{ method_name }}_rest_no_http_options():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
-        client.{{ method_name }}(request={{ request_dict }})
         {% endif %}{# is_async #}
     {% endif %}{# if 'rest' not in transport #}
-
         {% if is_async %}
         await client.{{ method_name }}(request={{ request_dict }})
         {% else %}{# is_async #}

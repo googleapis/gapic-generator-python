@@ -2923,8 +2923,6 @@ def test_delete_log_empty_call_grpc():
         call.return_value = None
         client.delete_log(request=None)
 
-        client.delete_log(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2946,8 +2944,6 @@ def test_write_log_entries_empty_call_grpc():
             type(client.transport.write_log_entries),
             '__call__') as call:
         call.return_value = logging.WriteLogEntriesResponse()
-        client.write_log_entries(request=None)
-
         client.write_log_entries(request=None)
 
         # Establish that the underlying stub method was called.
@@ -2973,8 +2969,6 @@ def test_list_log_entries_empty_call_grpc():
         call.return_value = logging.ListLogEntriesResponse()
         client.list_log_entries(request=None)
 
-        client.list_log_entries(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2998,8 +2992,6 @@ def test_list_monitored_resource_descriptors_empty_call_grpc():
         call.return_value = logging.ListMonitoredResourceDescriptorsResponse()
         client.list_monitored_resource_descriptors(request=None)
 
-        client.list_monitored_resource_descriptors(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3021,8 +3013,6 @@ def test_list_logs_empty_call_grpc():
             type(client.transport.list_logs),
             '__call__') as call:
         call.return_value = logging.ListLogsResponse()
-        client.list_logs(request=None)
-
         client.list_logs(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3065,8 +3055,6 @@ async def test_delete_log_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_log(request=None)
 
-        await client.delete_log(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3091,8 +3079,6 @@ async def test_write_log_entries_empty_call_grpc_asyncio():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging.WriteLogEntriesResponse(
         ))
-        await client.write_log_entries(request=None)
-
         await client.write_log_entries(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3122,8 +3108,6 @@ async def test_list_log_entries_empty_call_grpc_asyncio():
         ))
         await client.list_log_entries(request=None)
 
-        await client.list_log_entries(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3149,8 +3133,6 @@ async def test_list_monitored_resource_descriptors_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging.ListMonitoredResourceDescriptorsResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.list_monitored_resource_descriptors(request=None)
-
         await client.list_monitored_resource_descriptors(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3179,8 +3161,6 @@ async def test_list_logs_empty_call_grpc_asyncio():
             log_names=['log_names_value'],
             next_page_token='next_page_token_value',
         ))
-        await client.list_logs(request=None)
-
         await client.list_logs(request=None)
 
         # Establish that the underlying stub method was called.

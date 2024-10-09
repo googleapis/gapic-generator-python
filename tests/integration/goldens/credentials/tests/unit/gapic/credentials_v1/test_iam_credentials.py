@@ -2935,8 +2935,6 @@ def test_generate_access_token_empty_call_grpc():
         call.return_value = common.GenerateAccessTokenResponse()
         client.generate_access_token(request=None)
 
-        client.generate_access_token(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2958,8 +2956,6 @@ def test_generate_id_token_empty_call_grpc():
             type(client.transport.generate_id_token),
             '__call__') as call:
         call.return_value = common.GenerateIdTokenResponse()
-        client.generate_id_token(request=None)
-
         client.generate_id_token(request=None)
 
         # Establish that the underlying stub method was called.
@@ -2985,8 +2981,6 @@ def test_sign_blob_empty_call_grpc():
         call.return_value = common.SignBlobResponse()
         client.sign_blob(request=None)
 
-        client.sign_blob(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3008,8 +3002,6 @@ def test_sign_jwt_empty_call_grpc():
             type(client.transport.sign_jwt),
             '__call__') as call:
         call.return_value = common.SignJwtResponse()
-        client.sign_jwt(request=None)
-
         client.sign_jwt(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3054,8 +3046,6 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
         ))
         await client.generate_access_token(request=None)
 
-        await client.generate_access_token(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3081,8 +3071,6 @@ async def test_generate_id_token_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
             token='token_value',
         ))
-        await client.generate_id_token(request=None)
-
         await client.generate_id_token(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3113,8 +3101,6 @@ async def test_sign_blob_empty_call_grpc_asyncio():
         ))
         await client.sign_blob(request=None)
 
-        await client.sign_blob(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3141,8 +3127,6 @@ async def test_sign_jwt_empty_call_grpc_asyncio():
             key_id='key_id_value',
             signed_jwt='signed_jwt_value',
         ))
-        await client.sign_jwt(request=None)
-
         await client.sign_jwt(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3577,8 +3561,8 @@ def test_generate_access_token_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.generate_access_token), '__call__') as call:
-
+            type(client.transport.generate_access_token),
+            '__call__') as call:
         client.generate_access_token(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3599,8 +3583,8 @@ def test_generate_id_token_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.generate_id_token), '__call__') as call:
-
+            type(client.transport.generate_id_token),
+            '__call__') as call:
         client.generate_id_token(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3621,8 +3605,8 @@ def test_sign_blob_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.sign_blob), '__call__') as call:
-
+            type(client.transport.sign_blob),
+            '__call__') as call:
         client.sign_blob(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3643,8 +3627,8 @@ def test_sign_jwt_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.sign_jwt), '__call__') as call:
-
+            type(client.transport.sign_jwt),
+            '__call__') as call:
         client.sign_jwt(request=None)
 
         # Establish that the underlying stub method was called.

@@ -12981,8 +12981,6 @@ def test_export_assets_empty_call_grpc():
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.export_assets(request=None)
 
-        client.export_assets(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13004,8 +13002,6 @@ def test_list_assets_empty_call_grpc():
             type(client.transport.list_assets),
             '__call__') as call:
         call.return_value = asset_service.ListAssetsResponse()
-        client.list_assets(request=None)
-
         client.list_assets(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13031,8 +13027,6 @@ def test_batch_get_assets_history_empty_call_grpc():
         call.return_value = asset_service.BatchGetAssetsHistoryResponse()
         client.batch_get_assets_history(request=None)
 
-        client.batch_get_assets_history(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13054,8 +13048,6 @@ def test_create_feed_empty_call_grpc():
             type(client.transport.create_feed),
             '__call__') as call:
         call.return_value = asset_service.Feed()
-        client.create_feed(request=None)
-
         client.create_feed(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13081,8 +13073,6 @@ def test_get_feed_empty_call_grpc():
         call.return_value = asset_service.Feed()
         client.get_feed(request=None)
 
-        client.get_feed(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13104,8 +13094,6 @@ def test_list_feeds_empty_call_grpc():
             type(client.transport.list_feeds),
             '__call__') as call:
         call.return_value = asset_service.ListFeedsResponse()
-        client.list_feeds(request=None)
-
         client.list_feeds(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13131,8 +13119,6 @@ def test_update_feed_empty_call_grpc():
         call.return_value = asset_service.Feed()
         client.update_feed(request=None)
 
-        client.update_feed(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13154,8 +13140,6 @@ def test_delete_feed_empty_call_grpc():
             type(client.transport.delete_feed),
             '__call__') as call:
         call.return_value = None
-        client.delete_feed(request=None)
-
         client.delete_feed(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13181,8 +13165,6 @@ def test_search_all_resources_empty_call_grpc():
         call.return_value = asset_service.SearchAllResourcesResponse()
         client.search_all_resources(request=None)
 
-        client.search_all_resources(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13204,8 +13186,6 @@ def test_search_all_iam_policies_empty_call_grpc():
             type(client.transport.search_all_iam_policies),
             '__call__') as call:
         call.return_value = asset_service.SearchAllIamPoliciesResponse()
-        client.search_all_iam_policies(request=None)
-
         client.search_all_iam_policies(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13231,8 +13211,6 @@ def test_analyze_iam_policy_empty_call_grpc():
         call.return_value = asset_service.AnalyzeIamPolicyResponse()
         client.analyze_iam_policy(request=None)
 
-        client.analyze_iam_policy(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13254,8 +13232,6 @@ def test_analyze_iam_policy_longrunning_empty_call_grpc():
             type(client.transport.analyze_iam_policy_longrunning),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
-        client.analyze_iam_policy_longrunning(request=None)
-
         client.analyze_iam_policy_longrunning(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13281,8 +13257,6 @@ def test_analyze_move_empty_call_grpc():
         call.return_value = asset_service.AnalyzeMoveResponse()
         client.analyze_move(request=None)
 
-        client.analyze_move(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13304,8 +13278,6 @@ def test_query_assets_empty_call_grpc():
             type(client.transport.query_assets),
             '__call__') as call:
         call.return_value = asset_service.QueryAssetsResponse()
-        client.query_assets(request=None)
-
         client.query_assets(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13331,8 +13303,6 @@ def test_create_saved_query_empty_call_grpc():
         call.return_value = asset_service.SavedQuery()
         client.create_saved_query(request=None)
 
-        client.create_saved_query(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13354,8 +13324,6 @@ def test_get_saved_query_empty_call_grpc():
             type(client.transport.get_saved_query),
             '__call__') as call:
         call.return_value = asset_service.SavedQuery()
-        client.get_saved_query(request=None)
-
         client.get_saved_query(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13381,8 +13349,6 @@ def test_list_saved_queries_empty_call_grpc():
         call.return_value = asset_service.ListSavedQueriesResponse()
         client.list_saved_queries(request=None)
 
-        client.list_saved_queries(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13404,8 +13370,6 @@ def test_update_saved_query_empty_call_grpc():
             type(client.transport.update_saved_query),
             '__call__') as call:
         call.return_value = asset_service.SavedQuery()
-        client.update_saved_query(request=None)
-
         client.update_saved_query(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13431,8 +13395,6 @@ def test_delete_saved_query_empty_call_grpc():
         call.return_value = None
         client.delete_saved_query(request=None)
 
-        client.delete_saved_query(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13454,8 +13416,6 @@ def test_batch_get_effective_iam_policies_empty_call_grpc():
             type(client.transport.batch_get_effective_iam_policies),
             '__call__') as call:
         call.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
-        client.batch_get_effective_iam_policies(request=None)
-
         client.batch_get_effective_iam_policies(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13481,8 +13441,6 @@ def test_analyze_org_policies_empty_call_grpc():
         call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
         client.analyze_org_policies(request=None)
 
-        client.analyze_org_policies(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13506,8 +13464,6 @@ def test_analyze_org_policy_governed_containers_empty_call_grpc():
         call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
         client.analyze_org_policy_governed_containers(request=None)
 
-        client.analyze_org_policy_governed_containers(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13529,8 +13485,6 @@ def test_analyze_org_policy_governed_assets_empty_call_grpc():
             type(client.transport.analyze_org_policy_governed_assets),
             '__call__') as call:
         call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
-        client.analyze_org_policy_governed_assets(request=None)
-
         client.analyze_org_policy_governed_assets(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13575,8 +13529,6 @@ async def test_export_assets_empty_call_grpc_asyncio():
         )
         await client.export_assets(request=None)
 
-        await client.export_assets(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13604,8 +13556,6 @@ async def test_list_assets_empty_call_grpc_asyncio():
         ))
         await client.list_assets(request=None)
 
-        await client.list_assets(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13630,8 +13580,6 @@ async def test_batch_get_assets_history_empty_call_grpc_asyncio():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetAssetsHistoryResponse(
         ))
-        await client.batch_get_assets_history(request=None)
-
         await client.batch_get_assets_history(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13665,8 +13613,6 @@ async def test_create_feed_empty_call_grpc_asyncio():
         ))
         await client.create_feed(request=None)
 
-        await client.create_feed(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13698,8 +13644,6 @@ async def test_get_feed_empty_call_grpc_asyncio():
         ))
         await client.get_feed(request=None)
 
-        await client.get_feed(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13724,8 +13668,6 @@ async def test_list_feeds_empty_call_grpc_asyncio():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListFeedsResponse(
         ))
-        await client.list_feeds(request=None)
-
         await client.list_feeds(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13759,8 +13701,6 @@ async def test_update_feed_empty_call_grpc_asyncio():
         ))
         await client.update_feed(request=None)
 
-        await client.update_feed(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13784,8 +13724,6 @@ async def test_delete_feed_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_feed(request=None)
-
         await client.delete_feed(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13815,8 +13753,6 @@ async def test_search_all_resources_empty_call_grpc_asyncio():
         ))
         await client.search_all_resources(request=None)
 
-        await client.search_all_resources(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13842,8 +13778,6 @@ async def test_search_all_iam_policies_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllIamPoliciesResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.search_all_iam_policies(request=None)
-
         await client.search_all_iam_policies(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13873,8 +13807,6 @@ async def test_analyze_iam_policy_empty_call_grpc_asyncio():
         ))
         await client.analyze_iam_policy(request=None)
 
-        await client.analyze_iam_policy(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13900,8 +13832,6 @@ async def test_analyze_iam_policy_longrunning_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        await client.analyze_iam_policy_longrunning(request=None)
-
         await client.analyze_iam_policy_longrunning(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13930,8 +13860,6 @@ async def test_analyze_move_empty_call_grpc_asyncio():
         ))
         await client.analyze_move(request=None)
 
-        await client.analyze_move(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -13958,8 +13886,6 @@ async def test_query_assets_empty_call_grpc_asyncio():
             job_reference='job_reference_value',
             done=True,
         ))
-        await client.query_assets(request=None)
-
         await client.query_assets(request=None)
 
         # Establish that the underlying stub method was called.
@@ -13992,8 +13918,6 @@ async def test_create_saved_query_empty_call_grpc_asyncio():
         ))
         await client.create_saved_query(request=None)
 
-        await client.create_saved_query(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -14024,8 +13948,6 @@ async def test_get_saved_query_empty_call_grpc_asyncio():
         ))
         await client.get_saved_query(request=None)
 
-        await client.get_saved_query(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -14051,8 +13973,6 @@ async def test_list_saved_queries_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.list_saved_queries(request=None)
-
         await client.list_saved_queries(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14085,8 +14005,6 @@ async def test_update_saved_query_empty_call_grpc_asyncio():
         ))
         await client.update_saved_query(request=None)
 
-        await client.update_saved_query(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -14110,8 +14028,6 @@ async def test_delete_saved_query_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_saved_query(request=None)
-
         await client.delete_saved_query(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14138,8 +14054,6 @@ async def test_batch_get_effective_iam_policies_empty_call_grpc_asyncio():
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetEffectiveIamPoliciesResponse(
         ))
-        await client.batch_get_effective_iam_policies(request=None)
-
         await client.batch_get_effective_iam_policies(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14169,8 +14083,6 @@ async def test_analyze_org_policies_empty_call_grpc_asyncio():
         ))
         await client.analyze_org_policies(request=None)
 
-        await client.analyze_org_policies(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -14198,8 +14110,6 @@ async def test_analyze_org_policy_governed_containers_empty_call_grpc_asyncio():
         ))
         await client.analyze_org_policy_governed_containers(request=None)
 
-        await client.analyze_org_policy_governed_containers(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -14225,8 +14135,6 @@ async def test_analyze_org_policy_governed_assets_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
             next_page_token='next_page_token_value',
         ))
-        await client.analyze_org_policy_governed_assets(request=None)
-
         await client.analyze_org_policy_governed_assets(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16719,8 +16627,8 @@ def test_export_assets_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.export_assets), '__call__') as call:
-
+            type(client.transport.export_assets),
+            '__call__') as call:
         client.export_assets(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16741,8 +16649,8 @@ def test_list_assets_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_assets), '__call__') as call:
-
+            type(client.transport.list_assets),
+            '__call__') as call:
         client.list_assets(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16763,8 +16671,8 @@ def test_batch_get_assets_history_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.batch_get_assets_history), '__call__') as call:
-
+            type(client.transport.batch_get_assets_history),
+            '__call__') as call:
         client.batch_get_assets_history(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16785,8 +16693,8 @@ def test_create_feed_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_feed), '__call__') as call:
-
+            type(client.transport.create_feed),
+            '__call__') as call:
         client.create_feed(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16807,8 +16715,8 @@ def test_get_feed_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_feed), '__call__') as call:
-
+            type(client.transport.get_feed),
+            '__call__') as call:
         client.get_feed(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16829,8 +16737,8 @@ def test_list_feeds_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_feeds), '__call__') as call:
-
+            type(client.transport.list_feeds),
+            '__call__') as call:
         client.list_feeds(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16851,8 +16759,8 @@ def test_update_feed_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_feed), '__call__') as call:
-
+            type(client.transport.update_feed),
+            '__call__') as call:
         client.update_feed(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16873,8 +16781,8 @@ def test_delete_feed_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_feed), '__call__') as call:
-
+            type(client.transport.delete_feed),
+            '__call__') as call:
         client.delete_feed(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16895,8 +16803,8 @@ def test_search_all_resources_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.search_all_resources), '__call__') as call:
-
+            type(client.transport.search_all_resources),
+            '__call__') as call:
         client.search_all_resources(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16917,8 +16825,8 @@ def test_search_all_iam_policies_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.search_all_iam_policies), '__call__') as call:
-
+            type(client.transport.search_all_iam_policies),
+            '__call__') as call:
         client.search_all_iam_policies(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16939,8 +16847,8 @@ def test_analyze_iam_policy_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_iam_policy), '__call__') as call:
-
+            type(client.transport.analyze_iam_policy),
+            '__call__') as call:
         client.analyze_iam_policy(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16961,8 +16869,8 @@ def test_analyze_iam_policy_longrunning_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_iam_policy_longrunning), '__call__') as call:
-
+            type(client.transport.analyze_iam_policy_longrunning),
+            '__call__') as call:
         client.analyze_iam_policy_longrunning(request=None)
 
         # Establish that the underlying stub method was called.
@@ -16983,8 +16891,8 @@ def test_analyze_move_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_move), '__call__') as call:
-
+            type(client.transport.analyze_move),
+            '__call__') as call:
         client.analyze_move(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17005,8 +16913,8 @@ def test_query_assets_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.query_assets), '__call__') as call:
-
+            type(client.transport.query_assets),
+            '__call__') as call:
         client.query_assets(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17027,8 +16935,8 @@ def test_create_saved_query_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_saved_query), '__call__') as call:
-
+            type(client.transport.create_saved_query),
+            '__call__') as call:
         client.create_saved_query(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17049,8 +16957,8 @@ def test_get_saved_query_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_saved_query), '__call__') as call:
-
+            type(client.transport.get_saved_query),
+            '__call__') as call:
         client.get_saved_query(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17071,8 +16979,8 @@ def test_list_saved_queries_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_saved_queries), '__call__') as call:
-
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
         client.list_saved_queries(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17093,8 +17001,8 @@ def test_update_saved_query_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_saved_query), '__call__') as call:
-
+            type(client.transport.update_saved_query),
+            '__call__') as call:
         client.update_saved_query(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17115,8 +17023,8 @@ def test_delete_saved_query_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_saved_query), '__call__') as call:
-
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
         client.delete_saved_query(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17137,8 +17045,8 @@ def test_batch_get_effective_iam_policies_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.batch_get_effective_iam_policies), '__call__') as call:
-
+            type(client.transport.batch_get_effective_iam_policies),
+            '__call__') as call:
         client.batch_get_effective_iam_policies(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17159,8 +17067,8 @@ def test_analyze_org_policies_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_org_policies), '__call__') as call:
-
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
         client.analyze_org_policies(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17181,8 +17089,8 @@ def test_analyze_org_policy_governed_containers_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_org_policy_governed_containers), '__call__') as call:
-
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
         client.analyze_org_policy_governed_containers(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17203,8 +17111,8 @@ def test_analyze_org_policy_governed_assets_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_org_policy_governed_assets), '__call__') as call:
-
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
         client.analyze_org_policy_governed_assets(request=None)
 
         # Establish that the underlying stub method was called.
