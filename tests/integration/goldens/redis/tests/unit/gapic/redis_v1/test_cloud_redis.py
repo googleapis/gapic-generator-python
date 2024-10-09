@@ -10848,6 +10848,8 @@ def test_initialize_client_w_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_list_instances_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -10881,6 +10883,8 @@ async def test_list_instances_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_get_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -10914,6 +10918,8 @@ async def test_get_instance_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -10947,6 +10953,8 @@ async def test_get_instance_auth_string_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_create_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -10978,6 +10986,8 @@ async def test_create_instance_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_update_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -11009,6 +11019,8 @@ async def test_update_instance_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_upgrade_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -11040,6 +11052,8 @@ async def test_upgrade_instance_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_import_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -11071,6 +11085,8 @@ async def test_import_instance_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_export_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -11102,6 +11118,8 @@ async def test_export_instance_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_failover_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -11133,6 +11151,8 @@ async def test_failover_instance_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_delete_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
@@ -11164,6 +11184,8 @@ async def test_delete_instance_empty_call_rest_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",

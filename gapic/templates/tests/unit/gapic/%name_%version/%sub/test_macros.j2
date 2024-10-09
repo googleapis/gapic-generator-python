@@ -1466,6 +1466,10 @@ def test_{{ method_name }}_rest_no_http_options():
 @pytest.mark.asyncio
 {% endif %}{# is_async #}
 {{ async_method_prefix }}def test_{{ method_name }}_{{ test_name }}_{{transport_name}}():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
     client = {{ get_client(service=service, is_async=is_async) }}(
         credentials={{ get_credentials(is_async=is_async) }},
         transport="{{ transport_name }}",
