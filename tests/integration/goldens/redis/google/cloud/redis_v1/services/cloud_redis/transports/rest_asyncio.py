@@ -566,7 +566,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         self._interceptor = interceptor or AsyncCloudRedisRestInterceptor()
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
-        self._operations_client: Optional[operations_v1.OperationsClient] = None
+        self._operations_client: Optional[operations_v1.AsyncOperationsRestClient] = None
 
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
