@@ -1479,7 +1479,7 @@ def test_{{ method_name }}_rest_no_http_options():
     with mock.patch.object(
             type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
-    {% else %}{# gRPC #}
+    {% if 'rest' not in transport %}
         {% if is_async %}
         # Designate an appropriate return value for the call.
         {% if method.void %}
