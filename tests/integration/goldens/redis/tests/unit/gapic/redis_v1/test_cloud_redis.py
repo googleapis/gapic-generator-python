@@ -6669,8 +6669,6 @@ def test_list_instances_empty_call_grpc():
         call.return_value = cloud_redis.ListInstancesResponse()
         client.list_instances(request=None)
 
-        client.list_instances(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6692,8 +6690,6 @@ def test_get_instance_empty_call_grpc():
             type(client.transport.get_instance),
             '__call__') as call:
         call.return_value = cloud_redis.Instance()
-        client.get_instance(request=None)
-
         client.get_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6719,8 +6715,6 @@ def test_get_instance_auth_string_empty_call_grpc():
         call.return_value = cloud_redis.InstanceAuthString()
         client.get_instance_auth_string(request=None)
 
-        client.get_instance_auth_string(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6742,8 +6736,6 @@ def test_create_instance_empty_call_grpc():
             type(client.transport.create_instance),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
-        client.create_instance(request=None)
-
         client.create_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6769,8 +6761,6 @@ def test_update_instance_empty_call_grpc():
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.update_instance(request=None)
 
-        client.update_instance(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6792,8 +6782,6 @@ def test_upgrade_instance_empty_call_grpc():
             type(client.transport.upgrade_instance),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
-        client.upgrade_instance(request=None)
-
         client.upgrade_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6819,8 +6807,6 @@ def test_import_instance_empty_call_grpc():
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.import_instance(request=None)
 
-        client.import_instance(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6842,8 +6828,6 @@ def test_export_instance_empty_call_grpc():
             type(client.transport.export_instance),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
-        client.export_instance(request=None)
-
         client.export_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6869,8 +6853,6 @@ def test_failover_instance_empty_call_grpc():
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.failover_instance(request=None)
 
-        client.failover_instance(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6894,8 +6876,6 @@ def test_delete_instance_empty_call_grpc():
         call.return_value = operations_pb2.Operation(name='operations/op')
         client.delete_instance(request=None)
 
-        client.delete_instance(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6917,8 +6897,6 @@ def test_reschedule_maintenance_empty_call_grpc():
             type(client.transport.reschedule_maintenance),
             '__call__') as call:
         call.return_value = operations_pb2.Operation(name='operations/op')
-        client.reschedule_maintenance(request=None)
-
         client.reschedule_maintenance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6962,8 +6940,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
             next_page_token='next_page_token_value',
             unreachable=['unreachable_value'],
         ))
-        await client.list_instances(request=None)
-
         await client.list_instances(request=None)
 
         # Establish that the underlying stub method was called.
@@ -7019,8 +6995,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         ))
         await client.get_instance(request=None)
 
-        await client.get_instance(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7046,8 +7020,6 @@ async def test_get_instance_auth_string_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
             auth_string='auth_string_value',
         ))
-        await client.get_instance_auth_string(request=None)
-
         await client.get_instance_auth_string(request=None)
 
         # Establish that the underlying stub method was called.
@@ -7077,8 +7049,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         )
         await client.create_instance(request=None)
 
-        await client.create_instance(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7104,8 +7074,6 @@ async def test_update_instance_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        await client.update_instance(request=None)
-
         await client.update_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -7135,8 +7103,6 @@ async def test_upgrade_instance_empty_call_grpc_asyncio():
         )
         await client.upgrade_instance(request=None)
 
-        await client.upgrade_instance(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7162,8 +7128,6 @@ async def test_import_instance_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        await client.import_instance(request=None)
-
         await client.import_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -7193,8 +7157,6 @@ async def test_export_instance_empty_call_grpc_asyncio():
         )
         await client.export_instance(request=None)
 
-        await client.export_instance(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7220,8 +7182,6 @@ async def test_failover_instance_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        await client.failover_instance(request=None)
-
         await client.failover_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -7251,8 +7211,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         )
         await client.delete_instance(request=None)
 
-        await client.delete_instance(request=None)
-
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7278,8 +7236,6 @@ async def test_reschedule_maintenance_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        await client.reschedule_maintenance(request=None)
-
         await client.reschedule_maintenance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8851,8 +8807,8 @@ def test_list_instances_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_instances), '__call__') as call:
-
+            type(client.transport.list_instances),
+            '__call__') as call:
         client.list_instances(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8873,8 +8829,8 @@ def test_get_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_instance), '__call__') as call:
-
+            type(client.transport.get_instance),
+            '__call__') as call:
         client.get_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8895,8 +8851,8 @@ def test_get_instance_auth_string_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_instance_auth_string), '__call__') as call:
-
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
         client.get_instance_auth_string(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8917,8 +8873,8 @@ def test_create_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_instance), '__call__') as call:
-
+            type(client.transport.create_instance),
+            '__call__') as call:
         client.create_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8939,8 +8895,8 @@ def test_update_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_instance), '__call__') as call:
-
+            type(client.transport.update_instance),
+            '__call__') as call:
         client.update_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8961,8 +8917,8 @@ def test_upgrade_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.upgrade_instance), '__call__') as call:
-
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
         client.upgrade_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -8983,8 +8939,8 @@ def test_import_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.import_instance), '__call__') as call:
-
+            type(client.transport.import_instance),
+            '__call__') as call:
         client.import_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -9005,8 +8961,8 @@ def test_export_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.export_instance), '__call__') as call:
-
+            type(client.transport.export_instance),
+            '__call__') as call:
         client.export_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -9027,8 +8983,8 @@ def test_failover_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.failover_instance), '__call__') as call:
-
+            type(client.transport.failover_instance),
+            '__call__') as call:
         client.failover_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -9049,8 +9005,8 @@ def test_delete_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_instance), '__call__') as call:
-
+            type(client.transport.delete_instance),
+            '__call__') as call:
         client.delete_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -9071,8 +9027,8 @@ def test_reschedule_maintenance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.reschedule_maintenance), '__call__') as call:
-
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
         client.reschedule_maintenance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10763,8 +10719,8 @@ async def test_list_instances_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_instances), '__call__') as call:
-
+            type(client.transport.list_instances),
+            '__call__') as call:
         await client.list_instances(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10788,8 +10744,8 @@ async def test_get_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_instance), '__call__') as call:
-
+            type(client.transport.get_instance),
+            '__call__') as call:
         await client.get_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10813,8 +10769,8 @@ async def test_get_instance_auth_string_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_instance_auth_string), '__call__') as call:
-
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
         await client.get_instance_auth_string(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10838,8 +10794,8 @@ async def test_create_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_instance), '__call__') as call:
-
+            type(client.transport.create_instance),
+            '__call__') as call:
         await client.create_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10863,8 +10819,8 @@ async def test_update_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_instance), '__call__') as call:
-
+            type(client.transport.update_instance),
+            '__call__') as call:
         await client.update_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10888,8 +10844,8 @@ async def test_upgrade_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.upgrade_instance), '__call__') as call:
-
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
         await client.upgrade_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10913,8 +10869,8 @@ async def test_import_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.import_instance), '__call__') as call:
-
+            type(client.transport.import_instance),
+            '__call__') as call:
         await client.import_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10938,8 +10894,8 @@ async def test_export_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.export_instance), '__call__') as call:
-
+            type(client.transport.export_instance),
+            '__call__') as call:
         await client.export_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10963,8 +10919,8 @@ async def test_failover_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.failover_instance), '__call__') as call:
-
+            type(client.transport.failover_instance),
+            '__call__') as call:
         await client.failover_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -10988,8 +10944,8 @@ async def test_delete_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_instance), '__call__') as call:
-
+            type(client.transport.delete_instance),
+            '__call__') as call:
         await client.delete_instance(request=None)
 
         # Establish that the underlying stub method was called.
@@ -11013,8 +10969,8 @@ async def test_reschedule_maintenance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.reschedule_maintenance), '__call__') as call:
-
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
         await client.reschedule_maintenance(request=None)
 
         # Establish that the underlying stub method was called.
