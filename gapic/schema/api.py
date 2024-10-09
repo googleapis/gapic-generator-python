@@ -706,8 +706,11 @@ class API:
             for library_setting in self.service_yaml_config.publishing.library_settings
         }
 
-        # Add default settings for the current proto package
-        if not result:
+        # NOTE: Add default settings for the current proto package
+        # for the following cases:
+        # - if library settings are not specified in the service config.
+        # - if library_settings.version != self.naming.proto_package (proto package name)
+        if self.naming.proto_package not in result:
             result = {
                 self.naming.proto_package: client_pb2.ClientLibrarySettings(
                     version=self.naming.proto_package
