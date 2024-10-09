@@ -16719,15 +16719,7 @@ def test_export_assets_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.export_assets),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.export_assets), '__call__') as call:
 
         client.export_assets(request=None)
 
@@ -16749,17 +16741,7 @@ def test_list_assets_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_assets),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.ListAssetsResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.ListAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.list_assets), '__call__') as call:
 
         client.list_assets(request=None)
 
@@ -16781,17 +16763,7 @@ def test_batch_get_assets_history_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.batch_get_assets_history),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.BatchGetAssetsHistoryResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.batch_get_assets_history), '__call__') as call:
 
         client.batch_get_assets_history(request=None)
 
@@ -16813,17 +16785,7 @@ def test_create_feed_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_feed),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.Feed()
-        # Convert return value to protobuf type
-        return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.create_feed), '__call__') as call:
 
         client.create_feed(request=None)
 
@@ -16845,17 +16807,7 @@ def test_get_feed_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_feed),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.Feed()
-        # Convert return value to protobuf type
-        return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_feed), '__call__') as call:
 
         client.get_feed(request=None)
 
@@ -16877,17 +16829,7 @@ def test_list_feeds_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_feeds),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.ListFeedsResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.ListFeedsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.list_feeds), '__call__') as call:
 
         client.list_feeds(request=None)
 
@@ -16909,17 +16851,7 @@ def test_update_feed_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_feed),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.Feed()
-        # Convert return value to protobuf type
-        return_value = asset_service.Feed.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.update_feed), '__call__') as call:
 
         client.update_feed(request=None)
 
@@ -16941,15 +16873,7 @@ def test_delete_feed_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_feed),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = None
-        json_return_value = ''
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.delete_feed), '__call__') as call:
 
         client.delete_feed(request=None)
 
@@ -16971,17 +16895,7 @@ def test_search_all_resources_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.search_all_resources),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.SearchAllResourcesResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.search_all_resources), '__call__') as call:
 
         client.search_all_resources(request=None)
 
@@ -17003,17 +16917,7 @@ def test_search_all_iam_policies_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.search_all_iam_policies),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.SearchAllIamPoliciesResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.search_all_iam_policies), '__call__') as call:
 
         client.search_all_iam_policies(request=None)
 
@@ -17035,17 +16939,7 @@ def test_analyze_iam_policy_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_iam_policy),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.AnalyzeIamPolicyResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.analyze_iam_policy), '__call__') as call:
 
         client.analyze_iam_policy(request=None)
 
@@ -17067,15 +16961,7 @@ def test_analyze_iam_policy_longrunning_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_iam_policy_longrunning),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.analyze_iam_policy_longrunning), '__call__') as call:
 
         client.analyze_iam_policy_longrunning(request=None)
 
@@ -17097,17 +16983,7 @@ def test_analyze_move_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_move),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.AnalyzeMoveResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.analyze_move), '__call__') as call:
 
         client.analyze_move(request=None)
 
@@ -17129,17 +17005,7 @@ def test_query_assets_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.query_assets),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.QueryAssetsResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.QueryAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.query_assets), '__call__') as call:
 
         client.query_assets(request=None)
 
@@ -17161,17 +17027,7 @@ def test_create_saved_query_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_saved_query),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.SavedQuery()
-        # Convert return value to protobuf type
-        return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.create_saved_query), '__call__') as call:
 
         client.create_saved_query(request=None)
 
@@ -17193,17 +17049,7 @@ def test_get_saved_query_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_saved_query),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.SavedQuery()
-        # Convert return value to protobuf type
-        return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_saved_query), '__call__') as call:
 
         client.get_saved_query(request=None)
 
@@ -17225,17 +17071,7 @@ def test_list_saved_queries_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_saved_queries),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.ListSavedQueriesResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.list_saved_queries), '__call__') as call:
 
         client.list_saved_queries(request=None)
 
@@ -17257,17 +17093,7 @@ def test_update_saved_query_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_saved_query),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.SavedQuery()
-        # Convert return value to protobuf type
-        return_value = asset_service.SavedQuery.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.update_saved_query), '__call__') as call:
 
         client.update_saved_query(request=None)
 
@@ -17289,15 +17115,7 @@ def test_delete_saved_query_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_saved_query),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = None
-        json_return_value = ''
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.delete_saved_query), '__call__') as call:
 
         client.delete_saved_query(request=None)
 
@@ -17319,17 +17137,7 @@ def test_batch_get_effective_iam_policies_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.batch_get_effective_iam_policies),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.batch_get_effective_iam_policies), '__call__') as call:
 
         client.batch_get_effective_iam_policies(request=None)
 
@@ -17351,17 +17159,7 @@ def test_analyze_org_policies_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_org_policies),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.AnalyzeOrgPoliciesResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.analyze_org_policies), '__call__') as call:
 
         client.analyze_org_policies(request=None)
 
@@ -17383,17 +17181,7 @@ def test_analyze_org_policy_governed_containers_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_org_policy_governed_containers),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.analyze_org_policy_governed_containers), '__call__') as call:
 
         client.analyze_org_policy_governed_containers(request=None)
 
@@ -17415,17 +17203,7 @@ def test_analyze_org_policy_governed_assets_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.analyze_org_policy_governed_assets),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
-        # Convert return value to protobuf type
-        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.analyze_org_policy_governed_assets), '__call__') as call:
 
         client.analyze_org_policy_governed_assets(request=None)
 

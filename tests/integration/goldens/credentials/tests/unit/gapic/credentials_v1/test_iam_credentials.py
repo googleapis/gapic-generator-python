@@ -3577,17 +3577,7 @@ def test_generate_access_token_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.generate_access_token),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = common.GenerateAccessTokenResponse()
-        # Convert return value to protobuf type
-        return_value = common.GenerateAccessTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.generate_access_token), '__call__') as call:
 
         client.generate_access_token(request=None)
 
@@ -3609,17 +3599,7 @@ def test_generate_id_token_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.generate_id_token),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = common.GenerateIdTokenResponse()
-        # Convert return value to protobuf type
-        return_value = common.GenerateIdTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.generate_id_token), '__call__') as call:
 
         client.generate_id_token(request=None)
 
@@ -3641,17 +3621,7 @@ def test_sign_blob_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.sign_blob),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = common.SignBlobResponse()
-        # Convert return value to protobuf type
-        return_value = common.SignBlobResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.sign_blob), '__call__') as call:
 
         client.sign_blob(request=None)
 
@@ -3673,17 +3643,7 @@ def test_sign_jwt_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.sign_jwt),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = common.SignJwtResponse()
-        # Convert return value to protobuf type
-        return_value = common.SignJwtResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.sign_jwt), '__call__') as call:
 
         client.sign_jwt(request=None)
 

@@ -1478,27 +1478,7 @@ def test_{{ method_name }}_rest_no_http_options():
     # Mock the actual call, and fake the request.
     {% if 'rest' in transport %}
     with mock.patch.object(
-            type(client.transport.{{ method.transport_safe_name|snake_case }}),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        {% if method.void %}
-        return_value = None
-        json_return_value = ''
-        {% elif method.lro %}
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-        {% else %}
-        return_value = {{ method.output.ident }}()
-        {% if method.output.ident.is_proto_plus_type %}
-        # Convert return value to protobuf type
-        return_value = {{ method.output.ident }}.pb(return_value)
-        {% endif %}
-        json_return_value = json_format.MessageToJson(return_value)
-        {% endif %}
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.{{ method.transport_safe_name|snake_case }}), '__call__') as call:
     {% else %}{# gRPC #}
     with mock.patch.object(
             type(client.transport.{{ method.transport_safe_name|snake_case }}),

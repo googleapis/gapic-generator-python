@@ -14501,17 +14501,7 @@ def test_get_trigger_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_trigger),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = trigger.Trigger()
-        # Convert return value to protobuf type
-        return_value = trigger.Trigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_trigger), '__call__') as call:
 
         client.get_trigger(request=None)
 
@@ -14533,17 +14523,7 @@ def test_list_triggers_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_triggers),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = eventarc.ListTriggersResponse()
-        # Convert return value to protobuf type
-        return_value = eventarc.ListTriggersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.list_triggers), '__call__') as call:
 
         client.list_triggers(request=None)
 
@@ -14565,15 +14545,7 @@ def test_create_trigger_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_trigger),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.create_trigger), '__call__') as call:
 
         client.create_trigger(request=None)
 
@@ -14595,15 +14567,7 @@ def test_update_trigger_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_trigger),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.update_trigger), '__call__') as call:
 
         client.update_trigger(request=None)
 
@@ -14625,15 +14589,7 @@ def test_delete_trigger_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_trigger),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.delete_trigger), '__call__') as call:
 
         client.delete_trigger(request=None)
 
@@ -14655,17 +14611,7 @@ def test_get_channel_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_channel),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = channel.Channel()
-        # Convert return value to protobuf type
-        return_value = channel.Channel.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_channel), '__call__') as call:
 
         client.get_channel(request=None)
 
@@ -14687,17 +14633,7 @@ def test_list_channels_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_channels),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = eventarc.ListChannelsResponse()
-        # Convert return value to protobuf type
-        return_value = eventarc.ListChannelsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.list_channels), '__call__') as call:
 
         client.list_channels(request=None)
 
@@ -14719,15 +14655,7 @@ def test_create_channel_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_channel_),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.create_channel_), '__call__') as call:
 
         client.create_channel(request=None)
 
@@ -14749,15 +14677,7 @@ def test_update_channel_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_channel),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.update_channel), '__call__') as call:
 
         client.update_channel(request=None)
 
@@ -14779,15 +14699,7 @@ def test_delete_channel_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_channel),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.delete_channel), '__call__') as call:
 
         client.delete_channel(request=None)
 
@@ -14809,17 +14721,7 @@ def test_get_provider_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_provider),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = discovery.Provider()
-        # Convert return value to protobuf type
-        return_value = discovery.Provider.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_provider), '__call__') as call:
 
         client.get_provider(request=None)
 
@@ -14841,17 +14743,7 @@ def test_list_providers_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_providers),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = eventarc.ListProvidersResponse()
-        # Convert return value to protobuf type
-        return_value = eventarc.ListProvidersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.list_providers), '__call__') as call:
 
         client.list_providers(request=None)
 
@@ -14873,17 +14765,7 @@ def test_get_channel_connection_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_channel_connection),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = channel_connection.ChannelConnection()
-        # Convert return value to protobuf type
-        return_value = channel_connection.ChannelConnection.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_channel_connection), '__call__') as call:
 
         client.get_channel_connection(request=None)
 
@@ -14905,17 +14787,7 @@ def test_list_channel_connections_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_channel_connections),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = eventarc.ListChannelConnectionsResponse()
-        # Convert return value to protobuf type
-        return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.list_channel_connections), '__call__') as call:
 
         client.list_channel_connections(request=None)
 
@@ -14937,15 +14809,7 @@ def test_create_channel_connection_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_channel_connection),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.create_channel_connection), '__call__') as call:
 
         client.create_channel_connection(request=None)
 
@@ -14967,15 +14831,7 @@ def test_delete_channel_connection_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_channel_connection),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.delete_channel_connection), '__call__') as call:
 
         client.delete_channel_connection(request=None)
 
@@ -14997,17 +14853,7 @@ def test_get_google_channel_config_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_google_channel_config),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = google_channel_config.GoogleChannelConfig()
-        # Convert return value to protobuf type
-        return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_google_channel_config), '__call__') as call:
 
         client.get_google_channel_config(request=None)
 
@@ -15029,17 +14875,7 @@ def test_update_google_channel_config_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_google_channel_config),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = gce_google_channel_config.GoogleChannelConfig()
-        # Convert return value to protobuf type
-        return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.update_google_channel_config), '__call__') as call:
 
         client.update_google_channel_config(request=None)
 

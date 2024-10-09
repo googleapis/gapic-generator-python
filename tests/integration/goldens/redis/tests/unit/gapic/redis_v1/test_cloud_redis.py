@@ -8851,17 +8851,7 @@ def test_list_instances_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_instances),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = cloud_redis.ListInstancesResponse()
-        # Convert return value to protobuf type
-        return_value = cloud_redis.ListInstancesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.list_instances), '__call__') as call:
 
         client.list_instances(request=None)
 
@@ -8883,17 +8873,7 @@ def test_get_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = cloud_redis.Instance()
-        # Convert return value to protobuf type
-        return_value = cloud_redis.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_instance), '__call__') as call:
 
         client.get_instance(request=None)
 
@@ -8915,17 +8895,7 @@ def test_get_instance_auth_string_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_instance_auth_string),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = cloud_redis.InstanceAuthString()
-        # Convert return value to protobuf type
-        return_value = cloud_redis.InstanceAuthString.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_instance_auth_string), '__call__') as call:
 
         client.get_instance_auth_string(request=None)
 
@@ -8947,15 +8917,7 @@ def test_create_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.create_instance), '__call__') as call:
 
         client.create_instance(request=None)
 
@@ -8977,15 +8939,7 @@ def test_update_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.update_instance), '__call__') as call:
 
         client.update_instance(request=None)
 
@@ -9007,15 +8961,7 @@ def test_upgrade_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.upgrade_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.upgrade_instance), '__call__') as call:
 
         client.upgrade_instance(request=None)
 
@@ -9037,15 +8983,7 @@ def test_import_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.import_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.import_instance), '__call__') as call:
 
         client.import_instance(request=None)
 
@@ -9067,15 +9005,7 @@ def test_export_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.export_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.export_instance), '__call__') as call:
 
         client.export_instance(request=None)
 
@@ -9097,15 +9027,7 @@ def test_failover_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.failover_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.failover_instance), '__call__') as call:
 
         client.failover_instance(request=None)
 
@@ -9127,15 +9049,7 @@ def test_delete_instance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.delete_instance), '__call__') as call:
 
         client.delete_instance(request=None)
 
@@ -9157,15 +9071,7 @@ def test_reschedule_maintenance_empty_call_rest():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.reschedule_maintenance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.reschedule_maintenance), '__call__') as call:
 
         client.reschedule_maintenance(request=None)
 
@@ -10857,17 +10763,7 @@ async def test_list_instances_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.list_instances),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = cloud_redis.ListInstancesResponse()
-        # Convert return value to protobuf type
-        return_value = cloud_redis.ListInstancesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.list_instances), '__call__') as call:
 
         await client.list_instances(request=None)
 
@@ -10892,17 +10788,7 @@ async def test_get_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = cloud_redis.Instance()
-        # Convert return value to protobuf type
-        return_value = cloud_redis.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_instance), '__call__') as call:
 
         await client.get_instance(request=None)
 
@@ -10927,17 +10813,7 @@ async def test_get_instance_auth_string_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.get_instance_auth_string),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = cloud_redis.InstanceAuthString()
-        # Convert return value to protobuf type
-        return_value = cloud_redis.InstanceAuthString.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.get_instance_auth_string), '__call__') as call:
 
         await client.get_instance_auth_string(request=None)
 
@@ -10962,15 +10838,7 @@ async def test_create_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.create_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.create_instance), '__call__') as call:
 
         await client.create_instance(request=None)
 
@@ -10995,15 +10863,7 @@ async def test_update_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.update_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.update_instance), '__call__') as call:
 
         await client.update_instance(request=None)
 
@@ -11028,15 +10888,7 @@ async def test_upgrade_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.upgrade_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.upgrade_instance), '__call__') as call:
 
         await client.upgrade_instance(request=None)
 
@@ -11061,15 +10913,7 @@ async def test_import_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.import_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.import_instance), '__call__') as call:
 
         await client.import_instance(request=None)
 
@@ -11094,15 +10938,7 @@ async def test_export_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.export_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.export_instance), '__call__') as call:
 
         await client.export_instance(request=None)
 
@@ -11127,15 +10963,7 @@ async def test_failover_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.failover_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.failover_instance), '__call__') as call:
 
         await client.failover_instance(request=None)
 
@@ -11160,15 +10988,7 @@ async def test_delete_instance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.delete_instance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.delete_instance), '__call__') as call:
 
         await client.delete_instance(request=None)
 
@@ -11193,15 +11013,7 @@ async def test_reschedule_maintenance_empty_call_rest_asyncio():
 
     # Mock the actual call, and fake the request.
     with mock.patch.object(
-            type(client.transport.reschedule_maintenance),
-            '__call__') as call, mock.patch.object(type(client.transport._session), 'request') as req:
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = operations_pb2.Operation(name='operations/spam')
-        json_return_value = json_format.MessageToJson(return_value)
-
-        req.return_value.read = mock.AsyncMock(return_value=json_return_value)
-        call.return_value = req.return_value
+            type(client.transport.reschedule_maintenance), '__call__') as call:
 
         await client.reschedule_maintenance(request=None)
 
