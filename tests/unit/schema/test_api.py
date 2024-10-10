@@ -2746,10 +2746,10 @@ def test_read_empty_python_settings_from_service_yaml():
 
 
 def test_incorrect_library_settings_version():
-# NOTE: This test case ensures that the generator is able to read
-# from the default library settings if the version specified against the
-# library settings in the service yaml of an API differs from the version
-# of the API.
+    # NOTE: This test case ensures that the generator is able to read
+    # from the default library settings if the version specified against the
+    # library settings in the service yaml of an API differs from the version
+    # of the API.
     service_yaml_config = {
         "apis": [
             {"name": "google.example.v1beta1.ServiceOne.Example1"},
