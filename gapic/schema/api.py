@@ -711,11 +711,9 @@ class API:
         # - if library settings are not specified in the service config.
         # - if library_settings.version != self.naming.proto_package (proto package name)
         if self.naming.proto_package not in result:
-            result = {
-                self.naming.proto_package: client_pb2.ClientLibrarySettings(
+            result[self.naming.proto_package] = client_pb2.ClientLibrarySettings(
                     version=self.naming.proto_package
                 )
-            }
 
         return result
 
